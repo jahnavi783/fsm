@@ -19,20 +19,20 @@ mixin _$WorkOrderActionEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -47,20 +47,20 @@ mixin _$WorkOrderActionEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -75,20 +75,20 @@ mixin _$WorkOrderActionEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -225,20 +225,20 @@ class _$LoadWorkOrderImpl implements _LoadWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -256,20 +256,20 @@ class _$LoadWorkOrderImpl implements _LoadWorkOrder {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -287,20 +287,20 @@ class _$LoadWorkOrderImpl implements _LoadWorkOrder {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -384,7 +384,11 @@ abstract class _$$StartWorkOrderImplCopyWith<$Res> {
       __$$StartWorkOrderImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {int workOrderId, double latitude, double longitude, String? notes});
+      {int workOrderId,
+      double latitude,
+      double longitude,
+      List<File> files,
+      String? notes});
 }
 
 /// @nodoc
@@ -401,6 +405,7 @@ class __$$StartWorkOrderImplCopyWithImpl<$Res>
     Object? workOrderId = null,
     Object? latitude = null,
     Object? longitude = null,
+    Object? files = null,
     Object? notes = freezed,
   }) {
     return _then(_$StartWorkOrderImpl(
@@ -416,6 +421,10 @@ class __$$StartWorkOrderImplCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      files: null == files
+          ? _value._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -431,7 +440,9 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
       {required this.workOrderId,
       required this.latitude,
       required this.longitude,
-      this.notes});
+      final List<File> files = const [],
+      this.notes})
+      : _files = files;
 
   @override
   final int workOrderId;
@@ -439,12 +450,21 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
   final double latitude;
   @override
   final double longitude;
+  final List<File> _files;
+  @override
+  @JsonKey()
+  List<File> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
+
   @override
   final String? notes;
 
   @override
   String toString() {
-    return 'WorkOrderActionEvent.startWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, notes: $notes)';
+    return 'WorkOrderActionEvent.startWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
   }
 
   @override
@@ -458,12 +478,13 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
+            const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, workOrderId, latitude, longitude, notes);
+  int get hashCode => Object.hash(runtimeType, workOrderId, latitude, longitude,
+      const DeepCollectionEquality().hash(_files), notes);
 
   @JsonKey(ignore: true)
   @override
@@ -476,20 +497,20 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -500,27 +521,27 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
     required TResult Function() captureLocation,
     required TResult Function() clearError,
   }) {
-    return startWorkOrder(workOrderId, latitude, longitude, notes);
+    return startWorkOrder(workOrderId, latitude, longitude, files, notes);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -531,27 +552,27 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
     TResult? Function()? captureLocation,
     TResult? Function()? clearError,
   }) {
-    return startWorkOrder?.call(workOrderId, latitude, longitude, notes);
+    return startWorkOrder?.call(workOrderId, latitude, longitude, files, notes);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -564,7 +585,7 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
     required TResult orElse(),
   }) {
     if (startWorkOrder != null) {
-      return startWorkOrder(workOrderId, latitude, longitude, notes);
+      return startWorkOrder(workOrderId, latitude, longitude, files, notes);
     }
     return orElse();
   }
@@ -624,11 +645,13 @@ abstract class _StartWorkOrder implements WorkOrderActionEvent {
       {required final int workOrderId,
       required final double latitude,
       required final double longitude,
+      final List<File> files,
       final String? notes}) = _$StartWorkOrderImpl;
 
   int get workOrderId;
   double get latitude;
   double get longitude;
+  List<File> get files;
   String? get notes;
   @JsonKey(ignore: true)
   _$$StartWorkOrderImplCopyWith<_$StartWorkOrderImpl> get copyWith =>
@@ -642,7 +665,11 @@ abstract class _$$PauseWorkOrderImplCopyWith<$Res> {
       __$$PauseWorkOrderImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {int workOrderId, String reason, double latitude, double longitude});
+      {int workOrderId,
+      String reason,
+      double latitude,
+      double longitude,
+      List<File> files});
 }
 
 /// @nodoc
@@ -660,6 +687,7 @@ class __$$PauseWorkOrderImplCopyWithImpl<$Res>
     Object? reason = null,
     Object? latitude = null,
     Object? longitude = null,
+    Object? files = null,
   }) {
     return _then(_$PauseWorkOrderImpl(
       workOrderId: null == workOrderId
@@ -678,6 +706,10 @@ class __$$PauseWorkOrderImplCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      files: null == files
+          ? _value._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
     ));
   }
 }
@@ -689,7 +721,9 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
       {required this.workOrderId,
       required this.reason,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,
+      final List<File> files = const []})
+      : _files = files;
 
   @override
   final int workOrderId;
@@ -699,10 +733,18 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
   final double latitude;
   @override
   final double longitude;
+  final List<File> _files;
+  @override
+  @JsonKey()
+  List<File> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
 
   @override
   String toString() {
-    return 'WorkOrderActionEvent.pauseWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude)';
+    return 'WorkOrderActionEvent.pauseWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude, files: $files)';
   }
 
   @override
@@ -716,12 +758,13 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
-                other.longitude == longitude));
+                other.longitude == longitude) &&
+            const DeepCollectionEquality().equals(other._files, _files));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, workOrderId, reason, latitude, longitude);
+  int get hashCode => Object.hash(runtimeType, workOrderId, reason, latitude,
+      longitude, const DeepCollectionEquality().hash(_files));
 
   @JsonKey(ignore: true)
   @override
@@ -734,20 +777,20 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -758,27 +801,27 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
     required TResult Function() captureLocation,
     required TResult Function() clearError,
   }) {
-    return pauseWorkOrder(workOrderId, reason, latitude, longitude);
+    return pauseWorkOrder(workOrderId, reason, latitude, longitude, files);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -789,27 +832,28 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
     TResult? Function()? captureLocation,
     TResult? Function()? clearError,
   }) {
-    return pauseWorkOrder?.call(workOrderId, reason, latitude, longitude);
+    return pauseWorkOrder?.call(
+        workOrderId, reason, latitude, longitude, files);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -822,7 +866,7 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
     required TResult orElse(),
   }) {
     if (pauseWorkOrder != null) {
-      return pauseWorkOrder(workOrderId, reason, latitude, longitude);
+      return pauseWorkOrder(workOrderId, reason, latitude, longitude, files);
     }
     return orElse();
   }
@@ -882,12 +926,14 @@ abstract class _PauseWorkOrder implements WorkOrderActionEvent {
       {required final int workOrderId,
       required final String reason,
       required final double latitude,
-      required final double longitude}) = _$PauseWorkOrderImpl;
+      required final double longitude,
+      final List<File> files}) = _$PauseWorkOrderImpl;
 
   int get workOrderId;
   String get reason;
   double get latitude;
   double get longitude;
+  List<File> get files;
   @JsonKey(ignore: true)
   _$$PauseWorkOrderImplCopyWith<_$PauseWorkOrderImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -900,7 +946,11 @@ abstract class _$$ResumeWorkOrderImplCopyWith<$Res> {
       __$$ResumeWorkOrderImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {int workOrderId, double latitude, double longitude, String? notes});
+      {int workOrderId,
+      double latitude,
+      double longitude,
+      List<File> files,
+      String? notes});
 }
 
 /// @nodoc
@@ -917,6 +967,7 @@ class __$$ResumeWorkOrderImplCopyWithImpl<$Res>
     Object? workOrderId = null,
     Object? latitude = null,
     Object? longitude = null,
+    Object? files = null,
     Object? notes = freezed,
   }) {
     return _then(_$ResumeWorkOrderImpl(
@@ -932,6 +983,10 @@ class __$$ResumeWorkOrderImplCopyWithImpl<$Res>
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      files: null == files
+          ? _value._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
       notes: freezed == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -947,7 +1002,9 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
       {required this.workOrderId,
       required this.latitude,
       required this.longitude,
-      this.notes});
+      final List<File> files = const [],
+      this.notes})
+      : _files = files;
 
   @override
   final int workOrderId;
@@ -955,12 +1012,21 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
   final double latitude;
   @override
   final double longitude;
+  final List<File> _files;
+  @override
+  @JsonKey()
+  List<File> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
+
   @override
   final String? notes;
 
   @override
   String toString() {
-    return 'WorkOrderActionEvent.resumeWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, notes: $notes)';
+    return 'WorkOrderActionEvent.resumeWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
   }
 
   @override
@@ -974,12 +1040,13 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
+            const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.notes, notes) || other.notes == notes));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, workOrderId, latitude, longitude, notes);
+  int get hashCode => Object.hash(runtimeType, workOrderId, latitude, longitude,
+      const DeepCollectionEquality().hash(_files), notes);
 
   @JsonKey(ignore: true)
   @override
@@ -992,20 +1059,20 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -1016,27 +1083,27 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
     required TResult Function() captureLocation,
     required TResult Function() clearError,
   }) {
-    return resumeWorkOrder(workOrderId, latitude, longitude, notes);
+    return resumeWorkOrder(workOrderId, latitude, longitude, files, notes);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1047,27 +1114,28 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
     TResult? Function()? captureLocation,
     TResult? Function()? clearError,
   }) {
-    return resumeWorkOrder?.call(workOrderId, latitude, longitude, notes);
+    return resumeWorkOrder?.call(
+        workOrderId, latitude, longitude, files, notes);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1080,7 +1148,7 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
     required TResult orElse(),
   }) {
     if (resumeWorkOrder != null) {
-      return resumeWorkOrder(workOrderId, latitude, longitude, notes);
+      return resumeWorkOrder(workOrderId, latitude, longitude, files, notes);
     }
     return orElse();
   }
@@ -1140,11 +1208,13 @@ abstract class _ResumeWorkOrder implements WorkOrderActionEvent {
       {required final int workOrderId,
       required final double latitude,
       required final double longitude,
+      final List<File> files,
       final String? notes}) = _$ResumeWorkOrderImpl;
 
   int get workOrderId;
   double get latitude;
   double get longitude;
+  List<File> get files;
   String? get notes;
   @JsonKey(ignore: true)
   _$$ResumeWorkOrderImplCopyWith<_$ResumeWorkOrderImpl> get copyWith =>
@@ -1161,7 +1231,7 @@ abstract class _$$CompleteWorkOrderImplCopyWith<$Res> {
       {int workOrderId,
       String workLog,
       List<PartUsedEntity> partsUsed,
-      List<String> images,
+      List<File> files,
       double latitude,
       double longitude,
       String? completionNotes});
@@ -1181,7 +1251,7 @@ class __$$CompleteWorkOrderImplCopyWithImpl<$Res>
     Object? workOrderId = null,
     Object? workLog = null,
     Object? partsUsed = null,
-    Object? images = null,
+    Object? files = null,
     Object? latitude = null,
     Object? longitude = null,
     Object? completionNotes = freezed,
@@ -1199,10 +1269,10 @@ class __$$CompleteWorkOrderImplCopyWithImpl<$Res>
           ? _value._partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
               as List<PartUsedEntity>,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      files: null == files
+          ? _value._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
@@ -1226,12 +1296,12 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
       {required this.workOrderId,
       required this.workLog,
       required final List<PartUsedEntity> partsUsed,
-      required final List<String> images,
+      required final List<File> files,
       required this.latitude,
       required this.longitude,
       this.completionNotes})
       : _partsUsed = partsUsed,
-        _images = images;
+        _files = files;
 
   @override
   final int workOrderId;
@@ -1245,12 +1315,12 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
     return EqualUnmodifiableListView(_partsUsed);
   }
 
-  final List<String> _images;
+  final List<File> _files;
   @override
-  List<String> get images {
-    if (_images is EqualUnmodifiableListView) return _images;
+  List<File> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_images);
+    return EqualUnmodifiableListView(_files);
   }
 
   @override
@@ -1262,7 +1332,7 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
 
   @override
   String toString() {
-    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, partsUsed: $partsUsed, images: $images, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
+    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, partsUsed: $partsUsed, files: $files, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
   }
 
   @override
@@ -1275,7 +1345,7 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality()
                 .equals(other._partsUsed, _partsUsed) &&
-            const DeepCollectionEquality().equals(other._images, _images) &&
+            const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
@@ -1290,7 +1360,7 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
       workOrderId,
       workLog,
       const DeepCollectionEquality().hash(_partsUsed),
-      const DeepCollectionEquality().hash(_images),
+      const DeepCollectionEquality().hash(_files),
       latitude,
       longitude,
       completionNotes);
@@ -1306,20 +1376,20 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -1330,7 +1400,7 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
     required TResult Function() captureLocation,
     required TResult Function() clearError,
   }) {
-    return completeWorkOrder(workOrderId, workLog, partsUsed, images, latitude,
+    return completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
         longitude, completionNotes);
   }
 
@@ -1338,20 +1408,20 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1362,7 +1432,7 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
     TResult? Function()? captureLocation,
     TResult? Function()? clearError,
   }) {
-    return completeWorkOrder?.call(workOrderId, workLog, partsUsed, images,
+    return completeWorkOrder?.call(workOrderId, workLog, partsUsed, files,
         latitude, longitude, completionNotes);
   }
 
@@ -1370,20 +1440,20 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1396,8 +1466,8 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
     required TResult orElse(),
   }) {
     if (completeWorkOrder != null) {
-      return completeWorkOrder(workOrderId, workLog, partsUsed, images,
-          latitude, longitude, completionNotes);
+      return completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
+          longitude, completionNotes);
     }
     return orElse();
   }
@@ -1457,7 +1527,7 @@ abstract class _CompleteWorkOrder implements WorkOrderActionEvent {
       {required final int workOrderId,
       required final String workLog,
       required final List<PartUsedEntity> partsUsed,
-      required final List<String> images,
+      required final List<File> files,
       required final double latitude,
       required final double longitude,
       final String? completionNotes}) = _$CompleteWorkOrderImpl;
@@ -1465,7 +1535,7 @@ abstract class _CompleteWorkOrder implements WorkOrderActionEvent {
   int get workOrderId;
   String get workLog;
   List<PartUsedEntity> get partsUsed;
-  List<String> get images;
+  List<File> get files;
   double get latitude;
   double get longitude;
   String? get completionNotes;
@@ -1573,20 +1643,20 @@ class _$RejectWorkOrderImpl implements _RejectWorkOrder {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -1604,20 +1674,20 @@ class _$RejectWorkOrderImpl implements _RejectWorkOrder {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1635,20 +1705,20 @@ class _$RejectWorkOrderImpl implements _RejectWorkOrder {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1771,20 +1841,20 @@ class _$CaptureLocationImpl implements _CaptureLocation {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -1802,20 +1872,20 @@ class _$CaptureLocationImpl implements _CaptureLocation {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1833,20 +1903,20 @@ class _$CaptureLocationImpl implements _CaptureLocation {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -1957,20 +2027,20 @@ class _$ClearErrorImpl implements _ClearError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         startWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
         pauseWorkOrder,
-    required TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
         resumeWorkOrder,
     required TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)
@@ -1988,20 +2058,20 @@ class _$ClearErrorImpl implements _ClearError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult? Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult? Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?
@@ -2019,20 +2089,20 @@ class _$ClearErrorImpl implements _ClearError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         startWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
+    TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
         pauseWorkOrder,
-    TResult Function(
-            int workOrderId, double latitude, double longitude, String? notes)?
+    TResult Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
         resumeWorkOrder,
     TResult Function(
             int workOrderId,
             String workLog,
             List<PartUsedEntity> partsUsed,
-            List<String> images,
+            List<File> files,
             double latitude,
             double longitude,
             String? completionNotes)?

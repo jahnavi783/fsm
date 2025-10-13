@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:fsm/core/error/failures.dart';
@@ -16,6 +17,7 @@ class PauseWorkOrderUseCase {
       reason: params.reason,
       latitude: params.latitude,
       longitude: params.longitude,
+      files: params.files,
     );
   }
 }
@@ -25,11 +27,13 @@ class PauseWorkOrderParams {
   final String reason;
   final double latitude;
   final double longitude;
+  final List<File> files;
   
   PauseWorkOrderParams({
     required this.workOrderId,
     required this.reason,
     required this.latitude,
     required this.longitude,
+    this.files = const [],
   });
 }

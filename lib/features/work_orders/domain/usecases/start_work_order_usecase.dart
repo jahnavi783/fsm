@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:fsm/core/error/failures.dart';
@@ -15,6 +16,7 @@ class StartWorkOrderUseCase {
       workOrderId: params.workOrderId,
       latitude: params.latitude,
       longitude: params.longitude,
+      files: params.files,
       notes: params.notes,
     );
   }
@@ -24,12 +26,14 @@ class StartWorkOrderParams {
   final int workOrderId;
   final double latitude;
   final double longitude;
+  final List<File> files;
   final String? notes;
   
   StartWorkOrderParams({
     required this.workOrderId,
     required this.latitude,
     required this.longitude,
+    this.files = const [],
     this.notes,
   });
 }

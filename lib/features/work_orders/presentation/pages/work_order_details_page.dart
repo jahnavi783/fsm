@@ -889,7 +889,7 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
                           workOrderId: workOrder.id,
                           workLog: workLog,
                           partsUsed: [], // Empty for now
-                          images: [], // Empty for now
+                          files: [], // Empty for now
                           latitude: currentLocation.latitude,
                           longitude: currentLocation.longitude,
                           completionNotes: completionNotesController.text.trim().isEmpty 

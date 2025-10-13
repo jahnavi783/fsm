@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
@@ -113,6 +114,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   }) async {
     try {
@@ -121,6 +123,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           workOrderId: workOrderId,
           latitude: latitude,
           longitude: longitude,
+          files: files,
           notes: notes,
         );
         
@@ -164,6 +167,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     required String reason,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
   }) async {
     try {
       if (await _networkInfo.isConnected) {
@@ -172,6 +176,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           reason: reason,
           latitude: latitude,
           longitude: longitude,
+          files: files,
         );
         
         // Update cache
@@ -213,6 +218,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   }) async {
     try {
@@ -221,6 +227,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           workOrderId: workOrderId,
           latitude: latitude,
           longitude: longitude,
+          files: files,
           notes: notes,
         );
         
@@ -263,7 +270,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     required int workOrderId,
     required String workLog,
     required List<PartUsedEntity> partsUsed,
-    required List<String> images,
+    required List<File> files,
     required double latitude,
     required double longitude,
     String? completionNotes,
@@ -274,7 +281,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           workOrderId: workOrderId,
           workLog: workLog,
           partsUsed: partsUsed,
-          images: images,
+          files: files,
           latitude: latitude,
           longitude: longitude,
           completionNotes: completionNotes,
@@ -305,7 +312,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             partName: p.partName,
             description: p.description,
           )).toList(),
-          images: images,
+          images: files.map((file) => file.path).toList(),
           completionNotes: completionNotes,
           isPendingSync: true,
           pendingAction: 'complete',

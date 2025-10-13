@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:fsm/core/error/failures.dart';
@@ -15,7 +16,7 @@ class CompleteWorkOrderUseCase {
       workOrderId: params.workOrderId,
       workLog: params.workLog,
       partsUsed: params.partsUsed,
-      images: params.images,
+      files: params.files,
       latitude: params.latitude,
       longitude: params.longitude,
       completionNotes: params.completionNotes,
@@ -27,7 +28,7 @@ class CompleteWorkOrderParams {
   final int workOrderId;
   final String workLog;
   final List<PartUsedEntity> partsUsed;
-  final List<String> images;
+  final List<File> files;
   final double latitude;
   final double longitude;
   final String? completionNotes;
@@ -36,7 +37,7 @@ class CompleteWorkOrderParams {
     required this.workOrderId,
     required this.workLog,
     required this.partsUsed,
-    required this.images,
+    required this.files,
     required this.latitude,
     required this.longitude,
     this.completionNotes,

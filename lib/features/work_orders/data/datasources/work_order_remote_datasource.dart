@@ -1,10 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:injectable/injectable.dart';
 import 'package:fsm/features/work_orders/data/api/work_order_api_client.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_dto.dart';
-import 'package:fsm/features/work_orders/data/models/start_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/pause_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/resume_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/complete_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
@@ -23,6 +21,7 @@ abstract class WorkOrderRemoteDataSource {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   });
 
@@ -31,12 +30,14 @@ abstract class WorkOrderRemoteDataSource {
     required String reason,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
   });
 
   Future<WorkOrderDto> resumeWorkOrder({
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   });
 
@@ -44,7 +45,7 @@ abstract class WorkOrderRemoteDataSource {
     required int workOrderId,
     required String workLog,
     required List<PartUsedEntity> partsUsed,
-    required List<String> images,
+    required List<File> files,
     required double latitude,
     required double longitude,
     String? completionNotes,
@@ -75,9 +76,9 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     final response = await _apiClient.getWorkOrders(
       page: page,
       limit: limit,
-      status: status?.name,
-      priority: priority?.name,
-      searchQuery: searchQuery,
+      status: status,
+      priority: priority,
+      // searchQuery: searchQuery,
     );
     return response.workOrders;
   }
@@ -93,13 +94,14 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   }) async {
-    final request = StartWorkOrderRequest(
+    final response = await _apiClient.startWorkOrder(
+      id: workOrderId,
       gpsCoordinates: '$latitude,$longitude',
-      notes: notes,
+      files: files,
     );
-    final response = await _apiClient.startWorkOrder(workOrderId, request);
     return response.workOrder;
   }
 
@@ -109,12 +111,14 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     required String reason,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
   }) async {
-    final request = PauseWorkOrderRequest(
+    final response = await _apiClient.pauseWorkOrder(
+      id: workOrderId,
       reason: reason,
       gpsCoordinates: '$latitude,$longitude',
+      files: files,
     );
-    final response = await _apiClient.pauseWorkOrder(workOrderId, request);
     return response.workOrder;
   }
 
@@ -123,13 +127,14 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   }) async {
-    final request = ResumeWorkOrderRequest(
+    final response = await _apiClient.resumeWorkOrder(
+      id: workOrderId,
       gpsCoordinates: '$latitude,$longitude',
-      notes: notes,
+      files: files,
     );
-    final response = await _apiClient.resumeWorkOrder(workOrderId, request);
     return response.workOrder;
   }
 
@@ -138,24 +143,25 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     required int workOrderId,
     required String workLog,
     required List<PartUsedEntity> partsUsed,
-    required List<String> images,
+    required List<File> files,
     required double latitude,
     required double longitude,
     String? completionNotes,
   }) async {
-    final request = CompleteWorkOrderRequest(
+    final partsUsedJson = jsonEncode(partsUsed
+        .map((part) => {
+              'part_number': part.partNumber,
+              'quantity_used': part.quantityUsed,
+            })
+        .toList());
+    
+    final response = await _apiClient.completeWorkOrder(
+      id: workOrderId,
       workLog: workLog,
-      partsUsed: partsUsed
-          .map((part) => PartUsedRequestDto(
-                partNumber: part.partNumber,
-                quantityUsed: part.quantityUsed,
-              ))
-          .toList(),
-      images: images,
       gpsCoordinates: '$latitude,$longitude',
-      completionNotes: completionNotes,
+      partsUsed: partsUsedJson,
+      files: files,
     );
-    final response = await _apiClient.completeWorkOrder(workOrderId, request);
     return response.workOrder;
   }
 
@@ -170,7 +176,10 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       reason: reason,
       gpsCoordinates: '$latitude,$longitude',
     );
-    final response = await _apiClient.rejectWorkOrder(workOrderId, request);
+    final response = await _apiClient.rejectWorkOrder(
+      id: workOrderId,
+      body: request,
+    );
     return response.workOrder;
   }
 }

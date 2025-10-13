@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:fsm/core/error/failures.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
@@ -17,6 +18,7 @@ abstract class IWorkOrderRepository {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   });
   
@@ -25,12 +27,14 @@ abstract class IWorkOrderRepository {
     required String reason,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
   });
   
   Future<Either<Failure, WorkOrderEntity>> resumeWorkOrder({
     required int workOrderId,
     required double latitude,
     required double longitude,
+    List<File> files = const [],
     String? notes,
   });
   
@@ -38,7 +42,7 @@ abstract class IWorkOrderRepository {
     required int workOrderId,
     required String workLog,
     required List<PartUsedEntity> partsUsed,
-    required List<String> images,
+    required List<File> files,
     required double latitude,
     required double longitude,
     String? completionNotes,

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
@@ -44,14 +45,14 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
   ) async {
     await event.when(
       loadWorkOrder: (workOrderId) => _loadWorkOrder(workOrderId, emit),
-      startWorkOrder: (workOrderId, latitude, longitude, notes) =>
-          _startWorkOrder(workOrderId, latitude, longitude, notes, emit),
-      pauseWorkOrder: (workOrderId, reason, latitude, longitude) =>
-          _pauseWorkOrder(workOrderId, reason, latitude, longitude, emit),
-      resumeWorkOrder: (workOrderId, latitude, longitude, notes) =>
-          _resumeWorkOrder(workOrderId, latitude, longitude, notes, emit),
-      completeWorkOrder: (workOrderId, workLog, partsUsed, images, latitude, longitude, completionNotes) =>
-          _completeWorkOrder(workOrderId, workLog, partsUsed, images, latitude, longitude, completionNotes, emit),
+      startWorkOrder: (workOrderId, latitude, longitude, files, notes) =>
+          _startWorkOrder(workOrderId, latitude, longitude, files, notes, emit),
+      pauseWorkOrder: (workOrderId, reason, latitude, longitude, files) =>
+          _pauseWorkOrder(workOrderId, reason, latitude, longitude, files, emit),
+      resumeWorkOrder: (workOrderId, latitude, longitude, files, notes) =>
+          _resumeWorkOrder(workOrderId, latitude, longitude, files, notes, emit),
+      completeWorkOrder: (workOrderId, workLog, partsUsed, files, latitude, longitude, completionNotes) =>
+          _completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude, longitude, completionNotes, emit),
       rejectWorkOrder: (workOrderId, reason, latitude, longitude) =>
           _rejectWorkOrder(workOrderId, reason, latitude, longitude, emit),
       captureLocation: () => _captureLocation(emit),
@@ -91,6 +92,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     int workOrderId,
     double latitude,
     double longitude,
+    List<File> files,
     String? notes,
     Emitter<WorkOrderActionState> emit,
   ) async {
@@ -117,6 +119,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
       workOrderId: workOrderId,
       latitude: latitude,
       longitude: longitude,
+      files: files,
       notes: notes,
     ));
 
@@ -142,6 +145,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     String reason,
     double latitude,
     double longitude,
+    List<File> files,
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
@@ -168,6 +172,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
       reason: reason,
       latitude: latitude,
       longitude: longitude,
+      files: files,
     ));
 
     result.fold(
@@ -191,6 +196,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     int workOrderId,
     double latitude,
     double longitude,
+    List<File> files,
     String? notes,
     Emitter<WorkOrderActionState> emit,
   ) async {
@@ -217,6 +223,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
       workOrderId: workOrderId,
       latitude: latitude,
       longitude: longitude,
+      files: files,
       notes: notes,
     ));
 
@@ -241,7 +248,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     int workOrderId,
     String workLog,
     List<PartUsedEntity> partsUsed,
-    List<String> images,
+    List<File> files,
     double latitude,
     double longitude,
     String? completionNotes,
@@ -270,7 +277,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
       workOrderId: workOrderId,
       workLog: workLog,
       partsUsed: partsUsed,
-      images: images,
+      files: files,
       latitude: latitude,
       longitude: longitude,
       completionNotes: completionNotes,

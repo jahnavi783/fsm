@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
@@ -11,6 +12,7 @@ class WorkOrderActionEvent with _$WorkOrderActionEvent {
     required int workOrderId,
     required double latitude,
     required double longitude,
+    @Default([]) List<File> files,
     String? notes,
   }) = _StartWorkOrder;
   
@@ -19,12 +21,14 @@ class WorkOrderActionEvent with _$WorkOrderActionEvent {
     required String reason,
     required double latitude,
     required double longitude,
+    @Default([]) List<File> files,
   }) = _PauseWorkOrder;
   
   const factory WorkOrderActionEvent.resumeWorkOrder({
     required int workOrderId,
     required double latitude,
     required double longitude,
+    @Default([]) List<File> files,
     String? notes,
   }) = _ResumeWorkOrder;
   
@@ -32,7 +36,7 @@ class WorkOrderActionEvent with _$WorkOrderActionEvent {
     required int workOrderId,
     required String workLog,
     required List<PartUsedEntity> partsUsed,
-    required List<String> images,
+    required List<File> files,
     required double latitude,
     required double longitude,
     String? completionNotes,

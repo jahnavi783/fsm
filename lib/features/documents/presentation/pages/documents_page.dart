@@ -37,7 +37,6 @@ class DocumentsView extends StatefulWidget {
 
 class _DocumentsViewState extends State<DocumentsView> {
   final ScrollController _scrollController = ScrollController();
-  String? _searchQuery;
 
   @override
   void initState() {
@@ -67,7 +66,7 @@ class _DocumentsViewState extends State<DocumentsView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Documents'),
@@ -130,7 +129,9 @@ class _DocumentsViewState extends State<DocumentsView> {
                         label: 'Retry',
                         textColor: theme.colorScheme.onError,
                         onPressed: () {
-                          context.read<DocumentsBloc>().add(const RetryLastAction());
+                          context
+                              .read<DocumentsBloc>()
+                              .add(const RetryLastAction());
                         },
                       )
                     : null,
@@ -142,13 +143,13 @@ class _DocumentsViewState extends State<DocumentsView> {
           return RefreshIndicator(
             onRefresh: () async {
               context.read<DocumentsBloc>().add(
-                LoadDocuments(
-                  isRefresh: true,
-                  type: state.selectedType,
-                  category: state.selectedCategory,
-                  searchQuery: state.searchQuery,
-                ),
-              );
+                    LoadDocuments(
+                      isRefresh: true,
+                      type: state.selectedType,
+                      category: state.selectedCategory,
+                      searchQuery: state.searchQuery,
+                    ),
+                  );
             },
             child: Column(
               children: [
@@ -157,21 +158,24 @@ class _DocumentsViewState extends State<DocumentsView> {
                   initialQuery: state.searchQuery,
                   isLoading: state.isSearching,
                   onSearchChanged: (query) {
-                    _searchQuery = query;
-                  },
-                  onSearchSubmitted: () {
-                    if (_searchQuery != null && _searchQuery!.isNotEmpty) {
+                    // Trigger search immediately - debouncing is handled by BLoC
+                    if (query.isNotEmpty) {
                       context.read<DocumentsBloc>().add(
-                        SearchDocuments(
-                          query: _searchQuery!,
-                          type: state.selectedType,
-                          category: state.selectedCategory,
-                        ),
-                      );
+                            SearchDocuments(
+                              query: query,
+                              type: state.selectedType,
+                              category: state.selectedCategory,
+                            ),
+                          );
+                    } else {
+                      // Clear search if query is empty
+                      context.read<DocumentsBloc>().add(const ClearSearch());
                     }
                   },
+                  onSearchSubmitted: () {
+                    // Search is already triggered on change, no need for additional action
+                  },
                   onClearSearch: () {
-                    _searchQuery = null;
                     context.read<DocumentsBloc>().add(const ClearSearch());
                   },
                 ),
@@ -185,7 +189,9 @@ class _DocumentsViewState extends State<DocumentsView> {
                     context.read<DocumentsBloc>().add(FilterByType(type));
                   },
                   onCategoryChanged: (category) {
-                    context.read<DocumentsBloc>().add(FilterByCategory(category));
+                    context
+                        .read<DocumentsBloc>()
+                        .add(FilterByCategory(category));
                   },
                 ),
 
@@ -199,7 +205,8 @@ class _DocumentsViewState extends State<DocumentsView> {
                 if (state.isOffline)
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     color: Colors.orange.withOpacity(0.1),
                     child: Row(
                       children: [
@@ -254,7 +261,7 @@ class _DocumentsViewState extends State<DocumentsView> {
         }
 
         final document = state.documents[index];
-        final isDownloading = state.isDownloading && 
+        final isDownloading = state.isDownloading &&
             state.downloadingDocumentId == document.id.toString();
 
         return DocumentListItem(
@@ -270,7 +277,7 @@ class _DocumentsViewState extends State<DocumentsView> {
 
   Widget _buildEmptyState(BuildContext context, DocumentsState state) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(32.w),
@@ -284,7 +291,7 @@ class _DocumentsViewState extends State<DocumentsView> {
             ),
             SizedBox(height: 16.h),
             Text(
-              state.isSearchMode 
+              state.isSearchMode
                   ? 'No documents found for "${state.searchQuery}"'
                   : 'No documents available',
               style: theme.textTheme.titleMedium?.copyWith(
@@ -336,8 +343,8 @@ class _DocumentsViewState extends State<DocumentsView> {
             onPressed: () {
               Navigator.of(context).pop();
               context.read<DocumentsBloc>().add(
-                DeleteDownloadedDocument(document.id),
-              );
+                    DeleteDownloadedDocument(document.id),
+                  );
             },
             child: const Text('Delete'),
           ),

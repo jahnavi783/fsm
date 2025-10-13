@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../domain/usecases/download_document_usecase.dart';
 import '../../../domain/usecases/get_document_categories_usecase.dart';
@@ -18,6 +19,9 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
   final GetDocumentCategoriesUseCase _getDocumentCategoriesUseCase;
   final IDocumentRepository _documentRepository;
 
+  Timer? _searchDebounceTimer;
+  static const Duration _searchDebounceDelay = Duration(milliseconds: 300);
+
   DocumentsBloc(
     this._getDocumentsUseCase,
     this._searchDocumentsUseCase,
@@ -26,7 +30,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     this._documentRepository,
   ) : super(const DocumentsState()) {
     on<LoadDocuments>(_onLoadDocuments);
-    on<SearchDocuments>(_onSearchDocuments);
+    on<SearchDocuments>(_onSearchDocuments, transformer: _debounceTransformer());
     on<LoadMoreDocuments>(_onLoadMoreDocuments);
     on<FilterByType>(_onFilterByType);
     on<FilterByCategory>(_onFilterByCategory);
@@ -35,6 +39,21 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
     on<LoadCategories>(_onLoadCategories);
     on<ClearSearch>(_onClearSearch);
     on<RetryLastAction>(_onRetryLastAction);
+  }
+
+  @override
+  Future<void> close() {
+    _searchDebounceTimer?.cancel();
+    return super.close();
+  }
+
+  // Debounce transformer for search events
+  EventTransformer<SearchDocuments> _debounceTransformer() {
+    return (events, mapper) {
+      return events
+          .debounceTime(_searchDebounceDelay)
+          .asyncExpand(mapper);
+    };
   }
 
   Future<void> _onLoadDocuments(

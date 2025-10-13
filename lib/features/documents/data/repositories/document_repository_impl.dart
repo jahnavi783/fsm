@@ -99,66 +99,42 @@ class DocumentRepositoryImpl implements IDocumentRepository {
     required int limit,
   }) async {
     try {
-      if (await _networkInfo.isConnected) {
-        // Use the same getDocuments API with keyword parameter for search
-        final documentDtos = await _remoteDataSource.getDocuments(
-          model: null,
-          category: category,
-          keyword: query,
-          page: page,
-          limit: limit,
-        );
+      // Always search locally in cached documents - no API calls for search
+      final cachedModels = await _localDataSource.getCachedDocuments(
+        type: type,
+        category: category,
+      );
 
-        // Filter by type locally since API doesn't support it
-        var filteredDtos = documentDtos;
-        if (type != null) {
-          filteredDtos = documentDtos
-              .where((dto) =>
-                  dto.fileType.toLowerCase() == type.name.toLowerCase())
-              .toList();
-        }
+      // Perform local text search in cached documents
+      final filteredModels = cachedModels.where((doc) {
+        final searchLower = query.toLowerCase();
+        return doc.title.toLowerCase().contains(searchLower) ||
+            doc.description.toLowerCase().contains(searchLower) ||
+            (doc.keywords?.toLowerCase().contains(searchLower) ?? false) ||
+            doc.tags.any((tag) => tag.toLowerCase().contains(searchLower)) ||
+            doc.category.toLowerCase().contains(searchLower) ||
+            doc.categories
+                .any((cat) => cat.toLowerCase().contains(searchLower));
+      }).toList();
 
-        // Cache search results
-        final hiveModels =
-            filteredDtos.map((dto) => DocumentHiveModel.fromDto(dto)).toList();
-        await _localDataSource.cacheDocuments(hiveModels);
+      // Apply pagination locally
+      final startIndex = (page - 1) * limit;
+      final endIndex = startIndex + limit;
+      final paginatedModels = filteredModels.length > startIndex
+          ? filteredModels.sublist(
+              startIndex,
+              endIndex > filteredModels.length
+                  ? filteredModels.length
+                  : endIndex,
+            )
+          : <DocumentHiveModel>[];
 
-        // Return domain entities with download status
-        final entities = <DocumentEntity>[];
-        for (final dto in filteredDtos) {
-          final cachedDoc =
-              await _localDataSource.getCachedDocumentById(dto.id);
-          entities.add(dto.toEntity(
-            isDownloaded: cachedDoc?.isDownloaded,
-            localPath: cachedDoc?.localPath,
-          ));
-        }
+      final entities =
+          paginatedModels.map((model) => model.toEntity()).toList();
 
-        return Right(entities);
-      } else {
-        // Offline search in cached documents
-        final cachedModels = await _localDataSource.getCachedDocuments(
-          type: type,
-          category: category,
-        );
-
-        // Simple text search in cached documents
-        final filteredModels = cachedModels.where((doc) {
-          final searchLower = query.toLowerCase();
-          return doc.title.toLowerCase().contains(searchLower) ||
-              doc.description.toLowerCase().contains(searchLower) ||
-              (doc.keywords?.toLowerCase().contains(searchLower) ?? false) ||
-              doc.tags.any((tag) => tag.toLowerCase().contains(searchLower));
-        }).toList();
-
-        final entities =
-            filteredModels.map((model) => model.toEntity()).toList();
-        return Right(entities);
-      }
-    } on DioException catch (e) {
-      return Left(_handleDioException(e));
+      return Right(entities);
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(CacheFailure(message: 'Search failed: ${e.toString()}'));
     }
   }
 

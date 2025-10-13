@@ -8,16 +8,20 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:flutter/material.dart' as _i5;
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 import 'package:fsm/core/router/app_router.dart' as _i1;
-import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i2;
-import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i3;
+import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i3;
+import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i4;
+import 'package:fsm/features/work_orders/presentation/pages/dashboard_page.dart'
+    as _i2;
+import 'package:fsm/features/work_orders/presentation/pages/work_order_details_page.dart'
+    as _i5;
 
 /// generated route for
 /// [_i1.CalendarPage]
-class CalendarRoute extends _i4.PageRouteInfo<void> {
-  const CalendarRoute({List<_i4.PageRouteInfo>? children})
+class CalendarRoute extends _i6.PageRouteInfo<void> {
+  const CalendarRoute({List<_i6.PageRouteInfo>? children})
       : super(
           CalendarRoute.name,
           initialChildren: children,
@@ -25,7 +29,7 @@ class CalendarRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'CalendarRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.CalendarPage();
@@ -34,9 +38,9 @@ class CalendarRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i1.DashboardPage]
-class DashboardRoute extends _i4.PageRouteInfo<void> {
-  const DashboardRoute({List<_i4.PageRouteInfo>? children})
+/// [_i2.DashboardPage]
+class DashboardRoute extends _i6.PageRouteInfo<void> {
+  const DashboardRoute({List<_i6.PageRouteInfo>? children})
       : super(
           DashboardRoute.name,
           initialChildren: children,
@@ -44,21 +48,21 @@ class DashboardRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'DashboardRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const _i1.DashboardPage();
+      return const _i2.DashboardPage();
     },
   );
 }
 
 /// generated route for
 /// [_i1.DocumentViewerPage]
-class DocumentViewerRoute extends _i4.PageRouteInfo<DocumentViewerRouteArgs> {
+class DocumentViewerRoute extends _i6.PageRouteInfo<DocumentViewerRouteArgs> {
   DocumentViewerRoute({
-    _i5.Key? key,
+    _i7.Key? key,
     required String documentId,
-    List<_i4.PageRouteInfo>? children,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           DocumentViewerRoute.name,
           args: DocumentViewerRouteArgs(
@@ -71,7 +75,7 @@ class DocumentViewerRoute extends _i4.PageRouteInfo<DocumentViewerRouteArgs> {
 
   static const String name = 'DocumentViewerRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       final pathParams = data.inheritedPathParams;
@@ -92,7 +96,7 @@ class DocumentViewerRouteArgs {
     required this.documentId,
   });
 
-  final _i5.Key? key;
+  final _i7.Key? key;
 
   final String documentId;
 
@@ -104,8 +108,8 @@ class DocumentViewerRouteArgs {
 
 /// generated route for
 /// [_i1.DocumentsPage]
-class DocumentsRoute extends _i4.PageRouteInfo<void> {
-  const DocumentsRoute({List<_i4.PageRouteInfo>? children})
+class DocumentsRoute extends _i6.PageRouteInfo<void> {
+  const DocumentsRoute({List<_i6.PageRouteInfo>? children})
       : super(
           DocumentsRoute.name,
           initialChildren: children,
@@ -113,7 +117,7 @@ class DocumentsRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'DocumentsRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.DocumentsPage();
@@ -122,9 +126,9 @@ class DocumentsRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.LoginPage]
-class LoginRoute extends _i4.PageRouteInfo<void> {
-  const LoginRoute({List<_i4.PageRouteInfo>? children})
+/// [_i3.LoginPage]
+class LoginRoute extends _i6.PageRouteInfo<void> {
+  const LoginRoute({List<_i6.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -132,18 +136,18 @@ class LoginRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const _i2.LoginPage();
+      return const _i3.LoginPage();
     },
   );
 }
 
 /// generated route for
 /// [_i1.MainNavigationPage]
-class MainNavigationRoute extends _i4.PageRouteInfo<void> {
-  const MainNavigationRoute({List<_i4.PageRouteInfo>? children})
+class MainNavigationRoute extends _i6.PageRouteInfo<void> {
+  const MainNavigationRoute({List<_i6.PageRouteInfo>? children})
       : super(
           MainNavigationRoute.name,
           initialChildren: children,
@@ -151,7 +155,7 @@ class MainNavigationRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'MainNavigationRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.MainNavigationPage();
@@ -161,8 +165,8 @@ class MainNavigationRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.PartsPage]
-class PartsRoute extends _i4.PageRouteInfo<void> {
-  const PartsRoute({List<_i4.PageRouteInfo>? children})
+class PartsRoute extends _i6.PageRouteInfo<void> {
+  const PartsRoute({List<_i6.PageRouteInfo>? children})
       : super(
           PartsRoute.name,
           initialChildren: children,
@@ -170,7 +174,7 @@ class PartsRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'PartsRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.PartsPage();
@@ -180,8 +184,8 @@ class PartsRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.ProfilePage]
-class ProfileRoute extends _i4.PageRouteInfo<void> {
-  const ProfileRoute({List<_i4.PageRouteInfo>? children})
+class ProfileRoute extends _i6.PageRouteInfo<void> {
+  const ProfileRoute({List<_i6.PageRouteInfo>? children})
       : super(
           ProfileRoute.name,
           initialChildren: children,
@@ -189,7 +193,7 @@ class ProfileRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'ProfileRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.ProfilePage();
@@ -198,9 +202,9 @@ class ProfileRoute extends _i4.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.SplashPage]
-class SplashRoute extends _i4.PageRouteInfo<void> {
-  const SplashRoute({List<_i4.PageRouteInfo>? children})
+/// [_i4.SplashPage]
+class SplashRoute extends _i6.PageRouteInfo<void> {
+  const SplashRoute({List<_i6.PageRouteInfo>? children})
       : super(
           SplashRoute.name,
           initialChildren: children,
@@ -208,22 +212,22 @@ class SplashRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'SplashRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const _i3.SplashPage();
+      return const _i4.SplashPage();
     },
   );
 }
 
 /// generated route for
-/// [_i1.WorkOrderDetailsPage]
+/// [_i5.WorkOrderDetailsPage]
 class WorkOrderDetailsRoute
-    extends _i4.PageRouteInfo<WorkOrderDetailsRouteArgs> {
+    extends _i6.PageRouteInfo<WorkOrderDetailsRouteArgs> {
   WorkOrderDetailsRoute({
-    _i5.Key? key,
-    required String workOrderId,
-    List<_i4.PageRouteInfo>? children,
+    _i7.Key? key,
+    required int workOrderId,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           WorkOrderDetailsRoute.name,
           args: WorkOrderDetailsRouteArgs(
@@ -236,14 +240,14 @@ class WorkOrderDetailsRoute
 
   static const String name = 'WorkOrderDetailsRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<WorkOrderDetailsRouteArgs>(
           orElse: () => WorkOrderDetailsRouteArgs(
-              workOrderId: pathParams.getString('workOrderId')));
-      return _i1.WorkOrderDetailsPage(
+              workOrderId: pathParams.getInt('workOrderId')));
+      return _i5.WorkOrderDetailsPage(
         key: args.key,
         workOrderId: args.workOrderId,
       );
@@ -257,9 +261,9 @@ class WorkOrderDetailsRouteArgs {
     required this.workOrderId,
   });
 
-  final _i5.Key? key;
+  final _i7.Key? key;
 
-  final String workOrderId;
+  final int workOrderId;
 
   @override
   String toString() {
@@ -269,8 +273,8 @@ class WorkOrderDetailsRouteArgs {
 
 /// generated route for
 /// [_i1.WorkOrdersPage]
-class WorkOrdersRoute extends _i4.PageRouteInfo<void> {
-  const WorkOrdersRoute({List<_i4.PageRouteInfo>? children})
+class WorkOrdersRoute extends _i6.PageRouteInfo<void> {
+  const WorkOrdersRoute({List<_i6.PageRouteInfo>? children})
       : super(
           WorkOrdersRoute.name,
           initialChildren: children,
@@ -278,7 +282,7 @@ class WorkOrdersRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'WorkOrdersRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
       return const _i1.WorkOrdersPage();

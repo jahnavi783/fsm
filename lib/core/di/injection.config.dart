@@ -29,6 +29,36 @@ import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
 import '../../features/auth/domain/usecases/refresh_token_usecase.dart'
     as _i157;
 import '../../features/auth/presentation/blocs/auth/auth_bloc.dart' as _i331;
+import '../../features/work_orders/data/api/work_order_api_client.dart'
+    as _i103;
+import '../../features/work_orders/data/api/work_order_api_module.dart'
+    as _i860;
+import '../../features/work_orders/data/datasources/work_order_local_datasource.dart'
+    as _i701;
+import '../../features/work_orders/data/datasources/work_order_remote_datasource.dart'
+    as _i255;
+import '../../features/work_orders/data/repositories/work_order_repository_impl.dart'
+    as _i937;
+import '../../features/work_orders/domain/repositories/i_work_order_repository.dart'
+    as _i556;
+import '../../features/work_orders/domain/usecases/complete_work_order_usecase.dart'
+    as _i460;
+import '../../features/work_orders/domain/usecases/get_work_order_details_usecase.dart'
+    as _i1023;
+import '../../features/work_orders/domain/usecases/get_work_orders_usecase.dart'
+    as _i874;
+import '../../features/work_orders/domain/usecases/pause_work_order_usecase.dart'
+    as _i959;
+import '../../features/work_orders/domain/usecases/reject_work_order_usecase.dart'
+    as _i310;
+import '../../features/work_orders/domain/usecases/resume_work_order_usecase.dart'
+    as _i489;
+import '../../features/work_orders/domain/usecases/start_work_order_usecase.dart'
+    as _i188;
+import '../../features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart'
+    as _i532;
+import '../../features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart'
+    as _i332;
 import '../network/auth_interceptor.dart' as _i908;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
@@ -51,9 +81,13 @@ extension GetItInjectableX on _i174.GetIt {
     final connectivityModule = _$ConnectivityModule();
     final networkModule = _$NetworkModule();
     final authModule = _$AuthModule();
+    final workOrderApiModule = _$WorkOrderApiModule();
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.factory<_i669.LocationService>(() => _i669.LocationService());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    gh.factoryAsync<_i701.WorkOrderLocalDataSource>(() async =>
+        _i701.WorkOrderLocalDataSourceImpl(
+            await getAsync<_i459.HiveService>()));
     gh.factoryAsync<_i1038.CacheManager>(
         () async => _i1038.CacheManager(await getAsync<_i459.HiveService>()));
     gh.factory<_i932.NetworkInfo>(
@@ -68,6 +102,8 @@ extension GetItInjectableX on _i174.GetIt {
         networkModule.provideDio(await getAsync<_i908.AuthInterceptor>()));
     gh.factoryAsync<_i541.AuthApiClient>(
         () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
+        workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
     gh.singletonAsync<_i667.DioClient>(
         () async => _i667.DioClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i161.AuthRemoteDataSource>(() async =>
@@ -77,6 +113,15 @@ extension GetItInjectableX on _i174.GetIt {
           await getAsync<_i992.AuthLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
         ));
+    gh.factoryAsync<_i255.WorkOrderRemoteDataSource>(() async =>
+        _i255.WorkOrderRemoteDataSourceImpl(
+            await getAsync<_i103.WorkOrderApiClient>()));
+    gh.factoryAsync<_i556.IWorkOrderRepository>(
+        () async => _i937.WorkOrderRepositoryImpl(
+              await getAsync<_i255.WorkOrderRemoteDataSource>(),
+              await getAsync<_i701.WorkOrderLocalDataSource>(),
+              gh<_i932.NetworkInfo>(),
+            ));
     gh.factoryAsync<_i831.CheckAuthUseCase>(() async =>
         _i831.CheckAuthUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i157.RefreshTokenUseCase>(() async =>
@@ -85,12 +130,50 @@ extension GetItInjectableX on _i174.GetIt {
         _i188.LoginUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i48.LogoutUseCase>(() async =>
         _i48.LogoutUseCase(await getAsync<_i589.IAuthRepository>()));
+    gh.factoryAsync<_i188.StartWorkOrderUseCase>(() async =>
+        _i188.StartWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i489.ResumeWorkOrderUseCase>(() async =>
+        _i489.ResumeWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i460.CompleteWorkOrderUseCase>(() async =>
+        _i460.CompleteWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i959.PauseWorkOrderUseCase>(() async =>
+        _i959.PauseWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i874.GetWorkOrdersUseCase>(() async =>
+        _i874.GetWorkOrdersUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i1023.GetWorkOrderDetailsUseCase>(() async =>
+        _i1023.GetWorkOrderDetailsUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i310.RejectWorkOrderUseCase>(() async =>
+        _i310.RejectWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
     gh.factoryAsync<_i331.AuthBloc>(() async => _i331.AuthBloc(
           await getAsync<_i188.LoginUseCase>(),
           await getAsync<_i48.LogoutUseCase>(),
           await getAsync<_i831.CheckAuthUseCase>(),
           await getAsync<_i157.RefreshTokenUseCase>(),
         ));
+    gh.factoryAsync<_i332.WorkOrdersListBloc>(
+        () async => _i332.WorkOrdersListBloc(
+              await getAsync<_i874.GetWorkOrdersUseCase>(),
+              await getAsync<_i556.IWorkOrderRepository>(),
+              gh<_i932.NetworkInfo>(),
+            ));
+    gh.factoryAsync<_i532.WorkOrderActionBloc>(
+        () async => _i532.WorkOrderActionBloc(
+              await getAsync<_i1023.GetWorkOrderDetailsUseCase>(),
+              await getAsync<_i188.StartWorkOrderUseCase>(),
+              await getAsync<_i959.PauseWorkOrderUseCase>(),
+              await getAsync<_i489.ResumeWorkOrderUseCase>(),
+              await getAsync<_i460.CompleteWorkOrderUseCase>(),
+              await getAsync<_i310.RejectWorkOrderUseCase>(),
+              gh<_i669.LocationService>(),
+              gh<_i932.NetworkInfo>(),
+            ));
     return this;
   }
 }
@@ -100,3 +183,5 @@ class _$ConnectivityModule extends _i932.ConnectivityModule {}
 class _$NetworkModule extends _i667.NetworkModule {}
 
 class _$AuthModule extends _i521.AuthModule {}
+
+class _$WorkOrderApiModule extends _i860.WorkOrderApiModule {}

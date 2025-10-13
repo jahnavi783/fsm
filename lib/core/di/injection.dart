@@ -5,5 +5,18 @@ import 'injection.config.dart';
 
 final GetIt getIt = GetIt.instance;
 
-@InjectableInit()
-Future<void> configureDependencies() async => getIt.init();
+@InjectableInit(
+  initializerName: 'init',
+  preferRelativeImports: true,
+  asExtension: true,
+)
+Future<void> configureDependencies(String environment) async {
+  getIt.init(environment: environment);
+}
+
+// Environment constants
+abstract class Environment {
+  static const String dev = 'dev';
+  static const String staging = 'staging';
+  static const String prod = 'prod';
+}

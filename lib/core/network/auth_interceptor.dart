@@ -1,21 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../constants/app_constants.dart';
-import '../storage/hive_service.dart';
+import '../../features/auth/data/datasources/auth_local_datasource.dart';
+import '../config/app_config.dart';
 
 @injectable
 class AuthInterceptor extends Interceptor {
-  final HiveService _hiveService;
+  final AuthLocalDataSource _localDataSource;
 
-  AuthInterceptor(this._hiveService);
+  AuthInterceptor(this._localDataSource);
 
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = await _hiveService.getAccessToken();
+    final accessToken = await _localDataSource.getAccessToken();
     
     // Don't add token to auth endpoints
     if (accessToken != null && !options.uri.toString().contains("/auth")) {
@@ -40,15 +40,17 @@ class AuthInterceptor extends Interceptor {
         }
       } else {
         // Clear tokens and let the error propagate
-        await _hiveService.clearAuthTokens();
+        await _localDataSource.clearAuthData();
       }
     }
     return handler.next(err);
   }
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-    final dio = Dio();
-    final accessToken = await _hiveService.getAccessToken();
+    final dio = Dio(BaseOptions(
+      baseUrl: AppConfig.baseUrl,
+    ));
+    final accessToken = await _localDataSource.getAccessToken();
     
     final options = Options(
       method: requestOptions.method,
@@ -68,34 +70,34 @@ class AuthInterceptor extends Interceptor {
 
   Future<bool> _refreshToken() async {
     try {
-      final refreshToken = await _hiveService.getRefreshToken();
+      final refreshToken = await _localDataSource.getRefreshToken();
       if (refreshToken == null) {
         return false;
       }
 
       // Create a new Dio instance to avoid interceptors loop
       final tokenDio = Dio(BaseOptions(
-        baseUrl: AppConstants.baseUrl,
+        baseUrl: AppConfig.baseUrl,
       ));
 
       // Call refresh token API
-      final response = await tokenDio.post('/auth/refresh', data: {
-        'refreshToken': refreshToken,
+      final response = await tokenDio.post('/auth/refresh-token', data: {
+        'refresh_token': refreshToken,
       });
 
       if (response.statusCode == 200) {
         final data = response.data;
-        await _hiveService.saveAccessToken(data['accessToken']);
-        if (data['refreshToken'] != null) {
-          await _hiveService.saveRefreshToken(data['refreshToken']);
-        }
+        await _localDataSource.saveTokens(
+          accessToken: data['access_token'],
+          refreshToken: data['refresh_token'],
+        );
         return true;
       }
       
       return false;
     } catch (e) {
       // If refresh token failed, clear tokens
-      await _hiveService.clearAuthTokens();
+      await _localDataSource.clearAuthData();
       return false;
     }
   }

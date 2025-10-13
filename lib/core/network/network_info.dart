@@ -31,7 +31,7 @@ class NetworkInfoImpl implements NetworkInfo {
 }
 
 @module
-abstract class NetworkModule {
+abstract class ConnectivityModule {
   @injectable
   Connectivity get connectivity => Connectivity();
 }

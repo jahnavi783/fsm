@@ -5,12 +5,12 @@ import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
 import 'core/storage/hive_service.dart';
 
-Future<void> mainCommon() async {
+Future<void> mainCommon(String environment) async {
   // Initialize Hive service
   await HiveService.create();
   
-  // Configure dependency injection
-  await configureDependencies();
+  // Configure dependency injection with environment
+  await configureDependencies(environment);
   
   runApp(MyApp());
 }

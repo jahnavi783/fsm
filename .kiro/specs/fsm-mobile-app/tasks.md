@@ -41,7 +41,7 @@
   - Add flavor-specific app icons and launch screens
   - _Requirements: All requirements for environment-specific configurations_
 
-- [ ] 2. Core Services Implementation
+- [x] 2. Core Services Implementation
   - Implement dependency injection container with Injectable
   - Create network layer with Dio client and interceptors
   - Set up Hive service for local storage
@@ -49,7 +49,7 @@
   - Create network info service for connectivity checking
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [ ] 2.1 Implement Dependency Injection Container with Environment Support
+- [x] 2.1 Implement Dependency Injection Container with Environment Support
   - Create injection.dart with @InjectableInit configuration
   - Set up GetIt container for dependency management
   - Configure environment-specific registrations (@dev, @staging, @prod)
@@ -57,7 +57,7 @@
   - Initialize DI container with environment-specific configurations
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 2.2 Create Network Layer with Dio and Environment Configuration
+- [x] 2.2 Create Network Layer with Dio and Environment Configuration
   - Implement DioClient as singleton with environment-specific base URLs
   - Create AuthInterceptor for JWT token management and automatic refresh
   - Add PrettyDioLogger for development debugging (disabled in production)
@@ -65,28 +65,28 @@
   - Configure different timeout values and logging levels per environment
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 2.3 Set Up Hive Local Storage Service
+- [x] 2.3 Set Up Hive Local Storage Service
   - Create HiveService as singleton for box management
   - Initialize Hive with Flutter integration
   - Set up box constants and keys
   - Implement cache management methods
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
-- [ ] 2.4 Implement Location Service
+- [x] 2.4 Implement Location Service
   - Create LocationService with permission handling
   - Implement getCurrentPosition with error handling
   - Add location accuracy validation
   - Handle location service disabled scenarios
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [ ] 2.5 Create Network Info Service
+- [x] 2.5 Create Network Info Service
   - Implement NetworkInfo service using connectivity_plus
   - Add connection state monitoring
   - Create methods for checking internet connectivity
   - Handle network state changes
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 3. Authentication Feature Implementation
+- [x] 3. Authentication Feature Implementation
   - Create authentication domain entities and use cases
   - Implement authentication data layer with API client
   - Build authentication BLoC for state management
@@ -94,14 +94,14 @@
   - Set up Auto Route configuration with auth guards
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 3.1 Migrate and Enhance Authentication Domain Layer
+- [x] 3.1 Migrate and Enhance Authentication Domain Layer
   - Migrate existing UserEntity from .old/lib/data/entity/user_entity.dart to domain layer
   - Create IAuthRepository interface based on existing authentication patterns
   - Implement LoginUseCase, LogoutUseCase, CheckAuthUseCase, RefreshTokenUseCase
   - Add authentication-related failure types
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 3.2 Migrate and Enhance Authentication Data Layer
+- [x] 3.2 Migrate and Enhance Authentication Data Layer
   - Migrate existing LoginRequest and LoginResponse from .old/lib/data/response/
   - Adapt existing API client patterns from .old/lib/data/client.dart to Retrofit
   - Migrate existing auth_interceptor.dart to new network layer
@@ -110,14 +110,14 @@
   - Create AuthRepositoryImpl implementing IAuthRepository
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 3.3 Build Authentication BLoC
+- [x] 3.3 Build Authentication BLoC
   - Create AuthEvent and AuthState with Freezed
   - Implement AuthBloc with Injectable registration
   - Handle login, logout, check auth, and token refresh events
   - Implement proper state transitions and error handling
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 3.4 Migrate and Enhance Authentication UI Pages
+- [x] 3.4 Migrate and Enhance Authentication UI Pages
   - Migrate existing SplashPage from .old/lib/presentation/pages/splash/ and add @RoutePage annotation
   - Migrate existing LoginPage from .old/lib/presentation/pages/login/ with gradient components
   - Adapt existing login form to reactive forms pattern
@@ -125,7 +125,7 @@
   - Add loading states with shimmer effects and ensure flutter_screenutil usage
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 9.1, 9.2, 9.3, 9.4_
 
-- [ ] 3.5 Set Up Auto Route Configuration
+- [x] 3.5 Set Up Auto Route Configuration
   - Create AppRouter with @AutoRouterConfig
   - Define routes for splash, login, and main app sections
   - Implement AuthGuard for protected routes

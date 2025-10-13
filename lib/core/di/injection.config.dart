@@ -108,6 +108,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.factory<_i669.LocationService>(() => _i669.LocationService());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
     gh.factory<_i506.DocumentLocalDataSource>(
         () => _i506.DocumentLocalDataSourceImpl());
     gh.factoryAsync<_i701.WorkOrderLocalDataSource>(() async =>

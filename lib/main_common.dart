@@ -3,15 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
+import 'core/router/app_router.dart';
 import 'core/storage/hive_service.dart';
 
 Future<void> mainCommon(String environment) async {
   // Initialize Hive service
   await HiveService.create();
-  
+
   // Configure dependency injection with environment
   await configureDependencies(environment);
-  
+
   runApp(MyApp());
 }
 
@@ -20,15 +21,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appRouter = getIt<AppRouter>();
+
     return ScreenUtilInit(
       // Design size from Figma/design specs (iPhone 11 Pro dimensions)
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        return MaterialApp.router(
           title: AppConfig.appName,
           debugShowCheckedModeBanner: AppConfig.isDebug,
+          routerConfig: appRouter.config(),
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             // Use .sp for font sizes in theme
@@ -50,73 +54,8 @@ class MyApp extends StatelessWidget {
               labelSmall: TextStyle(fontSize: 10.sp),
             ),
           ),
-          home: MyHomePage(title: '${AppConfig.appName} Demo'),
         );
       },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 56.h, // Responsive height
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(
-          widget.title,
-          style: TextStyle(fontSize: 20.sp), // Responsive font size
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Environment: ${AppConfig.environment.runtimeType}',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Base URL: ${AppConfig.baseUrl}',
-              style: TextStyle(fontSize: 12.sp),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'You have pushed the button this many times:',
-              style: TextStyle(fontSize: 16.sp), // Responsive font size
-            ),
-            SizedBox(height: 16.h), // Responsive spacing
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add, size: 24.r), // Responsive icon size
-      ),
     );
   }
 }

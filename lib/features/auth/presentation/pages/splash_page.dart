@@ -28,7 +28,6 @@ class _SplashPageState extends State<SplashPage>
   void initState() {
     super.initState();
     _initializeAnimations();
-    _startDelay();
   }
 
   void _initializeAnimations() {
@@ -48,7 +47,7 @@ class _SplashPageState extends State<SplashPage>
     )..repeat(reverse: true, period: const Duration(milliseconds: 500));
   }
 
-  void _startDelay() {
+  void _startAuthCheck(BuildContext context) {
     _timer = Timer(const Duration(seconds: 2), () {
       context.read<AuthBloc>().add(const AuthEvent.checkAuth());
     });
@@ -67,58 +66,69 @@ class _SplashPageState extends State<SplashPage>
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AuthBloc>(),
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          state.when(
-            initial: () {},
-            loading: () {},
-            authenticated: (user) {
-              if (user.isTechnician) {
-                context.router.navigateNamed('/main');
-              } else {
-                // Show error for non-technician users
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please use web portal for authentication.'),
-                    backgroundColor: Colors.blue,
-                  ),
-                );
-                context.router.navigateNamed('/login');
-              }
+      child: Builder(
+        builder: (context) {
+          // Start auth check after BlocProvider is available
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_timer == null) {
+              _startAuthCheck(context);
+            }
+          });
+          
+          return BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              state.when(
+                initial: () {},
+                loading: () {},
+                authenticated: (user) {
+                  if (user.isTechnician) {
+                    context.router.navigateNamed('/main');
+                  } else {
+                    // Show error for non-technician users
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please use web portal for authentication.'),
+                        backgroundColor: Colors.blue,
+                      ),
+                    );
+                    context.router.navigateNamed('/login');
+                  }
+                },
+                unauthenticated: () {
+                  context.router.navigateNamed('/login');
+                },
+                error: (message) {
+                  context.router.navigateNamed('/login');
+                },
+              );
             },
-            unauthenticated: () {
-              context.router.navigateNamed('/login');
-            },
-            error: (message) {
-              context.router.navigateNamed('/login');
-            },
-          );
-        },
-        child: Scaffold(
-          body: Padding(
-            padding: EdgeInsets.all(10.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/fsm_logo.png',
-                  height: 250.h,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 15.h),
-                Row(
+            child: Scaffold(
+              body: Padding(
+                padding: EdgeInsets.all(10.w),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    LoadingCircles(controller: _controller1),
-                    LoadingCircles(controller: _controller2),
-                    LoadingCircles(controller: _controller3),
+                    Image.asset(
+                      'assets/images/fsm_logo.png',
+                      height: 250.h,
+                      fit: BoxFit.cover,
+                    ),
+                    SizedBox(height: 15.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadingCircles(controller: _controller1),
+                        LoadingCircles(controller: _controller2),
+                        LoadingCircles(controller: _controller3),
+                      ],
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

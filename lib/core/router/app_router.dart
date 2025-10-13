@@ -6,6 +6,7 @@ import '../../features/auth/data/datasources/auth_local_datasource.dart';
 import 'app_router.gr.dart';
 
 @AutoRouterConfig()
+@singleton
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
@@ -30,28 +31,28 @@ class AppRouter extends RootStackRouter {
           children: [
             AutoRoute(
               page: DashboardRoute.page,
-              path: '/dashboard',
+              path: 'dashboard',
               initial: true,
             ),
             AutoRoute(
               page: WorkOrdersRoute.page,
-              path: '/work-orders',
+              path: 'work-orders',
             ),
             AutoRoute(
               page: CalendarRoute.page,
-              path: '/calendar',
+              path: 'calendar',
             ),
             AutoRoute(
               page: DocumentsRoute.page,
-              path: '/documents',
+              path: 'documents',
             ),
             AutoRoute(
               page: PartsRoute.page,
-              path: '/parts',
+              path: 'parts',
             ),
             AutoRoute(
               page: ProfileRoute.page,
-              path: '/profile',
+              path: 'profile',
             ),
           ],
         ),
@@ -71,7 +72,6 @@ class AppRouter extends RootStackRouter {
 }
 
 @injectable
-@AutoRouteGuard()
 class AuthGuard extends AutoRouteGuard {
   final AuthLocalDataSource _localDataSource;
 
@@ -96,19 +96,6 @@ class AuthGuard extends AutoRouteGuard {
 }
 
 // Placeholder route pages - these will be implemented in later tasks
-@RoutePage()
-class MainNavigationPage extends StatelessWidget {
-  const MainNavigationPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Main Navigation - To be implemented'),
-      ),
-    );
-  }
-}
 
 @RoutePage()
 class DashboardPage extends StatelessWidget {
@@ -196,7 +183,7 @@ class ProfilePage extends StatelessWidget {
 
 @RoutePage()
 class WorkOrderDetailsPage extends StatelessWidget {
-  final String workOrderId;
+  final int workOrderId;
 
   const WorkOrderDetailsPage({
     super.key,
@@ -215,7 +202,7 @@ class WorkOrderDetailsPage extends StatelessWidget {
 
 @RoutePage()
 class DocumentViewerPage extends StatelessWidget {
-  final String documentId;
+  final int documentId;
 
   const DocumentViewerPage({
     super.key,

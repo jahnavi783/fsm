@@ -2,7 +2,7 @@ abstract class HiveBoxes {
   // Box names
   static const String authBox = 'auth_box';
   static const String workOrders = 'work_orders_box';
-  static const String documentsBox = 'documents_box';
+  static const String documents = 'documents_box';
   static const String partsBox = 'parts_box';
   static const String calendarBox = 'calendar_box';
   static const String profileBox = 'profile_box';

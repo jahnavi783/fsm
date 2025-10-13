@@ -29,6 +29,28 @@ import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
 import '../../features/auth/domain/usecases/refresh_token_usecase.dart'
     as _i157;
 import '../../features/auth/presentation/blocs/auth/auth_bloc.dart' as _i331;
+import '../../features/documents/data/api/document_api_client.dart' as _i936;
+import '../../features/documents/data/datasources/document_local_datasource.dart'
+    as _i506;
+import '../../features/documents/data/datasources/document_remote_datasource.dart'
+    as _i749;
+import '../../features/documents/data/di/document_module.dart' as _i843;
+import '../../features/documents/data/repositories/document_repository_impl.dart'
+    as _i113;
+import '../../features/documents/domain/repositories/i_document_repository.dart'
+    as _i121;
+import '../../features/documents/domain/usecases/download_document_usecase.dart'
+    as _i750;
+import '../../features/documents/domain/usecases/get_document_by_id_usecase.dart'
+    as _i937;
+import '../../features/documents/domain/usecases/get_document_categories_usecase.dart'
+    as _i1041;
+import '../../features/documents/domain/usecases/get_documents_usecase.dart'
+    as _i911;
+import '../../features/documents/domain/usecases/search_documents_usecase.dart'
+    as _i633;
+import '../../features/documents/presentation/blocs/documents/documents_bloc.dart'
+    as _i239;
 import '../../features/work_orders/data/api/work_order_api_client.dart'
     as _i103;
 import '../../features/work_orders/data/api/work_order_api_module.dart'
@@ -82,9 +104,12 @@ extension GetItInjectableX on _i174.GetIt {
     final networkModule = _$NetworkModule();
     final authModule = _$AuthModule();
     final workOrderApiModule = _$WorkOrderApiModule();
+    final documentModule = _$DocumentModule();
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.factory<_i669.LocationService>(() => _i669.LocationService());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    gh.factory<_i506.DocumentLocalDataSource>(
+        () => _i506.DocumentLocalDataSourceImpl());
     gh.factoryAsync<_i701.WorkOrderLocalDataSource>(() async =>
         _i701.WorkOrderLocalDataSourceImpl(
             await getAsync<_i459.HiveService>()));
@@ -104,6 +129,8 @@ extension GetItInjectableX on _i174.GetIt {
         () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
         workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
+        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
     gh.singletonAsync<_i667.DioClient>(
         () async => _i667.DioClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i161.AuthRemoteDataSource>(() async =>
@@ -122,6 +149,9 @@ extension GetItInjectableX on _i174.GetIt {
               await getAsync<_i701.WorkOrderLocalDataSource>(),
               gh<_i932.NetworkInfo>(),
             ));
+    gh.factoryAsync<_i749.DocumentRemoteDataSource>(() async =>
+        _i749.DocumentRemoteDataSourceImpl(
+            await getAsync<_i936.DocumentApiClient>()));
     gh.factoryAsync<_i831.CheckAuthUseCase>(() async =>
         _i831.CheckAuthUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i157.RefreshTokenUseCase>(() async =>
@@ -163,6 +193,12 @@ extension GetItInjectableX on _i174.GetIt {
               await getAsync<_i556.IWorkOrderRepository>(),
               gh<_i932.NetworkInfo>(),
             ));
+    gh.factoryAsync<_i121.IDocumentRepository>(
+        () async => _i113.DocumentRepositoryImpl(
+              await getAsync<_i749.DocumentRemoteDataSource>(),
+              gh<_i506.DocumentLocalDataSource>(),
+              gh<_i932.NetworkInfo>(),
+            ));
     gh.factoryAsync<_i532.WorkOrderActionBloc>(
         () async => _i532.WorkOrderActionBloc(
               await getAsync<_i1023.GetWorkOrderDetailsUseCase>(),
@@ -174,6 +210,27 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i669.LocationService>(),
               gh<_i932.NetworkInfo>(),
             ));
+    gh.factoryAsync<_i1041.GetDocumentCategoriesUseCase>(() async =>
+        _i1041.GetDocumentCategoriesUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i633.SearchDocumentsUseCase>(() async =>
+        _i633.SearchDocumentsUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i937.GetDocumentByIdUseCase>(() async =>
+        _i937.GetDocumentByIdUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i911.GetDocumentsUseCase>(() async =>
+        _i911.GetDocumentsUseCase(await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i750.DownloadDocumentUseCase>(() async =>
+        _i750.DownloadDocumentUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i239.DocumentsBloc>(() async => _i239.DocumentsBloc(
+          await getAsync<_i911.GetDocumentsUseCase>(),
+          await getAsync<_i633.SearchDocumentsUseCase>(),
+          await getAsync<_i750.DownloadDocumentUseCase>(),
+          await getAsync<_i1041.GetDocumentCategoriesUseCase>(),
+          await getAsync<_i121.IDocumentRepository>(),
+        ));
     return this;
   }
 }
@@ -185,3 +242,5 @@ class _$NetworkModule extends _i667.NetworkModule {}
 class _$AuthModule extends _i521.AuthModule {}
 
 class _$WorkOrderApiModule extends _i860.WorkOrderApiModule {}
+
+class _$DocumentModule extends _i843.DocumentModule {}

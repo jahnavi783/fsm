@@ -8,20 +8,24 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i6;
-import 'package:flutter/material.dart' as _i7;
+import 'package:auto_route/auto_route.dart' as _i8;
+import 'package:flutter/material.dart' as _i9;
 import 'package:fsm/core/router/app_router.dart' as _i1;
-import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i3;
-import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i4;
+import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i5;
+import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i6;
+import 'package:fsm/features/documents/presentation/pages/document_viewer_page.dart'
+    as _i3;
+import 'package:fsm/features/documents/presentation/pages/documents_page.dart'
+    as _i4;
 import 'package:fsm/features/work_orders/presentation/pages/dashboard_page.dart'
     as _i2;
 import 'package:fsm/features/work_orders/presentation/pages/work_order_details_page.dart'
-    as _i5;
+    as _i7;
 
 /// generated route for
 /// [_i1.CalendarPage]
-class CalendarRoute extends _i6.PageRouteInfo<void> {
-  const CalendarRoute({List<_i6.PageRouteInfo>? children})
+class CalendarRoute extends _i8.PageRouteInfo<void> {
+  const CalendarRoute({List<_i8.PageRouteInfo>? children})
       : super(
           CalendarRoute.name,
           initialChildren: children,
@@ -29,7 +33,7 @@ class CalendarRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'CalendarRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i1.CalendarPage();
@@ -39,8 +43,8 @@ class CalendarRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.DashboardPage]
-class DashboardRoute extends _i6.PageRouteInfo<void> {
-  const DashboardRoute({List<_i6.PageRouteInfo>? children})
+class DashboardRoute extends _i8.PageRouteInfo<void> {
+  const DashboardRoute({List<_i8.PageRouteInfo>? children})
       : super(
           DashboardRoute.name,
           initialChildren: children,
@@ -48,7 +52,7 @@ class DashboardRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'DashboardRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i2.DashboardPage();
@@ -57,12 +61,12 @@ class DashboardRoute extends _i6.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i1.DocumentViewerPage]
-class DocumentViewerRoute extends _i6.PageRouteInfo<DocumentViewerRouteArgs> {
+/// [_i3.DocumentViewerPage]
+class DocumentViewerRoute extends _i8.PageRouteInfo<DocumentViewerRouteArgs> {
   DocumentViewerRoute({
-    _i7.Key? key,
-    required String documentId,
-    List<_i6.PageRouteInfo>? children,
+    _i9.Key? key,
+    required int documentId,
+    List<_i8.PageRouteInfo>? children,
   }) : super(
           DocumentViewerRoute.name,
           args: DocumentViewerRouteArgs(
@@ -75,14 +79,14 @@ class DocumentViewerRoute extends _i6.PageRouteInfo<DocumentViewerRouteArgs> {
 
   static const String name = 'DocumentViewerRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<DocumentViewerRouteArgs>(
           orElse: () => DocumentViewerRouteArgs(
-              documentId: pathParams.getString('documentId')));
-      return _i1.DocumentViewerPage(
+              documentId: pathParams.getInt('documentId')));
+      return _i3.DocumentViewerPage(
         key: args.key,
         documentId: args.documentId,
       );
@@ -96,9 +100,9 @@ class DocumentViewerRouteArgs {
     required this.documentId,
   });
 
-  final _i7.Key? key;
+  final _i9.Key? key;
 
-  final String documentId;
+  final int documentId;
 
   @override
   String toString() {
@@ -107,9 +111,9 @@ class DocumentViewerRouteArgs {
 }
 
 /// generated route for
-/// [_i1.DocumentsPage]
-class DocumentsRoute extends _i6.PageRouteInfo<void> {
-  const DocumentsRoute({List<_i6.PageRouteInfo>? children})
+/// [_i4.DocumentsPage]
+class DocumentsRoute extends _i8.PageRouteInfo<void> {
+  const DocumentsRoute({List<_i8.PageRouteInfo>? children})
       : super(
           DocumentsRoute.name,
           initialChildren: children,
@@ -117,18 +121,18 @@ class DocumentsRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'DocumentsRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
-      return const _i1.DocumentsPage();
+      return const _i4.DocumentsPage();
     },
   );
 }
 
 /// generated route for
-/// [_i3.LoginPage]
-class LoginRoute extends _i6.PageRouteInfo<void> {
-  const LoginRoute({List<_i6.PageRouteInfo>? children})
+/// [_i5.LoginPage]
+class LoginRoute extends _i8.PageRouteInfo<void> {
+  const LoginRoute({List<_i8.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -136,18 +140,18 @@ class LoginRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
-      return const _i3.LoginPage();
+      return const _i5.LoginPage();
     },
   );
 }
 
 /// generated route for
 /// [_i1.MainNavigationPage]
-class MainNavigationRoute extends _i6.PageRouteInfo<void> {
-  const MainNavigationRoute({List<_i6.PageRouteInfo>? children})
+class MainNavigationRoute extends _i8.PageRouteInfo<void> {
+  const MainNavigationRoute({List<_i8.PageRouteInfo>? children})
       : super(
           MainNavigationRoute.name,
           initialChildren: children,
@@ -155,7 +159,7 @@ class MainNavigationRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'MainNavigationRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i1.MainNavigationPage();
@@ -165,8 +169,8 @@ class MainNavigationRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.PartsPage]
-class PartsRoute extends _i6.PageRouteInfo<void> {
-  const PartsRoute({List<_i6.PageRouteInfo>? children})
+class PartsRoute extends _i8.PageRouteInfo<void> {
+  const PartsRoute({List<_i8.PageRouteInfo>? children})
       : super(
           PartsRoute.name,
           initialChildren: children,
@@ -174,7 +178,7 @@ class PartsRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'PartsRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i1.PartsPage();
@@ -184,8 +188,8 @@ class PartsRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.ProfilePage]
-class ProfileRoute extends _i6.PageRouteInfo<void> {
-  const ProfileRoute({List<_i6.PageRouteInfo>? children})
+class ProfileRoute extends _i8.PageRouteInfo<void> {
+  const ProfileRoute({List<_i8.PageRouteInfo>? children})
       : super(
           ProfileRoute.name,
           initialChildren: children,
@@ -193,7 +197,7 @@ class ProfileRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'ProfileRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i1.ProfilePage();
@@ -202,9 +206,9 @@ class ProfileRoute extends _i6.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.SplashPage]
-class SplashRoute extends _i6.PageRouteInfo<void> {
-  const SplashRoute({List<_i6.PageRouteInfo>? children})
+/// [_i6.SplashPage]
+class SplashRoute extends _i8.PageRouteInfo<void> {
+  const SplashRoute({List<_i8.PageRouteInfo>? children})
       : super(
           SplashRoute.name,
           initialChildren: children,
@@ -212,22 +216,22 @@ class SplashRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'SplashRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
-      return const _i4.SplashPage();
+      return const _i6.SplashPage();
     },
   );
 }
 
 /// generated route for
-/// [_i5.WorkOrderDetailsPage]
+/// [_i7.WorkOrderDetailsPage]
 class WorkOrderDetailsRoute
-    extends _i6.PageRouteInfo<WorkOrderDetailsRouteArgs> {
+    extends _i8.PageRouteInfo<WorkOrderDetailsRouteArgs> {
   WorkOrderDetailsRoute({
-    _i7.Key? key,
+    _i9.Key? key,
     required int workOrderId,
-    List<_i6.PageRouteInfo>? children,
+    List<_i8.PageRouteInfo>? children,
   }) : super(
           WorkOrderDetailsRoute.name,
           args: WorkOrderDetailsRouteArgs(
@@ -240,14 +244,14 @@ class WorkOrderDetailsRoute
 
   static const String name = 'WorkOrderDetailsRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<WorkOrderDetailsRouteArgs>(
           orElse: () => WorkOrderDetailsRouteArgs(
               workOrderId: pathParams.getInt('workOrderId')));
-      return _i5.WorkOrderDetailsPage(
+      return _i7.WorkOrderDetailsPage(
         key: args.key,
         workOrderId: args.workOrderId,
       );
@@ -261,7 +265,7 @@ class WorkOrderDetailsRouteArgs {
     required this.workOrderId,
   });
 
-  final _i7.Key? key;
+  final _i9.Key? key;
 
   final int workOrderId;
 
@@ -273,8 +277,8 @@ class WorkOrderDetailsRouteArgs {
 
 /// generated route for
 /// [_i1.WorkOrdersPage]
-class WorkOrdersRoute extends _i6.PageRouteInfo<void> {
-  const WorkOrdersRoute({List<_i6.PageRouteInfo>? children})
+class WorkOrdersRoute extends _i8.PageRouteInfo<void> {
+  const WorkOrdersRoute({List<_i8.PageRouteInfo>? children})
       : super(
           WorkOrdersRoute.name,
           initialChildren: children,
@@ -282,7 +286,7 @@ class WorkOrdersRoute extends _i6.PageRouteInfo<void> {
 
   static const String name = 'WorkOrdersRoute';
 
-  static _i6.PageInfo page = _i6.PageInfo(
+  static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
       return const _i1.WorkOrdersPage();

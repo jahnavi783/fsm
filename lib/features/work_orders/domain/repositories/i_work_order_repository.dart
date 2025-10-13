@@ -11,9 +11,9 @@ abstract class IWorkOrderRepository {
     WorkOrderPriority? priority,
     String? searchQuery,
   });
-  
+
   Future<Either<Failure, WorkOrderEntity>> getWorkOrderById(int id);
-  
+
   Future<Either<Failure, WorkOrderEntity>> startWorkOrder({
     required int workOrderId,
     required double latitude,
@@ -21,7 +21,7 @@ abstract class IWorkOrderRepository {
     List<File> files = const [],
     String? notes,
   });
-  
+
   Future<Either<Failure, WorkOrderEntity>> pauseWorkOrder({
     required int workOrderId,
     required String reason,
@@ -29,7 +29,7 @@ abstract class IWorkOrderRepository {
     required double longitude,
     List<File> files = const [],
   });
-  
+
   Future<Either<Failure, WorkOrderEntity>> resumeWorkOrder({
     required int workOrderId,
     required double latitude,
@@ -37,7 +37,7 @@ abstract class IWorkOrderRepository {
     List<File> files = const [],
     String? notes,
   });
-  
+
   Future<Either<Failure, WorkOrderEntity>> completeWorkOrder({
     required int workOrderId,
     required String workLog,
@@ -47,18 +47,19 @@ abstract class IWorkOrderRepository {
     required double longitude,
     String? completionNotes,
   });
-  
+
   Future<Either<Failure, WorkOrderEntity>> rejectWorkOrder({
     required int workOrderId,
     required String reason,
     required double latitude,
     required double longitude,
   });
-  
+
   Future<Either<Failure, List<WorkOrderEntity>>> syncPendingWorkOrders();
-  
-  Future<Either<Failure, void>> cacheWorkOrders(List<WorkOrderEntity> workOrders);
-  
+
+  Future<Either<Failure, void>> cacheWorkOrders(
+      List<WorkOrderEntity> workOrders);
+
   Future<Either<Failure, List<WorkOrderEntity>>> getCachedWorkOrders({
     WorkOrderStatus? status,
   });

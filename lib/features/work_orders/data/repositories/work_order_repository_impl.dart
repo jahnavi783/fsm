@@ -44,15 +44,12 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         // Cache successful response
-        final hiveModels = workOrderDtos
-            .map((dto) => _mapDtoToHiveModel(dto))
-            .toList();
+        final hiveModels =
+            workOrderDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheWorkOrders(hiveModels);
 
         // Return domain entities
-        final entities = workOrderDtos
-            .map((dto) => dto.toEntity())
-            .toList();
+        final entities = workOrderDtos.map((dto) => dto.toEntity()).toList();
         return Right(entities);
       } else {
         // Fallback to cache when offline
@@ -66,9 +63,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           ));
         }
 
-        final entities = cachedModels
-            .map((model) => model.toEntity())
-            .toList();
+        final entities = cachedModels.map((model) => model.toEntity()).toList();
         return Right(entities);
       }
     } on DioException catch (e) {
@@ -85,11 +80,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     try {
       if (await _networkInfo.isConnected) {
         final workOrderDto = await _remoteDataSource.getWorkOrderById(id);
-        
+
         // Cache the work order
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         final cachedModel = await _localDataSource.getCachedWorkOrderById(id);
@@ -126,29 +121,30 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           files: files,
           notes: notes,
         );
-        
+
         // Update cache
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         // Store action for later sync
         await _localDataSource.markWorkOrderForSync(workOrderId, 'start');
-        
+
         // Update local status optimistically
-        final cachedModel = await _localDataSource.getCachedWorkOrderById(workOrderId);
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
-        
+
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.inProgress.index,
           startedAt: DateTime.now(),
           isPendingSync: true,
           pendingAction: 'start',
         );
-        
+
         await _localDataSource.updateWorkOrder(updatedModel);
         return Right(updatedModel.toEntity());
       }
@@ -178,29 +174,30 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           longitude: longitude,
           files: files,
         );
-        
+
         // Update cache
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         // Store action for later sync
         await _localDataSource.markWorkOrderForSync(workOrderId, 'pause');
-        
+
         // Update local status optimistically
-        final cachedModel = await _localDataSource.getCachedWorkOrderById(workOrderId);
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
-        
+
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.paused.index,
           pauseLogs: reason,
           isPendingSync: true,
           pendingAction: 'pause',
         );
-        
+
         await _localDataSource.updateWorkOrder(updatedModel);
         return Right(updatedModel.toEntity());
       }
@@ -230,29 +227,30 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           files: files,
           notes: notes,
         );
-        
+
         // Update cache
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         // Store action for later sync
         await _localDataSource.markWorkOrderForSync(workOrderId, 'resume');
-        
+
         // Update local status optimistically
-        final cachedModel = await _localDataSource.getCachedWorkOrderById(workOrderId);
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
-        
+
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.inProgress.index,
           resumedAt: DateTime.now(),
           isPendingSync: true,
           pendingAction: 'resume',
         );
-        
+
         await _localDataSource.updateWorkOrder(updatedModel);
         return Right(updatedModel.toEntity());
       }
@@ -286,38 +284,41 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           longitude: longitude,
           completionNotes: completionNotes,
         );
-        
+
         // Update cache
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         // Store action for later sync
         await _localDataSource.markWorkOrderForSync(workOrderId, 'complete');
-        
+
         // Update local status optimistically
-        final cachedModel = await _localDataSource.getCachedWorkOrderById(workOrderId);
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
-        
+
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.completed.index,
           completedAt: DateTime.now(),
           workLog: workLog,
-          partsUsed: partsUsed.map((p) => PartUsedHiveModel(
-            partNumber: p.partNumber,
-            quantityUsed: p.quantityUsed,
-            partName: p.partName,
-            description: p.description,
-          )).toList(),
+          partsUsed: partsUsed
+              .map((p) => PartUsedHiveModel(
+                    partNumber: p.partNumber,
+                    quantityUsed: p.quantityUsed,
+                    partName: p.partName,
+                    description: p.description,
+                  ))
+              .toList(),
           images: files.map((file) => file.path).toList(),
           completionNotes: completionNotes,
           isPendingSync: true,
           pendingAction: 'complete',
         );
-        
+
         await _localDataSource.updateWorkOrder(updatedModel);
         return Right(updatedModel.toEntity());
       }
@@ -345,29 +346,30 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           latitude: latitude,
           longitude: longitude,
         );
-        
+
         // Update cache
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
-        
+
         return Right(workOrderDto.toEntity());
       } else {
         // Store action for later sync
         await _localDataSource.markWorkOrderForSync(workOrderId, 'reject');
-        
+
         // Update local status optimistically
-        final cachedModel = await _localDataSource.getCachedWorkOrderById(workOrderId);
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
-        
+
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.rejected.index,
           pauseLogs: reason,
           isPendingSync: true,
           pendingAction: 'reject',
         );
-        
+
         await _localDataSource.updateWorkOrder(updatedModel);
         return Right(updatedModel.toEntity());
       }
@@ -387,7 +389,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         return Left(NetworkFailure(message: 'No internet connection'));
       }
 
-      final pendingWorkOrders = await _localDataSource.getPendingSyncWorkOrders();
+      final pendingWorkOrders =
+          await _localDataSource.getPendingSyncWorkOrders();
       final syncedWorkOrders = <WorkOrderEntity>[];
 
       for (final workOrder in pendingWorkOrders) {
@@ -409,11 +412,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   }
 
   @override
-  Future<Either<Failure, void>> cacheWorkOrders(List<WorkOrderEntity> workOrders) async {
+  Future<Either<Failure, void>> cacheWorkOrders(
+      List<WorkOrderEntity> workOrders) async {
     try {
-      final hiveModels = workOrders
-          .map((entity) => _mapEntityToHiveModel(entity))
-          .toList();
+      final hiveModels =
+          workOrders.map((entity) => _mapEntityToHiveModel(entity)).toList();
       await _localDataSource.cacheWorkOrders(hiveModels);
       return Right(null);
     } on HiveError catch (e) {
@@ -431,9 +434,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       final cachedModels = await _localDataSource.getCachedWorkOrders(
         status: status,
       );
-      final entities = cachedModels
-          .map((model) => model.toEntity())
-          .toList();
+      final entities = cachedModels.map((model) => model.toEntity()).toList();
       return Right(entities);
     } on HiveError catch (e) {
       return Left(CacheFailure(message: e.message));
@@ -477,7 +478,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       updatedAt: DateTime.parse(dto.updatedAt),
       startedAt: dto.startedAt != null ? DateTime.parse(dto.startedAt) : null,
       resumedAt: dto.resumedAt != null ? DateTime.parse(dto.resumedAt) : null,
-      completedAt: dto.completedAt != null ? DateTime.parse(dto.completedAt) : null,
+      completedAt:
+          dto.completedAt != null ? DateTime.parse(dto.completedAt) : null,
       pauseLogs: dto.pauseLogs,
       workLog: dto.workLog,
       partsUsed: [], // Map from DTO
@@ -506,12 +508,14 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       completedAt: entity.completedAt,
       pauseLogs: entity.pauseLogs,
       workLog: entity.workLog,
-      partsUsed: entity.partsUsed.map((p) => PartUsedHiveModel(
-        partNumber: p.partNumber,
-        quantityUsed: p.quantityUsed,
-        partName: p.partName,
-        description: p.description,
-      )).toList(),
+      partsUsed: entity.partsUsed
+          .map((p) => PartUsedHiveModel(
+                partNumber: p.partNumber,
+                quantityUsed: p.quantityUsed,
+                partName: p.partName,
+                description: p.description,
+              ))
+          .toList(),
       images: entity.images,
       cachedAt: DateTime.now(),
       isPendingSync: false,

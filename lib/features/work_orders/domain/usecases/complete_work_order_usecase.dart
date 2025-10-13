@@ -8,10 +8,11 @@ import 'package:fsm/features/work_orders/domain/repositories/i_work_order_reposi
 @injectable
 class CompleteWorkOrderUseCase {
   final IWorkOrderRepository _repository;
-  
+
   CompleteWorkOrderUseCase(this._repository);
-  
-  Future<Either<Failure, WorkOrderEntity>> call(CompleteWorkOrderParams params) {
+
+  Future<Either<Failure, WorkOrderEntity>> call(
+      CompleteWorkOrderParams params) {
     return _repository.completeWorkOrder(
       workOrderId: params.workOrderId,
       workLog: params.workLog,
@@ -32,7 +33,7 @@ class CompleteWorkOrderParams {
   final double latitude;
   final double longitude;
   final String? completionNotes;
-  
+
   CompleteWorkOrderParams({
     required this.workOrderId,
     required this.workLog,

@@ -8,9 +8,9 @@ import 'package:fsm/features/work_orders/domain/repositories/i_work_order_reposi
 @injectable
 class ResumeWorkOrderUseCase {
   final IWorkOrderRepository _repository;
-  
+
   ResumeWorkOrderUseCase(this._repository);
-  
+
   Future<Either<Failure, WorkOrderEntity>> call(ResumeWorkOrderParams params) {
     return _repository.resumeWorkOrder(
       workOrderId: params.workOrderId,
@@ -28,7 +28,7 @@ class ResumeWorkOrderParams {
   final double longitude;
   final List<File> files;
   final String? notes;
-  
+
   ResumeWorkOrderParams({
     required this.workOrderId,
     required this.latitude,

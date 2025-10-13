@@ -8,9 +8,9 @@ import 'package:fsm/features/work_orders/domain/repositories/i_work_order_reposi
 @injectable
 class PauseWorkOrderUseCase {
   final IWorkOrderRepository _repository;
-  
+
   PauseWorkOrderUseCase(this._repository);
-  
+
   Future<Either<Failure, WorkOrderEntity>> call(PauseWorkOrderParams params) {
     return _repository.pauseWorkOrder(
       workOrderId: params.workOrderId,
@@ -28,7 +28,7 @@ class PauseWorkOrderParams {
   final double latitude;
   final double longitude;
   final List<File> files;
-  
+
   PauseWorkOrderParams({
     required this.workOrderId,
     required this.reason,

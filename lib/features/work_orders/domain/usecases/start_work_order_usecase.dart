@@ -8,9 +8,9 @@ import 'package:fsm/features/work_orders/domain/repositories/i_work_order_reposi
 @injectable
 class StartWorkOrderUseCase {
   final IWorkOrderRepository _repository;
-  
+
   StartWorkOrderUseCase(this._repository);
-  
+
   Future<Either<Failure, WorkOrderEntity>> call(StartWorkOrderParams params) {
     return _repository.startWorkOrder(
       workOrderId: params.workOrderId,
@@ -28,7 +28,7 @@ class StartWorkOrderParams {
   final double longitude;
   final List<File> files;
   final String? notes;
-  
+
   StartWorkOrderParams({
     required this.workOrderId,
     required this.latitude,

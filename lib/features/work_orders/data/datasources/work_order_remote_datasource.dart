@@ -154,7 +154,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
               'quantity_used': part.quantityUsed,
             })
         .toList());
-    
+
     final response = await _apiClient.completeWorkOrder(
       id: workOrderId,
       workLog: workLog,

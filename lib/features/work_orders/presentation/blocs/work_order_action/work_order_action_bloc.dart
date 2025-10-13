@@ -16,7 +16,8 @@ import 'work_order_action_event.dart';
 import 'work_order_action_state.dart';
 
 @injectable
-class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionState> {
+class WorkOrderActionBloc
+    extends Bloc<WorkOrderActionEvent, WorkOrderActionState> {
   final GetWorkOrderDetailsUseCase _getWorkOrderDetailsUseCase;
   final StartWorkOrderUseCase _startWorkOrderUseCase;
   final PauseWorkOrderUseCase _pauseWorkOrderUseCase;
@@ -48,11 +49,15 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
       startWorkOrder: (workOrderId, latitude, longitude, files, notes) =>
           _startWorkOrder(workOrderId, latitude, longitude, files, notes, emit),
       pauseWorkOrder: (workOrderId, reason, latitude, longitude, files) =>
-          _pauseWorkOrder(workOrderId, reason, latitude, longitude, files, emit),
+          _pauseWorkOrder(
+              workOrderId, reason, latitude, longitude, files, emit),
       resumeWorkOrder: (workOrderId, latitude, longitude, files, notes) =>
-          _resumeWorkOrder(workOrderId, latitude, longitude, files, notes, emit),
-      completeWorkOrder: (workOrderId, workLog, partsUsed, files, latitude, longitude, completionNotes) =>
-          _completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude, longitude, completionNotes, emit),
+          _resumeWorkOrder(
+              workOrderId, latitude, longitude, files, notes, emit),
+      completeWorkOrder: (workOrderId, workLog, partsUsed, files, latitude,
+              longitude, completionNotes) =>
+          _completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
+              longitude, completionNotes, emit),
       rejectWorkOrder: (workOrderId, reason, latitude, longitude) =>
           _rejectWorkOrder(workOrderId, reason, latitude, longitude, emit),
       captureLocation: () => _captureLocation(emit),
@@ -81,7 +86,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
           workOrder: workOrder,
           isOffline: !isConnected,
         ));
-        
+
         // Automatically capture location when work order is loaded
         add(const WorkOrderActionEvent.captureLocation());
       },
@@ -97,7 +102,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -149,7 +154,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -201,7 +206,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -255,7 +260,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -308,7 +313,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     Emitter<WorkOrderActionState> emit,
   ) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -352,7 +357,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
 
   Future<void> _captureLocation(Emitter<WorkOrderActionState> emit) async {
     final currentState = state;
-    
+
     final workOrder = currentState.maybeWhen(
       loaded: (workOrder, _, __, ___) => workOrder,
       orElse: () => null,
@@ -360,7 +365,8 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
     if (workOrder == null) return;
 
     emit(currentState.maybeWhen(
-      loaded: (workOrder, currentLocation, _, isOffline) => WorkOrderActionState.loaded(
+      loaded: (workOrder, currentLocation, _, isOffline) =>
+          WorkOrderActionState.loaded(
         workOrder: workOrder,
         currentLocation: currentLocation,
         isLocationLoading: true,
@@ -397,7 +403,7 @@ class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionStat
 
   Future<void> _clearError(Emitter<WorkOrderActionState> emit) async {
     final currentState = state;
-    
+
     currentState.maybeWhen(
       error: (failure, workOrder, isOffline) {
         if (workOrder != null) {

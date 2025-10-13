@@ -1,12 +1,10 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_response.dart';
-import 'package:fsm/features/work_orders/data/models/start_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/pause_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/resume_work_order_request.dart';
-import 'package:fsm/features/work_orders/data/models/complete_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 part 'work_order_api_client.g.dart';
 
@@ -16,43 +14,53 @@ abstract class WorkOrderApiClient {
 
   @GET('/work-orders')
   Future<WorkOrdersResponse> getWorkOrders({
-    @Query('page') required int page,
-    @Query('limit') required int limit,
-    @Query('status') String? status,
-    @Query('priority') String? priority,
-    @Query('search') String? searchQuery,
+    @Query('page') int page = 1,
+    @Query('limit') int limit = 10,
+    @Query('status') WorkOrderStatus? status,
+    @Query('priority') WorkOrderPriority? priority,
   });
 
   @GET('/work-orders/{id}')
   Future<WorkOrderResponse> getWorkOrderById(@Path('id') int id);
 
-  @POST('/work-orders/{id}/start')
-  Future<WorkOrderResponse> startWorkOrder(
-    @Path('id') int id,
-    @Body() StartWorkOrderRequest request,
-  );
+  @PATCH('/work-orders/{id}/start')
+  @MultiPart()
+  Future<WorkOrderResponse> startWorkOrder({
+    @Path('id') required int id,
+    @Part(name: 'gps_coordinates') required String gpsCoordinates,
+    @Part(name: 'files') List<File> files = const [],
+  });
 
-  @POST('/work-orders/{id}/pause')
-  Future<WorkOrderResponse> pauseWorkOrder(
-    @Path('id') int id,
-    @Body() PauseWorkOrderRequest request,
-  );
+  @PATCH('/work-orders/{id}/pause')
+  @MultiPart()
+  Future<WorkOrderResponse> pauseWorkOrder({
+    @Path('id') required int id,
+    @Part(name: 'reason') required String reason,
+    @Part(name: 'gps_coordinates') required String gpsCoordinates,
+    @Part(name: 'files') List<File> files = const [],
+  });
 
-  @POST('/work-orders/{id}/resume')
-  Future<WorkOrderResponse> resumeWorkOrder(
-    @Path('id') int id,
-    @Body() ResumeWorkOrderRequest request,
-  );
+  @PATCH('/work-orders/{id}/resume')
+  @MultiPart()
+  Future<WorkOrderResponse> resumeWorkOrder({
+    @Path('id') required int id,
+    @Part(name: 'gps_coordinates') String? gpsCoordinates,
+    @Part(name: 'files') List<File> files = const [],
+  });
 
-  @POST('/work-orders/{id}/complete')
-  Future<WorkOrderResponse> completeWorkOrder(
-    @Path('id') int id,
-    @Body() CompleteWorkOrderRequest request,
-  );
+  @PATCH('/work-orders/{id}/complete')
+  @MultiPart()
+  Future<WorkOrderResponse> completeWorkOrder({
+    @Path('id') required int id,
+    @Part(name: 'work_log') required String workLog,
+    @Part(name: 'gps_coordinates') required String gpsCoordinates,
+    @Part(name: 'parts_used') required String partsUsed,
+    @Part(name: 'files') List<File> files = const [],
+  });
 
-  @POST('/work-orders/{id}/reject')
-  Future<WorkOrderResponse> rejectWorkOrder(
-    @Path('id') int id,
-    @Body() RejectWorkOrderRequest request,
-  );
+  @PATCH('/work-orders/{id}/reject')
+  Future<WorkOrderResponse> rejectWorkOrder({
+    @Path('id') required int id,
+    @Body() required RejectWorkOrderRequest body,
+  });
 }

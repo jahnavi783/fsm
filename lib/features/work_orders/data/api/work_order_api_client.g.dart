@@ -23,19 +23,17 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
 
   @override
   Future<WorkOrdersResponse> getWorkOrders({
-    required int page,
-    required int limit,
-    String? status,
-    String? priority,
-    String? searchQuery,
+    int page = 1,
+    int limit = 10,
+    WorkOrderStatus? status,
+    WorkOrderPriority? priority,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'limit': limit,
-      r'status': status,
-      r'priority': priority,
-      r'search': searchQuery,
+      r'status': status?.name,
+      r'priority': priority?.name,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -101,18 +99,30 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
   }
 
   @override
-  Future<WorkOrderResponse> startWorkOrder(
-    int id,
-    StartWorkOrderRequest request,
-  ) async {
+  Future<WorkOrderResponse> startWorkOrder({
+    required int id,
+    required String gpsCoordinates,
+    List<File> files = const [],
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'gps_coordinates',
+      gpsCoordinates,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry(
+        'files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
     final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
@@ -137,18 +147,35 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
   }
 
   @override
-  Future<WorkOrderResponse> pauseWorkOrder(
-    int id,
-    PauseWorkOrderRequest request,
-  ) async {
+  Future<WorkOrderResponse> pauseWorkOrder({
+    required int id,
+    required String reason,
+    required String gpsCoordinates,
+    List<File> files = const [],
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'reason',
+      reason,
+    ));
+    _data.fields.add(MapEntry(
+      'gps_coordinates',
+      gpsCoordinates,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry(
+        'files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
     final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
@@ -173,18 +200,33 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
   }
 
   @override
-  Future<WorkOrderResponse> resumeWorkOrder(
-    int id,
-    ResumeWorkOrderRequest request,
-  ) async {
+  Future<WorkOrderResponse> resumeWorkOrder({
+    required int id,
+    String? gpsCoordinates,
+    List<File> files = const [],
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = FormData();
+    if (gpsCoordinates != null) {
+      _data.fields.add(MapEntry(
+        'gps_coordinates',
+        gpsCoordinates,
+      ));
+    }
+    _data.files.addAll(files.map((i) => MapEntry(
+        'files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
     final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
@@ -209,18 +251,40 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
   }
 
   @override
-  Future<WorkOrderResponse> completeWorkOrder(
-    int id,
-    CompleteWorkOrderRequest request,
-  ) async {
+  Future<WorkOrderResponse> completeWorkOrder({
+    required int id,
+    required String workLog,
+    required String gpsCoordinates,
+    required String partsUsed,
+    List<File> files = const [],
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'work_log',
+      workLog,
+    ));
+    _data.fields.add(MapEntry(
+      'gps_coordinates',
+      gpsCoordinates,
+    ));
+    _data.fields.add(MapEntry(
+      'parts_used',
+      partsUsed,
+    ));
+    _data.files.addAll(files.map((i) => MapEntry(
+        'files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
     final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
@@ -245,16 +309,16 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
   }
 
   @override
-  Future<WorkOrderResponse> rejectWorkOrder(
-    int id,
-    RejectWorkOrderRequest request,
-  ) async {
+  Future<WorkOrderResponse> rejectWorkOrder({
+    required int id,
+    required RejectWorkOrderRequest body,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = request;
+    final _data = body;
     final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
     )

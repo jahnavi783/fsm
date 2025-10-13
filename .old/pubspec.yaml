@@ -1,0 +1,71 @@
+name: fsm_flutter
+description: "A FSM Mobile Application built with Flutter."
+
+publish_to: "none"
+
+version: 2.0.5+5
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^9.0.0
+  shared_preferences: ^2.3.2
+  get_it: ^8.0.3
+  equatable: ^2.0.7
+  either_dart: ^1.0.0
+  http: ^1.3.0
+  location: ^7.0.1
+  shimmer: ^3.0.0
+  file_picker: ^8.3.5
+  socket_io_client: ^3.0.2
+  flutter_webrtc: ^0.12.9
+  screenshot: ^3.0.0
+  permission_handler: ^11.3.1
+  intl: ^0.20.2
+  retrofit: ^4.4.2
+  freezed: ^3.0.6
+  json_annotation: ^4.9.0
+  dio: ^5.8.0+1
+  freezed_annotation: ^3.0.0
+  pretty_dio_logger: ^1.4.0
+  dio_refresh_token: ^0.0.1
+  very_good_infinite_list: ^0.9.0
+  calendar_view: ^1.4.0
+  dio_smart_retry: ^7.0.1
+  image_picker: ^1.1.0
+  rounded_loading_button_plus: ^3.0.1
+  flutter_map: ^8.1.1
+  reactive_forms: ^17.0.0
+  flutter_screenutil: ^5.9.3
+  chucker_flutter: ^1.8.5
+  syncfusion_flutter_pdfviewer: ^30.1.37
+  chewie: ^1.12.1
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+  json_serializable: ^6.9.5
+  build_runner: ^2.4.15
+  retrofit_generator: ^9.2.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter.ttf
+          style: normal

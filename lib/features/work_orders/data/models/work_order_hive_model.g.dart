@@ -26,7 +26,7 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       visitDate: fields[6] as DateTime,
       location: fields[7] as String,
       status: fields[8] as int,
-      duration: fields[9] as int,
+      durationDays: fields[9] as int,
       createdAt: fields[10] as DateTime,
       updatedAt: fields[11] as DateTime,
       startedAt: fields[12] as DateTime?,
@@ -73,7 +73,7 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       ..writeByte(8)
       ..write(obj.status)
       ..writeByte(9)
-      ..write(obj.duration)
+      ..write(obj.durationDays)
       ..writeByte(10)
       ..write(obj.createdAt)
       ..writeByte(11)
@@ -495,7 +495,7 @@ _$WorkOrderHiveModelImpl _$$WorkOrderHiveModelImplFromJson(
       visitDate: DateTime.parse(json['visitDate'] as String),
       location: json['location'] as String,
       status: (json['status'] as num).toInt(),
-      duration: (json['duration'] as num).toInt(),
+      durationDays: (json['durationDays'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       startedAt: json['startedAt'] == null
@@ -564,7 +564,7 @@ Map<String, dynamic> _$$WorkOrderHiveModelImplToJson(
       'visitDate': instance.visitDate.toIso8601String(),
       'location': instance.location,
       'status': instance.status,
-      'duration': instance.duration,
+      'durationDays': instance.durationDays,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
       'startedAt': instance.startedAt?.toIso8601String(),

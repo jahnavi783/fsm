@@ -40,7 +40,7 @@ mixin _$WorkOrderHiveModel {
   @HiveField(8)
   int get status => throw _privateConstructorUsedError; // Store as int for enum
   @HiveField(9)
-  int get duration => throw _privateConstructorUsedError;
+  int get durationDays => throw _privateConstructorUsedError;
   @HiveField(10)
   DateTime get createdAt => throw _privateConstructorUsedError;
   @HiveField(11)
@@ -105,7 +105,7 @@ abstract class $WorkOrderHiveModelCopyWith<$Res> {
       @HiveField(6) DateTime visitDate,
       @HiveField(7) String location,
       @HiveField(8) int status,
-      @HiveField(9) int duration,
+      @HiveField(9) int durationDays,
       @HiveField(10) DateTime createdAt,
       @HiveField(11) DateTime updatedAt,
       @HiveField(12) DateTime? startedAt,
@@ -154,7 +154,7 @@ class _$WorkOrderHiveModelCopyWithImpl<$Res, $Val extends WorkOrderHiveModel>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -213,9 +213,9 @@ class _$WorkOrderHiveModelCopyWithImpl<$Res, $Val extends WorkOrderHiveModel>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -356,7 +356,7 @@ abstract class _$$WorkOrderHiveModelImplCopyWith<$Res>
       @HiveField(6) DateTime visitDate,
       @HiveField(7) String location,
       @HiveField(8) int status,
-      @HiveField(9) int duration,
+      @HiveField(9) int durationDays,
       @HiveField(10) DateTime createdAt,
       @HiveField(11) DateTime updatedAt,
       @HiveField(12) DateTime? startedAt,
@@ -406,7 +406,7 @@ class __$$WorkOrderHiveModelImplCopyWithImpl<$Res>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -465,9 +465,9 @@ class __$$WorkOrderHiveModelImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as int,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -566,7 +566,7 @@ class _$WorkOrderHiveModelImpl implements _WorkOrderHiveModel {
       @HiveField(6) required this.visitDate,
       @HiveField(7) required this.location,
       @HiveField(8) required this.status,
-      @HiveField(9) required this.duration,
+      @HiveField(9) required this.durationDays,
       @HiveField(10) required this.createdAt,
       @HiveField(11) required this.updatedAt,
       @HiveField(12) this.startedAt,
@@ -628,7 +628,7 @@ class _$WorkOrderHiveModelImpl implements _WorkOrderHiveModel {
 // Store as int for enum
   @override
   @HiveField(9)
-  final int duration;
+  final int durationDays;
   @override
   @HiveField(10)
   final DateTime createdAt;
@@ -735,7 +735,7 @@ class _$WorkOrderHiveModelImpl implements _WorkOrderHiveModel {
 
   @override
   String toString() {
-    return 'WorkOrderHiveModel(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, duration: $duration, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
+    return 'WorkOrderHiveModel(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
   }
 
   @override
@@ -757,8 +757,8 @@ class _$WorkOrderHiveModelImpl implements _WorkOrderHiveModel {
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
+            (identical(other.durationDays, durationDays) ||
+                other.durationDays == durationDays) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -811,7 +811,7 @@ class _$WorkOrderHiveModelImpl implements _WorkOrderHiveModel {
         visitDate,
         location,
         status,
-        duration,
+        durationDays,
         createdAt,
         updatedAt,
         startedAt,
@@ -860,7 +860,7 @@ abstract class _WorkOrderHiveModel implements WorkOrderHiveModel {
       @HiveField(6) required final DateTime visitDate,
       @HiveField(7) required final String location,
       @HiveField(8) required final int status,
-      @HiveField(9) required final int duration,
+      @HiveField(9) required final int durationDays,
       @HiveField(10) required final DateTime createdAt,
       @HiveField(11) required final DateTime updatedAt,
       @HiveField(12) final DateTime? startedAt,
@@ -914,7 +914,7 @@ abstract class _WorkOrderHiveModel implements WorkOrderHiveModel {
   int get status;
   @override // Store as int for enum
   @HiveField(9)
-  int get duration;
+  int get durationDays;
   @override
   @HiveField(10)
   DateTime get createdAt;

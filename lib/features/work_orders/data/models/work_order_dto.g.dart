@@ -17,26 +17,22 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
       visitDate: json['visit_date'] as String,
       location: json['location'] as String? ?? '',
       status: json['status'] as String,
-      duration: (json['duration'] as num?)?.toInt() ?? 30,
+      durationDays: (json['duration_days'] as num?)?.toInt() ?? 0,
+      createdBy: (json['created_by'] as num?)?.toInt(),
+      assignedTo: (json['assigned_to'] as num?)?.toInt(),
       startedAt: json['started_at'] as String?,
       resumedAt: json['resumed_at'] as String?,
       completedAt: json['completed_at'] as String?,
       pauseLogs: json['pause_logs'] as String?,
+      rejectionLogs: json['rejection_logs'] as String?,
       workLog: json['work_log'] as String?,
-      partsUsed: (json['parts_used'] as List<dynamic>?)
-              ?.map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      createdBy: json['createdBy'] == null
+      partsUsed: json['parts_used'] as String?,
+      createdAt: json['createdAt'] as String,
+      updatedAt: json['updatedAt'] as String,
+      createdByUser: json['createdBy'] == null
           ? null
           : UserDto.fromJson(json['createdBy'] as Map<String, dynamic>),
-      assignedTo: json['assignedTo'] == null
+      assignedToUser: json['assignedTo'] == null
           ? null
           : UserDto.fromJson(json['assignedTo'] as Map<String, dynamic>),
       serviceRequest: json['serviceRequest'] == null
@@ -50,15 +46,15 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
           ? null
           : LocationDto.fromJson(
               json['location_details'] as Map<String, dynamic>),
-      workLogs: (json['work_logs'] as List<dynamic>?)
+      workLogs: (json['workLogs'] as List<dynamic>?)
               ?.map((e) => WorkLogDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      requiredSkills: (json['required_skills'] as List<dynamic>?)
+      requiredSkills: (json['requiredSkills'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      requiredParts: (json['required_parts'] as List<dynamic>?)
+      requiredParts: (json['requiredParts'] as List<dynamic>?)
               ?.map((e) => PartDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -66,7 +62,11 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      completionNotes: json['completion_notes'] as String?,
+      completionNotes: json['completionNotes'] as String?,
+      images: (json['images'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$WorkOrderDtoImplToJson(_$WorkOrderDtoImpl instance) =>
@@ -80,26 +80,29 @@ Map<String, dynamic> _$$WorkOrderDtoImplToJson(_$WorkOrderDtoImpl instance) =>
       'visit_date': instance.visitDate,
       'location': instance.location,
       'status': instance.status,
-      'duration': instance.duration,
+      'duration_days': instance.durationDays,
+      'created_by': instance.createdBy,
+      'assigned_to': instance.assignedTo,
       'started_at': instance.startedAt,
       'resumed_at': instance.resumedAt,
       'completed_at': instance.completedAt,
       'pause_logs': instance.pauseLogs,
+      'rejection_logs': instance.rejectionLogs,
       'work_log': instance.workLog,
       'parts_used': instance.partsUsed,
-      'images': instance.images,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
-      'createdBy': instance.createdBy,
-      'assignedTo': instance.assignedTo,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
+      'createdBy': instance.createdByUser,
+      'assignedTo': instance.assignedToUser,
       'serviceRequest': instance.serviceRequest,
       'customer': instance.customer,
       'location_details': instance.locationDetails,
-      'work_logs': instance.workLogs,
-      'required_skills': instance.requiredSkills,
-      'required_parts': instance.requiredParts,
+      'workLogs': instance.workLogs,
+      'requiredSkills': instance.requiredSkills,
+      'requiredParts': instance.requiredParts,
       'attachments': instance.attachments,
-      'completion_notes': instance.completionNotes,
+      'completionNotes': instance.completionNotes,
+      'images': instance.images,
     };
 
 _$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
@@ -107,8 +110,6 @@ _$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       email: json['email'] as String,
       firstName: json['first_name'] as String,
-      lastName: json['last_name'] as String,
-      role: json['role'] as String,
     );
 
 Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
@@ -116,22 +117,4 @@ Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
       'id': instance.id,
       'email': instance.email,
       'first_name': instance.firstName,
-      'last_name': instance.lastName,
-      'role': instance.role,
-    };
-
-_$PartUsedDtoImpl _$$PartUsedDtoImplFromJson(Map<String, dynamic> json) =>
-    _$PartUsedDtoImpl(
-      partNumber: json['part_number'] as String,
-      quantityUsed: (json['quantity_used'] as num).toInt(),
-      partName: json['part_name'] as String?,
-      description: json['description'] as String?,
-    );
-
-Map<String, dynamic> _$$PartUsedDtoImplToJson(_$PartUsedDtoImpl instance) =>
-    <String, dynamic>{
-      'part_number': instance.partNumber,
-      'quantity_used': instance.quantityUsed,
-      'part_name': instance.partName,
-      'description': instance.description,
     };

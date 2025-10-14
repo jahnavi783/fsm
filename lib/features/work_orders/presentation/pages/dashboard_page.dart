@@ -31,14 +31,14 @@ class _DashboardPageState extends State<DashboardPage>
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
-    
+
     // Load initial data
     context.read<WorkOrdersListBloc>().add(
-      const WorkOrdersListEvent.loadWorkOrders(
-        page: 1,
-        status: WorkOrderStatus.assigned,
-      ),
-    );
+          const WorkOrdersListEvent.loadWorkOrders(
+            page: 1,
+            status: WorkOrderStatus.assigned,
+          ),
+        );
   }
 
   @override
@@ -52,8 +52,8 @@ class _DashboardPageState extends State<DashboardPage>
     if (!_tabController.indexIsChanging) {
       final status = _getStatusForTab(_tabController.index);
       context.read<WorkOrdersListBloc>().add(
-        WorkOrdersListEvent.filterByStatus(status),
-      );
+            WorkOrdersListEvent.filterByStatus(status),
+          );
     }
   }
 
@@ -61,8 +61,8 @@ class _DashboardPageState extends State<DashboardPage>
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
       context.read<WorkOrdersListBloc>().add(
-        const WorkOrdersListEvent.loadMoreWorkOrders(),
-      );
+            const WorkOrdersListEvent.loadMoreWorkOrders(),
+          );
     }
   }
 
@@ -84,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Work Orders'),
@@ -105,8 +105,8 @@ class _DashboardPageState extends State<DashboardPage>
             icon: const Icon(Icons.refresh),
             onPressed: () {
               context.read<WorkOrdersListBloc>().add(
-                const WorkOrdersListEvent.refreshWorkOrders(),
-              );
+                    const WorkOrdersListEvent.refreshWorkOrders(),
+                  );
             },
           ),
           IconButton(
@@ -116,7 +116,7 @@ class _DashboardPageState extends State<DashboardPage>
             },
           ),
           // Debug options button (only visible in debug mode)
-          if (AppConfig.isDebug) 
+          if (AppConfig.isDebug)
             IconButton(
               icon: const Icon(Icons.bug_report, color: Colors.orange),
               onPressed: () {
@@ -154,17 +154,23 @@ class _DashboardPageState extends State<DashboardPage>
                   padding: EdgeInsets.all(16.w),
                   child: Row(
                     children: [
-                      _buildStatsCard('Assigned', _getCountForStatus(state, WorkOrderStatus.assigned)),
-                      _buildStatsCard('In Progress', _getCountForStatus(state, WorkOrderStatus.inProgress)),
-                      _buildStatsCard('Paused', _getCountForStatus(state, WorkOrderStatus.paused)),
-                      _buildStatsCard('Completed', _getCountForStatus(state, WorkOrderStatus.completed)),
+                      _buildStatsCard('Assigned',
+                          _getCountForStatus(state, WorkOrderStatus.assigned)),
+                      _buildStatsCard(
+                          'In Progress',
+                          _getCountForStatus(
+                              state, WorkOrderStatus.inProgress)),
+                      _buildStatsCard('Paused',
+                          _getCountForStatus(state, WorkOrderStatus.paused)),
+                      _buildStatsCard('Completed',
+                          _getCountForStatus(state, WorkOrderStatus.completed)),
                     ],
                   ),
                 ),
               );
             },
           ),
-          
+
           // Work Orders List
           Expanded(
             child: TabBarView(
@@ -182,8 +188,8 @@ class _DashboardPageState extends State<DashboardPage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<WorkOrdersListBloc>().add(
-            const WorkOrdersListEvent.syncPendingWorkOrders(),
-          );
+                const WorkOrdersListEvent.syncPendingWorkOrders(),
+              );
         },
         child: const Icon(Icons.sync),
       ),
@@ -235,14 +241,19 @@ class _DashboardPageState extends State<DashboardPage>
         return state.when(
           initial: () => const Center(child: CircularProgressIndicator()),
           loading: () => const WorkOrderListShimmer(),
-          loaded: (workOrders, currentPage, hasReachedMax, isLoadingMore, 
-                  statusFilter, priorityFilter, searchQuery, isOffline, hasPendingSync) {
-            
+          loaded: (workOrders,
+              currentPage,
+              hasReachedMax,
+              isLoadingMore,
+              statusFilter,
+              priorityFilter,
+              searchQuery,
+              isOffline,
+              hasPendingSync) {
             // Filter work orders by current tab status
-            final filteredWorkOrders = workOrders
-                .where((wo) => wo.status == status)
-                .toList();
-            
+            final filteredWorkOrders =
+                workOrders.where((wo) => wo.status == status).toList();
+
             if (filteredWorkOrders.isEmpty) {
               return Center(
                 child: Column(
@@ -265,12 +276,12 @@ class _DashboardPageState extends State<DashboardPage>
                 ),
               );
             }
-            
+
             return RefreshIndicator(
               onRefresh: () async {
                 context.read<WorkOrdersListBloc>().add(
-                  const WorkOrdersListEvent.refreshWorkOrders(),
-                );
+                      const WorkOrdersListEvent.refreshWorkOrders(),
+                    );
               },
               child: ListView.builder(
                 controller: _scrollController,
@@ -282,12 +293,13 @@ class _DashboardPageState extends State<DashboardPage>
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-                  
+
                   final workOrder = filteredWorkOrders[index];
                   return WorkOrderCard(
                     workOrder: workOrder,
                     onTap: () {
-                      context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                      context.router.push(
+                          WorkOrderDetailsRoute(workOrderId: workOrder.id));
                     },
                     onActionTap: () {
                       _showWorkOrderActions(workOrder);
@@ -327,8 +339,8 @@ class _DashboardPageState extends State<DashboardPage>
                 ElevatedButton(
                   onPressed: () {
                     context.read<WorkOrdersListBloc>().add(
-                      const WorkOrdersListEvent.refreshWorkOrders(),
-                    );
+                          const WorkOrdersListEvent.refreshWorkOrders(),
+                        );
                   },
                   child: const Text('Retry'),
                 ),
@@ -354,21 +366,31 @@ class _DashboardPageState extends State<DashboardPage>
     WorkOrderActionSheet.show(
       context,
       workOrder: workOrder,
-      onStart: workOrder.canBeStarted ? () {
-        _handleWorkOrderAction(context, workOrder, 'start');
-      } : null,
-      onPause: workOrder.canBePaused ? () {
-        _handleWorkOrderAction(context, workOrder, 'pause');
-      } : null,
-      onResume: workOrder.canBeResumed ? () {
-        _handleWorkOrderAction(context, workOrder, 'resume');
-      } : null,
-      onComplete: workOrder.canBeCompleted ? () {
-        _handleWorkOrderAction(context, workOrder, 'complete');
-      } : null,
-      onReject: workOrder.canBeRejected ? () {
-        _handleWorkOrderAction(context, workOrder, 'reject');
-      } : null,
+      onStart: workOrder.canBeStarted
+          ? () {
+              _handleWorkOrderAction(context, workOrder, 'start');
+            }
+          : null,
+      onPause: workOrder.canBePaused
+          ? () {
+              _handleWorkOrderAction(context, workOrder, 'pause');
+            }
+          : null,
+      onResume: workOrder.canBeResumed
+          ? () {
+              _handleWorkOrderAction(context, workOrder, 'resume');
+            }
+          : null,
+      onComplete: workOrder.canBeCompleted
+          ? () {
+              _handleWorkOrderAction(context, workOrder, 'complete');
+            }
+          : null,
+      onReject: workOrder.canBeRejected
+          ? () {
+              _handleWorkOrderAction(context, workOrder, 'reject');
+            }
+          : null,
       onViewDetails: () {
         context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
       },
@@ -386,7 +408,7 @@ class _DashboardPageState extends State<DashboardPage>
 
   void _showSearchDialog(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -402,8 +424,8 @@ class _DashboardPageState extends State<DashboardPage>
             Navigator.of(context).pop();
             if (query.isNotEmpty) {
               context.read<WorkOrdersListBloc>().add(
-                WorkOrdersListEvent.searchWorkOrders(query),
-              );
+                    WorkOrdersListEvent.searchWorkOrders(query),
+                  );
             }
           },
         ),
@@ -418,8 +440,8 @@ class _DashboardPageState extends State<DashboardPage>
               final query = searchController.text.trim();
               if (query.isNotEmpty) {
                 context.read<WorkOrdersListBloc>().add(
-                  WorkOrdersListEvent.searchWorkOrders(query),
-                );
+                      WorkOrdersListEvent.searchWorkOrders(query),
+                    );
               }
             },
             child: const Text('Search'),
@@ -429,15 +451,17 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
-  void _handleWorkOrderAction(BuildContext context, WorkOrderEntity workOrder, String action) {
+  void _handleWorkOrderAction(
+      BuildContext context, WorkOrderEntity workOrder, String action) {
     // Navigate to work order details page where the actual action will be performed
     // This ensures we have the WorkOrderActionBloc available and can capture GPS location
     context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-    
+
     // Show a snackbar to inform the user
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Navigate to work order details to $action the work order'),
+        content:
+            Text('Navigate to work order details to $action the work order'),
         duration: const Duration(seconds: 2),
       ),
     );

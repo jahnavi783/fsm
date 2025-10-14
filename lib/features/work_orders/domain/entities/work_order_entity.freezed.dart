@@ -25,7 +25,7 @@ mixin _$WorkOrderEntity {
   DateTime get visitDate => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   WorkOrderStatus get status => throw _privateConstructorUsedError;
-  int get duration => throw _privateConstructorUsedError;
+  int get durationDays => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   DateTime? get startedAt => throw _privateConstructorUsedError;
@@ -66,7 +66,7 @@ abstract class $WorkOrderEntityCopyWith<$Res> {
       DateTime visitDate,
       String location,
       WorkOrderStatus status,
-      int duration,
+      int durationDays,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -112,7 +112,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res, $Val extends WorkOrderEntity>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -168,9 +168,9 @@ class _$WorkOrderEntityCopyWithImpl<$Res, $Val extends WorkOrderEntity>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as WorkOrderStatus,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -298,7 +298,7 @@ abstract class _$$WorkOrderEntityImplCopyWith<$Res>
       DateTime visitDate,
       String location,
       WorkOrderStatus status,
-      int duration,
+      int durationDays,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -345,7 +345,7 @@ class __$$WorkOrderEntityImplCopyWithImpl<$Res>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -401,9 +401,9 @@ class __$$WorkOrderEntityImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as WorkOrderStatus,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -490,7 +490,7 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
       required this.visitDate,
       required this.location,
       required this.status,
-      required this.duration,
+      required this.durationDays,
       required this.createdAt,
       required this.updatedAt,
       this.startedAt,
@@ -535,7 +535,7 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
   @override
   final WorkOrderStatus status;
   @override
-  final int duration;
+  final int durationDays;
   @override
   final DateTime createdAt;
   @override
@@ -615,7 +615,7 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, duration: $duration, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
   }
 
   @override
@@ -637,8 +637,8 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
+            (identical(other.durationDays, durationDays) ||
+                other.durationDays == durationDays) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -684,7 +684,7 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
         visitDate,
         location,
         status,
-        duration,
+        durationDays,
         createdAt,
         updatedAt,
         startedAt,
@@ -723,7 +723,7 @@ abstract class _WorkOrderEntity extends WorkOrderEntity {
       required final DateTime visitDate,
       required final String location,
       required final WorkOrderStatus status,
-      required final int duration,
+      required final int durationDays,
       required final DateTime createdAt,
       required final DateTime updatedAt,
       final DateTime? startedAt,
@@ -762,7 +762,7 @@ abstract class _WorkOrderEntity extends WorkOrderEntity {
   @override
   WorkOrderStatus get status;
   @override
-  int get duration;
+  int get durationDays;
   @override
   DateTime get createdAt;
   @override

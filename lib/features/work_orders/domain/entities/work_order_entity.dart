@@ -10,7 +10,7 @@ part 'work_order_entity.freezed.dart';
 @freezed
 class WorkOrderEntity with _$WorkOrderEntity {
   const WorkOrderEntity._();
-  
+
   const factory WorkOrderEntity({
     required int id,
     required String woNumber,
@@ -21,7 +21,7 @@ class WorkOrderEntity with _$WorkOrderEntity {
     required DateTime visitDate,
     required String location,
     required WorkOrderStatus status,
-    required int duration,
+    required int durationDays,
     required DateTime createdAt,
     required DateTime updatedAt,
     DateTime? startedAt,
@@ -40,20 +40,21 @@ class WorkOrderEntity with _$WorkOrderEntity {
     @Default([]) List<String> attachments,
     String? completionNotes,
   }) = _WorkOrderEntity;
-  
+
   // Business logic methods
   bool get canBeStarted => status == WorkOrderStatus.assigned;
   bool get canBePaused => status == WorkOrderStatus.inProgress;
   bool get canBeResumed => status == WorkOrderStatus.paused;
   bool get canBeCompleted => status == WorkOrderStatus.inProgress;
-  bool get canBeRejected => status == WorkOrderStatus.assigned || status == WorkOrderStatus.paused;
+  bool get canBeRejected =>
+      status == WorkOrderStatus.assigned || status == WorkOrderStatus.paused;
   bool get isOverdue => visitDate.isBefore(DateTime.now()) && !isCompleted;
   bool get isCompleted => status == WorkOrderStatus.completed;
   bool get isInProgress => status == WorkOrderStatus.inProgress;
   bool get isPaused => status == WorkOrderStatus.paused;
   bool get isAssigned => status == WorkOrderStatus.assigned;
   bool get isRejected => status == WorkOrderStatus.rejected;
-  
+
   Duration? get totalWorkDuration {
     if (startedAt == null) return null;
     if (completedAt != null) {
@@ -64,7 +65,7 @@ class WorkOrderEntity with _$WorkOrderEntity {
     }
     return null;
   }
-  
+
   String get statusDisplayName => status.displayName;
   String get priorityDisplayName => priority.displayName;
 }
@@ -77,7 +78,7 @@ enum WorkOrderStatus {
   completed,
   rejected,
   reAssigned;
-  
+
   String get displayName {
     switch (this) {
       case WorkOrderStatus.created:
@@ -103,7 +104,7 @@ enum WorkOrderPriority {
   medium,
   high,
   urgent;
-  
+
   String get displayName {
     switch (this) {
       case WorkOrderPriority.low:

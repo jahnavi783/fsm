@@ -16,31 +16,37 @@ class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'wo_number') required String woNumber,
     @JsonKey(name: 'sr_id') required int srId,
     @Default('') String summary,
-    @JsonKey(name: 'problem_description') @Default('') String problemDescription,
+    @JsonKey(name: 'problem_description')
+    @Default('')
+    String problemDescription,
     required String priority,
     @JsonKey(name: 'visit_date') required String visitDate,
     @Default('') String location,
     required String status,
-    @Default(30) int duration,
+    @JsonKey(name: 'duration_days') @Default(0) int durationDays,
+    @JsonKey(name: 'created_by') int? createdBy,
+    @JsonKey(name: 'assigned_to') int? assignedTo,
     @JsonKey(name: 'started_at') String? startedAt,
     @JsonKey(name: 'resumed_at') String? resumedAt,
     @JsonKey(name: 'completed_at') String? completedAt,
     @JsonKey(name: 'pause_logs') String? pauseLogs,
+    @JsonKey(name: 'rejection_logs') String? rejectionLogs,
     @JsonKey(name: 'work_log') String? workLog,
-    @JsonKey(name: 'parts_used') @Default([]) List<PartUsedDto> partsUsed,
-    @Default([]) List<String> images,
-    @JsonKey(name: 'createdAt') required DateTime createdAt,
-    @JsonKey(name: 'updatedAt') required DateTime updatedAt,
-    @JsonKey(name: 'createdBy') UserDto? createdBy,
-    @JsonKey(name: 'assignedTo') UserDto? assignedTo,
+    @JsonKey(name: 'parts_used') String? partsUsed,
+    @JsonKey(name: 'createdAt') required String createdAt,
+    @JsonKey(name: 'updatedAt') required String updatedAt,
+    @JsonKey(name: 'createdBy') UserDto? createdByUser,
+    @JsonKey(name: 'assignedTo') UserDto? assignedToUser,
     @JsonKey(name: 'serviceRequest') ServiceRequestDto? serviceRequest,
+    // Optional fields that may not be in the API response
     CustomerDto? customer,
     @JsonKey(name: 'location_details') LocationDto? locationDetails,
-    @JsonKey(name: 'work_logs') @Default([]) List<WorkLogDto> workLogs,
-    @JsonKey(name: 'required_skills') @Default([]) List<String> requiredSkills,
-    @JsonKey(name: 'required_parts') @Default([]) List<PartDto> requiredParts,
+    @Default([]) List<WorkLogDto> workLogs,
+    @Default([]) List<String> requiredSkills,
+    @Default([]) List<PartDto> requiredParts,
     @Default([]) List<String> attachments,
-    @JsonKey(name: 'completion_notes') String? completionNotes,
+    String? completionNotes,
+    @Default([]) List<String> images,
   }) = _WorkOrderDto;
 
   factory WorkOrderDto.fromJson(Map<String, dynamic> json) =>
@@ -53,25 +59,10 @@ class UserDto with _$UserDto {
     required int id,
     required String email,
     @JsonKey(name: 'first_name') required String firstName,
-    @JsonKey(name: 'last_name') required String lastName,
-    required String role,
   }) = _UserDto;
 
   factory UserDto.fromJson(Map<String, dynamic> json) =>
       _$UserDtoFromJson(json);
-}
-
-@freezed
-class PartUsedDto with _$PartUsedDto {
-  const factory PartUsedDto({
-    @JsonKey(name: 'part_number') required String partNumber,
-    @JsonKey(name: 'quantity_used') required int quantityUsed,
-    @JsonKey(name: 'part_name') String? partName,
-    String? description,
-  }) = _PartUsedDto;
-
-  factory PartUsedDto.fromJson(Map<String, dynamic> json) =>
-      _$PartUsedDtoFromJson(json);
 }
 
 // Extension for mapping to domain entity
@@ -87,15 +78,15 @@ extension WorkOrderDtoX on WorkOrderDto {
       visitDate: DateTime.parse(visitDate),
       location: location,
       status: _mapStatus(status),
-      duration: duration,
-      createdAt: createdAt,
-      updatedAt:updatedAt,
+      durationDays: durationDays,
+      createdAt: DateTime.parse(createdAt),
+      updatedAt: DateTime.parse(updatedAt),
       startedAt: startedAt != null ? DateTime.parse(startedAt!) : null,
       resumedAt: resumedAt != null ? DateTime.parse(resumedAt!) : null,
       completedAt: completedAt != null ? DateTime.parse(completedAt!) : null,
       pauseLogs: pauseLogs,
       workLog: workLog,
-      partsUsed: partsUsed.map((p) => p.toEntity()).toList(),
+      partsUsed: [], // parts_used is now a string field in the API
       images: images,
       customer: customer?.toEntity(),
       locationDetails: locationDetails?.toEntity(),
@@ -107,7 +98,7 @@ extension WorkOrderDtoX on WorkOrderDto {
       completionNotes: completionNotes,
     );
   }
-  
+
   WorkOrderStatus _mapStatus(String status) {
     switch (status.toLowerCase()) {
       case 'new':
@@ -128,7 +119,7 @@ extension WorkOrderDtoX on WorkOrderDto {
         return WorkOrderStatus.assigned;
     }
   }
-  
+
   WorkOrderPriority _mapPriority(String priority) {
     switch (priority.toLowerCase()) {
       case 'low':
@@ -142,16 +133,5 @@ extension WorkOrderDtoX on WorkOrderDto {
       default:
         return WorkOrderPriority.medium;
     }
-  }
-}
-
-extension PartUsedDtoX on PartUsedDto {
-  PartUsedEntity toEntity() {
-    return PartUsedEntity(
-      partNumber: partNumber,
-      quantityUsed: quantityUsed,
-      partName: partName,
-      description: description,
-    );
   }
 }

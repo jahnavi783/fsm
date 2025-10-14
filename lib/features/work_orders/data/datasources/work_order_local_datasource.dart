@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:hive/hive.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
+import 'package:fsm/core/storage/hive_service.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_hive_model.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
@@ -20,14 +21,16 @@ abstract class WorkOrderLocalDataSource {
 
 @Injectable(as: WorkOrderLocalDataSource)
 class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
-  WorkOrderLocalDataSourceImpl();
+  final HiveService _hiveService;
 
-  Box<WorkOrderHiveModel> get _workOrderBox =>
-      Hive.box<WorkOrderHiveModel>(HiveBoxes.workOrders);
+  WorkOrderLocalDataSourceImpl(this._hiveService);
+
+  Future<Box<WorkOrderHiveModel>> get _workOrderBox async =>
+      await _hiveService.getTypedBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
 
   @override
   Future<void> cacheWorkOrders(List<WorkOrderHiveModel> workOrders) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     for (final workOrder in workOrders) {
       await box.put(workOrder.id, workOrder);
     }
@@ -37,7 +40,7 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
   Future<List<WorkOrderHiveModel>> getCachedWorkOrders({
     WorkOrderStatus? status,
   }) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     final allWorkOrders = box.values.toList();
 
     if (status != null) {
@@ -49,37 +52,37 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
 
   @override
   Future<WorkOrderHiveModel?> getCachedWorkOrderById(int id) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     return box.get(id);
   }
 
   @override
   Future<void> updateWorkOrder(WorkOrderHiveModel workOrder) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     await box.put(workOrder.id, workOrder);
   }
 
   @override
   Future<void> deleteWorkOrder(int id) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     await box.delete(id);
   }
 
   @override
   Future<void> clearCache() async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     await box.clear();
   }
 
   @override
   Future<List<WorkOrderHiveModel>> getPendingSyncWorkOrders() async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     return box.values.where((workOrder) => workOrder.isPendingSync).toList();
   }
 
   @override
   Future<void> markWorkOrderForSync(int id, String action) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     final workOrder = box.get(id);
     if (workOrder != null) {
       final updatedWorkOrder = workOrder.copyWith(
@@ -92,7 +95,7 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
 
   @override
   Future<void> clearSyncFlag(int id) async {
-    final box = _workOrderBox;
+    final box = await _workOrderBox;
     final workOrder = box.get(id);
     if (workOrder != null) {
       final updatedWorkOrder = workOrder.copyWith(

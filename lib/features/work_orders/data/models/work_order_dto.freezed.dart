@@ -33,7 +33,12 @@ mixin _$WorkOrderDto {
   String get visitDate => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
-  int get duration => throw _privateConstructorUsedError;
+  @JsonKey(name: 'duration_days')
+  int get durationDays => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_by')
+  int? get createdBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'assigned_to')
+  int? get assignedTo => throw _privateConstructorUsedError;
   @JsonKey(name: 'started_at')
   String? get startedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'resumed_at')
@@ -42,33 +47,32 @@ mixin _$WorkOrderDto {
   String? get completedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'pause_logs')
   String? get pauseLogs => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rejection_logs')
+  String? get rejectionLogs => throw _privateConstructorUsedError;
   @JsonKey(name: 'work_log')
   String? get workLog => throw _privateConstructorUsedError;
   @JsonKey(name: 'parts_used')
-  List<PartUsedDto> get partsUsed => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
+  String? get partsUsed => throw _privateConstructorUsedError;
   @JsonKey(name: 'createdAt')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updatedAt')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  String get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'createdBy')
-  UserDto? get createdBy => throw _privateConstructorUsedError;
+  UserDto? get createdByUser => throw _privateConstructorUsedError;
   @JsonKey(name: 'assignedTo')
-  UserDto? get assignedTo => throw _privateConstructorUsedError;
+  UserDto? get assignedToUser => throw _privateConstructorUsedError;
   @JsonKey(name: 'serviceRequest')
-  ServiceRequestDto? get serviceRequest => throw _privateConstructorUsedError;
+  ServiceRequestDto? get serviceRequest =>
+      throw _privateConstructorUsedError; // Optional fields that may not be in the API response
   CustomerDto? get customer => throw _privateConstructorUsedError;
   @JsonKey(name: 'location_details')
   LocationDto? get locationDetails => throw _privateConstructorUsedError;
-  @JsonKey(name: 'work_logs')
   List<WorkLogDto> get workLogs => throw _privateConstructorUsedError;
-  @JsonKey(name: 'required_skills')
   List<String> get requiredSkills => throw _privateConstructorUsedError;
-  @JsonKey(name: 'required_parts')
   List<PartDto> get requiredParts => throw _privateConstructorUsedError;
   List<String> get attachments => throw _privateConstructorUsedError;
-  @JsonKey(name: 'completion_notes')
   String? get completionNotes => throw _privateConstructorUsedError;
+  List<String> get images => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -92,29 +96,32 @@ abstract class $WorkOrderDtoCopyWith<$Res> {
       @JsonKey(name: 'visit_date') String visitDate,
       String location,
       String status,
-      int duration,
+      @JsonKey(name: 'duration_days') int durationDays,
+      @JsonKey(name: 'created_by') int? createdBy,
+      @JsonKey(name: 'assigned_to') int? assignedTo,
       @JsonKey(name: 'started_at') String? startedAt,
       @JsonKey(name: 'resumed_at') String? resumedAt,
       @JsonKey(name: 'completed_at') String? completedAt,
       @JsonKey(name: 'pause_logs') String? pauseLogs,
+      @JsonKey(name: 'rejection_logs') String? rejectionLogs,
       @JsonKey(name: 'work_log') String? workLog,
-      @JsonKey(name: 'parts_used') List<PartUsedDto> partsUsed,
-      List<String> images,
-      @JsonKey(name: 'createdAt') DateTime createdAt,
-      @JsonKey(name: 'updatedAt') DateTime updatedAt,
-      @JsonKey(name: 'createdBy') UserDto? createdBy,
-      @JsonKey(name: 'assignedTo') UserDto? assignedTo,
+      @JsonKey(name: 'parts_used') String? partsUsed,
+      @JsonKey(name: 'createdAt') String createdAt,
+      @JsonKey(name: 'updatedAt') String updatedAt,
+      @JsonKey(name: 'createdBy') UserDto? createdByUser,
+      @JsonKey(name: 'assignedTo') UserDto? assignedToUser,
       @JsonKey(name: 'serviceRequest') ServiceRequestDto? serviceRequest,
       CustomerDto? customer,
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
-      @JsonKey(name: 'work_logs') List<WorkLogDto> workLogs,
-      @JsonKey(name: 'required_skills') List<String> requiredSkills,
-      @JsonKey(name: 'required_parts') List<PartDto> requiredParts,
+      List<WorkLogDto> workLogs,
+      List<String> requiredSkills,
+      List<PartDto> requiredParts,
       List<String> attachments,
-      @JsonKey(name: 'completion_notes') String? completionNotes});
+      String? completionNotes,
+      List<String> images});
 
-  $UserDtoCopyWith<$Res>? get createdBy;
-  $UserDtoCopyWith<$Res>? get assignedTo;
+  $UserDtoCopyWith<$Res>? get createdByUser;
+  $UserDtoCopyWith<$Res>? get assignedToUser;
   $ServiceRequestDtoCopyWith<$Res>? get serviceRequest;
   $CustomerDtoCopyWith<$Res>? get customer;
   $LocationDtoCopyWith<$Res>? get locationDetails;
@@ -142,18 +149,20 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
+    Object? createdBy = freezed,
+    Object? assignedTo = freezed,
     Object? startedAt = freezed,
     Object? resumedAt = freezed,
     Object? completedAt = freezed,
     Object? pauseLogs = freezed,
+    Object? rejectionLogs = freezed,
     Object? workLog = freezed,
-    Object? partsUsed = null,
-    Object? images = null,
+    Object? partsUsed = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? createdBy = freezed,
-    Object? assignedTo = freezed,
+    Object? createdByUser = freezed,
+    Object? assignedToUser = freezed,
     Object? serviceRequest = freezed,
     Object? customer = freezed,
     Object? locationDetails = freezed,
@@ -162,6 +171,7 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? images = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -200,10 +210,18 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      createdBy: freezed == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
+              as int?,
+      assignedTo: freezed == assignedTo
+          ? _value.assignedTo
+          : assignedTo // ignore: cast_nullable_to_non_nullable
+              as int?,
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -220,33 +238,33 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
           ? _value.pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
               as String?,
+      rejectionLogs: freezed == rejectionLogs
+          ? _value.rejectionLogs
+          : rejectionLogs // ignore: cast_nullable_to_non_nullable
+              as String?,
       workLog: freezed == workLog
           ? _value.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
               as String?,
-      partsUsed: null == partsUsed
+      partsUsed: freezed == partsUsed
           ? _value.partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartUsedDto>,
-      images: null == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      createdBy: freezed == createdBy
-          ? _value.createdBy
-          : createdBy // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdByUser: freezed == createdByUser
+          ? _value.createdByUser
+          : createdByUser // ignore: cast_nullable_to_non_nullable
               as UserDto?,
-      assignedTo: freezed == assignedTo
-          ? _value.assignedTo
-          : assignedTo // ignore: cast_nullable_to_non_nullable
+      assignedToUser: freezed == assignedToUser
+          ? _value.assignedToUser
+          : assignedToUser // ignore: cast_nullable_to_non_nullable
               as UserDto?,
       serviceRequest: freezed == serviceRequest
           ? _value.serviceRequest
@@ -280,30 +298,34 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
           ? _value.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
               as String?,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UserDtoCopyWith<$Res>? get createdBy {
-    if (_value.createdBy == null) {
+  $UserDtoCopyWith<$Res>? get createdByUser {
+    if (_value.createdByUser == null) {
       return null;
     }
 
-    return $UserDtoCopyWith<$Res>(_value.createdBy!, (value) {
-      return _then(_value.copyWith(createdBy: value) as $Val);
+    return $UserDtoCopyWith<$Res>(_value.createdByUser!, (value) {
+      return _then(_value.copyWith(createdByUser: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UserDtoCopyWith<$Res>? get assignedTo {
-    if (_value.assignedTo == null) {
+  $UserDtoCopyWith<$Res>? get assignedToUser {
+    if (_value.assignedToUser == null) {
       return null;
     }
 
-    return $UserDtoCopyWith<$Res>(_value.assignedTo!, (value) {
-      return _then(_value.copyWith(assignedTo: value) as $Val);
+    return $UserDtoCopyWith<$Res>(_value.assignedToUser!, (value) {
+      return _then(_value.copyWith(assignedToUser: value) as $Val);
     });
   }
 
@@ -362,31 +384,34 @@ abstract class _$$WorkOrderDtoImplCopyWith<$Res>
       @JsonKey(name: 'visit_date') String visitDate,
       String location,
       String status,
-      int duration,
+      @JsonKey(name: 'duration_days') int durationDays,
+      @JsonKey(name: 'created_by') int? createdBy,
+      @JsonKey(name: 'assigned_to') int? assignedTo,
       @JsonKey(name: 'started_at') String? startedAt,
       @JsonKey(name: 'resumed_at') String? resumedAt,
       @JsonKey(name: 'completed_at') String? completedAt,
       @JsonKey(name: 'pause_logs') String? pauseLogs,
+      @JsonKey(name: 'rejection_logs') String? rejectionLogs,
       @JsonKey(name: 'work_log') String? workLog,
-      @JsonKey(name: 'parts_used') List<PartUsedDto> partsUsed,
-      List<String> images,
-      @JsonKey(name: 'createdAt') DateTime createdAt,
-      @JsonKey(name: 'updatedAt') DateTime updatedAt,
-      @JsonKey(name: 'createdBy') UserDto? createdBy,
-      @JsonKey(name: 'assignedTo') UserDto? assignedTo,
+      @JsonKey(name: 'parts_used') String? partsUsed,
+      @JsonKey(name: 'createdAt') String createdAt,
+      @JsonKey(name: 'updatedAt') String updatedAt,
+      @JsonKey(name: 'createdBy') UserDto? createdByUser,
+      @JsonKey(name: 'assignedTo') UserDto? assignedToUser,
       @JsonKey(name: 'serviceRequest') ServiceRequestDto? serviceRequest,
       CustomerDto? customer,
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
-      @JsonKey(name: 'work_logs') List<WorkLogDto> workLogs,
-      @JsonKey(name: 'required_skills') List<String> requiredSkills,
-      @JsonKey(name: 'required_parts') List<PartDto> requiredParts,
+      List<WorkLogDto> workLogs,
+      List<String> requiredSkills,
+      List<PartDto> requiredParts,
       List<String> attachments,
-      @JsonKey(name: 'completion_notes') String? completionNotes});
+      String? completionNotes,
+      List<String> images});
 
   @override
-  $UserDtoCopyWith<$Res>? get createdBy;
+  $UserDtoCopyWith<$Res>? get createdByUser;
   @override
-  $UserDtoCopyWith<$Res>? get assignedTo;
+  $UserDtoCopyWith<$Res>? get assignedToUser;
   @override
   $ServiceRequestDtoCopyWith<$Res>? get serviceRequest;
   @override
@@ -415,18 +440,20 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
     Object? visitDate = null,
     Object? location = null,
     Object? status = null,
-    Object? duration = null,
+    Object? durationDays = null,
+    Object? createdBy = freezed,
+    Object? assignedTo = freezed,
     Object? startedAt = freezed,
     Object? resumedAt = freezed,
     Object? completedAt = freezed,
     Object? pauseLogs = freezed,
+    Object? rejectionLogs = freezed,
     Object? workLog = freezed,
-    Object? partsUsed = null,
-    Object? images = null,
+    Object? partsUsed = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? createdBy = freezed,
-    Object? assignedTo = freezed,
+    Object? createdByUser = freezed,
+    Object? assignedToUser = freezed,
     Object? serviceRequest = freezed,
     Object? customer = freezed,
     Object? locationDetails = freezed,
@@ -435,6 +462,7 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? images = null,
   }) {
     return _then(_$WorkOrderDtoImpl(
       id: null == id
@@ -473,10 +501,18 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      durationDays: null == durationDays
+          ? _value.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      createdBy: freezed == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
+              as int?,
+      assignedTo: freezed == assignedTo
+          ? _value.assignedTo
+          : assignedTo // ignore: cast_nullable_to_non_nullable
+              as int?,
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -493,33 +529,33 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
           ? _value.pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
               as String?,
+      rejectionLogs: freezed == rejectionLogs
+          ? _value.rejectionLogs
+          : rejectionLogs // ignore: cast_nullable_to_non_nullable
+              as String?,
       workLog: freezed == workLog
           ? _value.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
               as String?,
-      partsUsed: null == partsUsed
-          ? _value._partsUsed
+      partsUsed: freezed == partsUsed
+          ? _value.partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartUsedDto>,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      createdBy: freezed == createdBy
-          ? _value.createdBy
-          : createdBy // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdByUser: freezed == createdByUser
+          ? _value.createdByUser
+          : createdByUser // ignore: cast_nullable_to_non_nullable
               as UserDto?,
-      assignedTo: freezed == assignedTo
-          ? _value.assignedTo
-          : assignedTo // ignore: cast_nullable_to_non_nullable
+      assignedToUser: freezed == assignedToUser
+          ? _value.assignedToUser
+          : assignedToUser // ignore: cast_nullable_to_non_nullable
               as UserDto?,
       serviceRequest: freezed == serviceRequest
           ? _value.serviceRequest
@@ -553,6 +589,10 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
           ? _value.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
               as String?,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -570,34 +610,34 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
       @JsonKey(name: 'visit_date') required this.visitDate,
       this.location = '',
       required this.status,
-      this.duration = 30,
+      @JsonKey(name: 'duration_days') this.durationDays = 0,
+      @JsonKey(name: 'created_by') this.createdBy,
+      @JsonKey(name: 'assigned_to') this.assignedTo,
       @JsonKey(name: 'started_at') this.startedAt,
       @JsonKey(name: 'resumed_at') this.resumedAt,
       @JsonKey(name: 'completed_at') this.completedAt,
       @JsonKey(name: 'pause_logs') this.pauseLogs,
+      @JsonKey(name: 'rejection_logs') this.rejectionLogs,
       @JsonKey(name: 'work_log') this.workLog,
-      @JsonKey(name: 'parts_used') final List<PartUsedDto> partsUsed = const [],
-      final List<String> images = const [],
+      @JsonKey(name: 'parts_used') this.partsUsed,
       @JsonKey(name: 'createdAt') required this.createdAt,
       @JsonKey(name: 'updatedAt') required this.updatedAt,
-      @JsonKey(name: 'createdBy') this.createdBy,
-      @JsonKey(name: 'assignedTo') this.assignedTo,
+      @JsonKey(name: 'createdBy') this.createdByUser,
+      @JsonKey(name: 'assignedTo') this.assignedToUser,
       @JsonKey(name: 'serviceRequest') this.serviceRequest,
       this.customer,
       @JsonKey(name: 'location_details') this.locationDetails,
-      @JsonKey(name: 'work_logs') final List<WorkLogDto> workLogs = const [],
-      @JsonKey(name: 'required_skills')
+      final List<WorkLogDto> workLogs = const [],
       final List<String> requiredSkills = const [],
-      @JsonKey(name: 'required_parts')
       final List<PartDto> requiredParts = const [],
       final List<String> attachments = const [],
-      @JsonKey(name: 'completion_notes') this.completionNotes})
-      : _partsUsed = partsUsed,
-        _images = images,
-        _workLogs = workLogs,
+      this.completionNotes,
+      final List<String> images = const []})
+      : _workLogs = workLogs,
         _requiredSkills = requiredSkills,
         _requiredParts = requiredParts,
-        _attachments = attachments;
+        _attachments = attachments,
+        _images = images;
 
   factory _$WorkOrderDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$WorkOrderDtoImplFromJson(json);
@@ -627,8 +667,14 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
   @override
   final String status;
   @override
-  @JsonKey()
-  final int duration;
+  @JsonKey(name: 'duration_days')
+  final int durationDays;
+  @override
+  @JsonKey(name: 'created_by')
+  final int? createdBy;
+  @override
+  @JsonKey(name: 'assigned_to')
+  final int? assignedTo;
   @override
   @JsonKey(name: 'started_at')
   final String? startedAt;
@@ -642,41 +688,30 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
   @JsonKey(name: 'pause_logs')
   final String? pauseLogs;
   @override
+  @JsonKey(name: 'rejection_logs')
+  final String? rejectionLogs;
+  @override
   @JsonKey(name: 'work_log')
   final String? workLog;
-  final List<PartUsedDto> _partsUsed;
   @override
   @JsonKey(name: 'parts_used')
-  List<PartUsedDto> get partsUsed {
-    if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_partsUsed);
-  }
-
-  final List<String> _images;
-  @override
-  @JsonKey()
-  List<String> get images {
-    if (_images is EqualUnmodifiableListView) return _images;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_images);
-  }
-
+  final String? partsUsed;
   @override
   @JsonKey(name: 'createdAt')
-  final DateTime createdAt;
+  final String createdAt;
   @override
   @JsonKey(name: 'updatedAt')
-  final DateTime updatedAt;
+  final String updatedAt;
   @override
   @JsonKey(name: 'createdBy')
-  final UserDto? createdBy;
+  final UserDto? createdByUser;
   @override
   @JsonKey(name: 'assignedTo')
-  final UserDto? assignedTo;
+  final UserDto? assignedToUser;
   @override
   @JsonKey(name: 'serviceRequest')
   final ServiceRequestDto? serviceRequest;
+// Optional fields that may not be in the API response
   @override
   final CustomerDto? customer;
   @override
@@ -684,7 +719,7 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
   final LocationDto? locationDetails;
   final List<WorkLogDto> _workLogs;
   @override
-  @JsonKey(name: 'work_logs')
+  @JsonKey()
   List<WorkLogDto> get workLogs {
     if (_workLogs is EqualUnmodifiableListView) return _workLogs;
     // ignore: implicit_dynamic_type
@@ -693,7 +728,7 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
 
   final List<String> _requiredSkills;
   @override
-  @JsonKey(name: 'required_skills')
+  @JsonKey()
   List<String> get requiredSkills {
     if (_requiredSkills is EqualUnmodifiableListView) return _requiredSkills;
     // ignore: implicit_dynamic_type
@@ -702,7 +737,7 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
 
   final List<PartDto> _requiredParts;
   @override
-  @JsonKey(name: 'required_parts')
+  @JsonKey()
   List<PartDto> get requiredParts {
     if (_requiredParts is EqualUnmodifiableListView) return _requiredParts;
     // ignore: implicit_dynamic_type
@@ -719,12 +754,19 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
   }
 
   @override
-  @JsonKey(name: 'completion_notes')
   final String? completionNotes;
+  final List<String> _images;
+  @override
+  @JsonKey()
+  List<String> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
 
   @override
   String toString() {
-    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, duration: $duration, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, createdAt: $createdAt, updatedAt: $updatedAt, createdBy: $createdBy, assignedTo: $assignedTo, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
   }
 
   @override
@@ -746,8 +788,12 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
+            (identical(other.durationDays, durationDays) ||
+                other.durationDays == durationDays) &&
+            (identical(other.createdBy, createdBy) ||
+                other.createdBy == createdBy) &&
+            (identical(other.assignedTo, assignedTo) ||
+                other.assignedTo == assignedTo) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.resumedAt, resumedAt) ||
@@ -756,18 +802,19 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
                 other.completedAt == completedAt) &&
             (identical(other.pauseLogs, pauseLogs) ||
                 other.pauseLogs == pauseLogs) &&
+            (identical(other.rejectionLogs, rejectionLogs) ||
+                other.rejectionLogs == rejectionLogs) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
-            const DeepCollectionEquality()
-                .equals(other._partsUsed, _partsUsed) &&
-            const DeepCollectionEquality().equals(other._images, _images) &&
+            (identical(other.partsUsed, partsUsed) ||
+                other.partsUsed == partsUsed) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
-            (identical(other.createdBy, createdBy) ||
-                other.createdBy == createdBy) &&
-            (identical(other.assignedTo, assignedTo) ||
-                other.assignedTo == assignedTo) &&
+            (identical(other.createdByUser, createdByUser) ||
+                other.createdByUser == createdByUser) &&
+            (identical(other.assignedToUser, assignedToUser) ||
+                other.assignedToUser == assignedToUser) &&
             (identical(other.serviceRequest, serviceRequest) ||
                 other.serviceRequest == serviceRequest) &&
             (identical(other.customer, customer) ||
@@ -782,7 +829,8 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
             const DeepCollectionEquality()
                 .equals(other._attachments, _attachments) &&
             (identical(other.completionNotes, completionNotes) ||
-                other.completionNotes == completionNotes));
+                other.completionNotes == completionNotes) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @JsonKey(ignore: true)
@@ -798,18 +846,20 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
         visitDate,
         location,
         status,
-        duration,
+        durationDays,
+        createdBy,
+        assignedTo,
         startedAt,
         resumedAt,
         completedAt,
         pauseLogs,
+        rejectionLogs,
         workLog,
-        const DeepCollectionEquality().hash(_partsUsed),
-        const DeepCollectionEquality().hash(_images),
+        partsUsed,
         createdAt,
         updatedAt,
-        createdBy,
-        assignedTo,
+        createdByUser,
+        assignedToUser,
         serviceRequest,
         customer,
         locationDetails,
@@ -817,7 +867,8 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
         const DeepCollectionEquality().hash(_requiredSkills),
         const DeepCollectionEquality().hash(_requiredParts),
         const DeepCollectionEquality().hash(_attachments),
-        completionNotes
+        completionNotes,
+        const DeepCollectionEquality().hash(_images)
       ]);
 
   @JsonKey(ignore: true)
@@ -845,27 +896,29 @@ abstract class _WorkOrderDto implements WorkOrderDto {
       @JsonKey(name: 'visit_date') required final String visitDate,
       final String location,
       required final String status,
-      final int duration,
+      @JsonKey(name: 'duration_days') final int durationDays,
+      @JsonKey(name: 'created_by') final int? createdBy,
+      @JsonKey(name: 'assigned_to') final int? assignedTo,
       @JsonKey(name: 'started_at') final String? startedAt,
       @JsonKey(name: 'resumed_at') final String? resumedAt,
       @JsonKey(name: 'completed_at') final String? completedAt,
       @JsonKey(name: 'pause_logs') final String? pauseLogs,
+      @JsonKey(name: 'rejection_logs') final String? rejectionLogs,
       @JsonKey(name: 'work_log') final String? workLog,
-      @JsonKey(name: 'parts_used') final List<PartUsedDto> partsUsed,
-      final List<String> images,
-      @JsonKey(name: 'createdAt') required final DateTime createdAt,
-      @JsonKey(name: 'updatedAt') required final DateTime updatedAt,
-      @JsonKey(name: 'createdBy') final UserDto? createdBy,
-      @JsonKey(name: 'assignedTo') final UserDto? assignedTo,
+      @JsonKey(name: 'parts_used') final String? partsUsed,
+      @JsonKey(name: 'createdAt') required final String createdAt,
+      @JsonKey(name: 'updatedAt') required final String updatedAt,
+      @JsonKey(name: 'createdBy') final UserDto? createdByUser,
+      @JsonKey(name: 'assignedTo') final UserDto? assignedToUser,
       @JsonKey(name: 'serviceRequest') final ServiceRequestDto? serviceRequest,
       final CustomerDto? customer,
       @JsonKey(name: 'location_details') final LocationDto? locationDetails,
-      @JsonKey(name: 'work_logs') final List<WorkLogDto> workLogs,
-      @JsonKey(name: 'required_skills') final List<String> requiredSkills,
-      @JsonKey(name: 'required_parts') final List<PartDto> requiredParts,
+      final List<WorkLogDto> workLogs,
+      final List<String> requiredSkills,
+      final List<PartDto> requiredParts,
       final List<String> attachments,
-      @JsonKey(name: 'completion_notes')
-      final String? completionNotes}) = _$WorkOrderDtoImpl;
+      final String? completionNotes,
+      final List<String> images}) = _$WorkOrderDtoImpl;
 
   factory _WorkOrderDto.fromJson(Map<String, dynamic> json) =
       _$WorkOrderDtoImpl.fromJson;
@@ -893,7 +946,14 @@ abstract class _WorkOrderDto implements WorkOrderDto {
   @override
   String get status;
   @override
-  int get duration;
+  @JsonKey(name: 'duration_days')
+  int get durationDays;
+  @override
+  @JsonKey(name: 'created_by')
+  int? get createdBy;
+  @override
+  @JsonKey(name: 'assigned_to')
+  int? get assignedTo;
   @override
   @JsonKey(name: 'started_at')
   String? get startedAt;
@@ -907,47 +967,46 @@ abstract class _WorkOrderDto implements WorkOrderDto {
   @JsonKey(name: 'pause_logs')
   String? get pauseLogs;
   @override
+  @JsonKey(name: 'rejection_logs')
+  String? get rejectionLogs;
+  @override
   @JsonKey(name: 'work_log')
   String? get workLog;
   @override
   @JsonKey(name: 'parts_used')
-  List<PartUsedDto> get partsUsed;
-  @override
-  List<String> get images;
+  String? get partsUsed;
   @override
   @JsonKey(name: 'createdAt')
-  DateTime get createdAt;
+  String get createdAt;
   @override
   @JsonKey(name: 'updatedAt')
-  DateTime get updatedAt;
+  String get updatedAt;
   @override
   @JsonKey(name: 'createdBy')
-  UserDto? get createdBy;
+  UserDto? get createdByUser;
   @override
   @JsonKey(name: 'assignedTo')
-  UserDto? get assignedTo;
+  UserDto? get assignedToUser;
   @override
   @JsonKey(name: 'serviceRequest')
   ServiceRequestDto? get serviceRequest;
-  @override
+  @override // Optional fields that may not be in the API response
   CustomerDto? get customer;
   @override
   @JsonKey(name: 'location_details')
   LocationDto? get locationDetails;
   @override
-  @JsonKey(name: 'work_logs')
   List<WorkLogDto> get workLogs;
   @override
-  @JsonKey(name: 'required_skills')
   List<String> get requiredSkills;
   @override
-  @JsonKey(name: 'required_parts')
   List<PartDto> get requiredParts;
   @override
   List<String> get attachments;
   @override
-  @JsonKey(name: 'completion_notes')
   String? get completionNotes;
+  @override
+  List<String> get images;
   @override
   @JsonKey(ignore: true)
   _$$WorkOrderDtoImplCopyWith<_$WorkOrderDtoImpl> get copyWith =>
@@ -964,9 +1023,6 @@ mixin _$UserDto {
   String get email => throw _privateConstructorUsedError;
   @JsonKey(name: 'first_name')
   String get firstName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'last_name')
-  String get lastName => throw _privateConstructorUsedError;
-  String get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -979,11 +1035,7 @@ abstract class $UserDtoCopyWith<$Res> {
       _$UserDtoCopyWithImpl<$Res, UserDto>;
   @useResult
   $Res call(
-      {int id,
-      String email,
-      @JsonKey(name: 'first_name') String firstName,
-      @JsonKey(name: 'last_name') String lastName,
-      String role});
+      {int id, String email, @JsonKey(name: 'first_name') String firstName});
 }
 
 /// @nodoc
@@ -1002,8 +1054,6 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
     Object? id = null,
     Object? email = null,
     Object? firstName = null,
-    Object? lastName = null,
-    Object? role = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -1018,14 +1068,6 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -1038,11 +1080,7 @@ abstract class _$$UserDtoImplCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
-      String email,
-      @JsonKey(name: 'first_name') String firstName,
-      @JsonKey(name: 'last_name') String lastName,
-      String role});
+      {int id, String email, @JsonKey(name: 'first_name') String firstName});
 }
 
 /// @nodoc
@@ -1059,8 +1097,6 @@ class __$$UserDtoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? email = null,
     Object? firstName = null,
-    Object? lastName = null,
-    Object? role = null,
   }) {
     return _then(_$UserDtoImpl(
       id: null == id
@@ -1075,14 +1111,6 @@ class __$$UserDtoImplCopyWithImpl<$Res>
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -1093,9 +1121,7 @@ class _$UserDtoImpl implements _UserDto {
   const _$UserDtoImpl(
       {required this.id,
       required this.email,
-      @JsonKey(name: 'first_name') required this.firstName,
-      @JsonKey(name: 'last_name') required this.lastName,
-      required this.role});
+      @JsonKey(name: 'first_name') required this.firstName});
 
   factory _$UserDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDtoImplFromJson(json);
@@ -1107,15 +1133,10 @@ class _$UserDtoImpl implements _UserDto {
   @override
   @JsonKey(name: 'first_name')
   final String firstName;
-  @override
-  @JsonKey(name: 'last_name')
-  final String lastName;
-  @override
-  final String role;
 
   @override
   String toString() {
-    return 'UserDto(id: $id, email: $email, firstName: $firstName, lastName: $lastName, role: $role)';
+    return 'UserDto(id: $id, email: $email, firstName: $firstName)';
   }
 
   @override
@@ -1126,16 +1147,12 @@ class _$UserDtoImpl implements _UserDto {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.role, role) || other.role == role));
+                other.firstName == firstName));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, email, firstName, lastName, role);
+  int get hashCode => Object.hash(runtimeType, id, email, firstName);
 
   @JsonKey(ignore: true)
   @override
@@ -1153,11 +1170,10 @@ class _$UserDtoImpl implements _UserDto {
 
 abstract class _UserDto implements UserDto {
   const factory _UserDto(
-      {required final int id,
-      required final String email,
-      @JsonKey(name: 'first_name') required final String firstName,
-      @JsonKey(name: 'last_name') required final String lastName,
-      required final String role}) = _$UserDtoImpl;
+          {required final int id,
+          required final String email,
+          @JsonKey(name: 'first_name') required final String firstName}) =
+      _$UserDtoImpl;
 
   factory _UserDto.fromJson(Map<String, dynamic> json) = _$UserDtoImpl.fromJson;
 
@@ -1169,226 +1185,7 @@ abstract class _UserDto implements UserDto {
   @JsonKey(name: 'first_name')
   String get firstName;
   @override
-  @JsonKey(name: 'last_name')
-  String get lastName;
-  @override
-  String get role;
-  @override
   @JsonKey(ignore: true)
   _$$UserDtoImplCopyWith<_$UserDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-PartUsedDto _$PartUsedDtoFromJson(Map<String, dynamic> json) {
-  return _PartUsedDto.fromJson(json);
-}
-
-/// @nodoc
-mixin _$PartUsedDto {
-  @JsonKey(name: 'part_number')
-  String get partNumber => throw _privateConstructorUsedError;
-  @JsonKey(name: 'quantity_used')
-  int get quantityUsed => throw _privateConstructorUsedError;
-  @JsonKey(name: 'part_name')
-  String? get partName => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PartUsedDtoCopyWith<PartUsedDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartUsedDtoCopyWith<$Res> {
-  factory $PartUsedDtoCopyWith(
-          PartUsedDto value, $Res Function(PartUsedDto) then) =
-      _$PartUsedDtoCopyWithImpl<$Res, PartUsedDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_number') String partNumber,
-      @JsonKey(name: 'quantity_used') int quantityUsed,
-      @JsonKey(name: 'part_name') String? partName,
-      String? description});
-}
-
-/// @nodoc
-class _$PartUsedDtoCopyWithImpl<$Res, $Val extends PartUsedDto>
-    implements $PartUsedDtoCopyWith<$Res> {
-  _$PartUsedDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
-    Object? partName = freezed,
-    Object? description = freezed,
-  }) {
-    return _then(_value.copyWith(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
-      partName: freezed == partName
-          ? _value.partName
-          : partName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PartUsedDtoImplCopyWith<$Res>
-    implements $PartUsedDtoCopyWith<$Res> {
-  factory _$$PartUsedDtoImplCopyWith(
-          _$PartUsedDtoImpl value, $Res Function(_$PartUsedDtoImpl) then) =
-      __$$PartUsedDtoImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_number') String partNumber,
-      @JsonKey(name: 'quantity_used') int quantityUsed,
-      @JsonKey(name: 'part_name') String? partName,
-      String? description});
-}
-
-/// @nodoc
-class __$$PartUsedDtoImplCopyWithImpl<$Res>
-    extends _$PartUsedDtoCopyWithImpl<$Res, _$PartUsedDtoImpl>
-    implements _$$PartUsedDtoImplCopyWith<$Res> {
-  __$$PartUsedDtoImplCopyWithImpl(
-      _$PartUsedDtoImpl _value, $Res Function(_$PartUsedDtoImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
-    Object? partName = freezed,
-    Object? description = freezed,
-  }) {
-    return _then(_$PartUsedDtoImpl(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
-      partName: freezed == partName
-          ? _value.partName
-          : partName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PartUsedDtoImpl implements _PartUsedDto {
-  const _$PartUsedDtoImpl(
-      {@JsonKey(name: 'part_number') required this.partNumber,
-      @JsonKey(name: 'quantity_used') required this.quantityUsed,
-      @JsonKey(name: 'part_name') this.partName,
-      this.description});
-
-  factory _$PartUsedDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PartUsedDtoImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'part_number')
-  final String partNumber;
-  @override
-  @JsonKey(name: 'quantity_used')
-  final int quantityUsed;
-  @override
-  @JsonKey(name: 'part_name')
-  final String? partName;
-  @override
-  final String? description;
-
-  @override
-  String toString() {
-    return 'PartUsedDto(partNumber: $partNumber, quantityUsed: $quantityUsed, partName: $partName, description: $description)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PartUsedDtoImpl &&
-            (identical(other.partNumber, partNumber) ||
-                other.partNumber == partNumber) &&
-            (identical(other.quantityUsed, quantityUsed) ||
-                other.quantityUsed == quantityUsed) &&
-            (identical(other.partName, partName) ||
-                other.partName == partName) &&
-            (identical(other.description, description) ||
-                other.description == description));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, partNumber, quantityUsed, partName, description);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PartUsedDtoImplCopyWith<_$PartUsedDtoImpl> get copyWith =>
-      __$$PartUsedDtoImplCopyWithImpl<_$PartUsedDtoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PartUsedDtoImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _PartUsedDto implements PartUsedDto {
-  const factory _PartUsedDto(
-      {@JsonKey(name: 'part_number') required final String partNumber,
-      @JsonKey(name: 'quantity_used') required final int quantityUsed,
-      @JsonKey(name: 'part_name') final String? partName,
-      final String? description}) = _$PartUsedDtoImpl;
-
-  factory _PartUsedDto.fromJson(Map<String, dynamic> json) =
-      _$PartUsedDtoImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'part_number')
-  String get partNumber;
-  @override
-  @JsonKey(name: 'quantity_used')
-  int get quantityUsed;
-  @override
-  @JsonKey(name: 'part_name')
-  String? get partName;
-  @override
-  String? get description;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartUsedDtoImplCopyWith<_$PartUsedDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

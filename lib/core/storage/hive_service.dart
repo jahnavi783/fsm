@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import '../constants/app_constants.dart';
 import '../constants/hive_boxes.dart';
+import '../../features/work_orders/data/models/work_order_hive_model.dart'
+    as wo;
 
 @singleton
 class HiveService {
@@ -20,10 +22,53 @@ class HiveService {
 
   Future<void> _init() async {
     await Hive.initFlutter();
-    
+
+    // Register Hive adapters
+    _registerAdapters();
+
     // Open essential boxes
     _authBox = await Hive.openBox(HiveBoxes.authBox);
     _settingsBox = await Hive.openBox(HiveBoxes.settingsBox);
+
+    // Open feature-specific boxes
+    await _openFeatureBoxes();
+  }
+
+  void _registerAdapters() {
+    // Only register if not already registered
+    if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
+      Hive.registerAdapter(wo.WorkOrderHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.partUsedEntityTypeId)) {
+      Hive.registerAdapter(wo.PartUsedHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.customerEntityTypeId)) {
+      Hive.registerAdapter(wo.CustomerHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.locationEntityTypeId)) {
+      Hive.registerAdapter(wo.LocationHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.serviceRequestEntityTypeId)) {
+      Hive.registerAdapter(wo.ServiceRequestHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)) {
+      Hive.registerAdapter(wo.WorkLogHiveModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(HiveBoxes.partEntityTypeId)) {
+      Hive.registerAdapter(wo.PartHiveModelAdapter());
+    }
+  }
+
+  Future<void> _openFeatureBoxes() async {
+    // Open boxes for different features
+    await Hive.openBox<wo.WorkOrderHiveModel>(HiveBoxes.workOrders);
+    await Hive.openBox(HiveBoxes.documents);
+    await Hive.openBox(HiveBoxes.parts);
+    await Hive.openBox(HiveBoxes.inventory);
+    await Hive.openBox(HiveBoxes.calendarEvents);
+    await Hive.openBox(HiveBoxes.calendarBox);
+    await Hive.openBox(HiveBoxes.profile);
+    await Hive.openBox(HiveBoxes.profilePreferences);
   }
 
   // Auth token methods
@@ -74,6 +119,14 @@ class HiveService {
       return Hive.box(boxName);
     }
     return await Hive.openBox(boxName);
+  }
+
+  // Typed box management for WorkOrderHiveModel
+  Future<Box<T>> getTypedBox<T>(String boxName) async {
+    if (Hive.isBoxOpen(boxName)) {
+      return Hive.box<T>(boxName);
+    }
+    return await Hive.openBox<T>(boxName);
   }
 
   Future<void> closeBox(String boxName) async {

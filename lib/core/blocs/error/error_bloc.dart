@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../error/failures.dart';
+import '../../services/logging_service.dart';
 import 'error_event.dart';
 import 'error_state.dart';
 
 @singleton
 class ErrorBloc extends Bloc<ErrorEvent, ErrorState> {
-  ErrorBloc() : super(const ErrorState.initial()) {
+  final LoggingService _loggingService;
+
+  ErrorBloc(this._loggingService) : super(const ErrorState.initial()) {
     on<ErrorEvent>((event, emit) async {
       await event.when(
         errorOccurred: (failure, context, stackTrace) =>
@@ -83,24 +86,26 @@ class ErrorBloc extends Bloc<ErrorEvent, ErrorState> {
   }
 
   void _logError(Failure failure, String? context, StackTrace? stackTrace) {
-    // In a real app, you would use a proper logging service like Firebase Crashlytics
-    print('Error occurred: ${failure.message}');
+    _loggingService.error(
+      'Error occurred: ${failure.message}',
+      tag: 'ERROR_BLOC',
+      error: failure,
+      stackTrace: stackTrace,
+    );
+
     if (context != null) {
-      print('Context: $context');
-    }
-    if (stackTrace != null) {
-      print('Stack trace: $stackTrace');
+      _loggingService.debug('Error context: $context', tag: 'ERROR_BLOC');
     }
   }
 
   void _logCriticalError(
       String message, String details, StackTrace? stackTrace) {
-    // In a real app, you would use a proper logging service
-    print('CRITICAL ERROR: $message');
-    print('Details: $details');
-    if (stackTrace != null) {
-      print('Stack trace: $stackTrace');
-    }
+    _loggingService.critical(
+      'CRITICAL ERROR: $message',
+      tag: 'ERROR_BLOC',
+      error: details,
+      stackTrace: stackTrace,
+    );
   }
 }
 

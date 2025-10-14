@@ -24,7 +24,7 @@ class WorkOrderHiveModel with _$WorkOrderHiveModel {
     @HiveField(6) required DateTime visitDate,
     @HiveField(7) required String location,
     @HiveField(8) required int status, // Store as int for enum
-    @HiveField(9) required int duration,
+    @HiveField(9) required int durationDays,
     @HiveField(10) required DateTime createdAt,
     @HiveField(11) required DateTime updatedAt,
     @HiveField(12) DateTime? startedAt,
@@ -44,7 +44,8 @@ class WorkOrderHiveModel with _$WorkOrderHiveModel {
     @HiveField(26) String? completionNotes,
     @HiveField(27) required DateTime cachedAt,
     @HiveField(28) @Default(false) bool isPendingSync,
-    @HiveField(29) String? pendingAction, // 'start', 'pause', 'resume', 'complete', 'reject'
+    @HiveField(29)
+    String? pendingAction, // 'start', 'pause', 'resume', 'complete', 'reject'
   }) = _WorkOrderHiveModel;
 
   factory WorkOrderHiveModel.fromJson(Map<String, dynamic> json) =>
@@ -179,7 +180,7 @@ extension WorkOrderHiveModelX on WorkOrderHiveModel {
       visitDate: visitDate,
       location: location,
       status: WorkOrderStatus.values[status],
-      duration: duration,
+      durationDays: durationDays,
       createdAt: createdAt,
       updatedAt: updatedAt,
       startedAt: startedAt,

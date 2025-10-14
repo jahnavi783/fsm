@@ -6,12 +6,14 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 import '../config/app_config.dart';
 import '../constants/app_constants.dart';
 import '../services/alice_service.dart';
+import '../services/logging_service.dart';
 import 'auth_interceptor.dart';
 
 @module
 abstract class NetworkModule {
   @singleton
-  Dio provideDio(AuthInterceptor authInterceptor, AliceService aliceService) {
+  Dio provideDio(AuthInterceptor authInterceptor, AliceService aliceService,
+      LoggingService loggingService) {
     final dio = Dio(BaseOptions(
       baseUrl: AppConfig.baseUrl,
       connectTimeout: AppConstants.connectTimeout,
@@ -28,7 +30,10 @@ abstract class NetworkModule {
       authInterceptor,
       RetryInterceptor(
         dio: dio,
-        logPrint: AppConfig.enableLogging ? print : null,
+        logPrint: AppConfig.enableLogging
+            ? (message) =>
+                loggingService.debug(message.toString(), tag: 'RETRY')
+            : null,
         retries: 3,
         retryDelays: const [
           Duration(seconds: 1),
@@ -55,10 +60,8 @@ abstract class NetworkModule {
           compact: false,
           maxWidth: 120,
           logPrint: (object) {
-            // Enhanced logging with timestamps and emojis for better debugging
-            final timestamp =
-                DateTime.now().toIso8601String().substring(11, 19);
-            print('🌐 [$timestamp] NETWORK: $object');
+            // Use logging service instead of direct print
+            loggingService.debug(object.toString(), tag: 'NETWORK');
           },
         ),
       );

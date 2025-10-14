@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 class WorkOrderStatusChip extends StatelessWidget {
@@ -16,7 +17,7 @@ class WorkOrderStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final statusColor = _getStatusColor();
-    
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
@@ -53,21 +54,6 @@ class WorkOrderStatusChip extends StatelessWidget {
   }
 
   Color _getStatusColor() {
-    switch (status) {
-      case WorkOrderStatus.created:
-        return Colors.grey;
-      case WorkOrderStatus.assigned:
-        return Colors.blue;
-      case WorkOrderStatus.inProgress:
-        return Colors.orange;
-      case WorkOrderStatus.paused:
-        return Colors.amber;
-      case WorkOrderStatus.completed:
-        return Colors.green;
-      case WorkOrderStatus.rejected:
-        return Colors.red;
-      case WorkOrderStatus.reAssigned:
-        return Colors.purple;
-    }
+    return AppColors.getStatusColor(status.name);
   }
 }

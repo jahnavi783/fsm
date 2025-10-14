@@ -6,7 +6,7 @@ class AppColors {
   // Brand Colors (from old theme)
   static const Color brandPrimary = Color(0xFF116587);
   static const Color brandSecondary = Color(0xFF00A74F);
-  
+
   // Light Theme Colors
   static const Color primary = brandPrimary;
   static const Color onPrimary = Color(0xFFFFFFFF);
@@ -28,15 +28,17 @@ class AppColors {
   static const Color errorContainer = Color(0xFFFFDAD6);
   static const Color onErrorContainer = Color(0xFF410002);
 
-  static const Color background = Color(0xFFFCFCFF);
-  static const Color onBackground = Color(0xFF1A1C1E);
-  static const Color surface = Color(0xFFFCFCFF);
-  static const Color onSurface = Color(0xFF1A1C1E);
-  static const Color surfaceVariant = Color(0xFFDDE3EA);
-  static const Color onSurfaceVariant = Color(0xFF41484D);
+  // Updated background and surface colors to match Figma design
+  static const Color background = Color(0xFFFFFFFF);
+  static const Color onBackground = Color(0xFF454545);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color onSurface = Color(0xFF454545);
+  static const Color surfaceVariant = Color(0xFFF5F5F5);
+  static const Color onSurfaceVariant = Color(0xFF8E8E8E);
 
-  static const Color outline = Color(0xFF71787E);
-  static const Color outlineVariant = Color(0xFFC1C7CE);
+  // Updated outline colors to match Figma design
+  static const Color outline = Color(0xFFD9D9D9);
+  static const Color outlineVariant = Color(0xFFE2D6D6);
   static const Color shadow = Color(0xFF000000);
   static const Color scrim = Color(0xFF000000);
   static const Color inverseSurface = Color(0xFF2F3033);
@@ -96,17 +98,35 @@ class AppColors {
   static const Color statusCancelled = Color(0xFFF44336);
   static const Color statusRejected = Color(0xFF795548);
 
-  // Priority Colors
-  static const Color priorityLow = Color(0xFF4CAF50);
-  static const Color priorityMedium = Color(0xFFFF9800);
-  static const Color priorityHigh = Color(0xFFFF5722);
-  static const Color priorityUrgent = Color(0xFFF44336);
+  // Priority Colors - Updated to match Figma design
+  static const Color priorityLow = Color(0xFFFFBB00); // Yellow from Figma
+  static const Color priorityMedium = Color(0xFF497FE4); // Blue from Figma
+  static const Color priorityHigh = Color(0xFFA01313); // Red from Figma
+  static const Color priorityUrgent =
+      Color(0xFFA01313); // Same as high priority
 
   // Utility Colors
   static const Color transparent = Colors.transparent;
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
+
+  // Text Colors - Updated to match Figma design
+  static const Color textPrimary = Color(0xFF454545);
+  static const Color textSecondary = Color(0xFF999494);
+  static const Color textTertiary = Color(0xFF8E8E8E);
+  static const Color textQuaternary = Color(0xFF6C6C6C);
   static const Color grey = Color(0xFF9E9E9E);
+
+  // Additional UI Colors from Figma
+  static const Color searchBackground = Color(0xFFF5F5F5);
+  static const Color cardBorder = Color(0xFFD9D9D9);
+  static const Color inputBorder = Color(0xFFE2D6D6);
+  static const Color disabledBackground = Color(0xFFD9D9D9);
+
+  // Button Colors from Figma
+  static const Color buttonPrimary = brandPrimary;
+  static const Color buttonSecondary = brandSecondary;
+  static const Color buttonDisabled = Color(0xFFD9D9D9);
 
   // Gradient Definitions
   static const LinearGradient primaryGradient = LinearGradient(

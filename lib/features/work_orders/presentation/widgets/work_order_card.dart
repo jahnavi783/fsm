@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +20,7 @@ class WorkOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       elevation: 2,
@@ -50,9 +51,9 @@ class WorkOrderCard extends StatelessWidget {
                   WorkOrderStatusChip(status: workOrder.status),
                 ],
               ),
-              
+
               SizedBox(height: 8.h),
-              
+
               // Summary
               Text(
                 workOrder.summary,
@@ -63,17 +64,19 @@ class WorkOrderCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              
+
               SizedBox(height: 12.h),
-              
+
               // Priority and Visit Date
               Row(
                 children: [
                   // Priority
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
-                      color: _getPriorityColor(workOrder.priority).withOpacity(0.1),
+                      color: _getPriorityColor(workOrder.priority)
+                          .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(
                         color: _getPriorityColor(workOrder.priority),
@@ -89,9 +92,9 @@ class WorkOrderCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   SizedBox(width: 12.w),
-                  
+
                   // Visit Date
                   Icon(
                     Icons.schedule,
@@ -108,9 +111,9 @@ class WorkOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 12.h),
-              
+
               // Location and Customer
               if (workOrder.customer != null) ...[
                 Row(
@@ -135,7 +138,7 @@ class WorkOrderCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
               ],
-              
+
               Row(
                 children: [
                   Icon(
@@ -156,7 +159,7 @@ class WorkOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               // Action button for actionable work orders
               if (_shouldShowActionButton()) ...[
                 SizedBox(height: 16.h),
@@ -182,7 +185,7 @@ class WorkOrderCard extends StatelessWidget {
                   ),
                 ),
               ],
-              
+
               // Overdue indicator
               if (workOrder.isOverdue) ...[
                 SizedBox(height: 8.h),
@@ -222,20 +225,13 @@ class WorkOrderCard extends StatelessWidget {
   }
 
   Color _getPriorityColor(WorkOrderPriority priority) {
-    switch (priority) {
-      case WorkOrderPriority.low:
-        return Colors.green;
-      case WorkOrderPriority.medium:
-        return Colors.orange;
-      case WorkOrderPriority.high:
-        return Colors.red;
-      case WorkOrderPriority.urgent:
-        return Colors.purple;
-    }
+    return AppColors.getPriorityColor(priority.name);
   }
 
   bool _shouldShowActionButton() {
-    return workOrder.canBeStarted || workOrder.canBePaused || workOrder.canBeResumed;
+    return workOrder.canBeStarted ||
+        workOrder.canBePaused ||
+        workOrder.canBeResumed;
   }
 
   String _getActionButtonText() {

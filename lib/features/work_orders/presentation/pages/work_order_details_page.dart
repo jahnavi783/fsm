@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
+import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
@@ -695,16 +696,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   Color _getPriorityColor(WorkOrderPriority priority) {
-    switch (priority) {
-      case WorkOrderPriority.low:
-        return Colors.green;
-      case WorkOrderPriority.medium:
-        return Colors.orange;
-      case WorkOrderPriority.high:
-        return Colors.red;
-      case WorkOrderPriority.urgent:
-        return Colors.purple;
-    }
+    return AppColors.getPriorityColor(priority.name);
   }
 
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {

@@ -88,7 +88,7 @@ class WorkOrderActionBloc
         ));
 
         // Automatically capture location when work order is loaded
-        add(const WorkOrderActionEvent.captureLocation());
+        // add(const WorkOrderActionEvent.captureLocation());
       },
     );
   }

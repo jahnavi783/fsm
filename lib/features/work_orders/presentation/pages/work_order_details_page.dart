@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:intl/intl.dart';
+import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
@@ -13,7 +14,7 @@ import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
 
 @RoutePage()
-class WorkOrderDetailsPage extends StatefulWidget {
+class WorkOrderDetailsPage extends StatelessWidget {
   final int workOrderId;
 
   const WorkOrderDetailsPage({
@@ -22,10 +23,80 @@ class WorkOrderDetailsPage extends StatefulWidget {
   });
 
   @override
-  State<WorkOrderDetailsPage> createState() => _WorkOrderDetailsPageState();
+  Widget build(BuildContext context) {
+    return FutureBuilder<WorkOrderActionBloc>(
+      future: getIt.getAsync<WorkOrderActionBloc>(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Work Order Details'),
+            ),
+            body: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Work Order Details'),
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64.sp,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  SizedBox(height: 16.h),
+                  const Text('Failed to load work order details'),
+                  SizedBox(height: 8.h),
+                  Text(
+                    'Error: ${snapshot.error}',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 16.h),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Go Back'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final workOrderActionBloc = snapshot.data!;
+
+        return BlocProvider.value(
+          value: workOrderActionBloc,
+          child: WorkOrderDetailsView(workOrderId: workOrderId),
+        );
+      },
+    );
+  }
 }
 
-class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
+class WorkOrderDetailsView extends StatefulWidget {
+  final int workOrderId;
+
+  const WorkOrderDetailsView({
+    super.key,
+    required this.workOrderId,
+  });
+
+  @override
+  State<WorkOrderDetailsView> createState() => _WorkOrderDetailsViewState();
+}
+
+class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   @override
   void initState() {
     super.initState();
@@ -647,12 +718,12 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
           loaded: (_, currentLocation, __, ___) {
             if (currentLocation != null) {
               context.read<WorkOrderActionBloc>().add(
-                WorkOrderActionEvent.startWorkOrder(
-                  workOrderId: workOrder.id,
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                ),
-              );
+                    WorkOrderActionEvent.startWorkOrder(
+                      workOrderId: workOrder.id,
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    ),
+                  );
             } else {
               _showLocationErrorDialog(context);
             }
@@ -674,13 +745,13 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
           loaded: (_, currentLocation, __, ___) {
             if (currentLocation != null) {
               context.read<WorkOrderActionBloc>().add(
-                WorkOrderActionEvent.pauseWorkOrder(
-                  workOrderId: workOrder.id,
-                  reason: reason,
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                ),
-              );
+                    WorkOrderActionEvent.pauseWorkOrder(
+                      workOrderId: workOrder.id,
+                      reason: reason,
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    ),
+                  );
             } else {
               _showLocationErrorDialog(context);
             }
@@ -702,12 +773,12 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
           loaded: (_, currentLocation, __, ___) {
             if (currentLocation != null) {
               context.read<WorkOrderActionBloc>().add(
-                WorkOrderActionEvent.resumeWorkOrder(
-                  workOrderId: workOrder.id,
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                ),
-              );
+                    WorkOrderActionEvent.resumeWorkOrder(
+                      workOrderId: workOrder.id,
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    ),
+                  );
             } else {
               _showLocationErrorDialog(context);
             }
@@ -733,13 +804,13 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
           loaded: (_, currentLocation, __, ___) {
             if (currentLocation != null) {
               context.read<WorkOrderActionBloc>().add(
-                WorkOrderActionEvent.rejectWorkOrder(
-                  workOrderId: workOrder.id,
-                  reason: reason,
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                ),
-              );
+                    WorkOrderActionEvent.rejectWorkOrder(
+                      workOrderId: workOrder.id,
+                      reason: reason,
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                    ),
+                  );
             } else {
               _showLocationErrorDialog(context);
             }
@@ -785,7 +856,7 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
     Function(String) onSubmit,
   ) {
     final TextEditingController reasonController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -826,10 +897,12 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
     );
   }
 
-  void _showCompleteWorkOrderDialog(BuildContext context, WorkOrderEntity workOrder) {
+  void _showCompleteWorkOrderDialog(
+      BuildContext context, WorkOrderEntity workOrder) {
     final TextEditingController workLogController = TextEditingController();
-    final TextEditingController completionNotesController = TextEditingController();
-    
+    final TextEditingController completionNotesController =
+        TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -879,24 +952,25 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
               final workLog = workLogController.text.trim();
               if (workLog.isNotEmpty) {
                 Navigator.of(context).pop();
-                
+
                 final state = context.read<WorkOrderActionBloc>().state;
                 state.maybeWhen(
                   loaded: (_, currentLocation, __, ___) {
                     if (currentLocation != null) {
                       context.read<WorkOrderActionBloc>().add(
-                        WorkOrderActionEvent.completeWorkOrder(
-                          workOrderId: workOrder.id,
-                          workLog: workLog,
-                          partsUsed: [], // Empty for now
-                          files: [], // Empty for now
-                          latitude: currentLocation.latitude,
-                          longitude: currentLocation.longitude,
-                          completionNotes: completionNotesController.text.trim().isEmpty 
-                              ? null 
-                              : completionNotesController.text.trim(),
-                        ),
-                      );
+                            WorkOrderActionEvent.completeWorkOrder(
+                              workOrderId: workOrder.id,
+                              workLog: workLog,
+                              partsUsed: [], // Empty for now
+                              files: [], // Empty for now
+                              latitude: currentLocation.latitude,
+                              longitude: currentLocation.longitude,
+                              completionNotes:
+                                  completionNotesController.text.trim().isEmpty
+                                      ? null
+                                      : completionNotesController.text.trim(),
+                            ),
+                          );
                     } else {
                       _showLocationErrorDialog(context);
                     }
@@ -929,8 +1003,8 @@ class _WorkOrderDetailsPageState extends State<WorkOrderDetailsPage> {
             onPressed: () {
               Navigator.of(context).pop();
               context.read<WorkOrderActionBloc>().add(
-                const WorkOrderActionEvent.captureLocation(),
-              );
+                    const WorkOrderActionEvent.captureLocation(),
+                  );
             },
             child: const Text('Retry Location'),
           ),

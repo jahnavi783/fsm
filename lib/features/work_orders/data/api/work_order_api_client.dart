@@ -10,7 +10,7 @@ part 'work_order_api_client.g.dart';
 
 @RestApi()
 abstract class WorkOrderApiClient {
-  factory WorkOrderApiClient(Dio dio, {String baseUrl}) = _WorkOrderApiClient;
+  factory WorkOrderApiClient(Dio dio, {String? baseUrl}) = _WorkOrderApiClient;
 
   @GET('/work-orders')
   Future<WorkOrdersResponse> getWorkOrders({

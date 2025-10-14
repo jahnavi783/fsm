@@ -1,0 +1,20 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+
+import 'navigation_event.dart';
+import 'navigation_state.dart';
+
+@injectable
+class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
+  NavigationBloc() : super(const NavigationState.initial()) {
+    on<NavigationEvent>((event, emit) {
+      event.when(
+        tabChanged: (index) => emit(NavigationState.tabChanged(index)),
+        navigateToTab: (index) => emit(NavigationState.navigateToTab(index)),
+        navigateToWorkOrder: (workOrderId) => emit(NavigationState.navigateToWorkOrder(workOrderId)),
+        navigateToDocument: (documentId) => emit(NavigationState.navigateToDocument(documentId)),
+        navigateToPart: (partId) => emit(NavigationState.navigateToPart(partId)),
+      );
+    });
+  }
+}

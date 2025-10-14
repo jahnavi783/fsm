@@ -3,9 +3,12 @@ abstract class HiveBoxes {
   static const String authBox = 'auth_box';
   static const String workOrders = 'work_orders_box';
   static const String documents = 'documents_box';
-  static const String partsBox = 'parts_box';
+  static const String parts = 'parts_box';
+  static const String inventory = 'inventory_box';
+  static const String calendarEvents = 'calendar_events_box';
   static const String calendarBox = 'calendar_box';
-  static const String profileBox = 'profile_box';
+  static const String profile = 'profile_box';
+  static const String profilePreferences = 'profile_preferences_box';
   static const String settingsBox = 'settings_box';
   
   // Type IDs for Hive adapters (matching work_order_hive_model.dart)

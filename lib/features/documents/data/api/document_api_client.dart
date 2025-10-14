@@ -6,7 +6,7 @@ part 'document_api_client.g.dart';
 
 @RestApi()
 abstract class DocumentApiClient {
-  factory DocumentApiClient(Dio dio, {String baseUrl}) = _DocumentApiClient;
+  factory DocumentApiClient(Dio dio, {String? baseUrl}) = _DocumentApiClient;
 
   @GET('/documents')
   Future<DocumentResponseDto> getDocuments({
@@ -16,6 +16,4 @@ abstract class DocumentApiClient {
     @Query('page') int? page,
     @Query('limit') int? limit,
   });
-
-
 }

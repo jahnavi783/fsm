@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../core/services/enums.dart';
 import '../../domain/entities/user_entity.dart';
 
 part 'user_dto.freezed.dart';
@@ -7,7 +8,7 @@ part 'user_dto.g.dart';
 @freezed
 class UserDto with _$UserDto {
   const UserDto._();
-  
+
   const factory UserDto({
     required int id,
     @JsonKey(name: 'first_name') required String firstName,

@@ -1,5 +1,61 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+enum UserRole {
+  @JsonValue(0)
+  superAdmin,
+  @JsonValue(1)
+  manager,
+  @JsonValue(2)
+  helpDesk,
+  @JsonValue(3)
+  partsManager,
+  @JsonValue(4)
+  technician;
+
+  @override
+  String toString() {
+    return switch (this) {
+      UserRole.superAdmin => 'Super Admin',
+      UserRole.manager => 'Manager',
+      UserRole.helpDesk => 'Help Desk',
+      UserRole.partsManager => 'Parts Manager',
+      UserRole.technician => 'Technician',
+    };
+  }
+
+  int get apiValue {
+    return switch (this) {
+      UserRole.superAdmin => 0,
+      UserRole.manager => 1,
+      UserRole.helpDesk => 2,
+      UserRole.partsManager => 3,
+      UserRole.technician => 4,
+    };
+  }
+}
+
+enum Gender {
+  @JsonValue('male')
+  male,
+  @JsonValue('female')
+  female;
+
+  @override
+  String toString() {
+    return switch (this) {
+      Gender.male => 'Male',
+      Gender.female => 'Female',
+    };
+  }
+
+  String get apiValue {
+    return switch (this) {
+      Gender.male => 'male',
+      Gender.female => 'female',
+    };
+  }
+}
+
 enum DocumentCategory {
   @JsonValue('manual')
   manual,
@@ -43,6 +99,8 @@ enum DocumentCategory {
 }
 
 enum WorkOrderStatus {
+  @JsonValue('created')
+  created,
   @JsonValue('assigned')
   assigned,
   @JsonValue('in_progress')
@@ -54,28 +112,34 @@ enum WorkOrderStatus {
   @JsonValue('cancelled')
   cancelled,
   @JsonValue('rejected')
-  rejected;
+  rejected,
+  @JsonValue('reassigned')
+  reAssigned;
 
   @override
   String toString() {
     return switch (this) {
+      WorkOrderStatus.created => 'New',
       WorkOrderStatus.assigned => 'Assigned',
       WorkOrderStatus.inProgress => 'In Progress',
       WorkOrderStatus.paused => 'Paused',
       WorkOrderStatus.completed => 'Completed',
       WorkOrderStatus.cancelled => 'Cancelled',
       WorkOrderStatus.rejected => 'Rejected',
+      WorkOrderStatus.reAssigned => 'Reassigned',
     };
   }
 
   String get apiValue {
     return switch (this) {
+      WorkOrderStatus.created => 'created',
       WorkOrderStatus.assigned => 'assigned',
       WorkOrderStatus.inProgress => 'in_progress',
       WorkOrderStatus.paused => 'paused',
       WorkOrderStatus.completed => 'completed',
       WorkOrderStatus.cancelled => 'cancelled',
       WorkOrderStatus.rejected => 'rejected',
+      WorkOrderStatus.reAssigned => 'reassigned',
     };
   }
 }

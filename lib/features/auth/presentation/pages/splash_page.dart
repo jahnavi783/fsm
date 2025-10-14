@@ -17,8 +17,7 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage>
-    with TickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Timer? _timer;
   late AnimationController _controller1;
   late AnimationController _controller2;
@@ -64,71 +63,120 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>(),
-      child: Builder(
-        builder: (context) {
-          // Start auth check after BlocProvider is available
+    return FutureBuilder<AuthBloc>(
+      future: getIt.getAsync<AuthBloc>(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return _buildLoadingScaffold();
+        }
+
+        if (snapshot.hasError) {
+          // Navigate to login on DI error after a short delay
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (_timer == null) {
-              _startAuthCheck(context);
-            }
+            context.router.navigateNamed('/login');
           });
-          
-          return BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) {
-              state.when(
-                initial: () {},
-                loading: () {},
-                authenticated: (user) {
-                  if (user.isTechnician) {
-                    context.router.navigateNamed('/main');
-                  } else {
-                    // Show error for non-technician users
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please use web portal for authentication.'),
-                        backgroundColor: Colors.blue,
-                      ),
-                    );
-                    context.router.navigateNamed('/login');
-                  }
+          return _buildLoadingScaffold();
+        }
+
+        final authBloc = snapshot.data!;
+
+        return BlocProvider.value(
+          value: authBloc,
+          child: Builder(
+            builder: (context) {
+              // Start auth check after BlocProvider is available
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (_timer == null) {
+                  _startAuthCheck(context);
+                }
+              });
+
+              return BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  state.when(
+                    initial: () {},
+                    loading: () {},
+                    authenticated: (user) {
+                      if (user.isTechnician) {
+                        context.router.navigateNamed('/main');
+                      } else {
+                        // Show error for non-technician users
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Please use web portal for authentication.'),
+                            backgroundColor: Colors.blue,
+                          ),
+                        );
+                        context.router.navigateNamed('/login');
+                      }
+                    },
+                    unauthenticated: () {
+                      context.router.navigateNamed('/login');
+                    },
+                    error: (message) {
+                      context.router.navigateNamed('/login');
+                    },
+                  );
                 },
-                unauthenticated: () {
-                  context.router.navigateNamed('/login');
-                },
-                error: (message) {
-                  context.router.navigateNamed('/login');
-                },
-              );
-            },
-            child: Scaffold(
-              body: Padding(
-                padding: EdgeInsets.all(10.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/fsm_logo.png',
-                      height: 250.h,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(height: 15.h),
-                    Row(
+                child: Scaffold(
+                  body: Padding(
+                    padding: EdgeInsets.all(10.w),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        LoadingCircles(controller: _controller1),
-                        LoadingCircles(controller: _controller2),
-                        LoadingCircles(controller: _controller3),
+                        Image.asset(
+                          'assets/images/fsm_logo.png',
+                          height: 250.h,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 15.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LoadingCircles(controller: _controller1),
+                            LoadingCircles(controller: _controller2),
+                            LoadingCircles(controller: _controller3),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLoadingScaffold() {
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(10.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/fsm_logo.png',
+              height: 250.h,
+              fit: BoxFit.cover,
             ),
-          );
-        },
+            SizedBox(height: 15.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LoadingCircles(controller: _controller1),
+                LoadingCircles(controller: _controller2),
+                LoadingCircles(controller: _controller3),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

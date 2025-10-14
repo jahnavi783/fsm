@@ -19,11 +19,50 @@ class DocumentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<DocumentsBloc>()
-        ..add(const LoadDocuments())
-        ..add(const LoadCategories()),
-      child: const DocumentsView(),
+    return FutureBuilder<DocumentsBloc>(
+      future: getIt.getAsync<DocumentsBloc>(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Documents')),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Failed to load documents'),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Go Back'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final documentsBloc = snapshot.data!;
+
+        return BlocProvider.value(
+          value: documentsBloc
+            ..add(const LoadDocuments())
+            ..add(const LoadCategories()),
+          child: const DocumentsView(),
+        );
+      },
     );
   }
 }

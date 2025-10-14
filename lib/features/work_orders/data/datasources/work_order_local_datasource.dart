@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:hive/hive.dart';
-import 'package:fsm/core/storage/hive_service.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_hive_model.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
@@ -21,9 +20,7 @@ abstract class WorkOrderLocalDataSource {
 
 @Injectable(as: WorkOrderLocalDataSource)
 class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
-  final HiveService _hiveService;
-
-  WorkOrderLocalDataSourceImpl(this._hiveService);
+  WorkOrderLocalDataSourceImpl();
 
   Box<WorkOrderHiveModel> get _workOrderBox =>
       Hive.box<WorkOrderHiveModel>(HiveBoxes.workOrders);
@@ -44,9 +41,7 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
     final allWorkOrders = box.values.toList();
 
     if (status != null) {
-      return allWorkOrders
-          .where((wo) => wo.status == status.index)
-          .toList();
+      return allWorkOrders.where((wo) => wo.status == status.index).toList();
     }
 
     return allWorkOrders;
@@ -79,9 +74,7 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
   @override
   Future<List<WorkOrderHiveModel>> getPendingSyncWorkOrders() async {
     final box = _workOrderBox;
-    return box.values
-        .where((workOrder) => workOrder.isPendingSync)
-        .toList();
+    return box.values.where((workOrder) => workOrder.isPendingSync).toList();
   }
 
   @override

@@ -66,8 +66,8 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
       searchQuery: searchQuery,
     ));
 
-    result.fold(
-      (failure) {
+    await result.fold(
+      (failure) async {
         final currentWorkOrders = state.maybeWhen(
           loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________) => workOrders,
           orElse: () => <WorkOrderEntity>[],

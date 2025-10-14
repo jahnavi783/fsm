@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:reactive_forms/reactive_forms.dart';
-import '../../../../core/di/injection.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
@@ -63,205 +61,101 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return FutureBuilder<AuthBloc>(
-      future: getIt.getAsync<AuthBloc>(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData) {
-          return _buildLoadingScaffold(theme);
-        }
-
-        if (snapshot.hasError) {
-          return _buildErrorScaffold(theme, snapshot.error.toString());
-        }
-
-        final authBloc = snapshot.data!;
-
-        return BlocProvider.value(
-          value: authBloc,
-          child: Scaffold(
-            body: BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state) {
-                state.when(
-                  initial: () {},
-                  loading: () {},
-                  authenticated: (user) {
-                    if (user.isTechnician) {
-                      context.router.navigateNamed('/main');
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Please use web portal for authentication.'),
-                          backgroundColor: Colors.blue,
-                        ),
-                      );
-                    }
-                  },
-                  unauthenticated: () {},
-                  error: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  },
-                );
-              },
-              builder: (context, state) {
-                final isLoading = state.maybeWhen(
-                  loading: () => true,
-                  orElse: () => false,
-                );
-
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Image.asset(
-                              'assets/images/csg-logo.png',
-                              height: 100.h,
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/images/fsm_logo.png',
-                            height: 250.h,
-                            width: 250.w,
-                            fit: BoxFit.cover,
-                          ),
-                          Text(
-                            'FIELD SERVICE ENGINEER',
-                            style: TextStyle(
-                              color: theme.colorScheme.primary,
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          LoginForm(
-                            formGroup: _formGroup,
-                            onSubmit: _onSubmit,
-                            isLoading: isLoading,
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: GradientElevatedButton(
-                                  onPressed: isLoading ? null : _onSubmit,
-                                  isLoading: isLoading,
-                                  child: Text(
-                                    "Login",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5.h),
-                        ],
-                      ),
-                    ),
+    return Scaffold(
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          state.when(
+            initial: () {},
+            loading: () {},
+            authenticated: (user) {
+              if (user.isTechnician) {
+                context.router.navigateNamed('/main');
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please use web portal for authentication.'),
+                    backgroundColor: Colors.blue,
                   ),
                 );
-              },
+              }
+            },
+            unauthenticated: () {},
+            error: (message) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(message),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            },
+          );
+        },
+        builder: (context, state) {
+          final isLoading = state.maybeWhen(
+            loading: () => true,
+            orElse: () => false,
+          );
+
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.all(20.w),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Image.asset(
+                        'assets/images/csg-logo.png',
+                        height: 100.h,
+                      ),
+                    ),
+                    Image.asset(
+                      'assets/images/fsm_logo.png',
+                      height: 250.h,
+                      width: 250.w,
+                      fit: BoxFit.cover,
+                    ),
+                    Text(
+                      'FIELD SERVICE ENGINEER',
+                      style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    LoginForm(
+                      formGroup: _formGroup,
+                      onSubmit: _onSubmit,
+                      isLoading: isLoading,
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GradientElevatedButton(
+                            onPressed: isLoading ? null : _onSubmit,
+                            isLoading: isLoading,
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.h),
+                  ],
+                ),
+              ),
             ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLoadingScaffold(ThemeData theme) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Image.asset(
-                  'assets/images/csg-logo.png',
-                  height: 100.h,
-                ),
-              ),
-              Image.asset(
-                'assets/images/fsm_logo.png',
-                height: 250.h,
-                width: 250.w,
-                fit: BoxFit.cover,
-              ),
-              Text(
-                'FIELD SERVICE ENGINEER',
-                style: TextStyle(
-                  color: theme.colorScheme.primary,
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 20.h),
-              const CircularProgressIndicator(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildErrorScaffold(ThemeData theme, String error) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 64.sp,
-                color: theme.colorScheme.error,
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'Failed to initialize app',
-                style: TextStyle(
-                  color: theme.colorScheme.error,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                error,
-                style: TextStyle(
-                  color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  fontSize: 14.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20.h),
-              ElevatedButton(
-                onPressed: () {
-                  // Restart the app or navigate to a safe state
-                  context.router.navigateNamed('/splash');
-                },
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -27,7 +27,7 @@ class GetLowStockPartsUseCase {
     return result.fold(
       (failure) => Left(failure),
       (parts) => Right(
-        parts.where((part) => part.isOutOfStock || part.quantityAvailable <= (part.minQuantity * 0.5)).toList(),
+        parts.where((part) => part.quantityAvailable == 0).toList(),
       ),
     );
   }

@@ -79,9 +79,9 @@ _$PartsResponseImpl _$$PartsResponseImplFromJson(Map<String, dynamic> json) =>
       parts: (json['parts'] as List<dynamic>)
           .map((e) => PartDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalCount: (json['total_count'] as num).toInt(),
-      currentPage: (json['current_page'] as num).toInt(),
-      totalPages: (json['total_pages'] as num).toInt(),
+      totalCount: (json['total_count'] as num?)?.toInt() ?? 0,
+      currentPage: (json['current_page'] as num?)?.toInt() ?? 1,
+      totalPages: (json['total_pages'] as num?)?.toInt() ?? 1,
     );
 
 Map<String, dynamic> _$$PartsResponseImplToJson(_$PartsResponseImpl instance) =>

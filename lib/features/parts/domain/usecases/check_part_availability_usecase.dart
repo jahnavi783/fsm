@@ -5,12 +5,12 @@ import '../entities/part_entity.dart';
 import '../repositories/i_parts_repository.dart';
 
 @injectable
-class SearchPartsUseCase {
+class CheckPartAvailabilityUseCase {
   final IPartsRepository _repository;
 
-  SearchPartsUseCase(this._repository);
+  CheckPartAvailabilityUseCase(this._repository);
 
-  Future<Either<Failure, List<PartEntity>>> call({
+  Future<Either<Failure, PartEntity>> call({
     required String query,
   }) async {
     if (query.trim().isEmpty) {
@@ -19,8 +19,6 @@ class SearchPartsUseCase {
       ));
     }
 
-    return await _repository.searchParts(
-      query: query.trim(),
-    );
+    return await _repository.checkPartAvailability(query.trim());
   }
 }

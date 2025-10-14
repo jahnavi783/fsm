@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../calendar/presentation/blocs/calendar/calendar_bloc.dart';
+import '../../../work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
+import '../../../work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/navigation/navigation_bloc.dart';
 import '../blocs/navigation/navigation_event.dart';
 import '../blocs/navigation/navigation_state.dart';
@@ -11,6 +15,67 @@ import '../blocs/navigation/navigation_state.dart';
 @RoutePage()
 class MainNavigationPage extends StatelessWidget {
   const MainNavigationPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<dynamic>>(
+      future: Future.wait([
+        getIt.getAsync<WorkOrdersListBloc>(),
+        getIt.getAsync<WorkOrderActionBloc>(),
+        getIt.getAsync<CalendarBloc>(),
+      ]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Error initializing: ${snapshot.error}'),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final workOrdersListBloc = snapshot.data![0] as WorkOrdersListBloc;
+        final workOrderActionBloc = snapshot.data![1] as WorkOrderActionBloc;
+        final calendarBloc = snapshot.data![2] as CalendarBloc;
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => getIt<NavigationBloc>(),
+            ),
+            BlocProvider.value(
+              value: workOrdersListBloc,
+            ),
+            BlocProvider.value(
+              value: workOrderActionBloc,
+            ),
+            BlocProvider.value(
+              value: calendarBloc,
+            ),
+          ],
+          child: const _MainNavigationView(),
+        );
+      },
+    );
+  }
+}
+
+class _MainNavigationView extends StatelessWidget {
+  const _MainNavigationView();
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +119,13 @@ class MainNavigationPage extends StatelessWidget {
                 onTap: (index) {
                   tabsRouter.setActiveIndex(index);
                   context.read<NavigationBloc>().add(
-                    NavigationEvent.tabChanged(index),
-                  );
+                        NavigationEvent.tabChanged(index),
+                      );
                 },
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: theme.colorScheme.primary,
-                unselectedItemColor: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                unselectedItemColor:
+                    theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 selectedLabelStyle: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,

@@ -62,18 +62,17 @@ class PartCard extends StatelessWidget {
                   SizedBox(width: 12.w),
                   InventoryIndicator(
                     quantity: part.quantityAvailable,
-                    minQuantity: part.minQuantity,
-                    maxQuantity: part.maxQuantity,
+                    minQuantity: 10, // Default minimum threshold
+                    maxQuantity: 100, // Default maximum threshold
                   ),
                 ],
               ),
               SizedBox(height: 12.h),
               Text(
-                part.description,
+                'Part Number: ${part.partNumber}',
                 style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Colors.grey[700],
-                  height: 1.3,
+                  fontSize: 12.sp,
+                  color: Colors.grey[600],
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -82,7 +81,8 @@ class PartCard extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: Colors.blue[50],
                       borderRadius: BorderRadius.circular(6.r),
@@ -99,11 +99,13 @@ class PartCard extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: _getStatusColor(part.status).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(color: _getStatusColor(part.status).withOpacity(0.3)),
+                      border: Border.all(
+                          color: _getStatusColor(part.status).withOpacity(0.3)),
                     ),
                     child: Text(
                       _getStatusText(part.status),
@@ -129,12 +131,16 @@ class PartCard extends StatelessWidget {
                 SizedBox(height: 12.h),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   decoration: BoxDecoration(
-                    color: part.isOutOfStock ? Colors.red[50] : Colors.orange[50],
+                    color:
+                        part.isOutOfStock ? Colors.red[50] : Colors.orange[50],
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(
-                      color: part.isOutOfStock ? Colors.red[200]! : Colors.orange[200]!,
+                      color: part.isOutOfStock
+                          ? Colors.red[200]!
+                          : Colors.orange[200]!,
                     ),
                   ),
                   child: Row(
@@ -142,17 +148,21 @@ class PartCard extends StatelessWidget {
                       Icon(
                         part.isOutOfStock ? Icons.error : Icons.warning,
                         size: 16.sp,
-                        color: part.isOutOfStock ? Colors.red[700] : Colors.orange[700],
+                        color: part.isOutOfStock
+                            ? Colors.red[700]
+                            : Colors.orange[700],
                       ),
                       SizedBox(width: 8.w),
                       Expanded(
                         child: Text(
-                          part.isOutOfStock 
+                          part.isOutOfStock
                               ? 'Out of stock - Reorder needed'
                               : 'Low stock - Consider reordering',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: part.isOutOfStock ? Colors.red[700] : Colors.orange[700],
+                            color: part.isOutOfStock
+                                ? Colors.red[700]
+                                : Colors.orange[700],
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -161,7 +171,8 @@ class PartCard extends StatelessWidget {
                         TextButton(
                           onPressed: onUpdateInventory,
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 4.h),
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),

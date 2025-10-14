@@ -11,15 +11,11 @@ class GetPartsUseCase {
   GetPartsUseCase(this._repository);
 
   Future<Either<Failure, List<PartEntity>>> call({
-    required int page,
-    required int limit,
     String? category,
     PartStatus? status,
     String? searchQuery,
   }) async {
     return await _repository.getParts(
-      page: page,
-      limit: limit,
       category: category,
       status: status,
       searchQuery: searchQuery,

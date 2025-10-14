@@ -831,7 +831,8 @@ PartsResponse _$PartsResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PartsResponse {
-  List<PartDto> get parts => throw _privateConstructorUsedError;
+  List<PartDto> get parts =>
+      throw _privateConstructorUsedError; // Optional pagination fields for backward compatibility
   @JsonKey(name: 'total_count')
   int get totalCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_page')
@@ -954,9 +955,9 @@ class __$$PartsResponseImplCopyWithImpl<$Res>
 class _$PartsResponseImpl implements _PartsResponse {
   const _$PartsResponseImpl(
       {required final List<PartDto> parts,
-      @JsonKey(name: 'total_count') required this.totalCount,
-      @JsonKey(name: 'current_page') required this.currentPage,
-      @JsonKey(name: 'total_pages') required this.totalPages})
+      @JsonKey(name: 'total_count') this.totalCount = 0,
+      @JsonKey(name: 'current_page') this.currentPage = 1,
+      @JsonKey(name: 'total_pages') this.totalPages = 1})
       : _parts = parts;
 
   factory _$PartsResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -970,6 +971,7 @@ class _$PartsResponseImpl implements _PartsResponse {
     return EqualUnmodifiableListView(_parts);
   }
 
+// Optional pagination fields for backward compatibility
   @override
   @JsonKey(name: 'total_count')
   final int totalCount;
@@ -1025,9 +1027,9 @@ class _$PartsResponseImpl implements _PartsResponse {
 abstract class _PartsResponse implements PartsResponse {
   const factory _PartsResponse(
           {required final List<PartDto> parts,
-          @JsonKey(name: 'total_count') required final int totalCount,
-          @JsonKey(name: 'current_page') required final int currentPage,
-          @JsonKey(name: 'total_pages') required final int totalPages}) =
+          @JsonKey(name: 'total_count') final int totalCount,
+          @JsonKey(name: 'current_page') final int currentPage,
+          @JsonKey(name: 'total_pages') final int totalPages}) =
       _$PartsResponseImpl;
 
   factory _PartsResponse.fromJson(Map<String, dynamic> json) =
@@ -1035,7 +1037,7 @@ abstract class _PartsResponse implements PartsResponse {
 
   @override
   List<PartDto> get parts;
-  @override
+  @override // Optional pagination fields for backward compatibility
   @JsonKey(name: 'total_count')
   int get totalCount;
   @override

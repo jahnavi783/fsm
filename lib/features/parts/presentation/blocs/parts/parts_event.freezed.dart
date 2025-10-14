@@ -33,13 +33,8 @@ mixin _$PartsEvent {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -60,7 +55,7 @@ mixin _$PartsEvent {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -81,8 +76,8 @@ mixin _$PartsEvent {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -283,13 +278,8 @@ class _$LoadPartsImpl implements _LoadParts {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -313,7 +303,7 @@ class _$LoadPartsImpl implements _LoadParts {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -337,8 +327,8 @@ class _$LoadPartsImpl implements _LoadParts {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -482,13 +472,8 @@ class _$RefreshPartsImpl implements _RefreshParts {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -512,7 +497,7 @@ class _$RefreshPartsImpl implements _RefreshParts {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -536,8 +521,8 @@ class _$RefreshPartsImpl implements _RefreshParts {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -667,13 +652,8 @@ class _$LoadMorePartsImpl implements _LoadMoreParts {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -697,7 +677,7 @@ class _$LoadMorePartsImpl implements _LoadMoreParts {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -721,8 +701,8 @@ class _$LoadMorePartsImpl implements _LoadMoreParts {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -895,13 +875,8 @@ class _$SearchPartsImpl implements _SearchParts {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -925,7 +900,7 @@ class _$SearchPartsImpl implements _SearchParts {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -949,8 +924,8 @@ class _$SearchPartsImpl implements _SearchParts {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -1090,13 +1065,8 @@ class _$ClearSearchImpl implements _ClearSearch {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -1120,7 +1090,7 @@ class _$ClearSearchImpl implements _ClearSearch {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -1144,8 +1114,8 @@ class _$ClearSearchImpl implements _ClearSearch {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -1303,13 +1273,8 @@ class _$FilterByCategoryImpl implements _FilterByCategory {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -1333,7 +1298,7 @@ class _$FilterByCategoryImpl implements _FilterByCategory {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -1357,8 +1322,8 @@ class _$FilterByCategoryImpl implements _FilterByCategory {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -1521,13 +1486,8 @@ class _$FilterByStatusImpl implements _FilterByStatus {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -1551,7 +1511,7 @@ class _$FilterByStatusImpl implements _FilterByStatus {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -1575,8 +1535,8 @@ class _$FilterByStatusImpl implements _FilterByStatus {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -1712,13 +1672,8 @@ class _$LoadLowStockPartsImpl implements _LoadLowStockParts {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -1742,7 +1697,7 @@ class _$LoadLowStockPartsImpl implements _LoadLowStockParts {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -1766,8 +1721,8 @@ class _$LoadLowStockPartsImpl implements _LoadLowStockParts {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -1897,13 +1852,8 @@ class _$LoadPartCategoriesImpl implements _LoadPartCategories {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -1927,7 +1877,7 @@ class _$LoadPartCategoriesImpl implements _LoadPartCategories {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -1951,8 +1901,8 @@ class _$LoadPartCategoriesImpl implements _LoadPartCategories {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -2128,13 +2078,8 @@ class _$LoadInventoryImpl implements _LoadInventory {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -2158,7 +2103,7 @@ class _$LoadInventoryImpl implements _LoadInventory {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -2182,8 +2127,8 @@ class _$LoadInventoryImpl implements _LoadInventory {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -2279,7 +2224,7 @@ abstract class _$$UpdateInventoryImplCopyWith<$Res> {
   $Res call(
       {int partId,
       int quantityChange,
-      InventoryUpdateType type,
+      String type,
       String reason,
       String? workOrderId,
       String? notes});
@@ -2315,7 +2260,7 @@ class __$$UpdateInventoryImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as InventoryUpdateType,
+              as String,
       reason: null == reason
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
@@ -2348,7 +2293,7 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
   @override
   final int quantityChange;
   @override
-  final InventoryUpdateType type;
+  final String type;
   @override
   final String reason;
   @override
@@ -2405,13 +2350,8 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -2436,7 +2376,7 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -2461,8 +2401,8 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),
@@ -2540,14 +2480,14 @@ abstract class _UpdateInventory implements PartsEvent {
   const factory _UpdateInventory(
       {required final int partId,
       required final int quantityChange,
-      required final InventoryUpdateType type,
+      required final String type,
       required final String reason,
       final String? workOrderId,
       final String? notes}) = _$UpdateInventoryImpl;
 
   int get partId;
   int get quantityChange;
-  InventoryUpdateType get type;
+  String get type;
   String get reason;
   String? get workOrderId;
   String? get notes;
@@ -2656,13 +2596,8 @@ class _$LoadInventoryHistoryImpl implements _LoadInventoryHistory {
     required TResult Function() loadPartCategories,
     required TResult Function(int page, int limit, bool? lowStockOnly)
         loadInventory,
-    required TResult Function(
-            int partId,
-            int quantityChange,
-            InventoryUpdateType type,
-            String reason,
-            String? workOrderId,
-            String? notes)
+    required TResult Function(int partId, int quantityChange, String type,
+            String reason, String? workOrderId, String? notes)
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
@@ -2686,7 +2621,7 @@ class _$LoadInventoryHistoryImpl implements _LoadInventoryHistory {
     TResult? Function()? loadLowStockParts,
     TResult? Function()? loadPartCategories,
     TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, InventoryUpdateType type,
+    TResult? Function(int partId, int quantityChange, String type,
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
@@ -2710,8 +2645,8 @@ class _$LoadInventoryHistoryImpl implements _LoadInventoryHistory {
     TResult Function()? loadLowStockParts,
     TResult Function()? loadPartCategories,
     TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, InventoryUpdateType type,
-            String reason, String? workOrderId, String? notes)?
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
         updateInventory,
     TResult Function(int partId, int page, int limit)? loadInventoryHistory,
     required TResult orElse(),

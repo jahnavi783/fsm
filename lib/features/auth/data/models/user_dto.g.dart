@@ -15,9 +15,7 @@ _$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
       phone: json['phone'] as String?,
       gender: $enumDecodeNullable(_$GenderEnumMap, json['gender']),
       city: json['city'] as String?,
-      dob: json['date_of_birth'] == null
-          ? null
-          : DateTime.parse(json['date_of_birth'] as String),
+      dob: json['dob'] == null ? null : DateTime.parse(json['dob'] as String),
       roleId: $enumDecodeNullable(_$UserRoleEnumMap, json['role_id']),
       role: json['role'] as String?,
     );
@@ -31,7 +29,7 @@ Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
       'phone': instance.phone,
       'gender': _$GenderEnumMap[instance.gender],
       'city': instance.city,
-      'date_of_birth': instance.dob?.toIso8601String(),
+      'dob': instance.dob?.toIso8601String(),
       'role_id': _$UserRoleEnumMap[instance.roleId],
       'role': instance.role,
     };

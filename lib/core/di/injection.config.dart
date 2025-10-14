@@ -81,13 +81,13 @@ import '../../features/parts/data/repositories/parts_repository_impl.dart'
     as _i644;
 import '../../features/parts/domain/repositories/i_parts_repository.dart'
     as _i490;
+import '../../features/parts/domain/usecases/check_part_availability_usecase.dart'
+    as _i1036;
 import '../../features/parts/domain/usecases/get_low_stock_parts_usecase.dart'
     as _i1054;
 import '../../features/parts/domain/usecases/get_parts_usecase.dart' as _i637;
 import '../../features/parts/domain/usecases/search_parts_usecase.dart'
     as _i170;
-import '../../features/parts/domain/usecases/update_inventory_usecase.dart'
-    as _i689;
 import '../../features/parts/presentation/blocs/parts/parts_bloc.dart' as _i344;
 import '../../features/profile/data/api/profile_api_client.dart' as _i751;
 import '../../features/profile/data/api/profile_api_module.dart' as _i862;
@@ -164,18 +164,18 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final connectivityModule = _$ConnectivityModule();
     final networkModule = _$NetworkModule();
-    final authModule = _$AuthModule();
-    final workOrderApiModule = _$WorkOrderApiModule();
-    final documentModule = _$DocumentModule();
     final calendarApiModule = _$CalendarApiModule();
+    final authModule = _$AuthModule();
     final profileApiModule = _$ProfileApiModule();
+    final workOrderApiModule = _$WorkOrderApiModule();
     final partsApiModule = _$PartsApiModule();
+    final documentModule = _$DocumentModule();
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.factory<_i669.LocationService>(() => _i669.LocationService());
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
+    gh.singleton<_i188.ErrorBloc>(() => _i188.ErrorBloc());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
     gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
-    gh.singleton<_i188.ErrorBloc>(() => _i188.ErrorBloc());
     gh.factory<_i701.WorkOrderLocalDataSource>(
         () => _i701.WorkOrderLocalDataSourceImpl());
     gh.factory<_i1046.ProfileLocalDataSource>(
@@ -202,18 +202,18 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.singletonAsync<_i361.Dio>(() async =>
         networkModule.provideDio(await getAsync<_i908.AuthInterceptor>()));
-    gh.factoryAsync<_i541.AuthApiClient>(
-        () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
-        workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
-        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i584.CalendarApiClient>(() async =>
         calendarApiModule.calendarApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i541.AuthApiClient>(
+        () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i751.ProfileApiClient>(() async =>
         profileApiModule.profileApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
+        workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i1011.PartsApiClient>(
         () async => partsApiModule.partsApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
+        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
     gh.singletonAsync<_i667.DioClient>(
         () async => _i667.DioClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i161.AuthRemoteDataSource>(() async =>
@@ -338,8 +338,9 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i1046.ProfileLocalDataSource>(),
               gh<_i932.NetworkInfo>(),
             ));
-    gh.factoryAsync<_i689.UpdateInventoryUseCase>(() async =>
-        _i689.UpdateInventoryUseCase(await getAsync<_i490.IPartsRepository>()));
+    gh.factoryAsync<_i1036.CheckPartAvailabilityUseCase>(() async =>
+        _i1036.CheckPartAvailabilityUseCase(
+            await getAsync<_i490.IPartsRepository>()));
     gh.factoryAsync<_i1054.GetLowStockPartsUseCase>(() async =>
         _i1054.GetLowStockPartsUseCase(
             await getAsync<_i490.IPartsRepository>()));
@@ -350,7 +351,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<_i344.PartsBloc>(() async => _i344.PartsBloc(
           await getAsync<_i637.GetPartsUseCase>(),
           await getAsync<_i170.SearchPartsUseCase>(),
-          await getAsync<_i689.UpdateInventoryUseCase>(),
           await getAsync<_i1054.GetLowStockPartsUseCase>(),
           await getAsync<_i490.IPartsRepository>(),
         ));
@@ -402,14 +402,14 @@ class _$ConnectivityModule extends _i932.ConnectivityModule {}
 
 class _$NetworkModule extends _i667.NetworkModule {}
 
-class _$AuthModule extends _i521.AuthModule {}
-
-class _$WorkOrderApiModule extends _i860.WorkOrderApiModule {}
-
-class _$DocumentModule extends _i843.DocumentModule {}
-
 class _$CalendarApiModule extends _i347.CalendarApiModule {}
+
+class _$AuthModule extends _i521.AuthModule {}
 
 class _$ProfileApiModule extends _i862.ProfileApiModule {}
 
+class _$WorkOrderApiModule extends _i860.WorkOrderApiModule {}
+
 class _$PartsApiModule extends _i33.PartsApiModule {}
+
+class _$DocumentModule extends _i843.DocumentModule {}

@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../domain/entities/part_entity.dart';
-import '../../../domain/entities/inventory_entity.dart';
 
 part 'parts_event.freezed.dart';
 
@@ -26,7 +25,8 @@ class PartsEvent with _$PartsEvent {
 
   const factory PartsEvent.clearSearch() = _ClearSearch;
 
-  const factory PartsEvent.filterByCategory(String? category) = _FilterByCategory;
+  const factory PartsEvent.filterByCategory(String? category) =
+      _FilterByCategory;
 
   const factory PartsEvent.filterByStatus(PartStatus? status) = _FilterByStatus;
 
@@ -43,7 +43,7 @@ class PartsEvent with _$PartsEvent {
   const factory PartsEvent.updateInventory({
     required int partId,
     required int quantityChange,
-    required InventoryUpdateType type,
+    required String type,
     required String reason,
     String? workOrderId,
     String? notes,

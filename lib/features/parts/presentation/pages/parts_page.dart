@@ -9,7 +9,6 @@ import '../blocs/parts/parts_state.dart';
 import '../widgets/part_card.dart';
 import '../widgets/parts_search_bar.dart';
 import '../widgets/parts_filter_chips.dart';
-import '../widgets/inventory_update_form.dart';
 
 @RoutePage()
 class PartsPage extends StatelessWidget {
@@ -118,21 +117,27 @@ class _PartsPageViewState extends State<_PartsPageView>
             children: [
               // Summary cards
               _buildSummaryCards(state),
-              
+
               // Search and filters
               if (_tabController.index == 0) ...[
                 PartsSearchBar(
                   initialQuery: state.searchQuery,
                   onChanged: (query) {
                     if (query.isEmpty) {
-                      context.read<PartsBloc>().add(const PartsEvent.clearSearch());
+                      context
+                          .read<PartsBloc>()
+                          .add(const PartsEvent.clearSearch());
                     }
                   },
                   onSubmitted: (query) {
-                    context.read<PartsBloc>().add(PartsEvent.searchParts(query: query));
+                    context
+                        .read<PartsBloc>()
+                        .add(PartsEvent.searchParts(query: query));
                   },
                   onClear: () {
-                    context.read<PartsBloc>().add(const PartsEvent.clearSearch());
+                    context
+                        .read<PartsBloc>()
+                        .add(const PartsEvent.clearSearch());
                   },
                 ),
                 PartsFilterChips(
@@ -140,10 +145,14 @@ class _PartsPageViewState extends State<_PartsPageView>
                   selectedCategory: state.selectedCategory,
                   selectedStatus: state.selectedStatus,
                   onCategoryChanged: (category) {
-                    context.read<PartsBloc>().add(PartsEvent.filterByCategory(category));
+                    context
+                        .read<PartsBloc>()
+                        .add(PartsEvent.filterByCategory(category));
                   },
                   onStatusChanged: (status) {
-                    context.read<PartsBloc>().add(PartsEvent.filterByStatus(status));
+                    context
+                        .read<PartsBloc>()
+                        .add(PartsEvent.filterByStatus(status));
                   },
                   onClearFilters: () {
                     context.read<PartsBloc>()
@@ -152,7 +161,7 @@ class _PartsPageViewState extends State<_PartsPageView>
                   },
                 ),
               ],
-              
+
               // Content
               Expanded(
                 child: TabBarView(
@@ -409,28 +418,10 @@ class _PartsPageViewState extends State<_PartsPageView>
   }
 
   void _showInventoryUpdateForm(BuildContext context, part) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => InventoryUpdateForm(
-        part: part,
-        onSubmit: (updateData) {
-          context.read<PartsBloc>().add(
-            PartsEvent.updateInventory(
-              partId: updateData.partId,
-              quantityChange: updateData.quantityChange,
-              type: updateData.type,
-              reason: updateData.reason,
-              workOrderId: updateData.workOrderId,
-              notes: updateData.notes,
-            ),
-          );
-          Navigator.of(context).pop();
-        },
-        onCancel: () {
-          Navigator.of(context).pop();
-        },
+    // TODO: Implement inventory update form
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Inventory update feature coming soon'),
       ),
     );
   }

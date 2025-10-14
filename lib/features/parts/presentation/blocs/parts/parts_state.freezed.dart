@@ -20,8 +20,9 @@ mixin _$PartsState {
   List<PartEntity> get parts => throw _privateConstructorUsedError;
   List<PartEntity> get lowStockParts => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
-  List<InventoryEntity> get inventory => throw _privateConstructorUsedError;
-  List<InventoryUpdateEntity> get inventoryHistory =>
+  List<Map<String, dynamic>> get inventory =>
+      throw _privateConstructorUsedError;
+  List<Map<String, dynamic>> get inventoryHistory =>
       throw _privateConstructorUsedError;
   int get currentPage => throw _privateConstructorUsedError;
   bool get hasReachedMax => throw _privateConstructorUsedError;
@@ -50,8 +51,8 @@ abstract class $PartsStateCopyWith<$Res> {
       List<PartEntity> parts,
       List<PartEntity> lowStockParts,
       List<String> categories,
-      List<InventoryEntity> inventory,
-      List<InventoryUpdateEntity> inventoryHistory,
+      List<Map<String, dynamic>> inventory,
+      List<Map<String, dynamic>> inventoryHistory,
       int currentPage,
       bool hasReachedMax,
       bool isLoadingMore,
@@ -114,11 +115,11 @@ class _$PartsStateCopyWithImpl<$Res, $Val extends PartsState>
       inventory: null == inventory
           ? _value.inventory
           : inventory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryEntity>,
+              as List<Map<String, dynamic>>,
       inventoryHistory: null == inventoryHistory
           ? _value.inventoryHistory
           : inventoryHistory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryUpdateEntity>,
+              as List<Map<String, dynamic>>,
       currentPage: null == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
@@ -176,8 +177,8 @@ abstract class _$$PartsStateImplCopyWith<$Res>
       List<PartEntity> parts,
       List<PartEntity> lowStockParts,
       List<String> categories,
-      List<InventoryEntity> inventory,
-      List<InventoryUpdateEntity> inventoryHistory,
+      List<Map<String, dynamic>> inventory,
+      List<Map<String, dynamic>> inventoryHistory,
       int currentPage,
       bool hasReachedMax,
       bool isLoadingMore,
@@ -238,11 +239,11 @@ class __$$PartsStateImplCopyWithImpl<$Res>
       inventory: null == inventory
           ? _value._inventory
           : inventory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryEntity>,
+              as List<Map<String, dynamic>>,
       inventoryHistory: null == inventoryHistory
           ? _value._inventoryHistory
           : inventoryHistory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryUpdateEntity>,
+              as List<Map<String, dynamic>>,
       currentPage: null == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
@@ -295,8 +296,8 @@ class _$PartsStateImpl implements _PartsState {
       final List<PartEntity> parts = const [],
       final List<PartEntity> lowStockParts = const [],
       final List<String> categories = const [],
-      final List<InventoryEntity> inventory = const [],
-      final List<InventoryUpdateEntity> inventoryHistory = const [],
+      final List<Map<String, dynamic>> inventory = const [],
+      final List<Map<String, dynamic>> inventoryHistory = const [],
       this.currentPage = 1,
       this.hasReachedMax = false,
       this.isLoadingMore = false,
@@ -343,19 +344,19 @@ class _$PartsStateImpl implements _PartsState {
     return EqualUnmodifiableListView(_categories);
   }
 
-  final List<InventoryEntity> _inventory;
+  final List<Map<String, dynamic>> _inventory;
   @override
   @JsonKey()
-  List<InventoryEntity> get inventory {
+  List<Map<String, dynamic>> get inventory {
     if (_inventory is EqualUnmodifiableListView) return _inventory;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_inventory);
   }
 
-  final List<InventoryUpdateEntity> _inventoryHistory;
+  final List<Map<String, dynamic>> _inventoryHistory;
   @override
   @JsonKey()
-  List<InventoryUpdateEntity> get inventoryHistory {
+  List<Map<String, dynamic>> get inventoryHistory {
     if (_inventoryHistory is EqualUnmodifiableListView)
       return _inventoryHistory;
     // ignore: implicit_dynamic_type
@@ -463,8 +464,8 @@ abstract class _PartsState implements PartsState {
       final List<PartEntity> parts,
       final List<PartEntity> lowStockParts,
       final List<String> categories,
-      final List<InventoryEntity> inventory,
-      final List<InventoryUpdateEntity> inventoryHistory,
+      final List<Map<String, dynamic>> inventory,
+      final List<Map<String, dynamic>> inventoryHistory,
       final int currentPage,
       final bool hasReachedMax,
       final bool isLoadingMore,
@@ -485,9 +486,9 @@ abstract class _PartsState implements PartsState {
   @override
   List<String> get categories;
   @override
-  List<InventoryEntity> get inventory;
+  List<Map<String, dynamic>> get inventory;
   @override
-  List<InventoryUpdateEntity> get inventoryHistory;
+  List<Map<String, dynamic>> get inventoryHistory;
   @override
   int get currentPage;
   @override

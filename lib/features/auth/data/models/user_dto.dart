@@ -17,7 +17,7 @@ class UserDto with _$UserDto {
     String? phone,
     Gender? gender,
     String? city,
-    @JsonKey(name: 'date_of_birth') DateTime? dob,
+    DateTime? dob,
     @JsonKey(name: 'role_id') UserRole? roleId,
     String? role,
   }) = _UserDto;

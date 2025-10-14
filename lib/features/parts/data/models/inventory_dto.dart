@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/inventory_entity.dart';
 import 'part_dto.dart';
 
 part 'inventory_dto.freezed.dart';
@@ -56,9 +55,10 @@ class InventoryUpdateRequest with _$InventoryUpdateRequest {
 class PartsResponse with _$PartsResponse {
   const factory PartsResponse({
     required List<PartDto> parts,
-    @JsonKey(name: 'total_count') required int totalCount,
-    @JsonKey(name: 'current_page') required int currentPage,
-    @JsonKey(name: 'total_pages') required int totalPages,
+    // Optional pagination fields for backward compatibility
+    @JsonKey(name: 'total_count') @Default(0) int totalCount,
+    @JsonKey(name: 'current_page') @Default(1) int currentPage,
+    @JsonKey(name: 'total_pages') @Default(1) int totalPages,
   }) = _PartsResponse;
 
   factory PartsResponse.fromJson(Map<String, dynamic> json) =>
@@ -78,34 +78,34 @@ class InventoryResponse with _$InventoryResponse {
       _$InventoryResponseFromJson(json);
 }
 
-extension InventoryDtoX on InventoryDto {
-  InventoryEntity toEntity() {
-    return InventoryEntity(
-      partId: partId,
-      partNumber: partNumber,
-      quantity: quantity,
-      minQuantity: minQuantity,
-      maxQuantity: maxQuantity,
-      lastUpdated: DateTime.parse(lastUpdated),
-      location: location,
-      notes: notes,
-    );
-  }
-}
+// extension InventoryDtoX on InventoryDto {
+//   InventoryEntity toEntity() {
+//     return InventoryEntity(
+//       partId: partId,
+//       partNumber: partNumber,
+//       quantity: quantity,
+//       minQuantity: minQuantity,
+//       maxQuantity: maxQuantity,
+//       lastUpdated: DateTime.parse(lastUpdated),
+//       location: location,
+//       notes: notes,
+//     );
+//   }
+// }
 
-extension InventoryUpdateDtoX on InventoryUpdateDto {
-  InventoryUpdateEntity toEntity() {
-    return InventoryUpdateEntity(
-      partId: partId,
-      quantityChange: quantityChange,
-      type: InventoryUpdateType.values.firstWhere(
-        (e) => e.name.toLowerCase() == type.toLowerCase(),
-        orElse: () => InventoryUpdateType.adjustment,
-      ),
-      reason: reason,
-      timestamp: DateTime.parse(timestamp),
-      workOrderId: workOrderId,
-      notes: notes,
-    );
-  }
-}
+// extension InventoryUpdateDtoX on InventoryUpdateDto {
+//   InventoryUpdateEntity toEntity() {
+//     return InventoryUpdateEntity(
+//       partId: partId,
+//       quantityChange: quantityChange,
+//       type: InventoryUpdateType.values.firstWhere(
+//         (e) => e.name.toLowerCase() == type.toLowerCase(),
+//         orElse: () => InventoryUpdateType.adjustment,
+//       ),
+//       reason: reason,
+//       timestamp: DateTime.parse(timestamp),
+//       workOrderId: workOrderId,
+//       notes: notes,
+//     );
+//   }
+// }

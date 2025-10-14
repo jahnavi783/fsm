@@ -1,44 +1,24 @@
 import 'package:injectable/injectable.dart';
 import '../api/parts_api_client.dart';
-import '../models/inventory_dto.dart';
 import '../models/part_dto.dart';
 
 abstract class PartsRemoteDataSource {
-  Future<List<PartDto>> getParts({
-    required int page,
-    required int limit,
-    String? category,
-    String? status,
-    String? searchQuery,
-  });
+  /// Get all parts from inventory
+  Future<PartsResponse> getParts();
 
-  Future<PartDto> getPartById(int id);
+  /// Check part availability using search query
+  Future<PartDto> checkPartAvailability(String query);
 
+  /// Search parts (wraps checkPartAvailability)
   Future<List<PartDto>> searchParts({
     required String query,
-    String? category,
-    String? status,
   });
 
+  /// Get low stock parts (filtered from main inventory)
   Future<List<PartDto>> getLowStockParts();
 
+  /// Get part categories (extracted from inventory)
   Future<List<String>> getPartCategories();
-
-  Future<List<InventoryDto>> getInventoryList({
-    required int page,
-    required int limit,
-    bool? lowStockOnly,
-  });
-
-  Future<InventoryDto> getInventoryByPartId(int partId);
-
-  Future<void> updateInventory(int partId, Map<String, dynamic> request);
-
-  Future<List<InventoryDto>> getInventoryHistory({
-    required int partId,
-    required int page,
-    required int limit,
-  });
 }
 
 @Injectable(as: PartsRemoteDataSource)
@@ -48,83 +28,39 @@ class PartsRemoteDataSourceImpl implements PartsRemoteDataSource {
   PartsRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<List<PartDto>> getParts({
-    required int page,
-    required int limit,
-    String? category,
-    String? status,
-    String? searchQuery,
-  }) async {
-    return await _apiClient.getParts(
-      page: page,
-      limit: limit,
-      category: category,
-      status: status,
-      searchQuery: searchQuery,
-    );
+  Future<PartsResponse> getParts() async {
+    return await _apiClient.getParts();
   }
 
   @override
-  Future<PartDto> getPartById(int id) async {
-    return await _apiClient.getPartById(id);
+  Future<PartDto> checkPartAvailability(String query) async {
+    return await _apiClient.checkPartAvailability(query: query);
   }
 
   @override
   Future<List<PartDto>> searchParts({
     required String query,
-    String? category,
-    String? status,
   }) async {
-    return await _apiClient.searchParts(
-      query: query,
-      category: category,
-      status: status,
-    );
+    try {
+      final part = await _apiClient.checkPartAvailability(query: query);
+      return [part];
+    } catch (e) {
+      // If single part not found, return empty list
+      return [];
+    }
   }
 
   @override
   Future<List<PartDto>> getLowStockParts() async {
-    return await _apiClient.getLowStockParts();
+    final response = await _apiClient.getParts();
+    return response.parts.where((part) => part.isLowStock).toList();
   }
 
   @override
   Future<List<String>> getPartCategories() async {
-    return await _apiClient.getPartCategories();
-  }
-
-  @override
-  Future<List<InventoryDto>> getInventoryList({
-    required int page,
-    required int limit,
-    bool? lowStockOnly,
-  }) async {
-    return await _apiClient.getInventoryList(
-      page: page,
-      limit: limit,
-      lowStockOnly: lowStockOnly,
-    );
-  }
-
-  @override
-  Future<InventoryDto> getInventoryByPartId(int partId) async {
-    return await _apiClient.getInventoryByPartId(partId);
-  }
-
-  @override
-  Future<void> updateInventory(int partId, Map<String, dynamic> request) async {
-    return await _apiClient.updateInventory(partId, request);
-  }
-
-  @override
-  Future<List<InventoryDto>> getInventoryHistory({
-    required int partId,
-    required int page,
-    required int limit,
-  }) async {
-    return await _apiClient.getInventoryHistory(
-      partId: partId,
-      page: page,
-      limit: limit,
-    );
+    final response = await _apiClient.getParts();
+    final categories =
+        response.parts.map((part) => part.category).toSet().toList();
+    return categories;
   }
 }

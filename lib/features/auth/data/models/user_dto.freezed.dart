@@ -29,7 +29,6 @@ mixin _$UserDto {
   String? get phone => throw _privateConstructorUsedError;
   Gender? get gender => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
-  @JsonKey(name: 'date_of_birth')
   DateTime? get dob => throw _privateConstructorUsedError;
   @JsonKey(name: 'role_id')
   UserRole? get roleId => throw _privateConstructorUsedError;
@@ -53,7 +52,7 @@ abstract class $UserDtoCopyWith<$Res> {
       String? phone,
       Gender? gender,
       String? city,
-      @JsonKey(name: 'date_of_birth') DateTime? dob,
+      DateTime? dob,
       @JsonKey(name: 'role_id') UserRole? roleId,
       String? role});
 }
@@ -142,7 +141,7 @@ abstract class _$$UserDtoImplCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
       String? phone,
       Gender? gender,
       String? city,
-      @JsonKey(name: 'date_of_birth') DateTime? dob,
+      DateTime? dob,
       @JsonKey(name: 'role_id') UserRole? roleId,
       String? role});
 }
@@ -225,7 +224,7 @@ class _$UserDtoImpl extends _UserDto {
       this.phone,
       this.gender,
       this.city,
-      @JsonKey(name: 'date_of_birth') this.dob,
+      this.dob,
       @JsonKey(name: 'role_id') this.roleId,
       this.role})
       : super._();
@@ -250,7 +249,6 @@ class _$UserDtoImpl extends _UserDto {
   @override
   final String? city;
   @override
-  @JsonKey(name: 'date_of_birth')
   final DateTime? dob;
   @override
   @JsonKey(name: 'role_id')
@@ -310,7 +308,7 @@ abstract class _UserDto extends UserDto {
       final String? phone,
       final Gender? gender,
       final String? city,
-      @JsonKey(name: 'date_of_birth') final DateTime? dob,
+      final DateTime? dob,
       @JsonKey(name: 'role_id') final UserRole? roleId,
       final String? role}) = _$UserDtoImpl;
   const _UserDto._() : super._();
@@ -334,7 +332,6 @@ abstract class _UserDto extends UserDto {
   @override
   String? get city;
   @override
-  @JsonKey(name: 'date_of_birth')
   DateTime? get dob;
   @override
   @JsonKey(name: 'role_id')

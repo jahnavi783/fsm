@@ -1,49 +1,26 @@
 import 'package:either_dart/either.dart';
 import '../../../../core/error/failures.dart';
 import '../entities/part_entity.dart';
-import '../entities/inventory_entity.dart';
 
 abstract class IPartsRepository {
+  /// Get all parts from inventory
   Future<Either<Failure, List<PartEntity>>> getParts({
-    required int page,
-    required int limit,
     String? category,
     PartStatus? status,
     String? searchQuery,
   });
 
-  Future<Either<Failure, PartEntity>> getPartById(int id);
+  /// Check part availability using search query (part number or name)
+  Future<Either<Failure, PartEntity>> checkPartAvailability(String query);
 
+  /// Search parts using query
   Future<Either<Failure, List<PartEntity>>> searchParts({
     required String query,
-    String? category,
-    PartStatus? status,
   });
 
+  /// Get parts with low stock levels
   Future<Either<Failure, List<PartEntity>>> getLowStockParts();
 
+  /// Get all available part categories
   Future<Either<Failure, List<String>>> getPartCategories();
-
-  Future<Either<Failure, InventoryEntity>> getInventoryByPartId(int partId);
-
-  Future<Either<Failure, List<InventoryEntity>>> getInventoryList({
-    required int page,
-    required int limit,
-    bool? lowStockOnly,
-  });
-
-  Future<Either<Failure, void>> updateInventory({
-    required int partId,
-    required int quantityChange,
-    required InventoryUpdateType type,
-    required String reason,
-    String? workOrderId,
-    String? notes,
-  });
-
-  Future<Either<Failure, List<InventoryUpdateEntity>>> getInventoryHistory({
-    required int partId,
-    required int page,
-    required int limit,
-  });
 }

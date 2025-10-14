@@ -11,13 +11,8 @@ abstract class PartsLocalDataSource {
     PartStatus? status,
     String? searchQuery,
   });
-  Future<PartHiveModel?> getCachedPartById(int id);
-  Future<void> cacheInventory(List<InventoryHiveModel> inventory);
-  Future<List<InventoryHiveModel>> getCachedInventory({bool? lowStockOnly});
-  Future<InventoryHiveModel?> getCachedInventoryByPartId(int partId);
-  Future<void> updateCachedInventory(int partId, int newQuantity);
+  Future<PartHiveModel?> getCachedPartByPartNumber(String partNumber);
   Future<void> clearPartsCache();
-  Future<void> clearInventoryCache();
 }
 
 @Injectable(as: PartsLocalDataSource)
@@ -33,7 +28,7 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
     // Clear existing parts and add new ones
     await box.clear();
     for (final part in parts) {
-      await box.put(part.id, part);
+      await box.put(part.partNumber, part);
     }
   }
 
@@ -66,8 +61,7 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
       if (searchQuery != null && searchQuery.isNotEmpty) {
         final query = searchQuery.toLowerCase();
         if (!part.partName.toLowerCase().contains(query) &&
-            !part.partNumber.toLowerCase().contains(query) &&
-            !part.description.toLowerCase().contains(query)) {
+            !part.partNumber.toLowerCase().contains(query)) {
           return false;
         }
       }
@@ -78,73 +72,18 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
     // Sort by part number
     filteredParts.sort((a, b) => a.partNumber.compareTo(b.partNumber));
 
-    return filteredParts.cast<PartHiveModel>().toList();
+    return filteredParts;
   }
 
   @override
-  Future<PartHiveModel?> getCachedPartById(int id) async {
+  Future<PartHiveModel?> getCachedPartByPartNumber(String partNumber) async {
     final box = await _hiveService.getBox(HiveBoxes.parts);
-    return box.get(id);
-  }
-
-  @override
-  Future<void> cacheInventory(List<InventoryHiveModel> inventory) async {
-    final box = await _hiveService.getBox(HiveBoxes.inventory);
-
-    // Clear existing inventory and add new ones
-    await box.clear();
-    for (final item in inventory) {
-      await box.put(item.partId, item);
-    }
-  }
-
-  @override
-  Future<List<InventoryHiveModel>> getCachedInventory(
-      {bool? lowStockOnly}) async {
-    final box = await _hiveService.getBox(HiveBoxes.inventory);
-    var inventory = box.values.cast<InventoryHiveModel>().toList();
-
-    if (lowStockOnly == true) {
-      inventory =
-          inventory.where((item) => item.quantity <= item.minQuantity).toList();
-    }
-
-    // Sort by part number
-    inventory.sort((a, b) => a.partNumber.compareTo(b.partNumber));
-
-    return inventory;
-  }
-
-  @override
-  Future<InventoryHiveModel?> getCachedInventoryByPartId(int partId) async {
-    final box = await _hiveService.getBox(HiveBoxes.inventory);
-    return box.get(partId);
-  }
-
-  @override
-  Future<void> updateCachedInventory(int partId, int newQuantity) async {
-    final box = await _hiveService.getBox(HiveBoxes.inventory);
-    final existingItem = box.get(partId);
-
-    if (existingItem != null) {
-      final updatedItem = existingItem.copyWith(
-        quantity: newQuantity,
-        lastUpdated: DateTime.now(),
-        cachedAt: DateTime.now(),
-      );
-      await box.put(partId, updatedItem);
-    }
+    return box.get(partNumber);
   }
 
   @override
   Future<void> clearPartsCache() async {
     final box = await _hiveService.getBox(HiveBoxes.parts);
-    await box.clear();
-  }
-
-  @override
-  Future<void> clearInventoryCache() async {
-    final box = await _hiveService.getBox(HiveBoxes.inventory);
     await box.clear();
   }
 }

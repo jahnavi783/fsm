@@ -21,9 +21,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$LoginResponse {
   String get message => throw _privateConstructorUsedError;
-  @JsonKey(name: 'access_token')
   String get accessToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'refresh_token')
   String get refreshToken => throw _privateConstructorUsedError;
   UserDto get user => throw _privateConstructorUsedError;
 
@@ -40,10 +38,7 @@ abstract class $LoginResponseCopyWith<$Res> {
       _$LoginResponseCopyWithImpl<$Res, LoginResponse>;
   @useResult
   $Res call(
-      {String message,
-      @JsonKey(name: 'access_token') String accessToken,
-      @JsonKey(name: 'refresh_token') String refreshToken,
-      UserDto user});
+      {String message, String accessToken, String refreshToken, UserDto user});
 
   $UserDtoCopyWith<$Res> get user;
 }
@@ -104,10 +99,7 @@ abstract class _$$LoginResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String message,
-      @JsonKey(name: 'access_token') String accessToken,
-      @JsonKey(name: 'refresh_token') String refreshToken,
-      UserDto user});
+      {String message, String accessToken, String refreshToken, UserDto user});
 
   @override
   $UserDtoCopyWith<$Res> get user;
@@ -155,8 +147,8 @@ class __$$LoginResponseImplCopyWithImpl<$Res>
 class _$LoginResponseImpl implements _LoginResponse {
   const _$LoginResponseImpl(
       {required this.message,
-      @JsonKey(name: 'access_token') required this.accessToken,
-      @JsonKey(name: 'refresh_token') required this.refreshToken,
+      required this.accessToken,
+      required this.refreshToken,
       required this.user});
 
   factory _$LoginResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -165,10 +157,8 @@ class _$LoginResponseImpl implements _LoginResponse {
   @override
   final String message;
   @override
-  @JsonKey(name: 'access_token')
   final String accessToken;
   @override
-  @JsonKey(name: 'refresh_token')
   final String refreshToken;
   @override
   final UserDto user;
@@ -213,8 +203,8 @@ class _$LoginResponseImpl implements _LoginResponse {
 abstract class _LoginResponse implements LoginResponse {
   const factory _LoginResponse(
       {required final String message,
-      @JsonKey(name: 'access_token') required final String accessToken,
-      @JsonKey(name: 'refresh_token') required final String refreshToken,
+      required final String accessToken,
+      required final String refreshToken,
       required final UserDto user}) = _$LoginResponseImpl;
 
   factory _LoginResponse.fromJson(Map<String, dynamic> json) =
@@ -223,10 +213,8 @@ abstract class _LoginResponse implements LoginResponse {
   @override
   String get message;
   @override
-  @JsonKey(name: 'access_token')
   String get accessToken;
   @override
-  @JsonKey(name: 'refresh_token')
   String get refreshToken;
   @override
   UserDto get user;

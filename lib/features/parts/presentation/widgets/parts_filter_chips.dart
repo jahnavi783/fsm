@@ -37,21 +37,23 @@ class PartsFilterChips extends StatelessWidget {
                   // Category filters
                   if (categories.isNotEmpty) ...[
                     _buildFilterChip(
+                      context: context,
                       label: 'All Categories',
                       isSelected: selectedCategory == null,
                       onTap: () => onCategoryChanged?.call(null),
                     ),
                     SizedBox(width: 8.w),
                     ...categories.map((category) => Padding(
-                      padding: EdgeInsets.only(right: 8.w),
-                      child: _buildFilterChip(
-                        label: category,
-                        isSelected: selectedCategory == category,
-                        onTap: () => onCategoryChanged?.call(category),
-                      ),
-                    )),
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: _buildFilterChip(
+                            context: context,
+                            label: category,
+                            isSelected: selectedCategory == category,
+                            onTap: () => onCategoryChanged?.call(category),
+                          ),
+                        )),
                   ],
-                  
+
                   // Divider
                   if (categories.isNotEmpty) ...[
                     Container(
@@ -61,28 +63,30 @@ class PartsFilterChips extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 8.w),
                     ),
                   ],
-                  
+
                   // Status filters
                   _buildFilterChip(
+                    context: context,
                     label: 'All Status',
                     isSelected: selectedStatus == null,
                     onTap: () => onStatusChanged?.call(null),
                   ),
                   SizedBox(width: 8.w),
                   ...PartStatus.values.map((status) => Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: _buildFilterChip(
-                      label: _getStatusLabel(status),
-                      isSelected: selectedStatus == status,
-                      onTap: () => onStatusChanged?.call(status),
-                      color: _getStatusColor(status),
-                    ),
-                  )),
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: _buildFilterChip(
+                          context: context,
+                          label: _getStatusLabel(status),
+                          isSelected: selectedStatus == status,
+                          onTap: () => onStatusChanged?.call(status),
+                          color: _getStatusColor(status),
+                        ),
+                      )),
                 ],
               ),
             ),
           ),
-          
+
           // Clear filters button
           if (hasFilters) ...[
             SizedBox(width: 8.w),
@@ -102,6 +106,7 @@ class PartsFilterChips extends StatelessWidget {
   }
 
   Widget _buildFilterChip({
+    required BuildContext context,
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
@@ -112,12 +117,12 @@ class PartsFilterChips extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: isSelected 
+          color: isSelected
               ? (color ?? Theme.of(context).primaryColor)
               : Colors.grey[100],
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: isSelected 
+            color: isSelected
                 ? (color ?? Theme.of(context).primaryColor)
                 : Colors.grey[300]!,
           ),
@@ -127,9 +132,7 @@ class PartsFilterChips extends StatelessWidget {
           style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w500,
-            color: isSelected 
-                ? Colors.white
-                : Colors.grey[700],
+            color: isSelected ? Colors.white : Colors.grey[700],
           ),
         ),
       ),

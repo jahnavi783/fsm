@@ -8,8 +8,8 @@ part 'login_response.g.dart';
 class LoginResponse with _$LoginResponse {
   const factory LoginResponse({
     required String message,
-    @JsonKey(name: 'access_token') required String accessToken,
-    @JsonKey(name: 'refresh_token') required String refreshToken,
+    required String accessToken,
+    required String refreshToken,
     required UserDto user,
   }) = _LoginResponse;
 

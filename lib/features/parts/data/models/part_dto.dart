@@ -7,48 +7,43 @@ part 'part_dto.g.dart';
 @freezed
 class PartDto with _$PartDto {
   const factory PartDto({
-    required int id,
     @JsonKey(name: 'part_number') required String partNumber,
     @JsonKey(name: 'part_name') required String partName,
-    required String description,
     required String category,
-    @JsonKey(name: 'unit_price') required double unitPrice,
     @JsonKey(name: 'quantity_available') required int quantityAvailable,
-    @JsonKey(name: 'min_quantity') required int minQuantity,
-    @JsonKey(name: 'max_quantity') required int maxQuantity,
-    required String unit,
+    @JsonKey(name: 'unit_price') required double unitPrice,
     required String status,
-    @JsonKey(name: 'compatible_models') @Default([]) List<String> compatibleModels,
-    @JsonKey(name: 'image_url') String? imageUrl,
-    String? specifications,
-    @JsonKey(name: 'last_updated') String? lastUpdated,
   }) = _PartDto;
 
   factory PartDto.fromJson(Map<String, dynamic> json) =>
       _$PartDtoFromJson(json);
 }
 
+@freezed
+class PartsResponse with _$PartsResponse {
+  const factory PartsResponse({
+    required List<PartDto> parts,
+  }) = _PartsResponse;
+
+  factory PartsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PartsResponseFromJson(json);
+}
+
 extension PartDtoX on PartDto {
+  bool get isLowStock => quantityAvailable <= 10; // Simple threshold
+  bool get isOutOfStock => quantityAvailable == 0;
+
   PartEntity toEntity() {
     return PartEntity(
-      id: id,
       partNumber: partNumber,
       partName: partName,
-      description: description,
       category: category,
-      unitPrice: unitPrice,
       quantityAvailable: quantityAvailable,
-      minQuantity: minQuantity,
-      maxQuantity: maxQuantity,
-      unit: unit,
+      unitPrice: unitPrice,
       status: PartStatus.values.firstWhere(
         (e) => e.name.toLowerCase() == status.toLowerCase(),
         orElse: () => PartStatus.active,
       ),
-      compatibleModels: compatibleModels,
-      imageUrl: imageUrl,
-      specifications: specifications,
-      lastUpdated: lastUpdated != null ? DateTime.parse(lastUpdated!) : null,
     );
   }
 }
@@ -56,21 +51,12 @@ extension PartDtoX on PartDto {
 extension PartEntityX on PartEntity {
   PartDto toDto() {
     return PartDto(
-      id: id,
       partNumber: partNumber,
       partName: partName,
-      description: description,
       category: category,
-      unitPrice: unitPrice,
       quantityAvailable: quantityAvailable,
-      minQuantity: minQuantity,
-      maxQuantity: maxQuantity,
-      unit: unit,
+      unitPrice: unitPrice,
       status: status.name,
-      compatibleModels: compatibleModels,
-      imageUrl: imageUrl,
-      specifications: specifications,
-      lastUpdated: lastUpdated?.toIso8601String(),
     );
   }
 }

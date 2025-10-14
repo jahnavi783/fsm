@@ -29,24 +29,24 @@ class AppRouter extends RootStackRouter {
           children: [
             AutoRoute(
               page: DashboardRoute.page,
-              path: '/dashboard',
+              path: 'dashboard',
               initial: true,
             ),
             AutoRoute(
               page: CalendarRoute.page,
-              path: '/calendar',
+              path: 'calendar',
             ),
             AutoRoute(
               page: DocumentsRoute.page,
-              path: '/documents',
+              path: 'documents',
             ),
             AutoRoute(
               page: PartsRoute.page,
-              path: '/parts',
+              path: 'parts',
             ),
             AutoRoute(
               page: ProfileRoute.page,
-              path: '/profile',
+              path: 'profile',
             ),
           ],
         ),

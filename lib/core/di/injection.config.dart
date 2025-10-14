@@ -147,6 +147,7 @@ import '../network/auth_interceptor.dart' as _i908;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../router/app_router.dart' as _i81;
+import '../services/alice_service.dart' as _i304;
 import '../services/location_service.dart' as _i669;
 import '../storage/cache_manager.dart' as _i1038;
 import '../storage/hive_service.dart' as _i459;
@@ -175,6 +176,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
     gh.singleton<_i188.ErrorBloc>(() => _i188.ErrorBloc());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    gh.singleton<_i304.AliceService>(() => _i304.AliceService());
     gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
     gh.factory<_i701.WorkOrderLocalDataSource>(
         () => _i701.WorkOrderLocalDataSourceImpl());
@@ -200,8 +202,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i932.NetworkInfo>(),
           gh<_i895.Connectivity>(),
         ));
-    gh.singletonAsync<_i361.Dio>(() async =>
-        networkModule.provideDio(await getAsync<_i908.AuthInterceptor>()));
+    gh.singletonAsync<_i361.Dio>(() async => networkModule.provideDio(
+          await getAsync<_i908.AuthInterceptor>(),
+          gh<_i304.AliceService>(),
+        ));
     gh.factoryAsync<_i584.CalendarApiClient>(() async =>
         calendarApiModule.calendarApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i541.AuthApiClient>(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fsm/core/config/app_config.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
@@ -114,6 +115,14 @@ class _DashboardPageState extends State<DashboardPage>
               _showSearchDialog(context);
             },
           ),
+          // Debug options button (only visible in debug mode)
+          if (AppConfig.isDebug) 
+            IconButton(
+              icon: const Icon(Icons.bug_report, color: Colors.orange),
+              onPressed: () {
+                context.router.push(const DeveloperOptionsRoute());
+              },
+            ),
         ],
         bottom: TabBar(
           controller: _tabController,

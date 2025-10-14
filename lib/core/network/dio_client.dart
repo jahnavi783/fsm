@@ -5,12 +5,13 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 
 import '../config/app_config.dart';
 import '../constants/app_constants.dart';
+import '../services/alice_service.dart';
 import 'auth_interceptor.dart';
 
 @module
 abstract class NetworkModule {
   @singleton
-  Dio provideDio(AuthInterceptor authInterceptor) {
+  Dio provideDio(AuthInterceptor authInterceptor, AliceService aliceService) {
     final dio = Dio(BaseOptions(
       baseUrl: AppConfig.baseUrl,
       connectTimeout: AppConstants.connectTimeout,
@@ -37,17 +38,28 @@ abstract class NetworkModule {
       ),
     ]);
 
-    // Add pretty logger only in development and staging
+    // Alice HTTP inspection - will be configured at app level
+    if (AppConfig.isDebug) {
+      aliceService.configureDio(dio);
+    }
+
+    // Enhanced network logging for development and staging
     if (AppConfig.enableLogging) {
       dio.interceptors.add(
         PrettyDioLogger(
           requestHeader: true,
           requestBody: true,
           responseBody: true,
-          responseHeader: false,
+          responseHeader: true,
           error: true,
-          compact: true,
-          maxWidth: 90,
+          compact: false,
+          maxWidth: 120,
+          logPrint: (object) {
+            // Enhanced logging with timestamps and emojis for better debugging
+            final timestamp =
+                DateTime.now().toIso8601String().substring(11, 19);
+            print('🌐 [$timestamp] NETWORK: $object');
+          },
         ),
       );
     }

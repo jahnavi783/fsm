@@ -47,15 +47,15 @@ mixin _$WorkOrderDto {
   @JsonKey(name: 'parts_used')
   List<PartUsedDto> get partsUsed => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  String get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
-  String get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_by')
+  @JsonKey(name: 'createdAt')
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updatedAt')
+  DateTime get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'createdBy')
   UserDto? get createdBy => throw _privateConstructorUsedError;
-  @JsonKey(name: 'assigned_to')
+  @JsonKey(name: 'assignedTo')
   UserDto? get assignedTo => throw _privateConstructorUsedError;
-  @JsonKey(name: 'service_request')
+  @JsonKey(name: 'serviceRequest')
   ServiceRequestDto? get serviceRequest => throw _privateConstructorUsedError;
   CustomerDto? get customer => throw _privateConstructorUsedError;
   @JsonKey(name: 'location_details')
@@ -100,11 +100,11 @@ abstract class $WorkOrderDtoCopyWith<$Res> {
       @JsonKey(name: 'work_log') String? workLog,
       @JsonKey(name: 'parts_used') List<PartUsedDto> partsUsed,
       List<String> images,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt,
-      @JsonKey(name: 'created_by') UserDto? createdBy,
-      @JsonKey(name: 'assigned_to') UserDto? assignedTo,
-      @JsonKey(name: 'service_request') ServiceRequestDto? serviceRequest,
+      @JsonKey(name: 'createdAt') DateTime createdAt,
+      @JsonKey(name: 'updatedAt') DateTime updatedAt,
+      @JsonKey(name: 'createdBy') UserDto? createdBy,
+      @JsonKey(name: 'assignedTo') UserDto? assignedTo,
+      @JsonKey(name: 'serviceRequest') ServiceRequestDto? serviceRequest,
       CustomerDto? customer,
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
       @JsonKey(name: 'work_logs') List<WorkLogDto> workLogs,
@@ -235,11 +235,11 @@ class _$WorkOrderDtoCopyWithImpl<$Res, $Val extends WorkOrderDto>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       createdBy: freezed == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -370,11 +370,11 @@ abstract class _$$WorkOrderDtoImplCopyWith<$Res>
       @JsonKey(name: 'work_log') String? workLog,
       @JsonKey(name: 'parts_used') List<PartUsedDto> partsUsed,
       List<String> images,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt,
-      @JsonKey(name: 'created_by') UserDto? createdBy,
-      @JsonKey(name: 'assigned_to') UserDto? assignedTo,
-      @JsonKey(name: 'service_request') ServiceRequestDto? serviceRequest,
+      @JsonKey(name: 'createdAt') DateTime createdAt,
+      @JsonKey(name: 'updatedAt') DateTime updatedAt,
+      @JsonKey(name: 'createdBy') UserDto? createdBy,
+      @JsonKey(name: 'assignedTo') UserDto? assignedTo,
+      @JsonKey(name: 'serviceRequest') ServiceRequestDto? serviceRequest,
       CustomerDto? customer,
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
       @JsonKey(name: 'work_logs') List<WorkLogDto> workLogs,
@@ -508,11 +508,11 @@ class __$$WorkOrderDtoImplCopyWithImpl<$Res>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       createdBy: freezed == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -578,11 +578,11 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
       @JsonKey(name: 'work_log') this.workLog,
       @JsonKey(name: 'parts_used') final List<PartUsedDto> partsUsed = const [],
       final List<String> images = const [],
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      @JsonKey(name: 'created_by') this.createdBy,
-      @JsonKey(name: 'assigned_to') this.assignedTo,
-      @JsonKey(name: 'service_request') this.serviceRequest,
+      @JsonKey(name: 'createdAt') required this.createdAt,
+      @JsonKey(name: 'updatedAt') required this.updatedAt,
+      @JsonKey(name: 'createdBy') this.createdBy,
+      @JsonKey(name: 'assignedTo') this.assignedTo,
+      @JsonKey(name: 'serviceRequest') this.serviceRequest,
       this.customer,
       @JsonKey(name: 'location_details') this.locationDetails,
       @JsonKey(name: 'work_logs') final List<WorkLogDto> workLogs = const [],
@@ -663,19 +663,19 @@ class _$WorkOrderDtoImpl implements _WorkOrderDto {
   }
 
   @override
-  @JsonKey(name: 'created_at')
-  final String createdAt;
+  @JsonKey(name: 'createdAt')
+  final DateTime createdAt;
   @override
-  @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
   @override
-  @JsonKey(name: 'created_by')
+  @JsonKey(name: 'createdBy')
   final UserDto? createdBy;
   @override
-  @JsonKey(name: 'assigned_to')
+  @JsonKey(name: 'assignedTo')
   final UserDto? assignedTo;
   @override
-  @JsonKey(name: 'service_request')
+  @JsonKey(name: 'serviceRequest')
   final ServiceRequestDto? serviceRequest;
   @override
   final CustomerDto? customer;
@@ -853,11 +853,11 @@ abstract class _WorkOrderDto implements WorkOrderDto {
       @JsonKey(name: 'work_log') final String? workLog,
       @JsonKey(name: 'parts_used') final List<PartUsedDto> partsUsed,
       final List<String> images,
-      @JsonKey(name: 'created_at') required final String createdAt,
-      @JsonKey(name: 'updated_at') required final String updatedAt,
-      @JsonKey(name: 'created_by') final UserDto? createdBy,
-      @JsonKey(name: 'assigned_to') final UserDto? assignedTo,
-      @JsonKey(name: 'service_request') final ServiceRequestDto? serviceRequest,
+      @JsonKey(name: 'createdAt') required final DateTime createdAt,
+      @JsonKey(name: 'updatedAt') required final DateTime updatedAt,
+      @JsonKey(name: 'createdBy') final UserDto? createdBy,
+      @JsonKey(name: 'assignedTo') final UserDto? assignedTo,
+      @JsonKey(name: 'serviceRequest') final ServiceRequestDto? serviceRequest,
       final CustomerDto? customer,
       @JsonKey(name: 'location_details') final LocationDto? locationDetails,
       @JsonKey(name: 'work_logs') final List<WorkLogDto> workLogs,
@@ -915,19 +915,19 @@ abstract class _WorkOrderDto implements WorkOrderDto {
   @override
   List<String> get images;
   @override
-  @JsonKey(name: 'created_at')
-  String get createdAt;
+  @JsonKey(name: 'createdAt')
+  DateTime get createdAt;
   @override
-  @JsonKey(name: 'updated_at')
-  String get updatedAt;
+  @JsonKey(name: 'updatedAt')
+  DateTime get updatedAt;
   @override
-  @JsonKey(name: 'created_by')
+  @JsonKey(name: 'createdBy')
   UserDto? get createdBy;
   @override
-  @JsonKey(name: 'assigned_to')
+  @JsonKey(name: 'assignedTo')
   UserDto? get assignedTo;
   @override
-  @JsonKey(name: 'service_request')
+  @JsonKey(name: 'serviceRequest')
   ServiceRequestDto? get serviceRequest;
   @override
   CustomerDto? get customer;

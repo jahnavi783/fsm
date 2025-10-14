@@ -71,6 +71,10 @@ dependencies:
   intl: ^0.20.2
   connectivity_plus: ^7.0.0
 
+  # HTTP Inspector (Debug only)
+  alice: ^1.0.0
+  alice_dio: ^1.0.7
+
   # Icons
   cupertino_icons: ^1.0.8
 
@@ -95,6 +99,8 @@ dev_dependencies:
   mockito: ^5.4.4
   bloc_test: ^10.0.0
   mocktail: ^1.0.4
+
+
 
 flutter:
   uses-material-design: true

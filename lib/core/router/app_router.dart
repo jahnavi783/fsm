@@ -64,6 +64,12 @@ class AppRouter extends RootStackRouter {
           page: PartDetailsRoute.page,
           path: '/part/:partId',
         ),
+
+        // Debug routes (only available in debug mode)
+        AutoRoute(
+          page: DeveloperOptionsRoute.page,
+          path: '/developer-options',
+        ),
       ];
 }
 

@@ -31,18 +31,18 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
-      createdBy: json['created_by'] == null
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdBy: json['createdBy'] == null
           ? null
-          : UserDto.fromJson(json['created_by'] as Map<String, dynamic>),
-      assignedTo: json['assigned_to'] == null
+          : UserDto.fromJson(json['createdBy'] as Map<String, dynamic>),
+      assignedTo: json['assignedTo'] == null
           ? null
-          : UserDto.fromJson(json['assigned_to'] as Map<String, dynamic>),
-      serviceRequest: json['service_request'] == null
+          : UserDto.fromJson(json['assignedTo'] as Map<String, dynamic>),
+      serviceRequest: json['serviceRequest'] == null
           ? null
           : ServiceRequestDto.fromJson(
-              json['service_request'] as Map<String, dynamic>),
+              json['serviceRequest'] as Map<String, dynamic>),
       customer: json['customer'] == null
           ? null
           : CustomerDto.fromJson(json['customer'] as Map<String, dynamic>),
@@ -88,11 +88,11 @@ Map<String, dynamic> _$$WorkOrderDtoImplToJson(_$WorkOrderDtoImpl instance) =>
       'work_log': instance.workLog,
       'parts_used': instance.partsUsed,
       'images': instance.images,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'created_by': instance.createdBy,
-      'assigned_to': instance.assignedTo,
-      'service_request': instance.serviceRequest,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'createdBy': instance.createdBy,
+      'assignedTo': instance.assignedTo,
+      'serviceRequest': instance.serviceRequest,
       'customer': instance.customer,
       'location_details': instance.locationDetails,
       'work_logs': instance.workLogs,

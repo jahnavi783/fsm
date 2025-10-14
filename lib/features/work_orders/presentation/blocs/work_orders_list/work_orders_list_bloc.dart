@@ -8,7 +8,8 @@ import 'work_orders_list_event.dart';
 import 'work_orders_list_state.dart';
 
 @injectable
-class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> {
+class WorkOrdersListBloc
+    extends Bloc<WorkOrdersListEvent, WorkOrdersListState> {
   final GetWorkOrdersUseCase _getWorkOrdersUseCase;
   final IWorkOrderRepository _repository;
   final NetworkInfo _networkInfo;
@@ -27,7 +28,8 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
   ) async {
     await event.when(
       loadWorkOrders: (page, limit, status, priority, searchQuery, isRefresh) =>
-          _loadWorkOrders(page, limit, status, priority, searchQuery, isRefresh, emit),
+          _loadWorkOrders(
+              page, limit, status, priority, searchQuery, isRefresh, emit),
       loadMoreWorkOrders: () => _loadMoreWorkOrders(emit),
       refreshWorkOrders: () => _refreshWorkOrders(emit),
       filterByStatus: (status) => _filterByStatus(status, emit),
@@ -51,13 +53,14 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
       emit(const WorkOrdersListState.loading());
     } else {
       state.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, _______, ________, _________) {},
+        loaded:
+            (_, __, ___, ____, _____, ______, _______, ________, _________) {},
         orElse: () => emit(const WorkOrdersListState.loading()),
       );
     }
 
     final isConnected = await _networkInfo.isConnected;
-    
+
     final result = await _getWorkOrdersUseCase(GetWorkOrdersParams(
       page: page,
       limit: limit,
@@ -69,7 +72,9 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
     await result.fold(
       (failure) async {
         final currentWorkOrders = state.maybeWhen(
-          loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________) => workOrders,
+          loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
+                  ________) =>
+              workOrders,
           orElse: () => <WorkOrderEntity>[],
         );
         emit(WorkOrdersListState.error(
@@ -97,32 +102,36 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
   Future<void> _loadMoreWorkOrders(Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     if (!currentState.maybeWhen(
-          loaded: (_, __, hasReachedMax, isLoadingMore, ____, _____, ______, _______, ________) => 
-              !hasReachedMax && !isLoadingMore,
-          orElse: () => false,
-        )) {
+      loaded: (_, __, hasReachedMax, isLoadingMore, ____, _____, ______,
+              _______, ________) =>
+          !hasReachedMax && !isLoadingMore,
+      orElse: () => false,
+    )) {
       return;
     }
 
     final nextPage = currentState.maybeWhen(
-      loaded: (_, currentPage, __, ___, ____, _____, ______, _______, ________) => currentPage + 1,
+      loaded:
+          (_, currentPage, __, ___, ____, _____, ______, _______, ________) =>
+              currentPage + 1,
       orElse: () => 1,
     );
 
     // Update state to show loading more
     emit(currentState.maybeWhen(
-      loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter, priorityFilter, searchQuery, isOffline, hasPendingSync) =>
+      loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter,
+              priorityFilter, searchQuery, isOffline, hasPendingSync) =>
           WorkOrdersListState.loaded(
-            workOrders: workOrders,
-            currentPage: currentPage,
-            hasReachedMax: hasReachedMax,
-            isLoadingMore: true,
-            statusFilter: statusFilter,
-            priorityFilter: priorityFilter,
-            searchQuery: searchQuery,
-            isOffline: isOffline,
-            hasPendingSync: hasPendingSync,
-          ),
+        workOrders: workOrders,
+        currentPage: currentPage,
+        hasReachedMax: hasReachedMax,
+        isLoadingMore: true,
+        statusFilter: statusFilter,
+        priorityFilter: priorityFilter,
+        searchQuery: searchQuery,
+        isOffline: isOffline,
+        hasPendingSync: hasPendingSync,
+      ),
       orElse: () => currentState,
     ));
 
@@ -130,15 +139,21 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
       page: nextPage,
       limit: 20,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______, ________) => statusFilter,
+        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
+                ________) =>
+            statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______, ________) => priorityFilter,
+        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
+                ________) =>
+            priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, searchQuery, _______, ________) => searchQuery,
+        loaded:
+            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+                searchQuery,
         orElse: () => null,
       ),
     ));
@@ -146,41 +161,45 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
     result.fold(
       (failure) {
         emit(currentState.maybeWhen(
-          loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter, priorityFilter, searchQuery, isOffline, hasPendingSync) =>
+          loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter,
+                  priorityFilter, searchQuery, isOffline, hasPendingSync) =>
               WorkOrdersListState.loaded(
-                workOrders: workOrders,
-                currentPage: currentPage,
-                hasReachedMax: hasReachedMax,
-                isLoadingMore: false,
-                statusFilter: statusFilter,
-                priorityFilter: priorityFilter,
-                searchQuery: searchQuery,
-                isOffline: isOffline,
-                hasPendingSync: hasPendingSync,
-              ),
+            workOrders: workOrders,
+            currentPage: currentPage,
+            hasReachedMax: hasReachedMax,
+            isLoadingMore: false,
+            statusFilter: statusFilter,
+            priorityFilter: priorityFilter,
+            searchQuery: searchQuery,
+            isOffline: isOffline,
+            hasPendingSync: hasPendingSync,
+          ),
           orElse: () => currentState,
         ));
       },
       (newWorkOrders) {
         final currentWorkOrders = currentState.maybeWhen(
-          loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________) => workOrders,
+          loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
+                  ________) =>
+              workOrders,
           orElse: () => <WorkOrderEntity>[],
         );
         final allWorkOrders = [...currentWorkOrders, ...newWorkOrders];
-        
+
         emit(currentState.maybeWhen(
-          loaded: (_, __, ___, ____, statusFilter, priorityFilter, searchQuery, isOffline, hasPendingSync) =>
+          loaded: (_, __, ___, ____, statusFilter, priorityFilter, searchQuery,
+                  isOffline, hasPendingSync) =>
               WorkOrdersListState.loaded(
-                workOrders: allWorkOrders,
-                currentPage: nextPage,
-                hasReachedMax: newWorkOrders.length < 20,
-                isLoadingMore: false,
-                statusFilter: statusFilter,
-                priorityFilter: priorityFilter,
-                searchQuery: searchQuery,
-                isOffline: isOffline,
-                hasPendingSync: hasPendingSync,
-              ),
+            workOrders: allWorkOrders,
+            currentPage: nextPage,
+            hasReachedMax: newWorkOrders.length < 20,
+            isLoadingMore: false,
+            statusFilter: statusFilter,
+            priorityFilter: priorityFilter,
+            searchQuery: searchQuery,
+            isOffline: isOffline,
+            hasPendingSync: hasPendingSync,
+          ),
           orElse: () => currentState,
         ));
       },
@@ -192,65 +211,86 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______, ________) => statusFilter,
+        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
+                ________) =>
+            statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______, ________) => priorityFilter,
+        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
+                ________) =>
+            priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, searchQuery, _______, ________) => searchQuery,
+        loaded:
+            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+                searchQuery,
         orElse: () => null,
       ),
       isRefresh: true,
     ));
   }
 
-  Future<void> _filterByStatus(WorkOrderStatus? status, Emitter<WorkOrdersListState> emit) async {
+  Future<void> _filterByStatus(
+      WorkOrderStatus? status, Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: status,
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______, ________) => priorityFilter,
+        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
+                ________) =>
+            priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, searchQuery, _______, ________) => searchQuery,
+        loaded:
+            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+                searchQuery,
         orElse: () => null,
       ),
       isRefresh: true,
     ));
   }
 
-  Future<void> _filterByPriority(WorkOrderPriority? priority, Emitter<WorkOrdersListState> emit) async {
+  Future<void> _filterByPriority(
+      WorkOrderPriority? priority, Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______, ________) => statusFilter,
+        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
+                ________) =>
+            statusFilter,
         orElse: () => null,
       ),
       priority: priority,
       searchQuery: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, searchQuery, _______, ________) => searchQuery,
+        loaded:
+            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+                searchQuery,
         orElse: () => null,
       ),
       isRefresh: true,
     ));
   }
 
-  Future<void> _searchWorkOrders(String query, Emitter<WorkOrdersListState> emit) async {
+  Future<void> _searchWorkOrders(
+      String query, Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______, ________) => statusFilter,
+        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
+                ________) =>
+            statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______, ________) => priorityFilter,
+        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
+                ________) =>
+            priorityFilter,
         orElse: () => null,
       ),
       searchQuery: query.isEmpty ? null : query,
@@ -268,14 +308,16 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
   Future<void> _syncPendingWorkOrders(Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     final currentWorkOrders = currentState.maybeWhen(
-      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________) => workOrders,
+      loaded:
+          (workOrders, _, __, ___, ____, _____, ______, _______, ________) =>
+              workOrders,
       orElse: () => <WorkOrderEntity>[],
     );
 
     emit(WorkOrdersListState.syncing(workOrders: currentWorkOrders));
 
     final result = await _repository.syncPendingWorkOrders();
-    
+
     result.fold(
       (failure) {
         emit(WorkOrdersListState.error(
@@ -294,11 +336,11 @@ class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> 
     final result = await _repository.getCachedWorkOrders();
     return result.fold(
       (failure) => false,
-      (workOrders) => workOrders.any((wo) => 
-        // Check if any work order has pending sync based on Hive model
-        // This would be implemented in the repository to check isPendingSync flag
-        false // For now, return false until Hive model sync is fully implemented
-      ),
+      (workOrders) => workOrders.any((wo) =>
+              // Check if any work order has pending sync based on Hive model
+              // This would be implemented in the repository to check isPendingSync flag
+              false // For now, return false until Hive model sync is fully implemented
+          ),
     );
   }
 }

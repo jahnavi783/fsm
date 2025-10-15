@@ -1,5 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 import '../constants/app_constants.dart';
 import '../constants/hive_boxes.dart';
@@ -24,8 +26,10 @@ class HiveService {
   HiveService._();
 
   Future<void> _init() async {
-    // Initialize Hive CE (no initFlutter method needed in Hive CE)
-    // Hive CE automatically handles Flutter initialization
+    // Initialize Hive CE with proper path
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String appDocPath = appDocDir.path;
+    Hive.init(appDocPath);
 
     // Register Hive adapters
     _registerAdapters();

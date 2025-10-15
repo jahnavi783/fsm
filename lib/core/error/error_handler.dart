@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 // import 'package:location/location.dart'; // Not needed
 
 import 'exceptions.dart';
 import 'failures.dart';
+import 'hive_ce_error_handler.dart';
 
 class ErrorHandler {
   static Failure handleException(dynamic exception) {
@@ -48,41 +49,43 @@ class ErrorHandler {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
         return Failure.timeout(
-          message: 'Request timed out. Please check your connection and try again.',
+          message:
+              'Request timed out. Please check your connection and try again.',
         );
-      
+
       case DioExceptionType.connectionError:
         return Failure.network(
-          message: 'No internet connection. Please check your network settings.',
+          message:
+              'No internet connection. Please check your network settings.',
         );
-      
+
       case DioExceptionType.badResponse:
         final statusCode = exception.response?.statusCode;
         final responseData = exception.response?.data;
-        
+
         String message = 'Server error occurred';
         String? errorCode;
-        
+
         if (responseData is Map<String, dynamic>) {
-          message = responseData['message'] ?? 
-                   responseData['error'] ?? 
-                   responseData['detail'] ?? 
-                   message;
+          message = responseData['message'] ??
+              responseData['error'] ??
+              responseData['detail'] ??
+              message;
           errorCode = responseData['code']?.toString();
         }
-        
+
         return Failure.server(
           message: message,
           statusCode: statusCode,
           errorCode: errorCode,
         );
-      
+
       case DioExceptionType.cancel:
         return Failure.unknown(message: 'Request was cancelled');
-      
+
       case DioExceptionType.badCertificate:
         return Failure.network(message: 'SSL certificate error');
-      
+
       case DioExceptionType.unknown:
         return Failure.unknown(
           message: exception.message ?? 'An unknown error occurred',
@@ -91,9 +94,7 @@ class ErrorHandler {
   }
 
   static Failure _handleHiveError(HiveError error) {
-    return Failure.cache(
-      message: 'Local storage error: ${error.message}',
-    );
+    return HiveCEErrorHandler.handleHiveError(error);
   }
 
   static Exception mapFailureToException(Failure failure) {

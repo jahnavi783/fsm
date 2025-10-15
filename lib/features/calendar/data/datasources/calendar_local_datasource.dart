@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
 import 'package:fsm/features/calendar/data/models/calendar_event_hive_model.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';

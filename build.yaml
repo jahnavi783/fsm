@@ -8,3 +8,8 @@ targets:
         options:
           output: lib/build_gen/ # Optional (default: lib/gen/)
           line_length: 120 # Optional
+      hive_ce_generator:hive_generator:
+        enabled: true
+        generate_for:
+          - lib/features/*/data/models/*_hive_model.dart
+          - lib/core/storage/models/*_hive_model.dart

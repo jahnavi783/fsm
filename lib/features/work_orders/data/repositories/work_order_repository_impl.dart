@@ -2,8 +2,9 @@ import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/error/failures.dart';
+import 'package:fsm/core/error/hive_ce_error_handler.dart';
 import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/core/services/logging_service.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
@@ -59,14 +60,16 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             workOrderDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheWorkOrders(hiveModels);
 
-        _logger.info('Successfully fetched and cached ${workOrderDtos.length} work orders',
+        _logger.info(
+            'Successfully fetched and cached ${workOrderDtos.length} work orders',
             tag: 'WORK_ORDER_REPO');
 
         // Return domain entities
         final entities = workOrderDtos.map((dto) => dto.toEntity()).toList();
         return Right(entities);
       } else {
-        _logger.warning('No internet connection, falling back to cache', tag: 'WORK_ORDER_REPO');
+        _logger.warning('No internet connection, falling back to cache',
+            tag: 'WORK_ORDER_REPO');
 
         // Fallback to cache when offline
         final cachedModels = await _localDataSource.getCachedWorkOrders(
@@ -74,7 +77,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         if (cachedModels.isEmpty) {
-          _logger.warning('No cached work orders available offline', tag: 'WORK_ORDER_REPO');
+          _logger.warning('No cached work orders available offline',
+              tag: 'WORK_ORDER_REPO');
           return const Left(CacheFailure(
             message: 'No cached work orders available offline',
           ));
@@ -88,21 +92,15 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in getWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in getWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in getWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -119,40 +117,38 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final hiveModel = _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
-        _logger.info('Successfully fetched work order $id', tag: 'WORK_ORDER_REPO');
+        _logger.info('Successfully fetched work order $id',
+            tag: 'WORK_ORDER_REPO');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('No internet connection, checking cache for work order $id',
+        _logger.warning(
+            'No internet connection, checking cache for work order $id',
             tag: 'WORK_ORDER_REPO');
 
         final cachedModel = await _localDataSource.getCachedWorkOrderById(id);
         if (cachedModel == null) {
-          _logger.warning('Work order $id not found in cache', tag: 'WORK_ORDER_REPO');
+          _logger.warning('Work order $id not found in cache',
+              tag: 'WORK_ORDER_REPO');
           return const Left(CacheFailure(
             message: 'Work order not found in cache',
           ));
         }
 
-        _logger.info('Retrieved work order $id from cache', tag: 'WORK_ORDER_REPO');
+        _logger.info('Retrieved work order $id from cache',
+            tag: 'WORK_ORDER_REPO');
         return Right(cachedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in getWorkOrderById for ID: $id',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in getWorkOrderById for ID: $id',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in getWorkOrderById for ID: $id',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -190,7 +186,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         _logger.workOrder('Successfully started work order $workOrderId');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('Offline: queuing start action for work order $workOrderId',
+        _logger.warning(
+            'Offline: queuing start action for work order $workOrderId',
             tag: 'WORK_ORDER_REPO');
 
         // Store action for later sync
@@ -200,7 +197,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModel =
             await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
-          _logger.error('Work order $workOrderId not found in cache for start action',
+          _logger.error(
+              'Work order $workOrderId not found in cache for start action',
               tag: 'WORK_ORDER_REPO');
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
@@ -213,26 +211,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         await _localDataSource.updateWorkOrder(updatedModel);
-        _logger.workOrder('Optimistically started work order $workOrderId offline');
+        _logger.workOrder(
+            'Optimistically started work order $workOrderId offline');
         return Right(updatedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in startWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in startWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in startWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -270,7 +263,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         _logger.workOrder('Successfully paused work order $workOrderId');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('Offline: queuing pause action for work order $workOrderId',
+        _logger.warning(
+            'Offline: queuing pause action for work order $workOrderId',
             tag: 'WORK_ORDER_REPO');
 
         // Store action for later sync
@@ -280,7 +274,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModel =
             await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
-          _logger.error('Work order $workOrderId not found in cache for pause action',
+          _logger.error(
+              'Work order $workOrderId not found in cache for pause action',
               tag: 'WORK_ORDER_REPO');
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
@@ -293,26 +288,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         await _localDataSource.updateWorkOrder(updatedModel);
-        _logger.workOrder('Optimistically paused work order $workOrderId offline');
+        _logger
+            .workOrder('Optimistically paused work order $workOrderId offline');
         return Right(updatedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in pauseWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in pauseWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in pauseWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -350,7 +340,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         _logger.workOrder('Successfully resumed work order $workOrderId');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('Offline: queuing resume action for work order $workOrderId',
+        _logger.warning(
+            'Offline: queuing resume action for work order $workOrderId',
             tag: 'WORK_ORDER_REPO');
 
         // Store action for later sync
@@ -360,7 +351,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModel =
             await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
-          _logger.error('Work order $workOrderId not found in cache for resume action',
+          _logger.error(
+              'Work order $workOrderId not found in cache for resume action',
               tag: 'WORK_ORDER_REPO');
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
@@ -373,26 +365,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         await _localDataSource.updateWorkOrder(updatedModel);
-        _logger.workOrder('Optimistically resumed work order $workOrderId offline');
+        _logger.workOrder(
+            'Optimistically resumed work order $workOrderId offline');
         return Right(updatedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in resumeWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in resumeWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in resumeWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -436,7 +423,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         _logger.workOrder('Successfully completed work order $workOrderId');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('Offline: queuing complete action for work order $workOrderId',
+        _logger.warning(
+            'Offline: queuing complete action for work order $workOrderId',
             tag: 'WORK_ORDER_REPO');
 
         // Store action for later sync
@@ -446,7 +434,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModel =
             await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
-          _logger.error('Work order $workOrderId not found in cache for complete action',
+          _logger.error(
+              'Work order $workOrderId not found in cache for complete action',
               tag: 'WORK_ORDER_REPO');
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
@@ -470,23 +459,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         await _localDataSource.updateWorkOrder(updatedModel);
-        _logger.workOrder('Optimistically completed work order $workOrderId offline');
+        _logger.workOrder(
+            'Optimistically completed work order $workOrderId offline');
         return Right(updatedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in completeWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in completeWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
-      _logger.error('Unexpected error in completeWorkOrder for ID: $workOrderId',
+      _logger.error(
+          'Unexpected error in completeWorkOrder for ID: $workOrderId',
           tag: 'WORK_ORDER_REPO',
           error: e,
           stackTrace: stackTrace);
@@ -524,7 +511,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         _logger.workOrder('Successfully rejected work order $workOrderId');
         return Right(workOrderDto.toEntity());
       } else {
-        _logger.warning('Offline: queuing reject action for work order $workOrderId',
+        _logger.warning(
+            'Offline: queuing reject action for work order $workOrderId',
             tag: 'WORK_ORDER_REPO');
 
         // Store action for later sync
@@ -534,7 +522,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModel =
             await _localDataSource.getCachedWorkOrderById(workOrderId);
         if (cachedModel == null) {
-          _logger.error('Work order $workOrderId not found in cache for reject action',
+          _logger.error(
+              'Work order $workOrderId not found in cache for reject action',
               tag: 'WORK_ORDER_REPO');
           return Left(CacheFailure(message: 'Work order not found in cache'));
         }
@@ -547,37 +536,34 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
 
         await _localDataSource.updateWorkOrder(updatedModel);
-        _logger.workOrder('Optimistically rejected work order $workOrderId offline');
+        _logger.workOrder(
+            'Optimistically rejected work order $workOrderId offline');
         return Right(updatedModel.toEntity());
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in rejectWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(_handleDioException(e));
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in rejectWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in rejectWorkOrder for ID: $workOrderId',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, List<WorkOrderEntity>>> syncPendingWorkOrders() async {
-    _logger.info('Starting sync of pending work orders', tag: 'WORK_ORDER_REPO');
+    _logger.info('Starting sync of pending work orders',
+        tag: 'WORK_ORDER_REPO');
 
     try {
       if (!await _networkInfo.isConnected) {
-        _logger.warning('No internet connection for sync', tag: 'WORK_ORDER_REPO');
+        _logger.warning('No internet connection for sync',
+            tag: 'WORK_ORDER_REPO');
         return Left(NetworkFailure(message: 'No internet connection'));
       }
 
@@ -591,7 +577,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
 
       for (final workOrder in pendingWorkOrders) {
         try {
-          _logger.debug('Syncing work order ${workOrder.id} with action: ${workOrder.pendingAction}',
+          _logger.debug(
+              'Syncing work order ${workOrder.id} with action: ${workOrder.pendingAction}',
               tag: 'WORK_ORDER_REPO');
 
           // Sync based on pending action
@@ -603,23 +590,20 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
               tag: 'WORK_ORDER_REPO');
         } catch (e, stackTrace) {
           _logger.error('Failed to sync work order ${workOrder.id}',
-              tag: 'WORK_ORDER_REPO',
-              error: e,
-              stackTrace: stackTrace);
+              tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
           // Continue with other work orders if one fails
           continue;
         }
       }
 
-      _logger.info('Successfully synced ${syncedWorkOrders.length}/${pendingWorkOrders.length} work orders',
+      _logger.info(
+          'Successfully synced ${syncedWorkOrders.length}/${pendingWorkOrders.length} work orders',
           tag: 'WORK_ORDER_REPO');
 
       return Right(syncedWorkOrders);
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in syncPendingWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -627,7 +611,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   @override
   Future<Either<Failure, void>> cacheWorkOrders(
       List<WorkOrderEntity> workOrders) async {
-    _logger.info('Caching ${workOrders.length} work orders', tag: 'WORK_ORDER_REPO');
+    _logger.info('Caching ${workOrders.length} work orders',
+        tag: 'WORK_ORDER_REPO');
 
     try {
       final hiveModels =
@@ -639,15 +624,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       return Right(null);
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in cacheWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in cacheWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -672,15 +653,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       return Right(entities);
     } on HiveError catch (e, stackTrace) {
       _logger.error('Hive error in getCachedWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
-      return Left(CacheFailure(message: e.message));
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
     } catch (e, stackTrace) {
       _logger.error('Unexpected error in getCachedWorkOrders',
-          tag: 'WORK_ORDER_REPO',
-          error: e,
-          stackTrace: stackTrace);
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(message: e.toString()));
     }
   }

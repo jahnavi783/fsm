@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:hive/hive.dart';
+import 'package:fsm/features/documents/data/models/document_hive_model.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../core/constants/hive_boxes.dart';
@@ -55,11 +56,13 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
     }
 
     return allDocuments.where((doc) {
-      bool matchesType = type == null || doc.fileType.toLowerCase() == type.name;
-      bool matchesCategory = category == null || 
+      bool matchesType =
+          type == null || doc.fileType.toLowerCase() == type.name;
+      bool matchesCategory = category == null ||
           doc.category.toLowerCase() == category.toLowerCase() ||
-          doc.categories.any((cat) => cat.toLowerCase() == category.toLowerCase());
-      
+          doc.categories
+              .any((cat) => cat.toLowerCase() == category.toLowerCase());
+
       return matchesType && matchesCategory;
     }).toList();
   }
@@ -67,7 +70,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   @override
   Future<void> cacheDocuments(List<DocumentHiveModel> documents) async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
-    
+
     for (final document in documents) {
       await box.put(document.id, document);
     }
@@ -93,7 +96,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   }) async {
     final appDir = await getApplicationDocumentsDirectory();
     final documentsDir = Directory('${appDir.path}/$_downloadedDocumentsDir');
-    
+
     if (!await documentsDir.exists()) {
       await documentsDir.create(recursive: true);
     }
@@ -102,10 +105,10 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final fileExtension = fileName.split('.').last;
     final uniqueFileName = '${documentId}_${timestamp}.$fileExtension';
-    
+
     final file = File('${documentsDir.path}/$uniqueFileName');
     await file.writeAsBytes(bytes);
-    
+
     return file.path;
   }
 
@@ -117,7 +120,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   }) async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     final document = box.get(documentId);
-    
+
     if (document != null) {
       final updatedDocument = document.copyWith(
         isDownloaded: isDownloaded,
@@ -131,13 +134,13 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   Future<void> deleteDocumentFile(int documentId) async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     final document = box.get(documentId);
-    
+
     if (document?.localPath != null) {
       final file = File(document!.localPath!);
       if (await file.exists()) {
         await file.delete();
       }
-      
+
       // Update the document to remove download status
       final updatedDocument = document.copyWith(
         isDownloaded: false,
@@ -151,11 +154,11 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   Future<void> clearCache() async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     await box.clear();
-    
+
     // Also delete all downloaded files
     final appDir = await getApplicationDocumentsDirectory();
     final documentsDir = Directory('${appDir.path}/$_downloadedDocumentsDir');
-    
+
     if (await documentsDir.exists()) {
       await documentsDir.delete(recursive: true);
     }
@@ -165,13 +168,13 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   Future<List<String>> getCachedCategories() async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     final allDocuments = box.values.toList();
-    
+
     final categories = <String>{};
     for (final document in allDocuments) {
       categories.add(document.category);
       categories.addAll(document.categories);
     }
-    
+
     return categories.toList()..sort();
   }
 }

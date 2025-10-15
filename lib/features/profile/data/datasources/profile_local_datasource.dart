@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/constants/hive_boxes.dart';
 import '../models/profile_hive_model.dart';
@@ -30,21 +30,24 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
 
   @override
   Future<ProfilePreferencesHiveModel?> getCachedPreferences() async {
-    final box = await Hive.openBox<ProfilePreferencesHiveModel>(HiveBoxes.profilePreferences);
+    final box = await Hive.openBox<ProfilePreferencesHiveModel>(
+        HiveBoxes.profilePreferences);
     return box.get(_preferencesKey);
   }
 
   @override
   Future<void> cachePreferences(ProfilePreferencesHiveModel preferences) async {
-    final box = await Hive.openBox<ProfilePreferencesHiveModel>(HiveBoxes.profilePreferences);
+    final box = await Hive.openBox<ProfilePreferencesHiveModel>(
+        HiveBoxes.profilePreferences);
     await box.put(_preferencesKey, preferences);
   }
 
   @override
   Future<void> clearCache() async {
     final profileBox = await Hive.openBox<ProfileHiveModel>(HiveBoxes.profile);
-    final preferencesBox = await Hive.openBox<ProfilePreferencesHiveModel>(HiveBoxes.profilePreferences);
-    
+    final preferencesBox = await Hive.openBox<ProfilePreferencesHiveModel>(
+        HiveBoxes.profilePreferences);
+
     await profileBox.clear();
     await preferencesBox.clear();
   }

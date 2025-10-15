@@ -1,12 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
-import '../../domain/entities/profile_entity.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:fsm/core/constants/hive_boxes.dart';
+import 'package:fsm/features/profile/domain/entities/profile_entity.dart';
 
 part 'profile_hive_model.freezed.dart';
 part 'profile_hive_model.g.dart';
 
 @freezed
-@HiveType(typeId: 10)
+@HiveType(typeId: HiveBoxes.profileEntityTypeId)
 class ProfileHiveModel with _$ProfileHiveModel {
   const factory ProfileHiveModel({
     @HiveField(0) required int id,
@@ -27,7 +28,7 @@ class ProfileHiveModel with _$ProfileHiveModel {
 }
 
 @freezed
-@HiveType(typeId: 11)
+@HiveType(typeId: HiveBoxes.profilePreferencesEntityTypeId)
 class ProfilePreferencesHiveModel with _$ProfilePreferencesHiveModel {
   const factory ProfilePreferencesHiveModel({
     @HiveField(0) @Default(true) bool notificationsEnabled,
@@ -46,7 +47,7 @@ class ProfilePreferencesHiveModel with _$ProfilePreferencesHiveModel {
       _$ProfilePreferencesHiveModelFromJson(json);
 }
 
-// Extensions for mapping to domain entities
+// Extension for mapping to domain entity
 extension ProfileHiveModelX on ProfileHiveModel {
   ProfileEntity toEntity() {
     return ProfileEntity(
@@ -81,8 +82,8 @@ extension ProfilePreferencesHiveModelX on ProfilePreferencesHiveModel {
   }
 }
 
-// Extensions for mapping from domain entities
-extension ProfileEntityToHive on ProfileEntity {
+// Factory method for creating from domain entity
+extension ProfileEntityX on ProfileEntity {
   ProfileHiveModel toHiveModel() {
     return ProfileHiveModel(
       id: id,
@@ -100,7 +101,7 @@ extension ProfileEntityToHive on ProfileEntity {
   }
 }
 
-extension ProfilePreferencesToHive on ProfilePreferences {
+extension ProfilePreferencesX on ProfilePreferences {
   ProfilePreferencesHiveModel toHiveModel() {
     return ProfilePreferencesHiveModel(
       notificationsEnabled: notificationsEnabled,

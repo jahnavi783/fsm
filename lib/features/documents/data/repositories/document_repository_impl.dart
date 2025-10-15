@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
+import 'package:fsm/features/documents/data/models/document_hive_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';

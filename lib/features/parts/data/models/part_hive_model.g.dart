@@ -20,9 +20,9 @@ class PartHiveModelAdapter extends TypeAdapter<PartHiveModel> {
       partNumber: fields[0] as String,
       partName: fields[1] as String,
       category: fields[2] as String,
-      quantityAvailable: fields[3] as int,
-      unitPrice: fields[4] as double,
-      status: fields[5] as int,
+      quantityAvailable: (fields[3] as num).toInt(),
+      unitPrice: (fields[4] as num).toDouble(),
+      status: (fields[5] as num).toInt(),
       cachedAt: fields[6] as DateTime,
     );
   }

@@ -17,16 +17,16 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WorkOrderHiveModel(
-      id: fields[0] as int,
+      id: (fields[0] as num).toInt(),
       woNumber: fields[1] as String,
-      srId: fields[2] as int,
+      srId: (fields[2] as num).toInt(),
       summary: fields[3] as String,
       problemDescription: fields[4] as String,
-      priority: fields[5] as int,
+      priority: (fields[5] as num).toInt(),
       visitDate: fields[6] as DateTime,
       location: fields[7] as String,
-      status: fields[8] as int,
-      durationDays: fields[9] as int,
+      status: (fields[8] as num).toInt(),
+      durationDays: (fields[9] as num).toInt(),
       createdAt: fields[10] as DateTime,
       updatedAt: fields[11] as DateTime,
       startedAt: fields[12] as DateTime?,
@@ -139,7 +139,7 @@ class PartUsedHiveModelAdapter extends TypeAdapter<PartUsedHiveModel> {
     };
     return PartUsedHiveModel(
       partNumber: fields[0] as String,
-      quantityUsed: fields[1] as int,
+      quantityUsed: (fields[1] as num).toInt(),
       partName: fields[2] as String?,
       description: fields[3] as String?,
     );
@@ -181,7 +181,7 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomerHiveModel(
-      id: fields[0] as int,
+      id: (fields[0] as num).toInt(),
       name: fields[1] as String,
       email: fields[2] as String,
       phone: fields[3] as String?,
@@ -239,15 +239,15 @@ class LocationHiveModelAdapter extends TypeAdapter<LocationHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LocationHiveModel(
-      latitude: fields[0] as double,
-      longitude: fields[1] as double,
+      latitude: (fields[0] as num).toDouble(),
+      longitude: (fields[1] as num).toDouble(),
       address: fields[2] as String?,
       city: fields[3] as String?,
       state: fields[4] as String?,
       postalCode: fields[5] as String?,
       country: fields[6] as String?,
       landmark: fields[7] as String?,
-      accuracy: fields[8] as double?,
+      accuracy: (fields[8] as num?)?.toDouble(),
       capturedAt: fields[9] as DateTime?,
     );
   }
@@ -365,14 +365,14 @@ class WorkLogHiveModelAdapter extends TypeAdapter<WorkLogHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WorkLogHiveModel(
-      id: fields[0] as int,
-      workOrderId: fields[1] as int,
-      type: fields[2] as int,
+      id: (fields[0] as num).toInt(),
+      workOrderId: (fields[1] as num).toInt(),
+      type: (fields[2] as num).toInt(),
       description: fields[3] as String,
       timestamp: fields[4] as DateTime,
       notes: fields[5] as String?,
-      latitude: fields[6] as double?,
-      longitude: fields[7] as double?,
+      latitude: (fields[6] as num?)?.toDouble(),
+      longitude: (fields[7] as num?)?.toDouble(),
       userId: fields[8] as String?,
       userName: fields[9] as String?,
     );
@@ -411,70 +411,6 @@ class WorkLogHiveModelAdapter extends TypeAdapter<WorkLogHiveModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is WorkLogHiveModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class PartHiveModelAdapter extends TypeAdapter<PartHiveModel> {
-  @override
-  final int typeId = 7;
-
-  @override
-  PartHiveModel read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return PartHiveModel(
-      id: fields[0] as int,
-      partNumber: fields[1] as String,
-      name: fields[2] as String,
-      description: fields[3] as String,
-      category: fields[4] as String,
-      price: fields[5] as double,
-      stockQuantity: fields[6] as int,
-      unit: fields[7] as String,
-      compatibleModels: (fields[8] as List).cast<String>(),
-      imageUrl: fields[9] as String?,
-      specifications: fields[10] as String?,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, PartHiveModel obj) {
-    writer
-      ..writeByte(11)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.partNumber)
-      ..writeByte(2)
-      ..write(obj.name)
-      ..writeByte(3)
-      ..write(obj.description)
-      ..writeByte(4)
-      ..write(obj.category)
-      ..writeByte(5)
-      ..write(obj.price)
-      ..writeByte(6)
-      ..write(obj.stockQuantity)
-      ..writeByte(7)
-      ..write(obj.unit)
-      ..writeByte(8)
-      ..write(obj.compatibleModels)
-      ..writeByte(9)
-      ..write(obj.imageUrl)
-      ..writeByte(10)
-      ..write(obj.specifications);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PartHiveModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -727,37 +663,4 @@ Map<String, dynamic> _$$WorkLogHiveModelImplToJson(
       'longitude': instance.longitude,
       'userId': instance.userId,
       'userName': instance.userName,
-    };
-
-_$PartHiveModelImpl _$$PartHiveModelImplFromJson(Map<String, dynamic> json) =>
-    _$PartHiveModelImpl(
-      id: (json['id'] as num).toInt(),
-      partNumber: json['partNumber'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
-      category: json['category'] as String,
-      price: (json['price'] as num).toDouble(),
-      stockQuantity: (json['stockQuantity'] as num).toInt(),
-      unit: json['unit'] as String,
-      compatibleModels: (json['compatibleModels'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      imageUrl: json['imageUrl'] as String?,
-      specifications: json['specifications'] as String?,
-    );
-
-Map<String, dynamic> _$$PartHiveModelImplToJson(_$PartHiveModelImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'partNumber': instance.partNumber,
-      'name': instance.name,
-      'description': instance.description,
-      'category': instance.category,
-      'price': instance.price,
-      'stockQuantity': instance.stockQuantity,
-      'unit': instance.unit,
-      'compatibleModels': instance.compatibleModels,
-      'imageUrl': instance.imageUrl,
-      'specifications': instance.specifications,
     };

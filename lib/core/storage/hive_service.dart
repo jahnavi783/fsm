@@ -1,8 +1,13 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../constants/app_constants.dart';
 import '../constants/hive_boxes.dart';
+import '../../features/work_orders/data/models/work_order_hive_model.dart';
+import '../../features/documents/data/models/document_hive_model.dart';
+import '../../features/calendar/data/models/calendar_event_hive_model.dart';
+import '../../features/profile/data/models/profile_hive_model.dart';
+import '../../features/parts/data/models/part_hive_model.dart' as parts;
 
 @singleton
 class HiveService {
@@ -19,7 +24,8 @@ class HiveService {
   HiveService._();
 
   Future<void> _init() async {
-    await Hive.initFlutter();
+    // Initialize Hive CE (no initFlutter method needed in Hive CE)
+    // Hive CE automatically handles Flutter initialization
 
     // Register Hive adapters
     _registerAdapters();
@@ -33,27 +39,73 @@ class HiveService {
   }
 
   void _registerAdapters() {
-    // TODO: Register Work Orders adapters when Hive models are implemented
-    // Work Orders adapters
-    // if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
-    //   Hive.registerAdapter(WorkOrderHiveModelAdapter());
-    // }
+    try {
+      // Register Work Order related adapters
+      if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
+        Hive.registerAdapter(WorkOrderHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.partUsedEntityTypeId)) {
+        Hive.registerAdapter(PartUsedHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.customerEntityTypeId)) {
+        Hive.registerAdapter(CustomerHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.locationEntityTypeId)) {
+        Hive.registerAdapter(LocationHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.serviceRequestEntityTypeId)) {
+        Hive.registerAdapter(ServiceRequestHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)) {
+        Hive.registerAdapter(WorkLogHiveModelAdapter());
+      }
 
-    // TODO: Add other feature adapters when available
-    // Documents, Parts, Calendar, Profile adapters will be added here
+      // Register Parts adapter (using alias to avoid conflict)
+      if (!Hive.isAdapterRegistered(HiveBoxes.partEntityTypeId)) {
+        Hive.registerAdapter(parts.PartHiveModelAdapter());
+      }
+
+      // Register Document adapter
+      if (!Hive.isAdapterRegistered(HiveBoxes.documentEntityTypeId)) {
+        Hive.registerAdapter(DocumentHiveModelAdapter());
+      }
+
+      // Register Calendar Event adapter
+      if (!Hive.isAdapterRegistered(HiveBoxes.calendarEventEntityTypeId)) {
+        Hive.registerAdapter(CalendarEventHiveModelAdapter());
+      }
+
+      // Register Profile adapters
+      if (!Hive.isAdapterRegistered(HiveBoxes.profileEntityTypeId)) {
+        Hive.registerAdapter(ProfileHiveModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.profilePreferencesEntityTypeId)) {
+        Hive.registerAdapter(ProfilePreferencesHiveModelAdapter());
+      }
+    } catch (e) {
+      // Log adapter registration errors but don't crash the app
+      print('Error registering Hive adapters: $e');
+      rethrow;
+    }
   }
 
   Future<void> _openFeatureBoxes() async {
-    // Open boxes for different features
-    await Hive.openBox(HiveBoxes
-        .workOrders); // TODO: Add type when WorkOrderHiveModel is implemented
-    await Hive.openBox(HiveBoxes.documents);
-    await Hive.openBox(HiveBoxes.parts);
-    await Hive.openBox(HiveBoxes.inventory);
-    await Hive.openBox(HiveBoxes.calendarEvents);
-    await Hive.openBox(HiveBoxes.calendarBox);
-    await Hive.openBox(HiveBoxes.profile);
-    await Hive.openBox(HiveBoxes.profilePreferences);
+    try {
+      // Open typed boxes for different features
+      await Hive.openBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
+      await Hive.openBox<DocumentHiveModel>(HiveBoxes.documents);
+      await Hive.openBox<parts.PartHiveModel>(HiveBoxes.parts);
+      await Hive.openBox(HiveBoxes.inventory); // Generic box for inventory data
+      await Hive.openBox<CalendarEventHiveModel>(HiveBoxes.calendarEvents);
+      await Hive.openBox(
+          HiveBoxes.calendarBox); // Generic box for calendar data
+      await Hive.openBox<ProfileHiveModel>(HiveBoxes.profile);
+      await Hive.openBox<ProfilePreferencesHiveModel>(
+          HiveBoxes.profilePreferences);
+    } catch (e) {
+      print('Error opening feature boxes: $e');
+      rethrow;
+    }
   }
 
   // Auth token methods
@@ -100,32 +152,57 @@ class HiveService {
 
   // Box management
   Future<Box> getBox(String boxName) async {
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box(boxName);
+    try {
+      if (Hive.isBoxOpen(boxName)) {
+        return Hive.box(boxName);
+      }
+      return await Hive.openBox(boxName);
+    } catch (e) {
+      print('Error getting box $boxName: $e');
+      rethrow;
     }
-    return await Hive.openBox(boxName);
   }
 
-  // Typed box management for WorkOrderHiveModel
+  // Typed box management for Hive CE models
   Future<Box<T>> getTypedBox<T>(String boxName) async {
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<T>(boxName);
+    try {
+      if (Hive.isBoxOpen(boxName)) {
+        return Hive.box<T>(boxName);
+      }
+      return await Hive.openBox<T>(boxName);
+    } catch (e) {
+      print('Error getting typed box $boxName: $e');
+      rethrow;
     }
-    return await Hive.openBox<T>(boxName);
   }
 
   Future<void> closeBox(String boxName) async {
-    if (Hive.isBoxOpen(boxName)) {
-      await Hive.box(boxName).close();
+    try {
+      if (Hive.isBoxOpen(boxName)) {
+        await Hive.box(boxName).close();
+      }
+    } catch (e) {
+      print('Error closing box $boxName: $e');
+      rethrow;
     }
   }
 
   Future<void> clearBox(String boxName) async {
-    final box = await getBox(boxName);
-    await box.clear();
+    try {
+      final box = await getBox(boxName);
+      await box.clear();
+    } catch (e) {
+      print('Error clearing box $boxName: $e');
+      rethrow;
+    }
   }
 
   Future<void> closeAllBoxes() async {
-    await Hive.close();
+    try {
+      await Hive.close();
+    } catch (e) {
+      print('Error closing all boxes: $e');
+      rethrow;
+    }
   }
 }

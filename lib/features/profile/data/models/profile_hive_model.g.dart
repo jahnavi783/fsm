@@ -17,7 +17,7 @@ class ProfileHiveModelAdapter extends TypeAdapter<ProfileHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProfileHiveModel(
-      id: fields[0] as int,
+      id: (fields[0] as num).toInt(),
       firstName: fields[1] as String,
       lastName: fields[2] as String,
       email: fields[3] as String,
@@ -89,9 +89,9 @@ class ProfilePreferencesHiveModelAdapter
       language: fields[4] as String,
       darkModeEnabled: fields[5] as bool,
       offlineSyncEnabled: fields[6] as bool,
-      syncIntervalMinutes: fields[7] as int,
+      syncIntervalMinutes: (fields[7] as num).toInt(),
       autoLogoutEnabled: fields[8] as bool,
-      autoLogoutMinutes: fields[9] as int,
+      autoLogoutMinutes: (fields[9] as num).toInt(),
     );
   }
 

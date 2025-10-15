@@ -18,27 +18,25 @@ class CalendarEventHiveModelAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CalendarEventHiveModel(
-      id: fields[0] as int,
+      id: (fields[0] as num).toInt(),
       title: fields[1] as String,
       startTime: fields[2] as DateTime,
       endTime: fields[3] as DateTime,
-      type: fields[4] as int,
+      type: (fields[4] as num).toInt(),
       description: fields[5] as String,
-      workOrderId: fields[6] as int?,
+      workOrderId: (fields[6] as num?)?.toInt(),
       location: fields[7] as String?,
       isAllDay: fields[8] as bool,
       color: fields[9] as String?,
-      metadata: (fields[10] as Map?)?.cast<String, dynamic>(),
+      metadata: fields[10] as String?,
       cachedAt: fields[11] as DateTime,
-      isPendingSync: fields[12] as bool,
-      pendingAction: fields[13] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CalendarEventHiveModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -62,11 +60,7 @@ class CalendarEventHiveModelAdapter
       ..writeByte(10)
       ..write(obj.metadata)
       ..writeByte(11)
-      ..write(obj.cachedAt)
-      ..writeByte(12)
-      ..write(obj.isPendingSync)
-      ..writeByte(13)
-      ..write(obj.pendingAction);
+      ..write(obj.cachedAt);
   }
 
   @override
@@ -97,10 +91,8 @@ _$CalendarEventHiveModelImpl _$$CalendarEventHiveModelImplFromJson(
       location: json['location'] as String?,
       isAllDay: json['isAllDay'] as bool? ?? false,
       color: json['color'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
+      metadata: json['metadata'] as String?,
       cachedAt: DateTime.parse(json['cachedAt'] as String),
-      isPendingSync: json['isPendingSync'] as bool? ?? false,
-      pendingAction: json['pendingAction'] as String?,
     );
 
 Map<String, dynamic> _$$CalendarEventHiveModelImplToJson(
@@ -118,6 +110,4 @@ Map<String, dynamic> _$$CalendarEventHiveModelImplToJson(
       'color': instance.color,
       'metadata': instance.metadata,
       'cachedAt': instance.cachedAt.toIso8601String(),
-      'isPendingSync': instance.isPendingSync,
-      'pendingAction': instance.pendingAction,
     };

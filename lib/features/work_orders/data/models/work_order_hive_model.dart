@@ -3,8 +3,11 @@ import 'package:fsm/features/work_orders/domain/entities/customer_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/part_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/service_request_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/parts/data/models/part_hive_model.dart';
+import 'package:fsm/features/parts/domain/entities/part_entity.dart'
+    as parts_domain;
 
 import '../../domain/entities/location_entity.dart' show LocationEntity;
 
@@ -146,27 +149,6 @@ class WorkLogHiveModel with _$WorkLogHiveModel {
       _$WorkLogHiveModelFromJson(json);
 }
 
-@freezed
-@HiveType(typeId: 7)
-class PartHiveModel with _$PartHiveModel {
-  const factory PartHiveModel({
-    @HiveField(0) required int id,
-    @HiveField(1) required String partNumber,
-    @HiveField(2) required String name,
-    @HiveField(3) required String description,
-    @HiveField(4) required String category,
-    @HiveField(5) required double price,
-    @HiveField(6) required int stockQuantity,
-    @HiveField(7) required String unit,
-    @HiveField(8) @Default([]) List<String> compatibleModels,
-    @HiveField(9) String? imageUrl,
-    @HiveField(10) String? specifications,
-  }) = _PartHiveModel;
-
-  factory PartHiveModel.fromJson(Map<String, dynamic> json) =>
-      _$PartHiveModelFromJson(json);
-}
-
 // Extension for mapping to domain entity
 extension WorkOrderHiveModelX on WorkOrderHiveModel {
   WorkOrderEntity toEntity() {
@@ -195,9 +177,26 @@ extension WorkOrderHiveModelX on WorkOrderHiveModel {
       serviceRequest: serviceRequest?.toEntity(),
       workLogs: workLogs.map((w) => w.toEntity()).toList(),
       requiredSkills: requiredSkills,
-      requiredParts: requiredParts.map((p) => p.toEntity()).toList(),
+      requiredParts:
+          requiredParts.map((p) => _convertPartEntity(p.toEntity())).toList(),
       attachments: attachments,
       completionNotes: completionNotes,
+    );
+  }
+
+  PartEntity _convertPartEntity(parts_domain.PartEntity partsEntity) {
+    return PartEntity(
+      id: 0, // Default ID since parts domain doesn't have ID
+      partNumber: partsEntity.partNumber,
+      name: partsEntity.partName,
+      description: partsEntity.category, // Use category as description
+      category: partsEntity.category,
+      price: partsEntity.unitPrice,
+      stockQuantity: partsEntity.quantityAvailable,
+      unit: 'each', // Default unit
+      compatibleModels: const [],
+      imageUrl: null,
+      specifications: null,
     );
   }
 }
@@ -277,24 +276,6 @@ extension WorkLogHiveModelX on WorkLogHiveModel {
       longitude: longitude,
       userId: userId,
       userName: userName,
-    );
-  }
-}
-
-extension PartHiveModelX on PartHiveModel {
-  PartEntity toEntity() {
-    return PartEntity(
-      id: id,
-      partNumber: partNumber,
-      name: name,
-      description: description,
-      category: category,
-      price: price,
-      stockQuantity: stockQuantity,
-      unit: unit,
-      compatibleModels: compatibleModels,
-      imageUrl: imageUrl,
-      specifications: specifications,
     );
   }
 }

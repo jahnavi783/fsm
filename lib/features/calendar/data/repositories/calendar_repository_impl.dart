@@ -1,8 +1,9 @@
 import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/error/failures.dart';
+import 'package:fsm/core/error/hive_ce_error_handler.dart';
 import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
 import 'package:fsm/features/calendar/domain/repositories/i_calendar_repository.dart';
@@ -41,7 +42,8 @@ class CalendarRepositoryImpl implements ICalendarRepository {
         );
 
         // Cache successful response
-        final hiveModels = eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
+        final hiveModels =
+            eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheEvents(hiveModels);
 
         // Return domain entities
@@ -86,7 +88,8 @@ class CalendarRepositoryImpl implements ICalendarRepository {
         );
 
         // Cache successful response
-        final hiveModels = eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
+        final hiveModels =
+            eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheEvents(hiveModels);
 
         final entities = eventDtos.map((dto) => dto.toEntity()).toList();
@@ -94,16 +97,16 @@ class CalendarRepositoryImpl implements ICalendarRepository {
       } else {
         // Fallback to cache when offline
         final cachedModels = await _localDataSource.getEventsForDate(date);
-        
+
         // Filter by type if provided
         var filteredModels = cachedModels;
         if (type != null) {
-          filteredModels = cachedModels
-              .where((model) => model.type == type.index)
-              .toList();
+          filteredModels =
+              cachedModels.where((model) => model.type == type.index).toList();
         }
 
-        final entities = filteredModels.map((model) => model.toEntity()).toList();
+        final entities =
+            filteredModels.map((model) => model.toEntity()).toList();
         return Right(entities);
       }
     } on DioException catch (e) {
@@ -126,7 +129,8 @@ class CalendarRepositoryImpl implements ICalendarRepository {
         );
 
         // Cache successful response
-        final hiveModels = eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
+        final hiveModels =
+            eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheEvents(hiveModels);
 
         final entities = eventDtos.map((dto) => dto.toEntity()).toList();
@@ -162,7 +166,8 @@ class CalendarRepositoryImpl implements ICalendarRepository {
         );
 
         // Cache successful response
-        final hiveModels = eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
+        final hiveModels =
+            eventDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheEvents(hiveModels);
 
         final entities = eventDtos.map((dto) => dto.toEntity()).toList();
@@ -207,13 +212,14 @@ class CalendarRepositoryImpl implements ICalendarRepository {
       } else {
         // Fallback to basic date-based ordering when offline
         final cachedModels = await _localDataSource.getEventsForDate(date);
-        
+
         // Filter only work orders for route optimization
         final workOrderModels = cachedModels
             .where((model) => model.type == CalendarEventType.workOrder.index)
             .toList();
 
-        final entities = workOrderModels.map((model) => model.toEntity()).toList();
+        final entities =
+            workOrderModels.map((model) => model.toEntity()).toList();
         return Right(entities);
       }
     } on DioException catch (e) {
@@ -232,7 +238,7 @@ class CalendarRepositoryImpl implements ICalendarRepository {
     try {
       if (await _networkInfo.isConnected) {
         final eventDto = await _remoteDataSource.createEvent(event: event);
-        
+
         // Cache the created event
         final hiveModel = _mapDtoToHiveModel(eventDto);
         await _localDataSource.updateEvent(hiveModel);
@@ -241,9 +247,9 @@ class CalendarRepositoryImpl implements ICalendarRepository {
       } else {
         // Store locally for sync when online
         final hiveModel = event.toHiveModel().copyWith(
-          isPendingSync: true,
-          pendingAction: 'create',
-        );
+              isPendingSync: true,
+              pendingAction: 'create',
+            );
         await _localDataSource.updateEvent(hiveModel);
 
         return Right(event);
@@ -264,7 +270,7 @@ class CalendarRepositoryImpl implements ICalendarRepository {
     try {
       if (await _networkInfo.isConnected) {
         final eventDto = await _remoteDataSource.updateEvent(event: event);
-        
+
         // Cache the updated event
         final hiveModel = _mapDtoToHiveModel(eventDto);
         await _localDataSource.updateEvent(hiveModel);
@@ -311,7 +317,8 @@ class CalendarRepositoryImpl implements ICalendarRepository {
   }
 
   @override
-  Future<Either<Failure, List<CalendarEventEntity>>> syncPendingChanges() async {
+  Future<Either<Failure, List<CalendarEventEntity>>>
+      syncPendingChanges() async {
     try {
       if (!await _networkInfo.isConnected) {
         return Left(NetworkFailure(message: 'No internet connection'));
@@ -340,7 +347,7 @@ class CalendarRepositoryImpl implements ICalendarRepository {
               await _localDataSource.deleteEvent(event.id);
               continue;
           }
-          
+
           // Clear sync flag on success
           await _localDataSource.clearSyncFlag(event.id);
         } catch (e) {
@@ -384,7 +391,7 @@ class CalendarRepositoryImpl implements ICalendarRepository {
         endDate: endDate,
         type: type,
       );
-      
+
       final entities = cachedModels.map((model) => model.toEntity()).toList();
       return Right(entities);
     } on HiveError catch (e) {
@@ -421,13 +428,14 @@ class CalendarRepositoryImpl implements ICalendarRepository {
           if (excludeEventId != null && model.id == excludeEventId) {
             return false;
           }
-          
+
           // Check if events overlap
-          return model.startTime.isBefore(endTime) && 
-                 model.endTime.isAfter(startTime);
+          return model.startTime.isBefore(endTime) &&
+              model.endTime.isAfter(startTime);
         }).toList();
 
-        final entities = conflictingModels.map((model) => model.toEntity()).toList();
+        final entities =
+            conflictingModels.map((model) => model.toEntity()).toList();
         return Right(entities);
       }
     } on DioException catch (e) {

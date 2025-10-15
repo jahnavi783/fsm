@@ -47,6 +47,10 @@ mixin _$CalendarEventHiveModel {
       throw _privateConstructorUsedError; // Store as JSON string
   @HiveField(11)
   DateTime get cachedAt => throw _privateConstructorUsedError;
+  @HiveField(12)
+  bool get isPendingSync => throw _privateConstructorUsedError;
+  @HiveField(13)
+  String? get pendingAction => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,7 +76,9 @@ abstract class $CalendarEventHiveModelCopyWith<$Res> {
       @HiveField(8) bool isAllDay,
       @HiveField(9) String? color,
       @HiveField(10) String? metadata,
-      @HiveField(11) DateTime cachedAt});
+      @HiveField(11) DateTime cachedAt,
+      @HiveField(12) bool isPendingSync,
+      @HiveField(13) String? pendingAction});
 }
 
 /// @nodoc
@@ -101,6 +107,8 @@ class _$CalendarEventHiveModelCopyWithImpl<$Res,
     Object? color = freezed,
     Object? metadata = freezed,
     Object? cachedAt = null,
+    Object? isPendingSync = null,
+    Object? pendingAction = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -151,6 +159,14 @@ class _$CalendarEventHiveModelCopyWithImpl<$Res,
           ? _value.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isPendingSync: null == isPendingSync
+          ? _value.isPendingSync
+          : isPendingSync // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pendingAction: freezed == pendingAction
+          ? _value.pendingAction
+          : pendingAction // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -176,7 +192,9 @@ abstract class _$$CalendarEventHiveModelImplCopyWith<$Res>
       @HiveField(8) bool isAllDay,
       @HiveField(9) String? color,
       @HiveField(10) String? metadata,
-      @HiveField(11) DateTime cachedAt});
+      @HiveField(11) DateTime cachedAt,
+      @HiveField(12) bool isPendingSync,
+      @HiveField(13) String? pendingAction});
 }
 
 /// @nodoc
@@ -204,6 +222,8 @@ class __$$CalendarEventHiveModelImplCopyWithImpl<$Res>
     Object? color = freezed,
     Object? metadata = freezed,
     Object? cachedAt = null,
+    Object? isPendingSync = null,
+    Object? pendingAction = freezed,
   }) {
     return _then(_$CalendarEventHiveModelImpl(
       id: null == id
@@ -254,6 +274,14 @@ class __$$CalendarEventHiveModelImplCopyWithImpl<$Res>
           ? _value.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      isPendingSync: null == isPendingSync
+          ? _value.isPendingSync
+          : isPendingSync // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pendingAction: freezed == pendingAction
+          ? _value.pendingAction
+          : pendingAction // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -273,7 +301,9 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
       @HiveField(8) this.isAllDay = false,
       @HiveField(9) this.color,
       @HiveField(10) this.metadata,
-      @HiveField(11) required this.cachedAt});
+      @HiveField(11) required this.cachedAt,
+      @HiveField(12) this.isPendingSync = false,
+      @HiveField(13) this.pendingAction});
 
   factory _$CalendarEventHiveModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalendarEventHiveModelImplFromJson(json);
@@ -317,10 +347,17 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
   @override
   @HiveField(11)
   final DateTime cachedAt;
+  @override
+  @JsonKey()
+  @HiveField(12)
+  final bool isPendingSync;
+  @override
+  @HiveField(13)
+  final String? pendingAction;
 
   @override
   String toString() {
-    return 'CalendarEventHiveModel(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, cachedAt: $cachedAt)';
+    return 'CalendarEventHiveModel(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
   }
 
   @override
@@ -346,7 +383,11 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
             (identical(other.metadata, metadata) ||
                 other.metadata == metadata) &&
             (identical(other.cachedAt, cachedAt) ||
-                other.cachedAt == cachedAt));
+                other.cachedAt == cachedAt) &&
+            (identical(other.isPendingSync, isPendingSync) ||
+                other.isPendingSync == isPendingSync) &&
+            (identical(other.pendingAction, pendingAction) ||
+                other.pendingAction == pendingAction));
   }
 
   @JsonKey(ignore: true)
@@ -364,7 +405,9 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
       isAllDay,
       color,
       metadata,
-      cachedAt);
+      cachedAt,
+      isPendingSync,
+      pendingAction);
 
   @JsonKey(ignore: true)
   @override
@@ -394,7 +437,9 @@ abstract class _CalendarEventHiveModel implements CalendarEventHiveModel {
           @HiveField(8) final bool isAllDay,
           @HiveField(9) final String? color,
           @HiveField(10) final String? metadata,
-          @HiveField(11) required final DateTime cachedAt}) =
+          @HiveField(11) required final DateTime cachedAt,
+          @HiveField(12) final bool isPendingSync,
+          @HiveField(13) final String? pendingAction}) =
       _$CalendarEventHiveModelImpl;
 
   factory _CalendarEventHiveModel.fromJson(Map<String, dynamic> json) =
@@ -436,6 +481,12 @@ abstract class _CalendarEventHiveModel implements CalendarEventHiveModel {
   @override // Store as JSON string
   @HiveField(11)
   DateTime get cachedAt;
+  @override
+  @HiveField(12)
+  bool get isPendingSync;
+  @override
+  @HiveField(13)
+  String? get pendingAction;
   @override
   @JsonKey(ignore: true)
   _$$CalendarEventHiveModelImplCopyWith<_$CalendarEventHiveModelImpl>

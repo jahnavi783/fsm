@@ -22,6 +22,8 @@ class CalendarEventHiveModel with _$CalendarEventHiveModel {
     @HiveField(9) String? color,
     @HiveField(10) String? metadata, // Store as JSON string
     @HiveField(11) required DateTime cachedAt,
+    @HiveField(12) @Default(false) bool isPendingSync,
+    @HiveField(13) String? pendingAction,
   }) = _CalendarEventHiveModel;
 
   factory CalendarEventHiveModel.fromJson(Map<String, dynamic> json) =>

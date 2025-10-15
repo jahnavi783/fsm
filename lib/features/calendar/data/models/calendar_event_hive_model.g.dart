@@ -30,13 +30,15 @@ class CalendarEventHiveModelAdapter
       color: fields[9] as String?,
       metadata: fields[10] as String?,
       cachedAt: fields[11] as DateTime,
+      isPendingSync: fields[12] as bool,
+      pendingAction: fields[13] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CalendarEventHiveModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -60,7 +62,11 @@ class CalendarEventHiveModelAdapter
       ..writeByte(10)
       ..write(obj.metadata)
       ..writeByte(11)
-      ..write(obj.cachedAt);
+      ..write(obj.cachedAt)
+      ..writeByte(12)
+      ..write(obj.isPendingSync)
+      ..writeByte(13)
+      ..write(obj.pendingAction);
   }
 
   @override
@@ -93,6 +99,8 @@ _$CalendarEventHiveModelImpl _$$CalendarEventHiveModelImplFromJson(
       color: json['color'] as String?,
       metadata: json['metadata'] as String?,
       cachedAt: DateTime.parse(json['cachedAt'] as String),
+      isPendingSync: json['isPendingSync'] as bool? ?? false,
+      pendingAction: json['pendingAction'] as String?,
     );
 
 Map<String, dynamic> _$$CalendarEventHiveModelImplToJson(
@@ -110,4 +118,6 @@ Map<String, dynamic> _$$CalendarEventHiveModelImplToJson(
       'color': instance.color,
       'metadata': instance.metadata,
       'cachedAt': instance.cachedAt.toIso8601String(),
+      'isPendingSync': instance.isPendingSync,
+      'pendingAction': instance.pendingAction,
     };

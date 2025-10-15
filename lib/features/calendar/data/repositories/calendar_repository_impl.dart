@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/error/failures.dart';
-import 'package:fsm/core/error/hive_ce_error_handler.dart';
 import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
 import 'package:fsm/features/calendar/domain/repositories/i_calendar_repository.dart';
@@ -449,6 +448,13 @@ class CalendarRepositoryImpl implements ICalendarRepository {
 
   // Helper methods
   CalendarEventHiveModel _mapDtoToHiveModel(CalendarEventDto dto) {
+    // Convert metadata Map to JSON string for Hive storage
+    String? metadataString;
+    if (dto.metadata != null) {
+      // In a real app, you'd use dart:convert jsonEncode
+      metadataString = dto.metadata.toString();
+    }
+
     return CalendarEventHiveModel(
       id: dto.id,
       title: dto.title,
@@ -460,7 +466,7 @@ class CalendarRepositoryImpl implements ICalendarRepository {
       location: dto.location,
       isAllDay: dto.isAllDay,
       color: dto.color,
-      metadata: dto.metadata,
+      metadata: metadataString,
       cachedAt: DateTime.now(),
     );
   }

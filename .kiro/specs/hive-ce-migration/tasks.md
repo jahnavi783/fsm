@@ -184,7 +184,7 @@
   - Handle box operation errors
   - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6_
 
-- [-] 7.2 Update Repository Error Handling
+- [ ] 7.2 Update Repository Error Handling
   - Update all repository implementations to use Hive CE error handling
   - Replace HiveError handling with HiveCEErrorHandler
   - Test error scenarios in offline mode

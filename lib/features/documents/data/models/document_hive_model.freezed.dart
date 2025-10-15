@@ -54,6 +54,10 @@ mixin _$DocumentHiveModel {
   String? get localPath => throw _privateConstructorUsedError;
   @HiveField(16)
   DateTime get cachedAt => throw _privateConstructorUsedError;
+  @HiveField(17)
+  String get category => throw _privateConstructorUsedError;
+  @HiveField(18)
+  String get fileType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -84,7 +88,9 @@ abstract class $DocumentHiveModelCopyWith<$Res> {
       @HiveField(13) int? uploadedBy,
       @HiveField(14) bool? isDownloaded,
       @HiveField(15) String? localPath,
-      @HiveField(16) DateTime cachedAt});
+      @HiveField(16) DateTime cachedAt,
+      @HiveField(17) String category,
+      @HiveField(18) String fileType});
 }
 
 /// @nodoc
@@ -117,6 +123,8 @@ class _$DocumentHiveModelCopyWithImpl<$Res, $Val extends DocumentHiveModel>
     Object? isDownloaded = freezed,
     Object? localPath = freezed,
     Object? cachedAt = null,
+    Object? category = null,
+    Object? fileType = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -187,6 +195,14 @@ class _$DocumentHiveModelCopyWithImpl<$Res, $Val extends DocumentHiveModel>
           ? _value.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileType: null == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -216,7 +232,9 @@ abstract class _$$DocumentHiveModelImplCopyWith<$Res>
       @HiveField(13) int? uploadedBy,
       @HiveField(14) bool? isDownloaded,
       @HiveField(15) String? localPath,
-      @HiveField(16) DateTime cachedAt});
+      @HiveField(16) DateTime cachedAt,
+      @HiveField(17) String category,
+      @HiveField(18) String fileType});
 }
 
 /// @nodoc
@@ -247,6 +265,8 @@ class __$$DocumentHiveModelImplCopyWithImpl<$Res>
     Object? isDownloaded = freezed,
     Object? localPath = freezed,
     Object? cachedAt = null,
+    Object? category = null,
+    Object? fileType = null,
   }) {
     return _then(_$DocumentHiveModelImpl(
       id: null == id
@@ -317,6 +337,14 @@ class __$$DocumentHiveModelImplCopyWithImpl<$Res>
           ? _value.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+      fileType: null == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -341,7 +369,9 @@ class _$DocumentHiveModelImpl implements _DocumentHiveModel {
       @HiveField(13) this.uploadedBy,
       @HiveField(14) this.isDownloaded,
       @HiveField(15) this.localPath,
-      @HiveField(16) required this.cachedAt})
+      @HiveField(16) required this.cachedAt,
+      @HiveField(17) required this.category,
+      @HiveField(18) required this.fileType})
       : _tags = tags,
         _categories = categories;
 
@@ -412,10 +442,16 @@ class _$DocumentHiveModelImpl implements _DocumentHiveModel {
   @override
   @HiveField(16)
   final DateTime cachedAt;
+  @override
+  @HiveField(17)
+  final String category;
+  @override
+  @HiveField(18)
+  final String fileType;
 
   @override
   String toString() {
-    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt)';
+    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt, category: $category, fileType: $fileType)';
   }
 
   @override
@@ -451,30 +487,37 @@ class _$DocumentHiveModelImpl implements _DocumentHiveModel {
             (identical(other.localPath, localPath) ||
                 other.localPath == localPath) &&
             (identical(other.cachedAt, cachedAt) ||
-                other.cachedAt == cachedAt));
+                other.cachedAt == cachedAt) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.fileType, fileType) ||
+                other.fileType == fileType));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      description,
-      type,
-      fileUrl,
-      fileName,
-      fileSize,
-      createdAt,
-      updatedAt,
-      const DeepCollectionEquality().hash(_tags),
-      const DeepCollectionEquality().hash(_categories),
-      relatedModel,
-      keywords,
-      uploadedBy,
-      isDownloaded,
-      localPath,
-      cachedAt);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        title,
+        description,
+        type,
+        fileUrl,
+        fileName,
+        fileSize,
+        createdAt,
+        updatedAt,
+        const DeepCollectionEquality().hash(_tags),
+        const DeepCollectionEquality().hash(_categories),
+        relatedModel,
+        keywords,
+        uploadedBy,
+        isDownloaded,
+        localPath,
+        cachedAt,
+        category,
+        fileType
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -493,24 +536,25 @@ class _$DocumentHiveModelImpl implements _DocumentHiveModel {
 
 abstract class _DocumentHiveModel implements DocumentHiveModel {
   const factory _DocumentHiveModel(
-          {@HiveField(0) required final int id,
-          @HiveField(1) required final String title,
-          @HiveField(2) required final String description,
-          @HiveField(3) required final int type,
-          @HiveField(4) required final String fileUrl,
-          @HiveField(5) required final String fileName,
-          @HiveField(6) required final int fileSize,
-          @HiveField(7) required final DateTime createdAt,
-          @HiveField(8) required final DateTime updatedAt,
-          @HiveField(9) required final List<String> tags,
-          @HiveField(10) required final List<String> categories,
-          @HiveField(11) final String? relatedModel,
-          @HiveField(12) final String? keywords,
-          @HiveField(13) final int? uploadedBy,
-          @HiveField(14) final bool? isDownloaded,
-          @HiveField(15) final String? localPath,
-          @HiveField(16) required final DateTime cachedAt}) =
-      _$DocumentHiveModelImpl;
+      {@HiveField(0) required final int id,
+      @HiveField(1) required final String title,
+      @HiveField(2) required final String description,
+      @HiveField(3) required final int type,
+      @HiveField(4) required final String fileUrl,
+      @HiveField(5) required final String fileName,
+      @HiveField(6) required final int fileSize,
+      @HiveField(7) required final DateTime createdAt,
+      @HiveField(8) required final DateTime updatedAt,
+      @HiveField(9) required final List<String> tags,
+      @HiveField(10) required final List<String> categories,
+      @HiveField(11) final String? relatedModel,
+      @HiveField(12) final String? keywords,
+      @HiveField(13) final int? uploadedBy,
+      @HiveField(14) final bool? isDownloaded,
+      @HiveField(15) final String? localPath,
+      @HiveField(16) required final DateTime cachedAt,
+      @HiveField(17) required final String category,
+      @HiveField(18) required final String fileType}) = _$DocumentHiveModelImpl;
 
   factory _DocumentHiveModel.fromJson(Map<String, dynamic> json) =
       _$DocumentHiveModelImpl.fromJson;
@@ -566,6 +610,12 @@ abstract class _DocumentHiveModel implements DocumentHiveModel {
   @override
   @HiveField(16)
   DateTime get cachedAt;
+  @override
+  @HiveField(17)
+  String get category;
+  @override
+  @HiveField(18)
+  String get fileType;
   @override
   @JsonKey(ignore: true)
   _$$DocumentHiveModelImplCopyWith<_$DocumentHiveModelImpl> get copyWith =>

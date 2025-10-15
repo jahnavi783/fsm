@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
 import 'package:fsm/features/documents/domain/entities/document_entity.dart';
+import 'document_dto.dart';
 
 part 'document_hive_model.freezed.dart';
 part 'document_hive_model.g.dart';
@@ -27,10 +28,37 @@ class DocumentHiveModel with _$DocumentHiveModel {
     @HiveField(14) bool? isDownloaded,
     @HiveField(15) String? localPath,
     @HiveField(16) required DateTime cachedAt,
+    @HiveField(17) required String category,
+    @HiveField(18) required String fileType,
   }) = _DocumentHiveModel;
 
   factory DocumentHiveModel.fromJson(Map<String, dynamic> json) =>
       _$DocumentHiveModelFromJson(json);
+
+  // Factory method for creating from DTO
+  factory DocumentHiveModel.fromDto(DocumentDto dto) {
+    return DocumentHiveModel(
+      id: dto.id,
+      title: dto.title,
+      description: dto.description,
+      type: DocumentDto.parseDocumentType(dto.fileType).index,
+      fileUrl: dto.fileUrl,
+      fileName: DocumentDto.extractFileName(dto.fileUrl),
+      fileSize: dto.fileSize,
+      createdAt: DateTime.parse(dto.createdAt),
+      updatedAt: DateTime.parse(dto.updatedAt),
+      tags: dto.tags,
+      categories: dto.categories.isNotEmpty ? dto.categories : [dto.category],
+      relatedModel: dto.relatedModel,
+      keywords: dto.keywords,
+      uploadedBy: dto.uploadedBy,
+      isDownloaded: false,
+      localPath: null,
+      cachedAt: DateTime.now(),
+      category: dto.category,
+      fileType: dto.fileType,
+    );
+  }
 }
 
 // Extension for mapping to domain entity
@@ -78,6 +106,8 @@ extension DocumentEntityX on DocumentEntity {
       isDownloaded: isDownloaded,
       localPath: localPath,
       cachedAt: DateTime.now(),
+      category: categories.isNotEmpty ? categories.first : 'general',
+      fileType: type.name,
     );
   }
 }

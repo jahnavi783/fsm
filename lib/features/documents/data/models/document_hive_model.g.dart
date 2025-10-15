@@ -34,13 +34,15 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       isDownloaded: fields[14] as bool?,
       localPath: fields[15] as String?,
       cachedAt: fields[16] as DateTime,
+      category: fields[17] as String,
+      fileType: fields[18] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DocumentHiveModel obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -74,7 +76,11 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       ..writeByte(15)
       ..write(obj.localPath)
       ..writeByte(16)
-      ..write(obj.cachedAt);
+      ..write(obj.cachedAt)
+      ..writeByte(17)
+      ..write(obj.category)
+      ..writeByte(18)
+      ..write(obj.fileType);
   }
 
   @override
@@ -114,6 +120,8 @@ _$DocumentHiveModelImpl _$$DocumentHiveModelImplFromJson(
       isDownloaded: json['isDownloaded'] as bool?,
       localPath: json['localPath'] as String?,
       cachedAt: DateTime.parse(json['cachedAt'] as String),
+      category: json['category'] as String,
+      fileType: json['fileType'] as String,
     );
 
 Map<String, dynamic> _$$DocumentHiveModelImplToJson(
@@ -136,4 +144,6 @@ Map<String, dynamic> _$$DocumentHiveModelImplToJson(
       'isDownloaded': instance.isDownloaded,
       'localPath': instance.localPath,
       'cachedAt': instance.cachedAt.toIso8601String(),
+      'category': instance.category,
+      'fileType': instance.fileType,
     };

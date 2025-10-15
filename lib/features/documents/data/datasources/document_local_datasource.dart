@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../core/constants/hive_boxes.dart';
 import '../../domain/entities/document_entity.dart';
-import '../models/document_dto.dart';
 
 abstract class DocumentLocalDataSource {
   Future<List<DocumentHiveModel>> getCachedDocuments({

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive_ce/hive.dart';
 import '../../domain/entities/document_entity.dart';
 
 part 'document_dto.freezed.dart';
@@ -37,9 +36,9 @@ class DocumentDto with _$DocumentDto {
       id: id,
       title: title,
       description: description,
-      type: _parseDocumentType(fileType),
+      type: DocumentDto.parseDocumentType(fileType),
       fileUrl: fileUrl,
-      fileName: _extractFileName(fileUrl),
+      fileName: DocumentDto.extractFileName(fileUrl),
       fileSize: fileSize,
       createdAt: DateTime.parse(createdAt),
       updatedAt: DateTime.parse(updatedAt),
@@ -53,7 +52,7 @@ class DocumentDto with _$DocumentDto {
     );
   }
 
-  DocumentType _parseDocumentType(String fileType) {
+  static DocumentType parseDocumentType(String fileType) {
     switch (fileType.toLowerCase()) {
       case 'manual':
         return DocumentType.manual;
@@ -78,7 +77,7 @@ class DocumentDto with _$DocumentDto {
     }
   }
 
-  String _extractFileName(String url) {
+  static String extractFileName(String url) {
     final uri = Uri.parse(url);
     final segments = uri.pathSegments;
     return segments.isNotEmpty ? segments.last : 'document';

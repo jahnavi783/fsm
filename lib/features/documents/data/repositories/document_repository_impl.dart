@@ -9,7 +9,6 @@ import '../../domain/entities/document_entity.dart';
 import '../../domain/repositories/i_document_repository.dart';
 import '../datasources/document_local_datasource.dart';
 import '../datasources/document_remote_datasource.dart';
-import '../models/document_dto.dart';
 
 @Injectable(as: IDocumentRepository)
 class DocumentRepositoryImpl implements IDocumentRepository {

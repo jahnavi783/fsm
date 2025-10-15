@@ -6,7 +6,7 @@ part 'profile_hive_model.freezed.dart';
 part 'profile_hive_model.g.dart';
 
 @freezed
-@HiveType(typeId: 6)
+@HiveType(typeId: 10)
 class ProfileHiveModel with _$ProfileHiveModel {
   const factory ProfileHiveModel({
     @HiveField(0) required int id,
@@ -27,7 +27,7 @@ class ProfileHiveModel with _$ProfileHiveModel {
 }
 
 @freezed
-@HiveType(typeId: 7)
+@HiveType(typeId: 11)
 class ProfilePreferencesHiveModel with _$ProfilePreferencesHiveModel {
   const factory ProfilePreferencesHiveModel({
     @HiveField(0) @Default(true) bool notificationsEnabled,

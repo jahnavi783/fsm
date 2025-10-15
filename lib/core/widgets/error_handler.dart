@@ -41,8 +41,6 @@ class GlobalErrorHandler extends StatelessWidget {
     bool canRetry = false,
     VoidCallback? retryAction,
   }) {
-    final theme = Theme.of(context);
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(

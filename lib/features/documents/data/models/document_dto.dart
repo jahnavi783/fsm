@@ -8,7 +8,7 @@ part 'document_dto.g.dart';
 @freezed
 class DocumentDto with _$DocumentDto {
   const DocumentDto._();
-  
+
   const factory DocumentDto({
     required int id,
     required String title,
@@ -28,7 +28,7 @@ class DocumentDto with _$DocumentDto {
 
   factory DocumentDto.fromJson(Map<String, dynamic> json) =>
       _$DocumentDtoFromJson(json);
-      
+
   DocumentEntity toEntity({
     bool? isDownloaded,
     String? localPath,
@@ -52,7 +52,7 @@ class DocumentDto with _$DocumentDto {
       localPath: localPath,
     );
   }
-  
+
   DocumentType _parseDocumentType(String fileType) {
     switch (fileType.toLowerCase()) {
       case 'manual':
@@ -77,7 +77,7 @@ class DocumentDto with _$DocumentDto {
         return DocumentType.other;
     }
   }
-  
+
   String _extractFileName(String url) {
     final uri = Uri.parse(url);
     final segments = uri.pathSegments;
@@ -98,11 +98,11 @@ class DocumentResponseDto with _$DocumentResponseDto {
       _$DocumentResponseDtoFromJson(json);
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 8)
 @freezed
 class DocumentHiveModel with _$DocumentHiveModel {
   const DocumentHiveModel._();
-  
+
   const factory DocumentHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String title,
@@ -125,8 +125,9 @@ class DocumentHiveModel with _$DocumentHiveModel {
 
   factory DocumentHiveModel.fromJson(Map<String, dynamic> json) =>
       _$DocumentHiveModelFromJson(json);
-      
-  factory DocumentHiveModel.fromDto(DocumentDto dto, {
+
+  factory DocumentHiveModel.fromDto(
+    DocumentDto dto, {
     bool? isDownloaded,
     String? localPath,
   }) {
@@ -150,7 +151,7 @@ class DocumentHiveModel with _$DocumentHiveModel {
       localPath: localPath,
     );
   }
-  
+
   DocumentEntity toEntity() {
     return DocumentEntity(
       id: id,
@@ -171,7 +172,7 @@ class DocumentHiveModel with _$DocumentHiveModel {
       localPath: localPath,
     );
   }
-  
+
   DocumentType _parseDocumentType(String fileType) {
     switch (fileType.toLowerCase()) {
       case 'manual':
@@ -196,7 +197,7 @@ class DocumentHiveModel with _$DocumentHiveModel {
         return DocumentType.other;
     }
   }
-  
+
   String _extractFileName(String url) {
     final uri = Uri.parse(url);
     final segments = uri.pathSegments;

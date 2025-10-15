@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../domain/entities/profile_entity.dart';
 
 class SettingsSection extends StatelessWidget {
   final String title;
@@ -47,7 +46,7 @@ class SettingsSection extends StatelessWidget {
               final index = entry.key;
               final item = entry.value;
               final isLast = index == items.length - 1;
-              
+
               return Column(
                 children: [
                   item,

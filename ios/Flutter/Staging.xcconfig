@@ -1,0 +1,7 @@
+#include "Generated.xcconfig"
+
+// Staging flavor configuration
+FLUTTER_FLAVOR=staging
+PRODUCT_BUNDLE_IDENTIFIER=com.fsm.app.staging
+PRODUCT_NAME=FSM Staging
+ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon-Staging

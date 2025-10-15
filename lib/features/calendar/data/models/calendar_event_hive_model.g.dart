@@ -9,7 +9,7 @@ part of 'calendar_event_hive_model.dart';
 class CalendarEventHiveModelAdapter
     extends TypeAdapter<CalendarEventHiveModel> {
   @override
-  final int typeId = 5;
+  final int typeId = 9;
 
   @override
   CalendarEventHiveModel read(BinaryReader reader) {

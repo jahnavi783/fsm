@@ -8,7 +8,7 @@ part of 'document_dto.dart';
 
 class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
   @override
-  final int typeId = 3;
+  final int typeId = 8;
 
   @override
   DocumentHiveModel read(BinaryReader reader) {

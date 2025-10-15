@@ -6,7 +6,7 @@ part 'calendar_event_hive_model.freezed.dart';
 part 'calendar_event_hive_model.g.dart';
 
 @freezed
-@HiveType(typeId: 5)
+@HiveType(typeId: 9)
 class CalendarEventHiveModel with _$CalendarEventHiveModel {
   const factory CalendarEventHiveModel({
     @HiveField(0) required int id,

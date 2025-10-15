@@ -3,8 +3,6 @@ import 'package:injectable/injectable.dart';
 
 import '../constants/app_constants.dart';
 import '../constants/hive_boxes.dart';
-import '../../features/work_orders/data/models/work_order_hive_model.dart'
-    as wo;
 
 @singleton
 class HiveService {
@@ -35,33 +33,20 @@ class HiveService {
   }
 
   void _registerAdapters() {
-    // Only register if not already registered
-    if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
-      Hive.registerAdapter(wo.WorkOrderHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.partUsedEntityTypeId)) {
-      Hive.registerAdapter(wo.PartUsedHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.customerEntityTypeId)) {
-      Hive.registerAdapter(wo.CustomerHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.locationEntityTypeId)) {
-      Hive.registerAdapter(wo.LocationHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.serviceRequestEntityTypeId)) {
-      Hive.registerAdapter(wo.ServiceRequestHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)) {
-      Hive.registerAdapter(wo.WorkLogHiveModelAdapter());
-    }
-    if (!Hive.isAdapterRegistered(HiveBoxes.partEntityTypeId)) {
-      Hive.registerAdapter(wo.PartHiveModelAdapter());
-    }
+    // TODO: Register Work Orders adapters when Hive models are implemented
+    // Work Orders adapters
+    // if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
+    //   Hive.registerAdapter(WorkOrderHiveModelAdapter());
+    // }
+
+    // TODO: Add other feature adapters when available
+    // Documents, Parts, Calendar, Profile adapters will be added here
   }
 
   Future<void> _openFeatureBoxes() async {
     // Open boxes for different features
-    await Hive.openBox<wo.WorkOrderHiveModel>(HiveBoxes.workOrders);
+    await Hive.openBox(HiveBoxes
+        .workOrders); // TODO: Add type when WorkOrderHiveModel is implemented
     await Hive.openBox(HiveBoxes.documents);
     await Hive.openBox(HiveBoxes.parts);
     await Hive.openBox(HiveBoxes.inventory);

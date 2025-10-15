@@ -45,5 +45,75 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Permission Usage Descriptions -->
+	<!-- Location permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs location access to track work orders and provide location-based services for field service management.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs location access to track work orders and provide location-based services for field service management, even when the app is in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs background location access to track work orders and provide continuous location-based services for field service management.</string>
+	
+	<!-- Camera permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to take photos of work orders, equipment, and documentation for field service reports.</string>
+	
+	<!-- Photo library permissions -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs photo library access to select and attach images to work orders and service documentation.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to save photos to your photo library for work order documentation.</string>
+	
+	<!-- Microphone permissions -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs microphone access to record voice notes and audio documentation for work orders.</string>
+	
+	<!-- Contacts permissions -->
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs contacts access to quickly add customer and team member information to work orders.</string>
+	
+	<!-- Calendar permissions -->
+	<key>NSCalendarUsageDescription</key>
+	<string>This app needs calendar access to schedule and manage work order appointments and service calls.</string>
+	
+	<!-- Reminders permissions -->
+	<key>NSRemindersUsageDescription</key>
+	<string>This app needs reminders access to create and manage task reminders for work orders and service activities.</string>
+	
+	<!-- Motion and fitness permissions -->
+	<key>NSMotionUsageDescription</key>
+	<string>This app uses motion data to detect work activity and improve location accuracy for field service tracking.</string>
+	
+	<!-- Bluetooth permissions -->
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app uses Bluetooth to connect to IoT devices and equipment sensors for enhanced field service capabilities.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app uses Bluetooth to communicate with field equipment and IoT devices for service management.</string>
+	
+	<!-- File access permissions -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>This app needs access to documents to manage work order files, manuals, and service documentation.</string>
+	
+	<!-- Network permissions -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app needs local network access to communicate with on-site equipment and local servers.</string>
+	
+	<!-- Background modes for location tracking -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>background-processing</string>
+		<string>background-fetch</string>
+	</array>
+	
+	<!-- App Transport Security for HTTP connections -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

@@ -1,0 +1,7 @@
+#include "Generated.xcconfig"
+
+// Production flavor configuration
+FLUTTER_FLAVOR=prod
+PRODUCT_BUNDLE_IDENTIFIER=com.fsm.app
+PRODUCT_NAME=FSM
+ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon

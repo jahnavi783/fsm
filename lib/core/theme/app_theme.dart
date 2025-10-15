@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'app_colors.dart';
 import 'app_dimensions.dart';
 import 'app_text_styles.dart';
+import 'extensions/fsm_theme_extension.dart';
 
 class AppTheme {
   AppTheme._();
@@ -13,6 +14,9 @@ class AppTheme {
     brightness: Brightness.light,
     colorScheme: _lightColorScheme,
     scaffoldBackgroundColor: AppColors.background,
+    extensions: const <ThemeExtension<dynamic>>[
+      FSMThemeExtension.light,
+    ],
     
     // App Bar Theme
     appBarTheme: AppBarTheme(
@@ -259,6 +263,9 @@ class AppTheme {
     brightness: Brightness.dark,
     colorScheme: _darkColorScheme,
     scaffoldBackgroundColor: AppColors.backgroundDark,
+    extensions: const <ThemeExtension<dynamic>>[
+      FSMThemeExtension.dark,
+    ],
     
     appBarTheme: lightTheme.appBarTheme.copyWith(
       systemOverlayStyle: SystemUiOverlayStyle.dark,

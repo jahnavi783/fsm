@@ -25,7 +25,7 @@ class CalendarViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calendarEvents = events.map(_convertToCalendarEvent).toList();
-    
+
     return Container(
       height: _getCalendarHeight(),
       child: _buildCalendarView(calendarEvents),
@@ -58,7 +58,7 @@ class CalendarViewWidget extends StatelessWidget {
             showTime: true,
           ),
         );
-        
+
       case CalendarViewType.week:
         return WeekView(
           controller: EventController()..addAll(calendarEvents),
@@ -83,7 +83,7 @@ class CalendarViewWidget extends StatelessWidget {
             showTime: true,
           ),
         );
-        
+
       case CalendarViewType.month:
         return MonthView(
           controller: EventController()..addAll(calendarEvents),
@@ -128,7 +128,7 @@ class CalendarViewWidget extends StatelessWidget {
         // Fallback to type-based color
       }
     }
-    
+
     return Color(int.parse(event.type.color.replaceFirst('#', '0xFF')));
   }
 
@@ -144,10 +144,10 @@ class CalendarViewWidget extends StatelessWidget {
     DateTime endDuration,
   ) {
     if (events.isEmpty) return const SizedBox.shrink();
-    
+
     final event = events.first;
     final originalEvent = _findOriginalEvent(event);
-    
+
     return Container(
       margin: EdgeInsets.all(2.w),
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
@@ -207,30 +207,6 @@ class CalendarViewWidget extends StatelessWidget {
     );
   }
 
-  Widget _weekTitleBuilder(DateTime startDate, DateTime endDate) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.1),
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey.withValues(alpha: 0.3),
-            width: 1,
-          ),
-        ),
-      ),
-      child: Center(
-        child: Text(
-          '${startDate.day} - ${endDate.day} ${_getMonthName(startDate.month)} ${startDate.year}',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _monthHeaderBuilder(DateTime month) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -242,91 +218,6 @@ class CalendarViewWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _monthCellBuilder(
-    DateTime date,
-    List<CalendarEventData> events,
-    bool isToday,
-    bool isInMonth,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isToday 
-            ? Colors.blue.withValues(alpha: 0.1)
-            : Colors.transparent,
-        border: Border.all(
-          color: Colors.grey.withValues(alpha: 0.2),
-          width: 0.5,
-        ),
-      ),
-      child: Column(
-        children: [
-          // Date number
-          Container(
-            padding: EdgeInsets.all(4.w),
-            child: Text(
-              date.day.toString(),
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                color: isInMonth 
-                    ? (isToday ? Colors.blue : Colors.black)
-                    : Colors.grey,
-              ),
-            ),
-          ),
-          
-          // Event indicators
-          if (events.isNotEmpty) ...[
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                itemCount: events.length > 3 ? 3 : events.length,
-                itemBuilder: (context, index) {
-                  if (index == 2 && events.length > 3) {
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 1.h),
-                      padding: EdgeInsets.symmetric(horizontal: 2.w),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(2.r),
-                      ),
-                      child: Text(
-                        '+${events.length - 2}',
-                        style: TextStyle(
-                          fontSize: 8.sp,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    );
-                  }
-                  
-                  final event = events[index];
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 1.h),
-                    padding: EdgeInsets.symmetric(horizontal: 2.w),
-                    decoration: BoxDecoration(
-                      color: event.color,
-                      borderRadius: BorderRadius.circular(2.r),
-                    ),
-                    child: Text(
-                      event.title,
-                      style: TextStyle(
-                        fontSize: 8.sp,
-                        color: Colors.white,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
@@ -364,8 +255,18 @@ class CalendarViewWidget extends StatelessWidget {
 
   String _getMonthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     return months[month - 1];
   }

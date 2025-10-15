@@ -89,6 +89,23 @@ import '../../features/parts/domain/usecases/get_parts_usecase.dart' as _i637;
 import '../../features/parts/domain/usecases/search_parts_usecase.dart'
     as _i170;
 import '../../features/parts/presentation/blocs/parts/parts_bloc.dart' as _i344;
+import '../../features/permission/data/datasources/permission_remote_datasource.dart'
+    as _i544;
+import '../../features/permission/data/di/permission_module.dart' as _i469;
+import '../../features/permission/domain/repositories/i_permission_repository.dart'
+    as _i165;
+import '../../features/permission/domain/usecases/check_multiple_permission_status_usecase.dart'
+    as _i992;
+import '../../features/permission/domain/usecases/check_permission_status_usecase.dart'
+    as _i428;
+import '../../features/permission/domain/usecases/open_app_settings_usecase.dart'
+    as _i418;
+import '../../features/permission/domain/usecases/request_multiple_permissions_usecase.dart'
+    as _i804;
+import '../../features/permission/domain/usecases/request_permission_usecase.dart'
+    as _i478;
+import '../../features/permission/presentation/blocs/permission/permission_bloc.dart'
+    as _i993;
 import '../../features/profile/data/api/profile_api_client.dart' as _i751;
 import '../../features/profile/data/api/profile_api_module.dart' as _i862;
 import '../../features/profile/data/datasources/profile_local_datasource.dart'
@@ -148,8 +165,12 @@ import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../router/app_router.dart' as _i81;
 import '../services/alice_service.dart' as _i304;
+import '../services/error_boundary_service.dart' as _i600;
+import '../services/lazy_loading_service.dart' as _i870;
 import '../services/location_service.dart' as _i669;
 import '../services/logging_service.dart' as _i520;
+import '../services/memory_management_service.dart' as _i1066;
+import '../services/performance_service.dart' as _i910;
 import '../storage/cache_manager.dart' as _i1038;
 import '../storage/hive_service.dart' as _i459;
 
@@ -165,6 +186,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final connectivityModule = _$ConnectivityModule();
+    final permissionModule = _$PermissionModule();
     final networkModule = _$NetworkModule();
     final calendarApiModule = _$CalendarApiModule();
     final authModule = _$AuthModule();
@@ -173,17 +195,26 @@ extension GetItInjectableX on _i174.GetIt {
     final partsApiModule = _$PartsApiModule();
     final documentModule = _$DocumentModule();
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
-    gh.factory<_i669.LocationService>(() => _i669.LocationService());
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
+    gh.factory<_i544.PermissionRemoteDataSource>(
+        () => _i544.PermissionRemoteDataSource());
     gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
-    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
+    gh.singleton<_i600.ErrorBoundaryService>(
+        () => _i600.ErrorBoundaryService());
+    gh.singleton<_i870.LazyLoadingService>(() => _i870.LazyLoadingService());
+    gh.singleton<_i1066.MemoryManagementService>(
+        () => _i1066.MemoryManagementService());
+    gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
     gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
+    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
     gh.singleton<_i188.ErrorBloc>(
         () => _i188.ErrorBloc(gh<_i520.LoggingService>()));
     gh.singleton<_i304.AliceService>(
         () => _i304.AliceService(gh<_i520.LoggingService>()));
     gh.factory<_i1046.ProfileLocalDataSource>(
         () => _i1046.ProfileLocalDataSourceImpl());
+    gh.factory<_i494.CalendarLocalDataSource>(
+        () => _i494.CalendarLocalDataSourceImpl());
     gh.factory<_i506.DocumentLocalDataSource>(
         () => _i506.DocumentLocalDataSourceImpl());
     gh.factoryAsync<_i701.WorkOrderLocalDataSource>(() async =>
@@ -195,8 +226,20 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()));
     gh.factoryAsync<_i992.AuthLocalDataSource>(() async =>
         _i992.AuthLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
-    gh.factoryAsync<_i494.CalendarLocalDataSource>(() async =>
-        _i494.CalendarLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
+    gh.lazySingleton<_i165.IPermissionRepository>(() => permissionModule
+        .permissionRepository(gh<_i544.PermissionRemoteDataSource>()));
+    gh.factory<_i418.OpenAppSettingsUseCase>(
+        () => _i418.OpenAppSettingsUseCase(gh<_i165.IPermissionRepository>()));
+    gh.factory<_i478.RequestPermissionUseCase>(() =>
+        _i478.RequestPermissionUseCase(gh<_i165.IPermissionRepository>()));
+    gh.factory<_i804.RequestMultiplePermissionsUseCase>(() =>
+        _i804.RequestMultiplePermissionsUseCase(
+            gh<_i165.IPermissionRepository>()));
+    gh.factory<_i992.CheckMultiplePermissionStatusUseCase>(() =>
+        _i992.CheckMultiplePermissionStatusUseCase(
+            gh<_i165.IPermissionRepository>()));
+    gh.factory<_i428.CheckPermissionStatusUseCase>(() =>
+        _i428.CheckPermissionStatusUseCase(gh<_i165.IPermissionRepository>()));
     gh.factoryAsync<_i641.PartsLocalDataSource>(() async =>
         _i641.PartsLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
     gh.factoryAsync<_i908.AuthInterceptor>(() async =>
@@ -212,6 +255,16 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i932.NetworkInfo>(),
           gh<_i895.Connectivity>(),
         ));
+    gh.factory<_i993.PermissionBloc>(() => _i993.PermissionBloc(
+          gh<_i428.CheckPermissionStatusUseCase>(),
+          gh<_i992.CheckMultiplePermissionStatusUseCase>(),
+          gh<_i478.RequestPermissionUseCase>(),
+          gh<_i804.RequestMultiplePermissionsUseCase>(),
+          gh<_i418.OpenAppSettingsUseCase>(),
+          gh<_i165.IPermissionRepository>(),
+        ));
+    gh.factory<_i669.LocationService>(
+        () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
     gh.factoryAsync<_i584.CalendarApiClient>(() async =>
         calendarApiModule.calendarApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i541.AuthApiClient>(
@@ -261,7 +314,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<_i342.ICalendarRepository>(
         () async => _i712.CalendarRepositoryImpl(
               await getAsync<_i123.CalendarRemoteDataSource>(),
-              await getAsync<_i494.CalendarLocalDataSource>(),
+              gh<_i494.CalendarLocalDataSource>(),
               gh<_i932.NetworkInfo>(),
             ));
     gh.factoryAsync<_i556.IWorkOrderRepository>(
@@ -410,6 +463,8 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$ConnectivityModule extends _i932.ConnectivityModule {}
+
+class _$PermissionModule extends _i469.PermissionModule {}
 
 class _$NetworkModule extends _i667.NetworkModule {}
 

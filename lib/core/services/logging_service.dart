@@ -35,6 +35,44 @@ enum LogLevel {
 @singleton
 class LoggingService {
   static const String _tag = 'FSM_LOG';
+  // ignore: unused_field
+  static LoggingService? _instance;
+
+  /// Initialize the logging service with configuration
+  static void initialize({
+    bool enableConsoleLogging = true,
+    bool enableFileLogging = false,
+    LogLevel logLevel = LogLevel.info,
+  }) {
+    // Store configuration for later use
+    // In a real implementation, you would configure the logging framework here
+  }
+
+  /// Static method for logging info messages
+  static void logInfo(String message, {String? tag, Object? data}) {
+    if (kDebugMode) {
+      final timestamp = DateTime.now().toIso8601String().substring(11, 19);
+      final logTag = tag ?? _tag;
+      print('ℹ️ [$timestamp] $logTag: $message');
+      if (data != null) {
+        print('  📄 Data: $data');
+      }
+    }
+  }
+
+  /// Static method for logging error messages
+  static void logError(String message,
+      {String? tag, Object? error, StackTrace? stackTrace}) {
+    final timestamp = DateTime.now().toIso8601String().substring(11, 19);
+    final logTag = tag ?? _tag;
+    print('❌ [$timestamp] $logTag: $message');
+    if (error != null) {
+      print('  📄 Error: $error');
+    }
+    if (stackTrace != null) {
+      print('  📚 Stack trace:\n$stackTrace');
+    }
+  }
 
   /// Log a debug message (only in debug mode)
   void debug(String message,

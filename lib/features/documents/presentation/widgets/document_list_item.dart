@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/entities/document_entity.dart';
 
 class DocumentListItem extends StatelessWidget {
@@ -22,7 +21,7 @@ class DocumentListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       elevation: 2,
@@ -55,7 +54,7 @@ class DocumentListItem extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 12.w),
-                  
+
                   // Document info
                   Expanded(
                     child: Column(
@@ -81,7 +80,7 @@ class DocumentListItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 8.h),
-                        
+
                         // Document metadata
                         Row(
                           children: [
@@ -91,7 +90,8 @@ class DocumentListItem extends StatelessWidget {
                                 vertical: 4.h,
                               ),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withOpacity(0.1),
+                                color:
+                                    theme.colorScheme.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(4.r),
                               ),
                               child: Text(
@@ -107,7 +107,8 @@ class DocumentListItem extends StatelessWidget {
                             Text(
                               document.fileSizeFormatted,
                               style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.6),
                                 fontSize: 12.sp,
                               ),
                             ),
@@ -116,7 +117,7 @@ class DocumentListItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   // Download status and actions
                   Column(
                     children: [
@@ -158,7 +159,6 @@ class DocumentListItem extends StatelessWidget {
                             minHeight: 32.h,
                           ),
                         ),
-                      
                       if (document.isAvailableOffline && onDelete != null)
                         IconButton(
                           onPressed: onDelete,
@@ -177,7 +177,7 @@ class DocumentListItem extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               // Categories
               if (document.categories.isNotEmpty) ...[
                 SizedBox(height: 12.h),

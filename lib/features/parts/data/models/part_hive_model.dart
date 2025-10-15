@@ -6,7 +6,7 @@ part 'part_hive_model.freezed.dart';
 part 'part_hive_model.g.dart';
 
 @freezed
-@HiveType(typeId: 4)
+@HiveType(typeId: 7)
 class PartHiveModel with _$PartHiveModel {
   const factory PartHiveModel({
     @HiveField(0) required String partNumber,

@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
 import 'package:hive/hive.dart';
-import 'package:fsm/core/storage/hive_service.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
 import 'package:fsm/features/calendar/data/models/calendar_event_hive_model.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
@@ -28,9 +27,7 @@ abstract class CalendarLocalDataSource {
 
 @Injectable(as: CalendarLocalDataSource)
 class CalendarLocalDataSourceImpl implements CalendarLocalDataSource {
-  final HiveService _hiveService;
-
-  CalendarLocalDataSourceImpl(this._hiveService);
+  CalendarLocalDataSourceImpl();
 
   Box<CalendarEventHiveModel> get _eventsBox =>
       Hive.box<CalendarEventHiveModel>(HiveBoxes.calendarEvents);
@@ -56,15 +53,13 @@ class CalendarLocalDataSourceImpl implements CalendarLocalDataSource {
     if (startDate != null && endDate != null) {
       allEvents = allEvents.where((event) {
         return event.startTime.isAfter(startDate.subtract(Duration(days: 1))) &&
-               event.startTime.isBefore(endDate.add(Duration(days: 1)));
+            event.startTime.isBefore(endDate.add(Duration(days: 1)));
       }).toList();
     }
 
     // Filter by type if provided
     if (type != null) {
-      allEvents = allEvents
-          .where((event) => event.type == type.index)
-          .toList();
+      allEvents = allEvents.where((event) => event.type == type.index).toList();
     }
 
     // Sort by start time
@@ -100,9 +95,7 @@ class CalendarLocalDataSourceImpl implements CalendarLocalDataSource {
   @override
   Future<List<CalendarEventHiveModel>> getPendingSyncEvents() async {
     final box = _eventsBox;
-    return box.values
-        .where((event) => event.isPendingSync)
-        .toList();
+    return box.values.where((event) => event.isPendingSync).toList();
   }
 
   @override
@@ -137,12 +130,11 @@ class CalendarLocalDataSourceImpl implements CalendarLocalDataSource {
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = startOfDay.add(Duration(days: 1));
 
-    return box.values
-        .where((event) {
-          return event.startTime.isAfter(startOfDay.subtract(Duration(seconds: 1))) &&
-                 event.startTime.isBefore(endOfDay);
-        })
-        .toList()
+    return box.values.where((event) {
+      return event.startTime
+              .isAfter(startOfDay.subtract(Duration(seconds: 1))) &&
+          event.startTime.isBefore(endOfDay);
+    }).toList()
       ..sort((a, b) => a.startTime.compareTo(b.startTime));
   }
 
@@ -152,13 +144,12 @@ class CalendarLocalDataSourceImpl implements CalendarLocalDataSource {
     required DateTime endDate,
   }) async {
     final box = _eventsBox;
-    
-    return box.values
-        .where((event) {
-          return event.startTime.isAfter(startDate.subtract(Duration(seconds: 1))) &&
-                 event.startTime.isBefore(endDate.add(Duration(seconds: 1)));
-        })
-        .toList()
+
+    return box.values.where((event) {
+      return event.startTime
+              .isAfter(startDate.subtract(Duration(seconds: 1))) &&
+          event.startTime.isBefore(endDate.add(Duration(seconds: 1)));
+    }).toList()
       ..sort((a, b) => a.startTime.compareTo(b.startTime));
   }
 }

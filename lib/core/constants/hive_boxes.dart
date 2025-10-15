@@ -10,8 +10,8 @@ abstract class HiveBoxes {
   static const String profile = 'profile_box';
   static const String profilePreferences = 'profile_preferences_box';
   static const String settingsBox = 'settings_box';
-  
-  // Type IDs for Hive adapters (matching work_order_hive_model.dart)
+
+  // Type IDs for Hive adapters
   static const int userEntityTypeId = 0;
   static const int workOrderEntityTypeId = 1;
   static const int partUsedEntityTypeId = 2;
@@ -23,4 +23,6 @@ abstract class HiveBoxes {
   static const int documentEntityTypeId = 8;
   static const int calendarEventEntityTypeId = 9;
   static const int profileEntityTypeId = 10;
+  static const int profilePreferencesEntityTypeId = 11;
+  static const int workOrderPartEntityTypeId = 12;
 }

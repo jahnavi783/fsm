@@ -8,7 +8,7 @@ part of 'part_hive_model.dart';
 
 class PartHiveModelAdapter extends TypeAdapter<PartHiveModel> {
   @override
-  final int typeId = 4;
+  final int typeId = 7;
 
   @override
   PartHiveModel read(BinaryReader reader) {

@@ -43,7 +43,7 @@ abstract class NetworkModule {
       ),
     ]);
 
-    // Alice HTTP inspection - will be configured at app level
+    // Alice HTTP inspection using alice_dio adapter (debug builds only)
     if (AppConfig.isDebug) {
       aliceService.configureDio(dio);
     }

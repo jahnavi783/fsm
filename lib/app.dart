@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
+import 'core/services/alice_service.dart';
 import 'core/services/error_boundary_service.dart';
+import 'core/theme/theme.dart';
 import 'core/widgets/error_boundary_widget.dart';
 import 'core/widgets/optimized_splash_screen.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
@@ -99,8 +101,21 @@ class _MyAppState extends State<MyApp> {
                   title: AppConfig.appName,
                   debugShowCheckedModeBanner: AppConfig.isDebug,
                   routerConfig: appRouter.config(),
-                  theme: _buildAppTheme(),
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: ThemeMode.light,
                   builder: (context, child) {
+                    // Initialize Alice for debug builds (works with auto_route)
+                    if (AppConfig.isDebug) {
+                      try {
+                        final aliceService = getIt<AliceService>();
+                        // Alice will overlay on the current navigator automatically
+                        debugPrint('Alice service initialized and ready for HTTP inspection');
+                      } catch (e) {
+                        debugPrint('Alice service not available: $e');
+                      }
+                    }
+
                     // Wrap entire app in error boundary and performance monitoring
                     return ErrorBoundaryWidget(
                       onError: (error, stackTrace) {
@@ -118,62 +133,6 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  ThemeData _buildAppTheme() {
-    return ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
-        brightness: Brightness.light,
-      ),
-      useMaterial3: true,
-      // Responsive text theme
-      textTheme: TextTheme(
-        displayLarge: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-        displayMedium: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
-        displaySmall: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-        headlineLarge: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
-        headlineMedium: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-        titleLarge: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-        titleMedium: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-        titleSmall: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
-        bodyLarge: TextStyle(fontSize: 16.sp),
-        bodyMedium: TextStyle(fontSize: 14.sp),
-        bodySmall: TextStyle(fontSize: 12.sp),
-        labelLarge: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-        labelMedium: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
-        labelSmall: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
-      ),
-      // Enhanced button themes
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(double.infinity, 48.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          elevation: 2,
-        ),
-      ),
-      // Enhanced card theme
-      cardTheme: CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      ),
-      // Enhanced app bar theme
-      appBarTheme: AppBarTheme(
-        elevation: 0,
-        centerTitle: true,
-        titleTextStyle: TextStyle(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w600,
-          color: Colors.black87,
-        ),
       ),
     );
   }

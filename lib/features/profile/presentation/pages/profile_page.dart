@@ -110,10 +110,13 @@ class ProfileView extends StatelessWidget {
           return state.when(
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (profile, preferences) => _buildLoadedContent(context, profile, preferences),
+            loaded: (profile, preferences) =>
+                _buildLoadedContent(context, profile, preferences),
             updating: () => const Center(child: CircularProgressIndicator()),
-            updated: (profile, preferences) => _buildLoadedContent(context, profile, preferences),
-            preferencesUpdated: (profile, preferences) => _buildLoadedContent(context, profile, preferences),
+            updated: (profile, preferences) =>
+                _buildLoadedContent(context, profile, preferences),
+            preferencesUpdated: (profile, preferences) =>
+                _buildLoadedContent(context, profile, preferences),
             loggedOut: () => const Center(
               child: Text('Logged out. Redirecting...'),
             ),
@@ -149,7 +152,9 @@ class ProfileView extends StatelessWidget {
                   SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<ProfileBloc>().add(const ProfileEvent.loadProfile());
+                      context
+                          .read<ProfileBloc>()
+                          .add(const ProfileEvent.loadProfile());
                     },
                     child: const Text('Retry'),
                   ),
@@ -215,8 +220,8 @@ class ProfileView extends StatelessWidget {
                     pushNotificationsEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
               SettingsToggleItem(
@@ -229,8 +234,8 @@ class ProfileView extends StatelessWidget {
                     emailNotificationsEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
             ],
@@ -252,8 +257,8 @@ class ProfileView extends StatelessWidget {
                     locationTrackingEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
               SettingsToggleItem(
@@ -266,8 +271,8 @@ class ProfileView extends StatelessWidget {
                     darkModeEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
               SettingsToggleItem(
@@ -280,8 +285,8 @@ class ProfileView extends StatelessWidget {
                     offlineSyncEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
               SettingsToggleItem(
@@ -294,8 +299,8 @@ class ProfileView extends StatelessWidget {
                     autoLogoutEnabled: value,
                   );
                   context.read<ProfileBloc>().add(
-                    ProfileEvent.updatePreferences(updatedPreferences),
-                  );
+                        ProfileEvent.updatePreferences(updatedPreferences),
+                      );
                 },
               ),
             ],
@@ -338,7 +343,8 @@ class ProfileView extends StatelessWidget {
                   // TODO: Navigate to change password page
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Change password functionality coming soon'),
+                      content:
+                          Text('Change password functionality coming soon'),
                     ),
                   );
                 },
@@ -362,7 +368,8 @@ class ProfileView extends StatelessWidget {
                   // TODO: Navigate to terms of service page
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Terms of service functionality coming soon'),
+                      content:
+                          Text('Terms of service functionality coming soon'),
                     ),
                   );
                 },
@@ -373,9 +380,12 @@ class ProfileView extends StatelessWidget {
                 iconColor: Colors.orange,
                 textColor: Colors.orange,
                 onTap: () async {
-                  final shouldLogout = await LogoutConfirmationDialog.show(context);
+                  final shouldLogout =
+                      await LogoutConfirmationDialog.show(context);
                   if (shouldLogout == true) {
-                    context.read<ProfileBloc>().add(const ProfileEvent.logout());
+                    context
+                        .read<ProfileBloc>()
+                        .add(const ProfileEvent.logout());
                   }
                 },
               ),

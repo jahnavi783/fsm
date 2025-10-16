@@ -1,4 +1,5 @@
 import 'package:alice/alice.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -39,7 +40,7 @@ class AliceService {
   /// Get Alice instance
   Alice get alice => _alice;
 
-  /// Configure Dio to work with Alice by adding interceptor (dev environment only)
+  /// Configure Dio to work with Alice by adding proper alice_dio adapter (dev environment only)
   void configureDio(Dio dio) {
     if (!AppConfig.isDebug || !_isInitialized) {
       _loggingService.debug(
@@ -49,13 +50,15 @@ class AliceService {
     }
 
     try {
-      // Add Alice's Dio interceptor for HTTP tracking
-      dio.interceptors.add(AliceHttpInterceptor(this));
+      // Create single Alice Dio adapter instance for proper HTTP tracking
+      final aliceAdapter = AliceDioAdapter();
+      _alice.addAdapter(aliceAdapter);
+      dio.interceptors.add(aliceAdapter);
       _loggingService.info(
-          'Alice HTTP interceptor added successfully for dev environment',
+          'Alice Dio adapter added successfully for dev environment',
           tag: 'ALICE');
     } catch (e, stackTrace) {
-      _loggingService.error('Alice interceptor configuration failed',
+      _loggingService.error('Alice Dio adapter configuration failed',
           tag: 'ALICE', error: e, stackTrace: stackTrace);
     }
   }
@@ -197,63 +200,3 @@ class AliceService {
   }
 }
 
-/// Custom Dio interceptor to integrate with Alice for HTTP tracking
-class AliceHttpInterceptor extends Interceptor {
-  final AliceService aliceService;
-
-  AliceHttpInterceptor(this.aliceService);
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (AppConfig.isDebug && aliceService._isInitialized) {
-      // Log request
-      aliceService._loggingService.network(
-        options.method,
-        options.uri.toString(),
-        data: options.data,
-      );
-
-      // Let Alice handle the HTTP call tracking
-      aliceService.addLog('→ ${options.method} ${options.uri}',
-          level: 'REQUEST');
-    }
-    super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    if (AppConfig.isDebug && aliceService._isInitialized) {
-      // Log response
-      aliceService._loggingService.network(
-        response.requestOptions.method,
-        response.requestOptions.uri.toString(),
-        statusCode: response.statusCode,
-        data: response.data,
-      );
-
-      aliceService.addLog(
-        '← ${response.statusCode} ${response.requestOptions.uri}',
-        level: 'RESPONSE',
-      );
-    }
-    super.onResponse(response, handler);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    if (AppConfig.isDebug && aliceService._isInitialized) {
-      // Log error
-      aliceService._loggingService.error(
-        'HTTP Error: ${err.response?.statusCode ?? 'NO_STATUS'} ${err.requestOptions.uri}',
-        tag: 'NETWORK',
-        error: err.message,
-      );
-
-      aliceService.addLog(
-        '❌ ${err.response?.statusCode ?? 'ERROR'} ${err.requestOptions.uri}: ${err.message}',
-        level: 'ERROR',
-      );
-    }
-    super.onError(err, handler);
-  }
-}

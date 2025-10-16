@@ -62,7 +62,7 @@ class DeveloperOptionsPage extends StatelessWidget {
                     Icon(Icons.check_circle, color: Colors.green, size: 16.sp),
                     SizedBox(width: 8.w),
                     Text(
-                      'Debug Mode: ${AppConfig.isDebug ? 'ENABLED' : 'DISABLED'} | Alice: CONFIGURED',
+                      'Debug Mode: ${AppConfig.isDebug ? 'ENABLED' : 'DISABLED'} | Alice: UPDATED & CONFIGURED',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.green[700],

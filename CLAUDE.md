@@ -146,22 +146,22 @@ flutter pub outdated
    - Dependency injection configuration
 
 ### Key Technology Stack
-- **State Management:** flutter_bloc ^8.1.6
-- **Dependency Injection:** injectable ^2.4.4 + get_it ^8.0.2
-- **Routing:** auto_route ^9.2.2 (code-generated, type-safe routing)
-- **Network:** dio ^5.7.0 + retrofit ^4.4.1
-- **Data Serialization:** freezed ^2.5.7 + json_serializable ^6.8.0
-- **Local Storage:** hive ^2.2.3 + hive_flutter ^1.1.0 + hive_generator ^2.0.1
-- **Asset Generation:** flutter_gen_runner ^5.7.0 (type-safe asset access)
-- **Location:** location ^7.0.0 + flutter_map ^7.0.2
-- **Media:** image_picker ^1.1.2 + file_picker ^8.1.2
+- **State Management:** flutter_bloc ^9.1.1
+- **Dependency Injection:** injectable ^2.5.2 + get_it ^8.2.0
+- **Routing:** auto_route ^9.3.0 (code-generated, type-safe routing)
+- **Network:** dio ^5.9.0 + retrofit ^4.7.3
+- **Data Serialization:** freezed ^2.5.2 + json_serializable ^6.8.0
+- **Local Storage:** hive_ce ^2.15.0 + hive_ce_generator ^1.4.0 (using community edition)
+- **Asset Generation:** flutter_gen_runner ^5.9.0 (temporarily disabled due to version conflicts)
+- **Location:** location ^8.0.1 + flutter_map ^8.2.2
+- **Media:** image_picker ^1.2.0 + file_picker ^10.3.3
 - **UI:** flutter_screenutil ^5.9.3 + shimmer ^3.0.0
-- **Forms:** reactive_forms ^17.0.1
-- **Documents:** syncfusion_flutter_pdfviewer ^27.1.48
-- **Calendar:** calendar_view ^1.2.0
+- **Forms:** reactive_forms ^18.1.1
+- **Documents:** syncfusion_flutter_pdfviewer ^31.1.23
+- **Calendar:** calendar_view ^1.4.0
 - **Code Generation:** build_runner ^2.4.13
-- **Network Debugging:** pretty_dio_logger ^1.4.0 + dio_smart_retry ^6.0.0
-- **Functional Programming:** dartz ^0.10.1 or either_dart ^1.0.0
+- **Network Debugging:** pretty_dio_logger ^1.4.0 + dio_smart_retry ^7.0.1 + alice ^1.0.0
+- **Functional Programming:** either_dart ^1.0.0
 
 ### Recommended pubspec.yaml
 ```yaml
@@ -277,11 +277,12 @@ This project leverages code generators for:
 - Improved `copyWith` generation
 - No breaking changes, but regenerate for optimizations
 
-### Hive 2.2.x (Official Package)
-- Using official Hive package (not hive_ce fork)
-- `hive_flutter` replaces `Hive.initFlutter()` functionality
-- `hive_generator` for adapter generation
-- Compatible with null-safety
+### Hive CE 2.15.x (Community Edition)
+- Using Hive Community Edition (hive_ce) for better maintenance and features
+- No separate `hive_flutter` needed - initialization handled by `HiveService.create()`
+- `hive_ce_generator` for adapter generation
+- Automatic adapter registration via `HiveRegistrar` extension
+- Compatible with null-safety and modern Flutter versions
 
 ### Flutter Gen 5.7.x
 - Now runs via `flutter_gen_runner` through build_runner
@@ -295,12 +296,12 @@ This project leverages code generators for:
 - Better error handling
 - `@factoryMethod` for constructor injection with Injectable
 
-### Flutter BLoC 8.1.x (from 9.x if downgrading)
-- **Note:** Version 8.1.6 is stable and widely used
-- If documentation references 9.0.0, that was a typo
-- API is stable from 8.0.0+
-- Transformer API for event handling
-- Full null-safety support
+### Flutter BLoC 9.1.x (Latest Version)
+- **Note:** Version 9.1.1 is the latest stable version in use
+- Enhanced null-safety support and improved performance
+- Better integration with modern Flutter widgets
+- Transformer API for advanced event handling
+- Improved error handling and state management
 
 ### Key Migration Tips
 ```bash

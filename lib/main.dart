@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,8 +10,6 @@ import 'core/config/environment_resolver.dart' as env;
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/services/error_boundary_service.dart';
-import 'core/services/memory_management_service.dart';
-import 'core/services/performance_service.dart';
 import 'core/storage/hive_service.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
@@ -108,16 +107,16 @@ Future<void> _initializeApp() async {
   await configureDependencies(env.Environment.name);
 
   // Initialize performance monitoring
-  final performanceService = getIt<PerformanceService>();
-  performanceService.measureMemory('app_initialization');
+  // final performanceService = getIt<PerformanceService>();
+  // performanceService.measureMemory('app_initialization');
 
   // Initialize error boundary service
   final errorBoundaryService = getIt<ErrorBoundaryService>();
   errorBoundaryService.initialize();
 
-  // Initialize memory management
-  final memoryService = getIt<MemoryManagementService>();
-  memoryService.initialize();
+  // // Initialize memory management
+  // final memoryService = getIt<MemoryManagementService>();
+  // memoryService.initialize();
 
   // Pre-warm critical services
   await _prewarmServices();

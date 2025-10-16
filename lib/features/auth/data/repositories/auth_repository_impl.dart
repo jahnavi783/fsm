@@ -1,6 +1,7 @@
-import 'package:either_dart/either.dart';
 import 'package:dio/dio.dart';
+import 'package:either_dart/either.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/user_entity.dart';
@@ -169,13 +170,13 @@ class AuthRepositoryImpl implements IAuthRepository {
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
         final message = e.response?.data?['message'] ?? 'Server error';
-        
+
         if (statusCode == 401) {
           return const AuthenticationFailure(
             message: 'Invalid credentials or session expired',
           );
         }
-        
+
         return ServerFailure(
           message: message,
           statusCode: statusCode,

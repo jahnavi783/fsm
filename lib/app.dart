@@ -6,10 +6,8 @@ import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/services/error_boundary_service.dart';
-import 'core/services/performance_service.dart';
 import 'core/widgets/error_boundary_widget.dart';
 import 'core/widgets/optimized_splash_screen.dart';
-import 'core/widgets/performance_monitor_widget.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
 class MyApp extends StatefulWidget {
@@ -20,23 +18,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final PerformanceService _performanceService;
+  // late final PerformanceService _performanceService;
   late final ErrorBoundaryService _errorBoundaryService;
 
   @override
   void initState() {
     super.initState();
-    _performanceService = getIt<PerformanceService>();
+    // _performanceService = getIt<PerformanceService>();
     _errorBoundaryService = getIt<ErrorBoundaryService>();
 
     // Initialize error boundary
     _errorBoundaryService.initialize();
 
     // Start monitoring frame performance
-    _performanceService.monitorFramePerformance();
+    // _performanceService.monitorFramePerformance();
 
     // Start app startup timer
-    _performanceService.startTimer('app_startup');
+    // _performanceService.startTimer('app_startup');
   }
 
   @override
@@ -87,7 +85,7 @@ class _MyAppState extends State<MyApp> {
           final authBloc = snapshot.data!;
 
           // End startup timer
-          _performanceService.endTimer('app_startup');
+          // _performanceService.endTimer('app_startup');
 
           return BlocProvider.value(
             value: authBloc,
@@ -104,17 +102,15 @@ class _MyAppState extends State<MyApp> {
                   theme: _buildAppTheme(),
                   builder: (context, child) {
                     // Wrap entire app in error boundary and performance monitoring
-                    return PerformanceMonitorWidget(
-                      child: ErrorBoundaryWidget(
-                        onError: (error, stackTrace) {
-                          _errorBoundaryService.reportError(
-                            error,
-                            stackTrace,
-                            context: 'App navigation',
-                          );
-                        },
-                        child: child ?? const SizedBox.shrink(),
-                      ),
+                    return ErrorBoundaryWidget(
+                      onError: (error, stackTrace) {
+                        _errorBoundaryService.reportError(
+                          error,
+                          stackTrace,
+                          context: 'App navigation',
+                        );
+                      },
+                      child: child ?? const SizedBox.shrink(),
                     );
                   },
                 );

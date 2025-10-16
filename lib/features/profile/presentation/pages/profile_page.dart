@@ -17,9 +17,39 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ProfileBloc>()..add(const ProfileEvent.loadProfile()),
-      child: const ProfileView(),
+    return FutureBuilder<ProfileBloc>(
+      future: getIt.getAsync<ProfileBloc>(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  SizedBox(height: 16.h),
+                  Text('Error initializing: ${snapshot.error}'),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final profileBloc = snapshot.data!;
+
+        return BlocProvider.value(
+          value: profileBloc..add(const ProfileEvent.loadProfile()),
+          child: const ProfileView(),
+        );
+      },
     );
   }
 }

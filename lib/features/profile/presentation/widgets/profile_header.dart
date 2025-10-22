@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../domain/entities/profile_entity.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -39,7 +40,7 @@ class ProfileHeader extends StatelessWidget {
               Expanded(
                 child: _buildUserInfo(),
               ),
-              if (onEditPressed != null) _buildEditButton(),
+              // if (onEditPressed != null) _buildEditButton(),
             ],
           ),
         ],
@@ -111,14 +112,14 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildEditButton() {
-    return IconButton(
-      onPressed: onEditPressed,
-      icon: Icon(
-        Icons.edit,
-        color: Colors.white,
-        size: 24.sp,
-      ),
-    );
-  }
+//   Widget _buildEditButton() {
+//     return IconButton(
+//       onPressed: onEditPressed,
+//       icon: Icon(
+//         Icons.edit,
+//         color: Colors.white,
+//         size: 24.sp,
+//       ),
+//     );
+//   }
 }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/profile_entity.dart';
@@ -27,43 +28,66 @@ class ProfileRepositoryImpl implements IProfileRepository {
   Future<Either<Failure, ProfileEntity>> getProfile() async {
     try {
       if (await _networkInfo.isConnected) {
-        // Try remote first
-        final profileDto = await _remoteDataSource.getProfile();
-        final preferencesDto = await _remoteDataSource.getPreferences();
-        
-        // Cache successful response
+        // Make only ONE API call to get current user data
+        final userDto = await _remoteDataSource.getCurrentUser();
+
+        // Create default preferences (can be loaded separately if needed)
+        final defaultPreferences = const ProfilePreferences();
+
+        // Try to get cached preferences, fallback to defaults
+        ProfilePreferences preferences = defaultPreferences;
+        try {
+          final cachedPrefs = await _localDataSource.getCachedPreferences();
+          if (cachedPrefs != null) {
+            preferences = cachedPrefs.toEntity();
+          }
+        } catch (e) {
+          // Use defaults if cache fails
+          preferences = defaultPreferences;
+        }
+
+        // Convert UserDto to ProfileEntity
+        final profileEntity = ProfileEntity(
+          id: userDto.id,
+          firstName: userDto.firstName,
+          lastName: userDto.lastName,
+          email: userDto.email,
+          phone: userDto.phone,
+          role: userDto.role,
+          city: userDto.city,
+          dob: userDto.dob,
+          profileImageUrl: null, // UserDto doesn't have this field
+          preferences: preferences,
+        );
+
+        // Cache the profile data
         final profileHiveModel = ProfileHiveModel(
-          id: profileDto.id,
-          firstName: profileDto.firstName,
-          lastName: profileDto.lastName,
-          email: profileDto.email,
-          phone: profileDto.phone,
-          role: profileDto.role,
-          city: profileDto.city,
-          dob: profileDto.dob != null ? DateTime.tryParse(profileDto.dob!) : null,
-          profileImageUrl: profileDto.profileImageUrl,
-          preferences: preferencesDto.toEntity().toHiveModel(),
+          id: userDto.id,
+          firstName: userDto.firstName,
+          lastName: userDto.lastName,
+          email: userDto.email,
+          phone: userDto.phone,
+          role: userDto.role,
+          city: userDto.city,
+          dob: userDto.dob,
+          profileImageUrl: null,
+          preferences: preferences.toHiveModel(),
           cachedAt: DateTime.now(),
         );
-        
+
         await _localDataSource.cacheProfile(profileHiveModel);
-        await _localDataSource.cachePreferences(preferencesDto.toEntity().toHiveModel());
-        
-        // Return domain entity
-        final entity = profileDto.toEntity(preferencesDto.toEntity());
-        return Right(entity);
-        
+
+        return Right(profileEntity);
       } else {
         // Fallback to cache when offline
         final cachedProfile = await _localDataSource.getCachedProfile();
-        final cachedPreferences = await _localDataSource.getCachedPreferences();
-        
-        if (cachedProfile == null || cachedPreferences == null) {
+
+        if (cachedProfile == null) {
           return Left(CacheFailure(
             message: 'No cached profile available offline',
           ));
         }
-        
+
         final entity = cachedProfile.toEntity();
         return Right(entity);
       }
@@ -77,34 +101,56 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<Either<Failure, ProfileEntity>> updateProfile(ProfileEntity profile) async {
+  Future<Either<Failure, ProfileEntity>> updateProfile(
+      ProfileEntity profile) async {
     try {
       if (await _networkInfo.isConnected) {
+        // Convert ProfileEntity to the format expected by the API
+        final profileData = {
+          'first_name': profile.firstName,
+          'last_name': profile.lastName,
+          'email': profile.email,
+          'phone': profile.phone,
+          'city': profile.city,
+          'date_of_birth': profile.dob?.toIso8601String(),
+        };
+
         // Update remote
-        final profileDto = profile.toDto();
-        final updatedProfileDto = await _remoteDataSource.updateProfile(profileDto);
-        
+        final updatedUserDto =
+            await _remoteDataSource.updateProfile(profileData);
+
+        // Create updated profile entity
+        final updatedProfile = ProfileEntity(
+          id: updatedUserDto.id,
+          firstName: updatedUserDto.firstName,
+          lastName: updatedUserDto.lastName,
+          email: updatedUserDto.email,
+          phone: updatedUserDto.phone,
+          role: updatedUserDto.role,
+          city: updatedUserDto.city,
+          dob: updatedUserDto.dob,
+          profileImageUrl: profile.profileImageUrl, // Keep existing image
+          preferences: profile.preferences, // Keep existing preferences
+        );
+
         // Update cache
         final profileHiveModel = ProfileHiveModel(
-          id: updatedProfileDto.id,
-          firstName: updatedProfileDto.firstName,
-          lastName: updatedProfileDto.lastName,
-          email: updatedProfileDto.email,
-          phone: updatedProfileDto.phone,
-          role: updatedProfileDto.role,
-          city: updatedProfileDto.city,
-          dob: updatedProfileDto.dob != null ? DateTime.tryParse(updatedProfileDto.dob!) : null,
-          profileImageUrl: updatedProfileDto.profileImageUrl,
-          preferences: profile.preferences.toHiveModel(),
+          id: updatedProfile.id,
+          firstName: updatedProfile.firstName,
+          lastName: updatedProfile.lastName,
+          email: updatedProfile.email,
+          phone: updatedProfile.phone,
+          role: updatedProfile.role,
+          city: updatedProfile.city,
+          dob: updatedProfile.dob,
+          profileImageUrl: updatedProfile.profileImageUrl,
+          preferences: updatedProfile.preferences.toHiveModel(),
           cachedAt: DateTime.now(),
         );
-        
+
         await _localDataSource.cacheProfile(profileHiveModel);
-        
-        // Return updated entity
-        final entity = updatedProfileDto.toEntity(profile.preferences);
-        return Right(entity);
-        
+
+        return Right(updatedProfile);
       } else {
         return Left(NetworkFailure(
           message: 'Cannot update profile while offline',
@@ -125,24 +171,24 @@ class ProfileRepositoryImpl implements IProfileRepository {
       if (await _networkInfo.isConnected) {
         // Try remote first
         final preferencesDto = await _remoteDataSource.getPreferences();
-        
+
         // Cache successful response
-        await _localDataSource.cachePreferences(preferencesDto.toEntity().toHiveModel());
-        
+        await _localDataSource
+            .cachePreferences(preferencesDto.toEntity().toHiveModel());
+
         // Return domain entity
         final entity = preferencesDto.toEntity();
         return Right(entity);
-        
       } else {
         // Fallback to cache when offline
         final cachedPreferences = await _localDataSource.getCachedPreferences();
-        
+
         if (cachedPreferences == null) {
           return Left(CacheFailure(
             message: 'No cached preferences available offline',
           ));
         }
-        
+
         final entity = cachedPreferences.toEntity();
         return Right(entity);
       }
@@ -156,23 +202,25 @@ class ProfileRepositoryImpl implements IProfileRepository {
   }
 
   @override
-  Future<Either<Failure, ProfilePreferences>> updatePreferences(ProfilePreferences preferences) async {
+  Future<Either<Failure, ProfilePreferences>> updatePreferences(
+      ProfilePreferences preferences) async {
     try {
       // Always update local preferences immediately for better UX
       await _localDataSource.cachePreferences(preferences.toHiveModel());
-      
+
       if (await _networkInfo.isConnected) {
         // Update remote
         final preferencesDto = preferences.toDto();
-        final updatedPreferencesDto = await _remoteDataSource.updatePreferences(preferencesDto);
-        
+        final updatedPreferencesDto =
+            await _remoteDataSource.updatePreferences(preferencesDto);
+
         // Update cache with server response
-        await _localDataSource.cachePreferences(updatedPreferencesDto.toEntity().toHiveModel());
-        
+        await _localDataSource
+            .cachePreferences(updatedPreferencesDto.toEntity().toHiveModel());
+
         // Return updated entity
         final entity = updatedPreferencesDto.toEntity();
         return Right(entity);
-        
       } else {
         // Return local preferences when offline
         return Right(preferences);
@@ -193,11 +241,11 @@ class ProfileRepositoryImpl implements IProfileRepository {
         // Logout from server
         await _remoteDataSource.logout();
       }
-      
+
       // Clear local cache regardless of network status
       await _localDataSource.clearCache();
-      
-      return Right(null);
+
+      return const Right(null);
     } on DioException catch (e) {
       // Still clear cache even if server logout fails
       await _localDataSource.clearCache();
@@ -217,11 +265,11 @@ class ProfileRepositoryImpl implements IProfileRepository {
       if (await _networkInfo.isConnected) {
         // Delete account from server
         await _remoteDataSource.deleteAccount();
-        
+
         // Clear local cache
         await _localDataSource.clearCache();
-        
-        return Right(null);
+
+        return const Right(null);
       } else {
         return Left(NetworkFailure(
           message: 'Cannot delete account while offline',
@@ -239,17 +287,28 @@ class ProfileRepositoryImpl implements IProfileRepository {
   Failure _handleDioException(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
-      case DioExceptionType.receiveTimeout:
       case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
         return NetworkFailure(message: 'Connection timeout');
-      case DioExceptionType.connectionError:
-        return NetworkFailure(message: 'No internet connection');
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
-        final message = e.response?.data?['message'] ?? 'Server error';
-        return ServerFailure(message: message, statusCode: statusCode);
+        if (statusCode == 401) {
+          return const AuthenticationFailure(message: 'Authentication failed');
+        } else if (statusCode == 404) {
+          return ServerFailure(message: 'Profile not found');
+        } else {
+          return ServerFailure(
+            message:
+                'Server error: ${e.response?.statusMessage ?? 'Unknown error'}',
+          );
+        }
+      case DioExceptionType.cancel:
+        return NetworkFailure(message: 'Request cancelled');
+      case DioExceptionType.connectionError:
+        return NetworkFailure(message: 'No internet connection');
+      case DioExceptionType.unknown:
       default:
-        return ServerFailure(message: 'Unknown error occurred');
+        return ServerFailure(message: 'Unexpected error: ${e.message}');
     }
   }
 }

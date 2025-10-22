@@ -1,12 +1,15 @@
 import 'package:injectable/injectable.dart';
+
+import '../../../auth/data/models/user_dto.dart';
 import '../api/profile_api_client.dart';
 import '../models/profile_dto.dart';
 
 abstract class ProfileRemoteDataSource {
-  Future<ProfileDto> getProfile();
-  Future<ProfileDto> updateProfile(ProfileDto profile);
+  Future<UserDto> getCurrentUser();
+  Future<UserDto> updateProfile(Map<String, dynamic> profileData);
   Future<ProfilePreferencesDto> getPreferences();
-  Future<ProfilePreferencesDto> updatePreferences(ProfilePreferencesDto preferences);
+  Future<ProfilePreferencesDto> updatePreferences(
+      ProfilePreferencesDto preferences);
   Future<void> logout();
   Future<void> deleteAccount();
 }
@@ -18,13 +21,13 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   ProfileRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<ProfileDto> getProfile() async {
-    return await _apiClient.getProfile();
+  Future<UserDto> getCurrentUser() async {
+    return await _apiClient.getCurrentUser();
   }
 
   @override
-  Future<ProfileDto> updateProfile(ProfileDto profile) async {
-    return await _apiClient.updateProfile(profile);
+  Future<UserDto> updateProfile(Map<String, dynamic> profileData) async {
+    return await _apiClient.updateProfile(profileData);
   }
 
   @override
@@ -33,7 +36,8 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<ProfilePreferencesDto> updatePreferences(ProfilePreferencesDto preferences) async {
+  Future<ProfilePreferencesDto> updatePreferences(
+      ProfilePreferencesDto preferences) async {
     return await _apiClient.updatePreferences(preferences);
   }
 

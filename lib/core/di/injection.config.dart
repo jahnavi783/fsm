@@ -188,25 +188,25 @@ extension GetItInjectableX on _i174.GetIt {
     final connectivityModule = _$ConnectivityModule();
     final permissionModule = _$PermissionModule();
     final networkModule = _$NetworkModule();
-    final authModule = _$AuthModule();
     final calendarApiModule = _$CalendarApiModule();
-    final documentModule = _$DocumentModule();
-    final partsApiModule = _$PartsApiModule();
+    final authModule = _$AuthModule();
     final profileApiModule = _$ProfileApiModule();
     final workOrderApiModule = _$WorkOrderApiModule();
+    final partsApiModule = _$PartsApiModule();
+    final documentModule = _$DocumentModule();
     gh.factory<_i895.Connectivity>(() => connectivityModule.connectivity);
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
     gh.factory<_i544.PermissionRemoteDataSource>(
         () => _i544.PermissionRemoteDataSource());
-    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
+    gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
     gh.singleton<_i600.ErrorBoundaryService>(
         () => _i600.ErrorBoundaryService());
     gh.singleton<_i870.LazyLoadingService>(() => _i870.LazyLoadingService());
-    gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
     gh.singleton<_i1066.MemoryManagementService>(
         () => _i1066.MemoryManagementService());
     gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
-    gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
+    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
     gh.singleton<_i188.ErrorBloc>(
         () => _i188.ErrorBloc(gh<_i520.LoggingService>()));
     gh.singleton<_i304.AliceService>(
@@ -228,18 +228,18 @@ extension GetItInjectableX on _i174.GetIt {
         _i992.AuthLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
     gh.lazySingleton<_i165.IPermissionRepository>(() => permissionModule
         .permissionRepository(gh<_i544.PermissionRemoteDataSource>()));
+    gh.factory<_i418.OpenAppSettingsUseCase>(
+        () => _i418.OpenAppSettingsUseCase(gh<_i165.IPermissionRepository>()));
+    gh.factory<_i478.RequestPermissionUseCase>(() =>
+        _i478.RequestPermissionUseCase(gh<_i165.IPermissionRepository>()));
+    gh.factory<_i804.RequestMultiplePermissionsUseCase>(() =>
+        _i804.RequestMultiplePermissionsUseCase(
+            gh<_i165.IPermissionRepository>()));
     gh.factory<_i992.CheckMultiplePermissionStatusUseCase>(() =>
         _i992.CheckMultiplePermissionStatusUseCase(
             gh<_i165.IPermissionRepository>()));
     gh.factory<_i428.CheckPermissionStatusUseCase>(() =>
         _i428.CheckPermissionStatusUseCase(gh<_i165.IPermissionRepository>()));
-    gh.factory<_i418.OpenAppSettingsUseCase>(
-        () => _i418.OpenAppSettingsUseCase(gh<_i165.IPermissionRepository>()));
-    gh.factory<_i804.RequestMultiplePermissionsUseCase>(() =>
-        _i804.RequestMultiplePermissionsUseCase(
-            gh<_i165.IPermissionRepository>()));
-    gh.factory<_i478.RequestPermissionUseCase>(() =>
-        _i478.RequestPermissionUseCase(gh<_i165.IPermissionRepository>()));
     gh.factoryAsync<_i641.PartsLocalDataSource>(() async =>
         _i641.PartsLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
     gh.factoryAsync<_i908.AuthInterceptor>(() async =>
@@ -265,18 +265,18 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i669.LocationService>(
         () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
-    gh.factoryAsync<_i541.AuthApiClient>(
-        () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i584.CalendarApiClient>(() async =>
         calendarApiModule.calendarApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
-        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i1011.PartsApiClient>(
-        () async => partsApiModule.partsApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i541.AuthApiClient>(
+        () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i751.ProfileApiClient>(() async =>
         profileApiModule.profileApiClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
         workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i1011.PartsApiClient>(
+        () async => partsApiModule.partsApiClient(await getAsync<_i361.Dio>()));
+    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
+        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
     gh.singletonAsync<_i667.DioClient>(
         () async => _i667.DioClient(await getAsync<_i361.Dio>()));
     gh.factoryAsync<_i161.AuthRemoteDataSource>(() async =>
@@ -299,12 +299,12 @@ extension GetItInjectableX on _i174.GetIt {
             await getAsync<_i936.DocumentApiClient>()));
     gh.factoryAsync<_i831.CheckAuthUseCase>(() async =>
         _i831.CheckAuthUseCase(await getAsync<_i589.IAuthRepository>()));
+    gh.factoryAsync<_i157.RefreshTokenUseCase>(() async =>
+        _i157.RefreshTokenUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i188.LoginUseCase>(() async =>
         _i188.LoginUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i48.LogoutUseCase>(() async =>
         _i48.LogoutUseCase(await getAsync<_i589.IAuthRepository>()));
-    gh.factoryAsync<_i157.RefreshTokenUseCase>(() async =>
-        _i157.RefreshTokenUseCase(await getAsync<_i589.IAuthRepository>()));
     gh.factoryAsync<_i327.ProfileRemoteDataSource>(() async =>
         _i327.ProfileRemoteDataSourceImpl(
             await getAsync<_i751.ProfileApiClient>()));
@@ -342,11 +342,11 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i506.DocumentLocalDataSource>(),
               gh<_i932.NetworkInfo>(),
             ));
-    gh.factoryAsync<_i377.GetCalendarEventsUseCase>(() async =>
-        _i377.GetCalendarEventsUseCase(
-            await getAsync<_i342.ICalendarRepository>()));
     gh.factoryAsync<_i614.GetDailyScheduleUseCase>(() async =>
         _i614.GetDailyScheduleUseCase(
+            await getAsync<_i342.ICalendarRepository>()));
+    gh.factoryAsync<_i377.GetCalendarEventsUseCase>(() async =>
+        _i377.GetCalendarEventsUseCase(
             await getAsync<_i342.ICalendarRepository>()));
     gh.factoryAsync<_i316.OptimizeRouteUseCase>(() async =>
         _i316.OptimizeRouteUseCase(
@@ -364,8 +364,17 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i1046.ProfileLocalDataSource>(),
               gh<_i932.NetworkInfo>(),
             ));
+    gh.factoryAsync<_i188.StartWorkOrderUseCase>(() async =>
+        _i188.StartWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i489.ResumeWorkOrderUseCase>(() async =>
+        _i489.ResumeWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
     gh.factoryAsync<_i460.CompleteWorkOrderUseCase>(() async =>
         _i460.CompleteWorkOrderUseCase(
+            await getAsync<_i556.IWorkOrderRepository>()));
+    gh.factoryAsync<_i959.PauseWorkOrderUseCase>(() async =>
+        _i959.PauseWorkOrderUseCase(
             await getAsync<_i556.IWorkOrderRepository>()));
     gh.factoryAsync<_i874.GetWorkOrdersUseCase>(() async =>
         _i874.GetWorkOrdersUseCase(
@@ -373,17 +382,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<_i1023.GetWorkOrderDetailsUseCase>(() async =>
         _i1023.GetWorkOrderDetailsUseCase(
             await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i959.PauseWorkOrderUseCase>(() async =>
-        _i959.PauseWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
     gh.factoryAsync<_i310.RejectWorkOrderUseCase>(() async =>
         _i310.RejectWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i489.ResumeWorkOrderUseCase>(() async =>
-        _i489.ResumeWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i188.StartWorkOrderUseCase>(() async =>
-        _i188.StartWorkOrderUseCase(
             await getAsync<_i556.IWorkOrderRepository>()));
     gh.factoryAsync<_i1036.CheckPartAvailabilityUseCase>(() async =>
         _i1036.CheckPartAvailabilityUseCase(
@@ -391,29 +391,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<_i1054.GetLowStockPartsUseCase>(() async =>
         _i1054.GetLowStockPartsUseCase(
             await getAsync<_i490.IPartsRepository>()));
-    gh.factoryAsync<_i637.GetPartsUseCase>(() async =>
-        _i637.GetPartsUseCase(await getAsync<_i490.IPartsRepository>()));
     gh.factoryAsync<_i170.SearchPartsUseCase>(() async =>
         _i170.SearchPartsUseCase(await getAsync<_i490.IPartsRepository>()));
+    gh.factoryAsync<_i637.GetPartsUseCase>(() async =>
+        _i637.GetPartsUseCase(await getAsync<_i490.IPartsRepository>()));
     gh.factoryAsync<_i344.PartsBloc>(() async => _i344.PartsBloc(
           await getAsync<_i637.GetPartsUseCase>(),
           await getAsync<_i170.SearchPartsUseCase>(),
           await getAsync<_i1054.GetLowStockPartsUseCase>(),
           await getAsync<_i490.IPartsRepository>(),
         ));
-    gh.factoryAsync<_i750.DownloadDocumentUseCase>(() async =>
-        _i750.DownloadDocumentUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i911.GetDocumentsUseCase>(() async =>
-        _i911.GetDocumentsUseCase(await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i937.GetDocumentByIdUseCase>(() async =>
-        _i937.GetDocumentByIdUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
     gh.factoryAsync<_i1041.GetDocumentCategoriesUseCase>(() async =>
         _i1041.GetDocumentCategoriesUseCase(
             await getAsync<_i121.IDocumentRepository>()));
     gh.factoryAsync<_i633.SearchDocumentsUseCase>(() async =>
         _i633.SearchDocumentsUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i937.GetDocumentByIdUseCase>(() async =>
+        _i937.GetDocumentByIdUseCase(
+            await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i911.GetDocumentsUseCase>(() async =>
+        _i911.GetDocumentsUseCase(await getAsync<_i121.IDocumentRepository>()));
+    gh.factoryAsync<_i750.DownloadDocumentUseCase>(() async =>
+        _i750.DownloadDocumentUseCase(
             await getAsync<_i121.IDocumentRepository>()));
     gh.factoryAsync<_i332.WorkOrdersListBloc>(
         () async => _i332.WorkOrdersListBloc(
@@ -428,18 +428,18 @@ extension GetItInjectableX on _i174.GetIt {
           await getAsync<_i1041.GetDocumentCategoriesUseCase>(),
           await getAsync<_i121.IDocumentRepository>(),
         ));
+    gh.factoryAsync<_i478.UpdateProfileUseCase>(() async =>
+        _i478.UpdateProfileUseCase(await getAsync<_i879.IProfileRepository>()));
+    gh.factoryAsync<_i17.LogoutUseCase>(() async =>
+        _i17.LogoutUseCase(await getAsync<_i879.IProfileRepository>()));
     gh.factoryAsync<_i154.GetPreferencesUseCase>(() async =>
         _i154.GetPreferencesUseCase(
             await getAsync<_i879.IProfileRepository>()));
     gh.factoryAsync<_i965.GetProfileUseCase>(() async =>
         _i965.GetProfileUseCase(await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i17.LogoutUseCase>(() async =>
-        _i17.LogoutUseCase(await getAsync<_i879.IProfileRepository>()));
     gh.factoryAsync<_i90.UpdatePreferencesUseCase>(() async =>
         _i90.UpdatePreferencesUseCase(
             await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i478.UpdateProfileUseCase>(() async =>
-        _i478.UpdateProfileUseCase(await getAsync<_i879.IProfileRepository>()));
     gh.factoryAsync<_i532.WorkOrderActionBloc>(
         () async => _i532.WorkOrderActionBloc(
               await getAsync<_i1023.GetWorkOrderDetailsUseCase>(),
@@ -468,14 +468,14 @@ class _$PermissionModule extends _i469.PermissionModule {}
 
 class _$NetworkModule extends _i667.NetworkModule {}
 
-class _$AuthModule extends _i521.AuthModule {}
-
 class _$CalendarApiModule extends _i347.CalendarApiModule {}
 
-class _$DocumentModule extends _i843.DocumentModule {}
-
-class _$PartsApiModule extends _i33.PartsApiModule {}
+class _$AuthModule extends _i521.AuthModule {}
 
 class _$ProfileApiModule extends _i862.ProfileApiModule {}
 
 class _$WorkOrderApiModule extends _i860.WorkOrderApiModule {}
+
+class _$PartsApiModule extends _i33.PartsApiModule {}
+
+class _$DocumentModule extends _i843.DocumentModule {}

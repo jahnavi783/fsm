@@ -22,19 +22,19 @@ class _ProfileApiClient implements ProfileApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ProfileDto> getProfile() async {
+  Future<UserDto> getCurrentUser() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ProfileDto>(Options(
+    final _options = _setStreamType<UserDto>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/profile',
+          '/users/me',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -44,9 +44,9 @@ class _ProfileApiClient implements ProfileApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileDto _value;
+    late UserDto _value;
     try {
-      _value = ProfileDto.fromJson(_result.data!);
+      _value = UserDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -55,19 +55,20 @@ class _ProfileApiClient implements ProfileApiClient {
   }
 
   @override
-  Future<ProfileDto> updateProfile(ProfileDto profile) async {
+  Future<UserDto> updateProfile(Map<String, dynamic> profileData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = profile;
-    final _options = _setStreamType<ProfileDto>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(profileData);
+    final _options = _setStreamType<UserDto>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/profile',
+          '/users/me',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -77,9 +78,9 @@ class _ProfileApiClient implements ProfileApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ProfileDto _value;
+    late UserDto _value;
     try {
-      _value = ProfileDto.fromJson(_result.data!);
+      _value = UserDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -100,7 +101,7 @@ class _ProfileApiClient implements ProfileApiClient {
     )
         .compose(
           _dio.options,
-          '/profile/preferences',
+          '/users/me/preferences',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -134,7 +135,7 @@ class _ProfileApiClient implements ProfileApiClient {
     )
         .compose(
           _dio.options,
-          '/profile/preferences',
+          '/users/me/preferences',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -192,7 +193,7 @@ class _ProfileApiClient implements ProfileApiClient {
     )
         .compose(
           _dio.options,
-          '/profile',
+          '/users/me',
           queryParameters: queryParameters,
           data: _data,
         )

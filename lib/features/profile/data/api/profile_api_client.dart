@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+
+import '../../../auth/data/models/user_dto.dart';
 import '../models/profile_dto.dart';
 
 part 'profile_api_client.g.dart';
@@ -8,22 +10,23 @@ part 'profile_api_client.g.dart';
 abstract class ProfileApiClient {
   factory ProfileApiClient(Dio dio, {String? baseUrl}) = _ProfileApiClient;
 
-  @GET('/profile')
-  Future<ProfileDto> getProfile();
+  // Use the existing auth endpoint that already returns user data
+  @GET('/users/me')
+  Future<UserDto> getCurrentUser();
 
-  @PUT('/profile')
-  Future<ProfileDto> updateProfile(@Body() ProfileDto profile);
+  @PUT('/users/me')
+  Future<UserDto> updateProfile(@Body() Map<String, dynamic> profileData);
 
-  @GET('/profile/preferences')
+  @GET('/users/me/preferences')
   Future<ProfilePreferencesDto> getPreferences();
 
-  @PUT('/profile/preferences')
+  @PUT('/users/me/preferences')
   Future<ProfilePreferencesDto> updatePreferences(
       @Body() ProfilePreferencesDto preferences);
 
   @POST('/auth/logout')
   Future<void> logout();
 
-  @DELETE('/profile')
+  @DELETE('/users/me')
   Future<void> deleteAccount();
 }

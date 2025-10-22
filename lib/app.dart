@@ -1,9 +1,9 @@
-import 'dart:io' show Platform;
-
+import 'package:alice/alice.dart';
+import 'package:alice/model/alice_configuration.dart';
+import 'package:alice_dio/alice_dio_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
@@ -15,6 +15,8 @@ import 'core/widgets/error_boundary_widget.dart';
 import 'core/widgets/optimized_splash_screen.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
+GlobalKey<NavigatorState> GlobalNavigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -25,30 +27,37 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // late final PerformanceService _performanceService;
   late final ErrorBoundaryService _errorBoundaryService;
-  late Chuck? _chuck;
+  Alice? _alice;
+  AliceDioAdapter? _aliceDioAdapter;
 
   @override
   void initState() {
     super.initState();
     // _performanceService = getIt<PerformanceService>();
     _errorBoundaryService = getIt<ErrorBoundaryService>();
-    
-    // Initialize Chuck for Android debug builds
-    if (AppConfig.isDebug && Platform.isAndroid) {
-      _chuck = Chuck(
-        navigatorKey: GlobalKey<NavigatorState>(),
-        showNotification: true,
-        showInspectorOnShake: true,
-      );
-      // Add Chuck interceptor to Dio
+
+    // Initialize Alice HTTP inspector for debug builds
+    if (AppConfig.isDebug) {
       try {
+        // Configure Alice HTTP Inspector
+        _alice = Alice(
+            configuration: AliceConfiguration(
+                showNotification: true, navigatorKey: GlobalNavigatorKey));
+        _aliceDioAdapter = AliceDioAdapter();
+
+        // Configure Alice with the Dio adapter
+        _alice!.addAdapter(_aliceDioAdapter!);
+
+        // Add Alice Dio interceptor to Dio client
         final dio = getIt<DioClient>().dio;
-        dio.interceptors.add(_chuck!.dioInterceptor);
+        dio.interceptors.add(_aliceDioAdapter!);
+
+        debugPrint('Alice HTTP Inspector initialized successfully');
+        debugPrint(
+            'Shake device or tap notification to open network inspector');
       } catch (e) {
-        debugPrint('Failed to add Chuck interceptor: $e');
+        debugPrint('Failed to initialize Alice: $e');
       }
-    } else {
-      _chuck = null;
     }
 
     // Initialize error boundary
@@ -59,6 +68,13 @@ class _MyAppState extends State<MyApp> {
 
     // Start app startup timer
     // _performanceService.startTimer('app_startup');
+  }
+
+  /// Show Alice inspector manually (for debugging purposes)
+  void _showAliceInspector() {
+    if (_alice != null && AppConfig.isDebug) {
+      _alice!.showInspector();
+    }
   }
 
   @override
@@ -137,7 +153,38 @@ class _MyAppState extends State<MyApp> {
                           context: 'App navigation',
                         );
                       },
-                      child: child ?? const SizedBox.shrink(),
+                      child: Stack(
+                        children: [
+                          child ?? const SizedBox.shrink(),
+                          // Add Alice inspector button for debug builds without tooltip
+                          if (AppConfig.isDebug && _alice != null)
+                            Positioned(
+                              bottom: 100.h,
+                              right: 16.w,
+                              child: Material(
+                                borderRadius: BorderRadius.circular(28.r),
+                                elevation: 6,
+                                color: Colors.orange.withAlpha(200),
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(28.r),
+                                  onTap: _showAliceInspector,
+                                  child: Container(
+                                    width: 56.w,
+                                    height: 56.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(28.r),
+                                    ),
+                                    child: Icon(
+                                      Icons.network_check,
+                                      color: Colors.white,
+                                      size: 24.w,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     );
                   },
                 ),

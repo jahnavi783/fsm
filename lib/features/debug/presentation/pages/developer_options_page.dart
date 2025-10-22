@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import '../../../../core/config/app_config.dart';
 import '../../../../core/di/injection.dart';

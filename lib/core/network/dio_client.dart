@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import '../config/app_config.dart';
 import '../constants/app_constants.dart';

@@ -1,19 +1,21 @@
+import 'dart:io' show Platform;
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import '../config/app_config.dart';
 import '../constants/app_constants.dart';
-import '../services/alice_service.dart';
 import '../services/logging_service.dart';
 import 'auth_interceptor.dart';
 
 @module
 abstract class NetworkModule {
   @singleton
-  Dio provideDio(AuthInterceptor authInterceptor, AliceService aliceService,
-      LoggingService loggingService) {
+  Dio provideDio(
+      AuthInterceptor authInterceptor, LoggingService loggingService) {
     final dio = Dio(BaseOptions(
       baseUrl: AppConfig.baseUrl,
       connectTimeout: AppConstants.connectTimeout,
@@ -43,9 +45,12 @@ abstract class NetworkModule {
       ),
     ]);
 
-    // Alice HTTP inspection using alice_dio adapter (debug builds only)
-    if (AppConfig.isDebug) {
-      aliceService.configureDio(dio);
+    // Chuck HTTP inspection for Android debug builds only
+    // Note: Chuck instance is created and managed in app.dart
+    // The interceptor is added there after Chuck is initialized with context
+    if (AppConfig.isDebug && Platform.isAndroid) {
+      // Chuck interceptor will be added via ChuckInterceptor(chuck) in app initialization
+      // We skip adding it here to avoid context dependency in DI module
     }
 
     // Enhanced network logging for development and staging

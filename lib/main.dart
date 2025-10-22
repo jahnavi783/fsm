@@ -15,38 +15,41 @@ import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
 /// Main entry point for the FSM Flutter app
 /// Uses industry-standard flavor-based configuration with performance monitoring
-void main() async {
-  // Start app initialization timer
-  final stopwatch = Stopwatch()..start();
-
-  // Ensure Flutter binding is initialized
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Set preferred orientations for mobile devices
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  // Initialize environment based on build flavor
-  env.Environment.initialize();
-
-  // Set app configuration
-  AppConfig.setEnvironment(env.Environment.current);
-
-  // Initialize app services with error handling
-  await _initializeAppWithErrorHandling();
-
-  // Log startup time
-  stopwatch.stop();
-  developer.log(
-    'App initialization completed in ${stopwatch.elapsedMilliseconds}ms',
-    name: 'AppStartup',
-  );
-
-  // Run the app with error zone
+void main() {
+  // Run the app with error zone - must wrap entire initialization
   runZonedGuarded(
-    () => runApp(const MyApp()),
+    () async {
+      // Start app initialization timer
+      final stopwatch = Stopwatch()..start();
+
+      // Ensure Flutter binding is initialized
+      WidgetsFlutterBinding.ensureInitialized();
+
+      // Set preferred orientations for mobile devices
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+
+      // Initialize environment based on build flavor
+      env.Environment.initialize();
+
+      // Set app configuration
+      AppConfig.setEnvironment(env.Environment.current);
+
+      // Initialize app services with error handling
+      await _initializeAppWithErrorHandling();
+
+      // Log startup time
+      stopwatch.stop();
+      developer.log(
+        'App initialization completed in ${stopwatch.elapsedMilliseconds}ms',
+        name: 'AppStartup',
+      );
+
+      // Run the app
+      runApp(const MyApp());
+    },
     (error, stackTrace) {
       // Handle uncaught errors
       developer.log(

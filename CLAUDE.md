@@ -160,7 +160,7 @@ flutter pub outdated
 - **Documents:** syncfusion_flutter_pdfviewer ^31.1.23
 - **Calendar:** calendar_view ^1.4.0
 - **Code Generation:** build_runner ^2.4.13
-- **Network Debugging:** pretty_dio_logger ^1.4.0 + dio_smart_retry ^7.0.1 + alice ^1.0.0
+- **Network Debugging:** pretty_dio_logger ^1.4.0 + dio_smart_retry ^7.0.1 + chuck_interceptor ^2.3.1 (Android only)
 - **Functional Programming:** either_dart ^1.0.0
 
 ### Recommended pubspec.yaml

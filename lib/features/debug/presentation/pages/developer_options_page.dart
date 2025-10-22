@@ -1,11 +1,13 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import '../../../../core/config/app_config.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/dio_client.dart';
-import '../../../../core/services/alice_service.dart';
 
 @RoutePage()
 class DeveloperOptionsPage extends StatelessWidget {
@@ -26,8 +28,6 @@ class DeveloperOptionsPage extends StatelessWidget {
         ),
       );
     }
-
-    final aliceService = getIt<AliceService>();
 
     return Scaffold(
       appBar: AppBar(
@@ -53,33 +53,68 @@ class DeveloperOptionsPage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.1),
+                  color: Platform.isAndroid
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Colors.green, width: 1),
+                  border: Border.all(
+                      color: Platform.isAndroid ? Colors.green : Colors.orange,
+                      width: 1),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green, size: 16.sp),
+                    Icon(
+                        Platform.isAndroid
+                            ? Icons.check_circle
+                            : Icons.info_outline,
+                        color:
+                            Platform.isAndroid ? Colors.green : Colors.orange,
+                        size: 16.sp),
                     SizedBox(width: 8.w),
-                    Text(
-                      'Debug Mode: ${AppConfig.isDebug ? 'ENABLED' : 'DISABLED'} | Alice: UPDATED & CONFIGURED',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.green[700],
-                        fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Text(
+                        Platform.isAndroid
+                            ? 'Debug Mode: ${AppConfig.isDebug ? 'ENABLED' : 'DISABLED'} | Chuck: CONFIGURED'
+                            : 'Debug Mode: ${AppConfig.isDebug ? 'ENABLED' : 'DISABLED'} | Chuck: Android Only',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Platform.isAndroid
+                              ? Colors.green[700]
+                              : Colors.orange[700],
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 20.h),
-              _DebugCard(
-                title: 'Alice HTTP Inspector',
-                description:
-                    'View all HTTP requests and responses\n✓ Configured for DEV environment\n✓ Debug mode enabled',
-                icon: Icons.network_check,
-                onTap: () => _openAliceInspector(context, aliceService),
-              ),
+              if (Platform.isAndroid)
+                _DebugCard(
+                  title: 'Chuck HTTP Inspector',
+                  description:
+                      'View all HTTP requests and responses\n✓ Configured for DEV environment\n✓ Android debug mode enabled',
+                  icon: Icons.network_check,
+                  onTap: () => _openChuckInspector(context),
+                )
+              else
+                _DebugCard(
+                  title: 'HTTP Inspector Unavailable',
+                  description:
+                      'Chuck is only available on Android\nUse PrettyDioLogger in console for iOS/other platforms',
+                  icon: Icons.info_outline,
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Chuck HTTP Inspector is Android-only.\n'
+                          'Check the console logs for HTTP request/response details on iOS.',
+                        ),
+                        duration: Duration(seconds: 4),
+                      ),
+                    );
+                  },
+                ),
               SizedBox(height: 16.h),
               _DebugCard(
                 title: 'Environment Info',
@@ -92,7 +127,7 @@ class DeveloperOptionsPage extends StatelessWidget {
                       content: Text(
                         'DEV Environment Active\n'
                         'Debug Mode: ${AppConfig.isDebug}\n'
-                        'Alice: Configured and Ready\n'
+                        'HTTP Inspector: ${Platform.isAndroid ? "Chuck (Android)" : "Console Logger"}\n'
                         'Base URL: ${AppConfig.baseUrl}',
                       ),
                       duration: Duration(seconds: 4),
@@ -101,12 +136,13 @@ class DeveloperOptionsPage extends StatelessWidget {
                 },
               ),
               SizedBox(height: 16.h),
-              _DebugCard(
-                title: 'Test API Call',
-                description: 'Make a test HTTP request to populate Alice',
-                icon: Icons.api,
-                onTap: () => _makeTestApiCall(context, aliceService),
-              ),
+              if (Platform.isAndroid)
+                _DebugCard(
+                  title: 'Test API Call',
+                  description: 'Make a test HTTP request to populate Chuck',
+                  icon: Icons.api,
+                  onTap: () => _makeTestApiCall(context),
+                ),
               SizedBox(height: 16.h),
               _DebugCard(
                 title: 'Logging Demo',
@@ -136,72 +172,47 @@ class DeveloperOptionsPage extends StatelessWidget {
     );
   }
 
-  /// Open Alice inspector with better error handling
-  void _openAliceInspector(BuildContext context, AliceService aliceService) {
-    try {
-      debugPrint('🔍 Attempting to open Alice inspector...');
-      aliceService.showInspector();
+  /// Open Chuck inspector (Android only)
+  void _openChuckInspector(BuildContext context) {
+    if (!Platform.isAndroid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Chuck is only available on Android devices'),
+          backgroundColor: Colors.orange,
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
 
+    try {
+      debugPrint('🔍 Opening Chuck inspector...');
+      // Chuck v2.3.1 uses showNotification() or directly navigates via http calls
+      // The inspector opens automatically when you tap the notification or when HTTP calls are made
+      
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-              'Alice inspector opened! If no requests visible, make some API calls first.'),
+              'Chuck is running! Make API calls and check notifications, or use the console logs.'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 3),
         ),
       );
     } catch (e) {
-      debugPrint('🔍 Alice inspector error: $e');
-      _showAliceTroubleshootingDialog(context, aliceService);
+      debugPrint('🔍 Chuck inspector error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error opening Chuck: $e'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 
-  /// Show troubleshooting dialog for Alice
-  void _showAliceTroubleshootingDialog(
-      BuildContext context, AliceService aliceService) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Alice HTTP Inspector'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                'Alice is configured but may not have captured any HTTP requests yet.'),
-            SizedBox(height: 16),
-            Text('To populate Alice:'),
-            SizedBox(height: 8),
-            Text('• Login to the app'),
-            Text('• Load work orders'),
-            Text('• Navigate between pages'),
-            Text('• Use the "Test API Call" button'),
-            SizedBox(height: 16),
-            Text(
-                'Once HTTP requests are made, Alice will show them in the inspector.'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _makeTestApiCall(context, aliceService);
-            },
-            child: const Text('Test API Call'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Make a test API call to populate Alice with sample data
-  Future<void> _makeTestApiCall(
-      BuildContext context, AliceService aliceService) async {
+  /// Make a test API call to populate Chucker with sample data
+  Future<void> _makeTestApiCall(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
 
     try {
@@ -215,17 +226,27 @@ class DeveloperOptionsPage extends StatelessWidget {
         ),
       );
 
-      // Make a test API call (this will be captured by Alice)
+      // Make a test API call (this will be captured by Chuck on Android)
       try {
         await dioClient.dio.get('/health');
       } catch (e) {
-        // It's okay if this fails - we just want to generate traffic for Alice
+        // It's okay if this fails - we just want to generate traffic for HTTP inspection
         debugPrint('Test API call completed (may have failed): $e');
       }
 
-      // Wait a moment then show Alice
+      // Wait a moment - Chuck will capture the request automatically (Android only)
       await Future.delayed(const Duration(milliseconds: 500));
-      aliceService.showInspector();
+      if (Platform.isAndroid) {
+        // Chuck automatically captures HTTP calls and shows notifications
+      } else {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Test API call completed. Check console logs for details (iOS/other platforms)'),
+            backgroundColor: Colors.blue,
+          ),
+        );
+      }
     } catch (e) {
       messenger.showSnackBar(
         SnackBar(
@@ -233,8 +254,10 @@ class DeveloperOptionsPage extends StatelessWidget {
           backgroundColor: Colors.orange,
         ),
       );
-      // Still try to show Alice
-      aliceService.showInspector();
+      // Chuck automatically captures HTTP calls on Android
+      if (Platform.isAndroid) {
+        // Chuck will show notifications for captured requests
+      }
     }
   }
 }

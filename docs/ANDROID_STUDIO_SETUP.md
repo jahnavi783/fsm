@@ -40,19 +40,19 @@ If the run configurations don't appear automatically, follow these steps:
 - **Name**: `FSM Development`
 - **Dart entry point**: `lib/main.dart`
 - **Build flavor**: `dev`
-- **Additional arguments**: `--dart-define=FLUTTER_FLAVOR=dev`
+- **Additional arguments**: `--flavor dev --dart-define=FLUTTER_FLAVOR=dev`
 
 #### Staging Configuration  
 - **Name**: `FSM Staging`
 - **Dart entry point**: `lib/main.dart`
 - **Build flavor**: `staging`
-- **Additional arguments**: `--dart-define=FLUTTER_FLAVOR=staging`
+- **Additional arguments**: `--flavor staging --dart-define=FLUTTER_FLAVOR=staging`
 
 #### Production Configuration
 - **Name**: `FSM Production`
 - **Dart entry point**: `lib/main.dart` 
 - **Build flavor**: `prod`
-- **Additional arguments**: `--dart-define=FLUTTER_FLAVOR=prod`
+- **Additional arguments**: `--flavor prod --dart-define=FLUTTER_FLAVOR=prod`
 
 #### Production Release Configuration
 - **Name**: `FSM Production Release`

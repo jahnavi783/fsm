@@ -1,11 +1,14 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:chuck_interceptor/chuck_interceptor.dart';
 
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
+import 'core/network/dio_client.dart';
 import 'core/router/app_router.dart';
-import 'core/services/alice_service.dart';
 import 'core/services/error_boundary_service.dart';
 import 'core/theme/theme.dart';
 import 'core/widgets/error_boundary_widget.dart';
@@ -22,12 +25,31 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // late final PerformanceService _performanceService;
   late final ErrorBoundaryService _errorBoundaryService;
+  late Chuck? _chuck;
 
   @override
   void initState() {
     super.initState();
     // _performanceService = getIt<PerformanceService>();
     _errorBoundaryService = getIt<ErrorBoundaryService>();
+    
+    // Initialize Chuck for Android debug builds
+    if (AppConfig.isDebug && Platform.isAndroid) {
+      _chuck = Chuck(
+        navigatorKey: GlobalKey<NavigatorState>(),
+        showNotification: true,
+        showInspectorOnShake: true,
+      );
+      // Add Chuck interceptor to Dio
+      try {
+        final dio = getIt<DioClient>().dio;
+        dio.interceptors.add(_chuck!.dioInterceptor);
+      } catch (e) {
+        debugPrint('Failed to add Chuck interceptor: $e');
+      }
+    } else {
+      _chuck = null;
+    }
 
     // Initialize error boundary
     _errorBoundaryService.initialize();
@@ -51,53 +73,54 @@ class _MyAppState extends State<MyApp> {
           context: 'MyApp root widget',
         );
       },
-      child: FutureBuilder<AuthBloc>(
-        future: getIt.getAsync<AuthBloc>(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            // Enhanced loading screen with branding
-            return MaterialApp(
-              title: AppConfig.appName,
-              debugShowCheckedModeBanner: AppConfig.isDebug,
-              home: const OptimizedSplashScreen(
-                message: 'Initializing app...',
-              ),
-            );
-          }
+      child: ScreenUtilInit(
+        // Design size from Figma/design specs (iPhone 11 Pro dimensions)
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        ensureScreenSize: true,
+        builder: (context, child) {
+          return FutureBuilder<AuthBloc>(
+            future: getIt.getAsync<AuthBloc>(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                // Enhanced loading screen with branding
+                return MaterialApp(
+                  title: AppConfig.appName,
+                  debugShowCheckedModeBanner: AppConfig.isDebug,
+                  home: const OptimizedSplashScreen(
+                    message: 'Initializing app...',
+                  ),
+                );
+              }
 
-          if (snapshot.hasError) {
-            return MaterialApp(
-              title: AppConfig.appName,
-              debugShowCheckedModeBanner: AppConfig.isDebug,
-              home: Scaffold(
-                body: DefaultErrorWidget(
-                  error: snapshot.error!,
-                  title: 'App Initialization Error',
-                  message:
-                      'Failed to initialize the application. Please restart the app.',
-                  onRetry: () {
-                    // Trigger app restart
-                    setState(() {});
-                  },
-                ),
-              ),
-            );
-          }
+              if (snapshot.hasError) {
+                return MaterialApp(
+                  title: AppConfig.appName,
+                  debugShowCheckedModeBanner: AppConfig.isDebug,
+                  home: Scaffold(
+                    body: DefaultErrorWidget(
+                      error: snapshot.error!,
+                      title: 'App Initialization Error',
+                      message:
+                          'Failed to initialize the application. Please restart the app.',
+                      onRetry: () {
+                        // Trigger app restart
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                );
+              }
 
-          final authBloc = snapshot.data!;
+              final authBloc = snapshot.data!;
 
-          // End startup timer
-          // _performanceService.endTimer('app_startup');
+              // End startup timer
+              // _performanceService.endTimer('app_startup');
 
-          return BlocProvider.value(
-            value: authBloc,
-            child: ScreenUtilInit(
-              // Design size from Figma/design specs (iPhone 11 Pro dimensions)
-              designSize: const Size(375, 812),
-              minTextAdapt: true,
-              splitScreenMode: true,
-              builder: (context, child) {
-                return MaterialApp.router(
+              return BlocProvider.value(
+                value: authBloc,
+                child: MaterialApp.router(
                   title: AppConfig.appName,
                   debugShowCheckedModeBanner: AppConfig.isDebug,
                   routerConfig: appRouter.config(),
@@ -105,17 +128,6 @@ class _MyAppState extends State<MyApp> {
                   darkTheme: AppTheme.darkTheme,
                   themeMode: ThemeMode.light,
                   builder: (context, child) {
-                    // Initialize Alice for debug builds (works with auto_route)
-                    if (AppConfig.isDebug) {
-                      try {
-                        final aliceService = getIt<AliceService>();
-                        // Alice will overlay on the current navigator automatically
-                        debugPrint('Alice service initialized and ready for HTTP inspection');
-                      } catch (e) {
-                        debugPrint('Alice service not available: $e');
-                      }
-                    }
-
                     // Wrap entire app in error boundary and performance monitoring
                     return ErrorBoundaryWidget(
                       onError: (error, stackTrace) {
@@ -128,9 +140,9 @@ class _MyAppState extends State<MyApp> {
                       child: child ?? const SizedBox.shrink(),
                     );
                   },
-                );
-              },
-            ),
+                ),
+              );
+            },
           );
         },
       ),

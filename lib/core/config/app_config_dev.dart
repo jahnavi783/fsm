@@ -2,7 +2,7 @@ import 'app_config.dart';
 
 class DevEnvironment implements AppEnvironment {
   @override
-  String get baseUrl => "http://172.16.116.138:3011/api";
+  String get baseUrl => "https://vast-heron-poetic.ngrok-free.app/api";
 
   @override
   String get appName => "FSM Dev";

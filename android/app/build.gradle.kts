@@ -27,6 +27,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // When a build flavor is not explicitly provided (e.g., using Android Studio's Run button),
+        // default to the "dev" flavor in the "environment" dimension so the app can launch.
+        missingDimensionStrategy("environment", "dev")
     }
 
     flavorDimensions += "environment"

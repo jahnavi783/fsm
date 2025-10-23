@@ -32,10 +32,14 @@ abstract class GpsCoordinatesDto with _$GpsCoordinatesDto {
 @freezed
 abstract class WorkOrderImageCaptureDto with _$WorkOrderImageCaptureDto {
   const factory WorkOrderImageCaptureDto({
+    int? id,
+    String? timestamp,
     @JsonKey(name: 'image_urls') List<String>? imageUrls,
     @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-    @JsonKey(name: 'captured_by') required CapturedByDto capturedBy,
-    @JsonKey(name: 'captured_at') required String capturedAt,
+    @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+    @JsonKey(name: 'captured_at') String? capturedAt,
+    String? reason,
+    String? remarks,
   }) = _WorkOrderImageCaptureDto;
 
   factory WorkOrderImageCaptureDto.fromJson(Map<String, dynamic> json) =>
@@ -44,7 +48,33 @@ abstract class WorkOrderImageCaptureDto with _$WorkOrderImageCaptureDto {
 
 extension WorkOrderImageCaptureDtoX on WorkOrderImageCaptureDto {
   WorkOrderImageCaptureEntity toEntity() {
+    // Parse capturedAt if available, otherwise use timestamp as fallback
+    DateTime? parsedCapturedAt;
+    if (capturedAt != null) {
+      try {
+        parsedCapturedAt = DateTime.parse(capturedAt!);
+      } catch (e) {
+        // If capturedAt parsing fails, try timestamp
+        if (timestamp != null) {
+          try {
+            parsedCapturedAt = DateTime.parse(timestamp!);
+          } catch (_) {
+            // If both fail, leave as null
+          }
+        }
+      }
+    } else if (timestamp != null) {
+      // If capturedAt is null but timestamp exists, use timestamp
+      try {
+        parsedCapturedAt = DateTime.parse(timestamp!);
+      } catch (_) {
+        // If parsing fails, leave as null
+      }
+    }
+
     return WorkOrderImageCaptureEntity(
+      id: id,
+      timestamp: timestamp,
       imageUrls: imageUrls ?? [],
       latitude: gpsCoordinates?.coordinates.length == 2
           ? gpsCoordinates!.coordinates[1]
@@ -52,8 +82,10 @@ extension WorkOrderImageCaptureDtoX on WorkOrderImageCaptureDto {
       longitude: gpsCoordinates?.coordinates.length == 2
           ? gpsCoordinates!.coordinates[0]
           : null,
-      capturedBy: capturedBy.toEntity(),
-      capturedAt: DateTime.parse(capturedAt),
+      capturedBy: capturedBy?.toEntity(),
+      capturedAt: parsedCapturedAt,
+      reason: reason,
+      remarks: remarks,
     );
   }
 }

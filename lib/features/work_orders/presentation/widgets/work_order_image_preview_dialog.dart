@@ -45,6 +45,9 @@ class _WorkOrderImagePreviewDialogState
     int imageIndex = 0;
 
     for (final capture in widget.captures) {
+      // Skip captures with no images (e.g., resume entries)
+      if (capture.imageUrls.isEmpty) continue;
+
       for (final imageUrl in capture.imageUrls) {
         _allImages.add(imageUrl);
         _imageIndexToCapture[imageIndex] = capture;
@@ -215,6 +218,19 @@ class _WorkOrderImagePreviewDialogState
     final capture = _imageIndexToCapture[index];
     if (capture == null) return const SizedBox.shrink();
 
+    // Determine display date
+    String? displayDate;
+    if (capture.capturedAt != null) {
+      displayDate = DateFormat('MMM dd, yyyy HH:mm').format(capture.capturedAt!);
+    } else if (capture.timestamp != null) {
+      try {
+        final parsedTimestamp = DateTime.parse(capture.timestamp!);
+        displayDate = DateFormat('MMM dd, yyyy HH:mm').format(parsedTimestamp);
+      } catch (e) {
+        displayDate = capture.timestamp;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -249,17 +265,29 @@ class _WorkOrderImagePreviewDialogState
           ),
           SizedBox(height: 8.h),
         ],
-        _buildMetadataRow(
-          Icons.access_time,
-          'Captured',
-          DateFormat('MMM dd, yyyy HH:mm').format(capture.capturedAt),
-        ),
-        SizedBox(height: 8.h),
-        _buildMetadataRow(
-          Icons.person,
-          'By',
-          '${capture.capturedBy.firstName} ${capture.capturedBy.lastName}',
-        ),
+        if (displayDate != null) ...[
+          _buildMetadataRow(
+            Icons.access_time,
+            'Captured',
+            displayDate,
+          ),
+          SizedBox(height: 8.h),
+        ],
+        if (capture.capturedBy != null) ...[
+          _buildMetadataRow(
+            Icons.person,
+            'By',
+            '${capture.capturedBy!.firstName} ${capture.capturedBy!.lastName}',
+          ),
+          SizedBox(height: 8.h),
+        ],
+        if (capture.reason != null && capture.reason!.isNotEmpty) ...[
+          _buildMetadataRow(
+            Icons.info_outline,
+            'Reason',
+            capture.reason!,
+          ),
+        ],
       ],
     );
   }

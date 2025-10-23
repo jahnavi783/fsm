@@ -6,10 +6,14 @@ part 'work_order_image_capture_entity.freezed.dart';
 @freezed
 abstract class WorkOrderImageCaptureEntity with _$WorkOrderImageCaptureEntity {
   const factory WorkOrderImageCaptureEntity({
-    required List<String> imageUrls,
+    int? id,
+    String? timestamp,
+    @Default([]) List<String> imageUrls,
     double? latitude,
     double? longitude,
-    required CapturedByEntity capturedBy,
-    required DateTime capturedAt,
+    CapturedByEntity? capturedBy,
+    DateTime? capturedAt,
+    String? reason,
+    String? remarks,
   }) = _WorkOrderImageCaptureEntity;
 }

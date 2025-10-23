@@ -14,11 +14,15 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$WorkOrderImageCaptureEntity {
+  int? get id;
+  String? get timestamp;
   List<String> get imageUrls;
   double? get latitude;
   double? get longitude;
-  CapturedByEntity get capturedBy;
-  DateTime get capturedAt;
+  CapturedByEntity? get capturedBy;
+  DateTime? get capturedAt;
+  String? get reason;
+  String? get remarks;
 
   /// Create a copy of WorkOrderImageCaptureEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -34,6 +38,9 @@ mixin _$WorkOrderImageCaptureEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is WorkOrderImageCaptureEntity &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
             const DeepCollectionEquality().equals(other.imageUrls, imageUrls) &&
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
@@ -42,21 +49,27 @@ mixin _$WorkOrderImageCaptureEntity {
             (identical(other.capturedBy, capturedBy) ||
                 other.capturedBy == capturedBy) &&
             (identical(other.capturedAt, capturedAt) ||
-                other.capturedAt == capturedAt));
+                other.capturedAt == capturedAt) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      timestamp,
       const DeepCollectionEquality().hash(imageUrls),
       latitude,
       longitude,
       capturedBy,
-      capturedAt);
+      capturedAt,
+      reason,
+      remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
   }
 }
 
@@ -68,13 +81,17 @@ abstract mixin class $WorkOrderImageCaptureEntityCopyWith<$Res> {
       _$WorkOrderImageCaptureEntityCopyWithImpl;
   @useResult
   $Res call(
-      {List<String> imageUrls,
+      {int? id,
+      String? timestamp,
+      List<String> imageUrls,
       double? latitude,
       double? longitude,
-      CapturedByEntity capturedBy,
-      DateTime capturedAt});
+      CapturedByEntity? capturedBy,
+      DateTime? capturedAt,
+      String? reason,
+      String? remarks});
 
-  $CapturedByEntityCopyWith<$Res> get capturedBy;
+  $CapturedByEntityCopyWith<$Res>? get capturedBy;
 }
 
 /// @nodoc
@@ -90,13 +107,25 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? timestamp = freezed,
     Object? imageUrls = null,
     Object? latitude = freezed,
     Object? longitude = freezed,
-    Object? capturedBy = null,
-    Object? capturedAt = null,
+    Object? capturedBy = freezed,
+    Object? capturedAt = freezed,
+    Object? reason = freezed,
+    Object? remarks = freezed,
   }) {
     return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      timestamp: freezed == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrls: null == imageUrls
           ? _self.imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
@@ -109,14 +138,22 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
           ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      capturedBy: null == capturedBy
+      capturedBy: freezed == capturedBy
           ? _self.capturedBy
           : capturedBy // ignore: cast_nullable_to_non_nullable
-              as CapturedByEntity,
-      capturedAt: null == capturedAt
+              as CapturedByEntity?,
+      capturedAt: freezed == capturedAt
           ? _self.capturedAt
           : capturedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      reason: freezed == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      remarks: freezed == remarks
+          ? _self.remarks
+          : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -124,8 +161,12 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CapturedByEntityCopyWith<$Res> get capturedBy {
-    return $CapturedByEntityCopyWith<$Res>(_self.capturedBy, (value) {
+  $CapturedByEntityCopyWith<$Res>? get capturedBy {
+    if (_self.capturedBy == null) {
+      return null;
+    }
+
+    return $CapturedByEntityCopyWith<$Res>(_self.capturedBy!, (value) {
       return _then(_self.copyWith(capturedBy: value));
     });
   }
@@ -225,19 +266,31 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
+            int? id,
+            String? timestamp,
             List<String> imageUrls,
             double? latitude,
             double? longitude,
-            CapturedByEntity capturedBy,
-            DateTime capturedAt)?
+            CapturedByEntity? capturedBy,
+            DateTime? capturedAt,
+            String? reason,
+            String? remarks)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureEntity() when $default != null:
-        return $default(_that.imageUrls, _that.latitude, _that.longitude,
-            _that.capturedBy, _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.latitude,
+            _that.longitude,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         return orElse();
     }
@@ -258,15 +311,31 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<String> imageUrls, double? latitude,
-            double? longitude, CapturedByEntity capturedBy, DateTime capturedAt)
+    TResult Function(
+            int? id,
+            String? timestamp,
+            List<String> imageUrls,
+            double? latitude,
+            double? longitude,
+            CapturedByEntity? capturedBy,
+            DateTime? capturedAt,
+            String? reason,
+            String? remarks)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureEntity():
-        return $default(_that.imageUrls, _that.latitude, _that.longitude,
-            _that.capturedBy, _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.latitude,
+            _that.longitude,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -287,18 +356,30 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
+            int? id,
+            String? timestamp,
             List<String> imageUrls,
             double? latitude,
             double? longitude,
-            CapturedByEntity capturedBy,
-            DateTime capturedAt)?
+            CapturedByEntity? capturedBy,
+            DateTime? capturedAt,
+            String? reason,
+            String? remarks)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureEntity() when $default != null:
-        return $default(_that.imageUrls, _that.latitude, _that.longitude,
-            _that.capturedBy, _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.latitude,
+            _that.longitude,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         return null;
     }
@@ -309,15 +390,24 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
 
 class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
   const _WorkOrderImageCaptureEntity(
-      {required final List<String> imageUrls,
+      {this.id,
+      this.timestamp,
+      final List<String> imageUrls = const [],
       this.latitude,
       this.longitude,
-      required this.capturedBy,
-      required this.capturedAt})
+      this.capturedBy,
+      this.capturedAt,
+      this.reason,
+      this.remarks})
       : _imageUrls = imageUrls;
 
+  @override
+  final int? id;
+  @override
+  final String? timestamp;
   final List<String> _imageUrls;
   @override
+  @JsonKey()
   List<String> get imageUrls {
     if (_imageUrls is EqualUnmodifiableListView) return _imageUrls;
     // ignore: implicit_dynamic_type
@@ -329,9 +419,13 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
   @override
   final double? longitude;
   @override
-  final CapturedByEntity capturedBy;
+  final CapturedByEntity? capturedBy;
   @override
-  final DateTime capturedAt;
+  final DateTime? capturedAt;
+  @override
+  final String? reason;
+  @override
+  final String? remarks;
 
   /// Create a copy of WorkOrderImageCaptureEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -347,6 +441,9 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _WorkOrderImageCaptureEntity &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
             const DeepCollectionEquality()
                 .equals(other._imageUrls, _imageUrls) &&
             (identical(other.latitude, latitude) ||
@@ -356,21 +453,27 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
             (identical(other.capturedBy, capturedBy) ||
                 other.capturedBy == capturedBy) &&
             (identical(other.capturedAt, capturedAt) ||
-                other.capturedAt == capturedAt));
+                other.capturedAt == capturedAt) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      timestamp,
       const DeepCollectionEquality().hash(_imageUrls),
       latitude,
       longitude,
       capturedBy,
-      capturedAt);
+      capturedAt,
+      reason,
+      remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
   }
 }
 
@@ -384,14 +487,18 @@ abstract mixin class _$WorkOrderImageCaptureEntityCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<String> imageUrls,
+      {int? id,
+      String? timestamp,
+      List<String> imageUrls,
       double? latitude,
       double? longitude,
-      CapturedByEntity capturedBy,
-      DateTime capturedAt});
+      CapturedByEntity? capturedBy,
+      DateTime? capturedAt,
+      String? reason,
+      String? remarks});
 
   @override
-  $CapturedByEntityCopyWith<$Res> get capturedBy;
+  $CapturedByEntityCopyWith<$Res>? get capturedBy;
 }
 
 /// @nodoc
@@ -407,13 +514,25 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
+    Object? id = freezed,
+    Object? timestamp = freezed,
     Object? imageUrls = null,
     Object? latitude = freezed,
     Object? longitude = freezed,
-    Object? capturedBy = null,
-    Object? capturedAt = null,
+    Object? capturedBy = freezed,
+    Object? capturedAt = freezed,
+    Object? reason = freezed,
+    Object? remarks = freezed,
   }) {
     return _then(_WorkOrderImageCaptureEntity(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      timestamp: freezed == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrls: null == imageUrls
           ? _self._imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
@@ -426,14 +545,22 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
           ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      capturedBy: null == capturedBy
+      capturedBy: freezed == capturedBy
           ? _self.capturedBy
           : capturedBy // ignore: cast_nullable_to_non_nullable
-              as CapturedByEntity,
-      capturedAt: null == capturedAt
+              as CapturedByEntity?,
+      capturedAt: freezed == capturedAt
           ? _self.capturedAt
           : capturedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      reason: freezed == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      remarks: freezed == remarks
+          ? _self.remarks
+          : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -441,8 +568,12 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CapturedByEntityCopyWith<$Res> get capturedBy {
-    return $CapturedByEntityCopyWith<$Res>(_self.capturedBy, (value) {
+  $CapturedByEntityCopyWith<$Res>? get capturedBy {
+    if (_self.capturedBy == null) {
+      return null;
+    }
+
+    return $CapturedByEntityCopyWith<$Res>(_self.capturedBy!, (value) {
       return _then(_self.copyWith(capturedBy: value));
     });
   }

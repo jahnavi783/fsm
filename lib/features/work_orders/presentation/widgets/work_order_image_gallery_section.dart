@@ -122,7 +122,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     IconData icon,
   ) {
     // Count total images
-    int totalImages = captures.fold(0, (sum, capture) => sum + capture.imageUrls.length);
+    int totalImages =
+        captures.fold(0, (sum, capture) => sum + capture.imageUrls.length);
 
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -163,7 +164,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
           ),
         ),
         children: [
-          ...captures.map((capture) => _buildCaptureItem(context, capture, actionType, color)),
+          ...captures.map((capture) =>
+              _buildCaptureItem(context, capture, actionType, color)),
         ],
       ),
     );
@@ -175,6 +177,19 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     String actionType,
     Color color,
   ) {
+    // Determine display date - use capturedAt if available, otherwise timestamp
+    String? displayDate;
+    if (capture.capturedAt != null) {
+      displayDate = DateFormat('MMM dd, yyyy HH:mm').format(capture.capturedAt!);
+    } else if (capture.timestamp != null) {
+      try {
+        final parsedTimestamp = DateTime.parse(capture.timestamp!);
+        displayDate = DateFormat('MMM dd, yyyy HH:mm').format(parsedTimestamp);
+      } catch (e) {
+        displayDate = capture.timestamp;
+      }
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(12.w),
@@ -189,40 +204,82 @@ class WorkOrderImageGallerySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Metadata row
-          Row(
-            children: [
-              Icon(
-                Icons.access_time,
-                size: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                DateFormat('MMM dd, yyyy HH:mm').format(capture.capturedAt),
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+          if (displayDate != null)
+            Row(
+              children: [
+                Icon(
+                  Icons.access_time,
+                  size: 14.sp,
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Icon(
-                Icons.person,
-                size: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-              SizedBox(width: 4.w),
-              Expanded(
-                child: Text(
-                  '${capture.capturedBy.firstName} ${capture.capturedBy.lastName}',
+                SizedBox(width: 4.w),
+                Text(
+                  displayDate,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.7),
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
-          ),
+                if (capture.capturedBy != null) ...[
+                  SizedBox(width: 12.w),
+                  Icon(
+                    Icons.person,
+                    size: 14.sp,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.6),
+                  ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: Text(
+                      '${capture.capturedBy!.firstName} ${capture.capturedBy!.lastName}',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.7),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+
+          // Reason field (for pause entries)
+          if (capture.reason != null && capture.reason!.isNotEmpty) ...[
+            SizedBox(height: 6.h),
+            Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  size: 14.sp,
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: Text(
+                    'Reason: ${capture.reason}',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.7),
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
 
           if (capture.latitude != null && capture.longitude != null) ...[
             SizedBox(height: 6.h),
@@ -231,7 +288,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                 Icon(
                   Icons.location_on,
                   size: 14.sp,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 ),
                 SizedBox(width: 4.w),
                 Expanded(
@@ -239,7 +297,10 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                     '${capture.latitude!.toStringAsFixed(6)}, ${capture.longitude!.toStringAsFixed(6)}',
                     style: TextStyle(
                       fontSize: 11.sp,
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.6),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -248,34 +309,35 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             ),
           ],
 
-          SizedBox(height: 12.h),
+          // Image thumbnails grid (only show if there are images)
+          if (capture.imageUrls.isNotEmpty) ...[
+            SizedBox(height: 12.h),
+            Wrap(
+              spacing: 8.w,
+              runSpacing: 8.h,
+              children: capture.imageUrls.asMap().entries.map((entry) {
+                final index = entry.key;
+                final imageUrl = entry.value;
 
-          // Image thumbnails grid
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: capture.imageUrls.asMap().entries.map((entry) {
-              final index = entry.key;
-              final imageUrl = entry.value;
-
-              return WorkOrderImageThumbnail(
-                imageUrl: imageUrl,
-                width: 80.w,
-                height: 80.h,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierColor: Colors.black87,
-                    builder: (context) => WorkOrderImagePreviewDialog(
-                      captures: [capture],
-                      initialIndex: index,
-                      actionType: actionType,
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
+                return WorkOrderImageThumbnail(
+                  imageUrl: imageUrl,
+                  width: 80.w,
+                  height: 80.h,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder: (context) => WorkOrderImagePreviewDialog(
+                        captures: [capture],
+                        initialIndex: index,
+                        actionType: actionType,
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ],
         ],
       ),
     );

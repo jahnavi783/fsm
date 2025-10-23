@@ -355,14 +355,18 @@ class __$GpsCoordinatesDtoCopyWithImpl<$Res>
 
 /// @nodoc
 mixin _$WorkOrderImageCaptureDto {
+  int? get id;
+  String? get timestamp;
   @JsonKey(name: 'image_urls')
   List<String>? get imageUrls;
   @JsonKey(name: 'gps_coordinates')
   GpsCoordinatesDto? get gpsCoordinates;
   @JsonKey(name: 'captured_by')
-  CapturedByDto get capturedBy;
+  CapturedByDto? get capturedBy;
   @JsonKey(name: 'captured_at')
-  String get capturedAt;
+  String? get capturedAt;
+  String? get reason;
+  String? get remarks;
 
   /// Create a copy of WorkOrderImageCaptureDto
   /// with the given fields replaced by the non-null parameter values.
@@ -380,27 +384,36 @@ mixin _$WorkOrderImageCaptureDto {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is WorkOrderImageCaptureDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
             const DeepCollectionEquality().equals(other.imageUrls, imageUrls) &&
             (identical(other.gpsCoordinates, gpsCoordinates) ||
                 other.gpsCoordinates == gpsCoordinates) &&
             (identical(other.capturedBy, capturedBy) ||
                 other.capturedBy == capturedBy) &&
             (identical(other.capturedAt, capturedAt) ||
-                other.capturedAt == capturedAt));
+                other.capturedAt == capturedAt) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      timestamp,
       const DeepCollectionEquality().hash(imageUrls),
       gpsCoordinates,
       capturedBy,
-      capturedAt);
+      capturedAt,
+      reason,
+      remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureDto(imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt)';
+    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
   }
 }
 
@@ -411,13 +424,17 @@ abstract mixin class $WorkOrderImageCaptureDtoCopyWith<$Res> {
       _$WorkOrderImageCaptureDtoCopyWithImpl;
   @useResult
   $Res call(
-      {@JsonKey(name: 'image_urls') List<String>? imageUrls,
+      {int? id,
+      String? timestamp,
+      @JsonKey(name: 'image_urls') List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-      @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
-      @JsonKey(name: 'captured_at') String capturedAt});
+      @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+      @JsonKey(name: 'captured_at') String? capturedAt,
+      String? reason,
+      String? remarks});
 
   $GpsCoordinatesDtoCopyWith<$Res>? get gpsCoordinates;
-  $CapturedByDtoCopyWith<$Res> get capturedBy;
+  $CapturedByDtoCopyWith<$Res>? get capturedBy;
 }
 
 /// @nodoc
@@ -433,12 +450,24 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? timestamp = freezed,
     Object? imageUrls = freezed,
     Object? gpsCoordinates = freezed,
-    Object? capturedBy = null,
-    Object? capturedAt = null,
+    Object? capturedBy = freezed,
+    Object? capturedAt = freezed,
+    Object? reason = freezed,
+    Object? remarks = freezed,
   }) {
     return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      timestamp: freezed == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrls: freezed == imageUrls
           ? _self.imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
@@ -447,14 +476,22 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
           ? _self.gpsCoordinates
           : gpsCoordinates // ignore: cast_nullable_to_non_nullable
               as GpsCoordinatesDto?,
-      capturedBy: null == capturedBy
+      capturedBy: freezed == capturedBy
           ? _self.capturedBy
           : capturedBy // ignore: cast_nullable_to_non_nullable
-              as CapturedByDto,
-      capturedAt: null == capturedAt
+              as CapturedByDto?,
+      capturedAt: freezed == capturedAt
           ? _self.capturedAt
           : capturedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      reason: freezed == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      remarks: freezed == remarks
+          ? _self.remarks
+          : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -476,8 +513,12 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CapturedByDtoCopyWith<$Res> get capturedBy {
-    return $CapturedByDtoCopyWith<$Res>(_self.capturedBy, (value) {
+  $CapturedByDtoCopyWith<$Res>? get capturedBy {
+    if (_self.capturedBy == null) {
+      return null;
+    }
+
+    return $CapturedByDtoCopyWith<$Res>(_self.capturedBy!, (value) {
       return _then(_self.copyWith(capturedBy: value));
     });
   }
@@ -577,18 +618,29 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
+            int? id,
+            String? timestamp,
             @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-            @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
-            @JsonKey(name: 'captured_at') String capturedAt)?
+            @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+            @JsonKey(name: 'captured_at') String? capturedAt,
+            String? reason,
+            String? remarks)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureDto() when $default != null:
-        return $default(_that.imageUrls, _that.gpsCoordinates, _that.capturedBy,
-            _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.gpsCoordinates,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         return orElse();
     }
@@ -610,17 +662,28 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
+            int? id,
+            String? timestamp,
             @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-            @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
-            @JsonKey(name: 'captured_at') String capturedAt)
+            @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+            @JsonKey(name: 'captured_at') String? capturedAt,
+            String? reason,
+            String? remarks)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureDto():
-        return $default(_that.imageUrls, _that.gpsCoordinates, _that.capturedBy,
-            _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.gpsCoordinates,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -641,17 +704,28 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
+            int? id,
+            String? timestamp,
             @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-            @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
-            @JsonKey(name: 'captured_at') String capturedAt)?
+            @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+            @JsonKey(name: 'captured_at') String? capturedAt,
+            String? reason,
+            String? remarks)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderImageCaptureDto() when $default != null:
-        return $default(_that.imageUrls, _that.gpsCoordinates, _that.capturedBy,
-            _that.capturedAt);
+        return $default(
+            _that.id,
+            _that.timestamp,
+            _that.imageUrls,
+            _that.gpsCoordinates,
+            _that.capturedBy,
+            _that.capturedAt,
+            _that.reason,
+            _that.remarks);
       case _:
         return null;
     }
@@ -662,14 +736,22 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
 @JsonSerializable()
 class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
   const _WorkOrderImageCaptureDto(
-      {@JsonKey(name: 'image_urls') final List<String>? imageUrls,
+      {this.id,
+      this.timestamp,
+      @JsonKey(name: 'image_urls') final List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') this.gpsCoordinates,
-      @JsonKey(name: 'captured_by') required this.capturedBy,
-      @JsonKey(name: 'captured_at') required this.capturedAt})
+      @JsonKey(name: 'captured_by') this.capturedBy,
+      @JsonKey(name: 'captured_at') this.capturedAt,
+      this.reason,
+      this.remarks})
       : _imageUrls = imageUrls;
   factory _WorkOrderImageCaptureDto.fromJson(Map<String, dynamic> json) =>
       _$WorkOrderImageCaptureDtoFromJson(json);
 
+  @override
+  final int? id;
+  @override
+  final String? timestamp;
   final List<String>? _imageUrls;
   @override
   @JsonKey(name: 'image_urls')
@@ -686,10 +768,14 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
   final GpsCoordinatesDto? gpsCoordinates;
   @override
   @JsonKey(name: 'captured_by')
-  final CapturedByDto capturedBy;
+  final CapturedByDto? capturedBy;
   @override
   @JsonKey(name: 'captured_at')
-  final String capturedAt;
+  final String? capturedAt;
+  @override
+  final String? reason;
+  @override
+  final String? remarks;
 
   /// Create a copy of WorkOrderImageCaptureDto
   /// with the given fields replaced by the non-null parameter values.
@@ -712,6 +798,9 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _WorkOrderImageCaptureDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
             const DeepCollectionEquality()
                 .equals(other._imageUrls, _imageUrls) &&
             (identical(other.gpsCoordinates, gpsCoordinates) ||
@@ -719,21 +808,27 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
             (identical(other.capturedBy, capturedBy) ||
                 other.capturedBy == capturedBy) &&
             (identical(other.capturedAt, capturedAt) ||
-                other.capturedAt == capturedAt));
+                other.capturedAt == capturedAt) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      timestamp,
       const DeepCollectionEquality().hash(_imageUrls),
       gpsCoordinates,
       capturedBy,
-      capturedAt);
+      capturedAt,
+      reason,
+      remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureDto(imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt)';
+    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
   }
 }
 
@@ -746,15 +841,19 @@ abstract mixin class _$WorkOrderImageCaptureDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'image_urls') List<String>? imageUrls,
+      {int? id,
+      String? timestamp,
+      @JsonKey(name: 'image_urls') List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
-      @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
-      @JsonKey(name: 'captured_at') String capturedAt});
+      @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
+      @JsonKey(name: 'captured_at') String? capturedAt,
+      String? reason,
+      String? remarks});
 
   @override
   $GpsCoordinatesDtoCopyWith<$Res>? get gpsCoordinates;
   @override
-  $CapturedByDtoCopyWith<$Res> get capturedBy;
+  $CapturedByDtoCopyWith<$Res>? get capturedBy;
 }
 
 /// @nodoc
@@ -770,12 +869,24 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
+    Object? id = freezed,
+    Object? timestamp = freezed,
     Object? imageUrls = freezed,
     Object? gpsCoordinates = freezed,
-    Object? capturedBy = null,
-    Object? capturedAt = null,
+    Object? capturedBy = freezed,
+    Object? capturedAt = freezed,
+    Object? reason = freezed,
+    Object? remarks = freezed,
   }) {
     return _then(_WorkOrderImageCaptureDto(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      timestamp: freezed == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String?,
       imageUrls: freezed == imageUrls
           ? _self._imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
@@ -784,14 +895,22 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
           ? _self.gpsCoordinates
           : gpsCoordinates // ignore: cast_nullable_to_non_nullable
               as GpsCoordinatesDto?,
-      capturedBy: null == capturedBy
+      capturedBy: freezed == capturedBy
           ? _self.capturedBy
           : capturedBy // ignore: cast_nullable_to_non_nullable
-              as CapturedByDto,
-      capturedAt: null == capturedAt
+              as CapturedByDto?,
+      capturedAt: freezed == capturedAt
           ? _self.capturedAt
           : capturedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      reason: freezed == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      remarks: freezed == remarks
+          ? _self.remarks
+          : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -813,8 +932,12 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CapturedByDtoCopyWith<$Res> get capturedBy {
-    return $CapturedByDtoCopyWith<$Res>(_self.capturedBy, (value) {
+  $CapturedByDtoCopyWith<$Res>? get capturedBy {
+    if (_self.capturedBy == null) {
+      return null;
+    }
+
+    return $CapturedByDtoCopyWith<$Res>(_self.capturedBy!, (value) {
       return _then(_self.copyWith(capturedBy: value));
     });
   }

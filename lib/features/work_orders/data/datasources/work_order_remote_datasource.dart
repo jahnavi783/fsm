@@ -99,7 +99,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   }) async {
     final response = await _apiClient.startWorkOrder(
       id: workOrderId,
-      gpsCoordinates: '$latitude,$longitude',
+      gpsCoordinates: '[$longitude, $latitude]',
       files: files,
     );
     return response.workOrder;
@@ -116,7 +116,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     final response = await _apiClient.pauseWorkOrder(
       id: workOrderId,
       reason: reason,
-      gpsCoordinates: '$latitude,$longitude',
+      gpsCoordinates: '[$longitude, $latitude]',
       files: files,
     );
     return response.workOrder;
@@ -132,7 +132,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   }) async {
     final response = await _apiClient.resumeWorkOrder(
       id: workOrderId,
-      gpsCoordinates: '$latitude,$longitude',
+      gpsCoordinates: '[$longitude, $latitude]',
       files: files,
     );
     return response.workOrder;
@@ -158,7 +158,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
     final response = await _apiClient.completeWorkOrder(
       id: workOrderId,
       workLog: workLog,
-      gpsCoordinates: '$latitude,$longitude',
+      gpsCoordinates: '[$longitude, $latitude]',
       partsUsed: partsUsedJson,
       files: files,
     );
@@ -174,7 +174,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   }) async {
     final request = RejectWorkOrderRequest(
       reason: reason,
-      gpsCoordinates: '$latitude,$longitude',
+      gpsCoordinates: '[$longitude, $latitude]',
     );
     final response = await _apiClient.rejectWorkOrder(
       id: workOrderId,

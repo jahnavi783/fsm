@@ -24,7 +24,8 @@ abstract class NetworkModule {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         // Add Ngrok-specific header to bypass browser warning
-        if (AppConfig.baseUrl.contains('ngrok-free.app') || AppConfig.baseUrl.contains('ngrok.io'))
+        if (AppConfig.baseUrl.contains('ngrok-free.app') ||
+            AppConfig.baseUrl.contains('ngrok.io'))
           'ngrok-skip-browser-warning': 'true',
       },
     ));
@@ -48,14 +49,13 @@ abstract class NetworkModule {
           // Don't retry on 307 redirects - these need to be fixed at the configuration level
           if (error.response?.statusCode == 307) {
             loggingService.error(
-              'Received 307 redirect - check if URL should use HTTPS instead of HTTP', 
-              tag: 'NETWORK'
-            );
+                'Received 307 redirect - check if URL should use HTTPS instead of HTTP',
+                tag: 'NETWORK');
             return false;
           }
           // Default retry logic for other errors
           return error.type != DioExceptionType.cancel &&
-                 error.type != DioExceptionType.unknown;
+              error.type != DioExceptionType.unknown;
         },
       ),
     ]);

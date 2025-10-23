@@ -16,12 +16,12 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final accessToken = await _localDataSource.getAccessToken();
-    
+
     // Don't add token to auth endpoints
     if (accessToken != null && !options.uri.toString().contains("/auth")) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
-    
+
     return handler.next(options);
   }
 
@@ -51,14 +51,15 @@ class AuthInterceptor extends Interceptor {
       baseUrl: AppConfig.baseUrl,
     ));
     final accessToken = await _localDataSource.getAccessToken();
-    
+
     final options = Options(
       method: requestOptions.method,
       headers: {
         ...requestOptions.headers,
         'Authorization': 'Bearer $accessToken',
         // Add Ngrok-specific header to bypass browser warning
-        if (AppConfig.baseUrl.contains('ngrok-free.app') || AppConfig.baseUrl.contains('ngrok.io'))
+        if (AppConfig.baseUrl.contains('ngrok-free.app') ||
+            AppConfig.baseUrl.contains('ngrok.io'))
           'ngrok-skip-browser-warning': 'true',
       },
     );
@@ -84,7 +85,8 @@ class AuthInterceptor extends Interceptor {
         headers: {
           'Content-Type': 'application/json',
           // Add Ngrok-specific header to bypass browser warning
-          if (AppConfig.baseUrl.contains('ngrok-free.app') || AppConfig.baseUrl.contains('ngrok.io'))
+          if (AppConfig.baseUrl.contains('ngrok-free.app') ||
+              AppConfig.baseUrl.contains('ngrok.io'))
             'ngrok-skip-browser-warning': 'true',
         },
       ));
@@ -102,7 +104,7 @@ class AuthInterceptor extends Interceptor {
         );
         return true;
       }
-      
+
       return false;
     } catch (e) {
       // If refresh token failed, clear tokens

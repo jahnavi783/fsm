@@ -146,7 +146,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
       body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
         listener: (context, state) {
           state.maybeWhen(
-            actionSuccess: (workOrder, actionType, message) {
+            actionSuccess: (workOrder, actionType, message, _) {
               if (actionType == 'start') {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -185,7 +185,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                 ),
               );
             },
-            loaded: (workOrder, currentLocation, isLocationLoading, isOffline) {
+            loaded: (workOrder, currentLocation, isLocationLoading, isOffline, _, __) {
               // Auto-show start bottom sheet when work order is loaded
               if (!_showStartBottomSheet && workOrder.canBeStarted) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -202,12 +202,12 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (workOrder, currentLocation, isLocationLoading,
-                    isOffline) =>
+                    isOffline, _, __) =>
                 _buildStartInterface(
                     workOrder, currentLocation, isLocationLoading, isOffline),
             actionInProgress: (workOrder, actionType, currentLocation) =>
                 _buildActionInProgress(workOrder, actionType),
-            actionSuccess: (workOrder, actionType, message) =>
+            actionSuccess: (workOrder, actionType, message, _) =>
                 _buildStartInterface(workOrder, null, false, false),
             error: (failure, workOrder, isOffline) =>
                 _buildError(failure.message, isOffline),

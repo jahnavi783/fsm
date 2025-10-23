@@ -4,6 +4,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_response.dart';
 import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 part 'work_order_api_client.g.dart';
@@ -63,4 +64,9 @@ abstract class WorkOrderApiClient {
     @Path('id') required int id,
     @Body() required RejectWorkOrderRequest body,
   });
+
+  @GET('/work-orders/{id}/images-grouped')
+  Future<WorkOrderGroupedImagesResponseDto> getGroupedImages(
+    @Path('id') int id,
+  );
 }

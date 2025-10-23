@@ -81,10 +81,13 @@ class WorkOrderActionBloc
           isOffline: !isConnected,
         ));
       },
-      (workOrder) {
+      (detailsResult) {
+        // Emit loaded state with work order and grouped images
         emit(WorkOrderActionState.loaded(
-          workOrder: workOrder,
+          workOrder: detailsResult.workOrder,
           isOffline: !isConnected,
+          groupedImages: detailsResult.groupedImages,
+          isLoadingImages: false,
         ));
 
         // Automatically capture location when work order is loaded
@@ -104,13 +107,13 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     final currentLocation = currentState.maybeWhen(
-      loaded: (_, currentLocation, __, ___) => currentLocation,
+      loaded: (_, currentLocation, __, ___, ____, _____) => currentLocation,
       orElse: () => null,
     );
 
@@ -156,13 +159,13 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     final currentLocation = currentState.maybeWhen(
-      loaded: (_, currentLocation, __, ___) => currentLocation,
+      loaded: (_, currentLocation, __, ___, ____, _____) => currentLocation,
       orElse: () => null,
     );
 
@@ -208,13 +211,13 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     final currentLocation = currentState.maybeWhen(
-      loaded: (_, currentLocation, __, ___) => currentLocation,
+      loaded: (_, currentLocation, __, ___, ____, _____) => currentLocation,
       orElse: () => null,
     );
 
@@ -262,13 +265,13 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     final currentLocation = currentState.maybeWhen(
-      loaded: (_, currentLocation, __, ___) => currentLocation,
+      loaded: (_, currentLocation, __, ___, ____, _____) => currentLocation,
       orElse: () => null,
     );
 
@@ -315,13 +318,13 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     final currentLocation = currentState.maybeWhen(
-      loaded: (_, currentLocation, __, ___) => currentLocation,
+      loaded: (_, currentLocation, __, ___, ____, _____) => currentLocation,
       orElse: () => null,
     );
 
@@ -359,18 +362,19 @@ class WorkOrderActionBloc
     final currentState = state;
 
     final workOrder = currentState.maybeWhen(
-      loaded: (workOrder, _, __, ___) => workOrder,
+      loaded: (workOrder, _, __, ___, ____, _____) => workOrder,
       orElse: () => null,
     );
     if (workOrder == null) return;
 
     emit(currentState.maybeWhen(
-      loaded: (workOrder, currentLocation, _, isOffline) =>
+      loaded: (workOrder, currentLocation, _, isOffline, groupedImages, __) =>
           WorkOrderActionState.loaded(
         workOrder: workOrder,
         currentLocation: currentLocation,
         isLocationLoading: true,
         isOffline: isOffline,
+        groupedImages: groupedImages,
       ),
       orElse: () => currentState,
     ));
@@ -385,11 +389,12 @@ class WorkOrderActionBloc
       );
 
       emit(currentState.maybeWhen(
-        loaded: (workOrder, _, __, isOffline) => WorkOrderActionState.loaded(
+        loaded: (workOrder, _, __, isOffline, groupedImages, ___) => WorkOrderActionState.loaded(
           workOrder: workOrder,
           currentLocation: location,
           isLocationLoading: false,
           isOffline: isOffline,
+          groupedImages: groupedImages,
         ),
         orElse: () => currentState,
       ));

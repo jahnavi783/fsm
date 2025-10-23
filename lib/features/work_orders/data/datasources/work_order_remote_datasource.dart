@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:fsm/features/work_orders/data/api/work_order_api_client.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_dto.dart';
 import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 abstract class WorkOrderRemoteDataSource {
@@ -57,6 +58,8 @@ abstract class WorkOrderRemoteDataSource {
     required double latitude,
     required double longitude,
   });
+
+  Future<WorkOrderGroupedImagesResponseDto> getGroupedImages(int workOrderId);
 }
 
 @Injectable(as: WorkOrderRemoteDataSource)
@@ -181,5 +184,11 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       body: request,
     );
     return response.workOrder;
+  }
+
+  @override
+  Future<WorkOrderGroupedImagesResponseDto> getGroupedImages(
+      int workOrderId) async {
+    return await _apiClient.getGroupedImages(workOrderId);
   }
 }

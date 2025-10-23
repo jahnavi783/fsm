@@ -240,8 +240,6 @@ extension GetItInjectableX on _i174.GetIt {
         _i428.CheckPermissionStatusUseCase(gh<_i165.IPermissionRepository>()));
     gh.factoryAsync<_i641.PartsLocalDataSource>(() async =>
         _i641.PartsLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
-    gh.factoryAsync<_i908.AuthInterceptor>(() async =>
-        _i908.AuthInterceptor(await getAsync<_i992.AuthLocalDataSource>()));
     gh.factoryAsync<_i530.AuthGuard>(() async =>
         _i530.AuthGuard(await getAsync<_i992.AuthLocalDataSource>()));
     gh.singleton<_i256.ConnectivityBloc>(() => _i256.ConnectivityBloc(
@@ -255,6 +253,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i804.RequestMultiplePermissionsUseCase>(),
           gh<_i418.OpenAppSettingsUseCase>(),
           gh<_i165.IPermissionRepository>(),
+        ));
+    gh.factoryAsync<_i908.AuthInterceptor>(() async => _i908.AuthInterceptor(
+          await getAsync<_i992.AuthLocalDataSource>(),
+          gh<_i520.LoggingService>(),
         ));
     gh.singletonAsync<_i81.AppRouter>(() async =>
         _i81.AppRouter(authGuard: await getAsync<_i530.AuthGuard>()));

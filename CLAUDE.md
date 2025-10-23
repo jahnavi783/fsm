@@ -4,2236 +4,481 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FSM (Field Service Management) Mobile Application - A Flutter-based field service management solution for technicians to manage work orders, track service requests, document work completion, and access technical assistance.
-
-**Platform:** Flutter (Android & iOS)
-**Target Version:** 2.0.5+5
-**Current State:** Fresh project scaffold - implementation pending based on FSM_APP_REBUILD_DOCUMENTATION.md
-
-### Requirements
-- **Flutter SDK:** >=3.6.0 (recommended: latest stable)
-- **Dart SDK:** >=3.0.0 <4.0.0
-- **Android:** minSdkVersion 21 (Android 5.0+)
-- **iOS:** iOS 12.0+
-- **macOS:** 10.14+ (for development)
-
-```bash
-# Check your Flutter version
-flutter --version
-
-# Upgrade Flutter to latest stable
-flutter upgrade
-
-# Check for issues
-flutter doctor -v
-```
+Flutter-based Field Service Management (FSM) mobile application built with clean architecture principles. The app supports offline-first operation with JWT authentication, work order lifecycle management, document handling, and GPS-enabled field operations.
 
 ## Development Commands
 
-### Code Generation
-This project uses extensive code generation. Run these commands after making changes:
+### Running the App
 
 ```bash
-# Modern dart run syntax (recommended for Flutter 3.x+)
-dart run build_runner build --delete-conflicting-outputs
+# Development (default)
+flutter run --flavor dev --target lib/main_dev.dart
+# Or use convenience script:
+./scripts/run_dev.sh
 
-# Watch mode for continuous generation during development (RECOMMENDED)
+# Staging
+flutter run --flavor staging --target lib/main_staging.dart
+./scripts/run_staging.sh
+
+# Production
+flutter run --flavor prod --target lib/main_prod.dart --release
+./scripts/run_prod.sh
+```
+
+### Code Generation
+
+**Critical**: Keep build_runner watching during development:
+
+```bash
+# Watch mode (recommended during development)
 dart run build_runner watch --delete-conflicting-outputs
 
-# Clean generated files before rebuilding
-dart run build_runner clean
-
-# Legacy flutter pub run syntax (still works but deprecated)
-flutter pub run build_runner build --delete-conflicting-outputs
+# One-time generation
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-**IMPORTANT:** Run code generation after:
-- Adding/modifying `@freezed` models or entities
-- Adding/modifying `@injectable` dependencies
-- Adding/modifying `@RestApi()` endpoints
-- Adding/modifying Auto Route `@RoutePage()` annotations
-- Adding/changing assets (Flutter Gen runs with build_runner)
+Run code generation after modifying:
+- `@freezed` models (DTOs, entities, states, events)
+- `@injectable` classes or `@module` providers
+- `@RestApi()` clients (Retrofit)
+- `@RoutePage()` annotated pages
+- Hive model types with `@HiveType`
+- Assets (images, fonts, colors) when flutter_gen is enabled
 
-**Note:** With `flutter_gen_runner: ^5.7.0`, assets are generated automatically by build_runner. No separate `fluttergen` command needed.
-
-### Running the Application
-```bash
-# Debug mode (default)
-flutter run
-
-# Release mode
-flutter run --release
-
-# Run on specific device
-flutter run -d <device_id>
-
-# List available devices
-flutter devices
-```
+Generated files locations:
+- DI config: `lib/core/di/injection.config.dart`
+- Router: `lib/core/router/app_router.gr.dart`
+- Retrofit APIs: `*.g.dart` next to API client files
+- Freezed models: `*.freezed.dart` and `*.g.dart` next to model files
 
 ### Testing
+
 ```bash
 # Run all tests
 flutter test
 
 # Run specific test file
-flutter test test/path/to/test_file.dart
+flutter test test/features/work_orders/data/repositories/work_order_repository_impl_test.dart
 
-# Run tests with coverage
+# Run with coverage
 flutter test --coverage
 ```
 
-### Building
+### Linting & Analysis
+
 ```bash
-# Android APK (release)
-flutter build apk --release
-
-# Android App Bundle (for Play Store)
-flutter build appbundle --release
-
-# iOS (requires macOS)
-flutter build ios --release
-
-# Check for build issues
+# Analyze entire project
+dart analyze
 flutter analyze
+
+# Fix auto-fixable issues
+dart fix --apply
 ```
 
-### Dependency Management
+### Building
+
 ```bash
-# Install dependencies
-flutter pub get
+# Development build
+flutter build apk --flavor dev --target lib/main_dev.dart
+./scripts/build_android_dev.sh
 
-# Update dependencies
-flutter pub upgrade
+# Staging build
+flutter build apk --flavor staging --target lib/main_staging.dart
+./scripts/build_android_staging.sh
 
-# Check for outdated packages
-flutter pub outdated
+# Production build
+flutter build apk --flavor prod --target lib/main_prod.dart --release
+./scripts/build_android_prod.sh
 ```
 
 ## Architecture Overview
 
-### Design Pattern
-- **Architecture:** Clean Architecture with Feature-First Modular Structure
-- **State Management:** BLoC (Business Logic Component) pattern with flutter_bloc
-- **Dependency Injection:** Injectable (code-generated) with GetIt container
-- **Routing:** Auto Route (declarative, type-safe, code-generated routing)
-- **Code Generation:** Extensive use of code generators for maintainability and type safety
+### Clean Architecture Pattern
 
-### Clean Architecture Layers
-
-1. **Presentation Layer** (UI + State Management)
-   - Pages/Screens with Auto Route annotations
-   - BLoC/Cubit for state management
-   - Widgets and UI components
-   - Routes (generated by Auto Route)
-
-2. **Domain Layer** (Business Logic)
-   - Use Cases (business logic operations)
-   - Repository interfaces (contracts)
-   - Domain entities
-   - Business rules and validators
-
-3. **Data Layer** (Data Sources)
-   - Repository implementations
-   - Data sources (Remote API, Local Cache)
-   - DTOs and Mappers
-   - Hive adapters for local storage
-
-4. **Core Layer** (Shared)
-   - Utilities and extensions
-   - Constants and enums
-   - Base classes
-   - Dependency injection configuration
-
-### Key Technology Stack
-- **State Management:** flutter_bloc ^9.1.1
-- **Dependency Injection:** injectable ^2.5.2 + get_it ^8.2.0
-- **Routing:** auto_route ^9.3.0 (code-generated, type-safe routing)
-- **Network:** dio ^5.9.0 + retrofit ^4.7.3
-- **Data Serialization:** freezed ^2.5.2 + json_serializable ^6.8.0
-- **Local Storage:** hive_ce ^2.15.0 + hive_ce_generator ^1.4.0 (using community edition)
-- **Asset Generation:** flutter_gen_runner ^5.9.0 (temporarily disabled due to version conflicts)
-- **Location:** location ^8.0.1 + flutter_map ^8.2.2
-- **Media:** image_picker ^1.2.0 + file_picker ^10.3.3
-- **UI:** flutter_screenutil ^5.9.3 + shimmer ^3.0.0
-- **Forms:** reactive_forms ^18.1.1
-- **Documents:** syncfusion_flutter_pdfviewer ^31.1.23
-- **Calendar:** calendar_view ^1.4.0
-- **Code Generation:** build_runner ^2.4.13
-- **Network Debugging:** pretty_dio_logger ^1.4.0 + dio_smart_retry ^7.0.1 + chuck_interceptor ^2.3.1 (Android only)
-- **Functional Programming:** either_dart ^1.0.0
-
-### Recommended pubspec.yaml
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-
-  # State Management
-  flutter_bloc: ^8.1.6
-  equatable: ^2.0.5
-
-  # Dependency Injection
-  injectable: ^2.4.4
-  get_it: ^8.0.2
-
-  # Routing
-  auto_route: ^9.2.2
-
-  # Network
-  dio: ^5.7.0
-  retrofit: ^4.4.1
-  pretty_dio_logger: ^1.4.0
-  dio_smart_retry: ^6.0.0
-
-  # Data Serialization
-  freezed_annotation: ^2.4.4
-  json_annotation: ^4.9.0
-
-  # Local Storage
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-
-  # Functional Programming (choose one)
-  dartz: ^0.10.1          # More features, larger
-  either_dart: ^1.0.0     # Lightweight alternative
-
-  # Location & Maps
-  location: ^7.0.0
-  flutter_map: ^7.0.2
-  latlong2: ^0.9.1
-
-  # Media & Files
-  image_picker: ^1.1.2
-  file_picker: ^8.1.2
-  permission_handler: ^11.3.1
-
-  # UI Components
-  flutter_screenutil: ^5.9.3
-  shimmer: ^3.0.0
-  cached_network_image: ^3.4.1
-
-  # Forms
-  reactive_forms: ^17.0.1
-
-  # Documents
-  syncfusion_flutter_pdfviewer: ^27.1.48
-
-  # Calendar
-  calendar_view: ^1.2.0
-
-  # Utils
-  intl: ^0.19.0
-  connectivity_plus: ^6.0.5
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  # Linting
-  flutter_lints: ^5.0.0
-
-  # Code Generation
-  build_runner: ^2.4.13
-  injectable_generator: ^2.6.2
-  auto_route_generator: ^9.0.0
-  freezed: ^2.5.7
-  json_serializable: ^6.8.0
-  hive_generator: ^2.0.1
-  retrofit_generator: ^9.1.2
-  flutter_gen_runner: ^5.7.0
-
-  # Testing
-  mockito: ^5.4.4
-  bloc_test: ^9.1.7
-  mocktail: ^1.0.4
-```
-
-### Code Generator Philosophy
-This project leverages code generators for:
-- **Type Safety:** Compile-time checks reduce runtime errors
-- **Boilerplate Reduction:** Focus on business logic, not plumbing
-- **Maintainability:** Generated code is consistent and predictable
-- **Refactoring:** Changes propagate automatically through generated code
-
-## Version-Specific Notes & Breaking Changes
-
-### Auto Route 9.x (from 8.x)
-- **Breaking:** `@AutoRoute()` annotation renamed to `@RoutePage()`
-- All page widgets must use `@RoutePage()` instead of `@AutoRoute()`
-- Route class names now use `Route` suffix (e.g., `LoginRoute` instead of `LoginScreenRoute`)
-- Navigation syntax remains mostly the same: `context.router.push(LoginRoute())`
-- Migration: Replace all `@AutoRoute()` with `@RoutePage()` and regenerate
-
-### Injectable 2.4.x
-- Stable API, no major breaking changes from 2.x
-- Better null-safety support
-- Improved environment-based registration
-- Compatible with latest get_it versions
-
-### Freezed 2.5.x (from 2.4.x)
-- Minor improvements to generated code
-- Better handling of default values
-- Improved `copyWith` generation
-- No breaking changes, but regenerate for optimizations
-
-### Hive CE 2.15.x (Community Edition)
-- Using Hive Community Edition (hive_ce) for better maintenance and features
-- No separate `hive_flutter` needed - initialization handled by `HiveService.create()`
-- `hive_ce_generator` for adapter generation
-- Automatic adapter registration via `HiveRegistrar` extension
-- Compatible with null-safety and modern Flutter versions
-
-### Flutter Gen 5.7.x
-- Now runs via `flutter_gen_runner` through build_runner
-- No separate CLI command needed (integrated workflow)
-- Better integration with build_runner watch mode
-- Assets automatically regenerate when changed
-
-### Retrofit 4.4.x + Retrofit Generator 9.x
-- **Note:** Retrofit generator version (9.x) is higher than retrofit package (4.x)
-- Full null-safety support
-- Better error handling
-- `@factoryMethod` for constructor injection with Injectable
-
-### Flutter BLoC 9.1.x (Latest Version)
-- **Note:** Version 9.1.1 is the latest stable version in use
-- Enhanced null-safety support and improved performance
-- Better integration with modern Flutter widgets
-- Transformer API for advanced event handling
-- Improved error handling and state management
-
-### Key Migration Tips
-```bash
-# After updating dependencies in pubspec.yaml
-flutter pub get
-flutter clean
-dart run build_runner clean
-dart run build_runner build --delete-conflicting-outputs
-
-# If you encounter version conflicts
-flutter pub upgrade
-dart pub outdated
-
-# To see why a specific version is required
-dart pub deps
-```
-
-## Project Structure
-
-Feature-first modular clean architecture with code generation:
+The codebase follows feature-first clean architecture with three layers per feature:
 
 ```
-lib/
-├── core/                                    # Shared infrastructure
-│   ├── di/
-│   │   ├── injection.dart                   # @InjectableInit - DI container setup
-│   │   └── injection.config.dart            # Generated by Injectable
-│   ├── network/
-│   │   ├── dio_client.dart                  # @injectable Dio configuration
-│   │   ├── auth_interceptor.dart            # JWT token management
-│   │   └── network_info.dart                # @injectable connectivity checker
-│   ├── storage/
-│   │   ├── hive_service.dart                # @injectable Hive service
-│   │   ├── cache_manager.dart               # @injectable cache operations
-│   │   └── adapters/                        # Hive TypeAdapters (generated)
-│   │       ├── work_order_adapter.dart      # @HiveType generated
-│   │       └── user_adapter.dart
-│   ├── router/
-│   │   ├── app_router.dart                  # @AutoRouterConfig - routing config
-│   │   └── app_router.gr.dart               # Generated by Auto Route
-│   ├── constants/
-│   │   ├── app_constants.dart               # API URLs, keys
-│   │   └── hive_boxes.dart                  # Hive box names
-│   ├── utils/
-│   │   ├── extensions.dart                  # Dart extensions
-│   │   └── validators.dart
-│   └── error/
-│       ├── failures.dart                    # @freezed failure types
-│       └── exceptions.dart
-│
-├── features/                                # Feature modules
-│   ├── auth/                                # Authentication feature
-│   │   ├── data/
-│   │   │   ├── datasources/
-│   │   │   │   ├── auth_remote_datasource.dart     # @injectable
-│   │   │   │   └── auth_local_datasource.dart      # @injectable
-│   │   │   ├── models/
-│   │   │   │   ├── login_request.dart              # @freezed
-│   │   │   │   └── login_response.dart             # @freezed
-│   │   │   ├── repositories/
-│   │   │   │   └── auth_repository_impl.dart       # @Injectable(as: IAuthRepository)
-│   │   │   └── api/
-│   │   │       └── auth_api_client.dart            # @RestApi()
-│   │   ├── domain/
-│   │   │   ├── entities/
-│   │   │   │   └── user_entity.dart                # @freezed
-│   │   │   ├── repositories/
-│   │   │   │   └── i_auth_repository.dart          # Abstract interface
-│   │   │   └── usecases/
-│   │   │       ├── login_usecase.dart              # @injectable
-│   │   │       ├── logout_usecase.dart             # @injectable
-│   │   │       └── check_auth_usecase.dart         # @injectable
-│   │   └── presentation/
-│   │       ├── pages/
-│   │       │   ├── login_page.dart                 # @RoutePage()
-│   │       │   └── splash_page.dart                # @RoutePage()
-│   │       ├── blocs/
-│   │       │   └── auth/
-│   │       │       ├── auth_bloc.dart              # @injectable
-│   │       │       ├── auth_event.dart             # @freezed
-│   │       │       └── auth_state.dart             # @freezed
-│   │       └── widgets/
-│   │           └── login_form.dart
-│   │
-│   ├── work_orders/                         # Work orders feature
-│   │   ├── data/
-│   │   │   ├── datasources/
-│   │   │   │   ├── work_order_remote_datasource.dart  # @injectable
-│   │   │   │   └── work_order_local_datasource.dart   # @injectable (Hive)
-│   │   │   ├── models/
-│   │   │   │   ├── work_order_dto.dart             # @freezed + @HiveType
-│   │   │   │   ├── service_request_dto.dart
-│   │   │   │   ├── work_order_start_request.dart
-│   │   │   │   └── work_order_complete_request.dart
-│   │   │   ├── repositories/
-│   │   │   │   └── work_order_repository_impl.dart # @Injectable(as: IWorkOrderRepository)
-│   │   │   └── api/
-│   │   │       └── work_order_api_client.dart      # @RestApi()
-│   │   ├── domain/
-│   │   │   ├── entities/
-│   │   │   │   ├── work_order_entity.dart          # @freezed
-│   │   │   │   └── service_request_entity.dart     # @freezed
-│   │   │   ├── repositories/
-│   │   │   │   └── i_work_order_repository.dart
-│   │   │   └── usecases/
-│   │   │       ├── get_work_orders_usecase.dart    # @injectable
-│   │   │       ├── start_work_order_usecase.dart   # @injectable
-│   │   │       ├── pause_work_order_usecase.dart   # @injectable
-│   │   │       ├── resume_work_order_usecase.dart  # @injectable
-│   │   │       └── complete_work_order_usecase.dart # @injectable
-│   │   └── presentation/
-│   │       ├── pages/
-│   │       │   ├── dashboard_page.dart             # @RoutePage()
-│   │       │   ├── work_order_details_page.dart    # @RoutePage()
-│   │       │   └── work_order_action_page.dart     # @RoutePage()
-│   │       ├── blocs/
-│   │       │   ├── work_orders_list/
-│   │       │   │   ├── work_orders_list_bloc.dart  # @injectable
-│   │       │   │   ├── work_orders_list_event.dart # @freezed
-│   │       │   │   └── work_orders_list_state.dart # @freezed
-│   │       │   └── work_order_action/
-│   │       │       ├── work_order_action_bloc.dart # @injectable
-│   │       │       ├── work_order_action_event.dart
-│   │       │       └── work_order_action_state.dart
-│   │       └── widgets/
-│   │           ├── work_order_card.dart
-│   │           ├── work_order_status_chip.dart
-│   │           └── work_order_action_sheet.dart
-│   │
-│   ├── documents/                           # Documents feature
-│   │   ├── data/
-│   │   │   ├── datasources/
-│   │   │   │   ├── document_remote_datasource.dart # @injectable
-│   │   │   │   └── document_local_datasource.dart  # @injectable
-│   │   │   ├── models/
-│   │   │   │   └── document_dto.dart               # @freezed
-│   │   │   ├── repositories/
-│   │   │   │   └── document_repository_impl.dart   # @Injectable(as: IDocumentRepository)
-│   │   │   └── api/
-│   │   │       └── document_api_client.dart        # @RestApi()
-│   │   ├── domain/
-│   │   │   ├── entities/
-│   │   │   │   └── document_entity.dart            # @freezed
-│   │   │   ├── repositories/
-│   │   │   │   └── i_document_repository.dart
-│   │   │   └── usecases/
-│   │   │       ├── get_documents_usecase.dart      # @injectable
-│   │   │       └── search_documents_usecase.dart   # @injectable
-│   │   └── presentation/
-│   │       ├── pages/
-│   │       │   ├── documents_page.dart             # @RoutePage()
-│   │       │   └── document_viewer_page.dart       # @RoutePage()
-│   │       ├── blocs/
-│   │       │   └── documents/
-│   │       │       ├── documents_bloc.dart         # @injectable
-│   │       │       ├── documents_event.dart
-│   │       │       └── documents_state.dart
-│   │       └── widgets/
-│   │           └── document_list_item.dart
-│   │
-│   ├── parts/                               # Parts/Inventory feature
-│   │   └── [similar structure]
-│   │
-│   ├── calendar/                            # Calendar feature
-│   │   └── [similar structure]
-│   │
-│   └── profile/                             # Profile feature
-│       └── [similar structure]
-│
-├── gen/                                     # Generated by Flutter Gen
-│   ├── assets.gen.dart                      # Type-safe asset access
-│   ├── colors.gen.dart                      # Generated color constants
-│   └── fonts.gen.dart                       # Generated font constants
-│
-└── main.dart                                # App entry point
+features/<feature>/
+├── data/                          # Data layer (frameworks & drivers)
+│   ├── api/                       # Retrofit API clients
+│   ├── datasources/               # Remote & local data sources
+│   │   ├── remote/                # API implementations
+│   │   └── local/                 # Hive cache implementations
+│   ├── models/                    # DTOs and Hive models
+│   ├── repositories/              # Repository implementations
+│   └── di/                        # Feature-specific DI modules
+├── domain/                        # Business logic (pure Dart)
+│   ├── entities/                  # Domain models (Freezed)
+│   ├── repositories/              # Repository interfaces
+│   └── usecases/                  # Business use cases
+└── presentation/                  # UI layer
+    ├── blocs/                     # BLoC state management
+    ├── pages/                     # Full screen widgets
+    └── widgets/                   # Feature-specific components
 ```
 
-### Key Structure Principles
-1. **Feature-First:** Each feature is self-contained with its own data/domain/presentation layers
-2. **Dependency Rule:** Dependencies point inward (presentation → domain ← data)
-3. **Code Generation:** Heavy use of generators for DI, routing, serialization, storage
-4. **Type Safety:** Generated code provides compile-time safety (Auto Route, Flutter Gen)
-5. **Modularity:** Features can be developed/tested independently
+**Dependency direction**: Presentation → Domain ← Data (domain has no dependencies)
 
-## Key Implementation Patterns
+### Core Infrastructure
 
-### 1. Work Order State Management
-Work orders follow a strict state machine managed by `WorkOrderBloc`:
-- **Assigned** → Start → **In Progress**
-- **In Progress** → Pause → **Paused**
-- **Paused** → Resume → **In Progress**
-- **In Progress** → Complete → **Completed**
-- **Assigned/Paused** → Reject → **Rejected**
+`lib/core/` contains shared functionality:
 
-**Critical:** GPS location must be captured before any state transition. Always pass `WorkOrderBloc` instances using `BlocProvider.value()` when navigating to preserve state.
+- `blocs/` - Global BLoCs (ConnectivityBloc, ErrorBloc, SyncBloc)
+- `config/` - Environment configs (dev/staging/prod)
+- `constants/` - App-wide constants (Hive box names, timeouts)
+- `di/` - Dependency injection setup (Injectable + GetIt)
+- `error/` - Error handling (Failure types, exceptions, handlers)
+- `network/` - HTTP client, AuthInterceptor, NetworkInfo
+- `router/` - Auto Route configuration and guards
+- `services/` - Core services (logging, location, error boundary)
+- `storage/` - Hive service and cache management
+- `theme/` - Design system and theming
+- `utils/` - Extensions and helper functions
+- `widgets/` - Shared UI components
 
-### 2. Dependency Injection with Injectable
-All dependencies are registered using Injectable annotations:
+### State Management (BLoC)
+
+**Global BLoCs** (singletons in `core/blocs/`):
+- `ConnectivityBloc` - Monitors real-time network connectivity
+- `ErrorBloc` - Centralized error handling with retry logic
+- `SyncBloc` - Coordinates offline data synchronization
+
+**Feature BLoCs** follow pattern:
+- Events: Freezed sealed unions (`@freezed`)
+- States: Freezed with pattern matching (`.when()`, `.map()`)
+- Registration: Factory scope via `@injectable`
+
+### Dependency Injection
+
+Using Injectable + GetIt with environment-based configuration:
 
 ```dart
-// Service registration
-@injectable
-class LocationService {
-  Future<Position> getCurrentLocation() async { ... }
-}
+// Initialize DI
+await configureDependencies(Environment.dev); // or staging, prod
 
-// Repository registration with interface
-@Injectable(as: IAuthRepository)
-class AuthRepositoryImpl implements IAuthRepository {
-  final AuthApiClient _apiClient;
-  final AuthLocalDataSource _localDataSource;
-
-  @injectable
-  AuthRepositoryImpl(this._apiClient, this._localDataSource);
-}
-
-// BLoC registration
-@injectable
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final LoginUseCase _loginUseCase;
-
-  @injectable
-  AuthBloc(this._loginUseCase) : super(AuthInitial());
-}
-
-// Singleton registration
-@singleton
-class HiveService {
-  @injectable
-  HiveService();
-}
-
-// Named instances
-@Named('authDio')
-@injectable
-Dio provideAuthDio() => Dio()..options.baseUrl = AppConstants.authBaseUrl;
-
-// Lazy singleton
-@lazySingleton
-class CacheManager { ... }
-
-// Environment-specific registration
-@dev
-@Injectable(as: IApiClient)
-class MockApiClient implements IApiClient { ... }
-
-@prod
-@Injectable(as: IApiClient)
-class ApiClient implements IApiClient { ... }
+// Access dependencies
+final repository = getIt<IWorkOrderRepository>();
 ```
 
-After modifying any `@injectable` class, run code generation.
+**Key annotations**:
+- `@singleton` - Single instance across app lifecycle
+- `@factory` - New instance per injection
+- `@module` - Group related dependencies
+- `@injectable` - Auto-register class
 
-### 3. Auto Route Navigation
-Type-safe, declarative routing with Auto Route:
+### Networking
 
+**Stack**: Dio → Retrofit → Repository
+
+**Interceptors** (applied in order):
+1. `AuthInterceptor` - Injects Bearer token, handles 401 refresh
+2. `RetryInterceptor` - Exponential backoff retry logic
+3. `PrettyDioLogger` - Debug logging (dev/staging only)
+
+**API Client Pattern** (Retrofit):
 ```dart
-// Define routes with @RoutePage()
-@RoutePage()
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-  // ...
+@RestApi()
+abstract class FeatureApiClient {
+  factory FeatureApiClient(Dio dio, {String? baseUrl}) = _FeatureApiClient;
+
+  @GET('/endpoint')
+  Future<ResponseDto> getResource();
 }
-
-// Router configuration
-@AutoRouterConfig()
-class AppRouter extends RootStackRouter {
-  @override
-  List<AutoRoute> get routes => [
-    AutoRoute(page: SplashRoute.page, initial: true),
-    AutoRoute(page: LoginRoute.page),
-    AutoRoute(page: DashboardRoute.page),
-    AutoRoute(
-      page: WorkOrderDetailsRoute.page,
-      guards: [AuthGuard],  // Route guards
-    ),
-    // Nested navigation
-    AutoRoute(
-      page: MainNavigationRoute.page,
-      children: [
-        AutoRoute(page: WorkOrdersRoute.page),
-        AutoRoute(page: CalendarRoute.page),
-        AutoRoute(page: DocumentsRoute.page),
-        AutoRoute(page: ProfileRoute.page),
-      ],
-    ),
-  ];
-}
-
-// Navigation examples
-// Push route
-context.router.push(WorkOrderDetailsRoute(workOrderId: 123));
-
-// Replace route
-context.router.replace(const DashboardRoute());
-
-// Pop
-context.router.pop();
-
-// Navigate with result
-final result = await context.router.push<bool>(
-  WorkOrderDetailsRoute(workOrderId: 123),
-);
-
-// Nested navigation
-context.router.navigate(const WorkOrdersRoute());
-
-// Passing BLoC with Auto Route
-context.router.push(
-  WorkOrderDetailsRoute(workOrderId: 123),
-).then((_) {
-  // Refresh data after navigation
-  context.read<WorkOrdersListBloc>().add(const RefreshWorkOrders());
-});
 ```
 
-### 4. API Client with Retrofit
+**Auth Flow**: AuthInterceptor automatically refreshes expired tokens on 401 responses and retries the original request.
+
+### Offline-First Strategy
+
+**Repository Pattern**:
+1. Check network connectivity via `NetworkInfo`
+2. If online: fetch from remote, cache result locally
+3. If offline: return cached data from Hive
+4. Track pending mutations for later sync when connectivity restored
+
+**Sync Management**:
+- Mark operations as pending sync when offline (`isPendingSync=true`)
+- Store action type (`pendingAction: 'start'|'pause'|'complete'`)
+- `SyncBloc` retries pending operations when connectivity restored
+- Server wins on conflicts
+
+### Routing
+
+Auto Route v10 with code generation:
+
+**Configuration**: `lib/core/router/app_router.dart`
+**Generated**: `lib/core/router/app_router.gr.dart`
+
+**Route Protection**: `AuthGuard` checks for valid token, redirects to login if unauthenticated
+
+**Navigation**:
 ```dart
-// Define API endpoints with Retrofit
-@RestApi(baseUrl: AppConstants.baseUrl)
-abstract class WorkOrderApiClient {
-  @factoryMethod
-  factory WorkOrderApiClient(Dio dio) = _WorkOrderApiClient;
-
-  @GET('/work-orders')
-  Future<WorkOrdersResponse> getWorkOrders({
-    @Query('page') required int page,
-    @Query('limit') required int limit,
-    @Query('status') WorkOrderStatus? status,
-  });
-
-  @GET('/work-orders/{id}')
-  Future<WorkOrderDto> getWorkOrderById(@Path('id') int id);
-
-  @PATCH('/work-orders/{id}/start')
-  @MultiPart()
-  Future<WorkOrderDto> startWorkOrder(
-    @Path('id') int id,
-    @Part(name: 'gps_coordinates') String coordinates,
-    @Part(name: 'files') List<MultipartFile>? files,
-  );
-
-  @POST('/work-orders/{id}/complete')
-  Future<WorkOrderDto> completeWorkOrder(
-    @Path('id') int id,
-    @Body() WorkOrderCompleteRequest request,
-  );
-}
-
-// Usage in DataSource
-@injectable
-class WorkOrderRemoteDataSource {
-  final WorkOrderApiClient _apiClient;
-
-  @injectable
-  WorkOrderRemoteDataSource(this._apiClient);
-
-  Future<List<WorkOrderDto>> getWorkOrders({
-    required int page,
-    required int limit,
-  }) async {
-    final response = await _apiClient.getWorkOrders(
-      page: page,
-      limit: limit,
-    );
-    return response.workOrders;
-  }
-}
+context.router.push(WorkOrderDetailsRoute(workOrderId: id));
+context.router.replacePath('/login');
 ```
 
-### 5. Authentication Flow
-- JWT token-based authentication with automatic refresh
-- `AuthInterceptor` handles 401 responses by refreshing tokens automatically
-- Tokens stored in Hive (encrypted box)
-- Auto Route guards check authentication state
-- Splash screen uses `CheckAuthUseCase` to route to Dashboard or Login
+**Route Pattern**:
+- Root: `/` - Splash screen
+- Public: `/login`
+- Protected: `/main` with nested tabs (dashboard, calendar, documents, parts, profile)
+- Deep links: `/work-order/:workOrderId`
 
-### 6. Data Models with Freezed
-All entities and DTOs use Freezed for immutability and type safety:
+### Local Storage (Hive)
 
+**Initialization**: `HiveService` singleton initialized at app startup
+
+**Box Configuration**: `lib/core/constants/hive_boxes.dart` defines box names and type IDs
+
+**Pattern**:
 ```dart
-// Domain Entity (pure business object)
-@freezed
-class WorkOrderEntity with _$WorkOrderEntity {
-  const factory WorkOrderEntity({
-    required int id,
-    required String woNumber,
-    required String summary,
-    required WorkOrderStatus status,
-    required DateTime visitDate,
-    @Default([]) List<String> images,
-  }) = _WorkOrderEntity;
-}
-
-// Data DTO with JSON serialization
-@freezed
-class WorkOrderDto with _$WorkOrderDto {
-  const factory WorkOrderDto({
-    required int id,
-    @JsonKey(name: 'wo_number') required String woNumber,
-    required String summary,
-    required WorkOrderStatus status,
-    @DateTimeConverter() @JsonKey(name: 'visit_date') required DateTime visitDate,
-    @Default([]) List<String> images,
-  }) = _WorkOrderDto;
-
-  factory WorkOrderDto.fromJson(Map<String, dynamic> json) =>
-      _$WorkOrderDtoFromJson(json);
-}
-
-// Hive model for caching
-@freezed
-@HiveType(typeId: 1)
-class WorkOrderHiveModel with _$WorkOrderHiveModel {
-  const factory WorkOrderHiveModel({
-    @HiveField(0) required int id,
-    @HiveField(1) required String woNumber,
-    @HiveField(2) required String summary,
-    @HiveField(3) required WorkOrderStatus status,
-    @HiveField(4) required DateTime visitDate,
-    @HiveField(5) @Default([]) List<String> images,
-  }) = _WorkOrderHiveModel;
-
-  factory WorkOrderHiveModel.fromJson(Map<String, dynamic> json) =>
-      _$WorkOrderHiveModelFromJson(json);
-}
-
-// Freezed union types for state
-@freezed
-class WorkOrderActionState with _$WorkOrderActionState {
-  const factory WorkOrderActionState.initial() = _Initial;
-  const factory WorkOrderActionState.loading() = _Loading;
-  const factory WorkOrderActionState.success(WorkOrderEntity workOrder) = _Success;
-  const factory WorkOrderActionState.error(String message) = _Error;
-}
-
-// Freezed with custom methods
-@freezed
-class WorkOrderEntity with _$WorkOrderEntity {
-  const WorkOrderEntity._();  // Private constructor for custom methods
-
-  const factory WorkOrderEntity({
-    required int id,
-    required WorkOrderStatus status,
-  }) = _WorkOrderEntity;
-
-  // Custom methods
-  bool get isInProgress => status == WorkOrderStatus.inProgress;
-  bool get canBePaused => status == WorkOrderStatus.inProgress;
-  bool get canBeCompleted => status == WorkOrderStatus.inProgress;
-}
+// Typed box access
+final box = await hiveService.getTypedBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
+await box.put(workOrder.id, workOrder);
+final cached = box.get(id);
 ```
 
-After modifying any `@freezed` class, run code generation.
+**Hive Models**: Include sync metadata fields:
+- `isPendingSync` - Marks for sync when offline
+- `pendingAction` - Action to retry ('start', 'pause', 'complete')
 
-### 7. Flutter ScreenUtil for Responsive Design
+**Critical**: TypeIds in `HiveBoxes` must remain stable across versions for migration.
 
-**CRITICAL:** Use flutter_screenutil for ALL dimensions throughout the app:
-- Padding and margins
-- Widget sizes (height, width)
-- Font sizes
-- Border radius
-- Icon sizes
-- Spacing between widgets
+### Data Flow Pattern
 
+```
+API Response (JSON)
+    ↓ (Retrofit deserializes)
+DTO (@freezed with @JsonSerializable)
+    ↓ (extension method: .toEntity())
+Domain Entity (@freezed, pure Dart)
+    ↓ (passed to BLoC)
+BLoC State (@freezed)
+    ↓ (UI rebuilds)
+Presentation Layer
+```
+
+**Reverse flow** (Entity → DTO):
 ```dart
-// Initialize in main.dart (before runApp)
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // ... other initialization
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // Wrap MaterialApp with ScreenUtilInit
-    return ScreenUtilInit(
-      // Design size (from your Figma/design specs)
-      designSize: const Size(375, 812),  // iPhone 11 Pro dimensions
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MaterialApp.router(
-          title: 'FSM App',
-          theme: ThemeData(
-            // Use .sp for font sizes in theme
-            textTheme: TextTheme(
-              displayLarge: TextStyle(fontSize: 32.sp),
-              displayMedium: TextStyle(fontSize: 28.sp),
-              displaySmall: TextStyle(fontSize: 24.sp),
-              headlineLarge: TextStyle(fontSize: 22.sp),
-              headlineMedium: TextStyle(fontSize: 20.sp),
-              headlineSmall: TextStyle(fontSize: 18.sp),
-              titleLarge: TextStyle(fontSize: 16.sp),
-              titleMedium: TextStyle(fontSize: 14.sp),
-              titleSmall: TextStyle(fontSize: 12.sp),
-              bodyLarge: TextStyle(fontSize: 16.sp),
-              bodyMedium: TextStyle(fontSize: 14.sp),
-              bodySmall: TextStyle(fontSize: 12.sp),
-              labelLarge: TextStyle(fontSize: 14.sp),
-              labelMedium: TextStyle(fontSize: 12.sp),
-              labelSmall: TextStyle(fontSize: 10.sp),
-            ),
-          ),
-          routerDelegate: ...,
-          routeInformationParser: ...,
-        );
-      },
-    );
-  }
-}
-
-// ============================================
-// ScreenUtil Extension Methods
-// ============================================
-
-// Width & Height
-Container(
-  width: 100.w,        // Responsive width
-  height: 100.h,       // Responsive height
-  child: ...,
-)
-
-// Font Sizes
-Text(
-  'Hello',
-  style: TextStyle(fontSize: 16.sp),  // Responsive font size
-)
-
-// Padding & Margin
-Padding(
-  padding: EdgeInsets.all(16.w),      // Equal padding
-  child: ...,
-)
-
-Padding(
-  padding: EdgeInsets.symmetric(
-    horizontal: 16.w,
-    vertical: 8.h,
-  ),
-  child: ...,
-)
-
-Padding(
-  padding: EdgeInsets.only(
-    left: 16.w,
-    top: 8.h,
-    right: 16.w,
-    bottom: 8.h,
-  ),
-  child: ...,
-)
-
-Container(
-  margin: EdgeInsets.all(16.w),
-  child: ...,
-)
-
-// Border Radius
-Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(8.r),  // Responsive radius
-  ),
-)
-
-BorderRadius.only(
-  topLeft: Radius.circular(12.r),
-  topRight: Radius.circular(12.r),
-)
-
-// Sized Boxes (Spacing)
-SizedBox(width: 16.w)    // Horizontal spacing
-SizedBox(height: 16.h)   // Vertical spacing
-
-// Icon Sizes
-Icon(
-  Icons.add,
-  size: 24.r,            // Responsive icon size
-)
-
-// Custom Sizes
-Container(
-  width: 0.5.sw,         // 50% of screen width
-  height: 0.3.sh,        // 30% of screen height
-  child: ...,
-)
-
-// ============================================
-// Common Patterns
-// ============================================
-
-// Card with responsive dimensions
-Card(
-  margin: EdgeInsets.symmetric(
-    horizontal: 16.w,
-    vertical: 8.h,
-  ),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12.r),
-  ),
-  child: Padding(
-    padding: EdgeInsets.all(16.w),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Title',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          'Description',
-          style: TextStyle(fontSize: 14.sp),
-        ),
-      ],
-    ),
-  ),
-)
-
-// Button with responsive size
-ElevatedButton(
-  onPressed: () {},
-  style: ElevatedButton.styleFrom(
-    minimumSize: Size(double.infinity, 48.h),
-    padding: EdgeInsets.symmetric(
-      horizontal: 24.w,
-      vertical: 12.h,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8.r),
-    ),
-  ),
-  child: Text(
-    'Submit',
-    style: TextStyle(fontSize: 16.sp),
-  ),
-)
-
-// AppBar with responsive dimensions
-AppBar(
-  toolbarHeight: 56.h,
-  leading: IconButton(
-    icon: Icon(Icons.menu, size: 24.r),
-    onPressed: () {},
-  ),
-  title: Text(
-    'Title',
-    style: TextStyle(fontSize: 20.sp),
-  ),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.notifications, size: 24.r),
-      onPressed: () {},
-    ),
-    SizedBox(width: 8.w),
-  ],
-)
-
-// List Tile with responsive spacing
-ListTile(
-  contentPadding: EdgeInsets.symmetric(
-    horizontal: 16.w,
-    vertical: 8.h,
-  ),
-  leading: Container(
-    width: 48.r,
-    height: 48.r,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: Colors.blue,
-    ),
-  ),
-  title: Text(
-    'Title',
-    style: TextStyle(fontSize: 16.sp),
-  ),
-  subtitle: Text(
-    'Subtitle',
-    style: TextStyle(fontSize: 14.sp),
-  ),
-  trailing: Icon(Icons.arrow_forward_ios, size: 16.r),
-)
-
-// Form Field with responsive dimensions
-TextFormField(
-  style: TextStyle(fontSize: 16.sp),
-  decoration: InputDecoration(
-    labelText: 'Email',
-    labelStyle: TextStyle(fontSize: 14.sp),
-    hintText: 'Enter your email',
-    hintStyle: TextStyle(fontSize: 14.sp),
-    contentPadding: EdgeInsets.symmetric(
-      horizontal: 16.w,
-      vertical: 12.h,
-    ),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8.r),
-    ),
-  ),
-)
-
-// Bottom Sheet with responsive dimensions
-showModalBottomSheet(
-  context: context,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.vertical(
-      top: Radius.circular(20.r),
-    ),
-  ),
-  builder: (context) => Container(
-    padding: EdgeInsets.all(24.w),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 40.w,
-          height: 4.h,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(2.r),
-          ),
-        ),
-        SizedBox(height: 16.h),
-        // Content
-      ],
-    ),
-  ),
-);
-
-// Dialog with responsive dimensions
-AlertDialog(
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12.r),
-  ),
-  contentPadding: EdgeInsets.all(24.w),
-  title: Text(
-    'Title',
-    style: TextStyle(fontSize: 18.sp),
-  ),
-  content: Text(
-    'Content',
-    style: TextStyle(fontSize: 14.sp),
-  ),
-  actions: [
-    TextButton(
-      onPressed: () {},
-      child: Text(
-        'Cancel',
-        style: TextStyle(fontSize: 14.sp),
-      ),
-    ),
-    TextButton(
-      onPressed: () {},
-      child: Text(
-        'Confirm',
-        style: TextStyle(fontSize: 14.sp),
-      ),
-    ),
-  ],
-)
-
-// ============================================
-// Screen Information
-// ============================================
-
-// Get screen dimensions
-final screenWidth = 1.sw;    // Screen width
-final screenHeight = 1.sh;   // Screen height
-
-// Get status bar height
-final statusBarHeight = ScreenUtil().statusBarHeight;
-
-// Get bottom bar height
-final bottomBarHeight = ScreenUtil().bottomBarHeight;
-
-// Pixel ratio
-final pixelRatio = ScreenUtil().pixelRatio;
-
-// ============================================
-// Custom Extensions (create in core/utils/extensions.dart)
-// ============================================
-
-extension ResponsiveExtensions on BuildContext {
-  // Screen dimensions
-  double get screenWidth => MediaQuery.of(this).size.width;
-  double get screenHeight => MediaQuery.of(this).size.height;
-
-  // Responsive sizes
-  double get responsiveWidth => 1.sw;
-  double get responsiveHeight => 1.sh;
-
-  // Orientation
-  bool get isLandscape => MediaQuery.of(this).orientation == Orientation.landscape;
-  bool get isPortrait => MediaQuery.of(this).orientation == Orientation.portrait;
-
-  // Screen size categories
-  bool get isMobile => screenWidth < 600;
-  bool get isTablet => screenWidth >= 600 && screenWidth < 900;
-  bool get isDesktop => screenWidth >= 900;
-}
-
-// ============================================
-// Design System Constants (core/constants/dimensions.dart)
-// ============================================
-
-class AppDimensions {
-  // Padding
-  static double paddingXS = 4.w;
-  static double paddingSM = 8.w;
-  static double paddingMD = 16.w;
-  static double paddingLG = 24.w;
-  static double paddingXL = 32.w;
-
-  // Margin
-  static double marginXS = 4.w;
-  static double marginSM = 8.w;
-  static double marginMD = 16.w;
-  static double marginLG = 24.w;
-  static double marginXL = 32.w;
-
-  // Border Radius
-  static double radiusXS = 4.r;
-  static double radiusSM = 8.r;
-  static double radiusMD = 12.r;
-  static double radiusLG = 16.r;
-  static double radiusXL = 20.r;
-  static double radiusFull = 999.r;
-
-  // Icon Sizes
-  static double iconXS = 16.r;
-  static double iconSM = 20.r;
-  static double iconMD = 24.r;
-  static double iconLG = 32.r;
-  static double iconXL = 48.r;
-
-  // Font Sizes
-  static double fontXS = 10.sp;
-  static double fontSM = 12.sp;
-  static double fontMD = 14.sp;
-  static double fontLG = 16.sp;
-  static double fontXL = 18.sp;
-  static double font2XL = 20.sp;
-  static double font3XL = 24.sp;
-  static double font4XL = 32.sp;
-
-  // Button Heights
-  static double buttonHeightSM = 36.h;
-  static double buttonHeightMD = 48.h;
-  static double buttonHeightLG = 56.h;
-
-  // App Bar
-  static double appBarHeight = 56.h;
-
-  // Card
-  static double cardElevation = 2;
-  static double cardPadding = 16.w;
-
-  // List Item
-  static double listItemHeight = 72.h;
-  static double listItemPadding = 16.w;
-}
-
-// Usage
-Container(
-  padding: EdgeInsets.all(AppDimensions.paddingMD),
-  margin: EdgeInsets.symmetric(
-    horizontal: AppDimensions.marginMD,
-    vertical: AppDimensions.marginSM,
-  ),
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(AppDimensions.radiusMD),
-  ),
-  child: Text(
-    'Hello',
-    style: TextStyle(fontSize: AppDimensions.fontLG),
-  ),
-)
-```
-
-### ScreenUtil Best Practices
-
-1. **Always initialize** in MaterialApp with ScreenUtilInit
-2. **Use .w for horizontal** dimensions (padding, margin, width)
-3. **Use .h for vertical** dimensions (height, vertical padding)
-4. **Use .sp for font sizes** (scales based on accessibility settings)
-5. **Use .r for radius** (keeps circular elements circular)
-6. **Create dimension constants** in AppDimensions for consistency
-7. **Never use raw numbers** for dimensions in UI code
-8. **Design size matters** - use your design's reference dimensions
-
-### 8. Hive for Storage & Caching
-```dart
-// Initialize Hive in main.dart
-await Hive.initFlutter();
-
-// Register adapters (generated by Freezed + Hive)
-Hive.registerAdapter(WorkOrderHiveModelAdapter());
-Hive.registerAdapter(WorkOrderStatusAdapter());
-
-// Open boxes
-await Hive.openBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
-await Hive.openBox(HiveBoxes.auth);  // For tokens
-
-// Service for Hive operations
-@singleton
-class HiveService {
-  Box<WorkOrderHiveModel>? _workOrderBox;
-  Box? _authBox;
-
-  @injectable
-  HiveService();
-
-  Future<void> init() async {
-    _workOrderBox = await Hive.openBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
-    _authBox = await Hive.openBox(HiveBoxes.auth);
-  }
-
-  // Cache work orders
-  Future<void> cacheWorkOrders(List<WorkOrderHiveModel> workOrders) async {
-    await _workOrderBox?.clear();
-    await _workOrderBox?.addAll(workOrders);
-  }
-
-  // Get cached work orders
-  List<WorkOrderHiveModel> getCachedWorkOrders() {
-    return _workOrderBox?.values.toList() ?? [];
-  }
-
-  // Store auth token
-  Future<void> saveAuthToken(String token) async {
-    await _authBox?.put(HiveKeys.authToken, token);
-  }
-
-  // Get auth token
-  String? getAuthToken() {
-    return _authBox?.get(HiveKeys.authToken) as String?;
-  }
-
-  // Clear all data
-  Future<void> clearAll() async {
-    await _workOrderBox?.clear();
-    await _authBox?.clear();
-  }
-}
-
-// Usage in Local DataSource
-@injectable
-class WorkOrderLocalDataSource {
-  final HiveService _hiveService;
-
-  @injectable
-  WorkOrderLocalDataSource(this._hiveService);
-
-  Future<void> cacheWorkOrders(List<WorkOrderHiveModel> workOrders) async {
-    await _hiveService.cacheWorkOrders(workOrders);
-  }
-
-  List<WorkOrderHiveModel> getCachedWorkOrders() {
-    return _hiveService.getCachedWorkOrders();
-  }
-}
-```
-
-### 8. Flutter Gen for Assets
-Type-safe access to assets using Flutter Gen:
-
-```yaml
-# pubspec.yaml configuration
-dev_dependencies:
-  flutter_gen_runner: ^5.7.0
-
-flutter_gen:
-  output: lib/gen/
-  line_length: 80
-
-  integrations:
-    flutter_svg: true
-    flare_flutter: true
-
-  assets:
-    enabled: true
-    outputs:
-      class_name: Assets
-
-  fonts:
-    enabled: true
-
-  colors:
-    enabled: true
-    inputs:
-      - assets/colors/colors.xml
-```
-
-```dart
-// Generated usage
-import 'package:fsm/gen/assets.gen.dart';
-import 'package:fsm/gen/colors.gen.dart';
-import 'package:fsm/gen/fonts.gen.dart';
-
-// Images
-Image.asset(Assets.images.logo.path)
-Image.asset(Assets.images.logo.path, width: 100, height: 100)
-
-// With flutter_svg integration
-SvgPicture.asset(Assets.icons.checkCircle.path)
-
-// Direct image widget (requires flutter_gen 5.x+)
-Assets.images.logo.image(width: 100, height: 100)
-
-// Colors (if colors.xml defined)
-Text('Hello', style: TextStyle(color: ColorName.primaryBlue))
-
-// Fonts
-Text('Hello', style: TextStyle(fontFamily: FontFamily.inter))
-
-// Network images with fallback
-CachedNetworkImage(
-  imageUrl: imageUrl,
-  placeholder: (context, url) => Assets.images.placeholder.image(),
-  errorWidget: (context, url, error) => Assets.images.error.image(),
-)
-```
-
-**Generate assets:**
-```bash
-# Using flutter_gen_runner (recommended)
-dart run build_runner build --delete-conflicting-outputs
-
-# Or using fluttergen CLI (if installed globally)
-fluttergen -c pubspec.yaml
-```
-
-### 9. BLoC Pattern
-All BLoCs are registered with Injectable and use Freezed for events/states:
-
-```dart
-// Event
-@freezed
-class WorkOrderActionEvent with _$WorkOrderActionEvent {
-  const factory WorkOrderActionEvent.startWorkOrder({
-    required int workOrderId,
-    required String coordinates,
-    @Default([]) List<File> files,
-  }) = StartWorkOrder;
-
-  const factory WorkOrderActionEvent.pauseWorkOrder({
-    required int workOrderId,
-    required String reason,
-  }) = PauseWorkOrder;
-}
-
-// State
-@freezed
-class WorkOrderActionState with _$WorkOrderActionState {
-  const factory WorkOrderActionState.initial() = _Initial;
-  const factory WorkOrderActionState.loading() = _Loading;
-  const factory WorkOrderActionState.success(WorkOrderEntity workOrder) = _Success;
-  const factory WorkOrderActionState.failure(Failure failure) = _Failure;
-}
-
-// BLoC
-@injectable
-class WorkOrderActionBloc extends Bloc<WorkOrderActionEvent, WorkOrderActionState> {
-  final StartWorkOrderUseCase _startWorkOrderUseCase;
-  final PauseWorkOrderUseCase _pauseWorkOrderUseCase;
-
-  @injectable
-  WorkOrderActionBloc(
-    this._startWorkOrderUseCase,
-    this._pauseWorkOrderUseCase,
-  ) : super(const WorkOrderActionState.initial()) {
-    on<StartWorkOrder>(_onStartWorkOrder);
-    on<PauseWorkOrder>(_onPauseWorkOrder);
-  }
-
-  Future<void> _onStartWorkOrder(
-    StartWorkOrder event,
-    Emitter<WorkOrderActionState> emit,
-  ) async {
-    emit(const WorkOrderActionState.loading());
-
-    final result = await _startWorkOrderUseCase(StartWorkOrderParams(
-      workOrderId: event.workOrderId,
-      coordinates: event.coordinates,
-      files: event.files,
-    ));
-
-    result.fold(
-      (failure) => emit(WorkOrderActionState.failure(failure)),
-      (workOrder) => emit(WorkOrderActionState.success(workOrder)),
-    );
-  }
-}
-```
-
-### 10. Use Case Pattern
-```dart
-// Base use case
-abstract class UseCase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
-}
-
-// Concrete use case
-@injectable
-class GetWorkOrdersUseCase implements UseCase<List<WorkOrderEntity>, GetWorkOrdersParams> {
-  final IWorkOrderRepository _repository;
-
-  @injectable
-  GetWorkOrdersUseCase(this._repository);
-
-  @override
-  Future<Either<Failure, List<WorkOrderEntity>>> call(
-    GetWorkOrdersParams params,
-  ) async {
-    return await _repository.getWorkOrders(
-      page: params.page,
-      limit: params.limit,
-      status: params.status,
-    );
-  }
-}
-
-// Params class
-@freezed
-class GetWorkOrdersParams with _$GetWorkOrdersParams {
-  const factory GetWorkOrdersParams({
-    @Default(1) int page,
-    @Default(10) int limit,
-    WorkOrderStatus? status,
-  }) = _GetWorkOrdersParams;
-}
-```
-
-## Important Development Notes
-
-### Flutter ScreenUtil - MANDATORY Usage
-**CRITICAL:** All UI dimensions MUST use flutter_screenutil extensions:
-
-❌ **NEVER do this:**
-```dart
-Container(width: 100, height: 50, padding: EdgeInsets.all(16))
-Text('Hello', style: TextStyle(fontSize: 16))
-BorderRadius.circular(8)
-Icon(Icons.add, size: 24)
-```
-
-✅ **ALWAYS do this:**
-```dart
-Container(width: 100.w, height: 50.h, padding: EdgeInsets.all(16.w))
-Text('Hello', style: TextStyle(fontSize: 16.sp))
-BorderRadius.circular(8.r)
-Icon(Icons.add, size: 24.r)
-```
-
-**Why:** Ensures consistent UI across all device sizes (phones, tablets, different resolutions)
-
-**Quick Reference:**
-- `.w` - Width values (padding left/right, width, horizontal margin)
-- `.h` - Height values (padding top/bottom, height, vertical margin)
-- `.sp` - Font sizes (scales with accessibility settings)
-- `.r` - Radius values (keeps circles circular)
-- `.sw` - Percentage of screen width (e.g., `0.5.sw` = 50% screen width)
-- `.sh` - Percentage of screen height (e.g., `0.3.sh` = 30% screen height)
-
-### Code Generation Requirements
-This project is code-generation heavy. You MUST run build_runner after:
-- Creating/modifying any `@freezed` classes (entities, DTOs, events, states)
-- Creating/modifying any `@JsonSerializable` classes
-- Creating/modifying any `@injectable` classes (services, repositories, BLoCs, use cases)
-- Creating/modifying any `@RestApi()` endpoints
-- Creating/modifying any `@RoutePage()` pages
-- Creating/modifying any `@HiveType` models
-- Adding/changing any assets (run `fluttergen` instead)
-
-**Recommended workflow:** Keep `build_runner watch` running during development for automatic code generation.
-
-### Location Services
-- Location permissions are required at runtime
-- LocationService (GetIt singleton) handles permission requests
-- GPS coordinates must be captured before starting/pausing/resuming/completing work orders
-- Format: `jsonEncode([latitude, longitude])`
-
-### Image Handling
-- Use `image_picker` for camera/gallery access
-- Images sent as multipart form data in work order operations
-- Store as `List<XFile>` before converting to `List<File>` for API calls
-
-### Dependency Injection Setup
-Initialize Injectable and Hive in main.dart:
-
-```dart
-// lib/main.dart
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Hive
-  await Hive.initFlutter();
-  Hive.registerAdapter(WorkOrderHiveModelAdapter());
-  Hive.registerAdapter(WorkOrderStatusAdapter());
-
-  // Initialize Injectable DI
-  await configureDependencies();
-
-  // Initialize Hive Service (open boxes)
-  await getIt<HiveService>().init();
-
-  runApp(const MyApp());
-}
-
-// lib/core/di/injection.dart
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
-import 'injection.config.dart';
-
-final getIt = GetIt.instance;
-
-@InjectableInit()
-Future<void> configureDependencies() async => getIt.init();
-
-// Usage anywhere in app
-final bloc = getIt<WorkOrderActionBloc>();
-final useCase = getIt<GetWorkOrdersUseCase>();
-```
-
-After modifying any `@injectable` class, run:
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
-### Network Debugging
-- **Chucker:** Visual network inspector (dev builds only)
-- **PrettyDioLogger:** Console-based request/response logging
-- Both are configured in `injection.dart`
-
-### Work Order Multipart Uploads
-Work order state transitions (start/pause/resume/complete) use multipart/form-data:
-- GPS coordinates (required)
-- Files/images (optional, except where business rules require)
-- Additional data (reason for pause, parts used for completion, etc.)
-
-### State Persistence and Caching Strategy
-Offline-first architecture with Hive:
-
-```dart
-// Repository implementation with caching
-@Injectable(as: IWorkOrderRepository)
-class WorkOrderRepositoryImpl implements IWorkOrderRepository {
-  final WorkOrderRemoteDataSource _remoteDataSource;
-  final WorkOrderLocalDataSource _localDataSource;
-  final NetworkInfo _networkInfo;
-
-  @injectable
-  WorkOrderRepositoryImpl(
-    this._remoteDataSource,
-    this._localDataSource,
-    this._networkInfo,
-  );
-
-  @override
-  Future<Either<Failure, List<WorkOrderEntity>>> getWorkOrders({
-    required int page,
-    required int limit,
-    WorkOrderStatus? status,
-  }) async {
-    // Check network connectivity
-    if (await _networkInfo.isConnected) {
-      try {
-        // Fetch from API
-        final workOrderDtos = await _remoteDataSource.getWorkOrders(
-          page: page,
-          limit: limit,
-          status: status,
-        );
-
-        // Cache to Hive
-        final hiveModels = workOrderDtos
-            .map((dto) => WorkOrderHiveModel.fromDto(dto))
-            .toList();
-        await _localDataSource.cacheWorkOrders(hiveModels);
-
-        // Map to domain entities
-        final entities = workOrderDtos
-            .map((dto) => dto.toEntity())
-            .toList();
-
-        return Right(entities);
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
-    } else {
-      // Return cached data when offline
-      final cachedModels = _localDataSource.getCachedWorkOrders();
-      if (cachedModels.isEmpty) {
-        return Left(CacheFailure(message: 'No cached data available'));
-      }
-
-      final entities = cachedModels
-          .map((model) => model.toEntity())
-          .toList();
-
-      return Right(entities);
-    }
-  }
-}
-```
-
-BLoC handles cache and remote states:
-```dart
-@injectable
-class WorkOrdersListBloc extends Bloc<WorkOrdersListEvent, WorkOrdersListState> {
-  final GetWorkOrdersUseCase _getWorkOrdersUseCase;
-
-  @injectable
-  WorkOrdersListBloc(this._getWorkOrdersUseCase)
-      : super(const WorkOrdersListState.initial()) {
-    on<LoadWorkOrders>(_onLoadWorkOrders);
-    on<RefreshWorkOrders>(_onRefreshWorkOrders);
-  }
-
-  Future<void> _onLoadWorkOrders(
-    LoadWorkOrders event,
-    Emitter<WorkOrdersListState> emit,
-  ) async {
-    emit(const WorkOrdersListState.loading());
-
-    final result = await _getWorkOrdersUseCase(GetWorkOrdersParams(
-      page: event.page,
-      limit: event.limit,
-      status: event.status,
-    ));
-
-    result.fold(
-      (failure) {
-        // If server failure, check if we have cached data
-        if (failure is ServerFailure) {
-          // BLoC could emit a state with cached data + error banner
-          emit(WorkOrdersListState.loadedFromCache(
-            workOrders: [], // Get from cache
-            message: 'Showing cached data. Unable to fetch latest.',
-          ));
-        } else {
-          emit(WorkOrdersListState.error(failure.message));
-        }
-      },
-      (workOrders) => emit(WorkOrdersListState.success(workOrders)),
-    );
-  }
-}
-```
-
-## Testing Strategy
-
-### Unit Tests
-```dart
-// Test use cases
-@GenerateMocks([IWorkOrderRepository])
-void main() {
-  late GetWorkOrdersUseCase useCase;
-  late MockIWorkOrderRepository mockRepository;
-
-  setUp(() {
-    mockRepository = MockIWorkOrderRepository();
-    useCase = GetWorkOrdersUseCase(mockRepository);
-  });
-
-  test('should return list of work orders from repository', () async {
-    // Arrange
-    final workOrders = [WorkOrderEntity(id: 1, ...)];
-    when(mockRepository.getWorkOrders(
-      page: anyNamed('page'),
-      limit: anyNamed('limit'),
-    )).thenAnswer((_) async => Right(workOrders));
-
-    // Act
-    final result = await useCase(GetWorkOrdersParams(page: 1, limit: 10));
-
-    // Assert
-    expect(result, Right(workOrders));
-    verify(mockRepository.getWorkOrders(page: 1, limit: 10));
-  });
-}
-
-// Test BLoCs
-@GenerateMocks([GetWorkOrdersUseCase])
-void main() {
-  late WorkOrdersListBloc bloc;
-  late MockGetWorkOrdersUseCase mockUseCase;
-
-  setUp(() {
-    mockUseCase = MockGetWorkOrdersUseCase();
-    bloc = WorkOrdersListBloc(mockUseCase);
-  });
-
-  blocTest<WorkOrdersListBloc, WorkOrdersListState>(
-    'emits [loading, success] when LoadWorkOrders succeeds',
-    build: () {
-      when(mockUseCase(any)).thenAnswer(
-        (_) async => Right([WorkOrderEntity(id: 1, ...)]),
-      );
-      return bloc;
-    },
-    act: (bloc) => bloc.add(const LoadWorkOrders()),
-    expect: () => [
-      const WorkOrdersListState.loading(),
-      WorkOrdersListState.success([WorkOrderEntity(id: 1, ...)]),
-    ],
-  );
-}
-```
-
-### Widget Tests
-```dart
-void main() {
-  late MockWorkOrdersListBloc mockBloc;
-
-  setUp(() {
-    mockBloc = MockWorkOrdersListBloc();
-  });
-
-  testWidgets('displays work orders when state is success', (tester) async {
-    // Arrange
-    when(() => mockBloc.state).thenReturn(
-      WorkOrdersListState.success([WorkOrderEntity(id: 1, ...)]),
-    );
-    when(() => mockBloc.stream).thenAnswer((_) => Stream.empty());
-
-    // Act
-    await tester.pumpWidget(
-      MaterialApp(
-        home: BlocProvider<WorkOrdersListBloc>.value(
-          value: mockBloc,
-          child: const WorkOrdersPage(),
-        ),
-      ),
-    );
-
-    // Assert
-    expect(find.byType(WorkOrderCard), findsOneWidget);
-  });
-}
-```
-
-### Integration Tests
-```dart
-void main() {
-  late GetIt getIt;
-
-  setUp(() async {
-    getIt = GetIt.instance;
-    await configureDependencies(environment: Environment.test);
-  });
-
-  tearDown(() async {
-    await getIt.reset();
-  });
-
-  testWidgets('complete work order flow', (tester) async {
-    // Arrange
-    final router = getIt<AppRouter>();
-
-    await tester.pumpWidget(
-      MaterialApp.router(
-        routerDelegate: router.delegate(),
-        routeInformationParser: router.defaultRouteParser(),
-      ),
-    );
-
-    // Act & Assert
-    // Login
-    await tester.enterText(find.byKey(Key('email')), 'test@test.com');
-    await tester.enterText(find.byKey(Key('password')), 'password');
-    await tester.tap(find.byKey(Key('login_button')));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(DashboardPage), findsOneWidget);
-
-    // Navigate to work order details
-    await tester.tap(find.byType(WorkOrderCard).first);
-    await tester.pumpAndSettle();
-
-    expect(find.byType(WorkOrderDetailsPage), findsOneWidget);
-  });
-}
-```
-
-### Testing with Hive
-```dart
-void main() {
-  late HiveService hiveService;
-
-  setUp(() async {
-    // Use temporary directory for tests
-    final tempDir = await getTemporaryDirectory();
-    Hive.init(tempDir.path);
-
-    Hive.registerAdapter(WorkOrderHiveModelAdapter());
-
-    hiveService = HiveService();
-    await hiveService.init();
-  });
-
-  tearDown(() async {
-    await Hive.deleteFromDisk();
-  });
-
-  test('should cache work orders', () async {
-    // Arrange
-    final workOrders = [WorkOrderHiveModel(id: 1, ...)];
-
-    // Act
-    await hiveService.cacheWorkOrders(workOrders);
-    final cached = hiveService.getCachedWorkOrders();
-
-    // Assert
-    expect(cached, workOrders);
-  });
-}
-```
-
-## Common Pitfalls to Avoid
-
-1. **Missing Code Generation:** Always run build_runner after making changes to:
-   - `@freezed` classes
-   - `@injectable` services/repositories/BLoCs
-   - `@RestApi()` endpoints
-   - `@RoutePage()` pages
-   - `@HiveType` models
-   - Run `fluttergen` after asset changes
-
-2. **Dependency Injection Errors:**
-   - Missing `@injectable` annotation
-   - Circular dependencies between modules
-   - Not registering repository interfaces with `@Injectable(as: IRepository)`
-   - Forgetting to run code generation after adding `@injectable`
-
-3. **Auto Route Issues:**
-   - Missing `@RoutePage()` annotation on page widgets
-   - Not running code generation after adding new routes
-   - Passing BLoCs incorrectly - use `BlocProvider` at the parent route level
-   - Forgetting to add routes to `AppRouter.routes` list
-
-4. **Hive Storage Issues:**
-   - Not registering adapters before opening boxes
-   - TypeId conflicts (each `@HiveType` needs unique typeId)
-   - Not initializing Hive before accessing boxes
-   - Forgetting to open boxes in `HiveService.init()`
-
-5. **Freezed Union Types:**
-   - Not handling all cases in `when()` or `map()` methods
-   - Using equality checks instead of `is` checks for union types
-   ```dart
-   // Wrong
-   if (state == WorkOrderActionState.loading()) { }
-
-   // Correct
-   state.when(
-     initial: () => ...,
-     loading: () => ...,
-     success: (workOrder) => ...,
-     failure: (failure) => ...,
-   );
-   ```
-
-6. **Repository Pattern:**
-   - Returning raw exceptions instead of `Either<Failure, T>`
-   - Not mapping DTOs to entities
-   - Mixing domain entities with data DTOs
-   - Not implementing offline-first pattern
-
-7. **Location Not Captured:** UI should disable actions until GPS is available
-
-8. **Token Refresh:** AuthInterceptor handles this automatically - don't implement manually
-
-9. **Multipart Form Data:** Work order transitions require specific multipart format
-
-10. **Status Enum Mapping:** WorkOrderStatus enum values must match backend exactly
-
-11. **Flutter Gen:** Not running code generation after adding assets leads to missing generated files
-
-12. **ScreenUtil Not Used:**
-    - Using raw numbers instead of `.w`, `.h`, `.sp`, `.r` extensions
-    - Not initializing ScreenUtilInit in main.dart
-    - Inconsistent sizing across different screen sizes
-    ```dart
-    // Wrong
-    Container(width: 100, height: 50)
-    Text('Hello', style: TextStyle(fontSize: 16))
-    Padding(padding: EdgeInsets.all(16))
-
-    // Correct
-    Container(width: 100.w, height: 50.h)
-    Text('Hello', style: TextStyle(fontSize: 16.sp))
-    Padding(padding: EdgeInsets.all(16.w))
-    ```
-
-13. **ScreenUtil Common Mistakes:**
-    - Using `.h` for horizontal values or `.w` for vertical values
-    - Using raw pixel values in TextStyle font sizes
-    - Not using `.r` for border radius (causing oval shapes)
-    - Forgetting to wrap MaterialApp with ScreenUtilInit
-    - Not setting designSize to match your design specs
-
-## Design Patterns
-
-### Gradient UI Components
-App uses custom gradient components throughout with ScreenUtil for responsive sizing:
-
-```dart
-// lib/presentation/core/components/gradient_appbar_widget.dart
-class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget title;
-  final List<Widget>? actions;
-  final Widget? leading;
-  final double? elevation;
-
-  const GradientAppBar({
-    super.key,
-    required this.title,
-    this.actions,
-    this.leading,
-    this.elevation,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: title,
-      elevation: elevation ?? 0,
-      leading: leading,
-      actions: actions,
-      toolbarHeight: 56.h,  // Responsive height
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(1.00, 0.00),
-            end: Alignment(-1, 0),
-            colors: [AppColors.initialColor, AppColors.finalColor],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(56.h);  // Responsive height
-}
-
-// lib/presentation/core/components/gradient_elevated_button.dart
-class GradientElevatedButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final Widget child;
-  final Color? backgroundColor;
-  final double? height;
-  final double? width;
-  final EdgeInsetsGeometry? padding;
-  final BorderRadius? borderRadius;
-
-  const GradientElevatedButton({
-    super.key,
-    required this.onPressed,
-    required this.child,
-    this.backgroundColor,
-    this.height,
-    this.width,
-    this.padding,
-    this.borderRadius,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height ?? 48.h,  // Default responsive height
-      decoration: backgroundColor == null
-          ? BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.initialColor, AppColors.finalColor],
-              ),
-              borderRadius: borderRadius ?? BorderRadius.circular(8.r),  // Responsive radius
-            )
-          : BoxDecoration(
-              color: backgroundColor,
-              borderRadius: borderRadius ?? BorderRadius.circular(8.r),  // Responsive radius
-            ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          padding: padding ?? EdgeInsets.symmetric(
-            horizontal: 24.w,
-            vertical: 12.h,
-          ),  // Responsive padding
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(8.r),
-          ),
-        ),
-        child: child,
-      ),
-    );
-  }
-}
-
-// Usage
-GradientAppBar(
-  title: Text(
-    'Dashboard',
-    style: TextStyle(fontSize: 20.sp),  // Responsive font size
-  ),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.notifications, size: 24.r),  // Responsive icon
-      onPressed: () {},
-    ),
-    SizedBox(width: 8.w),  // Responsive spacing
-  ],
-)
-
-GradientElevatedButton(
-  onPressed: () {},
-  height: 48.h,  // Responsive height
-  child: Text(
-    'Login',
-    style: TextStyle(fontSize: 16.sp),  // Responsive font size
-  ),
-)
+entity.toDto()  // For POST/PUT requests
 ```
 
 ### Error Handling
-- DioException for network errors
-- Status-based error handling (401 auto-handled by AuthInterceptor)
-- User-facing errors shown via SnackBar
-- Loading states shown with shimmer effects or CircularProgressIndicator
 
-### Form Validation
-- Use reactive_forms for complex forms
-- Use standard Flutter Form + TextFormField for simple forms
-- Validation errors defined in `presentation/core/form_errors/`
+**Three-tier system**:
 
-## Code Generation Workflow Summary
+1. **Exceptions** (thrown by data sources):
+   - `ServerException`, `NetworkException`, `CacheException`
 
-### Daily Development Workflow
-```bash
-# Start watch mode at beginning of day (RECOMMENDED)
-dart run build_runner watch --delete-conflicting-outputs
+2. **Failures** (domain layer, Freezed unions):
+   ```dart
+   @freezed
+   abstract class Failure {
+     const factory Failure.server({String message, int? statusCode});
+     const factory Failure.network({String message});
+     const factory Failure.cache({String message});
+     const factory Failure.validation({String message});
+   }
+   ```
 
-# This will automatically regenerate code when you:
-# - Modify @freezed classes
-# - Modify @injectable classes
-# - Modify @RestApi endpoints
-# - Modify @RoutePage pages
-# - Modify @HiveType models
-# - Add/modify assets (Flutter Gen integrated with build_runner)
+3. **BLoC States** (UI layer):
+   - Feature BLoCs emit error states with user-friendly messages
+   - `ErrorBloc` provides global error handling
 
-# Run full generation manually if needed
-dart run build_runner build --delete-conflicting-outputs
+**Repository pattern**: Return `Either<Failure, T>` from either_dart package
 
-# Install dependencies after pulling changes
-flutter pub get
-```
+### Environment Configuration
 
-### Generated Files to Commit
-✅ **Commit these generated files:**
-- `*.g.dart` (JSON serialization)
-- `*.freezed.dart` (Freezed models)
-- `injection.config.dart` (Injectable DI)
-- `app_router.gr.dart` (Auto Route)
-- `*.adapter.dart` (Hive adapters)
-- `lib/gen/**` (Flutter Gen assets)
+Three environments with separate entry points:
 
-❌ **Don't manually edit these files** - they will be overwritten
+- **Dev**: `lib/main_dev.dart` - Debug logging, Alice HTTP inspector, ngrok support
+- **Staging**: `lib/main_staging.dart` - Enhanced logging, full debug features
+- **Prod**: `lib/main_prod.dart` - Minimal logging, no debug tools
 
-### Code Generation Troubleshooting
-```bash
-# If generation fails with conflicts
-dart run build_runner build --delete-conflicting-outputs
+**Configuration files**: `lib/core/config/app_config_{dev|staging|prod}.dart`
 
-# If generation is incomplete or stuck
-flutter clean
-flutter pub get
-dart run build_runner clean
-dart run build_runner build --delete-conflicting-outputs
+Each defines:
+- API base URL
+- Environment name
+- Debug flags
+- Feature toggles
 
-# Force rebuild everything (nuclear option)
-rm -rf .dart_tool/build
-flutter clean
-flutter pub get
-dart run build_runner build --delete-conflicting-outputs
+## Important Conventions
 
-# If Injectable isn't finding dependencies
-# 1. Check that you have @injectable on the class
-# 2. Check that you've called configureDependencies() in main.dart
-# 3. Verify imports in injection.dart
-# 4. Make sure injectable_generator is in dev_dependencies
-# 5. Try: dart run build_runner build --delete-conflicting-outputs
+### UI Responsiveness
 
-# If Auto Route isn't generating routes
-# 1. Verify @RoutePage() annotation on pages (not @AutoRoute)
-# 2. Check that routes are added to AppRouter.routes
-# 3. Ensure page widgets are exported from their files
-# 4. Auto Route 9.x uses @RoutePage(), not @AutoRoute()
-# 5. Make sure auto_route_generator is in dev_dependencies
-
-# If Hive adapters aren't generating
-# 1. Check @HiveType(typeId: X) and @HiveField(Y) annotations
-# 2. Ensure each typeId is unique across all models
-# 3. Make sure hive_generator is in dev_dependencies
-
-# If Retrofit isn't generating
-# 1. Check @RestApi() annotation on abstract class
-# 2. Ensure retrofit_generator is in dev_dependencies
-# 3. Verify Dio is passed to factory constructor
-
-# Watch mode not detecting changes
-# Stop watch mode and restart
-# Check that you're editing the source file, not the generated file
-```
-
-## Quick Reference: Annotations
+**MANDATORY**: Use ScreenUtil for all dimensions:
 
 ```dart
-// Dependency Injection
-@injectable                           // Register as transient
-@singleton                           // Register as singleton
-@lazySingleton                       // Register as lazy singleton
-@Injectable(as: IRepository)        // Register with interface
-@Named('authDio')                    // Named instance
-@factoryMethod                       // Factory method
+// Correct
+padding: EdgeInsets.all(16.w)
+fontSize: 14.sp
+height: 100.h
+borderRadius: BorderRadius.circular(8.r)
 
-// Routing
-@RoutePage()                         // Auto Route page
-@AutoRouterConfig()                  // Router configuration
-
-// Data Models
-@freezed                             // Freezed immutable class
-@JsonSerializable()                  // JSON serialization
-@HiveType(typeId: 1)                // Hive model
-@HiveField(0)                        // Hive field
-
-// API
-@RestApi(baseUrl: '...')            // Retrofit API client
-@GET('/path')                        // HTTP GET
-@POST('/path')                       // HTTP POST
-@MultiPart()                         // Multipart request
-@Part(name: 'field')                 // Multipart field
+// Incorrect
+padding: EdgeInsets.all(16)  // ❌ Never use raw numbers
 ```
 
-## Keeping Dependencies Up to Date
+Initialize ScreenUtil in `main_common.dart` before runApp.
 
-### Checking for Updates
+### Work Order Lifecycle
+
+**GPS requirement**: All work order state transitions (start/pause/complete) REQUIRE GPS coordinates:
+
+```dart
+// BLoC emits locationError if GPS unavailable
+if (location == null) {
+  emit(state.copyWith(locationError: 'Location required'));
+  return;
+}
+```
+
+**Flow**: Idle → Started → Paused ↔ Resumed → Completed
+
+### Loading States
+
+Use `shimmer` package for skeleton screens during data loading. Avoid generic spinners; prefer content-aware loading states.
+
+### Permission Handling
+
+Use `PermissionRepository` abstraction:
+```dart
+final status = await permissionRepository.requestLocationPermission();
+```
+
+Don't call `permission_handler` directly in features.
+
+### Logging
+
+Use `LoggingService` singleton:
+```dart
+LoggingService.instance.debug('Message', tag: 'FeatureName', data: {...});
+LoggingService.instance.error('Error', tag: 'FeatureName', error: e, stackTrace: st);
+```
+
+Log levels: debug, info, warning, error, critical
+
+## Common Patterns
+
+### Creating a New Feature
+
+1. Create feature folder structure: `features/<feature>/{data,domain,presentation}`
+2. Define domain entities with `@freezed` in `domain/entities/`
+3. Create repository interface in `domain/repositories/`
+4. Implement DTOs with `@freezed` and `@JsonSerializable` in `data/models/`
+5. Create Retrofit API client in `data/api/` with `@RestApi()`
+6. Implement data sources (remote/local) in `data/datasources/`
+7. Implement repository in `data/repositories/`
+8. Create DI module in `data/di/` with `@module`
+9. Add BLoC in `presentation/blocs/` with events/states
+10. Create page with `@RoutePage()` in `presentation/pages/`
+11. Register route in `lib/core/router/app_router.dart`
+12. Run `dart run build_runner build --delete-conflicting-outputs`
+
+### Adding a New API Endpoint
+
+1. Add method to Retrofit client:
+   ```dart
+   @POST('/endpoint')
+   Future<ResponseDto> createResource(@Body CreateRequestDto request);
+   ```
+2. Run build_runner to generate implementation
+3. Create/update DTO if needed
+4. Add method to data source interface and implementation
+5. Add method to repository interface and implementation
+6. Create use case if complex business logic required
+7. Call from BLoC event handler
+
+### Implementing Offline Support
+
+1. Create Hive model in `data/models/` with `@HiveType`
+2. Add box name and typeId to `HiveBoxes` constants
+3. Register adapter in `HiveService._registerAdapters()`
+4. Open box in `HiveService._init()`
+5. Implement local data source with cache/retrieve/sync methods
+6. In repository:
+   - Check `NetworkInfo.isConnected`
+   - If online: fetch remote → cache locally
+   - If offline: return cached → mark for sync if mutation
+7. Handle sync in `SyncBloc` when connectivity restored
+
+### Testing BLoCs
+
+```dart
+blocTest<MyBloc, MyState>(
+  'emits success state when operation succeeds',
+  build: () {
+    when(() => mockRepository.doSomething())
+        .thenAnswer((_) async => Right(entity));
+    return MyBloc(repository: mockRepository);
+  },
+  act: (bloc) => bloc.add(const DoSomethingEvent()),
+  expect: () => [
+    MyState.loading(),
+    MyState.success(entity),
+  ],
+);
+```
+
+## Critical Files
+
+- `lib/core/di/injection.dart` - DI configuration
+- `lib/core/router/app_router.dart` - Route configuration
+- `lib/core/network/dio_client.dart` - HTTP client setup
+- `lib/core/network/auth_interceptor.dart` - JWT token management
+- `lib/core/storage/hive_service.dart` - Local storage initialization
+- `lib/core/constants/hive_boxes.dart` - Hive box names and type IDs
+- `lib/core/config/app_config.dart` - Environment configuration
+- `lib/main_common.dart` - Shared app initialization
+
+## Troubleshooting
+
+### Build Runner Issues
+
+If DI types aren't found or routes fail:
 ```bash
-# Check for outdated packages
-flutter pub outdated
+# Clean generated files
+flutter clean
+dart run build_runner clean
 
-# Show dependency tree
-dart pub deps
-
-# Upgrade packages respecting version constraints
-flutter pub upgrade
-
-# Upgrade to latest breaking versions (careful!)
-flutter pub upgrade --major-versions
-
-# Check for Flutter SDK updates
-flutter upgrade
+# Regenerate
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Version Update Strategy
-1. **Minor/Patch Updates:** Safe to update frequently
-   - Example: `^8.1.5` → `^8.1.6`
-   - Run tests after updating
+### Hive Migration Errors
 
-2. **Major Updates:** Require migration planning
-   - Example: `^8.1.6` → `^9.0.0`
-   - Read CHANGELOG and migration guides
-   - Update in isolated branch
-   - Test thoroughly
+If Hive throws typeId errors:
+- Never change existing typeIds in `HiveBoxes`
+- Add new typeIds sequentially
+- Consider migration strategy for breaking changes
 
-3. **Code Generation Packages:** Keep in sync
-   - Update generator with its corresponding package
-   - Example: Update `freezed` and `freezed_annotation` together
-   - Always regenerate after updating: `dart run build_runner build --delete-conflicting-outputs`
+### Auth Issues
 
-### Recommended Update Schedule
-- **Weekly:** Check for security updates
-- **Monthly:** Update patch versions
-- **Quarterly:** Review and plan major version updates
-- **Before Release:** Ensure all dependencies are up to date
+If 401 errors persist:
+- Check `AuthInterceptor` is registered in Dio client
+- Verify token refresh endpoint returns valid tokens
+- Check token storage in `auth_box`
 
-### Monitoring Dependencies
-```yaml
-# Use version constraints wisely
-dependencies:
-  # Good: Allows minor and patch updates
-  flutter_bloc: ^8.1.6
+### Location Errors
 
-  # Avoid: Locks to specific version (no updates)
-  # dio: 5.7.0
+If work order transitions fail:
+- Request location permission before operation
+- Ensure location services enabled
+- Check `LocationService` configuration
 
-  # Avoid: Too permissive (allows breaking changes)
-  # auto_route: any
-```
+### Route Not Found
 
-## Future Enhancements
+If route navigation fails:
+- Verify `@RoutePage()` annotation on page
+- Check route registered in `AppRouter.routes`
+- Run build_runner to regenerate router
+- Ensure import in app_router.dart
 
-Based on FSM_APP_REBUILD_DOCUMENTATION.md:
-- ✅ Offline-first architecture with Hive (implemented)
-- ✅ Type-safe routing with Auto Route (implemented)
-- ✅ Code generation for DI with Injectable (implemented)
-- Socket.io for real-time work order updates
-- Push notifications via Firebase Cloud Messaging
-- Signature capture for work order completion
-- Route optimization for multiple work orders
-- Voice notes for work logs
-- Multi-language support with easy_localization (code-generated)
-- Feature flags with injectable environments (@dev, @prod, @staging)
-- Analytics and crash reporting (Firebase Crashlytics + Analytics)
-- Biometric authentication (local_auth package)
+## Project Specifications
 
-## Documentation Reference
+Additional project specifications and requirements are located in `.kiro/specs/fsm-mobile-app/`:
+- `requirements.md` - Feature requirements and acceptance criteria
+- `design.md` - UI/UX specifications
+- `tasks.md` - Development task breakdown
 
-See `FSM_APP_REBUILD_DOCUMENTATION.md` for:
-- Detailed API endpoints and request/response formats
-- Complete entity definitions with field descriptions
-- Step-by-step UI flow diagrams
-- Complete code examples for each feature
-- Theme and styling specifications
+Treat these files as source of truth for feature implementation and user flows.

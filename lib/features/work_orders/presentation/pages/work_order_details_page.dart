@@ -11,6 +11,7 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/wo
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_start_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_pause_bottom_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_gallery_section.dart';
 
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
@@ -123,7 +124,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
         listener: (context, state) {
           state.maybeWhen(
-            actionSuccess: (workOrder, actionType, message) {
+            actionSuccess: (workOrder, actionType, message, _) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(message),
@@ -155,12 +156,12 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (workOrder, currentLocation, isLocationLoading,
-                    isOffline) =>
+                    isOffline, _, __) =>
                 _buildWorkOrderDetails(
                     workOrder, currentLocation, isLocationLoading, isOffline),
             actionInProgress: (workOrder, actionType, currentLocation) =>
                 _buildActionInProgress(workOrder, actionType),
-            actionSuccess: (workOrder, actionType, message) =>
+            actionSuccess: (workOrder, actionType, message, _) =>
                 _buildWorkOrderDetails(workOrder, null, false, false),
             error: (failure, workOrder, isOffline) =>
                 _buildError(failure.message, isOffline),
@@ -173,9 +174,9 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
         builder: (context, state) {
           return state.maybeWhen(
-            loaded: (workOrder, _, __, ___) =>
+            loaded: (workOrder, _, __, ___, ____, _____) =>
                 _buildWorkOrderActionFab(workOrder),
-            actionSuccess: (workOrder, _, __) =>
+            actionSuccess: (workOrder, _, __, ___) =>
                 _buildWorkOrderActionFab(workOrder),
             orElse: () => const SizedBox.shrink(),
           );
@@ -437,6 +438,9 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                   icon: Icons.timeline_outlined,
                   content: _buildWorkTimelineSection(workOrder.workLogs),
                 ),
+
+              // Images & Documentation
+              _buildImagesSection(),
 
               // Add bottom padding for floating action button
               SizedBox(height: 120.h),
@@ -1283,15 +1287,41 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     return AppColors.getPriorityColor(priority.name);
   }
 
+  Widget _buildImagesSection() {
+    return BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          loaded: (_, __, ___, ____, groupedImages, _____) {
+            if (groupedImages != null) {
+              return WorkOrderImageGallerySection(
+                groupedImages: groupedImages,
+              );
+            }
+            return const SizedBox.shrink();
+          },
+          actionSuccess: (_, __, ___, groupedImages) {
+            if (groupedImages != null) {
+              return WorkOrderImageGallerySection(
+                groupedImages: groupedImages,
+              );
+            }
+            return const SizedBox.shrink();
+          },
+          orElse: () => const SizedBox.shrink(),
+        );
+      },
+    );
+  }
+
   // Action methods from original file
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
       final state = _workOrderActionBloc?.state;
       state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___) {
+        loaded: (_, currentLocation, __, ___, ____, _____) {
           _showStartWorkOrderBottomSheet(context, workOrder, currentLocation);
         },
-        actionSuccess: (workOrderEntity, actionType, message) {
+        actionSuccess: (workOrderEntity, actionType, message, _) {
           _showStartWorkOrderBottomSheet(context, workOrder, null);
         },
         orElse: () => _showLocationErrorDialog(context),
@@ -1303,10 +1333,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     _executeIfMounted(() {
       final state = _workOrderActionBloc?.state;
       state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___) {
+        loaded: (_, currentLocation, __, ___, ____, _____) {
           _showPauseWorkOrderBottomSheet(context, workOrder, currentLocation);
         },
-        actionSuccess: (workOrderEntity, actionType, message) {
+        actionSuccess: (workOrderEntity, actionType, message, _) {
           _showPauseWorkOrderBottomSheet(context, workOrder, null);
         },
         orElse: () => _showLocationErrorDialog(context),
@@ -1323,7 +1353,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         _executeIfMounted(() {
           final state = _workOrderActionBloc?.state;
           state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___) {
+            loaded: (_, currentLocation, __, ___, ____, _____) {
               if (currentLocation != null) {
                 _workOrderActionBloc?.add(
                   WorkOrderActionEvent.resumeWorkOrder(
@@ -1356,7 +1386,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         _executeIfMounted(() {
           final state = _workOrderActionBloc?.state;
           state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___) {
+            loaded: (_, currentLocation, __, ___, ____, _____) {
               if (currentLocation != null) {
                 _workOrderActionBloc?.add(
                   WorkOrderActionEvent.rejectWorkOrder(
@@ -1563,7 +1593,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               _executeIfMounted(() {
                 final state = _workOrderActionBloc?.state;
                 state?.maybeWhen(
-                  loaded: (_, currentLocation, __, ___) {
+                  loaded: (_, currentLocation, __, ___, ____, _____) {
                     if (currentLocation != null) {
                       _workOrderActionBloc?.add(
                         WorkOrderActionEvent.completeWorkOrder(

@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:fsm/core/error/failures.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 
 part 'work_order_action_state.freezed.dart';
 
@@ -16,6 +17,8 @@ class WorkOrderActionState with _$WorkOrderActionState {
     LocationEntity? currentLocation,
     @Default(false) bool isLocationLoading,
     @Default(false) bool isOffline,
+    WorkOrderGroupedImagesEntity? groupedImages,
+    @Default(false) bool isLoadingImages,
   }) = _Loaded;
   
   const factory WorkOrderActionState.actionInProgress({
@@ -28,6 +31,7 @@ class WorkOrderActionState with _$WorkOrderActionState {
     required WorkOrderEntity workOrder,
     required String actionType,
     required String message,
+    WorkOrderGroupedImagesEntity? groupedImages,
   }) = _ActionSuccess;
   
   const factory WorkOrderActionState.error({

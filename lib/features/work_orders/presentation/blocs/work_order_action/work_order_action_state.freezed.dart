@@ -184,14 +184,19 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkOrderEntity workOrder, LocationEntity? currentLocation,
-            bool isLocationLoading, bool isOffline)?
+    TResult Function(
+            WorkOrderEntity workOrder,
+            LocationEntity? currentLocation,
+            bool isLocationLoading,
+            bool isOffline,
+            WorkOrderGroupedImagesEntity? groupedImages,
+            bool isLoadingImages)?
         loaded,
     TResult Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)?
         actionInProgress,
-    TResult Function(
-            WorkOrderEntity workOrder, String actionType, String message)?
+    TResult Function(WorkOrderEntity workOrder, String actionType,
+            String message, WorkOrderGroupedImagesEntity? groupedImages)?
         actionSuccess,
     TResult Function(
             Failure failure, WorkOrderEntity? workOrder, bool isOffline)?
@@ -206,13 +211,19 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
       case _Loading() when loading != null:
         return loading();
       case _Loaded() when loaded != null:
-        return loaded(_that.workOrder, _that.currentLocation,
-            _that.isLocationLoading, _that.isOffline);
+        return loaded(
+            _that.workOrder,
+            _that.currentLocation,
+            _that.isLocationLoading,
+            _that.isOffline,
+            _that.groupedImages,
+            _that.isLoadingImages);
       case _ActionInProgress() when actionInProgress != null:
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
       case _ActionSuccess() when actionSuccess != null:
-        return actionSuccess(_that.workOrder, _that.actionType, _that.message);
+        return actionSuccess(_that.workOrder, _that.actionType, _that.message,
+            _that.groupedImages);
       case _Error() when error != null:
         return error(_that.failure, _that.workOrder, _that.isOffline);
       case _LocationError() when locationError != null:
@@ -243,13 +254,15 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             WorkOrderEntity workOrder,
             LocationEntity? currentLocation,
             bool isLocationLoading,
-            bool isOffline)
+            bool isOffline,
+            WorkOrderGroupedImagesEntity? groupedImages,
+            bool isLoadingImages)
         loaded,
     required TResult Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)
         actionInProgress,
-    required TResult Function(
-            WorkOrderEntity workOrder, String actionType, String message)
+    required TResult Function(WorkOrderEntity workOrder, String actionType,
+            String message, WorkOrderGroupedImagesEntity? groupedImages)
         actionSuccess,
     required TResult Function(
             Failure failure, WorkOrderEntity? workOrder, bool isOffline)
@@ -264,13 +277,19 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
       case _Loading():
         return loading();
       case _Loaded():
-        return loaded(_that.workOrder, _that.currentLocation,
-            _that.isLocationLoading, _that.isOffline);
+        return loaded(
+            _that.workOrder,
+            _that.currentLocation,
+            _that.isLocationLoading,
+            _that.isOffline,
+            _that.groupedImages,
+            _that.isLoadingImages);
       case _ActionInProgress():
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
       case _ActionSuccess():
-        return actionSuccess(_that.workOrder, _that.actionType, _that.message);
+        return actionSuccess(_that.workOrder, _that.actionType, _that.message,
+            _that.groupedImages);
       case _Error():
         return error(_that.failure, _that.workOrder, _that.isOffline);
       case _LocationError():
@@ -300,13 +319,15 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             WorkOrderEntity workOrder,
             LocationEntity? currentLocation,
             bool isLocationLoading,
-            bool isOffline)?
+            bool isOffline,
+            WorkOrderGroupedImagesEntity? groupedImages,
+            bool isLoadingImages)?
         loaded,
     TResult? Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)?
         actionInProgress,
-    TResult? Function(
-            WorkOrderEntity workOrder, String actionType, String message)?
+    TResult? Function(WorkOrderEntity workOrder, String actionType,
+            String message, WorkOrderGroupedImagesEntity? groupedImages)?
         actionSuccess,
     TResult? Function(
             Failure failure, WorkOrderEntity? workOrder, bool isOffline)?
@@ -320,13 +341,19 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
       case _Loading() when loading != null:
         return loading();
       case _Loaded() when loaded != null:
-        return loaded(_that.workOrder, _that.currentLocation,
-            _that.isLocationLoading, _that.isOffline);
+        return loaded(
+            _that.workOrder,
+            _that.currentLocation,
+            _that.isLocationLoading,
+            _that.isOffline,
+            _that.groupedImages,
+            _that.isLoadingImages);
       case _ActionInProgress() when actionInProgress != null:
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
       case _ActionSuccess() when actionSuccess != null:
-        return actionSuccess(_that.workOrder, _that.actionType, _that.message);
+        return actionSuccess(_that.workOrder, _that.actionType, _that.message,
+            _that.groupedImages);
       case _Error() when error != null:
         return error(_that.failure, _that.workOrder, _that.isOffline);
       case _LocationError() when locationError != null:
@@ -384,7 +411,9 @@ class _Loaded implements WorkOrderActionState {
       {required this.workOrder,
       this.currentLocation,
       this.isLocationLoading = false,
-      this.isOffline = false});
+      this.isOffline = false,
+      this.groupedImages,
+      this.isLoadingImages = false});
 
   final WorkOrderEntity workOrder;
   final LocationEntity? currentLocation;
@@ -392,6 +421,9 @@ class _Loaded implements WorkOrderActionState {
   final bool isLocationLoading;
   @JsonKey()
   final bool isOffline;
+  final WorkOrderGroupedImagesEntity? groupedImages;
+  @JsonKey()
+  final bool isLoadingImages;
 
   /// Create a copy of WorkOrderActionState
   /// with the given fields replaced by the non-null parameter values.
@@ -412,16 +444,20 @@ class _Loaded implements WorkOrderActionState {
             (identical(other.isLocationLoading, isLocationLoading) ||
                 other.isLocationLoading == isLocationLoading) &&
             (identical(other.isOffline, isOffline) ||
-                other.isOffline == isOffline));
+                other.isOffline == isOffline) &&
+            (identical(other.groupedImages, groupedImages) ||
+                other.groupedImages == groupedImages) &&
+            (identical(other.isLoadingImages, isLoadingImages) ||
+                other.isLoadingImages == isLoadingImages));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, workOrder, currentLocation, isLocationLoading, isOffline);
+  int get hashCode => Object.hash(runtimeType, workOrder, currentLocation,
+      isLocationLoading, isOffline, groupedImages, isLoadingImages);
 
   @override
   String toString() {
-    return 'WorkOrderActionState.loaded(workOrder: $workOrder, currentLocation: $currentLocation, isLocationLoading: $isLocationLoading, isOffline: $isOffline)';
+    return 'WorkOrderActionState.loaded(workOrder: $workOrder, currentLocation: $currentLocation, isLocationLoading: $isLocationLoading, isOffline: $isOffline, groupedImages: $groupedImages, isLoadingImages: $isLoadingImages)';
   }
 }
 
@@ -435,10 +471,13 @@ abstract mixin class _$LoadedCopyWith<$Res>
       {WorkOrderEntity workOrder,
       LocationEntity? currentLocation,
       bool isLocationLoading,
-      bool isOffline});
+      bool isOffline,
+      WorkOrderGroupedImagesEntity? groupedImages,
+      bool isLoadingImages});
 
   $WorkOrderEntityCopyWith<$Res> get workOrder;
   $LocationEntityCopyWith<$Res>? get currentLocation;
+  $WorkOrderGroupedImagesEntityCopyWith<$Res>? get groupedImages;
 }
 
 /// @nodoc
@@ -456,6 +495,8 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
     Object? currentLocation = freezed,
     Object? isLocationLoading = null,
     Object? isOffline = null,
+    Object? groupedImages = freezed,
+    Object? isLoadingImages = null,
   }) {
     return _then(_Loaded(
       workOrder: null == workOrder
@@ -473,6 +514,14 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
       isOffline: null == isOffline
           ? _self.isOffline
           : isOffline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      groupedImages: freezed == groupedImages
+          ? _self.groupedImages
+          : groupedImages // ignore: cast_nullable_to_non_nullable
+              as WorkOrderGroupedImagesEntity?,
+      isLoadingImages: null == isLoadingImages
+          ? _self.isLoadingImages
+          : isLoadingImages // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -498,6 +547,21 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
 
     return $LocationEntityCopyWith<$Res>(_self.currentLocation!, (value) {
       return _then(_self.copyWith(currentLocation: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderActionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $WorkOrderGroupedImagesEntityCopyWith<$Res>? get groupedImages {
+    if (_self.groupedImages == null) {
+      return null;
+    }
+
+    return $WorkOrderGroupedImagesEntityCopyWith<$Res>(_self.groupedImages!,
+        (value) {
+      return _then(_self.copyWith(groupedImages: value));
     });
   }
 }
@@ -624,11 +688,13 @@ class _ActionSuccess implements WorkOrderActionState {
   const _ActionSuccess(
       {required this.workOrder,
       required this.actionType,
-      required this.message});
+      required this.message,
+      this.groupedImages});
 
   final WorkOrderEntity workOrder;
   final String actionType;
   final String message;
+  final WorkOrderGroupedImagesEntity? groupedImages;
 
   /// Create a copy of WorkOrderActionState
   /// with the given fields replaced by the non-null parameter values.
@@ -646,15 +712,18 @@ class _ActionSuccess implements WorkOrderActionState {
                 other.workOrder == workOrder) &&
             (identical(other.actionType, actionType) ||
                 other.actionType == actionType) &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.groupedImages, groupedImages) ||
+                other.groupedImages == groupedImages));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workOrder, actionType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, workOrder, actionType, message, groupedImages);
 
   @override
   String toString() {
-    return 'WorkOrderActionState.actionSuccess(workOrder: $workOrder, actionType: $actionType, message: $message)';
+    return 'WorkOrderActionState.actionSuccess(workOrder: $workOrder, actionType: $actionType, message: $message, groupedImages: $groupedImages)';
   }
 }
 
@@ -665,9 +734,14 @@ abstract mixin class _$ActionSuccessCopyWith<$Res>
           _ActionSuccess value, $Res Function(_ActionSuccess) _then) =
       __$ActionSuccessCopyWithImpl;
   @useResult
-  $Res call({WorkOrderEntity workOrder, String actionType, String message});
+  $Res call(
+      {WorkOrderEntity workOrder,
+      String actionType,
+      String message,
+      WorkOrderGroupedImagesEntity? groupedImages});
 
   $WorkOrderEntityCopyWith<$Res> get workOrder;
+  $WorkOrderGroupedImagesEntityCopyWith<$Res>? get groupedImages;
 }
 
 /// @nodoc
@@ -685,6 +759,7 @@ class __$ActionSuccessCopyWithImpl<$Res>
     Object? workOrder = null,
     Object? actionType = null,
     Object? message = null,
+    Object? groupedImages = freezed,
   }) {
     return _then(_ActionSuccess(
       workOrder: null == workOrder
@@ -699,6 +774,10 @@ class __$ActionSuccessCopyWithImpl<$Res>
           ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
+      groupedImages: freezed == groupedImages
+          ? _self.groupedImages
+          : groupedImages // ignore: cast_nullable_to_non_nullable
+              as WorkOrderGroupedImagesEntity?,
     ));
   }
 
@@ -709,6 +788,21 @@ class __$ActionSuccessCopyWithImpl<$Res>
   $WorkOrderEntityCopyWith<$Res> get workOrder {
     return $WorkOrderEntityCopyWith<$Res>(_self.workOrder, (value) {
       return _then(_self.copyWith(workOrder: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderActionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $WorkOrderGroupedImagesEntityCopyWith<$Res>? get groupedImages {
+    if (_self.groupedImages == null) {
+      return null;
+    }
+
+    return $WorkOrderGroupedImagesEntityCopyWith<$Res>(_self.groupedImages!,
+        (value) {
+      return _then(_self.copyWith(groupedImages: value));
     });
   }
 }

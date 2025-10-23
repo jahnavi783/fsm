@@ -46,6 +46,10 @@ abstract class NetworkModule {
           Duration(seconds: 3),
         ],
         retryEvaluator: (error, attempt) {
+          // Don't retry on 401 - let AuthInterceptor handle token refresh
+          if (error.response?.statusCode == 401) {
+            return false;
+          }
           // Don't retry on 307 redirects - these need to be fixed at the configuration level
           if (error.response?.statusCode == 307) {
             loggingService.error(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:either_dart/either.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
 import 'package:hive_ce/hive.dart';
@@ -8,6 +9,7 @@ import 'package:fsm/core/error/hive_ce_error_handler.dart';
 import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/core/services/logging_service.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
 import 'package:fsm/features/work_orders/data/datasources/work_order_remote_datasource.dart';
 import 'package:fsm/features/work_orders/data/datasources/work_order_local_datasource.dart';
@@ -781,6 +783,44 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         return WorkOrderPriority.urgent.index;
       default:
         return WorkOrderPriority.medium.index;
+    }
+  }
+
+  @override
+  Future<Either<Failure, WorkOrderGroupedImagesEntity>> getGroupedImages(
+      int workOrderId) async {
+    _logger.info('Getting grouped images for work order $workOrderId',
+        tag: 'WORK_ORDER_REPO');
+
+    try {
+      if (await _networkInfo.isConnected) {
+        final groupedImagesDto =
+            await _remoteDataSource.getGroupedImages(workOrderId);
+
+        _logger.info(
+            'Successfully fetched grouped images for work order $workOrderId',
+            tag: 'WORK_ORDER_REPO');
+
+        return Right(groupedImagesDto.toEntity());
+      } else {
+        _logger.warning(
+            'No internet connection, grouped images not available offline',
+            tag: 'WORK_ORDER_REPO');
+        return const Left(NetworkFailure(
+          message: 'Grouped images require internet connection',
+        ));
+      }
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Dio exception in getGroupedImages for ID: $workOrderId',
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(_handleDioException(e));
+    } catch (e, stackTrace) {
+      _logger.error(
+          'Unexpected error in getGroupedImages for ID: $workOrderId',
+          tag: 'WORK_ORDER_REPO',
+          error: e,
+          stackTrace: stackTrace);
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

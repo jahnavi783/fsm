@@ -173,7 +173,7 @@ class _WorkOrderPauseBottomSheetState extends State<WorkOrderPauseBottomSheet> {
     return BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
       listener: (context, state) {
         state.maybeWhen(
-          actionSuccess: (workOrder, actionType, message) {
+          actionSuccess: (workOrder, actionType, message, _) {
             Navigator.of(context).pop(true);
           },
           error: (failure, workOrder, isOffline) {

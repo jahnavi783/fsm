@@ -57,6 +57,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   shimmer: ^3.0.0
   cached_network_image: ^3.4.1
+  photo_view: ^0.15.0
 
   # Forms
   reactive_forms: ^18.1.1

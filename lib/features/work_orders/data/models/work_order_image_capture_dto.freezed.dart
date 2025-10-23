@@ -356,7 +356,7 @@ class __$GpsCoordinatesDtoCopyWithImpl<$Res>
 /// @nodoc
 mixin _$WorkOrderImageCaptureDto {
   @JsonKey(name: 'image_urls')
-  List<String> get imageUrls;
+  List<String>? get imageUrls;
   @JsonKey(name: 'gps_coordinates')
   GpsCoordinatesDto? get gpsCoordinates;
   @JsonKey(name: 'captured_by')
@@ -411,7 +411,7 @@ abstract mixin class $WorkOrderImageCaptureDtoCopyWith<$Res> {
       _$WorkOrderImageCaptureDtoCopyWithImpl;
   @useResult
   $Res call(
-      {@JsonKey(name: 'image_urls') List<String> imageUrls,
+      {@JsonKey(name: 'image_urls') List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
       @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
       @JsonKey(name: 'captured_at') String capturedAt});
@@ -433,16 +433,16 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imageUrls = null,
+    Object? imageUrls = freezed,
     Object? gpsCoordinates = freezed,
     Object? capturedBy = null,
     Object? capturedAt = null,
   }) {
     return _then(_self.copyWith(
-      imageUrls: null == imageUrls
+      imageUrls: freezed == imageUrls
           ? _self.imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       gpsCoordinates: freezed == gpsCoordinates
           ? _self.gpsCoordinates
           : gpsCoordinates // ignore: cast_nullable_to_non_nullable
@@ -577,7 +577,7 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            @JsonKey(name: 'image_urls') List<String> imageUrls,
+            @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
             @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
             @JsonKey(name: 'captured_at') String capturedAt)?
@@ -610,7 +610,7 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            @JsonKey(name: 'image_urls') List<String> imageUrls,
+            @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
             @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
             @JsonKey(name: 'captured_at') String capturedAt)
@@ -641,7 +641,7 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            @JsonKey(name: 'image_urls') List<String> imageUrls,
+            @JsonKey(name: 'image_urls') List<String>? imageUrls,
             @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
             @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
             @JsonKey(name: 'captured_at') String capturedAt)?
@@ -662,7 +662,7 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
 @JsonSerializable()
 class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
   const _WorkOrderImageCaptureDto(
-      {@JsonKey(name: 'image_urls') required final List<String> imageUrls,
+      {@JsonKey(name: 'image_urls') final List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') this.gpsCoordinates,
       @JsonKey(name: 'captured_by') required this.capturedBy,
       @JsonKey(name: 'captured_at') required this.capturedAt})
@@ -670,13 +670,15 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
   factory _WorkOrderImageCaptureDto.fromJson(Map<String, dynamic> json) =>
       _$WorkOrderImageCaptureDtoFromJson(json);
 
-  final List<String> _imageUrls;
+  final List<String>? _imageUrls;
   @override
   @JsonKey(name: 'image_urls')
-  List<String> get imageUrls {
+  List<String>? get imageUrls {
+    final value = _imageUrls;
+    if (value == null) return null;
     if (_imageUrls is EqualUnmodifiableListView) return _imageUrls;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_imageUrls);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -744,7 +746,7 @@ abstract mixin class _$WorkOrderImageCaptureDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'image_urls') List<String> imageUrls,
+      {@JsonKey(name: 'image_urls') List<String>? imageUrls,
       @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
       @JsonKey(name: 'captured_by') CapturedByDto capturedBy,
       @JsonKey(name: 'captured_at') String capturedAt});
@@ -768,16 +770,16 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? imageUrls = null,
+    Object? imageUrls = freezed,
     Object? gpsCoordinates = freezed,
     Object? capturedBy = null,
     Object? capturedAt = null,
   }) {
     return _then(_WorkOrderImageCaptureDto(
-      imageUrls: null == imageUrls
+      imageUrls: freezed == imageUrls
           ? _self._imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String>?,
       gpsCoordinates: freezed == gpsCoordinates
           ? _self.gpsCoordinates
           : gpsCoordinates // ignore: cast_nullable_to_non_nullable

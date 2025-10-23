@@ -32,7 +32,7 @@ abstract class GpsCoordinatesDto with _$GpsCoordinatesDto {
 @freezed
 abstract class WorkOrderImageCaptureDto with _$WorkOrderImageCaptureDto {
   const factory WorkOrderImageCaptureDto({
-    @JsonKey(name: 'image_urls') required List<String> imageUrls,
+    @JsonKey(name: 'image_urls') List<String>? imageUrls,
     @JsonKey(name: 'gps_coordinates') GpsCoordinatesDto? gpsCoordinates,
     @JsonKey(name: 'captured_by') required CapturedByDto capturedBy,
     @JsonKey(name: 'captured_at') required String capturedAt,
@@ -45,7 +45,7 @@ abstract class WorkOrderImageCaptureDto with _$WorkOrderImageCaptureDto {
 extension WorkOrderImageCaptureDtoX on WorkOrderImageCaptureDto {
   WorkOrderImageCaptureEntity toEntity() {
     return WorkOrderImageCaptureEntity(
-      imageUrls: imageUrls,
+      imageUrls: imageUrls ?? [],
       latitude: gpsCoordinates?.coordinates.length == 2
           ? gpsCoordinates!.coordinates[1]
           : null,

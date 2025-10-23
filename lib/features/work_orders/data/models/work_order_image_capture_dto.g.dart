@@ -21,8 +21,8 @@ Map<String, dynamic> _$GpsCoordinatesDtoToJson(_GpsCoordinatesDto instance) =>
 _WorkOrderImageCaptureDto _$WorkOrderImageCaptureDtoFromJson(
         Map<String, dynamic> json) =>
     _WorkOrderImageCaptureDto(
-      imageUrls: (json['image_urls'] as List<dynamic>)
-          .map((e) => e as String)
+      imageUrls: (json['image_urls'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
       gpsCoordinates: json['gps_coordinates'] == null
           ? null

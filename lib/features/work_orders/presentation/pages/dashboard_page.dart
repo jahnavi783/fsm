@@ -9,7 +9,6 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/wor
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_shimmer.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
 
 @RoutePage()
@@ -32,11 +31,10 @@ class _DashboardPageState extends State<DashboardPage>
     _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
 
-    // Load initial data
+    // Load all work orders initially without status filter
     context.read<WorkOrdersListBloc>().add(
           const WorkOrdersListEvent.loadWorkOrders(
             page: 1,
-            status: WorkOrderStatus.assigned,
           ),
         );
   }
@@ -49,12 +47,9 @@ class _DashboardPageState extends State<DashboardPage>
   }
 
   void _onTabChanged() {
-    if (!_tabController.indexIsChanging) {
-      final status = _getStatusForTab(_tabController.index);
-      context.read<WorkOrdersListBloc>().add(
-            WorkOrdersListEvent.filterByStatus(status),
-          );
-    }
+    // Frontend filtering - no API call needed
+    // The UI will automatically filter based on the current tab
+    // when _buildWorkOrdersList is called with the status
   }
 
   void _onScroll() {
@@ -66,168 +61,511 @@ class _DashboardPageState extends State<DashboardPage>
     }
   }
 
-  WorkOrderStatus _getStatusForTab(int index) {
-    switch (index) {
-      case 0:
-        return WorkOrderStatus.assigned;
-      case 1:
-        return WorkOrderStatus.inProgress;
-      case 2:
-        return WorkOrderStatus.paused;
-      case 3:
-        return WorkOrderStatus.completed;
-      default:
-        return WorkOrderStatus.assigned;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Work Orders'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.primaryColor,
-                theme.primaryColor.withOpacity(0.8),
-              ],
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            // Modern App Bar with Gradient
+            SliverAppBar(
+              expandedHeight: 120.h,
+              floating: false,
+              pinned: true,
+              elevation: 0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFF116587),
+                        const Color(0xFF00A74F),
+                      ],
+                    ),
+                  ),
+                  child: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 16.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Dashboard',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    'Manage your work orders',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  _buildHeaderAction(
+                                    icon: Icons.search,
+                                    onTap: () => _showSearchDialog(context),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  _buildHeaderAction(
+                                    icon: Icons.refresh,
+                                    onTap: () {
+                                      context.read<WorkOrdersListBloc>().add(
+                                            const WorkOrdersListEvent
+                                                .refreshWorkOrders(),
+                                          );
+                                    },
+                                  ),
+                                  if (AppConfig.isDebug) ...[
+                                    SizedBox(width: 12.w),
+                                    _buildHeaderAction(
+                                      icon: Icons.bug_report,
+                                      onTap: () => context.router
+                                          .push(const DeveloperOptionsRoute()),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(0),
+                child: Container(),
+              ),
             ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<WorkOrdersListBloc>().add(
-                    const WorkOrdersListEvent.refreshWorkOrders(),
-                  );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              _showSearchDialog(context);
-            },
-          ),
-          // Debug options button (only visible in debug mode)
-          if (AppConfig.isDebug)
-            IconButton(
-              icon: const Icon(Icons.bug_report, color: Colors.orange),
-              onPressed: () {
-                context.router.push(const DeveloperOptionsRoute());
+          ];
+        },
+        body: Column(
+          children: [
+            // Enhanced Stats Cards Section
+            BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
+              builder: (context, state) {
+                return Container(
+                  margin: EdgeInsets.all(16.w),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildModernStatsCard(
+                              'Assigned',
+                              _getCountForStatus(
+                                  state, WorkOrderStatus.assigned),
+                              Icons.assignment_outlined,
+                              const Color(0xFF2196F3),
+                              () => _switchToTab(0),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: _buildModernStatsCard(
+                              'In Progress',
+                              _getCountForStatus(
+                                  state, WorkOrderStatus.inProgress),
+                              Icons.autorenew,
+                              const Color(0xFFFF9800),
+                              () => _switchToTab(1),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildModernStatsCard(
+                              'Paused',
+                              _getCountForStatus(state, WorkOrderStatus.paused),
+                              Icons.pause_circle_outlined,
+                              const Color(0xFF9C27B0),
+                              () => _switchToTab(2),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: _buildModernStatsCard(
+                              'Completed',
+                              _getCountForStatus(
+                                  state, WorkOrderStatus.completed),
+                              Icons.check_circle_outline,
+                              const Color(0xFF4CAF50),
+                              () => _switchToTab(3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Assigned'),
-            Tab(text: 'In Progress'),
-            Tab(text: 'Paused'),
-            Tab(text: 'Completed'),
+
+            // Modern Tab Navigation
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(25.r),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.r),
+                  color: const Color(0xFF116587),
+                ),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.grey[600],
+                labelStyle: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                tabs: [
+                  Tab(text: 'Assigned'),
+                  Tab(text: 'In Progress'),
+                  Tab(text: 'Paused'),
+                  Tab(text: 'Completed'),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
+            // Work Orders List
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildWorkOrdersList(WorkOrderStatus.assigned),
+                  _buildWorkOrdersList(WorkOrderStatus.inProgress),
+                  _buildWorkOrdersList(WorkOrderStatus.paused),
+                  _buildWorkOrdersList(WorkOrderStatus.completed),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      body: Column(
-        children: [
-          // Stats Cards
-          BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
-            builder: (context, state) {
-              return Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.primaryColor.withOpacity(0.8),
-                      theme.primaryColor.withOpacity(0.6),
-                    ],
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Row(
-                    children: [
-                      _buildStatsCard('Assigned',
-                          _getCountForStatus(state, WorkOrderStatus.assigned)),
-                      _buildStatsCard(
-                          'In Progress',
-                          _getCountForStatus(
-                              state, WorkOrderStatus.inProgress)),
-                      _buildStatsCard('Paused',
-                          _getCountForStatus(state, WorkOrderStatus.paused)),
-                      _buildStatsCard('Completed',
-                          _getCountForStatus(state, WorkOrderStatus.completed)),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Work Orders List
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildWorkOrdersList(WorkOrderStatus.assigned),
-                _buildWorkOrdersList(WorkOrderStatus.inProgress),
-                _buildWorkOrdersList(WorkOrderStatus.paused),
-                _buildWorkOrdersList(WorkOrderStatus.completed),
-              ],
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           context.read<WorkOrdersListBloc>().add(
                 const WorkOrdersListEvent.syncPendingWorkOrders(),
               );
         },
-        child: const Icon(Icons.sync),
+        icon: const Icon(Icons.sync),
+        label: const Text('Sync'),
+        backgroundColor: const Color(0xFF116587),
+        foregroundColor: Colors.white,
       ),
     );
   }
 
-  Widget _buildStatsCard(String title, String count) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4.w),
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.3),
-            width: 1,
+  // Build header action button
+  Widget _buildHeaderAction({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8.r),
+        child: Container(
+          padding: EdgeInsets.all(8.w),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 20.sp,
           ),
         ),
+      ),
+    );
+  }
+
+  // Build modern stats card
+  Widget _buildModernStatsCard(
+    String title,
+    String count,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16.r),
+          child: Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 12,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: color,
+                        size: 20.sp,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 12.sp,
+                      color: Colors.grey[400],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12.h),
+                Text(
+                  count,
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Switch to specific tab (frontend filtering only)
+  void _switchToTab(int index) {
+    _tabController.animateTo(index);
+  }
+
+  // Build enhanced empty state
+  Widget _buildEmptyState(WorkOrderStatus status) {
+    final statusInfo = _getEmptyStateInfo(status);
+
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              count,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.all(32.w),
+              decoration: BoxDecoration(
+                color: statusInfo['color'].withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                statusInfo['icon'],
+                size: 64.sp,
+                color: statusInfo['color'],
               ),
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 24.h),
             Text(
-              title,
+              statusInfo['title'],
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
               textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              statusInfo['subtitle'],
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.read<WorkOrdersListBloc>().add(
+                      const WorkOrdersListEvent.refreshWorkOrders(),
+                    );
+              },
+              icon: Icon(Icons.refresh, size: 18.sp),
+              label: const Text('Refresh'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: statusInfo['color'],
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Get empty state information based on status
+  Map<String, dynamic> _getEmptyStateInfo(WorkOrderStatus status) {
+    switch (status) {
+      case WorkOrderStatus.assigned:
+        return {
+          'icon': Icons.assignment_outlined,
+          'color': const Color(0xFF2196F3),
+          'title': 'No Assigned Work Orders',
+          'subtitle':
+              'New work orders will appear here when they\'re assigned to you.',
+        };
+      case WorkOrderStatus.inProgress:
+        return {
+          'icon': Icons.autorenew,
+          'color': const Color(0xFFFF9800),
+          'title': 'No Active Work Orders',
+          'subtitle': 'Start working on assigned orders to see them here.',
+        };
+      case WorkOrderStatus.paused:
+        return {
+          'icon': Icons.pause_circle_outlined,
+          'color': const Color(0xFF9C27B0),
+          'title': 'No Paused Work Orders',
+          'subtitle': 'Work orders you pause will be listed here.',
+        };
+      case WorkOrderStatus.completed:
+        return {
+          'icon': Icons.check_circle_outline,
+          'color': const Color(0xFF4CAF50),
+          'title': 'No Completed Work Orders',
+          'subtitle': 'Your completed work orders will be shown here.',
+        };
+      default:
+        return {
+          'icon': Icons.work_outline,
+          'color': Colors.grey,
+          'title': 'No Work Orders',
+          'subtitle': 'No work orders found for this status.',
+        };
+    }
+  }
+
+  // Build enhanced error state
+  Widget _buildErrorState(String message, bool isOffline) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(32.w),
+              decoration: BoxDecoration(
+                color: isOffline
+                    ? Colors.orange.withOpacity(0.1)
+                    : Colors.red.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isOffline ? Icons.wifi_off : Icons.error_outline,
+                size: 64.sp,
+                color: isOffline ? Colors.orange : Colors.red,
+              ),
+            ),
+            SizedBox(height: 24.h),
+            Text(
+              isOffline ? 'You\'re Offline' : 'Something Went Wrong',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              isOffline
+                  ? 'Check your internet connection and try again.'
+                  : message,
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.read<WorkOrdersListBloc>().add(
+                      const WorkOrdersListEvent.refreshWorkOrders(),
+                    );
+              },
+              icon: Icon(Icons.refresh, size: 18.sp),
+              label: const Text('Try Again'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isOffline ? Colors.orange : Colors.red,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+              ),
             ),
           ],
         ),
@@ -239,8 +577,8 @@ class _DashboardPageState extends State<DashboardPage>
     return BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
       builder: (context, state) {
         return state.when(
-          initial: () => const Center(child: CircularProgressIndicator()),
-          loading: () => const WorkOrderListShimmer(),
+          initial: () => _buildLoadingState(),
+          loading: () => _buildLoadingState(),
           loaded: (workOrders,
               currentPage,
               hasReachedMax,
@@ -255,26 +593,7 @@ class _DashboardPageState extends State<DashboardPage>
                 workOrders.where((wo) => wo.status == status).toList();
 
             if (filteredWorkOrders.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.work_outline,
-                      size: 64.sp,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      'No ${status.displayName.toLowerCase()} work orders',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return _buildEmptyState(status);
             }
 
             return RefreshIndicator(
@@ -309,54 +628,9 @@ class _DashboardPageState extends State<DashboardPage>
               ),
             );
           },
-          error: (failure, workOrders, isOffline) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  isOffline ? Icons.wifi_off : Icons.error_outline,
-                  size: 64.sp,
-                  color: Colors.red,
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  isOffline ? 'You are offline' : 'Error loading work orders',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.red,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  failure.message,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 16.h),
-                ElevatedButton(
-                  onPressed: () {
-                    context.read<WorkOrdersListBloc>().add(
-                          const WorkOrdersListEvent.refreshWorkOrders(),
-                        );
-                  },
-                  child: const Text('Retry'),
-                ),
-              ],
-            ),
-          ),
-          syncing: (workOrders) => const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Syncing work orders...'),
-              ],
-            ),
-          ),
+          error: (failure, workOrders, isOffline) =>
+              _buildErrorState(failure.message, isOffline),
+          syncing: (workOrders) => _buildSyncingState(),
         );
       },
     );
@@ -463,6 +737,94 @@ class _DashboardPageState extends State<DashboardPage>
         content:
             Text('Navigate to work order details to $action the work order'),
         duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // Build enhanced syncing state
+  Widget _buildSyncingState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(32.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFF116587).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: CircularProgressIndicator(
+                color: const Color(0xFF116587),
+                strokeWidth: 3,
+              ),
+            ),
+            SizedBox(height: 24.h),
+            Text(
+              'Syncing Work Orders',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Please wait while we sync your latest work orders...',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Build enhanced loading state
+  Widget _buildLoadingState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(32.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFF116587).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: CircularProgressIndicator(
+                color: const Color(0xFF116587),
+                strokeWidth: 3,
+              ),
+            ),
+            SizedBox(height: 24.h),
+            Text(
+              'Loading Work Orders',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Please wait while we fetch your work orders...',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

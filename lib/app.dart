@@ -12,7 +12,6 @@ import 'core/router/app_router.dart';
 import 'core/services/error_boundary_service.dart';
 import 'core/theme/theme.dart';
 import 'core/widgets/error_boundary_widget.dart';
-import 'core/widgets/optimized_splash_screen.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
 GlobalKey<NavigatorState> GlobalNavigatorKey = GlobalKey<NavigatorState>();
@@ -96,100 +95,66 @@ class _MyAppState extends State<MyApp> {
         splitScreenMode: true,
         ensureScreenSize: true,
         builder: (context, child) {
-          return FutureBuilder<AuthBloc>(
-            future: getIt.getAsync<AuthBloc>(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                // Enhanced loading screen with branding
-                return MaterialApp(
-                  title: AppConfig.appName,
-                  debugShowCheckedModeBanner: AppConfig.isDebug,
-                  home: const OptimizedSplashScreen(
-                    message: 'Initializing app...',
-                  ),
-                );
-              }
+          // Get AuthBloc directly since it's now a singleton
+          final authBloc = getIt<AuthBloc>();
 
-              if (snapshot.hasError) {
-                return MaterialApp(
-                  title: AppConfig.appName,
-                  debugShowCheckedModeBanner: AppConfig.isDebug,
-                  home: Scaffold(
-                    body: DefaultErrorWidget(
-                      error: snapshot.error!,
-                      title: 'App Initialization Error',
-                      message:
-                          'Failed to initialize the application. Please restart the app.',
-                      onRetry: () {
-                        // Trigger app restart
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                );
-              }
+          // End startup timer
+          // _performanceService.endTimer('app_startup');
 
-              final authBloc = snapshot.data!;
-
-              // End startup timer
-              // _performanceService.endTimer('app_startup');
-
-              return BlocProvider.value(
-                value: authBloc,
-                child: MaterialApp.router(
-                  title: AppConfig.appName,
-                  debugShowCheckedModeBanner: AppConfig.isDebug,
-                  routerConfig: appRouter.config(),
-                  theme: AppTheme.lightTheme,
-                  darkTheme: AppTheme.darkTheme,
-                  themeMode: ThemeMode.light,
-                  builder: (context, child) {
-                    // Wrap entire app in error boundary and performance monitoring
-                    return ErrorBoundaryWidget(
-                      onError: (error, stackTrace) {
-                        _errorBoundaryService.reportError(
-                          error,
-                          stackTrace,
-                          context: 'App navigation',
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          child ?? const SizedBox.shrink(),
-                          // Add Alice inspector button for debug builds without tooltip
-                          if (AppConfig.isDebug && _alice != null)
-                            Positioned(
-                              bottom: 100.h,
-                              right: 16.w,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(28.r),
-                                elevation: 6,
-                                color: Colors.orange.withAlpha(200),
-                                child: InkWell(
+          return BlocProvider.value(
+            value: authBloc,
+            child: MaterialApp.router(
+              title: AppConfig.appName,
+              debugShowCheckedModeBanner: AppConfig.isDebug,
+              routerConfig: appRouter.config(),
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: ThemeMode.light,
+              builder: (context, child) {
+                // Wrap entire app in error boundary and performance monitoring
+                return ErrorBoundaryWidget(
+                  onError: (error, stackTrace) {
+                    _errorBoundaryService.reportError(
+                      error,
+                      stackTrace,
+                      context: 'App navigation',
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      child ?? const SizedBox.shrink(),
+                      // Add Alice inspector button for debug builds without tooltip
+                      if (AppConfig.isDebug && _alice != null)
+                        Positioned(
+                          bottom: 100.h,
+                          right: 16.w,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(28.r),
+                            elevation: 6,
+                            color: Colors.orange.withAlpha(200),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(28.r),
+                              onTap: _showAliceInspector,
+                              child: Container(
+                                width: 56.w,
+                                height: 56.w,
+                                decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(28.r),
-                                  onTap: _showAliceInspector,
-                                  child: Container(
-                                    width: 56.w,
-                                    height: 56.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(28.r),
-                                    ),
-                                    child: Icon(
-                                      Icons.network_check,
-                                      color: Colors.white,
-                                      size: 24.w,
-                                    ),
-                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.network_check,
+                                  color: Colors.white,
+                                  size: 24.w,
                                 ),
                               ),
                             ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

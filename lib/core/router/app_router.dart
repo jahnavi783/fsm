@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:fsm/app.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/auth/data/datasources/auth_local_datasource.dart';
 import 'app_router.gr.dart';
+import 'guards/auth_guard.dart';
 
 @AutoRouterConfig()
 @singleton
 class AppRouter extends RootStackRouter {
+  final AuthGuard authGuard;
+
+  AppRouter({required this.authGuard});
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalNavigatorKey;
@@ -32,6 +35,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: MainNavigationRoute.page,
           path: '/main',
+          guards: [authGuard],
           children: [
             AutoRoute(
               page: DashboardRoute.page,
@@ -57,55 +61,29 @@ class AppRouter extends RootStackRouter {
           ],
         ),
 
-        // Detail routes with deep linking support
+        // Detail routes with deep linking support (protected)
         AutoRoute(
           page: WorkOrderDetailsRoute.page,
           path: '/work-order/:workOrderId',
+          guards: [authGuard],
         ),
         AutoRoute(
           page: DocumentViewerRoute.page,
           path: '/document/:documentId',
+          guards: [authGuard],
         ),
         AutoRoute(
           page: PartDetailsRoute.page,
           path: '/part/:partId',
+          guards: [authGuard],
         ),
 
-        // Debug routes (only available in debug mode)
+        // Debug routes (publicly accessible in debug mode)
         AutoRoute(
           page: DeveloperOptionsRoute.page,
           path: '/developer-options',
         ),
       ];
-}
-
-@injectable
-class AuthGuard extends AutoRouteGuard {
-  final AuthLocalDataSource _localDataSource;
-
-  AuthGuard(this._localDataSource);
-
-  @override
-  Future<void> onNavigation(
-    NavigationResolver resolver,
-    StackRouter router,
-  ) async {
-    try {
-      final accessToken = await _localDataSource.getAccessToken();
-      final user = await _localDataSource.getUser();
-
-      if (accessToken != null && user != null) {
-        // User is authenticated, allow navigation
-        resolver.next();
-      } else {
-        // User is not authenticated, redirect to login
-        router.navigateNamed('/login');
-      }
-    } catch (e) {
-      // Error checking authentication, redirect to login
-      router.navigateNamed('/login');
-    }
-  }
 }
 
 // Navigation helpers and extensions
@@ -125,13 +103,14 @@ extension AppRouterExtension on StackRouter {
     return push(PartDetailsRoute(partId: partId));
   }
 
-  /// Navigate to main app after authentication
+  /// Navigate to main app after authentication (replaces current route)
+  /// This prevents back navigation to splash/login screens
   Future<void> navigateToMainApp() {
-    return navigateNamed('/main');
+    return replaceNamed('/main');
   }
 
   /// Navigate to login and clear stack
   Future<void> navigateToLogin() {
-    return navigateNamed('/login');
+    return replaceNamed('/login');
   }
 }

@@ -165,6 +165,7 @@ import '../network/auth_interceptor.dart' as _i908;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../router/app_router.dart' as _i81;
+import '../router/guards/auth_guard.dart' as _i530;
 import '../services/error_boundary_service.dart' as _i600;
 import '../services/lazy_loading_service.dart' as _i870;
 import '../services/location_service.dart' as _i669;
@@ -206,7 +207,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1066.MemoryManagementService());
     gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
     gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
-    gh.singleton<_i81.AppRouter>(() => _i81.AppRouter());
     gh.singleton<_i188.ErrorBloc>(
         () => _i188.ErrorBloc(gh<_i520.LoggingService>()));
     gh.factory<_i1046.ProfileLocalDataSource>(
@@ -242,8 +242,8 @@ extension GetItInjectableX on _i174.GetIt {
         _i641.PartsLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
     gh.factoryAsync<_i908.AuthInterceptor>(() async =>
         _i908.AuthInterceptor(await getAsync<_i992.AuthLocalDataSource>()));
-    gh.factoryAsync<_i81.AuthGuard>(() async =>
-        _i81.AuthGuard(await getAsync<_i992.AuthLocalDataSource>()));
+    gh.factoryAsync<_i530.AuthGuard>(() async =>
+        _i530.AuthGuard(await getAsync<_i992.AuthLocalDataSource>()));
     gh.singleton<_i256.ConnectivityBloc>(() => _i256.ConnectivityBloc(
           gh<_i932.NetworkInfo>(),
           gh<_i895.Connectivity>(),
@@ -256,6 +256,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i418.OpenAppSettingsUseCase>(),
           gh<_i165.IPermissionRepository>(),
         ));
+    gh.singletonAsync<_i81.AppRouter>(() async =>
+        _i81.AppRouter(authGuard: await getAsync<_i530.AuthGuard>()));
     gh.factory<_i669.LocationService>(
         () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
     gh.singletonAsync<_i361.Dio>(() async => networkModule.provideDio(
@@ -321,7 +323,7 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i932.NetworkInfo>(),
               gh<_i520.LoggingService>(),
             ));
-    gh.factoryAsync<_i331.AuthBloc>(() async => _i331.AuthBloc(
+    gh.singletonAsync<_i331.AuthBloc>(() async => _i331.AuthBloc(
           await getAsync<_i188.LoginUseCase>(),
           await getAsync<_i48.LogoutUseCase>(),
           await getAsync<_i831.CheckAuthUseCase>(),

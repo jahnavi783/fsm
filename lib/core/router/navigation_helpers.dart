@@ -42,14 +42,13 @@ class NavigationHelpers {
     );
   }
 
-  /// Navigate to main app after authentication
-  static Future<void> navigateToMainApp(BuildContext context) async {
-    await context.router.navigateNamed('/main');
+  // Navigate to main app after successful authentication
+  static Future<void> navigateToMain(BuildContext context) async {
+    await context.router.navigatePath('/main');
   }
 
-  /// Navigate to login and clear stack
   static Future<void> navigateToLogin(BuildContext context) async {
-    await context.router.navigateNamed('/login');
+    await context.router.navigatePath('/login');
   }
 
   /// Navigate to specific tab in main navigation

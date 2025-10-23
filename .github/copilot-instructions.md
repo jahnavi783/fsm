@@ -32,7 +32,7 @@ Code generation workflow (critical)
 
 Routing conventions
 - Declare routes in `AppRouter.routes`. Use guards via `@AutoRouteGuard()` (see `AuthGuard` in `core/router/app_router.dart`). Annotate pages with `@RoutePage()` and path params with `@PathParam`.
-- Navigate via `context.router.push(const DashboardRoute())`, `router.navigateNamed('/login')`.
+- Navigate via `context.router.push(const DashboardRoute())`, `router.navigatePath('/login')`.
 
 Networking conventions
 - All non-auth requests carry `Authorization: Bearer <token>`; 401 triggers refresh in `AuthInterceptor` using `AuthLocalDataSource`. Don’t duplicate token logic in features.

@@ -8,7 +8,7 @@ import '../../../domain/usecases/refresh_token_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
-@injectable
+@singleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase _loginUseCase;
   final LogoutUseCase _logoutUseCase;
@@ -32,9 +32,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
-    
+
     final result = await _checkAuthUseCase();
-    
+
     result.fold(
       (failure) => emit(AuthState.error(message: failure.userFriendlyMessage)),
       (user) {
@@ -52,12 +52,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
-    
+
     final result = await _loginUseCase(
       email: event.email,
       password: event.password,
     );
-    
+
     result.fold(
       (failure) => emit(AuthState.error(message: failure.userFriendlyMessage)),
       (user) => emit(AuthState.authenticated(user: user)),
@@ -69,9 +69,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
-    
+
     final result = await _logoutUseCase();
-    
+
     result.fold(
       (failure) => emit(AuthState.error(message: failure.userFriendlyMessage)),
       (_) => emit(const AuthState.unauthenticated()),
@@ -83,7 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     final result = await _refreshTokenUseCase();
-    
+
     result.fold(
       (failure) {
         // If refresh fails, user needs to log in again

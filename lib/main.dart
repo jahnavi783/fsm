@@ -133,11 +133,11 @@ Future<void> _initializeApp() async {
 /// Pre-warm critical services to improve startup performance
 Future<void> _prewarmServices() async {
   try {
-    // Pre-initialize router
-    getIt<AppRouter>();
+    // Pre-initialize router (async because it depends on AuthGuard)
+    await getIt.getAsync<AppRouter>();
 
-    // Pre-warm auth bloc (async)
-    unawaited(getIt.getAsync<AuthBloc>());
+    // Pre-warm auth bloc (now synchronous since it's a singleton)
+    getIt<AuthBloc>();
 
     developer.log('Services pre-warmed', name: 'ServicePrewarm');
   } catch (e) {

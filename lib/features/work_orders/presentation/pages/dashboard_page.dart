@@ -73,6 +73,7 @@ class _DashboardPageState extends State<DashboardPage>
               floating: false,
               pinned: true,
               elevation: 0,
+              automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: BoxDecoration(

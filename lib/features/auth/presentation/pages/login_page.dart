@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
             loading: () {},
             authenticated: (user) {
               if (user.isTechnician) {
-                context.router.navigateNamed('/main');
+                context.router.navigatePath('/main');
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

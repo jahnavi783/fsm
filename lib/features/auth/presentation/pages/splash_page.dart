@@ -77,7 +77,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           loading: () {},
           authenticated: (user) {
             if (user.isTechnician) {
-              context.router.navigateNamed('/main');
+              // Replace instead of push to remove splash from back stack
+              context.router.replaceNamed('/main');
             } else {
               // Show error for non-technician users
               ScaffoldMessenger.of(context).showSnackBar(
@@ -86,14 +87,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   backgroundColor: Colors.blue,
                 ),
               );
-              context.router.navigateNamed('/login');
+              context.router.replaceNamed('/login');
             }
           },
           unauthenticated: () {
-            context.router.navigateNamed('/login');
+            context.router.replaceNamed('/login');
           },
           error: (message) {
-            context.router.navigateNamed('/login');
+            context.router.replaceNamed('/login');
           },
         );
       },

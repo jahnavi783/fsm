@@ -27,7 +27,7 @@ extension NavigationExtensions on BuildContext {
 
   /// Navigate to main app
   Future<void> navigateToMainApp() {
-    return NavigationHelpers.navigateToMainApp(this);
+    return NavigationHelpers.navigateToMain(this);
   }
 
   /// Navigate to login
@@ -87,27 +87,27 @@ extension NavigationExtensions on BuildContext {
 extension StackRouterExtensions on StackRouter {
   /// Navigate to work order details with deep linking support
   Future<void> navigateToWorkOrderDeepLink(int workOrderId) {
-    return navigateNamed('/work-order/$workOrderId');
+    return navigatePath('/work-order/$workOrderId');
   }
 
   /// Navigate to document viewer with deep linking support
   Future<void> navigateToDocumentDeepLink(int documentId) {
-    return navigateNamed('/document/$documentId');
+    return navigatePath('/document/$documentId');
   }
 
   /// Navigate to part details with deep linking support
   Future<void> navigateToPartDeepLink(int partId) {
-    return navigateNamed('/part/$partId');
+    return navigatePath('/part/$partId');
   }
 
   /// Navigate to main app after authentication
   Future<void> navigateToMainAppDeepLink() {
-    return navigateNamed('/main');
+    return navigatePath('/main');
   }
 
   /// Navigate to login and clear stack
   Future<void> navigateToLoginDeepLink() {
-    return navigateNamed('/login');
+    return navigatePath('/login');
   }
 
   /// Navigate with custom transition

@@ -5,7 +5,7 @@ part 'document_dto.freezed.dart';
 part 'document_dto.g.dart';
 
 @freezed
-class DocumentDto with _$DocumentDto {
+abstract class DocumentDto with _$DocumentDto {
   const DocumentDto._();
 
   const factory DocumentDto({
@@ -85,7 +85,7 @@ class DocumentDto with _$DocumentDto {
 }
 
 @freezed
-class DocumentResponseDto with _$DocumentResponseDto {
+abstract class DocumentResponseDto with _$DocumentResponseDto {
   const factory DocumentResponseDto({
     @JsonKey(name: 'documents') required List<DocumentDto> documents,
     required int total,

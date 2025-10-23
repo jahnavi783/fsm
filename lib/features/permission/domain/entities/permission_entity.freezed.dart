@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,75 +9,50 @@ part of 'permission_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PermissionResult {
-  AppPermission get permission => throw _privateConstructorUsedError;
-  AppPermissionStatus get status => throw _privateConstructorUsedError;
-  bool get openedSettings => throw _privateConstructorUsedError;
+  AppPermission get permission;
+  AppPermissionStatus get status;
+  bool get openedSettings;
 
-  @JsonKey(ignore: true)
-  $PermissionResultCopyWith<PermissionResult> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PermissionResultCopyWith<$Res> {
-  factory $PermissionResultCopyWith(
-          PermissionResult value, $Res Function(PermissionResult) then) =
-      _$PermissionResultCopyWithImpl<$Res, PermissionResult>;
-  @useResult
-  $Res call(
-      {AppPermission permission,
-      AppPermissionStatus status,
-      bool openedSettings});
-}
-
-/// @nodoc
-class _$PermissionResultCopyWithImpl<$Res, $Val extends PermissionResult>
-    implements $PermissionResultCopyWith<$Res> {
-  _$PermissionResultCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of PermissionResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $PermissionResultCopyWith<PermissionResult> get copyWith =>
+      _$PermissionResultCopyWithImpl<PermissionResult>(
+          this as PermissionResult, _$identity);
+
   @override
-  $Res call({
-    Object? permission = null,
-    Object? status = null,
-    Object? openedSettings = null,
-  }) {
-    return _then(_value.copyWith(
-      permission: null == permission
-          ? _value.permission
-          : permission // ignore: cast_nullable_to_non_nullable
-              as AppPermission,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as AppPermissionStatus,
-      openedSettings: null == openedSettings
-          ? _value.openedSettings
-          : openedSettings // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PermissionResult &&
+            (identical(other.permission, permission) ||
+                other.permission == permission) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.openedSettings, openedSettings) ||
+                other.openedSettings == openedSettings));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, permission, status, openedSettings);
+
+  @override
+  String toString() {
+    return 'PermissionResult(permission: $permission, status: $status, openedSettings: $openedSettings)';
   }
 }
 
 /// @nodoc
-abstract class _$$PermissionResultImplCopyWith<$Res>
-    implements $PermissionResultCopyWith<$Res> {
-  factory _$$PermissionResultImplCopyWith(_$PermissionResultImpl value,
-          $Res Function(_$PermissionResultImpl) then) =
-      __$$PermissionResultImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PermissionResultCopyWith<$Res> {
+  factory $PermissionResultCopyWith(
+          PermissionResult value, $Res Function(PermissionResult) _then) =
+      _$PermissionResultCopyWithImpl;
   @useResult
   $Res call(
       {AppPermission permission,
@@ -86,13 +61,15 @@ abstract class _$$PermissionResultImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PermissionResultImplCopyWithImpl<$Res>
-    extends _$PermissionResultCopyWithImpl<$Res, _$PermissionResultImpl>
-    implements _$$PermissionResultImplCopyWith<$Res> {
-  __$$PermissionResultImplCopyWithImpl(_$PermissionResultImpl _value,
-      $Res Function(_$PermissionResultImpl) _then)
-      : super(_value, _then);
+class _$PermissionResultCopyWithImpl<$Res>
+    implements $PermissionResultCopyWith<$Res> {
+  _$PermissionResultCopyWithImpl(this._self, this._then);
 
+  final PermissionResult _self;
+  final $Res Function(PermissionResult) _then;
+
+  /// Create a copy of PermissionResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -100,27 +77,190 @@ class __$$PermissionResultImplCopyWithImpl<$Res>
     Object? status = null,
     Object? openedSettings = null,
   }) {
-    return _then(_$PermissionResultImpl(
+    return _then(_self.copyWith(
       permission: null == permission
-          ? _value.permission
+          ? _self.permission
           : permission // ignore: cast_nullable_to_non_nullable
               as AppPermission,
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as AppPermissionStatus,
       openedSettings: null == openedSettings
-          ? _value.openedSettings
+          ? _self.openedSettings
           : openedSettings // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PermissionResult].
+extension PermissionResultPatterns on PermissionResult {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PermissionResult value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PermissionResult value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PermissionResult value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(AppPermission permission, AppPermissionStatus status,
+            bool openedSettings)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult() when $default != null:
+        return $default(_that.permission, _that.status, _that.openedSettings);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(AppPermission permission, AppPermissionStatus status,
+            bool openedSettings)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult():
+        return $default(_that.permission, _that.status, _that.openedSettings);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(AppPermission permission, AppPermissionStatus status,
+            bool openedSettings)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionResult() when $default != null:
+        return $default(_that.permission, _that.status, _that.openedSettings);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$PermissionResultImpl implements _PermissionResult {
-  const _$PermissionResultImpl(
+class _PermissionResult implements PermissionResult {
+  const _PermissionResult(
       {required this.permission,
       required this.status,
       this.openedSettings = false});
@@ -133,16 +273,19 @@ class _$PermissionResultImpl implements _PermissionResult {
   @JsonKey()
   final bool openedSettings;
 
+  /// Create a copy of PermissionResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PermissionResult(permission: $permission, status: $status, openedSettings: $openedSettings)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PermissionResultCopyWith<_PermissionResult> get copyWith =>
+      __$PermissionResultCopyWithImpl<_PermissionResult>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionResultImpl &&
+            other is _PermissionResult &&
             (identical(other.permission, permission) ||
                 other.permission == permission) &&
             (identical(other.status, status) || other.status == status) &&
@@ -154,117 +297,113 @@ class _$PermissionResultImpl implements _PermissionResult {
   int get hashCode =>
       Object.hash(runtimeType, permission, status, openedSettings);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PermissionResultImplCopyWith<_$PermissionResultImpl> get copyWith =>
-      __$$PermissionResultImplCopyWithImpl<_$PermissionResultImpl>(
-          this, _$identity);
-}
-
-abstract class _PermissionResult implements PermissionResult {
-  const factory _PermissionResult(
-      {required final AppPermission permission,
-      required final AppPermissionStatus status,
-      final bool openedSettings}) = _$PermissionResultImpl;
-
-  @override
-  AppPermission get permission;
-  @override
-  AppPermissionStatus get status;
-  @override
-  bool get openedSettings;
-  @override
-  @JsonKey(ignore: true)
-  _$$PermissionResultImplCopyWith<_$PermissionResultImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$MultiplePermissionResult {
-  Map<AppPermission, AppPermissionStatus> get results =>
-      throw _privateConstructorUsedError;
-  List<AppPermission> get grantedPermissions =>
-      throw _privateConstructorUsedError;
-  List<AppPermission> get deniedPermissions =>
-      throw _privateConstructorUsedError;
-  List<AppPermission> get permanentlyDeniedPermissions =>
-      throw _privateConstructorUsedError;
-  List<AppPermission> get restrictedPermissions =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $MultiplePermissionResultCopyWith<MultiplePermissionResult> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $MultiplePermissionResultCopyWith<$Res> {
-  factory $MultiplePermissionResultCopyWith(MultiplePermissionResult value,
-          $Res Function(MultiplePermissionResult) then) =
-      _$MultiplePermissionResultCopyWithImpl<$Res, MultiplePermissionResult>;
-  @useResult
-  $Res call(
-      {Map<AppPermission, AppPermissionStatus> results,
-      List<AppPermission> grantedPermissions,
-      List<AppPermission> deniedPermissions,
-      List<AppPermission> permanentlyDeniedPermissions,
-      List<AppPermission> restrictedPermissions});
-}
-
-/// @nodoc
-class _$MultiplePermissionResultCopyWithImpl<$Res,
-        $Val extends MultiplePermissionResult>
-    implements $MultiplePermissionResultCopyWith<$Res> {
-  _$MultiplePermissionResultCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? results = null,
-    Object? grantedPermissions = null,
-    Object? deniedPermissions = null,
-    Object? permanentlyDeniedPermissions = null,
-    Object? restrictedPermissions = null,
-  }) {
-    return _then(_value.copyWith(
-      results: null == results
-          ? _value.results
-          : results // ignore: cast_nullable_to_non_nullable
-              as Map<AppPermission, AppPermissionStatus>,
-      grantedPermissions: null == grantedPermissions
-          ? _value.grantedPermissions
-          : grantedPermissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
-      deniedPermissions: null == deniedPermissions
-          ? _value.deniedPermissions
-          : deniedPermissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
-      permanentlyDeniedPermissions: null == permanentlyDeniedPermissions
-          ? _value.permanentlyDeniedPermissions
-          : permanentlyDeniedPermissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
-      restrictedPermissions: null == restrictedPermissions
-          ? _value.restrictedPermissions
-          : restrictedPermissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
-    ) as $Val);
+  String toString() {
+    return 'PermissionResult(permission: $permission, status: $status, openedSettings: $openedSettings)';
   }
 }
 
 /// @nodoc
-abstract class _$$MultiplePermissionResultImplCopyWith<$Res>
-    implements $MultiplePermissionResultCopyWith<$Res> {
-  factory _$$MultiplePermissionResultImplCopyWith(
-          _$MultiplePermissionResultImpl value,
-          $Res Function(_$MultiplePermissionResultImpl) then) =
-      __$$MultiplePermissionResultImplCopyWithImpl<$Res>;
+abstract mixin class _$PermissionResultCopyWith<$Res>
+    implements $PermissionResultCopyWith<$Res> {
+  factory _$PermissionResultCopyWith(
+          _PermissionResult value, $Res Function(_PermissionResult) _then) =
+      __$PermissionResultCopyWithImpl;
   @override
+  @useResult
+  $Res call(
+      {AppPermission permission,
+      AppPermissionStatus status,
+      bool openedSettings});
+}
+
+/// @nodoc
+class __$PermissionResultCopyWithImpl<$Res>
+    implements _$PermissionResultCopyWith<$Res> {
+  __$PermissionResultCopyWithImpl(this._self, this._then);
+
+  final _PermissionResult _self;
+  final $Res Function(_PermissionResult) _then;
+
+  /// Create a copy of PermissionResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? permission = null,
+    Object? status = null,
+    Object? openedSettings = null,
+  }) {
+    return _then(_PermissionResult(
+      permission: null == permission
+          ? _self.permission
+          : permission // ignore: cast_nullable_to_non_nullable
+              as AppPermission,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as AppPermissionStatus,
+      openedSettings: null == openedSettings
+          ? _self.openedSettings
+          : openedSettings // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$MultiplePermissionResult {
+  Map<AppPermission, AppPermissionStatus> get results;
+  List<AppPermission> get grantedPermissions;
+  List<AppPermission> get deniedPermissions;
+  List<AppPermission> get permanentlyDeniedPermissions;
+  List<AppPermission> get restrictedPermissions;
+
+  /// Create a copy of MultiplePermissionResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $MultiplePermissionResultCopyWith<MultiplePermissionResult> get copyWith =>
+      _$MultiplePermissionResultCopyWithImpl<MultiplePermissionResult>(
+          this as MultiplePermissionResult, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is MultiplePermissionResult &&
+            const DeepCollectionEquality().equals(other.results, results) &&
+            const DeepCollectionEquality()
+                .equals(other.grantedPermissions, grantedPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.deniedPermissions, deniedPermissions) &&
+            const DeepCollectionEquality().equals(
+                other.permanentlyDeniedPermissions,
+                permanentlyDeniedPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.restrictedPermissions, restrictedPermissions));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(results),
+      const DeepCollectionEquality().hash(grantedPermissions),
+      const DeepCollectionEquality().hash(deniedPermissions),
+      const DeepCollectionEquality().hash(permanentlyDeniedPermissions),
+      const DeepCollectionEquality().hash(restrictedPermissions));
+
+  @override
+  String toString() {
+    return 'MultiplePermissionResult(results: $results, grantedPermissions: $grantedPermissions, deniedPermissions: $deniedPermissions, permanentlyDeniedPermissions: $permanentlyDeniedPermissions, restrictedPermissions: $restrictedPermissions)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $MultiplePermissionResultCopyWith<$Res> {
+  factory $MultiplePermissionResultCopyWith(MultiplePermissionResult value,
+          $Res Function(MultiplePermissionResult) _then) =
+      _$MultiplePermissionResultCopyWithImpl;
   @useResult
   $Res call(
       {Map<AppPermission, AppPermissionStatus> results,
@@ -275,15 +414,15 @@ abstract class _$$MultiplePermissionResultImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$MultiplePermissionResultImplCopyWithImpl<$Res>
-    extends _$MultiplePermissionResultCopyWithImpl<$Res,
-        _$MultiplePermissionResultImpl>
-    implements _$$MultiplePermissionResultImplCopyWith<$Res> {
-  __$$MultiplePermissionResultImplCopyWithImpl(
-      _$MultiplePermissionResultImpl _value,
-      $Res Function(_$MultiplePermissionResultImpl) _then)
-      : super(_value, _then);
+class _$MultiplePermissionResultCopyWithImpl<$Res>
+    implements $MultiplePermissionResultCopyWith<$Res> {
+  _$MultiplePermissionResultCopyWithImpl(this._self, this._then);
 
+  final MultiplePermissionResult _self;
+  final $Res Function(MultiplePermissionResult) _then;
+
+  /// Create a copy of MultiplePermissionResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -293,35 +432,225 @@ class __$$MultiplePermissionResultImplCopyWithImpl<$Res>
     Object? permanentlyDeniedPermissions = null,
     Object? restrictedPermissions = null,
   }) {
-    return _then(_$MultiplePermissionResultImpl(
+    return _then(_self.copyWith(
       results: null == results
-          ? _value._results
+          ? _self.results
           : results // ignore: cast_nullable_to_non_nullable
               as Map<AppPermission, AppPermissionStatus>,
       grantedPermissions: null == grantedPermissions
-          ? _value._grantedPermissions
+          ? _self.grantedPermissions
           : grantedPermissions // ignore: cast_nullable_to_non_nullable
               as List<AppPermission>,
       deniedPermissions: null == deniedPermissions
-          ? _value._deniedPermissions
+          ? _self.deniedPermissions
           : deniedPermissions // ignore: cast_nullable_to_non_nullable
               as List<AppPermission>,
       permanentlyDeniedPermissions: null == permanentlyDeniedPermissions
-          ? _value._permanentlyDeniedPermissions
+          ? _self.permanentlyDeniedPermissions
           : permanentlyDeniedPermissions // ignore: cast_nullable_to_non_nullable
               as List<AppPermission>,
       restrictedPermissions: null == restrictedPermissions
-          ? _value._restrictedPermissions
+          ? _self.restrictedPermissions
           : restrictedPermissions // ignore: cast_nullable_to_non_nullable
               as List<AppPermission>,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [MultiplePermissionResult].
+extension MultiplePermissionResultPatterns on MultiplePermissionResult {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_MultiplePermissionResult value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_MultiplePermissionResult value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_MultiplePermissionResult value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            Map<AppPermission, AppPermissionStatus> results,
+            List<AppPermission> grantedPermissions,
+            List<AppPermission> deniedPermissions,
+            List<AppPermission> permanentlyDeniedPermissions,
+            List<AppPermission> restrictedPermissions)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult() when $default != null:
+        return $default(
+            _that.results,
+            _that.grantedPermissions,
+            _that.deniedPermissions,
+            _that.permanentlyDeniedPermissions,
+            _that.restrictedPermissions);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            Map<AppPermission, AppPermissionStatus> results,
+            List<AppPermission> grantedPermissions,
+            List<AppPermission> deniedPermissions,
+            List<AppPermission> permanentlyDeniedPermissions,
+            List<AppPermission> restrictedPermissions)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult():
+        return $default(
+            _that.results,
+            _that.grantedPermissions,
+            _that.deniedPermissions,
+            _that.permanentlyDeniedPermissions,
+            _that.restrictedPermissions);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            Map<AppPermission, AppPermissionStatus> results,
+            List<AppPermission> grantedPermissions,
+            List<AppPermission> deniedPermissions,
+            List<AppPermission> permanentlyDeniedPermissions,
+            List<AppPermission> restrictedPermissions)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MultiplePermissionResult() when $default != null:
+        return $default(
+            _that.results,
+            _that.grantedPermissions,
+            _that.deniedPermissions,
+            _that.permanentlyDeniedPermissions,
+            _that.restrictedPermissions);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$MultiplePermissionResultImpl extends _MultiplePermissionResult {
-  const _$MultiplePermissionResultImpl(
+class _MultiplePermissionResult extends MultiplePermissionResult {
+  const _MultiplePermissionResult(
       {required final Map<AppPermission, AppPermissionStatus> results,
       final List<AppPermission> grantedPermissions = const [],
       final List<AppPermission> deniedPermissions = const [],
@@ -382,16 +711,20 @@ class _$MultiplePermissionResultImpl extends _MultiplePermissionResult {
     return EqualUnmodifiableListView(_restrictedPermissions);
   }
 
+  /// Create a copy of MultiplePermissionResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'MultiplePermissionResult(results: $results, grantedPermissions: $grantedPermissions, deniedPermissions: $deniedPermissions, permanentlyDeniedPermissions: $permanentlyDeniedPermissions, restrictedPermissions: $restrictedPermissions)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$MultiplePermissionResultCopyWith<_MultiplePermissionResult> get copyWith =>
+      __$MultiplePermissionResultCopyWithImpl<_MultiplePermissionResult>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MultiplePermissionResultImpl &&
+            other is _MultiplePermissionResult &&
             const DeepCollectionEquality().equals(other._results, _results) &&
             const DeepCollectionEquality()
                 .equals(other._grantedPermissions, _grantedPermissions) &&
@@ -413,148 +746,140 @@ class _$MultiplePermissionResultImpl extends _MultiplePermissionResult {
       const DeepCollectionEquality().hash(_permanentlyDeniedPermissions),
       const DeepCollectionEquality().hash(_restrictedPermissions));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$MultiplePermissionResultImplCopyWith<_$MultiplePermissionResultImpl>
-      get copyWith => __$$MultiplePermissionResultImplCopyWithImpl<
-          _$MultiplePermissionResultImpl>(this, _$identity);
-}
-
-abstract class _MultiplePermissionResult extends MultiplePermissionResult {
-  const factory _MultiplePermissionResult(
-          {required final Map<AppPermission, AppPermissionStatus> results,
-          final List<AppPermission> grantedPermissions,
-          final List<AppPermission> deniedPermissions,
-          final List<AppPermission> permanentlyDeniedPermissions,
-          final List<AppPermission> restrictedPermissions}) =
-      _$MultiplePermissionResultImpl;
-  const _MultiplePermissionResult._() : super._();
-
-  @override
-  Map<AppPermission, AppPermissionStatus> get results;
-  @override
-  List<AppPermission> get grantedPermissions;
-  @override
-  List<AppPermission> get deniedPermissions;
-  @override
-  List<AppPermission> get permanentlyDeniedPermissions;
-  @override
-  List<AppPermission> get restrictedPermissions;
-  @override
-  @JsonKey(ignore: true)
-  _$$MultiplePermissionResultImplCopyWith<_$MultiplePermissionResultImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$PermissionRequestConfig {
-  AppPermission get permission => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get rationale => throw _privateConstructorUsedError;
-  String get positiveButtonText => throw _privateConstructorUsedError;
-  String get negativeButtonText => throw _privateConstructorUsedError;
-  bool get showRationale => throw _privateConstructorUsedError;
-  bool get openSettingsOnDenied => throw _privateConstructorUsedError;
-  bool get showInAppSettings => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $PermissionRequestConfigCopyWith<PermissionRequestConfig> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PermissionRequestConfigCopyWith<$Res> {
-  factory $PermissionRequestConfigCopyWith(PermissionRequestConfig value,
-          $Res Function(PermissionRequestConfig) then) =
-      _$PermissionRequestConfigCopyWithImpl<$Res, PermissionRequestConfig>;
-  @useResult
-  $Res call(
-      {AppPermission permission,
-      String title,
-      String description,
-      String rationale,
-      String positiveButtonText,
-      String negativeButtonText,
-      bool showRationale,
-      bool openSettingsOnDenied,
-      bool showInAppSettings});
-}
-
-/// @nodoc
-class _$PermissionRequestConfigCopyWithImpl<$Res,
-        $Val extends PermissionRequestConfig>
-    implements $PermissionRequestConfigCopyWith<$Res> {
-  _$PermissionRequestConfigCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? permission = null,
-    Object? title = null,
-    Object? description = null,
-    Object? rationale = null,
-    Object? positiveButtonText = null,
-    Object? negativeButtonText = null,
-    Object? showRationale = null,
-    Object? openSettingsOnDenied = null,
-    Object? showInAppSettings = null,
-  }) {
-    return _then(_value.copyWith(
-      permission: null == permission
-          ? _value.permission
-          : permission // ignore: cast_nullable_to_non_nullable
-              as AppPermission,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      rationale: null == rationale
-          ? _value.rationale
-          : rationale // ignore: cast_nullable_to_non_nullable
-              as String,
-      positiveButtonText: null == positiveButtonText
-          ? _value.positiveButtonText
-          : positiveButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-      negativeButtonText: null == negativeButtonText
-          ? _value.negativeButtonText
-          : negativeButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-      showRationale: null == showRationale
-          ? _value.showRationale
-          : showRationale // ignore: cast_nullable_to_non_nullable
-              as bool,
-      openSettingsOnDenied: null == openSettingsOnDenied
-          ? _value.openSettingsOnDenied
-          : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
-              as bool,
-      showInAppSettings: null == showInAppSettings
-          ? _value.showInAppSettings
-          : showInAppSettings // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+  String toString() {
+    return 'MultiplePermissionResult(results: $results, grantedPermissions: $grantedPermissions, deniedPermissions: $deniedPermissions, permanentlyDeniedPermissions: $permanentlyDeniedPermissions, restrictedPermissions: $restrictedPermissions)';
   }
 }
 
 /// @nodoc
-abstract class _$$PermissionRequestConfigImplCopyWith<$Res>
-    implements $PermissionRequestConfigCopyWith<$Res> {
-  factory _$$PermissionRequestConfigImplCopyWith(
-          _$PermissionRequestConfigImpl value,
-          $Res Function(_$PermissionRequestConfigImpl) then) =
-      __$$PermissionRequestConfigImplCopyWithImpl<$Res>;
+abstract mixin class _$MultiplePermissionResultCopyWith<$Res>
+    implements $MultiplePermissionResultCopyWith<$Res> {
+  factory _$MultiplePermissionResultCopyWith(_MultiplePermissionResult value,
+          $Res Function(_MultiplePermissionResult) _then) =
+      __$MultiplePermissionResultCopyWithImpl;
   @override
+  @useResult
+  $Res call(
+      {Map<AppPermission, AppPermissionStatus> results,
+      List<AppPermission> grantedPermissions,
+      List<AppPermission> deniedPermissions,
+      List<AppPermission> permanentlyDeniedPermissions,
+      List<AppPermission> restrictedPermissions});
+}
+
+/// @nodoc
+class __$MultiplePermissionResultCopyWithImpl<$Res>
+    implements _$MultiplePermissionResultCopyWith<$Res> {
+  __$MultiplePermissionResultCopyWithImpl(this._self, this._then);
+
+  final _MultiplePermissionResult _self;
+  final $Res Function(_MultiplePermissionResult) _then;
+
+  /// Create a copy of MultiplePermissionResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? results = null,
+    Object? grantedPermissions = null,
+    Object? deniedPermissions = null,
+    Object? permanentlyDeniedPermissions = null,
+    Object? restrictedPermissions = null,
+  }) {
+    return _then(_MultiplePermissionResult(
+      results: null == results
+          ? _self._results
+          : results // ignore: cast_nullable_to_non_nullable
+              as Map<AppPermission, AppPermissionStatus>,
+      grantedPermissions: null == grantedPermissions
+          ? _self._grantedPermissions
+          : grantedPermissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+      deniedPermissions: null == deniedPermissions
+          ? _self._deniedPermissions
+          : deniedPermissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+      permanentlyDeniedPermissions: null == permanentlyDeniedPermissions
+          ? _self._permanentlyDeniedPermissions
+          : permanentlyDeniedPermissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+      restrictedPermissions: null == restrictedPermissions
+          ? _self._restrictedPermissions
+          : restrictedPermissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$PermissionRequestConfig {
+  AppPermission get permission;
+  String get title;
+  String get description;
+  String get rationale;
+  String get positiveButtonText;
+  String get negativeButtonText;
+  bool get showRationale;
+  bool get openSettingsOnDenied;
+  bool get showInAppSettings;
+
+  /// Create a copy of PermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $PermissionRequestConfigCopyWith<PermissionRequestConfig> get copyWith =>
+      _$PermissionRequestConfigCopyWithImpl<PermissionRequestConfig>(
+          this as PermissionRequestConfig, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PermissionRequestConfig &&
+            (identical(other.permission, permission) ||
+                other.permission == permission) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.rationale, rationale) ||
+                other.rationale == rationale) &&
+            (identical(other.positiveButtonText, positiveButtonText) ||
+                other.positiveButtonText == positiveButtonText) &&
+            (identical(other.negativeButtonText, negativeButtonText) ||
+                other.negativeButtonText == negativeButtonText) &&
+            (identical(other.showRationale, showRationale) ||
+                other.showRationale == showRationale) &&
+            (identical(other.openSettingsOnDenied, openSettingsOnDenied) ||
+                other.openSettingsOnDenied == openSettingsOnDenied) &&
+            (identical(other.showInAppSettings, showInAppSettings) ||
+                other.showInAppSettings == showInAppSettings));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      permission,
+      title,
+      description,
+      rationale,
+      positiveButtonText,
+      negativeButtonText,
+      showRationale,
+      openSettingsOnDenied,
+      showInAppSettings);
+
+  @override
+  String toString() {
+    return 'PermissionRequestConfig(permission: $permission, title: $title, description: $description, rationale: $rationale, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, showInAppSettings: $showInAppSettings)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $PermissionRequestConfigCopyWith<$Res> {
+  factory $PermissionRequestConfigCopyWith(PermissionRequestConfig value,
+          $Res Function(PermissionRequestConfig) _then) =
+      _$PermissionRequestConfigCopyWithImpl;
   @useResult
   $Res call(
       {AppPermission permission,
@@ -569,15 +894,15 @@ abstract class _$$PermissionRequestConfigImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PermissionRequestConfigImplCopyWithImpl<$Res>
-    extends _$PermissionRequestConfigCopyWithImpl<$Res,
-        _$PermissionRequestConfigImpl>
-    implements _$$PermissionRequestConfigImplCopyWith<$Res> {
-  __$$PermissionRequestConfigImplCopyWithImpl(
-      _$PermissionRequestConfigImpl _value,
-      $Res Function(_$PermissionRequestConfigImpl) _then)
-      : super(_value, _then);
+class _$PermissionRequestConfigCopyWithImpl<$Res>
+    implements $PermissionRequestConfigCopyWith<$Res> {
+  _$PermissionRequestConfigCopyWithImpl(this._self, this._then);
 
+  final PermissionRequestConfig _self;
+  final $Res Function(PermissionRequestConfig) _then;
+
+  /// Create a copy of PermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -591,51 +916,265 @@ class __$$PermissionRequestConfigImplCopyWithImpl<$Res>
     Object? openSettingsOnDenied = null,
     Object? showInAppSettings = null,
   }) {
-    return _then(_$PermissionRequestConfigImpl(
+    return _then(_self.copyWith(
       permission: null == permission
-          ? _value.permission
+          ? _self.permission
           : permission // ignore: cast_nullable_to_non_nullable
               as AppPermission,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
       rationale: null == rationale
-          ? _value.rationale
+          ? _self.rationale
           : rationale // ignore: cast_nullable_to_non_nullable
               as String,
       positiveButtonText: null == positiveButtonText
-          ? _value.positiveButtonText
+          ? _self.positiveButtonText
           : positiveButtonText // ignore: cast_nullable_to_non_nullable
               as String,
       negativeButtonText: null == negativeButtonText
-          ? _value.negativeButtonText
+          ? _self.negativeButtonText
           : negativeButtonText // ignore: cast_nullable_to_non_nullable
               as String,
       showRationale: null == showRationale
-          ? _value.showRationale
+          ? _self.showRationale
           : showRationale // ignore: cast_nullable_to_non_nullable
               as bool,
       openSettingsOnDenied: null == openSettingsOnDenied
-          ? _value.openSettingsOnDenied
+          ? _self.openSettingsOnDenied
           : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
               as bool,
       showInAppSettings: null == showInAppSettings
-          ? _value.showInAppSettings
+          ? _self.showInAppSettings
           : showInAppSettings // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PermissionRequestConfig].
+extension PermissionRequestConfigPatterns on PermissionRequestConfig {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PermissionRequestConfig value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PermissionRequestConfig value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PermissionRequestConfig value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            AppPermission permission,
+            String title,
+            String description,
+            String rationale,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool showInAppSettings)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig() when $default != null:
+        return $default(
+            _that.permission,
+            _that.title,
+            _that.description,
+            _that.rationale,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.showInAppSettings);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            AppPermission permission,
+            String title,
+            String description,
+            String rationale,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool showInAppSettings)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig():
+        return $default(
+            _that.permission,
+            _that.title,
+            _that.description,
+            _that.rationale,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.showInAppSettings);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            AppPermission permission,
+            String title,
+            String description,
+            String rationale,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool showInAppSettings)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PermissionRequestConfig() when $default != null:
+        return $default(
+            _that.permission,
+            _that.title,
+            _that.description,
+            _that.rationale,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.showInAppSettings);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$PermissionRequestConfigImpl implements _PermissionRequestConfig {
-  const _$PermissionRequestConfigImpl(
+class _PermissionRequestConfig implements PermissionRequestConfig {
+  const _PermissionRequestConfig(
       {required this.permission,
       this.title = '',
       this.description = '',
@@ -673,16 +1212,20 @@ class _$PermissionRequestConfigImpl implements _PermissionRequestConfig {
   @JsonKey()
   final bool showInAppSettings;
 
+  /// Create a copy of PermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PermissionRequestConfig(permission: $permission, title: $title, description: $description, rationale: $rationale, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, showInAppSettings: $showInAppSettings)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PermissionRequestConfigCopyWith<_PermissionRequestConfig> get copyWith =>
+      __$PermissionRequestConfigCopyWithImpl<_PermissionRequestConfig>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionRequestConfigImpl &&
+            other is _PermissionRequestConfig &&
             (identical(other.permission, permission) ||
                 other.permission == permission) &&
             (identical(other.title, title) || other.title == title) &&
@@ -715,229 +1258,445 @@ class _$PermissionRequestConfigImpl implements _PermissionRequestConfig {
       openSettingsOnDenied,
       showInAppSettings);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PermissionRequestConfigImplCopyWith<_$PermissionRequestConfigImpl>
-      get copyWith => __$$PermissionRequestConfigImplCopyWithImpl<
-          _$PermissionRequestConfigImpl>(this, _$identity);
-}
-
-abstract class _PermissionRequestConfig implements PermissionRequestConfig {
-  const factory _PermissionRequestConfig(
-      {required final AppPermission permission,
-      final String title,
-      final String description,
-      final String rationale,
-      final String positiveButtonText,
-      final String negativeButtonText,
-      final bool showRationale,
-      final bool openSettingsOnDenied,
-      final bool showInAppSettings}) = _$PermissionRequestConfigImpl;
-
-  @override
-  AppPermission get permission;
-  @override
-  String get title;
-  @override
-  String get description;
-  @override
-  String get rationale;
-  @override
-  String get positiveButtonText;
-  @override
-  String get negativeButtonText;
-  @override
-  bool get showRationale;
-  @override
-  bool get openSettingsOnDenied;
-  @override
-  bool get showInAppSettings;
-  @override
-  @JsonKey(ignore: true)
-  _$$PermissionRequestConfigImplCopyWith<_$PermissionRequestConfigImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$BatchPermissionRequestConfig {
-  List<AppPermission> get permissions => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get positiveButtonText => throw _privateConstructorUsedError;
-  String get negativeButtonText => throw _privateConstructorUsedError;
-  bool get showRationale => throw _privateConstructorUsedError;
-  bool get openSettingsOnDenied => throw _privateConstructorUsedError;
-  bool get continueOnPartialGrant => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $BatchPermissionRequestConfigCopyWith<BatchPermissionRequestConfig>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BatchPermissionRequestConfigCopyWith<$Res> {
-  factory $BatchPermissionRequestConfigCopyWith(
-          BatchPermissionRequestConfig value,
-          $Res Function(BatchPermissionRequestConfig) then) =
-      _$BatchPermissionRequestConfigCopyWithImpl<$Res,
-          BatchPermissionRequestConfig>;
-  @useResult
-  $Res call(
-      {List<AppPermission> permissions,
-      String title,
-      String description,
-      String positiveButtonText,
-      String negativeButtonText,
-      bool showRationale,
-      bool openSettingsOnDenied,
-      bool continueOnPartialGrant});
-}
-
-/// @nodoc
-class _$BatchPermissionRequestConfigCopyWithImpl<$Res,
-        $Val extends BatchPermissionRequestConfig>
-    implements $BatchPermissionRequestConfigCopyWith<$Res> {
-  _$BatchPermissionRequestConfigCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? permissions = null,
-    Object? title = null,
-    Object? description = null,
-    Object? positiveButtonText = null,
-    Object? negativeButtonText = null,
-    Object? showRationale = null,
-    Object? openSettingsOnDenied = null,
-    Object? continueOnPartialGrant = null,
-  }) {
-    return _then(_value.copyWith(
-      permissions: null == permissions
-          ? _value.permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      positiveButtonText: null == positiveButtonText
-          ? _value.positiveButtonText
-          : positiveButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-      negativeButtonText: null == negativeButtonText
-          ? _value.negativeButtonText
-          : negativeButtonText // ignore: cast_nullable_to_non_nullable
-              as String,
-      showRationale: null == showRationale
-          ? _value.showRationale
-          : showRationale // ignore: cast_nullable_to_non_nullable
-              as bool,
-      openSettingsOnDenied: null == openSettingsOnDenied
-          ? _value.openSettingsOnDenied
-          : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
-              as bool,
-      continueOnPartialGrant: null == continueOnPartialGrant
-          ? _value.continueOnPartialGrant
-          : continueOnPartialGrant // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+  String toString() {
+    return 'PermissionRequestConfig(permission: $permission, title: $title, description: $description, rationale: $rationale, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, showInAppSettings: $showInAppSettings)';
   }
 }
 
 /// @nodoc
-abstract class _$$BatchPermissionRequestConfigImplCopyWith<$Res>
-    implements $BatchPermissionRequestConfigCopyWith<$Res> {
-  factory _$$BatchPermissionRequestConfigImplCopyWith(
-          _$BatchPermissionRequestConfigImpl value,
-          $Res Function(_$BatchPermissionRequestConfigImpl) then) =
-      __$$BatchPermissionRequestConfigImplCopyWithImpl<$Res>;
+abstract mixin class _$PermissionRequestConfigCopyWith<$Res>
+    implements $PermissionRequestConfigCopyWith<$Res> {
+  factory _$PermissionRequestConfigCopyWith(_PermissionRequestConfig value,
+          $Res Function(_PermissionRequestConfig) _then) =
+      __$PermissionRequestConfigCopyWithImpl;
   @override
   @useResult
   $Res call(
-      {List<AppPermission> permissions,
+      {AppPermission permission,
       String title,
       String description,
+      String rationale,
       String positiveButtonText,
       String negativeButtonText,
       bool showRationale,
       bool openSettingsOnDenied,
-      bool continueOnPartialGrant});
+      bool showInAppSettings});
 }
 
 /// @nodoc
-class __$$BatchPermissionRequestConfigImplCopyWithImpl<$Res>
-    extends _$BatchPermissionRequestConfigCopyWithImpl<$Res,
-        _$BatchPermissionRequestConfigImpl>
-    implements _$$BatchPermissionRequestConfigImplCopyWith<$Res> {
-  __$$BatchPermissionRequestConfigImplCopyWithImpl(
-      _$BatchPermissionRequestConfigImpl _value,
-      $Res Function(_$BatchPermissionRequestConfigImpl) _then)
-      : super(_value, _then);
+class __$PermissionRequestConfigCopyWithImpl<$Res>
+    implements _$PermissionRequestConfigCopyWith<$Res> {
+  __$PermissionRequestConfigCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _PermissionRequestConfig _self;
+  final $Res Function(_PermissionRequestConfig) _then;
+
+  /// Create a copy of PermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
-    Object? permissions = null,
+    Object? permission = null,
     Object? title = null,
     Object? description = null,
+    Object? rationale = null,
     Object? positiveButtonText = null,
     Object? negativeButtonText = null,
     Object? showRationale = null,
     Object? openSettingsOnDenied = null,
-    Object? continueOnPartialGrant = null,
+    Object? showInAppSettings = null,
   }) {
-    return _then(_$BatchPermissionRequestConfigImpl(
-      permissions: null == permissions
-          ? _value._permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<AppPermission>,
+    return _then(_PermissionRequestConfig(
+      permission: null == permission
+          ? _self.permission
+          : permission // ignore: cast_nullable_to_non_nullable
+              as AppPermission,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      rationale: null == rationale
+          ? _self.rationale
+          : rationale // ignore: cast_nullable_to_non_nullable
+              as String,
       positiveButtonText: null == positiveButtonText
-          ? _value.positiveButtonText
+          ? _self.positiveButtonText
           : positiveButtonText // ignore: cast_nullable_to_non_nullable
               as String,
       negativeButtonText: null == negativeButtonText
-          ? _value.negativeButtonText
+          ? _self.negativeButtonText
           : negativeButtonText // ignore: cast_nullable_to_non_nullable
               as String,
       showRationale: null == showRationale
-          ? _value.showRationale
+          ? _self.showRationale
           : showRationale // ignore: cast_nullable_to_non_nullable
               as bool,
       openSettingsOnDenied: null == openSettingsOnDenied
-          ? _value.openSettingsOnDenied
+          ? _self.openSettingsOnDenied
           : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
               as bool,
-      continueOnPartialGrant: null == continueOnPartialGrant
-          ? _value.continueOnPartialGrant
-          : continueOnPartialGrant // ignore: cast_nullable_to_non_nullable
+      showInAppSettings: null == showInAppSettings
+          ? _self.showInAppSettings
+          : showInAppSettings // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
 }
 
 /// @nodoc
+mixin _$BatchPermissionRequestConfig {
+  List<AppPermission> get permissions;
+  String get title;
+  String get description;
+  String get positiveButtonText;
+  String get negativeButtonText;
+  bool get showRationale;
+  bool get openSettingsOnDenied;
+  bool get continueOnPartialGrant;
 
-class _$BatchPermissionRequestConfigImpl
-    implements _BatchPermissionRequestConfig {
-  const _$BatchPermissionRequestConfigImpl(
+  /// Create a copy of BatchPermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $BatchPermissionRequestConfigCopyWith<BatchPermissionRequestConfig>
+      get copyWith => _$BatchPermissionRequestConfigCopyWithImpl<
+              BatchPermissionRequestConfig>(
+          this as BatchPermissionRequestConfig, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is BatchPermissionRequestConfig &&
+            const DeepCollectionEquality()
+                .equals(other.permissions, permissions) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.positiveButtonText, positiveButtonText) ||
+                other.positiveButtonText == positiveButtonText) &&
+            (identical(other.negativeButtonText, negativeButtonText) ||
+                other.negativeButtonText == negativeButtonText) &&
+            (identical(other.showRationale, showRationale) ||
+                other.showRationale == showRationale) &&
+            (identical(other.openSettingsOnDenied, openSettingsOnDenied) ||
+                other.openSettingsOnDenied == openSettingsOnDenied) &&
+            (identical(other.continueOnPartialGrant, continueOnPartialGrant) ||
+                other.continueOnPartialGrant == continueOnPartialGrant));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(permissions),
+      title,
+      description,
+      positiveButtonText,
+      negativeButtonText,
+      showRationale,
+      openSettingsOnDenied,
+      continueOnPartialGrant);
+
+  @override
+  String toString() {
+    return 'BatchPermissionRequestConfig(permissions: $permissions, title: $title, description: $description, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, continueOnPartialGrant: $continueOnPartialGrant)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $BatchPermissionRequestConfigCopyWith<$Res> {
+  factory $BatchPermissionRequestConfigCopyWith(
+          BatchPermissionRequestConfig value,
+          $Res Function(BatchPermissionRequestConfig) _then) =
+      _$BatchPermissionRequestConfigCopyWithImpl;
+  @useResult
+  $Res call(
+      {List<AppPermission> permissions,
+      String title,
+      String description,
+      String positiveButtonText,
+      String negativeButtonText,
+      bool showRationale,
+      bool openSettingsOnDenied,
+      bool continueOnPartialGrant});
+}
+
+/// @nodoc
+class _$BatchPermissionRequestConfigCopyWithImpl<$Res>
+    implements $BatchPermissionRequestConfigCopyWith<$Res> {
+  _$BatchPermissionRequestConfigCopyWithImpl(this._self, this._then);
+
+  final BatchPermissionRequestConfig _self;
+  final $Res Function(BatchPermissionRequestConfig) _then;
+
+  /// Create a copy of BatchPermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? permissions = null,
+    Object? title = null,
+    Object? description = null,
+    Object? positiveButtonText = null,
+    Object? negativeButtonText = null,
+    Object? showRationale = null,
+    Object? openSettingsOnDenied = null,
+    Object? continueOnPartialGrant = null,
+  }) {
+    return _then(_self.copyWith(
+      permissions: null == permissions
+          ? _self.permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      positiveButtonText: null == positiveButtonText
+          ? _self.positiveButtonText
+          : positiveButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
+      negativeButtonText: null == negativeButtonText
+          ? _self.negativeButtonText
+          : negativeButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
+      showRationale: null == showRationale
+          ? _self.showRationale
+          : showRationale // ignore: cast_nullable_to_non_nullable
+              as bool,
+      openSettingsOnDenied: null == openSettingsOnDenied
+          ? _self.openSettingsOnDenied
+          : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
+              as bool,
+      continueOnPartialGrant: null == continueOnPartialGrant
+          ? _self.continueOnPartialGrant
+          : continueOnPartialGrant // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [BatchPermissionRequestConfig].
+extension BatchPermissionRequestConfigPatterns on BatchPermissionRequestConfig {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_BatchPermissionRequestConfig value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_BatchPermissionRequestConfig value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_BatchPermissionRequestConfig value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            List<AppPermission> permissions,
+            String title,
+            String description,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool continueOnPartialGrant)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig() when $default != null:
+        return $default(
+            _that.permissions,
+            _that.title,
+            _that.description,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.continueOnPartialGrant);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            List<AppPermission> permissions,
+            String title,
+            String description,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool continueOnPartialGrant)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig():
+        return $default(
+            _that.permissions,
+            _that.title,
+            _that.description,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.continueOnPartialGrant);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            List<AppPermission> permissions,
+            String title,
+            String description,
+            String positiveButtonText,
+            String negativeButtonText,
+            bool showRationale,
+            bool openSettingsOnDenied,
+            bool continueOnPartialGrant)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _BatchPermissionRequestConfig() when $default != null:
+        return $default(
+            _that.permissions,
+            _that.title,
+            _that.description,
+            _that.positiveButtonText,
+            _that.negativeButtonText,
+            _that.showRationale,
+            _that.openSettingsOnDenied,
+            _that.continueOnPartialGrant);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _BatchPermissionRequestConfig implements BatchPermissionRequestConfig {
+  const _BatchPermissionRequestConfig(
       {required final List<AppPermission> permissions,
       this.title = 'Permissions Required',
       this.description =
@@ -979,16 +1738,20 @@ class _$BatchPermissionRequestConfigImpl
   @JsonKey()
   final bool continueOnPartialGrant;
 
+  /// Create a copy of BatchPermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'BatchPermissionRequestConfig(permissions: $permissions, title: $title, description: $description, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, continueOnPartialGrant: $continueOnPartialGrant)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BatchPermissionRequestConfigCopyWith<_BatchPermissionRequestConfig>
+      get copyWith => __$BatchPermissionRequestConfigCopyWithImpl<
+          _BatchPermissionRequestConfig>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BatchPermissionRequestConfigImpl &&
+            other is _BatchPermissionRequestConfig &&
             const DeepCollectionEquality()
                 .equals(other._permissions, _permissions) &&
             (identical(other.title, title) || other.title == title) &&
@@ -1018,46 +1781,89 @@ class _$BatchPermissionRequestConfigImpl
       openSettingsOnDenied,
       continueOnPartialGrant);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'BatchPermissionRequestConfig(permissions: $permissions, title: $title, description: $description, positiveButtonText: $positiveButtonText, negativeButtonText: $negativeButtonText, showRationale: $showRationale, openSettingsOnDenied: $openSettingsOnDenied, continueOnPartialGrant: $continueOnPartialGrant)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$BatchPermissionRequestConfigCopyWith<$Res>
+    implements $BatchPermissionRequestConfigCopyWith<$Res> {
+  factory _$BatchPermissionRequestConfigCopyWith(
+          _BatchPermissionRequestConfig value,
+          $Res Function(_BatchPermissionRequestConfig) _then) =
+      __$BatchPermissionRequestConfigCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {List<AppPermission> permissions,
+      String title,
+      String description,
+      String positiveButtonText,
+      String negativeButtonText,
+      bool showRationale,
+      bool openSettingsOnDenied,
+      bool continueOnPartialGrant});
+}
+
+/// @nodoc
+class __$BatchPermissionRequestConfigCopyWithImpl<$Res>
+    implements _$BatchPermissionRequestConfigCopyWith<$Res> {
+  __$BatchPermissionRequestConfigCopyWithImpl(this._self, this._then);
+
+  final _BatchPermissionRequestConfig _self;
+  final $Res Function(_BatchPermissionRequestConfig) _then;
+
+  /// Create a copy of BatchPermissionRequestConfig
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$BatchPermissionRequestConfigImplCopyWith<
-          _$BatchPermissionRequestConfigImpl>
-      get copyWith => __$$BatchPermissionRequestConfigImplCopyWithImpl<
-          _$BatchPermissionRequestConfigImpl>(this, _$identity);
+  $Res call({
+    Object? permissions = null,
+    Object? title = null,
+    Object? description = null,
+    Object? positiveButtonText = null,
+    Object? negativeButtonText = null,
+    Object? showRationale = null,
+    Object? openSettingsOnDenied = null,
+    Object? continueOnPartialGrant = null,
+  }) {
+    return _then(_BatchPermissionRequestConfig(
+      permissions: null == permissions
+          ? _self._permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<AppPermission>,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      positiveButtonText: null == positiveButtonText
+          ? _self.positiveButtonText
+          : positiveButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
+      negativeButtonText: null == negativeButtonText
+          ? _self.negativeButtonText
+          : negativeButtonText // ignore: cast_nullable_to_non_nullable
+              as String,
+      showRationale: null == showRationale
+          ? _self.showRationale
+          : showRationale // ignore: cast_nullable_to_non_nullable
+              as bool,
+      openSettingsOnDenied: null == openSettingsOnDenied
+          ? _self.openSettingsOnDenied
+          : openSettingsOnDenied // ignore: cast_nullable_to_non_nullable
+              as bool,
+      continueOnPartialGrant: null == continueOnPartialGrant
+          ? _self.continueOnPartialGrant
+          : continueOnPartialGrant // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
-abstract class _BatchPermissionRequestConfig
-    implements BatchPermissionRequestConfig {
-  const factory _BatchPermissionRequestConfig(
-      {required final List<AppPermission> permissions,
-      final String title,
-      final String description,
-      final String positiveButtonText,
-      final String negativeButtonText,
-      final bool showRationale,
-      final bool openSettingsOnDenied,
-      final bool continueOnPartialGrant}) = _$BatchPermissionRequestConfigImpl;
-
-  @override
-  List<AppPermission> get permissions;
-  @override
-  String get title;
-  @override
-  String get description;
-  @override
-  String get positiveButtonText;
-  @override
-  String get negativeButtonText;
-  @override
-  bool get showRationale;
-  @override
-  bool get openSettingsOnDenied;
-  @override
-  bool get continueOnPartialGrant;
-  @override
-  @JsonKey(ignore: true)
-  _$$BatchPermissionRequestConfigImplCopyWith<
-          _$BatchPermissionRequestConfigImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

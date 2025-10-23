@@ -5,7 +5,7 @@ import 'documents_event.dart';
 part 'documents_state.freezed.dart';
 
 @freezed
-class DocumentsState with _$DocumentsState {
+abstract class DocumentsState with _$DocumentsState {
   const DocumentsState._();
   
   const factory DocumentsState({

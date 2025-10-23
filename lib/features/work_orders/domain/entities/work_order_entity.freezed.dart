@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,52 +9,143 @@ part of 'work_order_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WorkOrderEntity {
-  int get id => throw _privateConstructorUsedError;
-  String get woNumber => throw _privateConstructorUsedError;
-  int get srId => throw _privateConstructorUsedError;
-  String get summary => throw _privateConstructorUsedError;
-  String get problemDescription => throw _privateConstructorUsedError;
-  WorkOrderPriority get priority => throw _privateConstructorUsedError;
-  DateTime get visitDate => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
-  WorkOrderStatus get status => throw _privateConstructorUsedError;
-  int get durationDays => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError;
-  DateTime? get startedAt => throw _privateConstructorUsedError;
-  DateTime? get resumedAt => throw _privateConstructorUsedError;
-  DateTime? get completedAt => throw _privateConstructorUsedError;
-  String? get pauseLogs => throw _privateConstructorUsedError;
-  String? get workLog => throw _privateConstructorUsedError;
-  List<PartUsedEntity> get partsUsed => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
-  CustomerEntity? get customer => throw _privateConstructorUsedError;
-  LocationEntity? get locationDetails => throw _privateConstructorUsedError;
-  ServiceRequestEntity? get serviceRequest =>
-      throw _privateConstructorUsedError;
-  List<WorkLogEntity> get workLogs => throw _privateConstructorUsedError;
-  List<String> get requiredSkills => throw _privateConstructorUsedError;
-  List<PartEntity> get requiredParts => throw _privateConstructorUsedError;
-  List<String> get attachments => throw _privateConstructorUsedError;
-  String? get completionNotes => throw _privateConstructorUsedError;
+  int get id;
+  String get woNumber;
+  int get srId;
+  String get summary;
+  String get problemDescription;
+  WorkOrderPriority get priority;
+  DateTime get visitDate;
+  String get location;
+  WorkOrderStatus get status;
+  int get durationDays;
+  DateTime get createdAt;
+  DateTime get updatedAt;
+  DateTime? get startedAt;
+  DateTime? get resumedAt;
+  DateTime? get completedAt;
+  String? get pauseLogs;
+  String? get workLog;
+  List<PartUsedEntity> get partsUsed;
+  List<String> get images;
+  CustomerEntity? get customer;
+  LocationEntity? get locationDetails;
+  ServiceRequestEntity? get serviceRequest;
+  List<WorkLogEntity> get workLogs;
+  List<String> get requiredSkills;
+  List<PartEntity> get requiredParts;
+  List<String> get attachments;
+  String? get completionNotes;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $WorkOrderEntityCopyWith<WorkOrderEntity> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$WorkOrderEntityCopyWithImpl<WorkOrderEntity>(
+          this as WorkOrderEntity, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is WorkOrderEntity &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.woNumber, woNumber) ||
+                other.woNumber == woNumber) &&
+            (identical(other.srId, srId) || other.srId == srId) &&
+            (identical(other.summary, summary) || other.summary == summary) &&
+            (identical(other.problemDescription, problemDescription) ||
+                other.problemDescription == problemDescription) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.visitDate, visitDate) ||
+                other.visitDate == visitDate) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.durationDays, durationDays) ||
+                other.durationDays == durationDays) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.startedAt, startedAt) ||
+                other.startedAt == startedAt) &&
+            (identical(other.resumedAt, resumedAt) ||
+                other.resumedAt == resumedAt) &&
+            (identical(other.completedAt, completedAt) ||
+                other.completedAt == completedAt) &&
+            (identical(other.pauseLogs, pauseLogs) ||
+                other.pauseLogs == pauseLogs) &&
+            (identical(other.workLog, workLog) || other.workLog == workLog) &&
+            const DeepCollectionEquality().equals(other.partsUsed, partsUsed) &&
+            const DeepCollectionEquality().equals(other.images, images) &&
+            (identical(other.customer, customer) ||
+                other.customer == customer) &&
+            (identical(other.locationDetails, locationDetails) ||
+                other.locationDetails == locationDetails) &&
+            (identical(other.serviceRequest, serviceRequest) ||
+                other.serviceRequest == serviceRequest) &&
+            const DeepCollectionEquality().equals(other.workLogs, workLogs) &&
+            const DeepCollectionEquality()
+                .equals(other.requiredSkills, requiredSkills) &&
+            const DeepCollectionEquality()
+                .equals(other.requiredParts, requiredParts) &&
+            const DeepCollectionEquality()
+                .equals(other.attachments, attachments) &&
+            (identical(other.completionNotes, completionNotes) ||
+                other.completionNotes == completionNotes));
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        woNumber,
+        srId,
+        summary,
+        problemDescription,
+        priority,
+        visitDate,
+        location,
+        status,
+        durationDays,
+        createdAt,
+        updatedAt,
+        startedAt,
+        resumedAt,
+        completedAt,
+        pauseLogs,
+        workLog,
+        const DeepCollectionEquality().hash(partsUsed),
+        const DeepCollectionEquality().hash(images),
+        customer,
+        locationDetails,
+        serviceRequest,
+        const DeepCollectionEquality().hash(workLogs),
+        const DeepCollectionEquality().hash(requiredSkills),
+        const DeepCollectionEquality().hash(requiredParts),
+        const DeepCollectionEquality().hash(attachments),
+        completionNotes
+      ]);
+
+  @override
+  String toString() {
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+  }
 }
 
 /// @nodoc
-abstract class $WorkOrderEntityCopyWith<$Res> {
+abstract mixin class $WorkOrderEntityCopyWith<$Res> {
   factory $WorkOrderEntityCopyWith(
-          WorkOrderEntity value, $Res Function(WorkOrderEntity) then) =
-      _$WorkOrderEntityCopyWithImpl<$Res, WorkOrderEntity>;
+          WorkOrderEntity value, $Res Function(WorkOrderEntity) _then) =
+      _$WorkOrderEntityCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -91,15 +182,15 @@ abstract class $WorkOrderEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WorkOrderEntityCopyWithImpl<$Res, $Val extends WorkOrderEntity>
+class _$WorkOrderEntityCopyWithImpl<$Res>
     implements $WorkOrderEntityCopyWith<$Res> {
-  _$WorkOrderEntityCopyWithImpl(this._value, this._then);
+  _$WorkOrderEntityCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final WorkOrderEntity _self;
+  final $Res Function(WorkOrderEntity) _then;
 
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,356 +222,487 @@ class _$WorkOrderEntityCopyWithImpl<$Res, $Val extends WorkOrderEntity>
     Object? attachments = null,
     Object? completionNotes = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       woNumber: null == woNumber
-          ? _value.woNumber
+          ? _self.woNumber
           : woNumber // ignore: cast_nullable_to_non_nullable
               as String,
       srId: null == srId
-          ? _value.srId
+          ? _self.srId
           : srId // ignore: cast_nullable_to_non_nullable
               as int,
       summary: null == summary
-          ? _value.summary
+          ? _self.summary
           : summary // ignore: cast_nullable_to_non_nullable
               as String,
       problemDescription: null == problemDescription
-          ? _value.problemDescription
+          ? _self.problemDescription
           : problemDescription // ignore: cast_nullable_to_non_nullable
               as String,
       priority: null == priority
-          ? _value.priority
+          ? _self.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as WorkOrderPriority,
       visitDate: null == visitDate
-          ? _value.visitDate
+          ? _self.visitDate
           : visitDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
       location: null == location
-          ? _value.location
+          ? _self.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as WorkOrderStatus,
       durationDays: null == durationDays
-          ? _value.durationDays
+          ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
       createdAt: null == createdAt
-          ? _value.createdAt
+          ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       updatedAt: null == updatedAt
-          ? _value.updatedAt
+          ? _self.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       startedAt: freezed == startedAt
-          ? _value.startedAt
+          ? _self.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       resumedAt: freezed == resumedAt
-          ? _value.resumedAt
+          ? _self.resumedAt
           : resumedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       completedAt: freezed == completedAt
-          ? _value.completedAt
+          ? _self.completedAt
           : completedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       pauseLogs: freezed == pauseLogs
-          ? _value.pauseLogs
+          ? _self.pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
               as String?,
       workLog: freezed == workLog
-          ? _value.workLog
+          ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
               as String?,
       partsUsed: null == partsUsed
-          ? _value.partsUsed
+          ? _self.partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
               as List<PartUsedEntity>,
       images: null == images
-          ? _value.images
+          ? _self.images
           : images // ignore: cast_nullable_to_non_nullable
               as List<String>,
       customer: freezed == customer
-          ? _value.customer
+          ? _self.customer
           : customer // ignore: cast_nullable_to_non_nullable
               as CustomerEntity?,
       locationDetails: freezed == locationDetails
-          ? _value.locationDetails
+          ? _self.locationDetails
           : locationDetails // ignore: cast_nullable_to_non_nullable
               as LocationEntity?,
       serviceRequest: freezed == serviceRequest
-          ? _value.serviceRequest
+          ? _self.serviceRequest
           : serviceRequest // ignore: cast_nullable_to_non_nullable
               as ServiceRequestEntity?,
       workLogs: null == workLogs
-          ? _value.workLogs
+          ? _self.workLogs
           : workLogs // ignore: cast_nullable_to_non_nullable
               as List<WorkLogEntity>,
       requiredSkills: null == requiredSkills
-          ? _value.requiredSkills
+          ? _self.requiredSkills
           : requiredSkills // ignore: cast_nullable_to_non_nullable
               as List<String>,
       requiredParts: null == requiredParts
-          ? _value.requiredParts
+          ? _self.requiredParts
           : requiredParts // ignore: cast_nullable_to_non_nullable
               as List<PartEntity>,
       attachments: null == attachments
-          ? _value.attachments
+          ? _self.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
               as List<String>,
       completionNotes: freezed == completionNotes
-          ? _value.completionNotes
-          : completionNotes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $CustomerEntityCopyWith<$Res>? get customer {
-    if (_value.customer == null) {
-      return null;
-    }
-
-    return $CustomerEntityCopyWith<$Res>(_value.customer!, (value) {
-      return _then(_value.copyWith(customer: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $LocationEntityCopyWith<$Res>? get locationDetails {
-    if (_value.locationDetails == null) {
-      return null;
-    }
-
-    return $LocationEntityCopyWith<$Res>(_value.locationDetails!, (value) {
-      return _then(_value.copyWith(locationDetails: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ServiceRequestEntityCopyWith<$Res>? get serviceRequest {
-    if (_value.serviceRequest == null) {
-      return null;
-    }
-
-    return $ServiceRequestEntityCopyWith<$Res>(_value.serviceRequest!, (value) {
-      return _then(_value.copyWith(serviceRequest: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$WorkOrderEntityImplCopyWith<$Res>
-    implements $WorkOrderEntityCopyWith<$Res> {
-  factory _$$WorkOrderEntityImplCopyWith(_$WorkOrderEntityImpl value,
-          $Res Function(_$WorkOrderEntityImpl) then) =
-      __$$WorkOrderEntityImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {int id,
-      String woNumber,
-      int srId,
-      String summary,
-      String problemDescription,
-      WorkOrderPriority priority,
-      DateTime visitDate,
-      String location,
-      WorkOrderStatus status,
-      int durationDays,
-      DateTime createdAt,
-      DateTime updatedAt,
-      DateTime? startedAt,
-      DateTime? resumedAt,
-      DateTime? completedAt,
-      String? pauseLogs,
-      String? workLog,
-      List<PartUsedEntity> partsUsed,
-      List<String> images,
-      CustomerEntity? customer,
-      LocationEntity? locationDetails,
-      ServiceRequestEntity? serviceRequest,
-      List<WorkLogEntity> workLogs,
-      List<String> requiredSkills,
-      List<PartEntity> requiredParts,
-      List<String> attachments,
-      String? completionNotes});
-
-  @override
-  $CustomerEntityCopyWith<$Res>? get customer;
-  @override
-  $LocationEntityCopyWith<$Res>? get locationDetails;
-  @override
-  $ServiceRequestEntityCopyWith<$Res>? get serviceRequest;
-}
-
-/// @nodoc
-class __$$WorkOrderEntityImplCopyWithImpl<$Res>
-    extends _$WorkOrderEntityCopyWithImpl<$Res, _$WorkOrderEntityImpl>
-    implements _$$WorkOrderEntityImplCopyWith<$Res> {
-  __$$WorkOrderEntityImplCopyWithImpl(
-      _$WorkOrderEntityImpl _value, $Res Function(_$WorkOrderEntityImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? woNumber = null,
-    Object? srId = null,
-    Object? summary = null,
-    Object? problemDescription = null,
-    Object? priority = null,
-    Object? visitDate = null,
-    Object? location = null,
-    Object? status = null,
-    Object? durationDays = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
-    Object? startedAt = freezed,
-    Object? resumedAt = freezed,
-    Object? completedAt = freezed,
-    Object? pauseLogs = freezed,
-    Object? workLog = freezed,
-    Object? partsUsed = null,
-    Object? images = null,
-    Object? customer = freezed,
-    Object? locationDetails = freezed,
-    Object? serviceRequest = freezed,
-    Object? workLogs = null,
-    Object? requiredSkills = null,
-    Object? requiredParts = null,
-    Object? attachments = null,
-    Object? completionNotes = freezed,
-  }) {
-    return _then(_$WorkOrderEntityImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      woNumber: null == woNumber
-          ? _value.woNumber
-          : woNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      srId: null == srId
-          ? _value.srId
-          : srId // ignore: cast_nullable_to_non_nullable
-              as int,
-      summary: null == summary
-          ? _value.summary
-          : summary // ignore: cast_nullable_to_non_nullable
-              as String,
-      problemDescription: null == problemDescription
-          ? _value.problemDescription
-          : problemDescription // ignore: cast_nullable_to_non_nullable
-              as String,
-      priority: null == priority
-          ? _value.priority
-          : priority // ignore: cast_nullable_to_non_nullable
-              as WorkOrderPriority,
-      visitDate: null == visitDate
-          ? _value.visitDate
-          : visitDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as WorkOrderStatus,
-      durationDays: null == durationDays
-          ? _value.durationDays
-          : durationDays // ignore: cast_nullable_to_non_nullable
-              as int,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      startedAt: freezed == startedAt
-          ? _value.startedAt
-          : startedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      resumedAt: freezed == resumedAt
-          ? _value.resumedAt
-          : resumedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      completedAt: freezed == completedAt
-          ? _value.completedAt
-          : completedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      pauseLogs: freezed == pauseLogs
-          ? _value.pauseLogs
-          : pauseLogs // ignore: cast_nullable_to_non_nullable
-              as String?,
-      workLog: freezed == workLog
-          ? _value.workLog
-          : workLog // ignore: cast_nullable_to_non_nullable
-              as String?,
-      partsUsed: null == partsUsed
-          ? _value._partsUsed
-          : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartUsedEntity>,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      customer: freezed == customer
-          ? _value.customer
-          : customer // ignore: cast_nullable_to_non_nullable
-              as CustomerEntity?,
-      locationDetails: freezed == locationDetails
-          ? _value.locationDetails
-          : locationDetails // ignore: cast_nullable_to_non_nullable
-              as LocationEntity?,
-      serviceRequest: freezed == serviceRequest
-          ? _value.serviceRequest
-          : serviceRequest // ignore: cast_nullable_to_non_nullable
-              as ServiceRequestEntity?,
-      workLogs: null == workLogs
-          ? _value._workLogs
-          : workLogs // ignore: cast_nullable_to_non_nullable
-              as List<WorkLogEntity>,
-      requiredSkills: null == requiredSkills
-          ? _value._requiredSkills
-          : requiredSkills // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      requiredParts: null == requiredParts
-          ? _value._requiredParts
-          : requiredParts // ignore: cast_nullable_to_non_nullable
-              as List<PartEntity>,
-      attachments: null == attachments
-          ? _value._attachments
-          : attachments // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      completionNotes: freezed == completionNotes
-          ? _value.completionNotes
+          ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomerEntityCopyWith<$Res>? get customer {
+    if (_self.customer == null) {
+      return null;
+    }
+
+    return $CustomerEntityCopyWith<$Res>(_self.customer!, (value) {
+      return _then(_self.copyWith(customer: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LocationEntityCopyWith<$Res>? get locationDetails {
+    if (_self.locationDetails == null) {
+      return null;
+    }
+
+    return $LocationEntityCopyWith<$Res>(_self.locationDetails!, (value) {
+      return _then(_self.copyWith(locationDetails: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ServiceRequestEntityCopyWith<$Res>? get serviceRequest {
+    if (_self.serviceRequest == null) {
+      return null;
+    }
+
+    return $ServiceRequestEntityCopyWith<$Res>(_self.serviceRequest!, (value) {
+      return _then(_self.copyWith(serviceRequest: value));
+    });
+  }
+}
+
+/// Adds pattern-matching-related methods to [WorkOrderEntity].
+extension WorkOrderEntityPatterns on WorkOrderEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_WorkOrderEntity value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_WorkOrderEntity value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_WorkOrderEntity value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String woNumber,
+            int srId,
+            String summary,
+            String problemDescription,
+            WorkOrderPriority priority,
+            DateTime visitDate,
+            String location,
+            WorkOrderStatus status,
+            int durationDays,
+            DateTime createdAt,
+            DateTime updatedAt,
+            DateTime? startedAt,
+            DateTime? resumedAt,
+            DateTime? completedAt,
+            String? pauseLogs,
+            String? workLog,
+            List<PartUsedEntity> partsUsed,
+            List<String> images,
+            CustomerEntity? customer,
+            LocationEntity? locationDetails,
+            ServiceRequestEntity? serviceRequest,
+            List<WorkLogEntity> workLogs,
+            List<String> requiredSkills,
+            List<PartEntity> requiredParts,
+            List<String> attachments,
+            String? completionNotes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity() when $default != null:
+        return $default(
+            _that.id,
+            _that.woNumber,
+            _that.srId,
+            _that.summary,
+            _that.problemDescription,
+            _that.priority,
+            _that.visitDate,
+            _that.location,
+            _that.status,
+            _that.durationDays,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.startedAt,
+            _that.resumedAt,
+            _that.completedAt,
+            _that.pauseLogs,
+            _that.workLog,
+            _that.partsUsed,
+            _that.images,
+            _that.customer,
+            _that.locationDetails,
+            _that.serviceRequest,
+            _that.workLogs,
+            _that.requiredSkills,
+            _that.requiredParts,
+            _that.attachments,
+            _that.completionNotes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String woNumber,
+            int srId,
+            String summary,
+            String problemDescription,
+            WorkOrderPriority priority,
+            DateTime visitDate,
+            String location,
+            WorkOrderStatus status,
+            int durationDays,
+            DateTime createdAt,
+            DateTime updatedAt,
+            DateTime? startedAt,
+            DateTime? resumedAt,
+            DateTime? completedAt,
+            String? pauseLogs,
+            String? workLog,
+            List<PartUsedEntity> partsUsed,
+            List<String> images,
+            CustomerEntity? customer,
+            LocationEntity? locationDetails,
+            ServiceRequestEntity? serviceRequest,
+            List<WorkLogEntity> workLogs,
+            List<String> requiredSkills,
+            List<PartEntity> requiredParts,
+            List<String> attachments,
+            String? completionNotes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity():
+        return $default(
+            _that.id,
+            _that.woNumber,
+            _that.srId,
+            _that.summary,
+            _that.problemDescription,
+            _that.priority,
+            _that.visitDate,
+            _that.location,
+            _that.status,
+            _that.durationDays,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.startedAt,
+            _that.resumedAt,
+            _that.completedAt,
+            _that.pauseLogs,
+            _that.workLog,
+            _that.partsUsed,
+            _that.images,
+            _that.customer,
+            _that.locationDetails,
+            _that.serviceRequest,
+            _that.workLogs,
+            _that.requiredSkills,
+            _that.requiredParts,
+            _that.attachments,
+            _that.completionNotes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            String woNumber,
+            int srId,
+            String summary,
+            String problemDescription,
+            WorkOrderPriority priority,
+            DateTime visitDate,
+            String location,
+            WorkOrderStatus status,
+            int durationDays,
+            DateTime createdAt,
+            DateTime updatedAt,
+            DateTime? startedAt,
+            DateTime? resumedAt,
+            DateTime? completedAt,
+            String? pauseLogs,
+            String? workLog,
+            List<PartUsedEntity> partsUsed,
+            List<String> images,
+            CustomerEntity? customer,
+            LocationEntity? locationDetails,
+            ServiceRequestEntity? serviceRequest,
+            List<WorkLogEntity> workLogs,
+            List<String> requiredSkills,
+            List<PartEntity> requiredParts,
+            List<String> attachments,
+            String? completionNotes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _WorkOrderEntity() when $default != null:
+        return $default(
+            _that.id,
+            _that.woNumber,
+            _that.srId,
+            _that.summary,
+            _that.problemDescription,
+            _that.priority,
+            _that.visitDate,
+            _that.location,
+            _that.status,
+            _that.durationDays,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.startedAt,
+            _that.resumedAt,
+            _that.completedAt,
+            _that.pauseLogs,
+            _that.workLog,
+            _that.partsUsed,
+            _that.images,
+            _that.customer,
+            _that.locationDetails,
+            _that.serviceRequest,
+            _that.workLogs,
+            _that.requiredSkills,
+            _that.requiredParts,
+            _that.attachments,
+            _that.completionNotes);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 
-class _$WorkOrderEntityImpl extends _WorkOrderEntity {
-  const _$WorkOrderEntityImpl(
+class _WorkOrderEntity extends WorkOrderEntity {
+  const _WorkOrderEntity(
       {required this.id,
       required this.woNumber,
       required this.srId,
@@ -613,16 +835,19 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
   @override
   final String? completionNotes;
 
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$WorkOrderEntityCopyWith<_WorkOrderEntity> get copyWith =>
+      __$WorkOrderEntityCopyWithImpl<_WorkOrderEntity>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WorkOrderEntityImpl &&
+            other is _WorkOrderEntity &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.woNumber, woNumber) ||
                 other.woNumber == woNumber) &&
@@ -704,249 +929,273 @@ class _$WorkOrderEntityImpl extends _WorkOrderEntity {
         completionNotes
       ]);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$WorkOrderEntityImplCopyWith<_$WorkOrderEntityImpl> get copyWith =>
-      __$$WorkOrderEntityImplCopyWithImpl<_$WorkOrderEntityImpl>(
-          this, _$identity);
+  String toString() {
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+  }
 }
 
-abstract class _WorkOrderEntity extends WorkOrderEntity {
-  const factory _WorkOrderEntity(
-      {required final int id,
-      required final String woNumber,
-      required final int srId,
-      required final String summary,
-      required final String problemDescription,
-      required final WorkOrderPriority priority,
-      required final DateTime visitDate,
-      required final String location,
-      required final WorkOrderStatus status,
-      required final int durationDays,
-      required final DateTime createdAt,
-      required final DateTime updatedAt,
-      final DateTime? startedAt,
-      final DateTime? resumedAt,
-      final DateTime? completedAt,
-      final String? pauseLogs,
-      final String? workLog,
-      final List<PartUsedEntity> partsUsed,
-      final List<String> images,
-      final CustomerEntity? customer,
-      final LocationEntity? locationDetails,
-      final ServiceRequestEntity? serviceRequest,
-      final List<WorkLogEntity> workLogs,
-      final List<String> requiredSkills,
-      final List<PartEntity> requiredParts,
-      final List<String> attachments,
-      final String? completionNotes}) = _$WorkOrderEntityImpl;
-  const _WorkOrderEntity._() : super._();
+/// @nodoc
+abstract mixin class _$WorkOrderEntityCopyWith<$Res>
+    implements $WorkOrderEntityCopyWith<$Res> {
+  factory _$WorkOrderEntityCopyWith(
+          _WorkOrderEntity value, $Res Function(_WorkOrderEntity) _then) =
+      __$WorkOrderEntityCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      String woNumber,
+      int srId,
+      String summary,
+      String problemDescription,
+      WorkOrderPriority priority,
+      DateTime visitDate,
+      String location,
+      WorkOrderStatus status,
+      int durationDays,
+      DateTime createdAt,
+      DateTime updatedAt,
+      DateTime? startedAt,
+      DateTime? resumedAt,
+      DateTime? completedAt,
+      String? pauseLogs,
+      String? workLog,
+      List<PartUsedEntity> partsUsed,
+      List<String> images,
+      CustomerEntity? customer,
+      LocationEntity? locationDetails,
+      ServiceRequestEntity? serviceRequest,
+      List<WorkLogEntity> workLogs,
+      List<String> requiredSkills,
+      List<PartEntity> requiredParts,
+      List<String> attachments,
+      String? completionNotes});
 
   @override
-  int get id;
+  $CustomerEntityCopyWith<$Res>? get customer;
   @override
-  String get woNumber;
+  $LocationEntityCopyWith<$Res>? get locationDetails;
   @override
-  int get srId;
+  $ServiceRequestEntityCopyWith<$Res>? get serviceRequest;
+}
+
+/// @nodoc
+class __$WorkOrderEntityCopyWithImpl<$Res>
+    implements _$WorkOrderEntityCopyWith<$Res> {
+  __$WorkOrderEntityCopyWithImpl(this._self, this._then);
+
+  final _WorkOrderEntity _self;
+  final $Res Function(_WorkOrderEntity) _then;
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String get summary;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? woNumber = null,
+    Object? srId = null,
+    Object? summary = null,
+    Object? problemDescription = null,
+    Object? priority = null,
+    Object? visitDate = null,
+    Object? location = null,
+    Object? status = null,
+    Object? durationDays = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+    Object? startedAt = freezed,
+    Object? resumedAt = freezed,
+    Object? completedAt = freezed,
+    Object? pauseLogs = freezed,
+    Object? workLog = freezed,
+    Object? partsUsed = null,
+    Object? images = null,
+    Object? customer = freezed,
+    Object? locationDetails = freezed,
+    Object? serviceRequest = freezed,
+    Object? workLogs = null,
+    Object? requiredSkills = null,
+    Object? requiredParts = null,
+    Object? attachments = null,
+    Object? completionNotes = freezed,
+  }) {
+    return _then(_WorkOrderEntity(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      woNumber: null == woNumber
+          ? _self.woNumber
+          : woNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      srId: null == srId
+          ? _self.srId
+          : srId // ignore: cast_nullable_to_non_nullable
+              as int,
+      summary: null == summary
+          ? _self.summary
+          : summary // ignore: cast_nullable_to_non_nullable
+              as String,
+      problemDescription: null == problemDescription
+          ? _self.problemDescription
+          : problemDescription // ignore: cast_nullable_to_non_nullable
+              as String,
+      priority: null == priority
+          ? _self.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as WorkOrderPriority,
+      visitDate: null == visitDate
+          ? _self.visitDate
+          : visitDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      location: null == location
+          ? _self.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as WorkOrderStatus,
+      durationDays: null == durationDays
+          ? _self.durationDays
+          : durationDays // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      updatedAt: null == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      startedAt: freezed == startedAt
+          ? _self.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      resumedAt: freezed == resumedAt
+          ? _self.resumedAt
+          : resumedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      completedAt: freezed == completedAt
+          ? _self.completedAt
+          : completedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      pauseLogs: freezed == pauseLogs
+          ? _self.pauseLogs
+          : pauseLogs // ignore: cast_nullable_to_non_nullable
+              as String?,
+      workLog: freezed == workLog
+          ? _self.workLog
+          : workLog // ignore: cast_nullable_to_non_nullable
+              as String?,
+      partsUsed: null == partsUsed
+          ? _self._partsUsed
+          : partsUsed // ignore: cast_nullable_to_non_nullable
+              as List<PartUsedEntity>,
+      images: null == images
+          ? _self._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      customer: freezed == customer
+          ? _self.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as CustomerEntity?,
+      locationDetails: freezed == locationDetails
+          ? _self.locationDetails
+          : locationDetails // ignore: cast_nullable_to_non_nullable
+              as LocationEntity?,
+      serviceRequest: freezed == serviceRequest
+          ? _self.serviceRequest
+          : serviceRequest // ignore: cast_nullable_to_non_nullable
+              as ServiceRequestEntity?,
+      workLogs: null == workLogs
+          ? _self._workLogs
+          : workLogs // ignore: cast_nullable_to_non_nullable
+              as List<WorkLogEntity>,
+      requiredSkills: null == requiredSkills
+          ? _self._requiredSkills
+          : requiredSkills // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      requiredParts: null == requiredParts
+          ? _self._requiredParts
+          : requiredParts // ignore: cast_nullable_to_non_nullable
+              as List<PartEntity>,
+      attachments: null == attachments
+          ? _self._attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      completionNotes: freezed == completionNotes
+          ? _self.completionNotes
+          : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String get problemDescription;
+  @pragma('vm:prefer-inline')
+  $CustomerEntityCopyWith<$Res>? get customer {
+    if (_self.customer == null) {
+      return null;
+    }
+
+    return $CustomerEntityCopyWith<$Res>(_self.customer!, (value) {
+      return _then(_self.copyWith(customer: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  WorkOrderPriority get priority;
+  @pragma('vm:prefer-inline')
+  $LocationEntityCopyWith<$Res>? get locationDetails {
+    if (_self.locationDetails == null) {
+      return null;
+    }
+
+    return $LocationEntityCopyWith<$Res>(_self.locationDetails!, (value) {
+      return _then(_self.copyWith(locationDetails: value));
+    });
+  }
+
+  /// Create a copy of WorkOrderEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  DateTime get visitDate;
-  @override
-  String get location;
-  @override
-  WorkOrderStatus get status;
-  @override
-  int get durationDays;
-  @override
-  DateTime get createdAt;
-  @override
-  DateTime get updatedAt;
-  @override
-  DateTime? get startedAt;
-  @override
-  DateTime? get resumedAt;
-  @override
-  DateTime? get completedAt;
-  @override
-  String? get pauseLogs;
-  @override
-  String? get workLog;
-  @override
-  List<PartUsedEntity> get partsUsed;
-  @override
-  List<String> get images;
-  @override
-  CustomerEntity? get customer;
-  @override
-  LocationEntity? get locationDetails;
-  @override
-  ServiceRequestEntity? get serviceRequest;
-  @override
-  List<WorkLogEntity> get workLogs;
-  @override
-  List<String> get requiredSkills;
-  @override
-  List<PartEntity> get requiredParts;
-  @override
-  List<String> get attachments;
-  @override
-  String? get completionNotes;
-  @override
-  @JsonKey(ignore: true)
-  _$$WorkOrderEntityImplCopyWith<_$WorkOrderEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $ServiceRequestEntityCopyWith<$Res>? get serviceRequest {
+    if (_self.serviceRequest == null) {
+      return null;
+    }
+
+    return $ServiceRequestEntityCopyWith<$Res>(_self.serviceRequest!, (value) {
+      return _then(_self.copyWith(serviceRequest: value));
+    });
+  }
 }
 
 /// @nodoc
 mixin _$PartUsedEntity {
-  String get partNumber => throw _privateConstructorUsedError;
-  int get quantityUsed => throw _privateConstructorUsedError;
-  String? get partName => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  String get partNumber;
+  int get quantityUsed;
+  String? get partName;
+  String? get description;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PartUsedEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PartUsedEntityCopyWith<PartUsedEntity> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartUsedEntityCopyWith<$Res> {
-  factory $PartUsedEntityCopyWith(
-          PartUsedEntity value, $Res Function(PartUsedEntity) then) =
-      _$PartUsedEntityCopyWithImpl<$Res, PartUsedEntity>;
-  @useResult
-  $Res call(
-      {String partNumber,
-      int quantityUsed,
-      String? partName,
-      String? description});
-}
-
-/// @nodoc
-class _$PartUsedEntityCopyWithImpl<$Res, $Val extends PartUsedEntity>
-    implements $PartUsedEntityCopyWith<$Res> {
-  _$PartUsedEntityCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
-    Object? partName = freezed,
-    Object? description = freezed,
-  }) {
-    return _then(_value.copyWith(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
-      partName: freezed == partName
-          ? _value.partName
-          : partName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PartUsedEntityImplCopyWith<$Res>
-    implements $PartUsedEntityCopyWith<$Res> {
-  factory _$$PartUsedEntityImplCopyWith(_$PartUsedEntityImpl value,
-          $Res Function(_$PartUsedEntityImpl) then) =
-      __$$PartUsedEntityImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String partNumber,
-      int quantityUsed,
-      String? partName,
-      String? description});
-}
-
-/// @nodoc
-class __$$PartUsedEntityImplCopyWithImpl<$Res>
-    extends _$PartUsedEntityCopyWithImpl<$Res, _$PartUsedEntityImpl>
-    implements _$$PartUsedEntityImplCopyWith<$Res> {
-  __$$PartUsedEntityImplCopyWithImpl(
-      _$PartUsedEntityImpl _value, $Res Function(_$PartUsedEntityImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
-    Object? partName = freezed,
-    Object? description = freezed,
-  }) {
-    return _then(_$PartUsedEntityImpl(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
-      partName: freezed == partName
-          ? _value.partName
-          : partName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$PartUsedEntityImpl implements _PartUsedEntity {
-  const _$PartUsedEntityImpl(
-      {required this.partNumber,
-      required this.quantityUsed,
-      this.partName,
-      this.description});
-
-  @override
-  final String partNumber;
-  @override
-  final int quantityUsed;
-  @override
-  final String? partName;
-  @override
-  final String? description;
-
-  @override
-  String toString() {
-    return 'PartUsedEntity(partNumber: $partNumber, quantityUsed: $quantityUsed, partName: $partName, description: $description)';
-  }
+      _$PartUsedEntityCopyWithImpl<PartUsedEntity>(
+          this as PartUsedEntity, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartUsedEntityImpl &&
+            other is PartUsedEntity &&
             (identical(other.partNumber, partNumber) ||
                 other.partNumber == partNumber) &&
             (identical(other.quantityUsed, quantityUsed) ||
@@ -961,31 +1210,333 @@ class _$PartUsedEntityImpl implements _PartUsedEntity {
   int get hashCode =>
       Object.hash(runtimeType, partNumber, quantityUsed, partName, description);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'PartUsedEntity(partNumber: $partNumber, quantityUsed: $quantityUsed, partName: $partName, description: $description)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $PartUsedEntityCopyWith<$Res> {
+  factory $PartUsedEntityCopyWith(
+          PartUsedEntity value, $Res Function(PartUsedEntity) _then) =
+      _$PartUsedEntityCopyWithImpl;
+  @useResult
+  $Res call(
+      {String partNumber,
+      int quantityUsed,
+      String? partName,
+      String? description});
+}
+
+/// @nodoc
+class _$PartUsedEntityCopyWithImpl<$Res>
+    implements $PartUsedEntityCopyWith<$Res> {
+  _$PartUsedEntityCopyWithImpl(this._self, this._then);
+
+  final PartUsedEntity _self;
+  final $Res Function(PartUsedEntity) _then;
+
+  /// Create a copy of PartUsedEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? partNumber = null,
+    Object? quantityUsed = null,
+    Object? partName = freezed,
+    Object? description = freezed,
+  }) {
+    return _then(_self.copyWith(
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantityUsed: null == quantityUsed
+          ? _self.quantityUsed
+          : quantityUsed // ignore: cast_nullable_to_non_nullable
+              as int,
+      partName: freezed == partName
+          ? _self.partName
+          : partName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [PartUsedEntity].
+extension PartUsedEntityPatterns on PartUsedEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartUsedEntity value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartUsedEntity value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartUsedEntity value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String partNumber, int quantityUsed, String? partName,
+            String? description)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity() when $default != null:
+        return $default(_that.partNumber, _that.quantityUsed, _that.partName,
+            _that.description);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String partNumber, int quantityUsed, String? partName,
+            String? description)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity():
+        return $default(_that.partNumber, _that.quantityUsed, _that.partName,
+            _that.description);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String partNumber, int quantityUsed, String? partName,
+            String? description)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedEntity() when $default != null:
+        return $default(_that.partNumber, _that.quantityUsed, _that.partName,
+            _that.description);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _PartUsedEntity implements PartUsedEntity {
+  const _PartUsedEntity(
+      {required this.partNumber,
+      required this.quantityUsed,
+      this.partName,
+      this.description});
+
+  @override
+  final String partNumber;
+  @override
+  final int quantityUsed;
+  @override
+  final String? partName;
+  @override
+  final String? description;
+
+  /// Create a copy of PartUsedEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartUsedEntityCopyWith<_PartUsedEntity> get copyWith =>
+      __$PartUsedEntityCopyWithImpl<_PartUsedEntity>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PartUsedEntity &&
+            (identical(other.partNumber, partNumber) ||
+                other.partNumber == partNumber) &&
+            (identical(other.quantityUsed, quantityUsed) ||
+                other.quantityUsed == quantityUsed) &&
+            (identical(other.partName, partName) ||
+                other.partName == partName) &&
+            (identical(other.description, description) ||
+                other.description == description));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, partNumber, quantityUsed, partName, description);
+
+  @override
+  String toString() {
+    return 'PartUsedEntity(partNumber: $partNumber, quantityUsed: $quantityUsed, partName: $partName, description: $description)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PartUsedEntityCopyWith<$Res>
+    implements $PartUsedEntityCopyWith<$Res> {
+  factory _$PartUsedEntityCopyWith(
+          _PartUsedEntity value, $Res Function(_PartUsedEntity) _then) =
+      __$PartUsedEntityCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String partNumber,
+      int quantityUsed,
+      String? partName,
+      String? description});
+}
+
+/// @nodoc
+class __$PartUsedEntityCopyWithImpl<$Res>
+    implements _$PartUsedEntityCopyWith<$Res> {
+  __$PartUsedEntityCopyWithImpl(this._self, this._then);
+
+  final _PartUsedEntity _self;
+  final $Res Function(_PartUsedEntity) _then;
+
+  /// Create a copy of PartUsedEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PartUsedEntityImplCopyWith<_$PartUsedEntityImpl> get copyWith =>
-      __$$PartUsedEntityImplCopyWithImpl<_$PartUsedEntityImpl>(
-          this, _$identity);
+  $Res call({
+    Object? partNumber = null,
+    Object? quantityUsed = null,
+    Object? partName = freezed,
+    Object? description = freezed,
+  }) {
+    return _then(_PartUsedEntity(
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantityUsed: null == quantityUsed
+          ? _self.quantityUsed
+          : quantityUsed // ignore: cast_nullable_to_non_nullable
+              as int,
+      partName: freezed == partName
+          ? _self.partName
+          : partName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
-abstract class _PartUsedEntity implements PartUsedEntity {
-  const factory _PartUsedEntity(
-      {required final String partNumber,
-      required final int quantityUsed,
-      final String? partName,
-      final String? description}) = _$PartUsedEntityImpl;
-
-  @override
-  String get partNumber;
-  @override
-  int get quantityUsed;
-  @override
-  String? get partName;
-  @override
-  String? get description;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartUsedEntityImplCopyWith<_$PartUsedEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -5,7 +5,7 @@ part 'part_dto.freezed.dart';
 part 'part_dto.g.dart';
 
 @freezed
-class PartDto with _$PartDto {
+abstract class PartDto with _$PartDto {
   const factory PartDto({
     @JsonKey(name: 'part_number') required String partNumber,
     @JsonKey(name: 'part_name') required String partName,
@@ -20,7 +20,7 @@ class PartDto with _$PartDto {
 }
 
 @freezed
-class PartsResponse with _$PartsResponse {
+abstract class PartsResponse with _$PartsResponse {
   const factory PartsResponse({
     required List<PartDto> parts,
   }) = _PartsResponse;

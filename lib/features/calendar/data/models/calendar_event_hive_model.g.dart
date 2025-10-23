@@ -9,7 +9,7 @@ part of 'calendar_event_hive_model.dart';
 class CalendarEventHiveModelAdapter
     extends TypeAdapter<CalendarEventHiveModel> {
   @override
-  final int typeId = 9;
+  final typeId = 9;
 
   @override
   CalendarEventHiveModel read(BinaryReader reader) {
@@ -26,11 +26,11 @@ class CalendarEventHiveModelAdapter
       description: fields[5] as String,
       workOrderId: (fields[6] as num?)?.toInt(),
       location: fields[7] as String?,
-      isAllDay: fields[8] as bool,
+      isAllDay: fields[8] == null ? false : fields[8] as bool,
       color: fields[9] as String?,
       metadata: fields[10] as String?,
       cachedAt: fields[11] as DateTime,
-      isPendingSync: fields[12] as bool,
+      isPendingSync: fields[12] == null ? false : fields[12] as bool,
       pendingAction: fields[13] as String?,
     );
   }
@@ -84,9 +84,9 @@ class CalendarEventHiveModelAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CalendarEventHiveModelImpl _$$CalendarEventHiveModelImplFromJson(
+_CalendarEventHiveModel _$CalendarEventHiveModelFromJson(
         Map<String, dynamic> json) =>
-    _$CalendarEventHiveModelImpl(
+    _CalendarEventHiveModel(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       startTime: DateTime.parse(json['startTime'] as String),
@@ -103,8 +103,8 @@ _$CalendarEventHiveModelImpl _$$CalendarEventHiveModelImplFromJson(
       pendingAction: json['pendingAction'] as String?,
     );
 
-Map<String, dynamic> _$$CalendarEventHiveModelImplToJson(
-        _$CalendarEventHiveModelImpl instance) =>
+Map<String, dynamic> _$CalendarEventHiveModelToJson(
+        _CalendarEventHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

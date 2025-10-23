@@ -6,8 +6,7 @@ part of 'profile_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ProfileDtoImpl _$$ProfileDtoImplFromJson(Map<String, dynamic> json) =>
-    _$ProfileDtoImpl(
+_ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => _ProfileDto(
       id: (json['id'] as num).toInt(),
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
@@ -19,7 +18,7 @@ _$ProfileDtoImpl _$$ProfileDtoImplFromJson(Map<String, dynamic> json) =>
       profileImageUrl: json['profile_image_url'] as String?,
     );
 
-Map<String, dynamic> _$$ProfileDtoImplToJson(_$ProfileDtoImpl instance) =>
+Map<String, dynamic> _$ProfileDtoToJson(_ProfileDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'first_name': instance.firstName,
@@ -32,9 +31,9 @@ Map<String, dynamic> _$$ProfileDtoImplToJson(_$ProfileDtoImpl instance) =>
       'profile_image_url': instance.profileImageUrl,
     };
 
-_$ProfilePreferencesDtoImpl _$$ProfilePreferencesDtoImplFromJson(
+_ProfilePreferencesDto _$ProfilePreferencesDtoFromJson(
         Map<String, dynamic> json) =>
-    _$ProfilePreferencesDtoImpl(
+    _ProfilePreferencesDto(
       notificationsEnabled: json['notifications_enabled'] as bool? ?? true,
       pushNotificationsEnabled:
           json['push_notifications_enabled'] as bool? ?? true,
@@ -51,8 +50,8 @@ _$ProfilePreferencesDtoImpl _$$ProfilePreferencesDtoImplFromJson(
       autoLogoutMinutes: (json['auto_logout_minutes'] as num?)?.toInt() ?? 60,
     );
 
-Map<String, dynamic> _$$ProfilePreferencesDtoImplToJson(
-        _$ProfilePreferencesDtoImpl instance) =>
+Map<String, dynamic> _$ProfilePreferencesDtoToJson(
+        _ProfilePreferencesDto instance) =>
     <String, dynamic>{
       'notifications_enabled': instance.notificationsEnabled,
       'push_notifications_enabled': instance.pushNotificationsEnabled,

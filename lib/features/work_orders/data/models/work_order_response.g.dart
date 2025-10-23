@@ -6,15 +6,13 @@ part of 'work_order_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WorkOrderResponseImpl _$$WorkOrderResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$WorkOrderResponseImpl(
+_WorkOrderResponse _$WorkOrderResponseFromJson(Map<String, dynamic> json) =>
+    _WorkOrderResponse(
       workOrder:
           WorkOrderDto.fromJson(json['work_order'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$WorkOrderResponseImplToJson(
-        _$WorkOrderResponseImpl instance) =>
+Map<String, dynamic> _$WorkOrderResponseToJson(_WorkOrderResponse instance) =>
     <String, dynamic>{
       'work_order': instance.workOrder,
     };

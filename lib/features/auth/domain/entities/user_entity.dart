@@ -4,7 +4,7 @@ import '../../../../core/services/enums.dart';
 part 'user_entity.freezed.dart';
 
 @freezed
-class UserEntity with _$UserEntity {
+abstract class UserEntity with _$UserEntity {
   const UserEntity._();
 
   const factory UserEntity({

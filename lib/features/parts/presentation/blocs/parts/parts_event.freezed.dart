@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,13 +9,288 @@ part of 'parts_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PartsEvent {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is PartsEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PartsEvent()';
+  }
+}
+
+/// @nodoc
+class $PartsEventCopyWith<$Res> {
+  $PartsEventCopyWith(PartsEvent _, $Res Function(PartsEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [PartsEvent].
+extension PartsEventPatterns on PartsEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadParts value)? loadParts,
+    TResult Function(_RefreshParts value)? refreshParts,
+    TResult Function(_LoadMoreParts value)? loadMoreParts,
+    TResult Function(_SearchParts value)? searchParts,
+    TResult Function(_ClearSearch value)? clearSearch,
+    TResult Function(_FilterByCategory value)? filterByCategory,
+    TResult Function(_FilterByStatus value)? filterByStatus,
+    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
+    TResult Function(_LoadPartCategories value)? loadPartCategories,
+    TResult Function(_LoadInventory value)? loadInventory,
+    TResult Function(_UpdateInventory value)? updateInventory,
+    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadParts() when loadParts != null:
+        return loadParts(_that);
+      case _RefreshParts() when refreshParts != null:
+        return refreshParts(_that);
+      case _LoadMoreParts() when loadMoreParts != null:
+        return loadMoreParts(_that);
+      case _SearchParts() when searchParts != null:
+        return searchParts(_that);
+      case _ClearSearch() when clearSearch != null:
+        return clearSearch(_that);
+      case _FilterByCategory() when filterByCategory != null:
+        return filterByCategory(_that);
+      case _FilterByStatus() when filterByStatus != null:
+        return filterByStatus(_that);
+      case _LoadLowStockParts() when loadLowStockParts != null:
+        return loadLowStockParts(_that);
+      case _LoadPartCategories() when loadPartCategories != null:
+        return loadPartCategories(_that);
+      case _LoadInventory() when loadInventory != null:
+        return loadInventory(_that);
+      case _UpdateInventory() when updateInventory != null:
+        return updateInventory(_that);
+      case _LoadInventoryHistory() when loadInventoryHistory != null:
+        return loadInventoryHistory(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadParts value) loadParts,
+    required TResult Function(_RefreshParts value) refreshParts,
+    required TResult Function(_LoadMoreParts value) loadMoreParts,
+    required TResult Function(_SearchParts value) searchParts,
+    required TResult Function(_ClearSearch value) clearSearch,
+    required TResult Function(_FilterByCategory value) filterByCategory,
+    required TResult Function(_FilterByStatus value) filterByStatus,
+    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
+    required TResult Function(_LoadPartCategories value) loadPartCategories,
+    required TResult Function(_LoadInventory value) loadInventory,
+    required TResult Function(_UpdateInventory value) updateInventory,
+    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadParts():
+        return loadParts(_that);
+      case _RefreshParts():
+        return refreshParts(_that);
+      case _LoadMoreParts():
+        return loadMoreParts(_that);
+      case _SearchParts():
+        return searchParts(_that);
+      case _ClearSearch():
+        return clearSearch(_that);
+      case _FilterByCategory():
+        return filterByCategory(_that);
+      case _FilterByStatus():
+        return filterByStatus(_that);
+      case _LoadLowStockParts():
+        return loadLowStockParts(_that);
+      case _LoadPartCategories():
+        return loadPartCategories(_that);
+      case _LoadInventory():
+        return loadInventory(_that);
+      case _UpdateInventory():
+        return updateInventory(_that);
+      case _LoadInventoryHistory():
+        return loadInventoryHistory(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadParts value)? loadParts,
+    TResult? Function(_RefreshParts value)? refreshParts,
+    TResult? Function(_LoadMoreParts value)? loadMoreParts,
+    TResult? Function(_SearchParts value)? searchParts,
+    TResult? Function(_ClearSearch value)? clearSearch,
+    TResult? Function(_FilterByCategory value)? filterByCategory,
+    TResult? Function(_FilterByStatus value)? filterByStatus,
+    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
+    TResult? Function(_LoadPartCategories value)? loadPartCategories,
+    TResult? Function(_LoadInventory value)? loadInventory,
+    TResult? Function(_UpdateInventory value)? updateInventory,
+    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadParts() when loadParts != null:
+        return loadParts(_that);
+      case _RefreshParts() when refreshParts != null:
+        return refreshParts(_that);
+      case _LoadMoreParts() when loadMoreParts != null:
+        return loadMoreParts(_that);
+      case _SearchParts() when searchParts != null:
+        return searchParts(_that);
+      case _ClearSearch() when clearSearch != null:
+        return clearSearch(_that);
+      case _FilterByCategory() when filterByCategory != null:
+        return filterByCategory(_that);
+      case _FilterByStatus() when filterByStatus != null:
+        return filterByStatus(_that);
+      case _LoadLowStockParts() when loadLowStockParts != null:
+        return loadLowStockParts(_that);
+      case _LoadPartCategories() when loadPartCategories != null:
+        return loadPartCategories(_that);
+      case _LoadInventory() when loadInventory != null:
+        return loadInventory(_that);
+      case _UpdateInventory() when updateInventory != null:
+        return updateInventory(_that);
+      case _LoadInventoryHistory() when loadInventoryHistory != null:
+        return loadInventoryHistory(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int page, int limit, String? category, PartStatus? status,
+            String? searchQuery)?
+        loadParts,
+    TResult Function()? refreshParts,
+    TResult Function()? loadMoreParts,
+    TResult Function(String query, String? category, PartStatus? status)?
+        searchParts,
+    TResult Function()? clearSearch,
+    TResult Function(String? category)? filterByCategory,
+    TResult Function(PartStatus? status)? filterByStatus,
+    TResult Function()? loadLowStockParts,
+    TResult Function()? loadPartCategories,
+    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
+    TResult Function(int partId, int quantityChange, String type, String reason,
+            String? workOrderId, String? notes)?
+        updateInventory,
+    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadParts() when loadParts != null:
+        return loadParts(_that.page, _that.limit, _that.category, _that.status,
+            _that.searchQuery);
+      case _RefreshParts() when refreshParts != null:
+        return refreshParts();
+      case _LoadMoreParts() when loadMoreParts != null:
+        return loadMoreParts();
+      case _SearchParts() when searchParts != null:
+        return searchParts(_that.query, _that.category, _that.status);
+      case _ClearSearch() when clearSearch != null:
+        return clearSearch();
+      case _FilterByCategory() when filterByCategory != null:
+        return filterByCategory(_that.category);
+      case _FilterByStatus() when filterByStatus != null:
+        return filterByStatus(_that.status);
+      case _LoadLowStockParts() when loadLowStockParts != null:
+        return loadLowStockParts();
+      case _LoadPartCategories() when loadPartCategories != null:
+        return loadPartCategories();
+      case _LoadInventory() when loadInventory != null:
+        return loadInventory(_that.page, _that.limit, _that.lowStockOnly);
+      case _UpdateInventory() when updateInventory != null:
+        return updateInventory(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.workOrderId, _that.notes);
+      case _LoadInventoryHistory() when loadInventoryHistory != null:
+        return loadInventoryHistory(_that.partId, _that.page, _that.limit);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int page, int limit, String? category,
@@ -38,8 +313,52 @@ mixin _$PartsEvent {
         updateInventory,
     required TResult Function(int partId, int page, int limit)
         loadInventoryHistory,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadParts():
+        return loadParts(_that.page, _that.limit, _that.category, _that.status,
+            _that.searchQuery);
+      case _RefreshParts():
+        return refreshParts();
+      case _LoadMoreParts():
+        return loadMoreParts();
+      case _SearchParts():
+        return searchParts(_that.query, _that.category, _that.status);
+      case _ClearSearch():
+        return clearSearch();
+      case _FilterByCategory():
+        return filterByCategory(_that.category);
+      case _FilterByStatus():
+        return filterByStatus(_that.status);
+      case _LoadLowStockParts():
+        return loadLowStockParts();
+      case _LoadPartCategories():
+        return loadPartCategories();
+      case _LoadInventory():
+        return loadInventory(_that.page, _that.limit, _that.lowStockOnly);
+      case _UpdateInventory():
+        return updateInventory(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.workOrderId, _that.notes);
+      case _LoadInventoryHistory():
+        return loadInventoryHistory(_that.partId, _that.page, _that.limit);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int page, int limit, String? category, PartStatus? status,
@@ -59,188 +378,71 @@ mixin _$PartsEvent {
             String reason, String? workOrderId, String? notes)?
         updateInventory,
     TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartsEventCopyWith<$Res> {
-  factory $PartsEventCopyWith(
-          PartsEvent value, $Res Function(PartsEvent) then) =
-      _$PartsEventCopyWithImpl<$Res, PartsEvent>;
-}
-
-/// @nodoc
-class _$PartsEventCopyWithImpl<$Res, $Val extends PartsEvent>
-    implements $PartsEventCopyWith<$Res> {
-  _$PartsEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$LoadPartsImplCopyWith<$Res> {
-  factory _$$LoadPartsImplCopyWith(
-          _$LoadPartsImpl value, $Res Function(_$LoadPartsImpl) then) =
-      __$$LoadPartsImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call(
-      {int page,
-      int limit,
-      String? category,
-      PartStatus? status,
-      String? searchQuery});
-}
-
-/// @nodoc
-class __$$LoadPartsImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadPartsImpl>
-    implements _$$LoadPartsImplCopyWith<$Res> {
-  __$$LoadPartsImplCopyWithImpl(
-      _$LoadPartsImpl _value, $Res Function(_$LoadPartsImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? page = null,
-    Object? limit = null,
-    Object? category = freezed,
-    Object? status = freezed,
-    Object? searchQuery = freezed,
   }) {
-    return _then(_$LoadPartsImpl(
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      limit: null == limit
-          ? _value.limit
-          : limit // ignore: cast_nullable_to_non_nullable
-              as int,
-      category: freezed == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as PartStatus?,
-      searchQuery: freezed == searchQuery
-          ? _value.searchQuery
-          : searchQuery // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _LoadParts() when loadParts != null:
+        return loadParts(_that.page, _that.limit, _that.category, _that.status,
+            _that.searchQuery);
+      case _RefreshParts() when refreshParts != null:
+        return refreshParts();
+      case _LoadMoreParts() when loadMoreParts != null:
+        return loadMoreParts();
+      case _SearchParts() when searchParts != null:
+        return searchParts(_that.query, _that.category, _that.status);
+      case _ClearSearch() when clearSearch != null:
+        return clearSearch();
+      case _FilterByCategory() when filterByCategory != null:
+        return filterByCategory(_that.category);
+      case _FilterByStatus() when filterByStatus != null:
+        return filterByStatus(_that.status);
+      case _LoadLowStockParts() when loadLowStockParts != null:
+        return loadLowStockParts();
+      case _LoadPartCategories() when loadPartCategories != null:
+        return loadPartCategories();
+      case _LoadInventory() when loadInventory != null:
+        return loadInventory(_that.page, _that.limit, _that.lowStockOnly);
+      case _UpdateInventory() when updateInventory != null:
+        return updateInventory(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.workOrderId, _that.notes);
+      case _LoadInventoryHistory() when loadInventoryHistory != null:
+        return loadInventoryHistory(_that.partId, _that.page, _that.limit);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$LoadPartsImpl implements _LoadParts {
-  const _$LoadPartsImpl(
+class _LoadParts implements PartsEvent {
+  const _LoadParts(
       {this.page = 1,
       this.limit = 20,
       this.category,
       this.status,
       this.searchQuery});
 
-  @override
   @JsonKey()
   final int page;
-  @override
   @JsonKey()
   final int limit;
-  @override
   final String? category;
-  @override
   final PartStatus? status;
-  @override
   final String? searchQuery;
 
-  @override
-  String toString() {
-    return 'PartsEvent.loadParts(page: $page, limit: $limit, category: $category, status: $status, searchQuery: $searchQuery)';
-  }
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LoadPartsCopyWith<_LoadParts> get copyWith =>
+      __$LoadPartsCopyWithImpl<_LoadParts>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadPartsImpl &&
+            other is _LoadParts &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.limit, limit) || other.limit == limit) &&
             (identical(other.category, category) ||
@@ -254,594 +456,130 @@ class _$LoadPartsImpl implements _LoadParts {
   int get hashCode =>
       Object.hash(runtimeType, page, limit, category, status, searchQuery);
 
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadPartsImplCopyWith<_$LoadPartsImpl> get copyWith =>
-      __$$LoadPartsImplCopyWithImpl<_$LoadPartsImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return loadParts(page, limit, category, status, searchQuery);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadParts?.call(page, limit, category, status, searchQuery);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadParts != null) {
-      return loadParts(page, limit, category, status, searchQuery);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadParts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadParts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadParts != null) {
-      return loadParts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadParts implements PartsEvent {
-  const factory _LoadParts(
-      {final int page,
-      final int limit,
-      final String? category,
-      final PartStatus? status,
-      final String? searchQuery}) = _$LoadPartsImpl;
-
-  int get page;
-  int get limit;
-  String? get category;
-  PartStatus? get status;
-  String? get searchQuery;
-  @JsonKey(ignore: true)
-  _$$LoadPartsImplCopyWith<_$LoadPartsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$RefreshPartsImplCopyWith<$Res> {
-  factory _$$RefreshPartsImplCopyWith(
-          _$RefreshPartsImpl value, $Res Function(_$RefreshPartsImpl) then) =
-      __$$RefreshPartsImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$RefreshPartsImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$RefreshPartsImpl>
-    implements _$$RefreshPartsImplCopyWith<$Res> {
-  __$$RefreshPartsImplCopyWithImpl(
-      _$RefreshPartsImpl _value, $Res Function(_$RefreshPartsImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$RefreshPartsImpl implements _RefreshParts {
-  const _$RefreshPartsImpl();
-
   @override
   String toString() {
-    return 'PartsEvent.refreshParts()';
+    return 'PartsEvent.loadParts(page: $page, limit: $limit, category: $category, status: $status, searchQuery: $searchQuery)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$RefreshPartsImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return refreshParts();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return refreshParts?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (refreshParts != null) {
-      return refreshParts();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return refreshParts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return refreshParts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (refreshParts != null) {
-      return refreshParts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _RefreshParts implements PartsEvent {
-  const factory _RefreshParts() = _$RefreshPartsImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadMorePartsImplCopyWith<$Res> {
-  factory _$$LoadMorePartsImplCopyWith(
-          _$LoadMorePartsImpl value, $Res Function(_$LoadMorePartsImpl) then) =
-      __$$LoadMorePartsImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadMorePartsImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadMorePartsImpl>
-    implements _$$LoadMorePartsImplCopyWith<$Res> {
-  __$$LoadMorePartsImplCopyWithImpl(
-      _$LoadMorePartsImpl _value, $Res Function(_$LoadMorePartsImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadMorePartsImpl implements _LoadMoreParts {
-  const _$LoadMorePartsImpl();
-
-  @override
-  String toString() {
-    return 'PartsEvent.loadMoreParts()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadMorePartsImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return loadMoreParts();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadMoreParts?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadMoreParts != null) {
-      return loadMoreParts();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadMoreParts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadMoreParts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadMoreParts != null) {
-      return loadMoreParts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadMoreParts implements PartsEvent {
-  const factory _LoadMoreParts() = _$LoadMorePartsImpl;
-}
-
-/// @nodoc
-abstract class _$$SearchPartsImplCopyWith<$Res> {
-  factory _$$SearchPartsImplCopyWith(
-          _$SearchPartsImpl value, $Res Function(_$SearchPartsImpl) then) =
-      __$$SearchPartsImplCopyWithImpl<$Res>;
+abstract mixin class _$LoadPartsCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$LoadPartsCopyWith(
+          _LoadParts value, $Res Function(_LoadParts) _then) =
+      __$LoadPartsCopyWithImpl;
   @useResult
-  $Res call({String query, String? category, PartStatus? status});
+  $Res call(
+      {int page,
+      int limit,
+      String? category,
+      PartStatus? status,
+      String? searchQuery});
 }
 
 /// @nodoc
-class __$$SearchPartsImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$SearchPartsImpl>
-    implements _$$SearchPartsImplCopyWith<$Res> {
-  __$$SearchPartsImplCopyWithImpl(
-      _$SearchPartsImpl _value, $Res Function(_$SearchPartsImpl) _then)
-      : super(_value, _then);
+class __$LoadPartsCopyWithImpl<$Res> implements _$LoadPartsCopyWith<$Res> {
+  __$LoadPartsCopyWithImpl(this._self, this._then);
 
+  final _LoadParts _self;
+  final $Res Function(_LoadParts) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? query = null,
+    Object? page = null,
+    Object? limit = null,
     Object? category = freezed,
     Object? status = freezed,
+    Object? searchQuery = freezed,
   }) {
-    return _then(_$SearchPartsImpl(
-      query: null == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String,
+    return _then(_LoadParts(
+      page: null == page
+          ? _self.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _self.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
       category: freezed == category
-          ? _value.category
+          ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
               as String?,
       status: freezed == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as PartStatus?,
+      searchQuery: freezed == searchQuery
+          ? _self.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$SearchPartsImpl implements _SearchParts {
-  const _$SearchPartsImpl({required this.query, this.category, this.status});
+class _RefreshParts implements PartsEvent {
+  const _RefreshParts();
 
   @override
-  final String query;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _RefreshParts);
+  }
+
   @override
-  final String? category;
-  @override
-  final PartStatus? status;
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
-    return 'PartsEvent.searchParts(query: $query, category: $category, status: $status)';
+    return 'PartsEvent.refreshParts()';
   }
+}
+
+/// @nodoc
+
+class _LoadMoreParts implements PartsEvent {
+  const _LoadMoreParts();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoadMoreParts);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PartsEvent.loadMoreParts()';
+  }
+}
+
+/// @nodoc
+
+class _SearchParts implements PartsEvent {
+  const _SearchParts({required this.query, this.category, this.status});
+
+  final String query;
+  final String? category;
+  final PartStatus? status;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SearchPartsCopyWith<_SearchParts> get copyWith =>
+      __$SearchPartsCopyWithImpl<_SearchParts>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchPartsImpl &&
+            other is _SearchParts &&
             (identical(other.query, query) || other.query == query) &&
             (identical(other.category, category) ||
                 other.category == category) &&
@@ -851,586 +589,48 @@ class _$SearchPartsImpl implements _SearchParts {
   @override
   int get hashCode => Object.hash(runtimeType, query, category, status);
 
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SearchPartsImplCopyWith<_$SearchPartsImpl> get copyWith =>
-      __$$SearchPartsImplCopyWithImpl<_$SearchPartsImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return searchParts(query, category, status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return searchParts?.call(query, category, status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (searchParts != null) {
-      return searchParts(query, category, status);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return searchParts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return searchParts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (searchParts != null) {
-      return searchParts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SearchParts implements PartsEvent {
-  const factory _SearchParts(
-      {required final String query,
-      final String? category,
-      final PartStatus? status}) = _$SearchPartsImpl;
-
-  String get query;
-  String? get category;
-  PartStatus? get status;
-  @JsonKey(ignore: true)
-  _$$SearchPartsImplCopyWith<_$SearchPartsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ClearSearchImplCopyWith<$Res> {
-  factory _$$ClearSearchImplCopyWith(
-          _$ClearSearchImpl value, $Res Function(_$ClearSearchImpl) then) =
-      __$$ClearSearchImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ClearSearchImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$ClearSearchImpl>
-    implements _$$ClearSearchImplCopyWith<$Res> {
-  __$$ClearSearchImplCopyWithImpl(
-      _$ClearSearchImpl _value, $Res Function(_$ClearSearchImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$ClearSearchImpl implements _ClearSearch {
-  const _$ClearSearchImpl();
-
   @override
   String toString() {
-    return 'PartsEvent.clearSearch()';
+    return 'PartsEvent.searchParts(query: $query, category: $category, status: $status)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ClearSearchImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return clearSearch();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return clearSearch?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (clearSearch != null) {
-      return clearSearch();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return clearSearch(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return clearSearch?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (clearSearch != null) {
-      return clearSearch(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ClearSearch implements PartsEvent {
-  const factory _ClearSearch() = _$ClearSearchImpl;
 }
 
 /// @nodoc
-abstract class _$$FilterByCategoryImplCopyWith<$Res> {
-  factory _$$FilterByCategoryImplCopyWith(_$FilterByCategoryImpl value,
-          $Res Function(_$FilterByCategoryImpl) then) =
-      __$$FilterByCategoryImplCopyWithImpl<$Res>;
+abstract mixin class _$SearchPartsCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$SearchPartsCopyWith(
+          _SearchParts value, $Res Function(_SearchParts) _then) =
+      __$SearchPartsCopyWithImpl;
   @useResult
-  $Res call({String? category});
+  $Res call({String query, String? category, PartStatus? status});
 }
 
 /// @nodoc
-class __$$FilterByCategoryImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$FilterByCategoryImpl>
-    implements _$$FilterByCategoryImplCopyWith<$Res> {
-  __$$FilterByCategoryImplCopyWithImpl(_$FilterByCategoryImpl _value,
-      $Res Function(_$FilterByCategoryImpl) _then)
-      : super(_value, _then);
+class __$SearchPartsCopyWithImpl<$Res> implements _$SearchPartsCopyWith<$Res> {
+  __$SearchPartsCopyWithImpl(this._self, this._then);
 
+  final _SearchParts _self;
+  final $Res Function(_SearchParts) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
+    Object? query = null,
     Object? category = freezed,
-  }) {
-    return _then(_$FilterByCategoryImpl(
-      freezed == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FilterByCategoryImpl implements _FilterByCategory {
-  const _$FilterByCategoryImpl(this.category);
-
-  @override
-  final String? category;
-
-  @override
-  String toString() {
-    return 'PartsEvent.filterByCategory(category: $category)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FilterByCategoryImpl &&
-            (identical(other.category, category) ||
-                other.category == category));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, category);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FilterByCategoryImplCopyWith<_$FilterByCategoryImpl> get copyWith =>
-      __$$FilterByCategoryImplCopyWithImpl<_$FilterByCategoryImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return filterByCategory(category);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return filterByCategory?.call(category);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (filterByCategory != null) {
-      return filterByCategory(category);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return filterByCategory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return filterByCategory?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (filterByCategory != null) {
-      return filterByCategory(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _FilterByCategory implements PartsEvent {
-  const factory _FilterByCategory(final String? category) =
-      _$FilterByCategoryImpl;
-
-  String? get category;
-  @JsonKey(ignore: true)
-  _$$FilterByCategoryImplCopyWith<_$FilterByCategoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$FilterByStatusImplCopyWith<$Res> {
-  factory _$$FilterByStatusImplCopyWith(_$FilterByStatusImpl value,
-          $Res Function(_$FilterByStatusImpl) then) =
-      __$$FilterByStatusImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({PartStatus? status});
-}
-
-/// @nodoc
-class __$$FilterByStatusImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$FilterByStatusImpl>
-    implements _$$FilterByStatusImplCopyWith<$Res> {
-  __$$FilterByStatusImplCopyWithImpl(
-      _$FilterByStatusImpl _value, $Res Function(_$FilterByStatusImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
     Object? status = freezed,
   }) {
-    return _then(_$FilterByStatusImpl(
-      freezed == status
-          ? _value.status
+    return _then(_SearchParts(
+      query: null == query
+          ? _self.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as PartStatus?,
     ));
@@ -1439,612 +639,216 @@ class __$$FilterByStatusImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FilterByStatusImpl implements _FilterByStatus {
-  const _$FilterByStatusImpl(this.status);
+class _ClearSearch implements PartsEvent {
+  const _ClearSearch();
 
   @override
-  final PartStatus? status;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ClearSearch);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
-    return 'PartsEvent.filterByStatus(status: $status)';
+    return 'PartsEvent.clearSearch()';
   }
+}
+
+/// @nodoc
+
+class _FilterByCategory implements PartsEvent {
+  const _FilterByCategory(this.category);
+
+  final String? category;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FilterByCategoryCopyWith<_FilterByCategory> get copyWith =>
+      __$FilterByCategoryCopyWithImpl<_FilterByCategory>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FilterByStatusImpl &&
-            (identical(other.status, status) || other.status == status));
+            other is _FilterByCategory &&
+            (identical(other.category, category) ||
+                other.category == category));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FilterByStatusImplCopyWith<_$FilterByStatusImpl> get copyWith =>
-      __$$FilterByStatusImplCopyWithImpl<_$FilterByStatusImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return filterByStatus(status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return filterByStatus?.call(status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (filterByStatus != null) {
-      return filterByStatus(status);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return filterByStatus(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return filterByStatus?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (filterByStatus != null) {
-      return filterByStatus(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _FilterByStatus implements PartsEvent {
-  const factory _FilterByStatus(final PartStatus? status) =
-      _$FilterByStatusImpl;
-
-  PartStatus? get status;
-  @JsonKey(ignore: true)
-  _$$FilterByStatusImplCopyWith<_$FilterByStatusImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LoadLowStockPartsImplCopyWith<$Res> {
-  factory _$$LoadLowStockPartsImplCopyWith(_$LoadLowStockPartsImpl value,
-          $Res Function(_$LoadLowStockPartsImpl) then) =
-      __$$LoadLowStockPartsImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadLowStockPartsImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadLowStockPartsImpl>
-    implements _$$LoadLowStockPartsImplCopyWith<$Res> {
-  __$$LoadLowStockPartsImplCopyWithImpl(_$LoadLowStockPartsImpl _value,
-      $Res Function(_$LoadLowStockPartsImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadLowStockPartsImpl implements _LoadLowStockParts {
-  const _$LoadLowStockPartsImpl();
+  int get hashCode => Object.hash(runtimeType, category);
 
   @override
   String toString() {
-    return 'PartsEvent.loadLowStockParts()';
+    return 'PartsEvent.filterByCategory(category: $category)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadLowStockPartsImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return loadLowStockParts();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadLowStockParts?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadLowStockParts != null) {
-      return loadLowStockParts();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadLowStockParts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadLowStockParts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadLowStockParts != null) {
-      return loadLowStockParts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadLowStockParts implements PartsEvent {
-  const factory _LoadLowStockParts() = _$LoadLowStockPartsImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadPartCategoriesImplCopyWith<$Res> {
-  factory _$$LoadPartCategoriesImplCopyWith(_$LoadPartCategoriesImpl value,
-          $Res Function(_$LoadPartCategoriesImpl) then) =
-      __$$LoadPartCategoriesImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadPartCategoriesImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadPartCategoriesImpl>
-    implements _$$LoadPartCategoriesImplCopyWith<$Res> {
-  __$$LoadPartCategoriesImplCopyWithImpl(_$LoadPartCategoriesImpl _value,
-      $Res Function(_$LoadPartCategoriesImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadPartCategoriesImpl implements _LoadPartCategories {
-  const _$LoadPartCategoriesImpl();
-
-  @override
-  String toString() {
-    return 'PartsEvent.loadPartCategories()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadPartCategoriesImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return loadPartCategories();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadPartCategories?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadPartCategories != null) {
-      return loadPartCategories();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadPartCategories(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadPartCategories?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadPartCategories != null) {
-      return loadPartCategories(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadPartCategories implements PartsEvent {
-  const factory _LoadPartCategories() = _$LoadPartCategoriesImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadInventoryImplCopyWith<$Res> {
-  factory _$$LoadInventoryImplCopyWith(
-          _$LoadInventoryImpl value, $Res Function(_$LoadInventoryImpl) then) =
-      __$$LoadInventoryImplCopyWithImpl<$Res>;
+abstract mixin class _$FilterByCategoryCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$FilterByCategoryCopyWith(
+          _FilterByCategory value, $Res Function(_FilterByCategory) _then) =
+      __$FilterByCategoryCopyWithImpl;
   @useResult
-  $Res call({int page, int limit, bool? lowStockOnly});
+  $Res call({String? category});
 }
 
 /// @nodoc
-class __$$LoadInventoryImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadInventoryImpl>
-    implements _$$LoadInventoryImplCopyWith<$Res> {
-  __$$LoadInventoryImplCopyWithImpl(
-      _$LoadInventoryImpl _value, $Res Function(_$LoadInventoryImpl) _then)
-      : super(_value, _then);
+class __$FilterByCategoryCopyWithImpl<$Res>
+    implements _$FilterByCategoryCopyWith<$Res> {
+  __$FilterByCategoryCopyWithImpl(this._self, this._then);
 
+  final _FilterByCategory _self;
+  final $Res Function(_FilterByCategory) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? page = null,
-    Object? limit = null,
-    Object? lowStockOnly = freezed,
+    Object? category = freezed,
   }) {
-    return _then(_$LoadInventoryImpl(
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as int,
-      limit: null == limit
-          ? _value.limit
-          : limit // ignore: cast_nullable_to_non_nullable
-              as int,
-      lowStockOnly: freezed == lowStockOnly
-          ? _value.lowStockOnly
-          : lowStockOnly // ignore: cast_nullable_to_non_nullable
-              as bool?,
+    return _then(_FilterByCategory(
+      freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$LoadInventoryImpl implements _LoadInventory {
-  const _$LoadInventoryImpl(
-      {this.page = 1, this.limit = 20, this.lowStockOnly});
+class _FilterByStatus implements PartsEvent {
+  const _FilterByStatus(this.status);
 
-  @override
-  @JsonKey()
-  final int page;
-  @override
-  @JsonKey()
-  final int limit;
-  @override
-  final bool? lowStockOnly;
+  final PartStatus? status;
 
-  @override
-  String toString() {
-    return 'PartsEvent.loadInventory(page: $page, limit: $limit, lowStockOnly: $lowStockOnly)';
-  }
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FilterByStatusCopyWith<_FilterByStatus> get copyWith =>
+      __$FilterByStatusCopyWithImpl<_FilterByStatus>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadInventoryImpl &&
+            other is _FilterByStatus &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, status);
+
+  @override
+  String toString() {
+    return 'PartsEvent.filterByStatus(status: $status)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$FilterByStatusCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$FilterByStatusCopyWith(
+          _FilterByStatus value, $Res Function(_FilterByStatus) _then) =
+      __$FilterByStatusCopyWithImpl;
+  @useResult
+  $Res call({PartStatus? status});
+}
+
+/// @nodoc
+class __$FilterByStatusCopyWithImpl<$Res>
+    implements _$FilterByStatusCopyWith<$Res> {
+  __$FilterByStatusCopyWithImpl(this._self, this._then);
+
+  final _FilterByStatus _self;
+  final $Res Function(_FilterByStatus) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? status = freezed,
+  }) {
+    return _then(_FilterByStatus(
+      freezed == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PartStatus?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _LoadLowStockParts implements PartsEvent {
+  const _LoadLowStockParts();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoadLowStockParts);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PartsEvent.loadLowStockParts()';
+  }
+}
+
+/// @nodoc
+
+class _LoadPartCategories implements PartsEvent {
+  const _LoadPartCategories();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoadPartCategories);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PartsEvent.loadPartCategories()';
+  }
+}
+
+/// @nodoc
+
+class _LoadInventory implements PartsEvent {
+  const _LoadInventory({this.page = 1, this.limit = 20, this.lowStockOnly});
+
+  @JsonKey()
+  final int page;
+  @JsonKey()
+  final int limit;
+  final bool? lowStockOnly;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LoadInventoryCopyWith<_LoadInventory> get copyWith =>
+      __$LoadInventoryCopyWithImpl<_LoadInventory>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _LoadInventory &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.limit, limit) || other.limit == limit) &&
             (identical(other.lowStockOnly, lowStockOnly) ||
@@ -2054,233 +858,59 @@ class _$LoadInventoryImpl implements _LoadInventory {
   @override
   int get hashCode => Object.hash(runtimeType, page, limit, lowStockOnly);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$LoadInventoryImplCopyWith<_$LoadInventoryImpl> get copyWith =>
-      __$$LoadInventoryImplCopyWithImpl<_$LoadInventoryImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return loadInventory(page, limit, lowStockOnly);
+  String toString() {
+    return 'PartsEvent.loadInventory(page: $page, limit: $limit, lowStockOnly: $lowStockOnly)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadInventory?.call(page, limit, lowStockOnly);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadInventory != null) {
-      return loadInventory(page, limit, lowStockOnly);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadInventory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadInventory?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadInventory != null) {
-      return loadInventory(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadInventory implements PartsEvent {
-  const factory _LoadInventory(
-      {final int page,
-      final int limit,
-      final bool? lowStockOnly}) = _$LoadInventoryImpl;
-
-  int get page;
-  int get limit;
-  bool? get lowStockOnly;
-  @JsonKey(ignore: true)
-  _$$LoadInventoryImplCopyWith<_$LoadInventoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UpdateInventoryImplCopyWith<$Res> {
-  factory _$$UpdateInventoryImplCopyWith(_$UpdateInventoryImpl value,
-          $Res Function(_$UpdateInventoryImpl) then) =
-      __$$UpdateInventoryImplCopyWithImpl<$Res>;
+abstract mixin class _$LoadInventoryCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$LoadInventoryCopyWith(
+          _LoadInventory value, $Res Function(_LoadInventory) _then) =
+      __$LoadInventoryCopyWithImpl;
   @useResult
-  $Res call(
-      {int partId,
-      int quantityChange,
-      String type,
-      String reason,
-      String? workOrderId,
-      String? notes});
+  $Res call({int page, int limit, bool? lowStockOnly});
 }
 
 /// @nodoc
-class __$$UpdateInventoryImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$UpdateInventoryImpl>
-    implements _$$UpdateInventoryImplCopyWith<$Res> {
-  __$$UpdateInventoryImplCopyWithImpl(
-      _$UpdateInventoryImpl _value, $Res Function(_$UpdateInventoryImpl) _then)
-      : super(_value, _then);
+class __$LoadInventoryCopyWithImpl<$Res>
+    implements _$LoadInventoryCopyWith<$Res> {
+  __$LoadInventoryCopyWithImpl(this._self, this._then);
 
+  final _LoadInventory _self;
+  final $Res Function(_LoadInventory) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? partId = null,
-    Object? quantityChange = null,
-    Object? type = null,
-    Object? reason = null,
-    Object? workOrderId = freezed,
-    Object? notes = freezed,
+    Object? page = null,
+    Object? limit = null,
+    Object? lowStockOnly = freezed,
   }) {
-    return _then(_$UpdateInventoryImpl(
-      partId: null == partId
-          ? _value.partId
-          : partId // ignore: cast_nullable_to_non_nullable
+    return _then(_LoadInventory(
+      page: null == page
+          ? _self.page
+          : page // ignore: cast_nullable_to_non_nullable
               as int,
-      quantityChange: null == quantityChange
-          ? _value.quantityChange
-          : quantityChange // ignore: cast_nullable_to_non_nullable
+      limit: null == limit
+          ? _self.limit
+          : limit // ignore: cast_nullable_to_non_nullable
               as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
+      lowStockOnly: freezed == lowStockOnly
+          ? _self.lowStockOnly
+          : lowStockOnly // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$UpdateInventoryImpl implements _UpdateInventory {
-  const _$UpdateInventoryImpl(
+class _UpdateInventory implements PartsEvent {
+  const _UpdateInventory(
       {required this.partId,
       required this.quantityChange,
       required this.type,
@@ -2288,29 +918,25 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
       this.workOrderId,
       this.notes});
 
-  @override
   final int partId;
-  @override
   final int quantityChange;
-  @override
   final String type;
-  @override
   final String reason;
-  @override
   final String? workOrderId;
-  @override
   final String? notes;
 
-  @override
-  String toString() {
-    return 'PartsEvent.updateInventory(partId: $partId, quantityChange: $quantityChange, type: $type, reason: $reason, workOrderId: $workOrderId, notes: $notes)';
-  }
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UpdateInventoryCopyWith<_UpdateInventory> get copyWith =>
+      __$UpdateInventoryCopyWithImpl<_UpdateInventory>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdateInventoryImpl &&
+            other is _UpdateInventory &&
             (identical(other.partId, partId) || other.partId == partId) &&
             (identical(other.quantityChange, quantityChange) ||
                 other.quantityChange == quantityChange) &&
@@ -2325,243 +951,101 @@ class _$UpdateInventoryImpl implements _UpdateInventory {
   int get hashCode => Object.hash(
       runtimeType, partId, quantityChange, type, reason, workOrderId, notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateInventoryImplCopyWith<_$UpdateInventoryImpl> get copyWith =>
-      __$$UpdateInventoryImplCopyWithImpl<_$UpdateInventoryImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
-  }) {
-    return updateInventory(
-        partId, quantityChange, type, reason, workOrderId, notes);
+  String toString() {
+    return 'PartsEvent.updateInventory(partId: $partId, quantityChange: $quantityChange, type: $type, reason: $reason, workOrderId: $workOrderId, notes: $notes)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return updateInventory?.call(
-        partId, quantityChange, type, reason, workOrderId, notes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (updateInventory != null) {
-      return updateInventory(
-          partId, quantityChange, type, reason, workOrderId, notes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return updateInventory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return updateInventory?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (updateInventory != null) {
-      return updateInventory(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdateInventory implements PartsEvent {
-  const factory _UpdateInventory(
-      {required final int partId,
-      required final int quantityChange,
-      required final String type,
-      required final String reason,
-      final String? workOrderId,
-      final String? notes}) = _$UpdateInventoryImpl;
-
-  int get partId;
-  int get quantityChange;
-  String get type;
-  String get reason;
-  String? get workOrderId;
-  String? get notes;
-  @JsonKey(ignore: true)
-  _$$UpdateInventoryImplCopyWith<_$UpdateInventoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LoadInventoryHistoryImplCopyWith<$Res> {
-  factory _$$LoadInventoryHistoryImplCopyWith(_$LoadInventoryHistoryImpl value,
-          $Res Function(_$LoadInventoryHistoryImpl) then) =
-      __$$LoadInventoryHistoryImplCopyWithImpl<$Res>;
+abstract mixin class _$UpdateInventoryCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$UpdateInventoryCopyWith(
+          _UpdateInventory value, $Res Function(_UpdateInventory) _then) =
+      __$UpdateInventoryCopyWithImpl;
   @useResult
-  $Res call({int partId, int page, int limit});
+  $Res call(
+      {int partId,
+      int quantityChange,
+      String type,
+      String reason,
+      String? workOrderId,
+      String? notes});
 }
 
 /// @nodoc
-class __$$LoadInventoryHistoryImplCopyWithImpl<$Res>
-    extends _$PartsEventCopyWithImpl<$Res, _$LoadInventoryHistoryImpl>
-    implements _$$LoadInventoryHistoryImplCopyWith<$Res> {
-  __$$LoadInventoryHistoryImplCopyWithImpl(_$LoadInventoryHistoryImpl _value,
-      $Res Function(_$LoadInventoryHistoryImpl) _then)
-      : super(_value, _then);
+class __$UpdateInventoryCopyWithImpl<$Res>
+    implements _$UpdateInventoryCopyWith<$Res> {
+  __$UpdateInventoryCopyWithImpl(this._self, this._then);
 
+  final _UpdateInventory _self;
+  final $Res Function(_UpdateInventory) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? partId = null,
-    Object? page = null,
-    Object? limit = null,
+    Object? quantityChange = null,
+    Object? type = null,
+    Object? reason = null,
+    Object? workOrderId = freezed,
+    Object? notes = freezed,
   }) {
-    return _then(_$LoadInventoryHistoryImpl(
+    return _then(_UpdateInventory(
       partId: null == partId
-          ? _value.partId
+          ? _self.partId
           : partId // ignore: cast_nullable_to_non_nullable
               as int,
-      page: null == page
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
+      quantityChange: null == quantityChange
+          ? _self.quantityChange
+          : quantityChange // ignore: cast_nullable_to_non_nullable
               as int,
-      limit: null == limit
-          ? _value.limit
-          : limit // ignore: cast_nullable_to_non_nullable
-              as int,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$LoadInventoryHistoryImpl implements _LoadInventoryHistory {
-  const _$LoadInventoryHistoryImpl(
+class _LoadInventoryHistory implements PartsEvent {
+  const _LoadInventoryHistory(
       {required this.partId, this.page = 1, this.limit = 20});
 
-  @override
   final int partId;
-  @override
   @JsonKey()
   final int page;
-  @override
   @JsonKey()
   final int limit;
 
-  @override
-  String toString() {
-    return 'PartsEvent.loadInventoryHistory(partId: $partId, page: $page, limit: $limit)';
-  }
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LoadInventoryHistoryCopyWith<_LoadInventoryHistory> get copyWith =>
+      __$LoadInventoryHistoryCopyWithImpl<_LoadInventoryHistory>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadInventoryHistoryImpl &&
+            other is _LoadInventoryHistory &&
             (identical(other.partId, partId) || other.partId == partId) &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.limit, limit) || other.limit == limit));
@@ -2570,165 +1054,53 @@ class _$LoadInventoryHistoryImpl implements _LoadInventoryHistory {
   @override
   int get hashCode => Object.hash(runtimeType, partId, page, limit);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'PartsEvent.loadInventoryHistory(partId: $partId, page: $page, limit: $limit)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$LoadInventoryHistoryCopyWith<$Res>
+    implements $PartsEventCopyWith<$Res> {
+  factory _$LoadInventoryHistoryCopyWith(_LoadInventoryHistory value,
+          $Res Function(_LoadInventoryHistory) _then) =
+      __$LoadInventoryHistoryCopyWithImpl;
+  @useResult
+  $Res call({int partId, int page, int limit});
+}
+
+/// @nodoc
+class __$LoadInventoryHistoryCopyWithImpl<$Res>
+    implements _$LoadInventoryHistoryCopyWith<$Res> {
+  __$LoadInventoryHistoryCopyWithImpl(this._self, this._then);
+
+  final _LoadInventoryHistory _self;
+  final $Res Function(_LoadInventoryHistory) _then;
+
+  /// Create a copy of PartsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$LoadInventoryHistoryImplCopyWith<_$LoadInventoryHistoryImpl>
-      get copyWith =>
-          __$$LoadInventoryHistoryImplCopyWithImpl<_$LoadInventoryHistoryImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int page, int limit, String? category,
-            PartStatus? status, String? searchQuery)
-        loadParts,
-    required TResult Function() refreshParts,
-    required TResult Function() loadMoreParts,
-    required TResult Function(
-            String query, String? category, PartStatus? status)
-        searchParts,
-    required TResult Function() clearSearch,
-    required TResult Function(String? category) filterByCategory,
-    required TResult Function(PartStatus? status) filterByStatus,
-    required TResult Function() loadLowStockParts,
-    required TResult Function() loadPartCategories,
-    required TResult Function(int page, int limit, bool? lowStockOnly)
-        loadInventory,
-    required TResult Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)
-        updateInventory,
-    required TResult Function(int partId, int page, int limit)
-        loadInventoryHistory,
+  $Res call({
+    Object? partId = null,
+    Object? page = null,
+    Object? limit = null,
   }) {
-    return loadInventoryHistory(partId, page, limit);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult? Function()? refreshParts,
-    TResult? Function()? loadMoreParts,
-    TResult? Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult? Function()? clearSearch,
-    TResult? Function(String? category)? filterByCategory,
-    TResult? Function(PartStatus? status)? filterByStatus,
-    TResult? Function()? loadLowStockParts,
-    TResult? Function()? loadPartCategories,
-    TResult? Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult? Function(int partId, int quantityChange, String type,
-            String reason, String? workOrderId, String? notes)?
-        updateInventory,
-    TResult? Function(int partId, int page, int limit)? loadInventoryHistory,
-  }) {
-    return loadInventoryHistory?.call(partId, page, limit);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int page, int limit, String? category, PartStatus? status,
-            String? searchQuery)?
-        loadParts,
-    TResult Function()? refreshParts,
-    TResult Function()? loadMoreParts,
-    TResult Function(String query, String? category, PartStatus? status)?
-        searchParts,
-    TResult Function()? clearSearch,
-    TResult Function(String? category)? filterByCategory,
-    TResult Function(PartStatus? status)? filterByStatus,
-    TResult Function()? loadLowStockParts,
-    TResult Function()? loadPartCategories,
-    TResult Function(int page, int limit, bool? lowStockOnly)? loadInventory,
-    TResult Function(int partId, int quantityChange, String type, String reason,
-            String? workOrderId, String? notes)?
-        updateInventory,
-    TResult Function(int partId, int page, int limit)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadInventoryHistory != null) {
-      return loadInventoryHistory(partId, page, limit);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadParts value) loadParts,
-    required TResult Function(_RefreshParts value) refreshParts,
-    required TResult Function(_LoadMoreParts value) loadMoreParts,
-    required TResult Function(_SearchParts value) searchParts,
-    required TResult Function(_ClearSearch value) clearSearch,
-    required TResult Function(_FilterByCategory value) filterByCategory,
-    required TResult Function(_FilterByStatus value) filterByStatus,
-    required TResult Function(_LoadLowStockParts value) loadLowStockParts,
-    required TResult Function(_LoadPartCategories value) loadPartCategories,
-    required TResult Function(_LoadInventory value) loadInventory,
-    required TResult Function(_UpdateInventory value) updateInventory,
-    required TResult Function(_LoadInventoryHistory value) loadInventoryHistory,
-  }) {
-    return loadInventoryHistory(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadParts value)? loadParts,
-    TResult? Function(_RefreshParts value)? refreshParts,
-    TResult? Function(_LoadMoreParts value)? loadMoreParts,
-    TResult? Function(_SearchParts value)? searchParts,
-    TResult? Function(_ClearSearch value)? clearSearch,
-    TResult? Function(_FilterByCategory value)? filterByCategory,
-    TResult? Function(_FilterByStatus value)? filterByStatus,
-    TResult? Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult? Function(_LoadPartCategories value)? loadPartCategories,
-    TResult? Function(_LoadInventory value)? loadInventory,
-    TResult? Function(_UpdateInventory value)? updateInventory,
-    TResult? Function(_LoadInventoryHistory value)? loadInventoryHistory,
-  }) {
-    return loadInventoryHistory?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadParts value)? loadParts,
-    TResult Function(_RefreshParts value)? refreshParts,
-    TResult Function(_LoadMoreParts value)? loadMoreParts,
-    TResult Function(_SearchParts value)? searchParts,
-    TResult Function(_ClearSearch value)? clearSearch,
-    TResult Function(_FilterByCategory value)? filterByCategory,
-    TResult Function(_FilterByStatus value)? filterByStatus,
-    TResult Function(_LoadLowStockParts value)? loadLowStockParts,
-    TResult Function(_LoadPartCategories value)? loadPartCategories,
-    TResult Function(_LoadInventory value)? loadInventory,
-    TResult Function(_UpdateInventory value)? updateInventory,
-    TResult Function(_LoadInventoryHistory value)? loadInventoryHistory,
-    required TResult orElse(),
-  }) {
-    if (loadInventoryHistory != null) {
-      return loadInventoryHistory(this);
-    }
-    return orElse();
+    return _then(_LoadInventoryHistory(
+      partId: null == partId
+          ? _self.partId
+          : partId // ignore: cast_nullable_to_non_nullable
+              as int,
+      page: null == page
+          ? _self.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int,
+      limit: null == limit
+          ? _self.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
-abstract class _LoadInventoryHistory implements PartsEvent {
-  const factory _LoadInventoryHistory(
-      {required final int partId,
-      final int page,
-      final int limit}) = _$LoadInventoryHistoryImpl;
-
-  int get partId;
-  int get page;
-  int get limit;
-  @JsonKey(ignore: true)
-  _$$LoadInventoryHistoryImplCopyWith<_$LoadInventoryHistoryImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

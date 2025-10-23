@@ -5,7 +5,7 @@ part 'inventory_dto.freezed.dart';
 part 'inventory_dto.g.dart';
 
 @freezed
-class InventoryDto with _$InventoryDto {
+abstract class InventoryDto with _$InventoryDto {
   const factory InventoryDto({
     @JsonKey(name: 'part_id') required int partId,
     @JsonKey(name: 'part_number') required String partNumber,
@@ -22,7 +22,7 @@ class InventoryDto with _$InventoryDto {
 }
 
 @freezed
-class InventoryUpdateDto with _$InventoryUpdateDto {
+abstract class InventoryUpdateDto with _$InventoryUpdateDto {
   const factory InventoryUpdateDto({
     @JsonKey(name: 'part_id') required int partId,
     @JsonKey(name: 'quantity_change') required int quantityChange,
@@ -38,7 +38,7 @@ class InventoryUpdateDto with _$InventoryUpdateDto {
 }
 
 @freezed
-class InventoryUpdateRequest with _$InventoryUpdateRequest {
+abstract class InventoryUpdateRequest with _$InventoryUpdateRequest {
   const factory InventoryUpdateRequest({
     @JsonKey(name: 'quantity_change') required int quantityChange,
     required String type,
@@ -52,7 +52,7 @@ class InventoryUpdateRequest with _$InventoryUpdateRequest {
 }
 
 @freezed
-class PartsResponse with _$PartsResponse {
+abstract class PartsResponse with _$PartsResponse {
   const factory PartsResponse({
     required List<PartDto> parts,
     // Optional pagination fields for backward compatibility
@@ -66,7 +66,7 @@ class PartsResponse with _$PartsResponse {
 }
 
 @freezed
-class InventoryResponse with _$InventoryResponse {
+abstract class InventoryResponse with _$InventoryResponse {
   const factory InventoryResponse({
     required List<InventoryDto> inventory,
     @JsonKey(name: 'total_count') required int totalCount,

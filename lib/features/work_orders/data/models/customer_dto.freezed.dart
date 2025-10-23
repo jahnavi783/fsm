@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,123 +9,65 @@ part of 'customer_dto.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-CustomerDto _$CustomerDtoFromJson(Map<String, dynamic> json) {
-  return _CustomerDto.fromJson(json);
-}
 
 /// @nodoc
 mixin _$CustomerDto {
-  int get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String? get phone => throw _privateConstructorUsedError;
-  String? get address => throw _privateConstructorUsedError;
-  String? get city => throw _privateConstructorUsedError;
-  String? get state => throw _privateConstructorUsedError;
+  int get id;
+  String get name;
+  String get email;
+  String? get phone;
+  String? get address;
+  String? get city;
+  String? get state;
   @JsonKey(name: 'postal_code')
-  String? get postalCode => throw _privateConstructorUsedError;
-  String? get country => throw _privateConstructorUsedError;
+  String? get postalCode;
+  String? get country;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $CustomerDtoCopyWith<CustomerDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CustomerDtoCopyWith<$Res> {
-  factory $CustomerDtoCopyWith(
-          CustomerDto value, $Res Function(CustomerDto) then) =
-      _$CustomerDtoCopyWithImpl<$Res, CustomerDto>;
-  @useResult
-  $Res call(
-      {int id,
-      String name,
-      String email,
-      String? phone,
-      String? address,
-      String? city,
-      String? state,
-      @JsonKey(name: 'postal_code') String? postalCode,
-      String? country});
-}
-
-/// @nodoc
-class _$CustomerDtoCopyWithImpl<$Res, $Val extends CustomerDto>
-    implements $CustomerDtoCopyWith<$Res> {
-  _$CustomerDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of CustomerDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $CustomerDtoCopyWith<CustomerDto> get copyWith =>
+      _$CustomerDtoCopyWithImpl<CustomerDto>(this as CustomerDto, _$identity);
+
+  /// Serializes this CustomerDto to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? email = null,
-    Object? phone = freezed,
-    Object? address = freezed,
-    Object? city = freezed,
-    Object? state = freezed,
-    Object? postalCode = freezed,
-    Object? country = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CustomerDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.state, state) || other.state == state) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.country, country) || other.country == country));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, email, phone, address,
+      city, state, postalCode, country);
+
+  @override
+  String toString() {
+    return 'CustomerDto(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
   }
 }
 
 /// @nodoc
-abstract class _$$CustomerDtoImplCopyWith<$Res>
-    implements $CustomerDtoCopyWith<$Res> {
-  factory _$$CustomerDtoImplCopyWith(
-          _$CustomerDtoImpl value, $Res Function(_$CustomerDtoImpl) then) =
-      __$$CustomerDtoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $CustomerDtoCopyWith<$Res> {
+  factory $CustomerDtoCopyWith(
+          CustomerDto value, $Res Function(CustomerDto) _then) =
+      _$CustomerDtoCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -140,13 +82,14 @@ abstract class _$$CustomerDtoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CustomerDtoImplCopyWithImpl<$Res>
-    extends _$CustomerDtoCopyWithImpl<$Res, _$CustomerDtoImpl>
-    implements _$$CustomerDtoImplCopyWith<$Res> {
-  __$$CustomerDtoImplCopyWithImpl(
-      _$CustomerDtoImpl _value, $Res Function(_$CustomerDtoImpl) _then)
-      : super(_value, _then);
+class _$CustomerDtoCopyWithImpl<$Res> implements $CustomerDtoCopyWith<$Res> {
+  _$CustomerDtoCopyWithImpl(this._self, this._then);
 
+  final CustomerDto _self;
+  final $Res Function(CustomerDto) _then;
+
+  /// Create a copy of CustomerDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -160,51 +103,265 @@ class __$$CustomerDtoImplCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? country = freezed,
   }) {
-    return _then(_$CustomerDtoImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
-          ? _value.email
+          ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
       phone: freezed == phone
-          ? _value.phone
+          ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
       address: freezed == address
-          ? _value.address
+          ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
       city: freezed == city
-          ? _value.city
+          ? _self.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
       state: freezed == state
-          ? _value.state
+          ? _self.state
           : state // ignore: cast_nullable_to_non_nullable
               as String?,
       postalCode: freezed == postalCode
-          ? _value.postalCode
+          ? _self.postalCode
           : postalCode // ignore: cast_nullable_to_non_nullable
               as String?,
       country: freezed == country
-          ? _value.country
+          ? _self.country
           : country // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [CustomerDto].
+extension CustomerDtoPatterns on CustomerDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CustomerDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CustomerDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CustomerDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            String? country)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto() when $default != null:
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            String? country)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto():
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            String? country)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerDto() when $default != null:
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$CustomerDtoImpl implements _CustomerDto {
-  const _$CustomerDtoImpl(
+class _CustomerDto implements CustomerDto {
+  const _CustomerDto(
       {required this.id,
       required this.name,
       required this.email,
@@ -214,9 +371,8 @@ class _$CustomerDtoImpl implements _CustomerDto {
       this.state,
       @JsonKey(name: 'postal_code') this.postalCode,
       this.country});
-
-  factory _$CustomerDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CustomerDtoImplFromJson(json);
+  factory _CustomerDto.fromJson(Map<String, dynamic> json) =>
+      _$CustomerDtoFromJson(json);
 
   @override
   final int id;
@@ -238,16 +394,26 @@ class _$CustomerDtoImpl implements _CustomerDto {
   @override
   final String? country;
 
+  /// Create a copy of CustomerDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'CustomerDto(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CustomerDtoCopyWith<_CustomerDto> get copyWith =>
+      __$CustomerDtoCopyWithImpl<_CustomerDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$CustomerDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerDtoImpl &&
+            other is _CustomerDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
@@ -260,61 +426,98 @@ class _$CustomerDtoImpl implements _CustomerDto {
             (identical(other.country, country) || other.country == country));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, email, phone, address,
       city, state, postalCode, country);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$CustomerDtoImplCopyWith<_$CustomerDtoImpl> get copyWith =>
-      __$$CustomerDtoImplCopyWithImpl<_$CustomerDtoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CustomerDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'CustomerDto(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
   }
 }
 
-abstract class _CustomerDto implements CustomerDto {
-  const factory _CustomerDto(
-      {required final int id,
-      required final String name,
-      required final String email,
-      final String? phone,
-      final String? address,
-      final String? city,
-      final String? state,
-      @JsonKey(name: 'postal_code') final String? postalCode,
-      final String? country}) = _$CustomerDtoImpl;
-
-  factory _CustomerDto.fromJson(Map<String, dynamic> json) =
-      _$CustomerDtoImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$CustomerDtoCopyWith<$Res>
+    implements $CustomerDtoCopyWith<$Res> {
+  factory _$CustomerDtoCopyWith(
+          _CustomerDto value, $Res Function(_CustomerDto) _then) =
+      __$CustomerDtoCopyWithImpl;
   @override
-  int get id;
-  @override
-  String get name;
-  @override
-  String get email;
-  @override
-  String? get phone;
-  @override
-  String? get address;
-  @override
-  String? get city;
-  @override
-  String? get state;
-  @override
-  @JsonKey(name: 'postal_code')
-  String? get postalCode;
-  @override
-  String? get country;
-  @override
-  @JsonKey(ignore: true)
-  _$$CustomerDtoImplCopyWith<_$CustomerDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String email,
+      String? phone,
+      String? address,
+      String? city,
+      String? state,
+      @JsonKey(name: 'postal_code') String? postalCode,
+      String? country});
 }
+
+/// @nodoc
+class __$CustomerDtoCopyWithImpl<$Res> implements _$CustomerDtoCopyWith<$Res> {
+  __$CustomerDtoCopyWithImpl(this._self, this._then);
+
+  final _CustomerDto _self;
+  final $Res Function(_CustomerDto) _then;
+
+  /// Create a copy of CustomerDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? email = null,
+    Object? phone = freezed,
+    Object? address = freezed,
+    Object? city = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
+  }) {
+    return _then(_CustomerDto(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: freezed == phone
+          ? _self.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _self.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _self.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      state: freezed == state
+          ? _self.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _self.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _self.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+// dart format on

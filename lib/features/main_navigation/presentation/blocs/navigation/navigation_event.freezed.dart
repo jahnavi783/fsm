@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,59 +9,46 @@ part of 'navigation_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$NavigationEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is NavigationEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationEvent()';
+  }
+}
+
+/// @nodoc
+class $NavigationEventCopyWith<$Res> {
+  $NavigationEventCopyWith(
+      NavigationEvent _, $Res Function(NavigationEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [NavigationEvent].
+extension NavigationEventPatterns on NavigationEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_TabChanged value)? tabChanged,
@@ -70,204 +57,270 @@ mixin _$NavigationEvent {
     TResult Function(_NavigateToDocument value)? navigateToDocument,
     TResult Function(_NavigateToPart value)? navigateToPart,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $NavigationEventCopyWith<$Res> {
-  factory $NavigationEventCopyWith(
-          NavigationEvent value, $Res Function(NavigationEvent) then) =
-      _$NavigationEventCopyWithImpl<$Res, NavigationEvent>;
-}
-
-/// @nodoc
-class _$NavigationEventCopyWithImpl<$Res, $Val extends NavigationEvent>
-    implements $NavigationEventCopyWith<$Res> {
-  _$NavigationEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$TabChangedImplCopyWith<$Res> {
-  factory _$$TabChangedImplCopyWith(
-          _$TabChangedImpl value, $Res Function(_$TabChangedImpl) then) =
-      __$$TabChangedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int index});
-}
-
-/// @nodoc
-class __$$TabChangedImplCopyWithImpl<$Res>
-    extends _$NavigationEventCopyWithImpl<$Res, _$TabChangedImpl>
-    implements _$$TabChangedImplCopyWith<$Res> {
-  __$$TabChangedImplCopyWithImpl(
-      _$TabChangedImpl _value, $Res Function(_$TabChangedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? index = null,
   }) {
-    return _then(_$TabChangedImpl(
-      null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _TabChanged() when tabChanged != null:
+        return tabChanged(_that);
+      case _NavigateToTab() when navigateToTab != null:
+        return navigateToTab(_that);
+      case _NavigateToWorkOrder() when navigateToWorkOrder != null:
+        return navigateToWorkOrder(_that);
+      case _NavigateToDocument() when navigateToDocument != null:
+        return navigateToDocument(_that);
+      case _NavigateToPart() when navigateToPart != null:
+        return navigateToPart(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_TabChanged value) tabChanged,
+    required TResult Function(_NavigateToTab value) navigateToTab,
+    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
+    required TResult Function(_NavigateToDocument value) navigateToDocument,
+    required TResult Function(_NavigateToPart value) navigateToPart,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TabChanged():
+        return tabChanged(_that);
+      case _NavigateToTab():
+        return navigateToTab(_that);
+      case _NavigateToWorkOrder():
+        return navigateToWorkOrder(_that);
+      case _NavigateToDocument():
+        return navigateToDocument(_that);
+      case _NavigateToPart():
+        return navigateToPart(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_TabChanged value)? tabChanged,
+    TResult? Function(_NavigateToTab value)? navigateToTab,
+    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
+    TResult? Function(_NavigateToDocument value)? navigateToDocument,
+    TResult? Function(_NavigateToPart value)? navigateToPart,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TabChanged() when tabChanged != null:
+        return tabChanged(_that);
+      case _NavigateToTab() when navigateToTab != null:
+        return navigateToTab(_that);
+      case _NavigateToWorkOrder() when navigateToWorkOrder != null:
+        return navigateToWorkOrder(_that);
+      case _NavigateToDocument() when navigateToDocument != null:
+        return navigateToDocument(_that);
+      case _NavigateToPart() when navigateToPart != null:
+        return navigateToPart(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int index)? tabChanged,
+    TResult Function(int index)? navigateToTab,
+    TResult Function(int workOrderId)? navigateToWorkOrder,
+    TResult Function(int documentId)? navigateToDocument,
+    TResult Function(int partId)? navigateToPart,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TabChanged() when tabChanged != null:
+        return tabChanged(_that.index);
+      case _NavigateToTab() when navigateToTab != null:
+        return navigateToTab(_that.index);
+      case _NavigateToWorkOrder() when navigateToWorkOrder != null:
+        return navigateToWorkOrder(_that.workOrderId);
+      case _NavigateToDocument() when navigateToDocument != null:
+        return navigateToDocument(_that.documentId);
+      case _NavigateToPart() when navigateToPart != null:
+        return navigateToPart(_that.partId);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int index) tabChanged,
+    required TResult Function(int index) navigateToTab,
+    required TResult Function(int workOrderId) navigateToWorkOrder,
+    required TResult Function(int documentId) navigateToDocument,
+    required TResult Function(int partId) navigateToPart,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TabChanged():
+        return tabChanged(_that.index);
+      case _NavigateToTab():
+        return navigateToTab(_that.index);
+      case _NavigateToWorkOrder():
+        return navigateToWorkOrder(_that.workOrderId);
+      case _NavigateToDocument():
+        return navigateToDocument(_that.documentId);
+      case _NavigateToPart():
+        return navigateToPart(_that.partId);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int index)? tabChanged,
+    TResult? Function(int index)? navigateToTab,
+    TResult? Function(int workOrderId)? navigateToWorkOrder,
+    TResult? Function(int documentId)? navigateToDocument,
+    TResult? Function(int partId)? navigateToPart,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TabChanged() when tabChanged != null:
+        return tabChanged(_that.index);
+      case _NavigateToTab() when navigateToTab != null:
+        return navigateToTab(_that.index);
+      case _NavigateToWorkOrder() when navigateToWorkOrder != null:
+        return navigateToWorkOrder(_that.workOrderId);
+      case _NavigateToDocument() when navigateToDocument != null:
+        return navigateToDocument(_that.documentId);
+      case _NavigateToPart() when navigateToPart != null:
+        return navigateToPart(_that.partId);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$TabChangedImpl implements _TabChanged {
-  const _$TabChangedImpl(this.index);
+class _TabChanged implements NavigationEvent {
+  const _TabChanged(this.index);
+
+  final int index;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TabChangedCopyWith<_TabChanged> get copyWith =>
+      __$TabChangedCopyWithImpl<_TabChanged>(this, _$identity);
 
   @override
-  final int index;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _TabChanged &&
+            (identical(other.index, index) || other.index == index));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, index);
 
   @override
   String toString() {
     return 'NavigationEvent.tabChanged(index: $index)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TabChangedImpl &&
-            (identical(other.index, index) || other.index == index));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, index);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$TabChangedImplCopyWith<_$TabChangedImpl> get copyWith =>
-      __$$TabChangedImplCopyWithImpl<_$TabChangedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
-  }) {
-    return tabChanged(index);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) {
-    return tabChanged?.call(index);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (tabChanged != null) {
-      return tabChanged(index);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) {
-    return tabChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) {
-    return tabChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TabChanged value)? tabChanged,
-    TResult Function(_NavigateToTab value)? navigateToTab,
-    TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult Function(_NavigateToDocument value)? navigateToDocument,
-    TResult Function(_NavigateToPart value)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (tabChanged != null) {
-      return tabChanged(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _TabChanged implements NavigationEvent {
-  const factory _TabChanged(final int index) = _$TabChangedImpl;
-
-  int get index;
-  @JsonKey(ignore: true)
-  _$$TabChangedImplCopyWith<_$TabChangedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$NavigateToTabImplCopyWith<$Res> {
-  factory _$$NavigateToTabImplCopyWith(
-          _$NavigateToTabImpl value, $Res Function(_$NavigateToTabImpl) then) =
-      __$$NavigateToTabImplCopyWithImpl<$Res>;
+abstract mixin class _$TabChangedCopyWith<$Res>
+    implements $NavigationEventCopyWith<$Res> {
+  factory _$TabChangedCopyWith(
+          _TabChanged value, $Res Function(_TabChanged) _then) =
+      __$TabChangedCopyWithImpl;
   @useResult
   $Res call({int index});
 }
 
 /// @nodoc
-class __$$NavigateToTabImplCopyWithImpl<$Res>
-    extends _$NavigationEventCopyWithImpl<$Res, _$NavigateToTabImpl>
-    implements _$$NavigateToTabImplCopyWith<$Res> {
-  __$$NavigateToTabImplCopyWithImpl(
-      _$NavigateToTabImpl _value, $Res Function(_$NavigateToTabImpl) _then)
-      : super(_value, _then);
+class __$TabChangedCopyWithImpl<$Res> implements _$TabChangedCopyWith<$Res> {
+  __$TabChangedCopyWithImpl(this._self, this._then);
 
+  final _TabChanged _self;
+  final $Res Function(_TabChanged) _then;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? index = null,
   }) {
-    return _then(_$NavigateToTabImpl(
+    return _then(_TabChanged(
       null == index
-          ? _value.index
+          ? _self.index
           : index // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -276,149 +329,128 @@ class __$$NavigateToTabImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NavigateToTabImpl implements _NavigateToTab {
-  const _$NavigateToTabImpl(this.index);
+class _NavigateToTab implements NavigationEvent {
+  const _NavigateToTab(this.index);
 
-  @override
   final int index;
 
-  @override
-  String toString() {
-    return 'NavigationEvent.navigateToTab(index: $index)';
-  }
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NavigateToTabCopyWith<_NavigateToTab> get copyWith =>
+      __$NavigateToTabCopyWithImpl<_NavigateToTab>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NavigateToTabImpl &&
+            other is _NavigateToTab &&
             (identical(other.index, index) || other.index == index));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, index);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$NavigateToTabImplCopyWith<_$NavigateToTabImpl> get copyWith =>
-      __$$NavigateToTabImplCopyWithImpl<_$NavigateToTabImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
-  }) {
-    return navigateToTab(index);
+  String toString() {
+    return 'NavigationEvent.navigateToTab(index: $index)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) {
-    return navigateToTab?.call(index);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToTab != null) {
-      return navigateToTab(index);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) {
-    return navigateToTab(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) {
-    return navigateToTab?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TabChanged value)? tabChanged,
-    TResult Function(_NavigateToTab value)? navigateToTab,
-    TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult Function(_NavigateToDocument value)? navigateToDocument,
-    TResult Function(_NavigateToPart value)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToTab != null) {
-      return navigateToTab(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _NavigateToTab implements NavigationEvent {
-  const factory _NavigateToTab(final int index) = _$NavigateToTabImpl;
-
-  int get index;
-  @JsonKey(ignore: true)
-  _$$NavigateToTabImplCopyWith<_$NavigateToTabImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$NavigateToWorkOrderImplCopyWith<$Res> {
-  factory _$$NavigateToWorkOrderImplCopyWith(_$NavigateToWorkOrderImpl value,
-          $Res Function(_$NavigateToWorkOrderImpl) then) =
-      __$$NavigateToWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$NavigateToTabCopyWith<$Res>
+    implements $NavigationEventCopyWith<$Res> {
+  factory _$NavigateToTabCopyWith(
+          _NavigateToTab value, $Res Function(_NavigateToTab) _then) =
+      __$NavigateToTabCopyWithImpl;
+  @useResult
+  $Res call({int index});
+}
+
+/// @nodoc
+class __$NavigateToTabCopyWithImpl<$Res>
+    implements _$NavigateToTabCopyWith<$Res> {
+  __$NavigateToTabCopyWithImpl(this._self, this._then);
+
+  final _NavigateToTab _self;
+  final $Res Function(_NavigateToTab) _then;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? index = null,
+  }) {
+    return _then(_NavigateToTab(
+      null == index
+          ? _self.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _NavigateToWorkOrder implements NavigationEvent {
+  const _NavigateToWorkOrder(this.workOrderId);
+
+  final int workOrderId;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NavigateToWorkOrderCopyWith<_NavigateToWorkOrder> get copyWith =>
+      __$NavigateToWorkOrderCopyWithImpl<_NavigateToWorkOrder>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _NavigateToWorkOrder &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, workOrderId);
+
+  @override
+  String toString() {
+    return 'NavigationEvent.navigateToWorkOrder(workOrderId: $workOrderId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$NavigateToWorkOrderCopyWith<$Res>
+    implements $NavigationEventCopyWith<$Res> {
+  factory _$NavigateToWorkOrderCopyWith(_NavigateToWorkOrder value,
+          $Res Function(_NavigateToWorkOrder) _then) =
+      __$NavigateToWorkOrderCopyWithImpl;
   @useResult
   $Res call({int workOrderId});
 }
 
 /// @nodoc
-class __$$NavigateToWorkOrderImplCopyWithImpl<$Res>
-    extends _$NavigationEventCopyWithImpl<$Res, _$NavigateToWorkOrderImpl>
-    implements _$$NavigateToWorkOrderImplCopyWith<$Res> {
-  __$$NavigateToWorkOrderImplCopyWithImpl(_$NavigateToWorkOrderImpl _value,
-      $Res Function(_$NavigateToWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$NavigateToWorkOrderCopyWithImpl<$Res>
+    implements _$NavigateToWorkOrderCopyWith<$Res> {
+  __$NavigateToWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _NavigateToWorkOrder _self;
+  final $Res Function(_NavigateToWorkOrder) _then;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
   }) {
-    return _then(_$NavigateToWorkOrderImpl(
+    return _then(_NavigateToWorkOrder(
       null == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -427,152 +459,63 @@ class __$$NavigateToWorkOrderImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NavigateToWorkOrderImpl implements _NavigateToWorkOrder {
-  const _$NavigateToWorkOrderImpl(this.workOrderId);
+class _NavigateToDocument implements NavigationEvent {
+  const _NavigateToDocument(this.documentId);
 
-  @override
-  final int workOrderId;
+  final int documentId;
 
-  @override
-  String toString() {
-    return 'NavigationEvent.navigateToWorkOrder(workOrderId: $workOrderId)';
-  }
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NavigateToDocumentCopyWith<_NavigateToDocument> get copyWith =>
+      __$NavigateToDocumentCopyWithImpl<_NavigateToDocument>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NavigateToWorkOrderImpl &&
-            (identical(other.workOrderId, workOrderId) ||
-                other.workOrderId == workOrderId));
+            other is _NavigateToDocument &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workOrderId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$NavigateToWorkOrderImplCopyWith<_$NavigateToWorkOrderImpl> get copyWith =>
-      __$$NavigateToWorkOrderImplCopyWithImpl<_$NavigateToWorkOrderImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, documentId);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
-  }) {
-    return navigateToWorkOrder(workOrderId);
+  String toString() {
+    return 'NavigationEvent.navigateToDocument(documentId: $documentId)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) {
-    return navigateToWorkOrder?.call(workOrderId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToWorkOrder != null) {
-      return navigateToWorkOrder(workOrderId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) {
-    return navigateToWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) {
-    return navigateToWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TabChanged value)? tabChanged,
-    TResult Function(_NavigateToTab value)? navigateToTab,
-    TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult Function(_NavigateToDocument value)? navigateToDocument,
-    TResult Function(_NavigateToPart value)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToWorkOrder != null) {
-      return navigateToWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _NavigateToWorkOrder implements NavigationEvent {
-  const factory _NavigateToWorkOrder(final int workOrderId) =
-      _$NavigateToWorkOrderImpl;
-
-  int get workOrderId;
-  @JsonKey(ignore: true)
-  _$$NavigateToWorkOrderImplCopyWith<_$NavigateToWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$NavigateToDocumentImplCopyWith<$Res> {
-  factory _$$NavigateToDocumentImplCopyWith(_$NavigateToDocumentImpl value,
-          $Res Function(_$NavigateToDocumentImpl) then) =
-      __$$NavigateToDocumentImplCopyWithImpl<$Res>;
+abstract mixin class _$NavigateToDocumentCopyWith<$Res>
+    implements $NavigationEventCopyWith<$Res> {
+  factory _$NavigateToDocumentCopyWith(
+          _NavigateToDocument value, $Res Function(_NavigateToDocument) _then) =
+      __$NavigateToDocumentCopyWithImpl;
   @useResult
   $Res call({int documentId});
 }
 
 /// @nodoc
-class __$$NavigateToDocumentImplCopyWithImpl<$Res>
-    extends _$NavigationEventCopyWithImpl<$Res, _$NavigateToDocumentImpl>
-    implements _$$NavigateToDocumentImplCopyWith<$Res> {
-  __$$NavigateToDocumentImplCopyWithImpl(_$NavigateToDocumentImpl _value,
-      $Res Function(_$NavigateToDocumentImpl) _then)
-      : super(_value, _then);
+class __$NavigateToDocumentCopyWithImpl<$Res>
+    implements _$NavigateToDocumentCopyWith<$Res> {
+  __$NavigateToDocumentCopyWithImpl(this._self, this._then);
 
+  final _NavigateToDocument _self;
+  final $Res Function(_NavigateToDocument) _then;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? documentId = null,
   }) {
-    return _then(_$NavigateToDocumentImpl(
+    return _then(_NavigateToDocument(
       null == documentId
-          ? _value.documentId
+          ? _self.documentId
           : documentId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -581,275 +524,66 @@ class __$$NavigateToDocumentImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NavigateToDocumentImpl implements _NavigateToDocument {
-  const _$NavigateToDocumentImpl(this.documentId);
+class _NavigateToPart implements NavigationEvent {
+  const _NavigateToPart(this.partId);
 
-  @override
-  final int documentId;
-
-  @override
-  String toString() {
-    return 'NavigationEvent.navigateToDocument(documentId: $documentId)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$NavigateToDocumentImpl &&
-            (identical(other.documentId, documentId) ||
-                other.documentId == documentId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, documentId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$NavigateToDocumentImplCopyWith<_$NavigateToDocumentImpl> get copyWith =>
-      __$$NavigateToDocumentImplCopyWithImpl<_$NavigateToDocumentImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
-  }) {
-    return navigateToDocument(documentId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) {
-    return navigateToDocument?.call(documentId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToDocument != null) {
-      return navigateToDocument(documentId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) {
-    return navigateToDocument(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) {
-    return navigateToDocument?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TabChanged value)? tabChanged,
-    TResult Function(_NavigateToTab value)? navigateToTab,
-    TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult Function(_NavigateToDocument value)? navigateToDocument,
-    TResult Function(_NavigateToPart value)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToDocument != null) {
-      return navigateToDocument(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _NavigateToDocument implements NavigationEvent {
-  const factory _NavigateToDocument(final int documentId) =
-      _$NavigateToDocumentImpl;
-
-  int get documentId;
-  @JsonKey(ignore: true)
-  _$$NavigateToDocumentImplCopyWith<_$NavigateToDocumentImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$NavigateToPartImplCopyWith<$Res> {
-  factory _$$NavigateToPartImplCopyWith(_$NavigateToPartImpl value,
-          $Res Function(_$NavigateToPartImpl) then) =
-      __$$NavigateToPartImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int partId});
-}
-
-/// @nodoc
-class __$$NavigateToPartImplCopyWithImpl<$Res>
-    extends _$NavigationEventCopyWithImpl<$Res, _$NavigateToPartImpl>
-    implements _$$NavigateToPartImplCopyWith<$Res> {
-  __$$NavigateToPartImplCopyWithImpl(
-      _$NavigateToPartImpl _value, $Res Function(_$NavigateToPartImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partId = null,
-  }) {
-    return _then(_$NavigateToPartImpl(
-      null == partId
-          ? _value.partId
-          : partId // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$NavigateToPartImpl implements _NavigateToPart {
-  const _$NavigateToPartImpl(this.partId);
-
-  @override
   final int partId;
 
-  @override
-  String toString() {
-    return 'NavigationEvent.navigateToPart(partId: $partId)';
-  }
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NavigateToPartCopyWith<_NavigateToPart> get copyWith =>
+      __$NavigateToPartCopyWithImpl<_NavigateToPart>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NavigateToPartImpl &&
+            other is _NavigateToPart &&
             (identical(other.partId, partId) || other.partId == partId));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, partId);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'NavigationEvent.navigateToPart(partId: $partId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$NavigateToPartCopyWith<$Res>
+    implements $NavigationEventCopyWith<$Res> {
+  factory _$NavigateToPartCopyWith(
+          _NavigateToPart value, $Res Function(_NavigateToPart) _then) =
+      __$NavigateToPartCopyWithImpl;
+  @useResult
+  $Res call({int partId});
+}
+
+/// @nodoc
+class __$NavigateToPartCopyWithImpl<$Res>
+    implements _$NavigateToPartCopyWith<$Res> {
+  __$NavigateToPartCopyWithImpl(this._self, this._then);
+
+  final _NavigateToPart _self;
+  final $Res Function(_NavigateToPart) _then;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$NavigateToPartImplCopyWith<_$NavigateToPartImpl> get copyWith =>
-      __$$NavigateToPartImplCopyWithImpl<_$NavigateToPartImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int index) tabChanged,
-    required TResult Function(int index) navigateToTab,
-    required TResult Function(int workOrderId) navigateToWorkOrder,
-    required TResult Function(int documentId) navigateToDocument,
-    required TResult Function(int partId) navigateToPart,
+  $Res call({
+    Object? partId = null,
   }) {
-    return navigateToPart(partId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int index)? tabChanged,
-    TResult? Function(int index)? navigateToTab,
-    TResult? Function(int workOrderId)? navigateToWorkOrder,
-    TResult? Function(int documentId)? navigateToDocument,
-    TResult? Function(int partId)? navigateToPart,
-  }) {
-    return navigateToPart?.call(partId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int index)? tabChanged,
-    TResult Function(int index)? navigateToTab,
-    TResult Function(int workOrderId)? navigateToWorkOrder,
-    TResult Function(int documentId)? navigateToDocument,
-    TResult Function(int partId)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToPart != null) {
-      return navigateToPart(partId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_TabChanged value) tabChanged,
-    required TResult Function(_NavigateToTab value) navigateToTab,
-    required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
-    required TResult Function(_NavigateToDocument value) navigateToDocument,
-    required TResult Function(_NavigateToPart value) navigateToPart,
-  }) {
-    return navigateToPart(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_TabChanged value)? tabChanged,
-    TResult? Function(_NavigateToTab value)? navigateToTab,
-    TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult? Function(_NavigateToDocument value)? navigateToDocument,
-    TResult? Function(_NavigateToPart value)? navigateToPart,
-  }) {
-    return navigateToPart?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_TabChanged value)? tabChanged,
-    TResult Function(_NavigateToTab value)? navigateToTab,
-    TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
-    TResult Function(_NavigateToDocument value)? navigateToDocument,
-    TResult Function(_NavigateToPart value)? navigateToPart,
-    required TResult orElse(),
-  }) {
-    if (navigateToPart != null) {
-      return navigateToPart(this);
-    }
-    return orElse();
+    return _then(_NavigateToPart(
+      null == partId
+          ? _self.partId
+          : partId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
-abstract class _NavigateToPart implements NavigationEvent {
-  const factory _NavigateToPart(final int partId) = _$NavigateToPartImpl;
-
-  int get partId;
-  @JsonKey(ignore: true)
-  _$$NavigateToPartImplCopyWith<_$NavigateToPartImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

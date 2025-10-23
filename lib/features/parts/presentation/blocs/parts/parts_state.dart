@@ -4,7 +4,7 @@ import '../../../domain/entities/part_entity.dart';
 part 'parts_state.freezed.dart';
 
 @freezed
-class PartsState with _$PartsState {
+abstract class PartsState with _$PartsState {
   const factory PartsState({
     @Default(PartsStatus.initial) PartsStatus status,
     @Default([]) List<PartEntity> parts,

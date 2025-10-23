@@ -68,7 +68,7 @@ extension AppPermissionStatusExtension on AppPermissionStatus {
 
 /// Permission request result entity
 @freezed
-class PermissionResult with _$PermissionResult {
+abstract class PermissionResult with _$PermissionResult {
   const factory PermissionResult({
     required AppPermission permission,
     required AppPermissionStatus status,
@@ -78,7 +78,7 @@ class PermissionResult with _$PermissionResult {
 
 /// Multiple permissions result
 @freezed
-class MultiplePermissionResult with _$MultiplePermissionResult {
+abstract class MultiplePermissionResult with _$MultiplePermissionResult {
   const factory MultiplePermissionResult({
     required Map<AppPermission, AppPermissionStatus> results,
     @Default([]) List<AppPermission> grantedPermissions,
@@ -110,7 +110,7 @@ class MultiplePermissionResult with _$MultiplePermissionResult {
 
 /// Permission request configuration
 @freezed
-class PermissionRequestConfig with _$PermissionRequestConfig {
+abstract class PermissionRequestConfig with _$PermissionRequestConfig {
   const factory PermissionRequestConfig({
     required AppPermission permission,
     @Default('') String title,
@@ -126,7 +126,7 @@ class PermissionRequestConfig with _$PermissionRequestConfig {
 
 /// Batch permission request configuration
 @freezed
-class BatchPermissionRequestConfig with _$BatchPermissionRequestConfig {
+abstract class BatchPermissionRequestConfig with _$BatchPermissionRequestConfig {
   const factory BatchPermissionRequestConfig({
     required List<AppPermission> permissions,
     @Default('Permissions Required') String title,

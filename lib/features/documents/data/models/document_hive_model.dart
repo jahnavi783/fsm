@@ -9,7 +9,7 @@ part 'document_hive_model.g.dart';
 
 @freezed
 @HiveType(typeId: HiveBoxes.documentEntityTypeId)
-class DocumentHiveModel with _$DocumentHiveModel {
+abstract class DocumentHiveModel with _$DocumentHiveModel {
   const factory DocumentHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String title,

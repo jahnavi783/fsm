@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,356 +9,358 @@ part of 'part_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PartEntity {
-  int get id => throw _privateConstructorUsedError;
-  String get partNumber => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
-  double get price => throw _privateConstructorUsedError;
-  int get stockQuantity => throw _privateConstructorUsedError;
-  String get unit => throw _privateConstructorUsedError;
-  List<String> get compatibleModels => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
-  String? get specifications => throw _privateConstructorUsedError;
+  int? get quantity;
+  String? get partName;
+  num? get unitPrice;
+  String? get partNumber;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PartEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PartEntityCopyWith<PartEntity> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartEntityCopyWith<$Res> {
-  factory $PartEntityCopyWith(
-          PartEntity value, $Res Function(PartEntity) then) =
-      _$PartEntityCopyWithImpl<$Res, PartEntity>;
-  @useResult
-  $Res call(
-      {int id,
-      String partNumber,
-      String name,
-      String description,
-      String category,
-      double price,
-      int stockQuantity,
-      String unit,
-      List<String> compatibleModels,
-      String? imageUrl,
-      String? specifications});
-}
-
-/// @nodoc
-class _$PartEntityCopyWithImpl<$Res, $Val extends PartEntity>
-    implements $PartEntityCopyWith<$Res> {
-  _$PartEntityCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? partNumber = null,
-    Object? name = null,
-    Object? description = null,
-    Object? category = null,
-    Object? price = null,
-    Object? stockQuantity = null,
-    Object? unit = null,
-    Object? compatibleModels = null,
-    Object? imageUrl = freezed,
-    Object? specifications = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
-      stockQuantity: null == stockQuantity
-          ? _value.stockQuantity
-          : stockQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      unit: null == unit
-          ? _value.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String,
-      compatibleModels: null == compatibleModels
-          ? _value.compatibleModels
-          : compatibleModels // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      specifications: freezed == specifications
-          ? _value.specifications
-          : specifications // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PartEntityImplCopyWith<$Res>
-    implements $PartEntityCopyWith<$Res> {
-  factory _$$PartEntityImplCopyWith(
-          _$PartEntityImpl value, $Res Function(_$PartEntityImpl) then) =
-      __$$PartEntityImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {int id,
-      String partNumber,
-      String name,
-      String description,
-      String category,
-      double price,
-      int stockQuantity,
-      String unit,
-      List<String> compatibleModels,
-      String? imageUrl,
-      String? specifications});
-}
-
-/// @nodoc
-class __$$PartEntityImplCopyWithImpl<$Res>
-    extends _$PartEntityCopyWithImpl<$Res, _$PartEntityImpl>
-    implements _$$PartEntityImplCopyWith<$Res> {
-  __$$PartEntityImplCopyWithImpl(
-      _$PartEntityImpl _value, $Res Function(_$PartEntityImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? partNumber = null,
-    Object? name = null,
-    Object? description = null,
-    Object? category = null,
-    Object? price = null,
-    Object? stockQuantity = null,
-    Object? unit = null,
-    Object? compatibleModels = null,
-    Object? imageUrl = freezed,
-    Object? specifications = freezed,
-  }) {
-    return _then(_$PartEntityImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
-      stockQuantity: null == stockQuantity
-          ? _value.stockQuantity
-          : stockQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      unit: null == unit
-          ? _value.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String,
-      compatibleModels: null == compatibleModels
-          ? _value._compatibleModels
-          : compatibleModels // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      specifications: freezed == specifications
-          ? _value.specifications
-          : specifications // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$PartEntityImpl implements _PartEntity {
-  const _$PartEntityImpl(
-      {required this.id,
-      required this.partNumber,
-      required this.name,
-      required this.description,
-      required this.category,
-      required this.price,
-      required this.stockQuantity,
-      required this.unit,
-      final List<String> compatibleModels = const [],
-      this.imageUrl,
-      this.specifications})
-      : _compatibleModels = compatibleModels;
-
-  @override
-  final int id;
-  @override
-  final String partNumber;
-  @override
-  final String name;
-  @override
-  final String description;
-  @override
-  final String category;
-  @override
-  final double price;
-  @override
-  final int stockQuantity;
-  @override
-  final String unit;
-  final List<String> _compatibleModels;
-  @override
-  @JsonKey()
-  List<String> get compatibleModels {
-    if (_compatibleModels is EqualUnmodifiableListView)
-      return _compatibleModels;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_compatibleModels);
-  }
-
-  @override
-  final String? imageUrl;
-  @override
-  final String? specifications;
-
-  @override
-  String toString() {
-    return 'PartEntity(id: $id, partNumber: $partNumber, name: $name, description: $description, category: $category, price: $price, stockQuantity: $stockQuantity, unit: $unit, compatibleModels: $compatibleModels, imageUrl: $imageUrl, specifications: $specifications)';
-  }
+      _$PartEntityCopyWithImpl<PartEntity>(this as PartEntity, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartEntityImpl &&
-            (identical(other.id, id) || other.id == id) &&
+            other is PartEntity &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            (identical(other.partName, partName) ||
+                other.partName == partName) &&
+            (identical(other.unitPrice, unitPrice) ||
+                other.unitPrice == unitPrice) &&
             (identical(other.partNumber, partNumber) ||
-                other.partNumber == partNumber) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.stockQuantity, stockQuantity) ||
-                other.stockQuantity == stockQuantity) &&
-            (identical(other.unit, unit) || other.unit == unit) &&
-            const DeepCollectionEquality()
-                .equals(other._compatibleModels, _compatibleModels) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
-            (identical(other.specifications, specifications) ||
-                other.specifications == specifications));
+                other.partNumber == partNumber));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      partNumber,
-      name,
-      description,
-      category,
-      price,
-      stockQuantity,
-      unit,
-      const DeepCollectionEquality().hash(_compatibleModels),
-      imageUrl,
-      specifications);
+  int get hashCode =>
+      Object.hash(runtimeType, quantity, partName, unitPrice, partNumber);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'PartEntity(quantity: $quantity, partName: $partName, unitPrice: $unitPrice, partNumber: $partNumber)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $PartEntityCopyWith<$Res> {
+  factory $PartEntityCopyWith(
+          PartEntity value, $Res Function(PartEntity) _then) =
+      _$PartEntityCopyWithImpl;
+  @useResult
+  $Res call(
+      {int? quantity, String? partName, num? unitPrice, String? partNumber});
+}
+
+/// @nodoc
+class _$PartEntityCopyWithImpl<$Res> implements $PartEntityCopyWith<$Res> {
+  _$PartEntityCopyWithImpl(this._self, this._then);
+
+  final PartEntity _self;
+  final $Res Function(PartEntity) _then;
+
+  /// Create a copy of PartEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? quantity = freezed,
+    Object? partName = freezed,
+    Object? unitPrice = freezed,
+    Object? partNumber = freezed,
+  }) {
+    return _then(_self.copyWith(
+      quantity: freezed == quantity
+          ? _self.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      partName: freezed == partName
+          ? _self.partName
+          : partName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      unitPrice: freezed == unitPrice
+          ? _self.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as num?,
+      partNumber: freezed == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [PartEntity].
+extension PartEntityPatterns on PartEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartEntity value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartEntity value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartEntity value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int? quantity, String? partName, num? unitPrice,
+            String? partNumber)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity() when $default != null:
+        return $default(
+            _that.quantity, _that.partName, _that.unitPrice, _that.partNumber);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int? quantity, String? partName, num? unitPrice, String? partNumber)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity():
+        return $default(
+            _that.quantity, _that.partName, _that.unitPrice, _that.partNumber);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int? quantity, String? partName, num? unitPrice,
+            String? partNumber)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartEntity() when $default != null:
+        return $default(
+            _that.quantity, _that.partName, _that.unitPrice, _that.partNumber);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _PartEntity implements PartEntity {
+  const _PartEntity(
+      {this.quantity, this.partName, this.unitPrice, this.partNumber});
+
+  @override
+  final int? quantity;
+  @override
+  final String? partName;
+  @override
+  final num? unitPrice;
+  @override
+  final String? partNumber;
+
+  /// Create a copy of PartEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartEntityCopyWith<_PartEntity> get copyWith =>
+      __$PartEntityCopyWithImpl<_PartEntity>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PartEntity &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            (identical(other.partName, partName) ||
+                other.partName == partName) &&
+            (identical(other.unitPrice, unitPrice) ||
+                other.unitPrice == unitPrice) &&
+            (identical(other.partNumber, partNumber) ||
+                other.partNumber == partNumber));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, quantity, partName, unitPrice, partNumber);
+
+  @override
+  String toString() {
+    return 'PartEntity(quantity: $quantity, partName: $partName, unitPrice: $unitPrice, partNumber: $partNumber)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PartEntityCopyWith<$Res>
+    implements $PartEntityCopyWith<$Res> {
+  factory _$PartEntityCopyWith(
+          _PartEntity value, $Res Function(_PartEntity) _then) =
+      __$PartEntityCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? quantity, String? partName, num? unitPrice, String? partNumber});
+}
+
+/// @nodoc
+class __$PartEntityCopyWithImpl<$Res> implements _$PartEntityCopyWith<$Res> {
+  __$PartEntityCopyWithImpl(this._self, this._then);
+
+  final _PartEntity _self;
+  final $Res Function(_PartEntity) _then;
+
+  /// Create a copy of PartEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PartEntityImplCopyWith<_$PartEntityImpl> get copyWith =>
-      __$$PartEntityImplCopyWithImpl<_$PartEntityImpl>(this, _$identity);
+  $Res call({
+    Object? quantity = freezed,
+    Object? partName = freezed,
+    Object? unitPrice = freezed,
+    Object? partNumber = freezed,
+  }) {
+    return _then(_PartEntity(
+      quantity: freezed == quantity
+          ? _self.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      partName: freezed == partName
+          ? _self.partName
+          : partName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      unitPrice: freezed == unitPrice
+          ? _self.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as num?,
+      partNumber: freezed == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
-abstract class _PartEntity implements PartEntity {
-  const factory _PartEntity(
-      {required final int id,
-      required final String partNumber,
-      required final String name,
-      required final String description,
-      required final String category,
-      required final double price,
-      required final int stockQuantity,
-      required final String unit,
-      final List<String> compatibleModels,
-      final String? imageUrl,
-      final String? specifications}) = _$PartEntityImpl;
-
-  @override
-  int get id;
-  @override
-  String get partNumber;
-  @override
-  String get name;
-  @override
-  String get description;
-  @override
-  String get category;
-  @override
-  double get price;
-  @override
-  int get stockQuantity;
-  @override
-  String get unit;
-  @override
-  List<String> get compatibleModels;
-  @override
-  String? get imageUrl;
-  @override
-  String? get specifications;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartEntityImplCopyWith<_$PartEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

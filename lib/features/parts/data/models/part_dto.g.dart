@@ -6,8 +6,7 @@ part of 'part_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PartDtoImpl _$$PartDtoImplFromJson(Map<String, dynamic> json) =>
-    _$PartDtoImpl(
+_PartDto _$PartDtoFromJson(Map<String, dynamic> json) => _PartDto(
       partNumber: json['part_number'] as String,
       partName: json['part_name'] as String,
       category: json['category'] as String,
@@ -16,8 +15,7 @@ _$PartDtoImpl _$$PartDtoImplFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String,
     );
 
-Map<String, dynamic> _$$PartDtoImplToJson(_$PartDtoImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PartDtoToJson(_PartDto instance) => <String, dynamic>{
       'part_number': instance.partNumber,
       'part_name': instance.partName,
       'category': instance.category,
@@ -26,14 +24,14 @@ Map<String, dynamic> _$$PartDtoImplToJson(_$PartDtoImpl instance) =>
       'status': instance.status,
     };
 
-_$PartsResponseImpl _$$PartsResponseImplFromJson(Map<String, dynamic> json) =>
-    _$PartsResponseImpl(
+_PartsResponse _$PartsResponseFromJson(Map<String, dynamic> json) =>
+    _PartsResponse(
       parts: (json['parts'] as List<dynamic>)
           .map((e) => PartDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$PartsResponseImplToJson(_$PartsResponseImpl instance) =>
+Map<String, dynamic> _$PartsResponseToJson(_PartsResponse instance) =>
     <String, dynamic>{
       'parts': instance.parts,
     };

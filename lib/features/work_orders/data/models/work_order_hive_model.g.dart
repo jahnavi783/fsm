@@ -8,7 +8,7 @@ part of 'work_order_hive_model.dart';
 
 class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
   @override
-  final int typeId = 1;
+  final typeId = 1;
 
   @override
   WorkOrderHiveModel read(BinaryReader reader) {
@@ -34,18 +34,25 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       completedAt: fields[14] as DateTime?,
       pauseLogs: fields[15] as String?,
       workLog: fields[16] as String?,
-      partsUsed: (fields[17] as List).cast<PartUsedHiveModel>(),
-      images: (fields[18] as List).cast<String>(),
+      partsUsed: fields[17] == null
+          ? []
+          : (fields[17] as List).cast<PartUsedHiveModel>(),
+      images: fields[18] == null ? [] : (fields[18] as List).cast<String>(),
       customer: fields[19] as CustomerHiveModel?,
       locationDetails: fields[20] as LocationHiveModel?,
       serviceRequest: fields[21] as ServiceRequestHiveModel?,
-      workLogs: (fields[22] as List).cast<WorkLogHiveModel>(),
-      requiredSkills: (fields[23] as List).cast<String>(),
-      requiredParts: (fields[24] as List).cast<PartHiveModel>(),
-      attachments: (fields[25] as List).cast<String>(),
+      workLogs: fields[22] == null
+          ? []
+          : (fields[22] as List).cast<WorkLogHiveModel>(),
+      requiredSkills:
+          fields[23] == null ? [] : (fields[23] as List).cast<String>(),
+      requiredParts:
+          fields[24] == null ? [] : (fields[24] as List).cast<PartHiveModel>(),
+      attachments:
+          fields[25] == null ? [] : (fields[25] as List).cast<String>(),
       completionNotes: fields[26] as String?,
       cachedAt: fields[27] as DateTime,
-      isPendingSync: fields[28] as bool,
+      isPendingSync: fields[28] == null ? false : fields[28] as bool,
       pendingAction: fields[29] as String?,
     );
   }
@@ -129,7 +136,7 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
 
 class PartUsedHiveModelAdapter extends TypeAdapter<PartUsedHiveModel> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   PartUsedHiveModel read(BinaryReader reader) {
@@ -172,7 +179,7 @@ class PartUsedHiveModelAdapter extends TypeAdapter<PartUsedHiveModel> {
 
 class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
   @override
-  final int typeId = 3;
+  final typeId = 3;
 
   @override
   CustomerHiveModel read(BinaryReader reader) {
@@ -230,7 +237,7 @@ class CustomerHiveModelAdapter extends TypeAdapter<CustomerHiveModel> {
 
 class LocationHiveModelAdapter extends TypeAdapter<LocationHiveModel> {
   @override
-  final int typeId = 4;
+  final typeId = 4;
 
   @override
   LocationHiveModel read(BinaryReader reader) {
@@ -292,7 +299,7 @@ class LocationHiveModelAdapter extends TypeAdapter<LocationHiveModel> {
 class ServiceRequestHiveModelAdapter
     extends TypeAdapter<ServiceRequestHiveModel> {
   @override
-  final int typeId = 5;
+  final typeId = 5;
 
   @override
   ServiceRequestHiveModel read(BinaryReader reader) {
@@ -356,7 +363,7 @@ class ServiceRequestHiveModelAdapter
 
 class WorkLogHiveModelAdapter extends TypeAdapter<WorkLogHiveModel> {
   @override
-  final int typeId = 6;
+  final typeId = 6;
 
   @override
   WorkLogHiveModel read(BinaryReader reader) {
@@ -419,9 +426,8 @@ class WorkLogHiveModelAdapter extends TypeAdapter<WorkLogHiveModel> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WorkOrderHiveModelImpl _$$WorkOrderHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$WorkOrderHiveModelImpl(
+_WorkOrderHiveModel _$WorkOrderHiveModelFromJson(Map<String, dynamic> json) =>
+    _WorkOrderHiveModel(
       id: (json['id'] as num).toInt(),
       woNumber: json['woNumber'] as String,
       srId: (json['srId'] as num).toInt(),
@@ -488,8 +494,7 @@ _$WorkOrderHiveModelImpl _$$WorkOrderHiveModelImplFromJson(
       pendingAction: json['pendingAction'] as String?,
     );
 
-Map<String, dynamic> _$$WorkOrderHiveModelImplToJson(
-        _$WorkOrderHiveModelImpl instance) =>
+Map<String, dynamic> _$WorkOrderHiveModelToJson(_WorkOrderHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'woNumber': instance.woNumber,
@@ -523,17 +528,15 @@ Map<String, dynamic> _$$WorkOrderHiveModelImplToJson(
       'pendingAction': instance.pendingAction,
     };
 
-_$PartUsedHiveModelImpl _$$PartUsedHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PartUsedHiveModelImpl(
+_PartUsedHiveModel _$PartUsedHiveModelFromJson(Map<String, dynamic> json) =>
+    _PartUsedHiveModel(
       partNumber: json['partNumber'] as String,
       quantityUsed: (json['quantityUsed'] as num).toInt(),
       partName: json['partName'] as String?,
       description: json['description'] as String?,
     );
 
-Map<String, dynamic> _$$PartUsedHiveModelImplToJson(
-        _$PartUsedHiveModelImpl instance) =>
+Map<String, dynamic> _$PartUsedHiveModelToJson(_PartUsedHiveModel instance) =>
     <String, dynamic>{
       'partNumber': instance.partNumber,
       'quantityUsed': instance.quantityUsed,
@@ -541,9 +544,8 @@ Map<String, dynamic> _$$PartUsedHiveModelImplToJson(
       'description': instance.description,
     };
 
-_$CustomerHiveModelImpl _$$CustomerHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$CustomerHiveModelImpl(
+_CustomerHiveModel _$CustomerHiveModelFromJson(Map<String, dynamic> json) =>
+    _CustomerHiveModel(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       email: json['email'] as String,
@@ -555,8 +557,7 @@ _$CustomerHiveModelImpl _$$CustomerHiveModelImplFromJson(
       country: json['country'] as String?,
     );
 
-Map<String, dynamic> _$$CustomerHiveModelImplToJson(
-        _$CustomerHiveModelImpl instance) =>
+Map<String, dynamic> _$CustomerHiveModelToJson(_CustomerHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -569,9 +570,8 @@ Map<String, dynamic> _$$CustomerHiveModelImplToJson(
       'country': instance.country,
     };
 
-_$LocationHiveModelImpl _$$LocationHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$LocationHiveModelImpl(
+_LocationHiveModel _$LocationHiveModelFromJson(Map<String, dynamic> json) =>
+    _LocationHiveModel(
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       address: json['address'] as String?,
@@ -586,8 +586,7 @@ _$LocationHiveModelImpl _$$LocationHiveModelImplFromJson(
           : DateTime.parse(json['capturedAt'] as String),
     );
 
-Map<String, dynamic> _$$LocationHiveModelImplToJson(
-        _$LocationHiveModelImpl instance) =>
+Map<String, dynamic> _$LocationHiveModelToJson(_LocationHiveModel instance) =>
     <String, dynamic>{
       'latitude': instance.latitude,
       'longitude': instance.longitude,
@@ -601,9 +600,9 @@ Map<String, dynamic> _$$LocationHiveModelImplToJson(
       'capturedAt': instance.capturedAt?.toIso8601String(),
     };
 
-_$ServiceRequestHiveModelImpl _$$ServiceRequestHiveModelImplFromJson(
+_ServiceRequestHiveModel _$ServiceRequestHiveModelFromJson(
         Map<String, dynamic> json) =>
-    _$ServiceRequestHiveModelImpl(
+    _ServiceRequestHiveModel(
       srNumber: json['srNumber'] as String,
       srType: json['srType'] as String,
       priority: json['priority'] as String?,
@@ -619,8 +618,8 @@ _$ServiceRequestHiveModelImpl _$$ServiceRequestHiveModelImplFromJson(
           : DateTime.parse(json['visitDate'] as String),
     );
 
-Map<String, dynamic> _$$ServiceRequestHiveModelImplToJson(
-        _$ServiceRequestHiveModelImpl instance) =>
+Map<String, dynamic> _$ServiceRequestHiveModelToJson(
+        _ServiceRequestHiveModel instance) =>
     <String, dynamic>{
       'srNumber': instance.srNumber,
       'srType': instance.srType,
@@ -635,9 +634,8 @@ Map<String, dynamic> _$$ServiceRequestHiveModelImplToJson(
       'visitDate': instance.visitDate?.toIso8601String(),
     };
 
-_$WorkLogHiveModelImpl _$$WorkLogHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$WorkLogHiveModelImpl(
+_WorkLogHiveModel _$WorkLogHiveModelFromJson(Map<String, dynamic> json) =>
+    _WorkLogHiveModel(
       id: (json['id'] as num).toInt(),
       workOrderId: (json['workOrderId'] as num).toInt(),
       type: (json['type'] as num).toInt(),
@@ -650,8 +648,7 @@ _$WorkLogHiveModelImpl _$$WorkLogHiveModelImplFromJson(
       userName: json['userName'] as String?,
     );
 
-Map<String, dynamic> _$$WorkLogHiveModelImplToJson(
-        _$WorkLogHiveModelImpl instance) =>
+Map<String, dynamic> _$WorkLogHiveModelToJson(_WorkLogHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'workOrderId': instance.workOrderId,

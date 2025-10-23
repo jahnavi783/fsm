@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,69 +9,186 @@ part of 'work_order_action_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WorkOrderActionEvent {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is WorkOrderActionEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'WorkOrderActionEvent()';
+  }
+}
+
+/// @nodoc
+class $WorkOrderActionEventCopyWith<$Res> {
+  $WorkOrderActionEventCopyWith(
+      WorkOrderActionEvent _, $Res Function(WorkOrderActionEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [WorkOrderActionEvent].
+extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
+    TResult Function(_StartWorkOrder value)? startWorkOrder,
+    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
+    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
+    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
+    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
+    TResult Function(_CaptureLocation value)? captureLocation,
+    TResult Function(_ClearError value)? clearError,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder() when loadWorkOrder != null:
+        return loadWorkOrder(_that);
+      case _StartWorkOrder() when startWorkOrder != null:
+        return startWorkOrder(_that);
+      case _PauseWorkOrder() when pauseWorkOrder != null:
+        return pauseWorkOrder(_that);
+      case _ResumeWorkOrder() when resumeWorkOrder != null:
+        return resumeWorkOrder(_that);
+      case _CompleteWorkOrder() when completeWorkOrder != null:
+        return completeWorkOrder(_that);
+      case _RejectWorkOrder() when rejectWorkOrder != null:
+        return rejectWorkOrder(_that);
+      case _CaptureLocation() when captureLocation != null:
+        return captureLocation(_that);
+      case _ClearError() when clearError != null:
+        return clearError(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
+    required TResult Function(_StartWorkOrder value) startWorkOrder,
+    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
+    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
+    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
+    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
+    required TResult Function(_CaptureLocation value) captureLocation,
+    required TResult Function(_ClearError value) clearError,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder():
+        return loadWorkOrder(_that);
+      case _StartWorkOrder():
+        return startWorkOrder(_that);
+      case _PauseWorkOrder():
+        return pauseWorkOrder(_that);
+      case _ResumeWorkOrder():
+        return resumeWorkOrder(_that);
+      case _CompleteWorkOrder():
+        return completeWorkOrder(_that);
+      case _RejectWorkOrder():
+        return rejectWorkOrder(_that);
+      case _CaptureLocation():
+        return captureLocation(_that);
+      case _ClearError():
+        return clearError(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
+    TResult? Function(_StartWorkOrder value)? startWorkOrder,
+    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
+    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
+    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
+    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
+    TResult? Function(_CaptureLocation value)? captureLocation,
+    TResult? Function(_ClearError value)? clearError,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder() when loadWorkOrder != null:
+        return loadWorkOrder(_that);
+      case _StartWorkOrder() when startWorkOrder != null:
+        return startWorkOrder(_that);
+      case _PauseWorkOrder() when pauseWorkOrder != null:
+        return pauseWorkOrder(_that);
+      case _ResumeWorkOrder() when resumeWorkOrder != null:
+        return resumeWorkOrder(_that);
+      case _CompleteWorkOrder() when completeWorkOrder != null:
+        return completeWorkOrder(_that);
+      case _RejectWorkOrder() when rejectWorkOrder != null:
+        return rejectWorkOrder(_that);
+      case _CaptureLocation() when captureLocation != null:
+        return captureLocation(_that);
+      case _ClearError() when clearError != null:
+        return clearError(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int workOrderId)? loadWorkOrder,
@@ -99,115 +216,208 @@ mixin _$WorkOrderActionEvent {
     TResult Function()? captureLocation,
     TResult Function()? clearError,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $WorkOrderActionEventCopyWith<$Res> {
-  factory $WorkOrderActionEventCopyWith(WorkOrderActionEvent value,
-          $Res Function(WorkOrderActionEvent) then) =
-      _$WorkOrderActionEventCopyWithImpl<$Res, WorkOrderActionEvent>;
-}
-
-/// @nodoc
-class _$WorkOrderActionEventCopyWithImpl<$Res,
-        $Val extends WorkOrderActionEvent>
-    implements $WorkOrderActionEventCopyWith<$Res> {
-  _$WorkOrderActionEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$LoadWorkOrderImplCopyWith<$Res> {
-  factory _$$LoadWorkOrderImplCopyWith(
-          _$LoadWorkOrderImpl value, $Res Function(_$LoadWorkOrderImpl) then) =
-      __$$LoadWorkOrderImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int workOrderId});
-}
-
-/// @nodoc
-class __$$LoadWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$LoadWorkOrderImpl>
-    implements _$$LoadWorkOrderImplCopyWith<$Res> {
-  __$$LoadWorkOrderImplCopyWithImpl(
-      _$LoadWorkOrderImpl _value, $Res Function(_$LoadWorkOrderImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? workOrderId = null,
   }) {
-    return _then(_$LoadWorkOrderImpl(
-      null == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder() when loadWorkOrder != null:
+        return loadWorkOrder(_that.workOrderId);
+      case _StartWorkOrder() when startWorkOrder != null:
+        return startWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _PauseWorkOrder() when pauseWorkOrder != null:
+        return pauseWorkOrder(_that.workOrderId, _that.reason, _that.latitude,
+            _that.longitude, _that.files);
+      case _ResumeWorkOrder() when resumeWorkOrder != null:
+        return resumeWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _CompleteWorkOrder() when completeWorkOrder != null:
+        return completeWorkOrder(
+            _that.workOrderId,
+            _that.workLog,
+            _that.partsUsed,
+            _that.files,
+            _that.latitude,
+            _that.longitude,
+            _that.completionNotes);
+      case _RejectWorkOrder() when rejectWorkOrder != null:
+        return rejectWorkOrder(
+            _that.workOrderId, _that.reason, _that.latitude, _that.longitude);
+      case _CaptureLocation() when captureLocation != null:
+        return captureLocation();
+      case _ClearError() when clearError != null:
+        return clearError();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int workOrderId) loadWorkOrder,
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
+        startWorkOrder,
+    required TResult Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)
+        pauseWorkOrder,
+    required TResult Function(int workOrderId, double latitude,
+            double longitude, List<File> files, String? notes)
+        resumeWorkOrder,
+    required TResult Function(
+            int workOrderId,
+            String workLog,
+            List<PartUsedEntity> partsUsed,
+            List<File> files,
+            double latitude,
+            double longitude,
+            String? completionNotes)
+        completeWorkOrder,
+    required TResult Function(
+            int workOrderId, String reason, double latitude, double longitude)
+        rejectWorkOrder,
+    required TResult Function() captureLocation,
+    required TResult Function() clearError,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder():
+        return loadWorkOrder(_that.workOrderId);
+      case _StartWorkOrder():
+        return startWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _PauseWorkOrder():
+        return pauseWorkOrder(_that.workOrderId, _that.reason, _that.latitude,
+            _that.longitude, _that.files);
+      case _ResumeWorkOrder():
+        return resumeWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _CompleteWorkOrder():
+        return completeWorkOrder(
+            _that.workOrderId,
+            _that.workLog,
+            _that.partsUsed,
+            _that.files,
+            _that.latitude,
+            _that.longitude,
+            _that.completionNotes);
+      case _RejectWorkOrder():
+        return rejectWorkOrder(
+            _that.workOrderId, _that.reason, _that.latitude, _that.longitude);
+      case _CaptureLocation():
+        return captureLocation();
+      case _ClearError():
+        return clearError();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int workOrderId)? loadWorkOrder,
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
+        startWorkOrder,
+    TResult? Function(int workOrderId, String reason, double latitude,
+            double longitude, List<File> files)?
+        pauseWorkOrder,
+    TResult? Function(int workOrderId, double latitude, double longitude,
+            List<File> files, String? notes)?
+        resumeWorkOrder,
+    TResult? Function(
+            int workOrderId,
+            String workLog,
+            List<PartUsedEntity> partsUsed,
+            List<File> files,
+            double latitude,
+            double longitude,
+            String? completionNotes)?
+        completeWorkOrder,
+    TResult? Function(
+            int workOrderId, String reason, double latitude, double longitude)?
+        rejectWorkOrder,
+    TResult? Function()? captureLocation,
+    TResult? Function()? clearError,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadWorkOrder() when loadWorkOrder != null:
+        return loadWorkOrder(_that.workOrderId);
+      case _StartWorkOrder() when startWorkOrder != null:
+        return startWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _PauseWorkOrder() when pauseWorkOrder != null:
+        return pauseWorkOrder(_that.workOrderId, _that.reason, _that.latitude,
+            _that.longitude, _that.files);
+      case _ResumeWorkOrder() when resumeWorkOrder != null:
+        return resumeWorkOrder(_that.workOrderId, _that.latitude,
+            _that.longitude, _that.files, _that.notes);
+      case _CompleteWorkOrder() when completeWorkOrder != null:
+        return completeWorkOrder(
+            _that.workOrderId,
+            _that.workLog,
+            _that.partsUsed,
+            _that.files,
+            _that.latitude,
+            _that.longitude,
+            _that.completionNotes);
+      case _RejectWorkOrder() when rejectWorkOrder != null:
+        return rejectWorkOrder(
+            _that.workOrderId, _that.reason, _that.latitude, _that.longitude);
+      case _CaptureLocation() when captureLocation != null:
+        return captureLocation();
+      case _ClearError() when clearError != null:
+        return clearError();
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$LoadWorkOrderImpl implements _LoadWorkOrder {
-  const _$LoadWorkOrderImpl(this.workOrderId);
+class _LoadWorkOrder implements WorkOrderActionEvent {
+  const _LoadWorkOrder(this.workOrderId);
 
-  @override
   final int workOrderId;
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.loadWorkOrder(workOrderId: $workOrderId)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LoadWorkOrderCopyWith<_LoadWorkOrder> get copyWith =>
+      __$LoadWorkOrderCopyWithImpl<_LoadWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadWorkOrderImpl &&
+            other is _LoadWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId));
   }
@@ -215,228 +425,49 @@ class _$LoadWorkOrderImpl implements _LoadWorkOrder {
   @override
   int get hashCode => Object.hash(runtimeType, workOrderId);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$LoadWorkOrderImplCopyWith<_$LoadWorkOrderImpl> get copyWith =>
-      __$$LoadWorkOrderImplCopyWithImpl<_$LoadWorkOrderImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return loadWorkOrder(workOrderId);
+  String toString() {
+    return 'WorkOrderActionEvent.loadWorkOrder(workOrderId: $workOrderId)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return loadWorkOrder?.call(workOrderId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (loadWorkOrder != null) {
-      return loadWorkOrder(workOrderId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return loadWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return loadWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (loadWorkOrder != null) {
-      return loadWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadWorkOrder implements WorkOrderActionEvent {
-  const factory _LoadWorkOrder(final int workOrderId) = _$LoadWorkOrderImpl;
-
-  int get workOrderId;
-  @JsonKey(ignore: true)
-  _$$LoadWorkOrderImplCopyWith<_$LoadWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$StartWorkOrderImplCopyWith<$Res> {
-  factory _$$StartWorkOrderImplCopyWith(_$StartWorkOrderImpl value,
-          $Res Function(_$StartWorkOrderImpl) then) =
-      __$$StartWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$LoadWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$LoadWorkOrderCopyWith(
+          _LoadWorkOrder value, $Res Function(_LoadWorkOrder) _then) =
+      __$LoadWorkOrderCopyWithImpl;
   @useResult
-  $Res call(
-      {int workOrderId,
-      double latitude,
-      double longitude,
-      List<File> files,
-      String? notes});
+  $Res call({int workOrderId});
 }
 
 /// @nodoc
-class __$$StartWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$StartWorkOrderImpl>
-    implements _$$StartWorkOrderImplCopyWith<$Res> {
-  __$$StartWorkOrderImplCopyWithImpl(
-      _$StartWorkOrderImpl _value, $Res Function(_$StartWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$LoadWorkOrderCopyWithImpl<$Res>
+    implements _$LoadWorkOrderCopyWith<$Res> {
+  __$LoadWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _LoadWorkOrder _self;
+  final $Res Function(_LoadWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
-    Object? latitude = null,
-    Object? longitude = null,
-    Object? files = null,
-    Object? notes = freezed,
   }) {
-    return _then(_$StartWorkOrderImpl(
-      workOrderId: null == workOrderId
-          ? _value.workOrderId
+    return _then(_LoadWorkOrder(
+      null == workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      files: null == files
-          ? _value._files
-          : files // ignore: cast_nullable_to_non_nullable
-              as List<File>,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$StartWorkOrderImpl implements _StartWorkOrder {
-  const _$StartWorkOrderImpl(
+class _StartWorkOrder implements WorkOrderActionEvent {
+  const _StartWorkOrder(
       {required this.workOrderId,
       required this.latitude,
       required this.longitude,
@@ -444,14 +475,10 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
       this.notes})
       : _files = files;
 
-  @override
   final int workOrderId;
-  @override
   final double latitude;
-  @override
   final double longitude;
   final List<File> _files;
-  @override
   @JsonKey()
   List<File> get files {
     if (_files is EqualUnmodifiableListView) return _files;
@@ -459,19 +486,20 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
     return EqualUnmodifiableListView(_files);
   }
 
-  @override
   final String? notes;
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.startWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$StartWorkOrderCopyWith<_StartWorkOrder> get copyWith =>
+      __$StartWorkOrderCopyWithImpl<_StartWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StartWorkOrderImpl &&
+            other is _StartWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.latitude, latitude) ||
@@ -486,238 +514,74 @@ class _$StartWorkOrderImpl implements _StartWorkOrder {
   int get hashCode => Object.hash(runtimeType, workOrderId, latitude, longitude,
       const DeepCollectionEquality().hash(_files), notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$StartWorkOrderImplCopyWith<_$StartWorkOrderImpl> get copyWith =>
-      __$$StartWorkOrderImplCopyWithImpl<_$StartWorkOrderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return startWorkOrder(workOrderId, latitude, longitude, files, notes);
+  String toString() {
+    return 'WorkOrderActionEvent.startWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return startWorkOrder?.call(workOrderId, latitude, longitude, files, notes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (startWorkOrder != null) {
-      return startWorkOrder(workOrderId, latitude, longitude, files, notes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return startWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return startWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (startWorkOrder != null) {
-      return startWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _StartWorkOrder implements WorkOrderActionEvent {
-  const factory _StartWorkOrder(
-      {required final int workOrderId,
-      required final double latitude,
-      required final double longitude,
-      final List<File> files,
-      final String? notes}) = _$StartWorkOrderImpl;
-
-  int get workOrderId;
-  double get latitude;
-  double get longitude;
-  List<File> get files;
-  String? get notes;
-  @JsonKey(ignore: true)
-  _$$StartWorkOrderImplCopyWith<_$StartWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PauseWorkOrderImplCopyWith<$Res> {
-  factory _$$PauseWorkOrderImplCopyWith(_$PauseWorkOrderImpl value,
-          $Res Function(_$PauseWorkOrderImpl) then) =
-      __$$PauseWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$StartWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$StartWorkOrderCopyWith(
+          _StartWorkOrder value, $Res Function(_StartWorkOrder) _then) =
+      __$StartWorkOrderCopyWithImpl;
   @useResult
   $Res call(
       {int workOrderId,
-      String reason,
       double latitude,
       double longitude,
-      List<File> files});
+      List<File> files,
+      String? notes});
 }
 
 /// @nodoc
-class __$$PauseWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$PauseWorkOrderImpl>
-    implements _$$PauseWorkOrderImplCopyWith<$Res> {
-  __$$PauseWorkOrderImplCopyWithImpl(
-      _$PauseWorkOrderImpl _value, $Res Function(_$PauseWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$StartWorkOrderCopyWithImpl<$Res>
+    implements _$StartWorkOrderCopyWith<$Res> {
+  __$StartWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _StartWorkOrder _self;
+  final $Res Function(_StartWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
-    Object? reason = null,
     Object? latitude = null,
     Object? longitude = null,
     Object? files = null,
+    Object? notes = freezed,
   }) {
-    return _then(_$PauseWorkOrderImpl(
+    return _then(_StartWorkOrder(
       workOrderId: null == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
-              as String,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
       files: null == files
-          ? _value._files
+          ? _self._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<File>,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$PauseWorkOrderImpl implements _PauseWorkOrder {
-  const _$PauseWorkOrderImpl(
+class _PauseWorkOrder implements WorkOrderActionEvent {
+  const _PauseWorkOrder(
       {required this.workOrderId,
       required this.reason,
       required this.latitude,
@@ -725,16 +589,11 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
       final List<File> files = const []})
       : _files = files;
 
-  @override
   final int workOrderId;
-  @override
   final String reason;
-  @override
   final double latitude;
-  @override
   final double longitude;
   final List<File> _files;
-  @override
   @JsonKey()
   List<File> get files {
     if (_files is EqualUnmodifiableListView) return _files;
@@ -742,16 +601,18 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
     return EqualUnmodifiableListView(_files);
   }
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.pauseWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude, files: $files)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PauseWorkOrderCopyWith<_PauseWorkOrder> get copyWith =>
+      __$PauseWorkOrderCopyWithImpl<_PauseWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PauseWorkOrderImpl &&
+            other is _PauseWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.reason, reason) || other.reason == reason) &&
@@ -766,239 +627,74 @@ class _$PauseWorkOrderImpl implements _PauseWorkOrder {
   int get hashCode => Object.hash(runtimeType, workOrderId, reason, latitude,
       longitude, const DeepCollectionEquality().hash(_files));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PauseWorkOrderImplCopyWith<_$PauseWorkOrderImpl> get copyWith =>
-      __$$PauseWorkOrderImplCopyWithImpl<_$PauseWorkOrderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return pauseWorkOrder(workOrderId, reason, latitude, longitude, files);
+  String toString() {
+    return 'WorkOrderActionEvent.pauseWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude, files: $files)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return pauseWorkOrder?.call(
-        workOrderId, reason, latitude, longitude, files);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (pauseWorkOrder != null) {
-      return pauseWorkOrder(workOrderId, reason, latitude, longitude, files);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return pauseWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return pauseWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (pauseWorkOrder != null) {
-      return pauseWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PauseWorkOrder implements WorkOrderActionEvent {
-  const factory _PauseWorkOrder(
-      {required final int workOrderId,
-      required final String reason,
-      required final double latitude,
-      required final double longitude,
-      final List<File> files}) = _$PauseWorkOrderImpl;
-
-  int get workOrderId;
-  String get reason;
-  double get latitude;
-  double get longitude;
-  List<File> get files;
-  @JsonKey(ignore: true)
-  _$$PauseWorkOrderImplCopyWith<_$PauseWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ResumeWorkOrderImplCopyWith<$Res> {
-  factory _$$ResumeWorkOrderImplCopyWith(_$ResumeWorkOrderImpl value,
-          $Res Function(_$ResumeWorkOrderImpl) then) =
-      __$$ResumeWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$PauseWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$PauseWorkOrderCopyWith(
+          _PauseWorkOrder value, $Res Function(_PauseWorkOrder) _then) =
+      __$PauseWorkOrderCopyWithImpl;
   @useResult
   $Res call(
       {int workOrderId,
+      String reason,
       double latitude,
       double longitude,
-      List<File> files,
-      String? notes});
+      List<File> files});
 }
 
 /// @nodoc
-class __$$ResumeWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$ResumeWorkOrderImpl>
-    implements _$$ResumeWorkOrderImplCopyWith<$Res> {
-  __$$ResumeWorkOrderImplCopyWithImpl(
-      _$ResumeWorkOrderImpl _value, $Res Function(_$ResumeWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$PauseWorkOrderCopyWithImpl<$Res>
+    implements _$PauseWorkOrderCopyWith<$Res> {
+  __$PauseWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _PauseWorkOrder _self;
+  final $Res Function(_PauseWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
+    Object? reason = null,
     Object? latitude = null,
     Object? longitude = null,
     Object? files = null,
-    Object? notes = freezed,
   }) {
-    return _then(_$ResumeWorkOrderImpl(
+    return _then(_PauseWorkOrder(
       workOrderId: null == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
       files: null == files
-          ? _value._files
+          ? _self._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<File>,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
-  const _$ResumeWorkOrderImpl(
+class _ResumeWorkOrder implements WorkOrderActionEvent {
+  const _ResumeWorkOrder(
       {required this.workOrderId,
       required this.latitude,
       required this.longitude,
@@ -1006,14 +702,10 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
       this.notes})
       : _files = files;
 
-  @override
   final int workOrderId;
-  @override
   final double latitude;
-  @override
   final double longitude;
   final List<File> _files;
-  @override
   @JsonKey()
   List<File> get files {
     if (_files is EqualUnmodifiableListView) return _files;
@@ -1021,19 +713,20 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
     return EqualUnmodifiableListView(_files);
   }
 
-  @override
   final String? notes;
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.resumeWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ResumeWorkOrderCopyWith<_ResumeWorkOrder> get copyWith =>
+      __$ResumeWorkOrderCopyWithImpl<_ResumeWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ResumeWorkOrderImpl &&
+            other is _ResumeWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.latitude, latitude) ||
@@ -1048,242 +741,65 @@ class _$ResumeWorkOrderImpl implements _ResumeWorkOrder {
   int get hashCode => Object.hash(runtimeType, workOrderId, latitude, longitude,
       const DeepCollectionEquality().hash(_files), notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ResumeWorkOrderImplCopyWith<_$ResumeWorkOrderImpl> get copyWith =>
-      __$$ResumeWorkOrderImplCopyWithImpl<_$ResumeWorkOrderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return resumeWorkOrder(workOrderId, latitude, longitude, files, notes);
+  String toString() {
+    return 'WorkOrderActionEvent.resumeWorkOrder(workOrderId: $workOrderId, latitude: $latitude, longitude: $longitude, files: $files, notes: $notes)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return resumeWorkOrder?.call(
-        workOrderId, latitude, longitude, files, notes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (resumeWorkOrder != null) {
-      return resumeWorkOrder(workOrderId, latitude, longitude, files, notes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return resumeWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return resumeWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (resumeWorkOrder != null) {
-      return resumeWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ResumeWorkOrder implements WorkOrderActionEvent {
-  const factory _ResumeWorkOrder(
-      {required final int workOrderId,
-      required final double latitude,
-      required final double longitude,
-      final List<File> files,
-      final String? notes}) = _$ResumeWorkOrderImpl;
-
-  int get workOrderId;
-  double get latitude;
-  double get longitude;
-  List<File> get files;
-  String? get notes;
-  @JsonKey(ignore: true)
-  _$$ResumeWorkOrderImplCopyWith<_$ResumeWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CompleteWorkOrderImplCopyWith<$Res> {
-  factory _$$CompleteWorkOrderImplCopyWith(_$CompleteWorkOrderImpl value,
-          $Res Function(_$CompleteWorkOrderImpl) then) =
-      __$$CompleteWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$ResumeWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$ResumeWorkOrderCopyWith(
+          _ResumeWorkOrder value, $Res Function(_ResumeWorkOrder) _then) =
+      __$ResumeWorkOrderCopyWithImpl;
   @useResult
   $Res call(
       {int workOrderId,
-      String workLog,
-      List<PartUsedEntity> partsUsed,
-      List<File> files,
       double latitude,
       double longitude,
-      String? completionNotes});
+      List<File> files,
+      String? notes});
 }
 
 /// @nodoc
-class __$$CompleteWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$CompleteWorkOrderImpl>
-    implements _$$CompleteWorkOrderImplCopyWith<$Res> {
-  __$$CompleteWorkOrderImplCopyWithImpl(_$CompleteWorkOrderImpl _value,
-      $Res Function(_$CompleteWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$ResumeWorkOrderCopyWithImpl<$Res>
+    implements _$ResumeWorkOrderCopyWith<$Res> {
+  __$ResumeWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _ResumeWorkOrder _self;
+  final $Res Function(_ResumeWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
-    Object? workLog = null,
-    Object? partsUsed = null,
-    Object? files = null,
     Object? latitude = null,
     Object? longitude = null,
-    Object? completionNotes = freezed,
+    Object? files = null,
+    Object? notes = freezed,
   }) {
-    return _then(_$CompleteWorkOrderImpl(
+    return _then(_ResumeWorkOrder(
       workOrderId: null == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
-      workLog: null == workLog
-          ? _value.workLog
-          : workLog // ignore: cast_nullable_to_non_nullable
-              as String,
-      partsUsed: null == partsUsed
-          ? _value._partsUsed
-          : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartUsedEntity>,
-      files: null == files
-          ? _value._files
-          : files // ignore: cast_nullable_to_non_nullable
-              as List<File>,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-      completionNotes: freezed == completionNotes
-          ? _value.completionNotes
-          : completionNotes // ignore: cast_nullable_to_non_nullable
+      files: null == files
+          ? _self._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -1291,8 +807,8 @@ class __$$CompleteWorkOrderImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
-  const _$CompleteWorkOrderImpl(
+class _CompleteWorkOrder implements WorkOrderActionEvent {
+  const _CompleteWorkOrder(
       {required this.workOrderId,
       required this.workLog,
       required final List<PartUsedEntity> partsUsed,
@@ -1303,12 +819,9 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
       : _partsUsed = partsUsed,
         _files = files;
 
-  @override
   final int workOrderId;
-  @override
   final String workLog;
   final List<PartUsedEntity> _partsUsed;
-  @override
   List<PartUsedEntity> get partsUsed {
     if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
     // ignore: implicit_dynamic_type
@@ -1316,30 +829,28 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
   }
 
   final List<File> _files;
-  @override
   List<File> get files {
     if (_files is EqualUnmodifiableListView) return _files;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_files);
   }
 
-  @override
   final double latitude;
-  @override
   final double longitude;
-  @override
   final String? completionNotes;
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, partsUsed: $partsUsed, files: $files, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CompleteWorkOrderCopyWith<_CompleteWorkOrder> get copyWith =>
+      __$CompleteWorkOrderCopyWithImpl<_CompleteWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CompleteWorkOrderImpl &&
+            other is _CompleteWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
@@ -1365,260 +876,108 @@ class _$CompleteWorkOrderImpl implements _CompleteWorkOrder {
       longitude,
       completionNotes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$CompleteWorkOrderImplCopyWith<_$CompleteWorkOrderImpl> get copyWith =>
-      __$$CompleteWorkOrderImplCopyWithImpl<_$CompleteWorkOrderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
-        longitude, completionNotes);
+  String toString() {
+    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, partsUsed: $partsUsed, files: $files, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return completeWorkOrder?.call(workOrderId, workLog, partsUsed, files,
-        latitude, longitude, completionNotes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (completeWorkOrder != null) {
-      return completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
-          longitude, completionNotes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return completeWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return completeWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (completeWorkOrder != null) {
-      return completeWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CompleteWorkOrder implements WorkOrderActionEvent {
-  const factory _CompleteWorkOrder(
-      {required final int workOrderId,
-      required final String workLog,
-      required final List<PartUsedEntity> partsUsed,
-      required final List<File> files,
-      required final double latitude,
-      required final double longitude,
-      final String? completionNotes}) = _$CompleteWorkOrderImpl;
-
-  int get workOrderId;
-  String get workLog;
-  List<PartUsedEntity> get partsUsed;
-  List<File> get files;
-  double get latitude;
-  double get longitude;
-  String? get completionNotes;
-  @JsonKey(ignore: true)
-  _$$CompleteWorkOrderImplCopyWith<_$CompleteWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RejectWorkOrderImplCopyWith<$Res> {
-  factory _$$RejectWorkOrderImplCopyWith(_$RejectWorkOrderImpl value,
-          $Res Function(_$RejectWorkOrderImpl) then) =
-      __$$RejectWorkOrderImplCopyWithImpl<$Res>;
+abstract mixin class _$CompleteWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$CompleteWorkOrderCopyWith(
+          _CompleteWorkOrder value, $Res Function(_CompleteWorkOrder) _then) =
+      __$CompleteWorkOrderCopyWithImpl;
   @useResult
   $Res call(
-      {int workOrderId, String reason, double latitude, double longitude});
+      {int workOrderId,
+      String workLog,
+      List<PartUsedEntity> partsUsed,
+      List<File> files,
+      double latitude,
+      double longitude,
+      String? completionNotes});
 }
 
 /// @nodoc
-class __$$RejectWorkOrderImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$RejectWorkOrderImpl>
-    implements _$$RejectWorkOrderImplCopyWith<$Res> {
-  __$$RejectWorkOrderImplCopyWithImpl(
-      _$RejectWorkOrderImpl _value, $Res Function(_$RejectWorkOrderImpl) _then)
-      : super(_value, _then);
+class __$CompleteWorkOrderCopyWithImpl<$Res>
+    implements _$CompleteWorkOrderCopyWith<$Res> {
+  __$CompleteWorkOrderCopyWithImpl(this._self, this._then);
 
+  final _CompleteWorkOrder _self;
+  final $Res Function(_CompleteWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? workOrderId = null,
-    Object? reason = null,
+    Object? workLog = null,
+    Object? partsUsed = null,
+    Object? files = null,
     Object? latitude = null,
     Object? longitude = null,
+    Object? completionNotes = freezed,
   }) {
-    return _then(_$RejectWorkOrderImpl(
+    return _then(_CompleteWorkOrder(
       workOrderId: null == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
+      workLog: null == workLog
+          ? _self.workLog
+          : workLog // ignore: cast_nullable_to_non_nullable
               as String,
+      partsUsed: null == partsUsed
+          ? _self._partsUsed
+          : partsUsed // ignore: cast_nullable_to_non_nullable
+              as List<PartUsedEntity>,
+      files: null == files
+          ? _self._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<File>,
       latitude: null == latitude
-          ? _value.latitude
+          ? _self.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
       longitude: null == longitude
-          ? _value.longitude
+          ? _self.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
+      completionNotes: freezed == completionNotes
+          ? _self.completionNotes
+          : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$RejectWorkOrderImpl implements _RejectWorkOrder {
-  const _$RejectWorkOrderImpl(
+class _RejectWorkOrder implements WorkOrderActionEvent {
+  const _RejectWorkOrder(
       {required this.workOrderId,
       required this.reason,
       required this.latitude,
       required this.longitude});
 
-  @override
   final int workOrderId;
-  @override
   final String reason;
-  @override
   final double latitude;
-  @override
   final double longitude;
 
-  @override
-  String toString() {
-    return 'WorkOrderActionEvent.rejectWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude)';
-  }
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$RejectWorkOrderCopyWith<_RejectWorkOrder> get copyWith =>
+      __$RejectWorkOrderCopyWithImpl<_RejectWorkOrder>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RejectWorkOrderImpl &&
+            other is _RejectWorkOrder &&
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.reason, reason) || other.reason == reason) &&
@@ -1632,544 +991,99 @@ class _$RejectWorkOrderImpl implements _RejectWorkOrder {
   int get hashCode =>
       Object.hash(runtimeType, workOrderId, reason, latitude, longitude);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'WorkOrderActionEvent.rejectWorkOrder(workOrderId: $workOrderId, reason: $reason, latitude: $latitude, longitude: $longitude)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$RejectWorkOrderCopyWith<$Res>
+    implements $WorkOrderActionEventCopyWith<$Res> {
+  factory _$RejectWorkOrderCopyWith(
+          _RejectWorkOrder value, $Res Function(_RejectWorkOrder) _then) =
+      __$RejectWorkOrderCopyWithImpl;
+  @useResult
+  $Res call(
+      {int workOrderId, String reason, double latitude, double longitude});
+}
+
+/// @nodoc
+class __$RejectWorkOrderCopyWithImpl<$Res>
+    implements _$RejectWorkOrderCopyWith<$Res> {
+  __$RejectWorkOrderCopyWithImpl(this._self, this._then);
+
+  final _RejectWorkOrder _self;
+  final $Res Function(_RejectWorkOrder) _then;
+
+  /// Create a copy of WorkOrderActionEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$RejectWorkOrderImplCopyWith<_$RejectWorkOrderImpl> get copyWith =>
-      __$$RejectWorkOrderImplCopyWithImpl<_$RejectWorkOrderImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
+  $Res call({
+    Object? workOrderId = null,
+    Object? reason = null,
+    Object? latitude = null,
+    Object? longitude = null,
   }) {
-    return rejectWorkOrder(workOrderId, reason, latitude, longitude);
+    return _then(_RejectWorkOrder(
+      workOrderId: null == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as int,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _self.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: null == longitude
+          ? _self.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return rejectWorkOrder?.call(workOrderId, reason, latitude, longitude);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (rejectWorkOrder != null) {
-      return rejectWorkOrder(workOrderId, reason, latitude, longitude);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return rejectWorkOrder(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return rejectWorkOrder?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (rejectWorkOrder != null) {
-      return rejectWorkOrder(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _RejectWorkOrder implements WorkOrderActionEvent {
-  const factory _RejectWorkOrder(
-      {required final int workOrderId,
-      required final String reason,
-      required final double latitude,
-      required final double longitude}) = _$RejectWorkOrderImpl;
-
-  int get workOrderId;
-  String get reason;
-  double get latitude;
-  double get longitude;
-  @JsonKey(ignore: true)
-  _$$RejectWorkOrderImplCopyWith<_$RejectWorkOrderImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$CaptureLocationImplCopyWith<$Res> {
-  factory _$$CaptureLocationImplCopyWith(_$CaptureLocationImpl value,
-          $Res Function(_$CaptureLocationImpl) then) =
-      __$$CaptureLocationImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$CaptureLocationImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$CaptureLocationImpl>
-    implements _$$CaptureLocationImplCopyWith<$Res> {
-  __$$CaptureLocationImplCopyWithImpl(
-      _$CaptureLocationImpl _value, $Res Function(_$CaptureLocationImpl) _then)
-      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CaptureLocationImpl implements _CaptureLocation {
-  const _$CaptureLocationImpl();
+class _CaptureLocation implements WorkOrderActionEvent {
+  const _CaptureLocation();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _CaptureLocation);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'WorkOrderActionEvent.captureLocation()';
   }
+}
+
+/// @nodoc
+
+class _ClearError implements WorkOrderActionEvent {
+  const _ClearError();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CaptureLocationImpl);
+        (other.runtimeType == runtimeType && other is _ClearError);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return captureLocation();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return captureLocation?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (captureLocation != null) {
-      return captureLocation();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return captureLocation(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return captureLocation?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (captureLocation != null) {
-      return captureLocation(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CaptureLocation implements WorkOrderActionEvent {
-  const factory _CaptureLocation() = _$CaptureLocationImpl;
-}
-
-/// @nodoc
-abstract class _$$ClearErrorImplCopyWith<$Res> {
-  factory _$$ClearErrorImplCopyWith(
-          _$ClearErrorImpl value, $Res Function(_$ClearErrorImpl) then) =
-      __$$ClearErrorImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ClearErrorImplCopyWithImpl<$Res>
-    extends _$WorkOrderActionEventCopyWithImpl<$Res, _$ClearErrorImpl>
-    implements _$$ClearErrorImplCopyWith<$Res> {
-  __$$ClearErrorImplCopyWithImpl(
-      _$ClearErrorImpl _value, $Res Function(_$ClearErrorImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$ClearErrorImpl implements _ClearError {
-  const _$ClearErrorImpl();
 
   @override
   String toString() {
     return 'WorkOrderActionEvent.clearError()';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ClearErrorImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int workOrderId) loadWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        startWorkOrder,
-    required TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)
-        pauseWorkOrder,
-    required TResult Function(int workOrderId, double latitude,
-            double longitude, List<File> files, String? notes)
-        resumeWorkOrder,
-    required TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)
-        completeWorkOrder,
-    required TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)
-        rejectWorkOrder,
-    required TResult Function() captureLocation,
-    required TResult Function() clearError,
-  }) {
-    return clearError();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int workOrderId)? loadWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult? Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult? Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult? Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult? Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult? Function()? captureLocation,
-    TResult? Function()? clearError,
-  }) {
-    return clearError?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int workOrderId)? loadWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        startWorkOrder,
-    TResult Function(int workOrderId, String reason, double latitude,
-            double longitude, List<File> files)?
-        pauseWorkOrder,
-    TResult Function(int workOrderId, double latitude, double longitude,
-            List<File> files, String? notes)?
-        resumeWorkOrder,
-    TResult Function(
-            int workOrderId,
-            String workLog,
-            List<PartUsedEntity> partsUsed,
-            List<File> files,
-            double latitude,
-            double longitude,
-            String? completionNotes)?
-        completeWorkOrder,
-    TResult Function(
-            int workOrderId, String reason, double latitude, double longitude)?
-        rejectWorkOrder,
-    TResult Function()? captureLocation,
-    TResult Function()? clearError,
-    required TResult orElse(),
-  }) {
-    if (clearError != null) {
-      return clearError();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadWorkOrder value) loadWorkOrder,
-    required TResult Function(_StartWorkOrder value) startWorkOrder,
-    required TResult Function(_PauseWorkOrder value) pauseWorkOrder,
-    required TResult Function(_ResumeWorkOrder value) resumeWorkOrder,
-    required TResult Function(_CompleteWorkOrder value) completeWorkOrder,
-    required TResult Function(_RejectWorkOrder value) rejectWorkOrder,
-    required TResult Function(_CaptureLocation value) captureLocation,
-    required TResult Function(_ClearError value) clearError,
-  }) {
-    return clearError(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult? Function(_StartWorkOrder value)? startWorkOrder,
-    TResult? Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult? Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult? Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult? Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult? Function(_CaptureLocation value)? captureLocation,
-    TResult? Function(_ClearError value)? clearError,
-  }) {
-    return clearError?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadWorkOrder value)? loadWorkOrder,
-    TResult Function(_StartWorkOrder value)? startWorkOrder,
-    TResult Function(_PauseWorkOrder value)? pauseWorkOrder,
-    TResult Function(_ResumeWorkOrder value)? resumeWorkOrder,
-    TResult Function(_CompleteWorkOrder value)? completeWorkOrder,
-    TResult Function(_RejectWorkOrder value)? rejectWorkOrder,
-    TResult Function(_CaptureLocation value)? captureLocation,
-    TResult Function(_ClearError value)? clearError,
-    required TResult orElse(),
-  }) {
-    if (clearError != null) {
-      return clearError(this);
-    }
-    return orElse();
-  }
 }
 
-abstract class _ClearError implements WorkOrderActionEvent {
-  const factory _ClearError() = _$ClearErrorImpl;
-}
+// dart format on

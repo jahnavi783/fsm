@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,144 +9,96 @@ part of 'service_request_dto.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-ServiceRequestDto _$ServiceRequestDtoFromJson(Map<String, dynamic> json) {
-  return _ServiceRequestDto.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ServiceRequestDto {
   @JsonKey(name: 'sr_number')
-  String get srNumber => throw _privateConstructorUsedError;
+  String get srNumber;
   @JsonKey(name: 'sr_type')
-  String get srType => throw _privateConstructorUsedError;
-  String? get priority => throw _privateConstructorUsedError;
+  String get srType;
+  String? get priority;
   @JsonKey(name: 'issue_description')
-  String? get issueDescription => throw _privateConstructorUsedError;
+  String? get issueDescription;
   @JsonKey(name: 'machine_serial')
-  String? get machineSerial => throw _privateConstructorUsedError;
-  String? get model => throw _privateConstructorUsedError;
+  String? get machineSerial;
+  String? get model;
   @JsonKey(name: 'customer_name')
-  String? get customerName => throw _privateConstructorUsedError;
-  String? get location => throw _privateConstructorUsedError;
+  String? get customerName;
+  String? get location;
   @JsonKey(name: 'postal_code')
-  String? get postalCode => throw _privateConstructorUsedError;
+  String? get postalCode;
   @JsonKey(name: 'under_warranty')
-  String? get underWarranty => throw _privateConstructorUsedError;
+  String? get underWarranty;
   @JsonKey(name: 'visit_date')
-  String? get visitDate => throw _privateConstructorUsedError;
+  String? get visitDate;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ServiceRequestDtoCopyWith<ServiceRequestDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ServiceRequestDtoCopyWith<$Res> {
-  factory $ServiceRequestDtoCopyWith(
-          ServiceRequestDto value, $Res Function(ServiceRequestDto) then) =
-      _$ServiceRequestDtoCopyWithImpl<$Res, ServiceRequestDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'sr_number') String srNumber,
-      @JsonKey(name: 'sr_type') String srType,
-      String? priority,
-      @JsonKey(name: 'issue_description') String? issueDescription,
-      @JsonKey(name: 'machine_serial') String? machineSerial,
-      String? model,
-      @JsonKey(name: 'customer_name') String? customerName,
-      String? location,
-      @JsonKey(name: 'postal_code') String? postalCode,
-      @JsonKey(name: 'under_warranty') String? underWarranty,
-      @JsonKey(name: 'visit_date') String? visitDate});
-}
-
-/// @nodoc
-class _$ServiceRequestDtoCopyWithImpl<$Res, $Val extends ServiceRequestDto>
-    implements $ServiceRequestDtoCopyWith<$Res> {
-  _$ServiceRequestDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of ServiceRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $ServiceRequestDtoCopyWith<ServiceRequestDto> get copyWith =>
+      _$ServiceRequestDtoCopyWithImpl<ServiceRequestDto>(
+          this as ServiceRequestDto, _$identity);
+
+  /// Serializes this ServiceRequestDto to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? srNumber = null,
-    Object? srType = null,
-    Object? priority = freezed,
-    Object? issueDescription = freezed,
-    Object? machineSerial = freezed,
-    Object? model = freezed,
-    Object? customerName = freezed,
-    Object? location = freezed,
-    Object? postalCode = freezed,
-    Object? underWarranty = freezed,
-    Object? visitDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      srNumber: null == srNumber
-          ? _value.srNumber
-          : srNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      srType: null == srType
-          ? _value.srType
-          : srType // ignore: cast_nullable_to_non_nullable
-              as String,
-      priority: freezed == priority
-          ? _value.priority
-          : priority // ignore: cast_nullable_to_non_nullable
-              as String?,
-      issueDescription: freezed == issueDescription
-          ? _value.issueDescription
-          : issueDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-      machineSerial: freezed == machineSerial
-          ? _value.machineSerial
-          : machineSerial // ignore: cast_nullable_to_non_nullable
-              as String?,
-      model: freezed == model
-          ? _value.model
-          : model // ignore: cast_nullable_to_non_nullable
-              as String?,
-      customerName: freezed == customerName
-          ? _value.customerName
-          : customerName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      underWarranty: freezed == underWarranty
-          ? _value.underWarranty
-          : underWarranty // ignore: cast_nullable_to_non_nullable
-              as String?,
-      visitDate: freezed == visitDate
-          ? _value.visitDate
-          : visitDate // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ServiceRequestDto &&
+            (identical(other.srNumber, srNumber) ||
+                other.srNumber == srNumber) &&
+            (identical(other.srType, srType) || other.srType == srType) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.issueDescription, issueDescription) ||
+                other.issueDescription == issueDescription) &&
+            (identical(other.machineSerial, machineSerial) ||
+                other.machineSerial == machineSerial) &&
+            (identical(other.model, model) || other.model == model) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.underWarranty, underWarranty) ||
+                other.underWarranty == underWarranty) &&
+            (identical(other.visitDate, visitDate) ||
+                other.visitDate == visitDate));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      srNumber,
+      srType,
+      priority,
+      issueDescription,
+      machineSerial,
+      model,
+      customerName,
+      location,
+      postalCode,
+      underWarranty,
+      visitDate);
+
+  @override
+  String toString() {
+    return 'ServiceRequestDto(srNumber: $srNumber, srType: $srType, priority: $priority, issueDescription: $issueDescription, machineSerial: $machineSerial, model: $model, customerName: $customerName, location: $location, postalCode: $postalCode, underWarranty: $underWarranty, visitDate: $visitDate)';
   }
 }
 
 /// @nodoc
-abstract class _$$ServiceRequestDtoImplCopyWith<$Res>
-    implements $ServiceRequestDtoCopyWith<$Res> {
-  factory _$$ServiceRequestDtoImplCopyWith(_$ServiceRequestDtoImpl value,
-          $Res Function(_$ServiceRequestDtoImpl) then) =
-      __$$ServiceRequestDtoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ServiceRequestDtoCopyWith<$Res> {
+  factory $ServiceRequestDtoCopyWith(
+          ServiceRequestDto value, $Res Function(ServiceRequestDto) _then) =
+      _$ServiceRequestDtoCopyWithImpl;
   @useResult
   $Res call(
       {@JsonKey(name: 'sr_number') String srNumber,
@@ -163,13 +115,15 @@ abstract class _$$ServiceRequestDtoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ServiceRequestDtoImplCopyWithImpl<$Res>
-    extends _$ServiceRequestDtoCopyWithImpl<$Res, _$ServiceRequestDtoImpl>
-    implements _$$ServiceRequestDtoImplCopyWith<$Res> {
-  __$$ServiceRequestDtoImplCopyWithImpl(_$ServiceRequestDtoImpl _value,
-      $Res Function(_$ServiceRequestDtoImpl) _then)
-      : super(_value, _then);
+class _$ServiceRequestDtoCopyWithImpl<$Res>
+    implements $ServiceRequestDtoCopyWith<$Res> {
+  _$ServiceRequestDtoCopyWithImpl(this._self, this._then);
 
+  final ServiceRequestDto _self;
+  final $Res Function(ServiceRequestDto) _then;
+
+  /// Create a copy of ServiceRequestDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -185,59 +139,285 @@ class __$$ServiceRequestDtoImplCopyWithImpl<$Res>
     Object? underWarranty = freezed,
     Object? visitDate = freezed,
   }) {
-    return _then(_$ServiceRequestDtoImpl(
+    return _then(_self.copyWith(
       srNumber: null == srNumber
-          ? _value.srNumber
+          ? _self.srNumber
           : srNumber // ignore: cast_nullable_to_non_nullable
               as String,
       srType: null == srType
-          ? _value.srType
+          ? _self.srType
           : srType // ignore: cast_nullable_to_non_nullable
               as String,
       priority: freezed == priority
-          ? _value.priority
+          ? _self.priority
           : priority // ignore: cast_nullable_to_non_nullable
               as String?,
       issueDescription: freezed == issueDescription
-          ? _value.issueDescription
+          ? _self.issueDescription
           : issueDescription // ignore: cast_nullable_to_non_nullable
               as String?,
       machineSerial: freezed == machineSerial
-          ? _value.machineSerial
+          ? _self.machineSerial
           : machineSerial // ignore: cast_nullable_to_non_nullable
               as String?,
       model: freezed == model
-          ? _value.model
+          ? _self.model
           : model // ignore: cast_nullable_to_non_nullable
               as String?,
       customerName: freezed == customerName
-          ? _value.customerName
+          ? _self.customerName
           : customerName // ignore: cast_nullable_to_non_nullable
               as String?,
       location: freezed == location
-          ? _value.location
+          ? _self.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
       postalCode: freezed == postalCode
-          ? _value.postalCode
+          ? _self.postalCode
           : postalCode // ignore: cast_nullable_to_non_nullable
               as String?,
       underWarranty: freezed == underWarranty
-          ? _value.underWarranty
+          ? _self.underWarranty
           : underWarranty // ignore: cast_nullable_to_non_nullable
               as String?,
       visitDate: freezed == visitDate
-          ? _value.visitDate
+          ? _self.visitDate
           : visitDate // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ServiceRequestDto].
+extension ServiceRequestDtoPatterns on ServiceRequestDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ServiceRequestDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ServiceRequestDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ServiceRequestDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'sr_number') String srNumber,
+            @JsonKey(name: 'sr_type') String srType,
+            String? priority,
+            @JsonKey(name: 'issue_description') String? issueDescription,
+            @JsonKey(name: 'machine_serial') String? machineSerial,
+            String? model,
+            @JsonKey(name: 'customer_name') String? customerName,
+            String? location,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            @JsonKey(name: 'under_warranty') String? underWarranty,
+            @JsonKey(name: 'visit_date') String? visitDate)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto() when $default != null:
+        return $default(
+            _that.srNumber,
+            _that.srType,
+            _that.priority,
+            _that.issueDescription,
+            _that.machineSerial,
+            _that.model,
+            _that.customerName,
+            _that.location,
+            _that.postalCode,
+            _that.underWarranty,
+            _that.visitDate);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'sr_number') String srNumber,
+            @JsonKey(name: 'sr_type') String srType,
+            String? priority,
+            @JsonKey(name: 'issue_description') String? issueDescription,
+            @JsonKey(name: 'machine_serial') String? machineSerial,
+            String? model,
+            @JsonKey(name: 'customer_name') String? customerName,
+            String? location,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            @JsonKey(name: 'under_warranty') String? underWarranty,
+            @JsonKey(name: 'visit_date') String? visitDate)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto():
+        return $default(
+            _that.srNumber,
+            _that.srType,
+            _that.priority,
+            _that.issueDescription,
+            _that.machineSerial,
+            _that.model,
+            _that.customerName,
+            _that.location,
+            _that.postalCode,
+            _that.underWarranty,
+            _that.visitDate);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: 'sr_number') String srNumber,
+            @JsonKey(name: 'sr_type') String srType,
+            String? priority,
+            @JsonKey(name: 'issue_description') String? issueDescription,
+            @JsonKey(name: 'machine_serial') String? machineSerial,
+            String? model,
+            @JsonKey(name: 'customer_name') String? customerName,
+            String? location,
+            @JsonKey(name: 'postal_code') String? postalCode,
+            @JsonKey(name: 'under_warranty') String? underWarranty,
+            @JsonKey(name: 'visit_date') String? visitDate)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ServiceRequestDto() when $default != null:
+        return $default(
+            _that.srNumber,
+            _that.srType,
+            _that.priority,
+            _that.issueDescription,
+            _that.machineSerial,
+            _that.model,
+            _that.customerName,
+            _that.location,
+            _that.postalCode,
+            _that.underWarranty,
+            _that.visitDate);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$ServiceRequestDtoImpl implements _ServiceRequestDto {
-  const _$ServiceRequestDtoImpl(
+class _ServiceRequestDto implements ServiceRequestDto {
+  const _ServiceRequestDto(
       {@JsonKey(name: 'sr_number') required this.srNumber,
       @JsonKey(name: 'sr_type') required this.srType,
       this.priority,
@@ -249,9 +429,8 @@ class _$ServiceRequestDtoImpl implements _ServiceRequestDto {
       @JsonKey(name: 'postal_code') this.postalCode,
       @JsonKey(name: 'under_warranty') this.underWarranty,
       @JsonKey(name: 'visit_date') this.visitDate});
-
-  factory _$ServiceRequestDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ServiceRequestDtoImplFromJson(json);
+  factory _ServiceRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$ServiceRequestDtoFromJson(json);
 
   @override
   @JsonKey(name: 'sr_number')
@@ -284,16 +463,26 @@ class _$ServiceRequestDtoImpl implements _ServiceRequestDto {
   @JsonKey(name: 'visit_date')
   final String? visitDate;
 
+  /// Create a copy of ServiceRequestDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ServiceRequestDto(srNumber: $srNumber, srType: $srType, priority: $priority, issueDescription: $issueDescription, machineSerial: $machineSerial, model: $model, customerName: $customerName, location: $location, postalCode: $postalCode, underWarranty: $underWarranty, visitDate: $visitDate)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ServiceRequestDtoCopyWith<_ServiceRequestDto> get copyWith =>
+      __$ServiceRequestDtoCopyWithImpl<_ServiceRequestDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ServiceRequestDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ServiceRequestDtoImpl &&
+            other is _ServiceRequestDto &&
             (identical(other.srNumber, srNumber) ||
                 other.srNumber == srNumber) &&
             (identical(other.srType, srType) || other.srType == srType) &&
@@ -316,7 +505,7 @@ class _$ServiceRequestDtoImpl implements _ServiceRequestDto {
                 other.visitDate == visitDate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -332,71 +521,106 @@ class _$ServiceRequestDtoImpl implements _ServiceRequestDto {
       underWarranty,
       visitDate);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ServiceRequestDtoImplCopyWith<_$ServiceRequestDtoImpl> get copyWith =>
-      __$$ServiceRequestDtoImplCopyWithImpl<_$ServiceRequestDtoImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ServiceRequestDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'ServiceRequestDto(srNumber: $srNumber, srType: $srType, priority: $priority, issueDescription: $issueDescription, machineSerial: $machineSerial, model: $model, customerName: $customerName, location: $location, postalCode: $postalCode, underWarranty: $underWarranty, visitDate: $visitDate)';
   }
 }
 
-abstract class _ServiceRequestDto implements ServiceRequestDto {
-  const factory _ServiceRequestDto(
-          {@JsonKey(name: 'sr_number') required final String srNumber,
-          @JsonKey(name: 'sr_type') required final String srType,
-          final String? priority,
-          @JsonKey(name: 'issue_description') final String? issueDescription,
-          @JsonKey(name: 'machine_serial') final String? machineSerial,
-          final String? model,
-          @JsonKey(name: 'customer_name') final String? customerName,
-          final String? location,
-          @JsonKey(name: 'postal_code') final String? postalCode,
-          @JsonKey(name: 'under_warranty') final String? underWarranty,
-          @JsonKey(name: 'visit_date') final String? visitDate}) =
-      _$ServiceRequestDtoImpl;
-
-  factory _ServiceRequestDto.fromJson(Map<String, dynamic> json) =
-      _$ServiceRequestDtoImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$ServiceRequestDtoCopyWith<$Res>
+    implements $ServiceRequestDtoCopyWith<$Res> {
+  factory _$ServiceRequestDtoCopyWith(
+          _ServiceRequestDto value, $Res Function(_ServiceRequestDto) _then) =
+      __$ServiceRequestDtoCopyWithImpl;
   @override
-  @JsonKey(name: 'sr_number')
-  String get srNumber;
-  @override
-  @JsonKey(name: 'sr_type')
-  String get srType;
-  @override
-  String? get priority;
-  @override
-  @JsonKey(name: 'issue_description')
-  String? get issueDescription;
-  @override
-  @JsonKey(name: 'machine_serial')
-  String? get machineSerial;
-  @override
-  String? get model;
-  @override
-  @JsonKey(name: 'customer_name')
-  String? get customerName;
-  @override
-  String? get location;
-  @override
-  @JsonKey(name: 'postal_code')
-  String? get postalCode;
-  @override
-  @JsonKey(name: 'under_warranty')
-  String? get underWarranty;
-  @override
-  @JsonKey(name: 'visit_date')
-  String? get visitDate;
-  @override
-  @JsonKey(ignore: true)
-  _$$ServiceRequestDtoImplCopyWith<_$ServiceRequestDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'sr_number') String srNumber,
+      @JsonKey(name: 'sr_type') String srType,
+      String? priority,
+      @JsonKey(name: 'issue_description') String? issueDescription,
+      @JsonKey(name: 'machine_serial') String? machineSerial,
+      String? model,
+      @JsonKey(name: 'customer_name') String? customerName,
+      String? location,
+      @JsonKey(name: 'postal_code') String? postalCode,
+      @JsonKey(name: 'under_warranty') String? underWarranty,
+      @JsonKey(name: 'visit_date') String? visitDate});
 }
+
+/// @nodoc
+class __$ServiceRequestDtoCopyWithImpl<$Res>
+    implements _$ServiceRequestDtoCopyWith<$Res> {
+  __$ServiceRequestDtoCopyWithImpl(this._self, this._then);
+
+  final _ServiceRequestDto _self;
+  final $Res Function(_ServiceRequestDto) _then;
+
+  /// Create a copy of ServiceRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? srNumber = null,
+    Object? srType = null,
+    Object? priority = freezed,
+    Object? issueDescription = freezed,
+    Object? machineSerial = freezed,
+    Object? model = freezed,
+    Object? customerName = freezed,
+    Object? location = freezed,
+    Object? postalCode = freezed,
+    Object? underWarranty = freezed,
+    Object? visitDate = freezed,
+  }) {
+    return _then(_ServiceRequestDto(
+      srNumber: null == srNumber
+          ? _self.srNumber
+          : srNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      srType: null == srType
+          ? _self.srType
+          : srType // ignore: cast_nullable_to_non_nullable
+              as String,
+      priority: freezed == priority
+          ? _self.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as String?,
+      issueDescription: freezed == issueDescription
+          ? _self.issueDescription
+          : issueDescription // ignore: cast_nullable_to_non_nullable
+              as String?,
+      machineSerial: freezed == machineSerial
+          ? _self.machineSerial
+          : machineSerial // ignore: cast_nullable_to_non_nullable
+              as String?,
+      model: freezed == model
+          ? _self.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customerName: freezed == customerName
+          ? _self.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      location: freezed == location
+          ? _self.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _self.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      underWarranty: freezed == underWarranty
+          ? _self.underWarranty
+          : underWarranty // ignore: cast_nullable_to_non_nullable
+              as String?,
+      visitDate: freezed == visitDate
+          ? _self.visitDate
+          : visitDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+// dart format on

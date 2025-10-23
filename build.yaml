@@ -4,6 +4,11 @@
 targets:
   $default:
     builders:
+      freezed:
+        options:
+          union_key: type
+          union_value_case: pascal
+
       flutter_gen_runner: # or flutter_gen
         options:
           output: lib/build_gen/ # Optional (default: lib/gen/)

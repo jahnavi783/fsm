@@ -5,7 +5,7 @@ part 'work_order_response.freezed.dart';
 part 'work_order_response.g.dart';
 
 @freezed
-class WorkOrderResponse with _$WorkOrderResponse {
+abstract class WorkOrderResponse with _$WorkOrderResponse {
   const factory WorkOrderResponse({
     @JsonKey(name: 'work_order') required WorkOrderDto workOrder,
   }) = _WorkOrderResponse;

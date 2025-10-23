@@ -5,7 +5,7 @@ part 'service_request_dto.freezed.dart';
 part 'service_request_dto.g.dart';
 
 @freezed
-class ServiceRequestDto with _$ServiceRequestDto {
+abstract class ServiceRequestDto with _$ServiceRequestDto {
   const factory ServiceRequestDto({
     @JsonKey(name: 'sr_number') required String srNumber,
     @JsonKey(name: 'sr_type') required String srType,

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,200 +9,45 @@ part of 'profile_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProfileEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProfileEventCopyWith<$Res> {
-  factory $ProfileEventCopyWith(
-          ProfileEvent value, $Res Function(ProfileEvent) then) =
-      _$ProfileEventCopyWithImpl<$Res, ProfileEvent>;
-}
-
-/// @nodoc
-class _$ProfileEventCopyWithImpl<$Res, $Val extends ProfileEvent>
-    implements $ProfileEventCopyWith<$Res> {
-  _$ProfileEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$LoadProfileImplCopyWith<$Res> {
-  factory _$$LoadProfileImplCopyWith(
-          _$LoadProfileImpl value, $Res Function(_$LoadProfileImpl) then) =
-      __$$LoadProfileImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadProfileImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$LoadProfileImpl>
-    implements _$$LoadProfileImplCopyWith<$Res> {
-  __$$LoadProfileImplCopyWithImpl(
-      _$LoadProfileImpl _value, $Res Function(_$LoadProfileImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadProfileImpl implements _LoadProfile {
-  const _$LoadProfileImpl();
-
-  @override
-  String toString() {
-    return 'ProfileEvent.loadProfile()';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadProfileImpl);
+        (other.runtimeType == runtimeType && other is ProfileEvent);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return loadProfile();
+  String toString() {
+    return 'ProfileEvent()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return loadProfile?.call();
-  }
+/// @nodoc
+class $ProfileEventCopyWith<$Res> {
+  $ProfileEventCopyWith(ProfileEvent _, $Res Function(ProfileEvent) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (loadProfile != null) {
-      return loadProfile();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [ProfileEvent].
+extension ProfileEventPatterns on ProfileEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return loadProfile(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return loadProfile?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadProfile value)? loadProfile,
@@ -213,22 +58,286 @@ class _$LoadProfileImpl implements _LoadProfile {
     TResult Function(_DeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) {
-    if (loadProfile != null) {
-      return loadProfile(this);
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile() when loadProfile != null:
+        return loadProfile(_that);
+      case _UpdateProfile() when updateProfile != null:
+        return updateProfile(_that);
+      case _LoadPreferences() when loadPreferences != null:
+        return loadPreferences(_that);
+      case _UpdatePreferences() when updatePreferences != null:
+        return updatePreferences(_that);
+      case _Logout() when logout != null:
+        return logout(_that);
+      case _DeleteAccount() when deleteAccount != null:
+        return deleteAccount(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadProfile value) loadProfile,
+    required TResult Function(_UpdateProfile value) updateProfile,
+    required TResult Function(_LoadPreferences value) loadPreferences,
+    required TResult Function(_UpdatePreferences value) updatePreferences,
+    required TResult Function(_Logout value) logout,
+    required TResult Function(_DeleteAccount value) deleteAccount,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile():
+        return loadProfile(_that);
+      case _UpdateProfile():
+        return updateProfile(_that);
+      case _LoadPreferences():
+        return loadPreferences(_that);
+      case _UpdatePreferences():
+        return updatePreferences(_that);
+      case _Logout():
+        return logout(_that);
+      case _DeleteAccount():
+        return deleteAccount(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadProfile value)? loadProfile,
+    TResult? Function(_UpdateProfile value)? updateProfile,
+    TResult? Function(_LoadPreferences value)? loadPreferences,
+    TResult? Function(_UpdatePreferences value)? updatePreferences,
+    TResult? Function(_Logout value)? logout,
+    TResult? Function(_DeleteAccount value)? deleteAccount,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile() when loadProfile != null:
+        return loadProfile(_that);
+      case _UpdateProfile() when updateProfile != null:
+        return updateProfile(_that);
+      case _LoadPreferences() when loadPreferences != null:
+        return loadPreferences(_that);
+      case _UpdatePreferences() when updatePreferences != null:
+        return updatePreferences(_that);
+      case _Logout() when logout != null:
+        return logout(_that);
+      case _DeleteAccount() when deleteAccount != null:
+        return deleteAccount(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadProfile,
+    TResult Function(ProfileEntity profile)? updateProfile,
+    TResult Function()? loadPreferences,
+    TResult Function(ProfilePreferences preferences)? updatePreferences,
+    TResult Function()? logout,
+    TResult Function()? deleteAccount,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile() when loadProfile != null:
+        return loadProfile();
+      case _UpdateProfile() when updateProfile != null:
+        return updateProfile(_that.profile);
+      case _LoadPreferences() when loadPreferences != null:
+        return loadPreferences();
+      case _UpdatePreferences() when updatePreferences != null:
+        return updatePreferences(_that.preferences);
+      case _Logout() when logout != null:
+        return logout();
+      case _DeleteAccount() when deleteAccount != null:
+        return deleteAccount();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadProfile,
+    required TResult Function(ProfileEntity profile) updateProfile,
+    required TResult Function() loadPreferences,
+    required TResult Function(ProfilePreferences preferences) updatePreferences,
+    required TResult Function() logout,
+    required TResult Function() deleteAccount,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile():
+        return loadProfile();
+      case _UpdateProfile():
+        return updateProfile(_that.profile);
+      case _LoadPreferences():
+        return loadPreferences();
+      case _UpdatePreferences():
+        return updatePreferences(_that.preferences);
+      case _Logout():
+        return logout();
+      case _DeleteAccount():
+        return deleteAccount();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadProfile,
+    TResult? Function(ProfileEntity profile)? updateProfile,
+    TResult? Function()? loadPreferences,
+    TResult? Function(ProfilePreferences preferences)? updatePreferences,
+    TResult? Function()? logout,
+    TResult? Function()? deleteAccount,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LoadProfile() when loadProfile != null:
+        return loadProfile();
+      case _UpdateProfile() when updateProfile != null:
+        return updateProfile(_that.profile);
+      case _LoadPreferences() when loadPreferences != null:
+        return loadPreferences();
+      case _UpdatePreferences() when updatePreferences != null:
+        return updatePreferences(_that.preferences);
+      case _Logout() when logout != null:
+        return logout();
+      case _DeleteAccount() when deleteAccount != null:
+        return deleteAccount();
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class _LoadProfile implements ProfileEvent {
-  const factory _LoadProfile() = _$LoadProfileImpl;
+/// @nodoc
+
+class _LoadProfile implements ProfileEvent {
+  const _LoadProfile();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoadProfile);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileEvent.loadProfile()';
+  }
 }
 
 /// @nodoc
-abstract class _$$UpdateProfileImplCopyWith<$Res> {
-  factory _$$UpdateProfileImplCopyWith(
-          _$UpdateProfileImpl value, $Res Function(_$UpdateProfileImpl) then) =
-      __$$UpdateProfileImplCopyWithImpl<$Res>;
+
+class _UpdateProfile implements ProfileEvent {
+  const _UpdateProfile(this.profile);
+
+  final ProfileEntity profile;
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UpdateProfileCopyWith<_UpdateProfile> get copyWith =>
+      __$UpdateProfileCopyWithImpl<_UpdateProfile>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _UpdateProfile &&
+            (identical(other.profile, profile) || other.profile == profile));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, profile);
+
+  @override
+  String toString() {
+    return 'ProfileEvent.updateProfile(profile: $profile)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$UpdateProfileCopyWith<$Res>
+    implements $ProfileEventCopyWith<$Res> {
+  factory _$UpdateProfileCopyWith(
+          _UpdateProfile value, $Res Function(_UpdateProfile) _then) =
+      __$UpdateProfileCopyWithImpl;
   @useResult
   $Res call({ProfileEntity profile});
 
@@ -236,347 +345,77 @@ abstract class _$$UpdateProfileImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UpdateProfileImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$UpdateProfileImpl>
-    implements _$$UpdateProfileImplCopyWith<$Res> {
-  __$$UpdateProfileImplCopyWithImpl(
-      _$UpdateProfileImpl _value, $Res Function(_$UpdateProfileImpl) _then)
-      : super(_value, _then);
+class __$UpdateProfileCopyWithImpl<$Res>
+    implements _$UpdateProfileCopyWith<$Res> {
+  __$UpdateProfileCopyWithImpl(this._self, this._then);
 
+  final _UpdateProfile _self;
+  final $Res Function(_UpdateProfile) _then;
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? profile = null,
   }) {
-    return _then(_$UpdateProfileImpl(
+    return _then(_UpdateProfile(
       null == profile
-          ? _value.profile
+          ? _self.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntity,
     ));
   }
 
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProfileEntityCopyWith<$Res> get profile {
-    return $ProfileEntityCopyWith<$Res>(_value.profile, (value) {
-      return _then(_value.copyWith(profile: value));
+    return $ProfileEntityCopyWith<$Res>(_self.profile, (value) {
+      return _then(_self.copyWith(profile: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$UpdateProfileImpl implements _UpdateProfile {
-  const _$UpdateProfileImpl(this.profile);
-
-  @override
-  final ProfileEntity profile;
-
-  @override
-  String toString() {
-    return 'ProfileEvent.updateProfile(profile: $profile)';
-  }
+class _LoadPreferences implements ProfileEvent {
+  const _LoadPreferences();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdateProfileImpl &&
-            (identical(other.profile, profile) || other.profile == profile));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, profile);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateProfileImplCopyWith<_$UpdateProfileImpl> get copyWith =>
-      __$$UpdateProfileImplCopyWithImpl<_$UpdateProfileImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return updateProfile(profile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return updateProfile?.call(profile);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (updateProfile != null) {
-      return updateProfile(profile);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return updateProfile(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return updateProfile?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (updateProfile != null) {
-      return updateProfile(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdateProfile implements ProfileEvent {
-  const factory _UpdateProfile(final ProfileEntity profile) =
-      _$UpdateProfileImpl;
-
-  ProfileEntity get profile;
-  @JsonKey(ignore: true)
-  _$$UpdateProfileImplCopyWith<_$UpdateProfileImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LoadPreferencesImplCopyWith<$Res> {
-  factory _$$LoadPreferencesImplCopyWith(_$LoadPreferencesImpl value,
-          $Res Function(_$LoadPreferencesImpl) then) =
-      __$$LoadPreferencesImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadPreferencesImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$LoadPreferencesImpl>
-    implements _$$LoadPreferencesImplCopyWith<$Res> {
-  __$$LoadPreferencesImplCopyWithImpl(
-      _$LoadPreferencesImpl _value, $Res Function(_$LoadPreferencesImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadPreferencesImpl implements _LoadPreferences {
-  const _$LoadPreferencesImpl();
-
-  @override
-  String toString() {
-    return 'ProfileEvent.loadPreferences()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadPreferencesImpl);
+        (other.runtimeType == runtimeType && other is _LoadPreferences);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return loadPreferences();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return loadPreferences?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (loadPreferences != null) {
-      return loadPreferences();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return loadPreferences(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return loadPreferences?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (loadPreferences != null) {
-      return loadPreferences(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadPreferences implements ProfileEvent {
-  const factory _LoadPreferences() = _$LoadPreferencesImpl;
-}
-
-/// @nodoc
-abstract class _$$UpdatePreferencesImplCopyWith<$Res> {
-  factory _$$UpdatePreferencesImplCopyWith(_$UpdatePreferencesImpl value,
-          $Res Function(_$UpdatePreferencesImpl) then) =
-      __$$UpdatePreferencesImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ProfilePreferences preferences});
-
-  $ProfilePreferencesCopyWith<$Res> get preferences;
-}
-
-/// @nodoc
-class __$$UpdatePreferencesImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$UpdatePreferencesImpl>
-    implements _$$UpdatePreferencesImplCopyWith<$Res> {
-  __$$UpdatePreferencesImplCopyWithImpl(_$UpdatePreferencesImpl _value,
-      $Res Function(_$UpdatePreferencesImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? preferences = null,
-  }) {
-    return _then(_$UpdatePreferencesImpl(
-      null == preferences
-          ? _value.preferences
-          : preferences // ignore: cast_nullable_to_non_nullable
-              as ProfilePreferences,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfilePreferencesCopyWith<$Res> get preferences {
-    return $ProfilePreferencesCopyWith<$Res>(_value.preferences, (value) {
-      return _then(_value.copyWith(preferences: value));
-    });
+  String toString() {
+    return 'ProfileEvent.loadPreferences()';
   }
 }
 
 /// @nodoc
 
-class _$UpdatePreferencesImpl implements _UpdatePreferences {
-  const _$UpdatePreferencesImpl(this.preferences);
+class _UpdatePreferences implements ProfileEvent {
+  const _UpdatePreferences(this.preferences);
 
-  @override
   final ProfilePreferences preferences;
 
-  @override
-  String toString() {
-    return 'ProfileEvent.updatePreferences(preferences: $preferences)';
-  }
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UpdatePreferencesCopyWith<_UpdatePreferences> get copyWith =>
+      __$UpdatePreferencesCopyWithImpl<_UpdatePreferences>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdatePreferencesImpl &&
+            other is _UpdatePreferences &&
             (identical(other.preferences, preferences) ||
                 other.preferences == preferences));
   }
@@ -584,358 +423,95 @@ class _$UpdatePreferencesImpl implements _UpdatePreferences {
   @override
   int get hashCode => Object.hash(runtimeType, preferences);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'ProfileEvent.updatePreferences(preferences: $preferences)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$UpdatePreferencesCopyWith<$Res>
+    implements $ProfileEventCopyWith<$Res> {
+  factory _$UpdatePreferencesCopyWith(
+          _UpdatePreferences value, $Res Function(_UpdatePreferences) _then) =
+      __$UpdatePreferencesCopyWithImpl;
+  @useResult
+  $Res call({ProfilePreferences preferences});
+
+  $ProfilePreferencesCopyWith<$Res> get preferences;
+}
+
+/// @nodoc
+class __$UpdatePreferencesCopyWithImpl<$Res>
+    implements _$UpdatePreferencesCopyWith<$Res> {
+  __$UpdatePreferencesCopyWithImpl(this._self, this._then);
+
+  final _UpdatePreferences _self;
+  final $Res Function(_UpdatePreferences) _then;
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? preferences = null,
+  }) {
+    return _then(_UpdatePreferences(
+      null == preferences
+          ? _self.preferences
+          : preferences // ignore: cast_nullable_to_non_nullable
+              as ProfilePreferences,
+    ));
+  }
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$UpdatePreferencesImplCopyWith<_$UpdatePreferencesImpl> get copyWith =>
-      __$$UpdatePreferencesImplCopyWithImpl<_$UpdatePreferencesImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return updatePreferences(preferences);
+  $ProfilePreferencesCopyWith<$Res> get preferences {
+    return $ProfilePreferencesCopyWith<$Res>(_self.preferences, (value) {
+      return _then(_self.copyWith(preferences: value));
+    });
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return updatePreferences?.call(preferences);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (updatePreferences != null) {
-      return updatePreferences(preferences);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return updatePreferences(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return updatePreferences?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (updatePreferences != null) {
-      return updatePreferences(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdatePreferences implements ProfileEvent {
-  const factory _UpdatePreferences(final ProfilePreferences preferences) =
-      _$UpdatePreferencesImpl;
-
-  ProfilePreferences get preferences;
-  @JsonKey(ignore: true)
-  _$$UpdatePreferencesImplCopyWith<_$UpdatePreferencesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LogoutImplCopyWith<$Res> {
-  factory _$$LogoutImplCopyWith(
-          _$LogoutImpl value, $Res Function(_$LogoutImpl) then) =
-      __$$LogoutImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LogoutImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$LogoutImpl>
-    implements _$$LogoutImplCopyWith<$Res> {
-  __$$LogoutImplCopyWithImpl(
-      _$LogoutImpl _value, $Res Function(_$LogoutImpl) _then)
-      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LogoutImpl implements _Logout {
-  const _$LogoutImpl();
+class _Logout implements ProfileEvent {
+  const _Logout();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Logout);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'ProfileEvent.logout()';
   }
+}
+
+/// @nodoc
+
+class _DeleteAccount implements ProfileEvent {
+  const _DeleteAccount();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LogoutImpl);
+        (other.runtimeType == runtimeType && other is _DeleteAccount);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return logout();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return logout?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (logout != null) {
-      return logout();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return logout(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return logout?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (logout != null) {
-      return logout(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Logout implements ProfileEvent {
-  const factory _Logout() = _$LogoutImpl;
-}
-
-/// @nodoc
-abstract class _$$DeleteAccountImplCopyWith<$Res> {
-  factory _$$DeleteAccountImplCopyWith(
-          _$DeleteAccountImpl value, $Res Function(_$DeleteAccountImpl) then) =
-      __$$DeleteAccountImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DeleteAccountImplCopyWithImpl<$Res>
-    extends _$ProfileEventCopyWithImpl<$Res, _$DeleteAccountImpl>
-    implements _$$DeleteAccountImplCopyWith<$Res> {
-  __$$DeleteAccountImplCopyWithImpl(
-      _$DeleteAccountImpl _value, $Res Function(_$DeleteAccountImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$DeleteAccountImpl implements _DeleteAccount {
-  const _$DeleteAccountImpl();
 
   @override
   String toString() {
     return 'ProfileEvent.deleteAccount()';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DeleteAccountImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadProfile,
-    required TResult Function(ProfileEntity profile) updateProfile,
-    required TResult Function() loadPreferences,
-    required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
-  }) {
-    return deleteAccount();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loadProfile,
-    TResult? Function(ProfileEntity profile)? updateProfile,
-    TResult? Function()? loadPreferences,
-    TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
-  }) {
-    return deleteAccount?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadProfile,
-    TResult Function(ProfileEntity profile)? updateProfile,
-    TResult Function()? loadPreferences,
-    TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (deleteAccount != null) {
-      return deleteAccount();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProfile value) loadProfile,
-    required TResult Function(_UpdateProfile value) updateProfile,
-    required TResult Function(_LoadPreferences value) loadPreferences,
-    required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
-  }) {
-    return deleteAccount(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProfile value)? loadProfile,
-    TResult? Function(_UpdateProfile value)? updateProfile,
-    TResult? Function(_LoadPreferences value)? loadPreferences,
-    TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
-  }) {
-    return deleteAccount?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProfile value)? loadProfile,
-    TResult Function(_UpdateProfile value)? updateProfile,
-    TResult Function(_LoadPreferences value)? loadPreferences,
-    TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
-    required TResult orElse(),
-  }) {
-    if (deleteAccount != null) {
-      return deleteAccount(this);
-    }
-    return orElse();
-  }
 }
 
-abstract class _DeleteAccount implements ProfileEvent {
-  const factory _DeleteAccount() = _$DeleteAccountImpl;
-}
+// dart format on

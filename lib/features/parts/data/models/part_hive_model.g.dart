@@ -8,7 +8,7 @@ part of 'part_hive_model.dart';
 
 class PartHiveModelAdapter extends TypeAdapter<PartHiveModel> {
   @override
-  final int typeId = 7;
+  final typeId = 7;
 
   @override
   PartHiveModel read(BinaryReader reader) {
@@ -62,8 +62,8 @@ class PartHiveModelAdapter extends TypeAdapter<PartHiveModel> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PartHiveModelImpl _$$PartHiveModelImplFromJson(Map<String, dynamic> json) =>
-    _$PartHiveModelImpl(
+_PartHiveModel _$PartHiveModelFromJson(Map<String, dynamic> json) =>
+    _PartHiveModel(
       partNumber: json['partNumber'] as String,
       partName: json['partName'] as String,
       category: json['category'] as String,
@@ -73,7 +73,7 @@ _$PartHiveModelImpl _$$PartHiveModelImplFromJson(Map<String, dynamic> json) =>
       cachedAt: DateTime.parse(json['cachedAt'] as String),
     );
 
-Map<String, dynamic> _$$PartHiveModelImplToJson(_$PartHiveModelImpl instance) =>
+Map<String, dynamic> _$PartHiveModelToJson(_PartHiveModel instance) =>
     <String, dynamic>{
       'partNumber': instance.partNumber,
       'partName': instance.partName,

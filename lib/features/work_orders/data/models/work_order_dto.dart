@@ -10,7 +10,7 @@ part 'work_order_dto.freezed.dart';
 part 'work_order_dto.g.dart';
 
 @freezed
-class WorkOrderDto with _$WorkOrderDto {
+abstract class WorkOrderDto with _$WorkOrderDto {
   const factory WorkOrderDto({
     required int id,
     @JsonKey(name: 'wo_number') required String woNumber,
@@ -32,7 +32,7 @@ class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'pause_logs') String? pauseLogs,
     @JsonKey(name: 'rejection_logs') String? rejectionLogs,
     @JsonKey(name: 'work_log') String? workLog,
-    @JsonKey(name: 'parts_used') String? partsUsed,
+    @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
     @JsonKey(name: 'createdAt') required String createdAt,
     @JsonKey(name: 'updatedAt') required String updatedAt,
     @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -54,7 +54,7 @@ class WorkOrderDto with _$WorkOrderDto {
 }
 
 @freezed
-class UserDto with _$UserDto {
+abstract class UserDto with _$UserDto {
   const factory UserDto({
     required int id,
     required String email,

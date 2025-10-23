@@ -6,8 +6,7 @@ part of 'customer_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CustomerDtoImpl _$$CustomerDtoImplFromJson(Map<String, dynamic> json) =>
-    _$CustomerDtoImpl(
+_CustomerDto _$CustomerDtoFromJson(Map<String, dynamic> json) => _CustomerDto(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       email: json['email'] as String,
@@ -19,7 +18,7 @@ _$CustomerDtoImpl _$$CustomerDtoImplFromJson(Map<String, dynamic> json) =>
       country: json['country'] as String?,
     );
 
-Map<String, dynamic> _$$CustomerDtoImplToJson(_$CustomerDtoImpl instance) =>
+Map<String, dynamic> _$CustomerDtoToJson(_CustomerDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

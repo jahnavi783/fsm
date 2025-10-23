@@ -8,7 +8,7 @@ import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
 part 'work_order_entity.freezed.dart';
 
 @freezed
-class WorkOrderEntity with _$WorkOrderEntity {
+abstract class WorkOrderEntity with _$WorkOrderEntity {
   const WorkOrderEntity._();
 
   const factory WorkOrderEntity({
@@ -97,6 +97,30 @@ enum WorkOrderStatus {
         return 'Reassigned';
     }
   }
+
+  @override
+  String toString() {
+    switch (this) {
+      case WorkOrderStatus.created:
+        return 'created';
+      case WorkOrderStatus.assigned:
+        return 'assigned';
+      case WorkOrderStatus.inProgress:
+        return 'in_progress';
+      case WorkOrderStatus.paused:
+        return 'paused';
+      case WorkOrderStatus.completed:
+        return 'completed';
+
+      case WorkOrderStatus.rejected:
+        return 'rejected';
+
+      case WorkOrderStatus.reAssigned:
+        return 're_assigned';
+      default:
+        return super.toString();
+    }
+  }
 }
 
 enum WorkOrderPriority {
@@ -120,7 +144,7 @@ enum WorkOrderPriority {
 }
 
 @freezed
-class PartUsedEntity with _$PartUsedEntity {
+abstract class PartUsedEntity with _$PartUsedEntity {
   const factory PartUsedEntity({
     required String partNumber,
     required int quantityUsed,

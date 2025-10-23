@@ -5,7 +5,7 @@ part 'work_log_dto.freezed.dart';
 part 'work_log_dto.g.dart';
 
 @freezed
-class WorkLogDto with _$WorkLogDto {
+abstract class WorkLogDto with _$WorkLogDto {
   const factory WorkLogDto({
     required int id,
     @JsonKey(name: 'work_order_id') required int workOrderId,

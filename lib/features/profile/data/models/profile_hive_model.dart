@@ -8,7 +8,7 @@ part 'profile_hive_model.g.dart';
 
 @freezed
 @HiveType(typeId: HiveBoxes.profileEntityTypeId)
-class ProfileHiveModel with _$ProfileHiveModel {
+abstract class ProfileHiveModel with _$ProfileHiveModel {
   const factory ProfileHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String firstName,
@@ -29,7 +29,7 @@ class ProfileHiveModel with _$ProfileHiveModel {
 
 @freezed
 @HiveType(typeId: HiveBoxes.profilePreferencesEntityTypeId)
-class ProfilePreferencesHiveModel with _$ProfilePreferencesHiveModel {
+abstract class ProfilePreferencesHiveModel with _$ProfilePreferencesHiveModel {
   const factory ProfilePreferencesHiveModel({
     @HiveField(0) @Default(true) bool notificationsEnabled,
     @HiveField(1) @Default(true) bool pushNotificationsEnabled,

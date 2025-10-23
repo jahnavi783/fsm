@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'calendar_event_entity.freezed.dart';
 
 @freezed
-class CalendarEventEntity with _$CalendarEventEntity {
+abstract class CalendarEventEntity with _$CalendarEventEntity {
   const CalendarEventEntity._();
   
   const factory CalendarEventEntity({

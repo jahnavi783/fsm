@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,156 +9,98 @@ part of 'calendar_event_dto.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-CalendarEventDto _$CalendarEventDtoFromJson(Map<String, dynamic> json) {
-  return _CalendarEventDto.fromJson(json);
-}
 
 /// @nodoc
 mixin _$CalendarEventDto {
-  int get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  int get id;
+  String get title;
   @JsonKey(name: 'start_time')
-  String get startTime => throw _privateConstructorUsedError;
+  String get startTime;
   @JsonKey(name: 'end_time')
-  String get endTime => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String get endTime;
+  String get type;
+  String get description;
   @JsonKey(name: 'work_order_id')
-  int? get workOrderId => throw _privateConstructorUsedError;
-  String? get location => throw _privateConstructorUsedError;
+  int? get workOrderId;
+  String? get location;
   @JsonKey(name: 'is_all_day')
-  bool get isAllDay => throw _privateConstructorUsedError;
-  String? get color => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
+  bool get isAllDay;
+  String? get color;
+  Map<String, dynamic>? get metadata;
   @JsonKey(name: 'created_at')
-  String get createdAt => throw _privateConstructorUsedError;
+  String get createdAt;
   @JsonKey(name: 'updated_at')
-  String get updatedAt => throw _privateConstructorUsedError;
+  String get updatedAt;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $CalendarEventDtoCopyWith<CalendarEventDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CalendarEventDtoCopyWith<$Res> {
-  factory $CalendarEventDtoCopyWith(
-          CalendarEventDto value, $Res Function(CalendarEventDto) then) =
-      _$CalendarEventDtoCopyWithImpl<$Res, CalendarEventDto>;
-  @useResult
-  $Res call(
-      {int id,
-      String title,
-      @JsonKey(name: 'start_time') String startTime,
-      @JsonKey(name: 'end_time') String endTime,
-      String type,
-      String description,
-      @JsonKey(name: 'work_order_id') int? workOrderId,
-      String? location,
-      @JsonKey(name: 'is_all_day') bool isAllDay,
-      String? color,
-      Map<String, dynamic>? metadata,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt});
-}
-
-/// @nodoc
-class _$CalendarEventDtoCopyWithImpl<$Res, $Val extends CalendarEventDto>
-    implements $CalendarEventDtoCopyWith<$Res> {
-  _$CalendarEventDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of CalendarEventDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $CalendarEventDtoCopyWith<CalendarEventDto> get copyWith =>
+      _$CalendarEventDtoCopyWithImpl<CalendarEventDto>(
+          this as CalendarEventDto, _$identity);
+
+  /// Serializes this CalendarEventDto to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? startTime = null,
-    Object? endTime = null,
-    Object? type = null,
-    Object? description = null,
-    Object? workOrderId = freezed,
-    Object? location = freezed,
-    Object? isAllDay = null,
-    Object? color = freezed,
-    Object? metadata = freezed,
-    Object? createdAt = null,
-    Object? updatedAt = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isAllDay: null == isAllDay
-          ? _value.isAllDay
-          : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool,
-      color: freezed == color
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as String?,
-      metadata: freezed == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
-      updatedAt: null == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CalendarEventDto &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.isAllDay, isAllDay) ||
+                other.isAllDay == isAllDay) &&
+            (identical(other.color, color) || other.color == color) &&
+            const DeepCollectionEquality().equals(other.metadata, metadata) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      startTime,
+      endTime,
+      type,
+      description,
+      workOrderId,
+      location,
+      isAllDay,
+      color,
+      const DeepCollectionEquality().hash(metadata),
+      createdAt,
+      updatedAt);
+
+  @override
+  String toString() {
+    return 'CalendarEventDto(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
 
 /// @nodoc
-abstract class _$$CalendarEventDtoImplCopyWith<$Res>
-    implements $CalendarEventDtoCopyWith<$Res> {
-  factory _$$CalendarEventDtoImplCopyWith(_$CalendarEventDtoImpl value,
-          $Res Function(_$CalendarEventDtoImpl) then) =
-      __$$CalendarEventDtoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $CalendarEventDtoCopyWith<$Res> {
+  factory $CalendarEventDtoCopyWith(
+          CalendarEventDto value, $Res Function(CalendarEventDto) _then) =
+      _$CalendarEventDtoCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -177,13 +119,15 @@ abstract class _$$CalendarEventDtoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CalendarEventDtoImplCopyWithImpl<$Res>
-    extends _$CalendarEventDtoCopyWithImpl<$Res, _$CalendarEventDtoImpl>
-    implements _$$CalendarEventDtoImplCopyWith<$Res> {
-  __$$CalendarEventDtoImplCopyWithImpl(_$CalendarEventDtoImpl _value,
-      $Res Function(_$CalendarEventDtoImpl) _then)
-      : super(_value, _then);
+class _$CalendarEventDtoCopyWithImpl<$Res>
+    implements $CalendarEventDtoCopyWith<$Res> {
+  _$CalendarEventDtoCopyWithImpl(this._self, this._then);
 
+  final CalendarEventDto _self;
+  final $Res Function(CalendarEventDto) _then;
+
+  /// Create a copy of CalendarEventDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -201,67 +145,305 @@ class __$$CalendarEventDtoImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$CalendarEventDtoImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       startTime: null == startTime
-          ? _value.startTime
+          ? _self.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as String,
       endTime: null == endTime
-          ? _value.endTime
+          ? _self.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
-          ? _value.type
+          ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
       workOrderId: freezed == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int?,
       location: freezed == location
-          ? _value.location
+          ? _self.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
       isAllDay: null == isAllDay
-          ? _value.isAllDay
+          ? _self.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
               as bool,
       color: freezed == color
-          ? _value.color
+          ? _self.color
           : color // ignore: cast_nullable_to_non_nullable
               as String?,
       metadata: freezed == metadata
-          ? _value._metadata
+          ? _self.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
       createdAt: null == createdAt
-          ? _value.createdAt
+          ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
       updatedAt: null == updatedAt
-          ? _value.updatedAt
+          ? _self.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [CalendarEventDto].
+extension CalendarEventDtoPatterns on CalendarEventDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CalendarEventDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CalendarEventDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CalendarEventDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String title,
+            @JsonKey(name: 'start_time') String startTime,
+            @JsonKey(name: 'end_time') String endTime,
+            String type,
+            String description,
+            @JsonKey(name: 'work_order_id') int? workOrderId,
+            String? location,
+            @JsonKey(name: 'is_all_day') bool isAllDay,
+            String? color,
+            Map<String, dynamic>? metadata,
+            @JsonKey(name: 'created_at') String createdAt,
+            @JsonKey(name: 'updated_at') String updatedAt)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.createdAt,
+            _that.updatedAt);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String title,
+            @JsonKey(name: 'start_time') String startTime,
+            @JsonKey(name: 'end_time') String endTime,
+            String type,
+            String description,
+            @JsonKey(name: 'work_order_id') int? workOrderId,
+            String? location,
+            @JsonKey(name: 'is_all_day') bool isAllDay,
+            String? color,
+            Map<String, dynamic>? metadata,
+            @JsonKey(name: 'created_at') String createdAt,
+            @JsonKey(name: 'updated_at') String updatedAt)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto():
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.createdAt,
+            _that.updatedAt);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            String title,
+            @JsonKey(name: 'start_time') String startTime,
+            @JsonKey(name: 'end_time') String endTime,
+            String type,
+            String description,
+            @JsonKey(name: 'work_order_id') int? workOrderId,
+            String? location,
+            @JsonKey(name: 'is_all_day') bool isAllDay,
+            String? color,
+            Map<String, dynamic>? metadata,
+            @JsonKey(name: 'created_at') String createdAt,
+            @JsonKey(name: 'updated_at') String updatedAt)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventDto() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.createdAt,
+            _that.updatedAt);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$CalendarEventDtoImpl implements _CalendarEventDto {
-  const _$CalendarEventDtoImpl(
+class _CalendarEventDto implements CalendarEventDto {
+  const _CalendarEventDto(
       {required this.id,
       required this.title,
       @JsonKey(name: 'start_time') required this.startTime,
@@ -276,9 +458,8 @@ class _$CalendarEventDtoImpl implements _CalendarEventDto {
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') required this.updatedAt})
       : _metadata = metadata;
-
-  factory _$CalendarEventDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CalendarEventDtoImplFromJson(json);
+  factory _CalendarEventDto.fromJson(Map<String, dynamic> json) =>
+      _$CalendarEventDtoFromJson(json);
 
   @override
   final int id;
@@ -321,16 +502,26 @@ class _$CalendarEventDtoImpl implements _CalendarEventDto {
   @JsonKey(name: 'updated_at')
   final String updatedAt;
 
+  /// Create a copy of CalendarEventDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'CalendarEventDto(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, createdAt: $createdAt, updatedAt: $updatedAt)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CalendarEventDtoCopyWith<_CalendarEventDto> get copyWith =>
+      __$CalendarEventDtoCopyWithImpl<_CalendarEventDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$CalendarEventDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CalendarEventDtoImpl &&
+            other is _CalendarEventDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.startTime, startTime) ||
@@ -353,7 +544,7 @@ class _$CalendarEventDtoImpl implements _CalendarEventDto {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -371,75 +562,118 @@ class _$CalendarEventDtoImpl implements _CalendarEventDto {
       createdAt,
       updatedAt);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$CalendarEventDtoImplCopyWith<_$CalendarEventDtoImpl> get copyWith =>
-      __$$CalendarEventDtoImplCopyWithImpl<_$CalendarEventDtoImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CalendarEventDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'CalendarEventDto(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
 
-abstract class _CalendarEventDto implements CalendarEventDto {
-  const factory _CalendarEventDto(
-          {required final int id,
-          required final String title,
-          @JsonKey(name: 'start_time') required final String startTime,
-          @JsonKey(name: 'end_time') required final String endTime,
-          required final String type,
-          required final String description,
-          @JsonKey(name: 'work_order_id') final int? workOrderId,
-          final String? location,
-          @JsonKey(name: 'is_all_day') final bool isAllDay,
-          final String? color,
-          final Map<String, dynamic>? metadata,
-          @JsonKey(name: 'created_at') required final String createdAt,
-          @JsonKey(name: 'updated_at') required final String updatedAt}) =
-      _$CalendarEventDtoImpl;
-
-  factory _CalendarEventDto.fromJson(Map<String, dynamic> json) =
-      _$CalendarEventDtoImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$CalendarEventDtoCopyWith<$Res>
+    implements $CalendarEventDtoCopyWith<$Res> {
+  factory _$CalendarEventDtoCopyWith(
+          _CalendarEventDto value, $Res Function(_CalendarEventDto) _then) =
+      __$CalendarEventDtoCopyWithImpl;
   @override
-  int get id;
-  @override
-  String get title;
-  @override
-  @JsonKey(name: 'start_time')
-  String get startTime;
-  @override
-  @JsonKey(name: 'end_time')
-  String get endTime;
-  @override
-  String get type;
-  @override
-  String get description;
-  @override
-  @JsonKey(name: 'work_order_id')
-  int? get workOrderId;
-  @override
-  String? get location;
-  @override
-  @JsonKey(name: 'is_all_day')
-  bool get isAllDay;
-  @override
-  String? get color;
-  @override
-  Map<String, dynamic>? get metadata;
-  @override
-  @JsonKey(name: 'created_at')
-  String get createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  String get updatedAt;
-  @override
-  @JsonKey(ignore: true)
-  _$$CalendarEventDtoImplCopyWith<_$CalendarEventDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {int id,
+      String title,
+      @JsonKey(name: 'start_time') String startTime,
+      @JsonKey(name: 'end_time') String endTime,
+      String type,
+      String description,
+      @JsonKey(name: 'work_order_id') int? workOrderId,
+      String? location,
+      @JsonKey(name: 'is_all_day') bool isAllDay,
+      String? color,
+      Map<String, dynamic>? metadata,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String updatedAt});
 }
+
+/// @nodoc
+class __$CalendarEventDtoCopyWithImpl<$Res>
+    implements _$CalendarEventDtoCopyWith<$Res> {
+  __$CalendarEventDtoCopyWithImpl(this._self, this._then);
+
+  final _CalendarEventDto _self;
+  final $Res Function(_CalendarEventDto) _then;
+
+  /// Create a copy of CalendarEventDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? startTime = null,
+    Object? endTime = null,
+    Object? type = null,
+    Object? description = null,
+    Object? workOrderId = freezed,
+    Object? location = freezed,
+    Object? isAllDay = null,
+    Object? color = freezed,
+    Object? metadata = freezed,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
+    return _then(_CalendarEventDto(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _self.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _self.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      location: freezed == location
+          ? _self.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAllDay: null == isAllDay
+          ? _self.isAllDay
+          : isAllDay // ignore: cast_nullable_to_non_nullable
+              as bool,
+      color: freezed == color
+          ? _self.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      metadata: freezed == metadata
+          ? _self._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+// dart format on

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'work_log_entity.freezed.dart';
 
 @freezed
-class WorkLogEntity with _$WorkLogEntity {
+abstract class WorkLogEntity with _$WorkLogEntity {
   const factory WorkLogEntity({
     required int id,
     required int workOrderId,

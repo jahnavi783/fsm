@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,102 +9,65 @@ part of 'part_dto.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PartDto _$PartDtoFromJson(Map<String, dynamic> json) {
-  return _PartDto.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PartDto {
   @JsonKey(name: 'part_number')
-  String get partNumber => throw _privateConstructorUsedError;
+  String get partNumber;
   @JsonKey(name: 'part_name')
-  String get partName => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
+  String get partName;
+  String get category;
   @JsonKey(name: 'quantity_available')
-  int get quantityAvailable => throw _privateConstructorUsedError;
+  int get quantityAvailable;
   @JsonKey(name: 'unit_price')
-  double get unitPrice => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  double get unitPrice;
+  String get status;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PartDtoCopyWith<PartDto> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartDtoCopyWith<$Res> {
-  factory $PartDtoCopyWith(PartDto value, $Res Function(PartDto) then) =
-      _$PartDtoCopyWithImpl<$Res, PartDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_number') String partNumber,
-      @JsonKey(name: 'part_name') String partName,
-      String category,
-      @JsonKey(name: 'quantity_available') int quantityAvailable,
-      @JsonKey(name: 'unit_price') double unitPrice,
-      String status});
-}
-
-/// @nodoc
-class _$PartDtoCopyWithImpl<$Res, $Val extends PartDto>
-    implements $PartDtoCopyWith<$Res> {
-  _$PartDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of PartDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $PartDtoCopyWith<PartDto> get copyWith =>
+      _$PartDtoCopyWithImpl<PartDto>(this as PartDto, _$identity);
+
+  /// Serializes this PartDto to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? partNumber = null,
-    Object? partName = null,
-    Object? category = null,
-    Object? quantityAvailable = null,
-    Object? unitPrice = null,
-    Object? status = null,
-  }) {
-    return _then(_value.copyWith(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      partName: null == partName
-          ? _value.partName
-          : partName // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityAvailable: null == quantityAvailable
-          ? _value.quantityAvailable
-          : quantityAvailable // ignore: cast_nullable_to_non_nullable
-              as int,
-      unitPrice: null == unitPrice
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
-              as double,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PartDto &&
+            (identical(other.partNumber, partNumber) ||
+                other.partNumber == partNumber) &&
+            (identical(other.partName, partName) ||
+                other.partName == partName) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.quantityAvailable, quantityAvailable) ||
+                other.quantityAvailable == quantityAvailable) &&
+            (identical(other.unitPrice, unitPrice) ||
+                other.unitPrice == unitPrice) &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, partNumber, partName, category,
+      quantityAvailable, unitPrice, status);
+
+  @override
+  String toString() {
+    return 'PartDto(partNumber: $partNumber, partName: $partName, category: $category, quantityAvailable: $quantityAvailable, unitPrice: $unitPrice, status: $status)';
   }
 }
 
 /// @nodoc
-abstract class _$$PartDtoImplCopyWith<$Res> implements $PartDtoCopyWith<$Res> {
-  factory _$$PartDtoImplCopyWith(
-          _$PartDtoImpl value, $Res Function(_$PartDtoImpl) then) =
-      __$$PartDtoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PartDtoCopyWith<$Res> {
+  factory $PartDtoCopyWith(PartDto value, $Res Function(PartDto) _then) =
+      _$PartDtoCopyWithImpl;
   @useResult
   $Res call(
       {@JsonKey(name: 'part_number') String partNumber,
@@ -116,13 +79,14 @@ abstract class _$$PartDtoImplCopyWith<$Res> implements $PartDtoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PartDtoImplCopyWithImpl<$Res>
-    extends _$PartDtoCopyWithImpl<$Res, _$PartDtoImpl>
-    implements _$$PartDtoImplCopyWith<$Res> {
-  __$$PartDtoImplCopyWithImpl(
-      _$PartDtoImpl _value, $Res Function(_$PartDtoImpl) _then)
-      : super(_value, _then);
+class _$PartDtoCopyWithImpl<$Res> implements $PartDtoCopyWith<$Res> {
+  _$PartDtoCopyWithImpl(this._self, this._then);
 
+  final PartDto _self;
+  final $Res Function(PartDto) _then;
+
+  /// Create a copy of PartDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,48 +97,228 @@ class __$$PartDtoImplCopyWithImpl<$Res>
     Object? unitPrice = null,
     Object? status = null,
   }) {
-    return _then(_$PartDtoImpl(
+    return _then(_self.copyWith(
       partNumber: null == partNumber
-          ? _value.partNumber
+          ? _self.partNumber
           : partNumber // ignore: cast_nullable_to_non_nullable
               as String,
       partName: null == partName
-          ? _value.partName
+          ? _self.partName
           : partName // ignore: cast_nullable_to_non_nullable
               as String,
       category: null == category
-          ? _value.category
+          ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
               as String,
       quantityAvailable: null == quantityAvailable
-          ? _value.quantityAvailable
+          ? _self.quantityAvailable
           : quantityAvailable // ignore: cast_nullable_to_non_nullable
               as int,
       unitPrice: null == unitPrice
-          ? _value.unitPrice
+          ? _self.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
               as double,
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PartDto].
+extension PartDtoPatterns on PartDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_number') String partNumber,
+            @JsonKey(name: 'part_name') String partName,
+            String category,
+            @JsonKey(name: 'quantity_available') int quantityAvailable,
+            @JsonKey(name: 'unit_price') double unitPrice,
+            String status)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto() when $default != null:
+        return $default(_that.partNumber, _that.partName, _that.category,
+            _that.quantityAvailable, _that.unitPrice, _that.status);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_number') String partNumber,
+            @JsonKey(name: 'part_name') String partName,
+            String category,
+            @JsonKey(name: 'quantity_available') int quantityAvailable,
+            @JsonKey(name: 'unit_price') double unitPrice,
+            String status)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto():
+        return $default(_that.partNumber, _that.partName, _that.category,
+            _that.quantityAvailable, _that.unitPrice, _that.status);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: 'part_number') String partNumber,
+            @JsonKey(name: 'part_name') String partName,
+            String category,
+            @JsonKey(name: 'quantity_available') int quantityAvailable,
+            @JsonKey(name: 'unit_price') double unitPrice,
+            String status)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartDto() when $default != null:
+        return $default(_that.partNumber, _that.partName, _that.category,
+            _that.quantityAvailable, _that.unitPrice, _that.status);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$PartDtoImpl implements _PartDto {
-  const _$PartDtoImpl(
+class _PartDto implements PartDto {
+  const _PartDto(
       {@JsonKey(name: 'part_number') required this.partNumber,
       @JsonKey(name: 'part_name') required this.partName,
       required this.category,
       @JsonKey(name: 'quantity_available') required this.quantityAvailable,
       @JsonKey(name: 'unit_price') required this.unitPrice,
       required this.status});
-
-  factory _$PartDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PartDtoImplFromJson(json);
+  factory _PartDto.fromJson(Map<String, dynamic> json) =>
+      _$PartDtoFromJson(json);
 
   @override
   @JsonKey(name: 'part_number')
@@ -193,16 +337,26 @@ class _$PartDtoImpl implements _PartDto {
   @override
   final String status;
 
+  /// Create a copy of PartDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PartDto(partNumber: $partNumber, partName: $partName, category: $category, quantityAvailable: $quantityAvailable, unitPrice: $unitPrice, status: $status)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartDtoCopyWith<_PartDto> get copyWith =>
+      __$PartDtoCopyWithImpl<_PartDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PartDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartDtoImpl &&
+            other is _PartDto &&
             (identical(other.partNumber, partNumber) ||
                 other.partNumber == partNumber) &&
             (identical(other.partName, partName) ||
@@ -216,146 +370,310 @@ class _$PartDtoImpl implements _PartDto {
             (identical(other.status, status) || other.status == status));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, partNumber, partName, category,
       quantityAvailable, unitPrice, status);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PartDtoImplCopyWith<_$PartDtoImpl> get copyWith =>
-      __$$PartDtoImplCopyWithImpl<_$PartDtoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PartDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PartDto(partNumber: $partNumber, partName: $partName, category: $category, quantityAvailable: $quantityAvailable, unitPrice: $unitPrice, status: $status)';
   }
 }
 
-abstract class _PartDto implements PartDto {
-  const factory _PartDto(
-      {@JsonKey(name: 'part_number') required final String partNumber,
-      @JsonKey(name: 'part_name') required final String partName,
-      required final String category,
-      @JsonKey(name: 'quantity_available') required final int quantityAvailable,
-      @JsonKey(name: 'unit_price') required final double unitPrice,
-      required final String status}) = _$PartDtoImpl;
-
-  factory _PartDto.fromJson(Map<String, dynamic> json) = _$PartDtoImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PartDtoCopyWith<$Res> implements $PartDtoCopyWith<$Res> {
+  factory _$PartDtoCopyWith(_PartDto value, $Res Function(_PartDto) _then) =
+      __$PartDtoCopyWithImpl;
   @override
-  @JsonKey(name: 'part_number')
-  String get partNumber;
-  @override
-  @JsonKey(name: 'part_name')
-  String get partName;
-  @override
-  String get category;
-  @override
-  @JsonKey(name: 'quantity_available')
-  int get quantityAvailable;
-  @override
-  @JsonKey(name: 'unit_price')
-  double get unitPrice;
-  @override
-  String get status;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartDtoImplCopyWith<_$PartDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'part_number') String partNumber,
+      @JsonKey(name: 'part_name') String partName,
+      String category,
+      @JsonKey(name: 'quantity_available') int quantityAvailable,
+      @JsonKey(name: 'unit_price') double unitPrice,
+      String status});
 }
 
-PartsResponse _$PartsResponseFromJson(Map<String, dynamic> json) {
-  return _PartsResponse.fromJson(json);
+/// @nodoc
+class __$PartDtoCopyWithImpl<$Res> implements _$PartDtoCopyWith<$Res> {
+  __$PartDtoCopyWithImpl(this._self, this._then);
+
+  final _PartDto _self;
+  final $Res Function(_PartDto) _then;
+
+  /// Create a copy of PartDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? partNumber = null,
+    Object? partName = null,
+    Object? category = null,
+    Object? quantityAvailable = null,
+    Object? unitPrice = null,
+    Object? status = null,
+  }) {
+    return _then(_PartDto(
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      partName: null == partName
+          ? _self.partName
+          : partName // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantityAvailable: null == quantityAvailable
+          ? _self.quantityAvailable
+          : quantityAvailable // ignore: cast_nullable_to_non_nullable
+              as int,
+      unitPrice: null == unitPrice
+          ? _self.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as double,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$PartsResponse {
-  List<PartDto> get parts => throw _privateConstructorUsedError;
+  List<PartDto> get parts;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PartsResponseCopyWith<PartsResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartsResponseCopyWith<$Res> {
-  factory $PartsResponseCopyWith(
-          PartsResponse value, $Res Function(PartsResponse) then) =
-      _$PartsResponseCopyWithImpl<$Res, PartsResponse>;
-  @useResult
-  $Res call({List<PartDto> parts});
-}
-
-/// @nodoc
-class _$PartsResponseCopyWithImpl<$Res, $Val extends PartsResponse>
-    implements $PartsResponseCopyWith<$Res> {
-  _$PartsResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $PartsResponseCopyWith<PartsResponse> get copyWith =>
+      _$PartsResponseCopyWithImpl<PartsResponse>(
+          this as PartsResponse, _$identity);
+
+  /// Serializes this PartsResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? parts = null,
-  }) {
-    return _then(_value.copyWith(
-      parts: null == parts
-          ? _value.parts
-          : parts // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PartsResponse &&
+            const DeepCollectionEquality().equals(other.parts, parts));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(parts));
+
+  @override
+  String toString() {
+    return 'PartsResponse(parts: $parts)';
   }
 }
 
 /// @nodoc
-abstract class _$$PartsResponseImplCopyWith<$Res>
-    implements $PartsResponseCopyWith<$Res> {
-  factory _$$PartsResponseImplCopyWith(
-          _$PartsResponseImpl value, $Res Function(_$PartsResponseImpl) then) =
-      __$$PartsResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PartsResponseCopyWith<$Res> {
+  factory $PartsResponseCopyWith(
+          PartsResponse value, $Res Function(PartsResponse) _then) =
+      _$PartsResponseCopyWithImpl;
   @useResult
   $Res call({List<PartDto> parts});
 }
 
 /// @nodoc
-class __$$PartsResponseImplCopyWithImpl<$Res>
-    extends _$PartsResponseCopyWithImpl<$Res, _$PartsResponseImpl>
-    implements _$$PartsResponseImplCopyWith<$Res> {
-  __$$PartsResponseImplCopyWithImpl(
-      _$PartsResponseImpl _value, $Res Function(_$PartsResponseImpl) _then)
-      : super(_value, _then);
+class _$PartsResponseCopyWithImpl<$Res>
+    implements $PartsResponseCopyWith<$Res> {
+  _$PartsResponseCopyWithImpl(this._self, this._then);
 
+  final PartsResponse _self;
+  final $Res Function(PartsResponse) _then;
+
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? parts = null,
   }) {
-    return _then(_$PartsResponseImpl(
+    return _then(_self.copyWith(
       parts: null == parts
-          ? _value._parts
+          ? _self.parts
           : parts // ignore: cast_nullable_to_non_nullable
               as List<PartDto>,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PartsResponse].
+extension PartsResponsePatterns on PartsResponse {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartsResponse value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartsResponse value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartsResponse value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(List<PartDto> parts)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that.parts);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(List<PartDto> parts) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse():
+        return $default(_that.parts);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(List<PartDto> parts)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that.parts);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$PartsResponseImpl implements _PartsResponse {
-  const _$PartsResponseImpl({required final List<PartDto> parts})
-      : _parts = parts;
-
-  factory _$PartsResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PartsResponseImplFromJson(json);
+class _PartsResponse implements PartsResponse {
+  const _PartsResponse({required final List<PartDto> parts}) : _parts = parts;
+  factory _PartsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PartsResponseFromJson(json);
 
   final List<PartDto> _parts;
   @override
@@ -365,49 +683,73 @@ class _$PartsResponseImpl implements _PartsResponse {
     return EqualUnmodifiableListView(_parts);
   }
 
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PartsResponse(parts: $parts)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartsResponseCopyWith<_PartsResponse> get copyWith =>
+      __$PartsResponseCopyWithImpl<_PartsResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PartsResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartsResponseImpl &&
+            other is _PartsResponse &&
             const DeepCollectionEquality().equals(other._parts, _parts));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_parts));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PartsResponseImplCopyWith<_$PartsResponseImpl> get copyWith =>
-      __$$PartsResponseImplCopyWithImpl<_$PartsResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PartsResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PartsResponse(parts: $parts)';
   }
 }
 
-abstract class _PartsResponse implements PartsResponse {
-  const factory _PartsResponse({required final List<PartDto> parts}) =
-      _$PartsResponseImpl;
-
-  factory _PartsResponse.fromJson(Map<String, dynamic> json) =
-      _$PartsResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PartsResponseCopyWith<$Res>
+    implements $PartsResponseCopyWith<$Res> {
+  factory _$PartsResponseCopyWith(
+          _PartsResponse value, $Res Function(_PartsResponse) _then) =
+      __$PartsResponseCopyWithImpl;
   @override
-  List<PartDto> get parts;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartsResponseImplCopyWith<_$PartsResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call({List<PartDto> parts});
 }
+
+/// @nodoc
+class __$PartsResponseCopyWithImpl<$Res>
+    implements _$PartsResponseCopyWith<$Res> {
+  __$PartsResponseCopyWithImpl(this._self, this._then);
+
+  final _PartsResponse _self;
+  final $Res Function(_PartsResponse) _then;
+
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? parts = null,
+  }) {
+    return _then(_PartsResponse(
+      parts: null == parts
+          ? _self._parts
+          : parts // ignore: cast_nullable_to_non_nullable
+              as List<PartDto>,
+    ));
+  }
+}
+
+// dart format on

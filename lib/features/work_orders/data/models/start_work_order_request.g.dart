@@ -6,15 +6,15 @@ part of 'start_work_order_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$StartWorkOrderRequestImpl _$$StartWorkOrderRequestImplFromJson(
+_StartWorkOrderRequest _$StartWorkOrderRequestFromJson(
         Map<String, dynamic> json) =>
-    _$StartWorkOrderRequestImpl(
+    _StartWorkOrderRequest(
       gpsCoordinates: json['gps_coordinates'] as String,
       notes: json['notes'] as String?,
     );
 
-Map<String, dynamic> _$$StartWorkOrderRequestImplToJson(
-        _$StartWorkOrderRequestImpl instance) =>
+Map<String, dynamic> _$StartWorkOrderRequestToJson(
+        _StartWorkOrderRequest instance) =>
     <String, dynamic>{
       'gps_coordinates': instance.gpsCoordinates,
       'notes': instance.notes,

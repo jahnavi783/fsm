@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,167 +9,46 @@ part of 'connectivity_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ConnectivityEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(bool isConnected) connectivityChanged,
-    required TResult Function() checkConnectivity,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(bool isConnected)? connectivityChanged,
-    TResult? Function()? checkConnectivity,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(bool isConnected)? connectivityChanged,
-    TResult Function()? checkConnectivity,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_ConnectivityChanged value) connectivityChanged,
-    required TResult Function(_CheckConnectivity value) checkConnectivity,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult? Function(_CheckConnectivity value)? checkConnectivity,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult Function(_CheckConnectivity value)? checkConnectivity,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ConnectivityEventCopyWith<$Res> {
-  factory $ConnectivityEventCopyWith(
-          ConnectivityEvent value, $Res Function(ConnectivityEvent) then) =
-      _$ConnectivityEventCopyWithImpl<$Res, ConnectivityEvent>;
-}
-
-/// @nodoc
-class _$ConnectivityEventCopyWithImpl<$Res, $Val extends ConnectivityEvent>
-    implements $ConnectivityEventCopyWith<$Res> {
-  _$ConnectivityEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$StartedImplCopyWith<$Res> {
-  factory _$$StartedImplCopyWith(
-          _$StartedImpl value, $Res Function(_$StartedImpl) then) =
-      __$$StartedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$StartedImplCopyWithImpl<$Res>
-    extends _$ConnectivityEventCopyWithImpl<$Res, _$StartedImpl>
-    implements _$$StartedImplCopyWith<$Res> {
-  __$$StartedImplCopyWithImpl(
-      _$StartedImpl _value, $Res Function(_$StartedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$StartedImpl implements _Started {
-  const _$StartedImpl();
-
-  @override
-  String toString() {
-    return 'ConnectivityEvent.started()';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StartedImpl);
+        (other.runtimeType == runtimeType && other is ConnectivityEvent);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(bool isConnected) connectivityChanged,
-    required TResult Function() checkConnectivity,
-  }) {
-    return started();
+  String toString() {
+    return 'ConnectivityEvent()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(bool isConnected)? connectivityChanged,
-    TResult? Function()? checkConnectivity,
-  }) {
-    return started?.call();
-  }
+/// @nodoc
+class $ConnectivityEventCopyWith<$Res> {
+  $ConnectivityEventCopyWith(
+      ConnectivityEvent _, $Res Function(ConnectivityEvent) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(bool isConnected)? connectivityChanged,
-    TResult Function()? checkConnectivity,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [ConnectivityEvent].
+extension ConnectivityEventPatterns on ConnectivityEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_ConnectivityChanged value) connectivityChanged,
-    required TResult Function(_CheckConnectivity value) checkConnectivity,
-  }) {
-    return started(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult? Function(_CheckConnectivity value)? checkConnectivity,
-  }) {
-    return started?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
@@ -177,42 +56,258 @@ class _$StartedImpl implements _Started {
     TResult Function(_CheckConnectivity value)? checkConnectivity,
     required TResult orElse(),
   }) {
-    if (started != null) {
-      return started(this);
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started(_that);
+      case _ConnectivityChanged() when connectivityChanged != null:
+        return connectivityChanged(_that);
+      case _CheckConnectivity() when checkConnectivity != null:
+        return checkConnectivity(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_ConnectivityChanged value) connectivityChanged,
+    required TResult Function(_CheckConnectivity value) checkConnectivity,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started():
+        return started(_that);
+      case _ConnectivityChanged():
+        return connectivityChanged(_that);
+      case _CheckConnectivity():
+        return checkConnectivity(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_ConnectivityChanged value)? connectivityChanged,
+    TResult? Function(_CheckConnectivity value)? checkConnectivity,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started(_that);
+      case _ConnectivityChanged() when connectivityChanged != null:
+        return connectivityChanged(_that);
+      case _CheckConnectivity() when checkConnectivity != null:
+        return checkConnectivity(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(bool isConnected)? connectivityChanged,
+    TResult Function()? checkConnectivity,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started();
+      case _ConnectivityChanged() when connectivityChanged != null:
+        return connectivityChanged(_that.isConnected);
+      case _CheckConnectivity() when checkConnectivity != null:
+        return checkConnectivity();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(bool isConnected) connectivityChanged,
+    required TResult Function() checkConnectivity,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started():
+        return started();
+      case _ConnectivityChanged():
+        return connectivityChanged(_that.isConnected);
+      case _CheckConnectivity():
+        return checkConnectivity();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(bool isConnected)? connectivityChanged,
+    TResult? Function()? checkConnectivity,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started();
+      case _ConnectivityChanged() when connectivityChanged != null:
+        return connectivityChanged(_that.isConnected);
+      case _CheckConnectivity() when checkConnectivity != null:
+        return checkConnectivity();
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class _Started implements ConnectivityEvent {
-  const factory _Started() = _$StartedImpl;
+/// @nodoc
+
+class _Started implements ConnectivityEvent {
+  const _Started();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Started);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ConnectivityEvent.started()';
+  }
 }
 
 /// @nodoc
-abstract class _$$ConnectivityChangedImplCopyWith<$Res> {
-  factory _$$ConnectivityChangedImplCopyWith(_$ConnectivityChangedImpl value,
-          $Res Function(_$ConnectivityChangedImpl) then) =
-      __$$ConnectivityChangedImplCopyWithImpl<$Res>;
+
+class _ConnectivityChanged implements ConnectivityEvent {
+  const _ConnectivityChanged(this.isConnected);
+
+  final bool isConnected;
+
+  /// Create a copy of ConnectivityEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ConnectivityChangedCopyWith<_ConnectivityChanged> get copyWith =>
+      __$ConnectivityChangedCopyWithImpl<_ConnectivityChanged>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ConnectivityChanged &&
+            (identical(other.isConnected, isConnected) ||
+                other.isConnected == isConnected));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, isConnected);
+
+  @override
+  String toString() {
+    return 'ConnectivityEvent.connectivityChanged(isConnected: $isConnected)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ConnectivityChangedCopyWith<$Res>
+    implements $ConnectivityEventCopyWith<$Res> {
+  factory _$ConnectivityChangedCopyWith(_ConnectivityChanged value,
+          $Res Function(_ConnectivityChanged) _then) =
+      __$ConnectivityChangedCopyWithImpl;
   @useResult
   $Res call({bool isConnected});
 }
 
 /// @nodoc
-class __$$ConnectivityChangedImplCopyWithImpl<$Res>
-    extends _$ConnectivityEventCopyWithImpl<$Res, _$ConnectivityChangedImpl>
-    implements _$$ConnectivityChangedImplCopyWith<$Res> {
-  __$$ConnectivityChangedImplCopyWithImpl(_$ConnectivityChangedImpl _value,
-      $Res Function(_$ConnectivityChangedImpl) _then)
-      : super(_value, _then);
+class __$ConnectivityChangedCopyWithImpl<$Res>
+    implements _$ConnectivityChangedCopyWith<$Res> {
+  __$ConnectivityChangedCopyWithImpl(this._self, this._then);
 
+  final _ConnectivityChanged _self;
+  final $Res Function(_ConnectivityChanged) _then;
+
+  /// Create a copy of ConnectivityEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? isConnected = null,
   }) {
-    return _then(_$ConnectivityChangedImpl(
+    return _then(_ConnectivityChanged(
       null == isConnected
-          ? _value.isConnected
+          ? _self.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
@@ -221,219 +316,22 @@ class __$$ConnectivityChangedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectivityChangedImpl implements _ConnectivityChanged {
-  const _$ConnectivityChangedImpl(this.isConnected);
-
-  @override
-  final bool isConnected;
-
-  @override
-  String toString() {
-    return 'ConnectivityEvent.connectivityChanged(isConnected: $isConnected)';
-  }
+class _CheckConnectivity implements ConnectivityEvent {
+  const _CheckConnectivity();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ConnectivityChangedImpl &&
-            (identical(other.isConnected, isConnected) ||
-                other.isConnected == isConnected));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, isConnected);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ConnectivityChangedImplCopyWith<_$ConnectivityChangedImpl> get copyWith =>
-      __$$ConnectivityChangedImplCopyWithImpl<_$ConnectivityChangedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(bool isConnected) connectivityChanged,
-    required TResult Function() checkConnectivity,
-  }) {
-    return connectivityChanged(isConnected);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(bool isConnected)? connectivityChanged,
-    TResult? Function()? checkConnectivity,
-  }) {
-    return connectivityChanged?.call(isConnected);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(bool isConnected)? connectivityChanged,
-    TResult Function()? checkConnectivity,
-    required TResult orElse(),
-  }) {
-    if (connectivityChanged != null) {
-      return connectivityChanged(isConnected);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_ConnectivityChanged value) connectivityChanged,
-    required TResult Function(_CheckConnectivity value) checkConnectivity,
-  }) {
-    return connectivityChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult? Function(_CheckConnectivity value)? checkConnectivity,
-  }) {
-    return connectivityChanged?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult Function(_CheckConnectivity value)? checkConnectivity,
-    required TResult orElse(),
-  }) {
-    if (connectivityChanged != null) {
-      return connectivityChanged(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ConnectivityChanged implements ConnectivityEvent {
-  const factory _ConnectivityChanged(final bool isConnected) =
-      _$ConnectivityChangedImpl;
-
-  bool get isConnected;
-  @JsonKey(ignore: true)
-  _$$ConnectivityChangedImplCopyWith<_$ConnectivityChangedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$CheckConnectivityImplCopyWith<$Res> {
-  factory _$$CheckConnectivityImplCopyWith(_$CheckConnectivityImpl value,
-          $Res Function(_$CheckConnectivityImpl) then) =
-      __$$CheckConnectivityImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$CheckConnectivityImplCopyWithImpl<$Res>
-    extends _$ConnectivityEventCopyWithImpl<$Res, _$CheckConnectivityImpl>
-    implements _$$CheckConnectivityImplCopyWith<$Res> {
-  __$$CheckConnectivityImplCopyWithImpl(_$CheckConnectivityImpl _value,
-      $Res Function(_$CheckConnectivityImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$CheckConnectivityImpl implements _CheckConnectivity {
-  const _$CheckConnectivityImpl();
-
-  @override
-  String toString() {
-    return 'ConnectivityEvent.checkConnectivity()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CheckConnectivityImpl);
+        (other.runtimeType == runtimeType && other is _CheckConnectivity);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(bool isConnected) connectivityChanged,
-    required TResult Function() checkConnectivity,
-  }) {
-    return checkConnectivity();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(bool isConnected)? connectivityChanged,
-    TResult? Function()? checkConnectivity,
-  }) {
-    return checkConnectivity?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(bool isConnected)? connectivityChanged,
-    TResult Function()? checkConnectivity,
-    required TResult orElse(),
-  }) {
-    if (checkConnectivity != null) {
-      return checkConnectivity();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_ConnectivityChanged value) connectivityChanged,
-    required TResult Function(_CheckConnectivity value) checkConnectivity,
-  }) {
-    return checkConnectivity(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult? Function(_CheckConnectivity value)? checkConnectivity,
-  }) {
-    return checkConnectivity?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_ConnectivityChanged value)? connectivityChanged,
-    TResult Function(_CheckConnectivity value)? checkConnectivity,
-    required TResult orElse(),
-  }) {
-    if (checkConnectivity != null) {
-      return checkConnectivity(this);
-    }
-    return orElse();
+  String toString() {
+    return 'ConnectivityEvent.checkConnectivity()';
   }
 }
 
-abstract class _CheckConnectivity implements ConnectivityEvent {
-  const factory _CheckConnectivity() = _$CheckConnectivityImpl;
-}
+// dart format on

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,65 +9,45 @@ part of 'sync_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SyncEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is SyncEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'SyncEvent()';
+  }
+}
+
+/// @nodoc
+class $SyncEventCopyWith<$Res> {
+  $SyncEventCopyWith(SyncEvent _, $Res Function(SyncEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [SyncEvent].
+extension SyncEventPatterns on SyncEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
@@ -77,433 +57,348 @@ mixin _$SyncEvent {
     TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
     TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started(_that);
+      case _SyncRequested() when syncRequested != null:
+        return syncRequested(_that);
+      case _SyncCompleted() when syncCompleted != null:
+        return syncCompleted(_that);
+      case _SyncFailed() when syncFailed != null:
+        return syncFailed(_that);
+      case _PendingChangesDetected() when pendingChangesDetected != null:
+        return pendingChangesDetected(_that);
+      case _AutoSyncTriggered() when autoSyncTriggered != null:
+        return autoSyncTriggered(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_SyncRequested value) syncRequested,
+    required TResult Function(_SyncCompleted value) syncCompleted,
+    required TResult Function(_SyncFailed value) syncFailed,
+    required TResult Function(_PendingChangesDetected value)
+        pendingChangesDetected,
+    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started():
+        return started(_that);
+      case _SyncRequested():
+        return syncRequested(_that);
+      case _SyncCompleted():
+        return syncCompleted(_that);
+      case _SyncFailed():
+        return syncFailed(_that);
+      case _PendingChangesDetected():
+        return pendingChangesDetected(_that);
+      case _AutoSyncTriggered():
+        return autoSyncTriggered(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_SyncRequested value)? syncRequested,
+    TResult? Function(_SyncCompleted value)? syncCompleted,
+    TResult? Function(_SyncFailed value)? syncFailed,
+    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
+    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started(_that);
+      case _SyncRequested() when syncRequested != null:
+        return syncRequested(_that);
+      case _SyncCompleted() when syncCompleted != null:
+        return syncCompleted(_that);
+      case _SyncFailed() when syncFailed != null:
+        return syncFailed(_that);
+      case _PendingChangesDetected() when pendingChangesDetected != null:
+        return pendingChangesDetected(_that);
+      case _AutoSyncTriggered() when autoSyncTriggered != null:
+        return autoSyncTriggered(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? syncRequested,
+    TResult Function()? syncCompleted,
+    TResult Function(String error)? syncFailed,
+    TResult Function(int count)? pendingChangesDetected,
+    TResult Function()? autoSyncTriggered,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started();
+      case _SyncRequested() when syncRequested != null:
+        return syncRequested();
+      case _SyncCompleted() when syncCompleted != null:
+        return syncCompleted();
+      case _SyncFailed() when syncFailed != null:
+        return syncFailed(_that.error);
+      case _PendingChangesDetected() when pendingChangesDetected != null:
+        return pendingChangesDetected(_that.count);
+      case _AutoSyncTriggered() when autoSyncTriggered != null:
+        return autoSyncTriggered();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() syncRequested,
+    required TResult Function() syncCompleted,
+    required TResult Function(String error) syncFailed,
+    required TResult Function(int count) pendingChangesDetected,
+    required TResult Function() autoSyncTriggered,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started():
+        return started();
+      case _SyncRequested():
+        return syncRequested();
+      case _SyncCompleted():
+        return syncCompleted();
+      case _SyncFailed():
+        return syncFailed(_that.error);
+      case _PendingChangesDetected():
+        return pendingChangesDetected(_that.count);
+      case _AutoSyncTriggered():
+        return autoSyncTriggered();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? syncRequested,
+    TResult? Function()? syncCompleted,
+    TResult? Function(String error)? syncFailed,
+    TResult? Function(int count)? pendingChangesDetected,
+    TResult? Function()? autoSyncTriggered,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Started() when started != null:
+        return started();
+      case _SyncRequested() when syncRequested != null:
+        return syncRequested();
+      case _SyncCompleted() when syncCompleted != null:
+        return syncCompleted();
+      case _SyncFailed() when syncFailed != null:
+        return syncFailed(_that.error);
+      case _PendingChangesDetected() when pendingChangesDetected != null:
+        return pendingChangesDetected(_that.count);
+      case _AutoSyncTriggered() when autoSyncTriggered != null:
+        return autoSyncTriggered();
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $SyncEventCopyWith<$Res> {
-  factory $SyncEventCopyWith(SyncEvent value, $Res Function(SyncEvent) then) =
-      _$SyncEventCopyWithImpl<$Res, SyncEvent>;
-}
 
-/// @nodoc
-class _$SyncEventCopyWithImpl<$Res, $Val extends SyncEvent>
-    implements $SyncEventCopyWith<$Res> {
-  _$SyncEventCopyWithImpl(this._value, this._then);
+class _Started implements SyncEvent {
+  const _Started();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Started);
+  }
 
-/// @nodoc
-abstract class _$$StartedImplCopyWith<$Res> {
-  factory _$$StartedImplCopyWith(
-          _$StartedImpl value, $Res Function(_$StartedImpl) then) =
-      __$$StartedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$StartedImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$StartedImpl>
-    implements _$$StartedImplCopyWith<$Res> {
-  __$$StartedImplCopyWithImpl(
-      _$StartedImpl _value, $Res Function(_$StartedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$StartedImpl implements _Started {
-  const _$StartedImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'SyncEvent.started()';
   }
+}
+
+/// @nodoc
+
+class _SyncRequested implements SyncEvent {
+  const _SyncRequested();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StartedImpl);
+        (other.runtimeType == runtimeType && other is _SyncRequested);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return started();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return started?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return started(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return started?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Started implements SyncEvent {
-  const factory _Started() = _$StartedImpl;
-}
-
-/// @nodoc
-abstract class _$$SyncRequestedImplCopyWith<$Res> {
-  factory _$$SyncRequestedImplCopyWith(
-          _$SyncRequestedImpl value, $Res Function(_$SyncRequestedImpl) then) =
-      __$$SyncRequestedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$SyncRequestedImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$SyncRequestedImpl>
-    implements _$$SyncRequestedImplCopyWith<$Res> {
-  __$$SyncRequestedImplCopyWithImpl(
-      _$SyncRequestedImpl _value, $Res Function(_$SyncRequestedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$SyncRequestedImpl implements _SyncRequested {
-  const _$SyncRequestedImpl();
 
   @override
   String toString() {
     return 'SyncEvent.syncRequested()';
   }
+}
+
+/// @nodoc
+
+class _SyncCompleted implements SyncEvent {
+  const _SyncCompleted();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SyncRequestedImpl);
+        (other.runtimeType == runtimeType && other is _SyncCompleted);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return syncRequested();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return syncRequested?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncRequested != null) {
-      return syncRequested();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return syncRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return syncRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncRequested != null) {
-      return syncRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SyncRequested implements SyncEvent {
-  const factory _SyncRequested() = _$SyncRequestedImpl;
-}
-
-/// @nodoc
-abstract class _$$SyncCompletedImplCopyWith<$Res> {
-  factory _$$SyncCompletedImplCopyWith(
-          _$SyncCompletedImpl value, $Res Function(_$SyncCompletedImpl) then) =
-      __$$SyncCompletedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$SyncCompletedImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$SyncCompletedImpl>
-    implements _$$SyncCompletedImplCopyWith<$Res> {
-  __$$SyncCompletedImplCopyWithImpl(
-      _$SyncCompletedImpl _value, $Res Function(_$SyncCompletedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$SyncCompletedImpl implements _SyncCompleted {
-  const _$SyncCompletedImpl();
 
   @override
   String toString() {
     return 'SyncEvent.syncCompleted()';
   }
+}
+
+/// @nodoc
+
+class _SyncFailed implements SyncEvent {
+  const _SyncFailed(this.error);
+
+  final String error;
+
+  /// Create a copy of SyncEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SyncFailedCopyWith<_SyncFailed> get copyWith =>
+      __$SyncFailedCopyWithImpl<_SyncFailed>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SyncCompletedImpl);
+        (other.runtimeType == runtimeType &&
+            other is _SyncFailed &&
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, error);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return syncCompleted();
+  String toString() {
+    return 'SyncEvent.syncFailed(error: $error)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return syncCompleted?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncCompleted != null) {
-      return syncCompleted();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return syncCompleted(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return syncCompleted?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncCompleted != null) {
-      return syncCompleted(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SyncCompleted implements SyncEvent {
-  const factory _SyncCompleted() = _$SyncCompletedImpl;
 }
 
 /// @nodoc
-abstract class _$$SyncFailedImplCopyWith<$Res> {
-  factory _$$SyncFailedImplCopyWith(
-          _$SyncFailedImpl value, $Res Function(_$SyncFailedImpl) then) =
-      __$$SyncFailedImplCopyWithImpl<$Res>;
+abstract mixin class _$SyncFailedCopyWith<$Res>
+    implements $SyncEventCopyWith<$Res> {
+  factory _$SyncFailedCopyWith(
+          _SyncFailed value, $Res Function(_SyncFailed) _then) =
+      __$SyncFailedCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$SyncFailedImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$SyncFailedImpl>
-    implements _$$SyncFailedImplCopyWith<$Res> {
-  __$$SyncFailedImplCopyWithImpl(
-      _$SyncFailedImpl _value, $Res Function(_$SyncFailedImpl) _then)
-      : super(_value, _then);
+class __$SyncFailedCopyWithImpl<$Res> implements _$SyncFailedCopyWith<$Res> {
+  __$SyncFailedCopyWithImpl(this._self, this._then);
 
+  final _SyncFailed _self;
+  final $Res Function(_SyncFailed) _then;
+
+  /// Create a copy of SyncEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$SyncFailedImpl(
+    return _then(_SyncFailed(
       null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -512,158 +407,63 @@ class __$$SyncFailedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SyncFailedImpl implements _SyncFailed {
-  const _$SyncFailedImpl(this.error);
+class _PendingChangesDetected implements SyncEvent {
+  const _PendingChangesDetected(this.count);
 
-  @override
-  final String error;
+  final int count;
 
-  @override
-  String toString() {
-    return 'SyncEvent.syncFailed(error: $error)';
-  }
+  /// Create a copy of SyncEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PendingChangesDetectedCopyWith<_PendingChangesDetected> get copyWith =>
+      __$PendingChangesDetectedCopyWithImpl<_PendingChangesDetected>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SyncFailedImpl &&
-            (identical(other.error, error) || other.error == error));
+            other is _PendingChangesDetected &&
+            (identical(other.count, count) || other.count == count));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, error);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SyncFailedImplCopyWith<_$SyncFailedImpl> get copyWith =>
-      __$$SyncFailedImplCopyWithImpl<_$SyncFailedImpl>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, count);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return syncFailed(error);
+  String toString() {
+    return 'SyncEvent.pendingChangesDetected(count: $count)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return syncFailed?.call(error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncFailed != null) {
-      return syncFailed(error);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return syncFailed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return syncFailed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (syncFailed != null) {
-      return syncFailed(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SyncFailed implements SyncEvent {
-  const factory _SyncFailed(final String error) = _$SyncFailedImpl;
-
-  String get error;
-  @JsonKey(ignore: true)
-  _$$SyncFailedImplCopyWith<_$SyncFailedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PendingChangesDetectedImplCopyWith<$Res> {
-  factory _$$PendingChangesDetectedImplCopyWith(
-          _$PendingChangesDetectedImpl value,
-          $Res Function(_$PendingChangesDetectedImpl) then) =
-      __$$PendingChangesDetectedImplCopyWithImpl<$Res>;
+abstract mixin class _$PendingChangesDetectedCopyWith<$Res>
+    implements $SyncEventCopyWith<$Res> {
+  factory _$PendingChangesDetectedCopyWith(_PendingChangesDetected value,
+          $Res Function(_PendingChangesDetected) _then) =
+      __$PendingChangesDetectedCopyWithImpl;
   @useResult
   $Res call({int count});
 }
 
 /// @nodoc
-class __$$PendingChangesDetectedImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$PendingChangesDetectedImpl>
-    implements _$$PendingChangesDetectedImplCopyWith<$Res> {
-  __$$PendingChangesDetectedImplCopyWithImpl(
-      _$PendingChangesDetectedImpl _value,
-      $Res Function(_$PendingChangesDetectedImpl) _then)
-      : super(_value, _then);
+class __$PendingChangesDetectedCopyWithImpl<$Res>
+    implements _$PendingChangesDetectedCopyWith<$Res> {
+  __$PendingChangesDetectedCopyWithImpl(this._self, this._then);
 
+  final _PendingChangesDetected _self;
+  final $Res Function(_PendingChangesDetected) _then;
+
+  /// Create a copy of SyncEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? count = null,
   }) {
-    return _then(_$PendingChangesDetectedImpl(
+    return _then(_PendingChangesDetected(
       null == count
-          ? _value.count
+          ? _self.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -672,256 +472,22 @@ class __$$PendingChangesDetectedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PendingChangesDetectedImpl implements _PendingChangesDetected {
-  const _$PendingChangesDetectedImpl(this.count);
-
-  @override
-  final int count;
-
-  @override
-  String toString() {
-    return 'SyncEvent.pendingChangesDetected(count: $count)';
-  }
+class _AutoSyncTriggered implements SyncEvent {
+  const _AutoSyncTriggered();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PendingChangesDetectedImpl &&
-            (identical(other.count, count) || other.count == count));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, count);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PendingChangesDetectedImplCopyWith<_$PendingChangesDetectedImpl>
-      get copyWith => __$$PendingChangesDetectedImplCopyWithImpl<
-          _$PendingChangesDetectedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return pendingChangesDetected(count);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return pendingChangesDetected?.call(count);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (pendingChangesDetected != null) {
-      return pendingChangesDetected(count);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return pendingChangesDetected(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return pendingChangesDetected?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (pendingChangesDetected != null) {
-      return pendingChangesDetected(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PendingChangesDetected implements SyncEvent {
-  const factory _PendingChangesDetected(final int count) =
-      _$PendingChangesDetectedImpl;
-
-  int get count;
-  @JsonKey(ignore: true)
-  _$$PendingChangesDetectedImplCopyWith<_$PendingChangesDetectedImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AutoSyncTriggeredImplCopyWith<$Res> {
-  factory _$$AutoSyncTriggeredImplCopyWith(_$AutoSyncTriggeredImpl value,
-          $Res Function(_$AutoSyncTriggeredImpl) then) =
-      __$$AutoSyncTriggeredImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AutoSyncTriggeredImplCopyWithImpl<$Res>
-    extends _$SyncEventCopyWithImpl<$Res, _$AutoSyncTriggeredImpl>
-    implements _$$AutoSyncTriggeredImplCopyWith<$Res> {
-  __$$AutoSyncTriggeredImplCopyWithImpl(_$AutoSyncTriggeredImpl _value,
-      $Res Function(_$AutoSyncTriggeredImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$AutoSyncTriggeredImpl implements _AutoSyncTriggered {
-  const _$AutoSyncTriggeredImpl();
-
-  @override
-  String toString() {
-    return 'SyncEvent.autoSyncTriggered()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AutoSyncTriggeredImpl);
+        (other.runtimeType == runtimeType && other is _AutoSyncTriggered);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function() syncRequested,
-    required TResult Function() syncCompleted,
-    required TResult Function(String error) syncFailed,
-    required TResult Function(int count) pendingChangesDetected,
-    required TResult Function() autoSyncTriggered,
-  }) {
-    return autoSyncTriggered();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function()? syncRequested,
-    TResult? Function()? syncCompleted,
-    TResult? Function(String error)? syncFailed,
-    TResult? Function(int count)? pendingChangesDetected,
-    TResult? Function()? autoSyncTriggered,
-  }) {
-    return autoSyncTriggered?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function()? syncRequested,
-    TResult Function()? syncCompleted,
-    TResult Function(String error)? syncFailed,
-    TResult Function(int count)? pendingChangesDetected,
-    TResult Function()? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (autoSyncTriggered != null) {
-      return autoSyncTriggered();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_SyncRequested value) syncRequested,
-    required TResult Function(_SyncCompleted value) syncCompleted,
-    required TResult Function(_SyncFailed value) syncFailed,
-    required TResult Function(_PendingChangesDetected value)
-        pendingChangesDetected,
-    required TResult Function(_AutoSyncTriggered value) autoSyncTriggered,
-  }) {
-    return autoSyncTriggered(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_SyncRequested value)? syncRequested,
-    TResult? Function(_SyncCompleted value)? syncCompleted,
-    TResult? Function(_SyncFailed value)? syncFailed,
-    TResult? Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult? Function(_AutoSyncTriggered value)? autoSyncTriggered,
-  }) {
-    return autoSyncTriggered?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_SyncRequested value)? syncRequested,
-    TResult Function(_SyncCompleted value)? syncCompleted,
-    TResult Function(_SyncFailed value)? syncFailed,
-    TResult Function(_PendingChangesDetected value)? pendingChangesDetected,
-    TResult Function(_AutoSyncTriggered value)? autoSyncTriggered,
-    required TResult orElse(),
-  }) {
-    if (autoSyncTriggered != null) {
-      return autoSyncTriggered(this);
-    }
-    return orElse();
+  String toString() {
+    return 'SyncEvent.autoSyncTriggered()';
   }
 }
 
-abstract class _AutoSyncTriggered implements SyncEvent {
-  const factory _AutoSyncTriggered() = _$AutoSyncTriggeredImpl;
-}
+// dart format on

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,168 +9,102 @@ part of 'parts_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PartsState {
-  PartsStatus get status => throw _privateConstructorUsedError;
-  List<PartEntity> get parts => throw _privateConstructorUsedError;
-  List<PartEntity> get lowStockParts => throw _privateConstructorUsedError;
-  List<String> get categories => throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get inventory =>
-      throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get inventoryHistory =>
-      throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
-  bool get hasReachedMax => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
-  String? get searchQuery => throw _privateConstructorUsedError;
-  String? get selectedCategory => throw _privateConstructorUsedError;
-  PartStatus? get selectedStatus => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
-  bool get isSearching => throw _privateConstructorUsedError;
-  bool get isUpdatingInventory => throw _privateConstructorUsedError;
-  int? get selectedPartId => throw _privateConstructorUsedError;
+  PartsStatus get status;
+  List<PartEntity> get parts;
+  List<PartEntity> get lowStockParts;
+  List<String> get categories;
+  List<Map<String, dynamic>> get inventory;
+  List<Map<String, dynamic>> get inventoryHistory;
+  int get currentPage;
+  bool get hasReachedMax;
+  bool get isLoadingMore;
+  String? get searchQuery;
+  String? get selectedCategory;
+  PartStatus? get selectedStatus;
+  String? get errorMessage;
+  bool get isSearching;
+  bool get isUpdatingInventory;
+  int? get selectedPartId;
 
-  @JsonKey(ignore: true)
-  $PartsStateCopyWith<PartsState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartsStateCopyWith<$Res> {
-  factory $PartsStateCopyWith(
-          PartsState value, $Res Function(PartsState) then) =
-      _$PartsStateCopyWithImpl<$Res, PartsState>;
-  @useResult
-  $Res call(
-      {PartsStatus status,
-      List<PartEntity> parts,
-      List<PartEntity> lowStockParts,
-      List<String> categories,
-      List<Map<String, dynamic>> inventory,
-      List<Map<String, dynamic>> inventoryHistory,
-      int currentPage,
-      bool hasReachedMax,
-      bool isLoadingMore,
-      String? searchQuery,
-      String? selectedCategory,
-      PartStatus? selectedStatus,
-      String? errorMessage,
-      bool isSearching,
-      bool isUpdatingInventory,
-      int? selectedPartId});
-}
-
-/// @nodoc
-class _$PartsStateCopyWithImpl<$Res, $Val extends PartsState>
-    implements $PartsStateCopyWith<$Res> {
-  _$PartsStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of PartsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $PartsStateCopyWith<PartsState> get copyWith =>
+      _$PartsStateCopyWithImpl<PartsState>(this as PartsState, _$identity);
+
   @override
-  $Res call({
-    Object? status = null,
-    Object? parts = null,
-    Object? lowStockParts = null,
-    Object? categories = null,
-    Object? inventory = null,
-    Object? inventoryHistory = null,
-    Object? currentPage = null,
-    Object? hasReachedMax = null,
-    Object? isLoadingMore = null,
-    Object? searchQuery = freezed,
-    Object? selectedCategory = freezed,
-    Object? selectedStatus = freezed,
-    Object? errorMessage = freezed,
-    Object? isSearching = null,
-    Object? isUpdatingInventory = null,
-    Object? selectedPartId = freezed,
-  }) {
-    return _then(_value.copyWith(
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as PartsStatus,
-      parts: null == parts
-          ? _value.parts
-          : parts // ignore: cast_nullable_to_non_nullable
-              as List<PartEntity>,
-      lowStockParts: null == lowStockParts
-          ? _value.lowStockParts
-          : lowStockParts // ignore: cast_nullable_to_non_nullable
-              as List<PartEntity>,
-      categories: null == categories
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      inventory: null == inventory
-          ? _value.inventory
-          : inventory // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
-      inventoryHistory: null == inventoryHistory
-          ? _value.inventoryHistory
-          : inventoryHistory // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
-      currentPage: null == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      hasReachedMax: null == hasReachedMax
-          ? _value.hasReachedMax
-          : hasReachedMax // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isLoadingMore: null == isLoadingMore
-          ? _value.isLoadingMore
-          : isLoadingMore // ignore: cast_nullable_to_non_nullable
-              as bool,
-      searchQuery: freezed == searchQuery
-          ? _value.searchQuery
-          : searchQuery // ignore: cast_nullable_to_non_nullable
-              as String?,
-      selectedCategory: freezed == selectedCategory
-          ? _value.selectedCategory
-          : selectedCategory // ignore: cast_nullable_to_non_nullable
-              as String?,
-      selectedStatus: freezed == selectedStatus
-          ? _value.selectedStatus
-          : selectedStatus // ignore: cast_nullable_to_non_nullable
-              as PartStatus?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isSearching: null == isSearching
-          ? _value.isSearching
-          : isSearching // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isUpdatingInventory: null == isUpdatingInventory
-          ? _value.isUpdatingInventory
-          : isUpdatingInventory // ignore: cast_nullable_to_non_nullable
-              as bool,
-      selectedPartId: freezed == selectedPartId
-          ? _value.selectedPartId
-          : selectedPartId // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PartsState &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality().equals(other.parts, parts) &&
+            const DeepCollectionEquality()
+                .equals(other.lowStockParts, lowStockParts) &&
+            const DeepCollectionEquality()
+                .equals(other.categories, categories) &&
+            const DeepCollectionEquality().equals(other.inventory, inventory) &&
+            const DeepCollectionEquality()
+                .equals(other.inventoryHistory, inventoryHistory) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.hasReachedMax, hasReachedMax) ||
+                other.hasReachedMax == hasReachedMax) &&
+            (identical(other.isLoadingMore, isLoadingMore) ||
+                other.isLoadingMore == isLoadingMore) &&
+            (identical(other.searchQuery, searchQuery) ||
+                other.searchQuery == searchQuery) &&
+            (identical(other.selectedCategory, selectedCategory) ||
+                other.selectedCategory == selectedCategory) &&
+            (identical(other.selectedStatus, selectedStatus) ||
+                other.selectedStatus == selectedStatus) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage) &&
+            (identical(other.isSearching, isSearching) ||
+                other.isSearching == isSearching) &&
+            (identical(other.isUpdatingInventory, isUpdatingInventory) ||
+                other.isUpdatingInventory == isUpdatingInventory) &&
+            (identical(other.selectedPartId, selectedPartId) ||
+                other.selectedPartId == selectedPartId));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(parts),
+      const DeepCollectionEquality().hash(lowStockParts),
+      const DeepCollectionEquality().hash(categories),
+      const DeepCollectionEquality().hash(inventory),
+      const DeepCollectionEquality().hash(inventoryHistory),
+      currentPage,
+      hasReachedMax,
+      isLoadingMore,
+      searchQuery,
+      selectedCategory,
+      selectedStatus,
+      errorMessage,
+      isSearching,
+      isUpdatingInventory,
+      selectedPartId);
+
+  @override
+  String toString() {
+    return 'PartsState(status: $status, parts: $parts, lowStockParts: $lowStockParts, categories: $categories, inventory: $inventory, inventoryHistory: $inventoryHistory, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, searchQuery: $searchQuery, selectedCategory: $selectedCategory, selectedStatus: $selectedStatus, errorMessage: $errorMessage, isSearching: $isSearching, isUpdatingInventory: $isUpdatingInventory, selectedPartId: $selectedPartId)';
   }
 }
 
 /// @nodoc
-abstract class _$$PartsStateImplCopyWith<$Res>
-    implements $PartsStateCopyWith<$Res> {
-  factory _$$PartsStateImplCopyWith(
-          _$PartsStateImpl value, $Res Function(_$PartsStateImpl) then) =
-      __$$PartsStateImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PartsStateCopyWith<$Res> {
+  factory $PartsStateCopyWith(
+          PartsState value, $Res Function(PartsState) _then) =
+      _$PartsStateCopyWithImpl;
   @useResult
   $Res call(
       {PartsStatus status,
@@ -192,13 +126,14 @@ abstract class _$$PartsStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PartsStateImplCopyWithImpl<$Res>
-    extends _$PartsStateCopyWithImpl<$Res, _$PartsStateImpl>
-    implements _$$PartsStateImplCopyWith<$Res> {
-  __$$PartsStateImplCopyWithImpl(
-      _$PartsStateImpl _value, $Res Function(_$PartsStateImpl) _then)
-      : super(_value, _then);
+class _$PartsStateCopyWithImpl<$Res> implements $PartsStateCopyWith<$Res> {
+  _$PartsStateCopyWithImpl(this._self, this._then);
 
+  final PartsState _self;
+  final $Res Function(PartsState) _then;
+
+  /// Create a copy of PartsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -219,79 +154,335 @@ class __$$PartsStateImplCopyWithImpl<$Res>
     Object? isUpdatingInventory = null,
     Object? selectedPartId = freezed,
   }) {
-    return _then(_$PartsStateImpl(
+    return _then(_self.copyWith(
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as PartsStatus,
       parts: null == parts
-          ? _value._parts
+          ? _self.parts
           : parts // ignore: cast_nullable_to_non_nullable
               as List<PartEntity>,
       lowStockParts: null == lowStockParts
-          ? _value._lowStockParts
+          ? _self.lowStockParts
           : lowStockParts // ignore: cast_nullable_to_non_nullable
               as List<PartEntity>,
       categories: null == categories
-          ? _value._categories
+          ? _self.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       inventory: null == inventory
-          ? _value._inventory
+          ? _self.inventory
           : inventory // ignore: cast_nullable_to_non_nullable
               as List<Map<String, dynamic>>,
       inventoryHistory: null == inventoryHistory
-          ? _value._inventoryHistory
+          ? _self.inventoryHistory
           : inventoryHistory // ignore: cast_nullable_to_non_nullable
               as List<Map<String, dynamic>>,
       currentPage: null == currentPage
-          ? _value.currentPage
+          ? _self.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
       hasReachedMax: null == hasReachedMax
-          ? _value.hasReachedMax
+          ? _self.hasReachedMax
           : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
       isLoadingMore: null == isLoadingMore
-          ? _value.isLoadingMore
+          ? _self.isLoadingMore
           : isLoadingMore // ignore: cast_nullable_to_non_nullable
               as bool,
       searchQuery: freezed == searchQuery
-          ? _value.searchQuery
+          ? _self.searchQuery
           : searchQuery // ignore: cast_nullable_to_non_nullable
               as String?,
       selectedCategory: freezed == selectedCategory
-          ? _value.selectedCategory
+          ? _self.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
               as String?,
       selectedStatus: freezed == selectedStatus
-          ? _value.selectedStatus
+          ? _self.selectedStatus
           : selectedStatus // ignore: cast_nullable_to_non_nullable
               as PartStatus?,
       errorMessage: freezed == errorMessage
-          ? _value.errorMessage
+          ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
       isSearching: null == isSearching
-          ? _value.isSearching
+          ? _self.isSearching
           : isSearching // ignore: cast_nullable_to_non_nullable
               as bool,
       isUpdatingInventory: null == isUpdatingInventory
-          ? _value.isUpdatingInventory
+          ? _self.isUpdatingInventory
           : isUpdatingInventory // ignore: cast_nullable_to_non_nullable
               as bool,
       selectedPartId: freezed == selectedPartId
-          ? _value.selectedPartId
+          ? _self.selectedPartId
           : selectedPartId // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PartsState].
+extension PartsStatePatterns on PartsState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartsState value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartsState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartsState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            PartsStatus status,
+            List<PartEntity> parts,
+            List<PartEntity> lowStockParts,
+            List<String> categories,
+            List<Map<String, dynamic>> inventory,
+            List<Map<String, dynamic>> inventoryHistory,
+            int currentPage,
+            bool hasReachedMax,
+            bool isLoadingMore,
+            String? searchQuery,
+            String? selectedCategory,
+            PartStatus? selectedStatus,
+            String? errorMessage,
+            bool isSearching,
+            bool isUpdatingInventory,
+            int? selectedPartId)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState() when $default != null:
+        return $default(
+            _that.status,
+            _that.parts,
+            _that.lowStockParts,
+            _that.categories,
+            _that.inventory,
+            _that.inventoryHistory,
+            _that.currentPage,
+            _that.hasReachedMax,
+            _that.isLoadingMore,
+            _that.searchQuery,
+            _that.selectedCategory,
+            _that.selectedStatus,
+            _that.errorMessage,
+            _that.isSearching,
+            _that.isUpdatingInventory,
+            _that.selectedPartId);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            PartsStatus status,
+            List<PartEntity> parts,
+            List<PartEntity> lowStockParts,
+            List<String> categories,
+            List<Map<String, dynamic>> inventory,
+            List<Map<String, dynamic>> inventoryHistory,
+            int currentPage,
+            bool hasReachedMax,
+            bool isLoadingMore,
+            String? searchQuery,
+            String? selectedCategory,
+            PartStatus? selectedStatus,
+            String? errorMessage,
+            bool isSearching,
+            bool isUpdatingInventory,
+            int? selectedPartId)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState():
+        return $default(
+            _that.status,
+            _that.parts,
+            _that.lowStockParts,
+            _that.categories,
+            _that.inventory,
+            _that.inventoryHistory,
+            _that.currentPage,
+            _that.hasReachedMax,
+            _that.isLoadingMore,
+            _that.searchQuery,
+            _that.selectedCategory,
+            _that.selectedStatus,
+            _that.errorMessage,
+            _that.isSearching,
+            _that.isUpdatingInventory,
+            _that.selectedPartId);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            PartsStatus status,
+            List<PartEntity> parts,
+            List<PartEntity> lowStockParts,
+            List<String> categories,
+            List<Map<String, dynamic>> inventory,
+            List<Map<String, dynamic>> inventoryHistory,
+            int currentPage,
+            bool hasReachedMax,
+            bool isLoadingMore,
+            String? searchQuery,
+            String? selectedCategory,
+            PartStatus? selectedStatus,
+            String? errorMessage,
+            bool isSearching,
+            bool isUpdatingInventory,
+            int? selectedPartId)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsState() when $default != null:
+        return $default(
+            _that.status,
+            _that.parts,
+            _that.lowStockParts,
+            _that.categories,
+            _that.inventory,
+            _that.inventoryHistory,
+            _that.currentPage,
+            _that.hasReachedMax,
+            _that.isLoadingMore,
+            _that.searchQuery,
+            _that.selectedCategory,
+            _that.selectedStatus,
+            _that.errorMessage,
+            _that.isSearching,
+            _that.isUpdatingInventory,
+            _that.selectedPartId);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$PartsStateImpl implements _PartsState {
-  const _$PartsStateImpl(
+class _PartsState implements PartsState {
+  const _PartsState(
       {this.status = PartsStatus.initial,
       final List<PartEntity> parts = const [],
       final List<PartEntity> lowStockParts = const [],
@@ -389,16 +580,19 @@ class _$PartsStateImpl implements _PartsState {
   @override
   final int? selectedPartId;
 
+  /// Create a copy of PartsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PartsState(status: $status, parts: $parts, lowStockParts: $lowStockParts, categories: $categories, inventory: $inventory, inventoryHistory: $inventoryHistory, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, searchQuery: $searchQuery, selectedCategory: $selectedCategory, selectedStatus: $selectedStatus, errorMessage: $errorMessage, isSearching: $isSearching, isUpdatingInventory: $isUpdatingInventory, selectedPartId: $selectedPartId)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartsStateCopyWith<_PartsState> get copyWith =>
+      __$PartsStateCopyWithImpl<_PartsState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartsStateImpl &&
+            other is _PartsState &&
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality().equals(other._parts, _parts) &&
             const DeepCollectionEquality()
@@ -451,66 +645,135 @@ class _$PartsStateImpl implements _PartsState {
       isUpdatingInventory,
       selectedPartId);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'PartsState(status: $status, parts: $parts, lowStockParts: $lowStockParts, categories: $categories, inventory: $inventory, inventoryHistory: $inventoryHistory, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, searchQuery: $searchQuery, selectedCategory: $selectedCategory, selectedStatus: $selectedStatus, errorMessage: $errorMessage, isSearching: $isSearching, isUpdatingInventory: $isUpdatingInventory, selectedPartId: $selectedPartId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PartsStateCopyWith<$Res>
+    implements $PartsStateCopyWith<$Res> {
+  factory _$PartsStateCopyWith(
+          _PartsState value, $Res Function(_PartsState) _then) =
+      __$PartsStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {PartsStatus status,
+      List<PartEntity> parts,
+      List<PartEntity> lowStockParts,
+      List<String> categories,
+      List<Map<String, dynamic>> inventory,
+      List<Map<String, dynamic>> inventoryHistory,
+      int currentPage,
+      bool hasReachedMax,
+      bool isLoadingMore,
+      String? searchQuery,
+      String? selectedCategory,
+      PartStatus? selectedStatus,
+      String? errorMessage,
+      bool isSearching,
+      bool isUpdatingInventory,
+      int? selectedPartId});
+}
+
+/// @nodoc
+class __$PartsStateCopyWithImpl<$Res> implements _$PartsStateCopyWith<$Res> {
+  __$PartsStateCopyWithImpl(this._self, this._then);
+
+  final _PartsState _self;
+  final $Res Function(_PartsState) _then;
+
+  /// Create a copy of PartsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PartsStateImplCopyWith<_$PartsStateImpl> get copyWith =>
-      __$$PartsStateImplCopyWithImpl<_$PartsStateImpl>(this, _$identity);
+  $Res call({
+    Object? status = null,
+    Object? parts = null,
+    Object? lowStockParts = null,
+    Object? categories = null,
+    Object? inventory = null,
+    Object? inventoryHistory = null,
+    Object? currentPage = null,
+    Object? hasReachedMax = null,
+    Object? isLoadingMore = null,
+    Object? searchQuery = freezed,
+    Object? selectedCategory = freezed,
+    Object? selectedStatus = freezed,
+    Object? errorMessage = freezed,
+    Object? isSearching = null,
+    Object? isUpdatingInventory = null,
+    Object? selectedPartId = freezed,
+  }) {
+    return _then(_PartsState(
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PartsStatus,
+      parts: null == parts
+          ? _self._parts
+          : parts // ignore: cast_nullable_to_non_nullable
+              as List<PartEntity>,
+      lowStockParts: null == lowStockParts
+          ? _self._lowStockParts
+          : lowStockParts // ignore: cast_nullable_to_non_nullable
+              as List<PartEntity>,
+      categories: null == categories
+          ? _self._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      inventory: null == inventory
+          ? _self._inventory
+          : inventory // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
+      inventoryHistory: null == inventoryHistory
+          ? _self._inventoryHistory
+          : inventoryHistory // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
+      currentPage: null == currentPage
+          ? _self.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasReachedMax: null == hasReachedMax
+          ? _self.hasReachedMax
+          : hasReachedMax // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingMore: null == isLoadingMore
+          ? _self.isLoadingMore
+          : isLoadingMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      searchQuery: freezed == searchQuery
+          ? _self.searchQuery
+          : searchQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedCategory: freezed == selectedCategory
+          ? _self.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedStatus: freezed == selectedStatus
+          ? _self.selectedStatus
+          : selectedStatus // ignore: cast_nullable_to_non_nullable
+              as PartStatus?,
+      errorMessage: freezed == errorMessage
+          ? _self.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isSearching: null == isSearching
+          ? _self.isSearching
+          : isSearching // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUpdatingInventory: null == isUpdatingInventory
+          ? _self.isUpdatingInventory
+          : isUpdatingInventory // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedPartId: freezed == selectedPartId
+          ? _self.selectedPartId
+          : selectedPartId // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
-abstract class _PartsState implements PartsState {
-  const factory _PartsState(
-      {final PartsStatus status,
-      final List<PartEntity> parts,
-      final List<PartEntity> lowStockParts,
-      final List<String> categories,
-      final List<Map<String, dynamic>> inventory,
-      final List<Map<String, dynamic>> inventoryHistory,
-      final int currentPage,
-      final bool hasReachedMax,
-      final bool isLoadingMore,
-      final String? searchQuery,
-      final String? selectedCategory,
-      final PartStatus? selectedStatus,
-      final String? errorMessage,
-      final bool isSearching,
-      final bool isUpdatingInventory,
-      final int? selectedPartId}) = _$PartsStateImpl;
-
-  @override
-  PartsStatus get status;
-  @override
-  List<PartEntity> get parts;
-  @override
-  List<PartEntity> get lowStockParts;
-  @override
-  List<String> get categories;
-  @override
-  List<Map<String, dynamic>> get inventory;
-  @override
-  List<Map<String, dynamic>> get inventoryHistory;
-  @override
-  int get currentPage;
-  @override
-  bool get hasReachedMax;
-  @override
-  bool get isLoadingMore;
-  @override
-  String? get searchQuery;
-  @override
-  String? get selectedCategory;
-  @override
-  PartStatus? get selectedStatus;
-  @override
-  String? get errorMessage;
-  @override
-  bool get isSearching;
-  @override
-  bool get isUpdatingInventory;
-  @override
-  int? get selectedPartId;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartsStateImplCopyWith<_$PartsStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

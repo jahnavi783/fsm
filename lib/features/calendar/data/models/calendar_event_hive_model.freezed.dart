@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,176 +9,111 @@ part of 'calendar_event_hive_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-CalendarEventHiveModel _$CalendarEventHiveModelFromJson(
-    Map<String, dynamic> json) {
-  return _CalendarEventHiveModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$CalendarEventHiveModel {
   @HiveField(0)
-  int get id => throw _privateConstructorUsedError;
+  int get id;
   @HiveField(1)
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @HiveField(2)
-  DateTime get startTime => throw _privateConstructorUsedError;
+  DateTime get startTime;
   @HiveField(3)
-  DateTime get endTime => throw _privateConstructorUsedError;
+  DateTime get endTime;
   @HiveField(4)
-  int get type =>
-      throw _privateConstructorUsedError; // CalendarEventType as int
+  int get type; // CalendarEventType as int
   @HiveField(5)
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @HiveField(6)
-  int? get workOrderId => throw _privateConstructorUsedError;
+  int? get workOrderId;
   @HiveField(7)
-  String? get location => throw _privateConstructorUsedError;
+  String? get location;
   @HiveField(8)
-  bool get isAllDay => throw _privateConstructorUsedError;
+  bool get isAllDay;
   @HiveField(9)
-  String? get color => throw _privateConstructorUsedError;
+  String? get color;
   @HiveField(10)
-  String? get metadata =>
-      throw _privateConstructorUsedError; // Store as JSON string
+  String? get metadata; // Store as JSON string
   @HiveField(11)
-  DateTime get cachedAt => throw _privateConstructorUsedError;
+  DateTime get cachedAt;
   @HiveField(12)
-  bool get isPendingSync => throw _privateConstructorUsedError;
+  bool get isPendingSync;
   @HiveField(13)
-  String? get pendingAction => throw _privateConstructorUsedError;
+  String? get pendingAction;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $CalendarEventHiveModelCopyWith<CalendarEventHiveModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CalendarEventHiveModelCopyWith<$Res> {
-  factory $CalendarEventHiveModelCopyWith(CalendarEventHiveModel value,
-          $Res Function(CalendarEventHiveModel) then) =
-      _$CalendarEventHiveModelCopyWithImpl<$Res, CalendarEventHiveModel>;
-  @useResult
-  $Res call(
-      {@HiveField(0) int id,
-      @HiveField(1) String title,
-      @HiveField(2) DateTime startTime,
-      @HiveField(3) DateTime endTime,
-      @HiveField(4) int type,
-      @HiveField(5) String description,
-      @HiveField(6) int? workOrderId,
-      @HiveField(7) String? location,
-      @HiveField(8) bool isAllDay,
-      @HiveField(9) String? color,
-      @HiveField(10) String? metadata,
-      @HiveField(11) DateTime cachedAt,
-      @HiveField(12) bool isPendingSync,
-      @HiveField(13) String? pendingAction});
-}
-
-/// @nodoc
-class _$CalendarEventHiveModelCopyWithImpl<$Res,
-        $Val extends CalendarEventHiveModel>
-    implements $CalendarEventHiveModelCopyWith<$Res> {
-  _$CalendarEventHiveModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of CalendarEventHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $CalendarEventHiveModelCopyWith<CalendarEventHiveModel> get copyWith =>
+      _$CalendarEventHiveModelCopyWithImpl<CalendarEventHiveModel>(
+          this as CalendarEventHiveModel, _$identity);
+
+  /// Serializes this CalendarEventHiveModel to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? startTime = null,
-    Object? endTime = null,
-    Object? type = null,
-    Object? description = null,
-    Object? workOrderId = freezed,
-    Object? location = freezed,
-    Object? isAllDay = null,
-    Object? color = freezed,
-    Object? metadata = freezed,
-    Object? cachedAt = null,
-    Object? isPendingSync = null,
-    Object? pendingAction = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as int,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      location: freezed == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isAllDay: null == isAllDay
-          ? _value.isAllDay
-          : isAllDay // ignore: cast_nullable_to_non_nullable
-              as bool,
-      color: freezed == color
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as String?,
-      metadata: freezed == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as String?,
-      cachedAt: null == cachedAt
-          ? _value.cachedAt
-          : cachedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      isPendingSync: null == isPendingSync
-          ? _value.isPendingSync
-          : isPendingSync // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pendingAction: freezed == pendingAction
-          ? _value.pendingAction
-          : pendingAction // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CalendarEventHiveModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.isAllDay, isAllDay) ||
+                other.isAllDay == isAllDay) &&
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.metadata, metadata) ||
+                other.metadata == metadata) &&
+            (identical(other.cachedAt, cachedAt) ||
+                other.cachedAt == cachedAt) &&
+            (identical(other.isPendingSync, isPendingSync) ||
+                other.isPendingSync == isPendingSync) &&
+            (identical(other.pendingAction, pendingAction) ||
+                other.pendingAction == pendingAction));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      startTime,
+      endTime,
+      type,
+      description,
+      workOrderId,
+      location,
+      isAllDay,
+      color,
+      metadata,
+      cachedAt,
+      isPendingSync,
+      pendingAction);
+
+  @override
+  String toString() {
+    return 'CalendarEventHiveModel(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
   }
 }
 
 /// @nodoc
-abstract class _$$CalendarEventHiveModelImplCopyWith<$Res>
-    implements $CalendarEventHiveModelCopyWith<$Res> {
-  factory _$$CalendarEventHiveModelImplCopyWith(
-          _$CalendarEventHiveModelImpl value,
-          $Res Function(_$CalendarEventHiveModelImpl) then) =
-      __$$CalendarEventHiveModelImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $CalendarEventHiveModelCopyWith<$Res> {
+  factory $CalendarEventHiveModelCopyWith(CalendarEventHiveModel value,
+          $Res Function(CalendarEventHiveModel) _then) =
+      _$CalendarEventHiveModelCopyWithImpl;
   @useResult
   $Res call(
       {@HiveField(0) int id,
@@ -198,15 +133,15 @@ abstract class _$$CalendarEventHiveModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CalendarEventHiveModelImplCopyWithImpl<$Res>
-    extends _$CalendarEventHiveModelCopyWithImpl<$Res,
-        _$CalendarEventHiveModelImpl>
-    implements _$$CalendarEventHiveModelImplCopyWith<$Res> {
-  __$$CalendarEventHiveModelImplCopyWithImpl(
-      _$CalendarEventHiveModelImpl _value,
-      $Res Function(_$CalendarEventHiveModelImpl) _then)
-      : super(_value, _then);
+class _$CalendarEventHiveModelCopyWithImpl<$Res>
+    implements $CalendarEventHiveModelCopyWith<$Res> {
+  _$CalendarEventHiveModelCopyWithImpl(this._self, this._then);
 
+  final CalendarEventHiveModel _self;
+  final $Res Function(CalendarEventHiveModel) _then;
+
+  /// Create a copy of CalendarEventHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -225,71 +160,315 @@ class __$$CalendarEventHiveModelImplCopyWithImpl<$Res>
     Object? isPendingSync = null,
     Object? pendingAction = freezed,
   }) {
-    return _then(_$CalendarEventHiveModelImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       startTime: null == startTime
-          ? _value.startTime
+          ? _self.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
       endTime: null == endTime
-          ? _value.endTime
+          ? _self.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
       type: null == type
-          ? _value.type
+          ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as int,
       description: null == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
       workOrderId: freezed == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int?,
       location: freezed == location
-          ? _value.location
+          ? _self.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
       isAllDay: null == isAllDay
-          ? _value.isAllDay
+          ? _self.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
               as bool,
       color: freezed == color
-          ? _value.color
+          ? _self.color
           : color // ignore: cast_nullable_to_non_nullable
               as String?,
       metadata: freezed == metadata
-          ? _value.metadata
+          ? _self.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
               as String?,
       cachedAt: null == cachedAt
-          ? _value.cachedAt
+          ? _self.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       isPendingSync: null == isPendingSync
-          ? _value.isPendingSync
+          ? _self.isPendingSync
           : isPendingSync // ignore: cast_nullable_to_non_nullable
               as bool,
       pendingAction: freezed == pendingAction
-          ? _value.pendingAction
+          ? _self.pendingAction
           : pendingAction // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [CalendarEventHiveModel].
+extension CalendarEventHiveModelPatterns on CalendarEventHiveModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CalendarEventHiveModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CalendarEventHiveModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CalendarEventHiveModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) int id,
+            @HiveField(1) String title,
+            @HiveField(2) DateTime startTime,
+            @HiveField(3) DateTime endTime,
+            @HiveField(4) int type,
+            @HiveField(5) String description,
+            @HiveField(6) int? workOrderId,
+            @HiveField(7) String? location,
+            @HiveField(8) bool isAllDay,
+            @HiveField(9) String? color,
+            @HiveField(10) String? metadata,
+            @HiveField(11) DateTime cachedAt,
+            @HiveField(12) bool isPendingSync,
+            @HiveField(13) String? pendingAction)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.cachedAt,
+            _that.isPendingSync,
+            _that.pendingAction);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) int id,
+            @HiveField(1) String title,
+            @HiveField(2) DateTime startTime,
+            @HiveField(3) DateTime endTime,
+            @HiveField(4) int type,
+            @HiveField(5) String description,
+            @HiveField(6) int? workOrderId,
+            @HiveField(7) String? location,
+            @HiveField(8) bool isAllDay,
+            @HiveField(9) String? color,
+            @HiveField(10) String? metadata,
+            @HiveField(11) DateTime cachedAt,
+            @HiveField(12) bool isPendingSync,
+            @HiveField(13) String? pendingAction)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel():
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.cachedAt,
+            _that.isPendingSync,
+            _that.pendingAction);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @HiveField(0) int id,
+            @HiveField(1) String title,
+            @HiveField(2) DateTime startTime,
+            @HiveField(3) DateTime endTime,
+            @HiveField(4) int type,
+            @HiveField(5) String description,
+            @HiveField(6) int? workOrderId,
+            @HiveField(7) String? location,
+            @HiveField(8) bool isAllDay,
+            @HiveField(9) String? color,
+            @HiveField(10) String? metadata,
+            @HiveField(11) DateTime cachedAt,
+            @HiveField(12) bool isPendingSync,
+            @HiveField(13) String? pendingAction)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CalendarEventHiveModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.startTime,
+            _that.endTime,
+            _that.type,
+            _that.description,
+            _that.workOrderId,
+            _that.location,
+            _that.isAllDay,
+            _that.color,
+            _that.metadata,
+            _that.cachedAt,
+            _that.isPendingSync,
+            _that.pendingAction);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
-  const _$CalendarEventHiveModelImpl(
+class _CalendarEventHiveModel implements CalendarEventHiveModel {
+  const _CalendarEventHiveModel(
       {@HiveField(0) required this.id,
       @HiveField(1) required this.title,
       @HiveField(2) required this.startTime,
@@ -304,9 +483,8 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
       @HiveField(11) required this.cachedAt,
       @HiveField(12) this.isPendingSync = false,
       @HiveField(13) this.pendingAction});
-
-  factory _$CalendarEventHiveModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CalendarEventHiveModelImplFromJson(json);
+  factory _CalendarEventHiveModel.fromJson(Map<String, dynamic> json) =>
+      _$CalendarEventHiveModelFromJson(json);
 
   @override
   @HiveField(0)
@@ -355,16 +533,27 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
   @HiveField(13)
   final String? pendingAction;
 
+  /// Create a copy of CalendarEventHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'CalendarEventHiveModel(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CalendarEventHiveModelCopyWith<_CalendarEventHiveModel> get copyWith =>
+      __$CalendarEventHiveModelCopyWithImpl<_CalendarEventHiveModel>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$CalendarEventHiveModelToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CalendarEventHiveModelImpl &&
+            other is _CalendarEventHiveModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.startTime, startTime) ||
@@ -390,7 +579,7 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
                 other.pendingAction == pendingAction));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -409,86 +598,124 @@ class _$CalendarEventHiveModelImpl implements _CalendarEventHiveModel {
       isPendingSync,
       pendingAction);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$CalendarEventHiveModelImplCopyWith<_$CalendarEventHiveModelImpl>
-      get copyWith => __$$CalendarEventHiveModelImplCopyWithImpl<
-          _$CalendarEventHiveModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CalendarEventHiveModelImplToJson(
-      this,
-    );
+  String toString() {
+    return 'CalendarEventHiveModel(id: $id, title: $title, startTime: $startTime, endTime: $endTime, type: $type, description: $description, workOrderId: $workOrderId, location: $location, isAllDay: $isAllDay, color: $color, metadata: $metadata, cachedAt: $cachedAt, isPendingSync: $isPendingSync, pendingAction: $pendingAction)';
   }
 }
 
-abstract class _CalendarEventHiveModel implements CalendarEventHiveModel {
-  const factory _CalendarEventHiveModel(
-          {@HiveField(0) required final int id,
-          @HiveField(1) required final String title,
-          @HiveField(2) required final DateTime startTime,
-          @HiveField(3) required final DateTime endTime,
-          @HiveField(4) required final int type,
-          @HiveField(5) required final String description,
-          @HiveField(6) final int? workOrderId,
-          @HiveField(7) final String? location,
-          @HiveField(8) final bool isAllDay,
-          @HiveField(9) final String? color,
-          @HiveField(10) final String? metadata,
-          @HiveField(11) required final DateTime cachedAt,
-          @HiveField(12) final bool isPendingSync,
-          @HiveField(13) final String? pendingAction}) =
-      _$CalendarEventHiveModelImpl;
-
-  factory _CalendarEventHiveModel.fromJson(Map<String, dynamic> json) =
-      _$CalendarEventHiveModelImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$CalendarEventHiveModelCopyWith<$Res>
+    implements $CalendarEventHiveModelCopyWith<$Res> {
+  factory _$CalendarEventHiveModelCopyWith(_CalendarEventHiveModel value,
+          $Res Function(_CalendarEventHiveModel) _then) =
+      __$CalendarEventHiveModelCopyWithImpl;
   @override
-  @HiveField(0)
-  int get id;
-  @override
-  @HiveField(1)
-  String get title;
-  @override
-  @HiveField(2)
-  DateTime get startTime;
-  @override
-  @HiveField(3)
-  DateTime get endTime;
-  @override
-  @HiveField(4)
-  int get type;
-  @override // CalendarEventType as int
-  @HiveField(5)
-  String get description;
-  @override
-  @HiveField(6)
-  int? get workOrderId;
-  @override
-  @HiveField(7)
-  String? get location;
-  @override
-  @HiveField(8)
-  bool get isAllDay;
-  @override
-  @HiveField(9)
-  String? get color;
-  @override
-  @HiveField(10)
-  String? get metadata;
-  @override // Store as JSON string
-  @HiveField(11)
-  DateTime get cachedAt;
-  @override
-  @HiveField(12)
-  bool get isPendingSync;
-  @override
-  @HiveField(13)
-  String? get pendingAction;
-  @override
-  @JsonKey(ignore: true)
-  _$$CalendarEventHiveModelImplCopyWith<_$CalendarEventHiveModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {@HiveField(0) int id,
+      @HiveField(1) String title,
+      @HiveField(2) DateTime startTime,
+      @HiveField(3) DateTime endTime,
+      @HiveField(4) int type,
+      @HiveField(5) String description,
+      @HiveField(6) int? workOrderId,
+      @HiveField(7) String? location,
+      @HiveField(8) bool isAllDay,
+      @HiveField(9) String? color,
+      @HiveField(10) String? metadata,
+      @HiveField(11) DateTime cachedAt,
+      @HiveField(12) bool isPendingSync,
+      @HiveField(13) String? pendingAction});
 }
+
+/// @nodoc
+class __$CalendarEventHiveModelCopyWithImpl<$Res>
+    implements _$CalendarEventHiveModelCopyWith<$Res> {
+  __$CalendarEventHiveModelCopyWithImpl(this._self, this._then);
+
+  final _CalendarEventHiveModel _self;
+  final $Res Function(_CalendarEventHiveModel) _then;
+
+  /// Create a copy of CalendarEventHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? startTime = null,
+    Object? endTime = null,
+    Object? type = null,
+    Object? description = null,
+    Object? workOrderId = freezed,
+    Object? location = freezed,
+    Object? isAllDay = null,
+    Object? color = freezed,
+    Object? metadata = freezed,
+    Object? cachedAt = null,
+    Object? isPendingSync = null,
+    Object? pendingAction = freezed,
+  }) {
+    return _then(_CalendarEventHiveModel(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _self.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      endTime: null == endTime
+          ? _self.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as int,
+      description: null == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      location: freezed == location
+          ? _self.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAllDay: null == isAllDay
+          ? _self.isAllDay
+          : isAllDay // ignore: cast_nullable_to_non_nullable
+              as bool,
+      color: freezed == color
+          ? _self.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      metadata: freezed == metadata
+          ? _self.metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as String?,
+      cachedAt: null == cachedAt
+          ? _self.cachedAt
+          : cachedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      isPendingSync: null == isPendingSync
+          ? _self.isPendingSync
+          : isPendingSync // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pendingAction: freezed == pendingAction
+          ? _self.pendingAction
+          : pendingAction // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+// dart format on

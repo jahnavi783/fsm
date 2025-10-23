@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'part_entity.freezed.dart';
 
 @freezed
-class PartEntity with _$PartEntity {
+abstract class PartEntity with _$PartEntity {
   const PartEntity._();
 
   const factory PartEntity({

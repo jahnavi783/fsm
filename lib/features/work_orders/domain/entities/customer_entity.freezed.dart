@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,117 +9,61 @@ part of 'customer_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CustomerEntity {
-  int get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String? get phone => throw _privateConstructorUsedError;
-  String? get address => throw _privateConstructorUsedError;
-  String? get city => throw _privateConstructorUsedError;
-  String? get state => throw _privateConstructorUsedError;
-  String? get postalCode => throw _privateConstructorUsedError;
-  String? get country => throw _privateConstructorUsedError;
+  int get id;
+  String get name;
+  String get email;
+  String? get phone;
+  String? get address;
+  String? get city;
+  String? get state;
+  String? get postalCode;
+  String? get country;
 
-  @JsonKey(ignore: true)
-  $CustomerEntityCopyWith<CustomerEntity> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CustomerEntityCopyWith<$Res> {
-  factory $CustomerEntityCopyWith(
-          CustomerEntity value, $Res Function(CustomerEntity) then) =
-      _$CustomerEntityCopyWithImpl<$Res, CustomerEntity>;
-  @useResult
-  $Res call(
-      {int id,
-      String name,
-      String email,
-      String? phone,
-      String? address,
-      String? city,
-      String? state,
-      String? postalCode,
-      String? country});
-}
-
-/// @nodoc
-class _$CustomerEntityCopyWithImpl<$Res, $Val extends CustomerEntity>
-    implements $CustomerEntityCopyWith<$Res> {
-  _$CustomerEntityCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of CustomerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $CustomerEntityCopyWith<CustomerEntity> get copyWith =>
+      _$CustomerEntityCopyWithImpl<CustomerEntity>(
+          this as CustomerEntity, _$identity);
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? email = null,
-    Object? phone = freezed,
-    Object? address = freezed,
-    Object? city = freezed,
-    Object? state = freezed,
-    Object? postalCode = freezed,
-    Object? country = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CustomerEntity &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.state, state) || other.state == state) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.country, country) || other.country == country));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, email, phone, address,
+      city, state, postalCode, country);
+
+  @override
+  String toString() {
+    return 'CustomerEntity(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
   }
 }
 
 /// @nodoc
-abstract class _$$CustomerEntityImplCopyWith<$Res>
-    implements $CustomerEntityCopyWith<$Res> {
-  factory _$$CustomerEntityImplCopyWith(_$CustomerEntityImpl value,
-          $Res Function(_$CustomerEntityImpl) then) =
-      __$$CustomerEntityImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $CustomerEntityCopyWith<$Res> {
+  factory $CustomerEntityCopyWith(
+          CustomerEntity value, $Res Function(CustomerEntity) _then) =
+      _$CustomerEntityCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -134,13 +78,15 @@ abstract class _$$CustomerEntityImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CustomerEntityImplCopyWithImpl<$Res>
-    extends _$CustomerEntityCopyWithImpl<$Res, _$CustomerEntityImpl>
-    implements _$$CustomerEntityImplCopyWith<$Res> {
-  __$$CustomerEntityImplCopyWithImpl(
-      _$CustomerEntityImpl _value, $Res Function(_$CustomerEntityImpl) _then)
-      : super(_value, _then);
+class _$CustomerEntityCopyWithImpl<$Res>
+    implements $CustomerEntityCopyWith<$Res> {
+  _$CustomerEntityCopyWithImpl(this._self, this._then);
 
+  final CustomerEntity _self;
+  final $Res Function(CustomerEntity) _then;
+
+  /// Create a copy of CustomerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -154,51 +100,265 @@ class __$$CustomerEntityImplCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? country = freezed,
   }) {
-    return _then(_$CustomerEntityImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
-          ? _value.email
+          ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
       phone: freezed == phone
-          ? _value.phone
+          ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
       address: freezed == address
-          ? _value.address
+          ? _self.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
       city: freezed == city
-          ? _value.city
+          ? _self.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
       state: freezed == state
-          ? _value.state
+          ? _self.state
           : state // ignore: cast_nullable_to_non_nullable
               as String?,
       postalCode: freezed == postalCode
-          ? _value.postalCode
+          ? _self.postalCode
           : postalCode // ignore: cast_nullable_to_non_nullable
               as String?,
       country: freezed == country
-          ? _value.country
+          ? _self.country
           : country // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [CustomerEntity].
+extension CustomerEntityPatterns on CustomerEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CustomerEntity value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CustomerEntity value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CustomerEntity value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            String? postalCode,
+            String? country)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity() when $default != null:
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            String? postalCode,
+            String? country)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity():
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            String name,
+            String email,
+            String? phone,
+            String? address,
+            String? city,
+            String? state,
+            String? postalCode,
+            String? country)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CustomerEntity() when $default != null:
+        return $default(
+            _that.id,
+            _that.name,
+            _that.email,
+            _that.phone,
+            _that.address,
+            _that.city,
+            _that.state,
+            _that.postalCode,
+            _that.country);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
-class _$CustomerEntityImpl implements _CustomerEntity {
-  const _$CustomerEntityImpl(
+class _CustomerEntity implements CustomerEntity {
+  const _CustomerEntity(
       {required this.id,
       required this.name,
       required this.email,
@@ -228,16 +388,19 @@ class _$CustomerEntityImpl implements _CustomerEntity {
   @override
   final String? country;
 
+  /// Create a copy of CustomerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'CustomerEntity(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CustomerEntityCopyWith<_CustomerEntity> get copyWith =>
+      __$CustomerEntityCopyWithImpl<_CustomerEntity>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CustomerEntityImpl &&
+            other is _CustomerEntity &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
@@ -254,46 +417,94 @@ class _$CustomerEntityImpl implements _CustomerEntity {
   int get hashCode => Object.hash(runtimeType, id, name, email, phone, address,
       city, state, postalCode, country);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'CustomerEntity(id: $id, name: $name, email: $email, phone: $phone, address: $address, city: $city, state: $state, postalCode: $postalCode, country: $country)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$CustomerEntityCopyWith<$Res>
+    implements $CustomerEntityCopyWith<$Res> {
+  factory _$CustomerEntityCopyWith(
+          _CustomerEntity value, $Res Function(_CustomerEntity) _then) =
+      __$CustomerEntityCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String email,
+      String? phone,
+      String? address,
+      String? city,
+      String? state,
+      String? postalCode,
+      String? country});
+}
+
+/// @nodoc
+class __$CustomerEntityCopyWithImpl<$Res>
+    implements _$CustomerEntityCopyWith<$Res> {
+  __$CustomerEntityCopyWithImpl(this._self, this._then);
+
+  final _CustomerEntity _self;
+  final $Res Function(_CustomerEntity) _then;
+
+  /// Create a copy of CustomerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$CustomerEntityImplCopyWith<_$CustomerEntityImpl> get copyWith =>
-      __$$CustomerEntityImplCopyWithImpl<_$CustomerEntityImpl>(
-          this, _$identity);
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? email = null,
+    Object? phone = freezed,
+    Object? address = freezed,
+    Object? city = freezed,
+    Object? state = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
+  }) {
+    return _then(_CustomerEntity(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: freezed == phone
+          ? _self.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _self.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _self.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      state: freezed == state
+          ? _self.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postalCode: freezed == postalCode
+          ? _self.postalCode
+          : postalCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      country: freezed == country
+          ? _self.country
+          : country // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
-abstract class _CustomerEntity implements CustomerEntity {
-  const factory _CustomerEntity(
-      {required final int id,
-      required final String name,
-      required final String email,
-      final String? phone,
-      final String? address,
-      final String? city,
-      final String? state,
-      final String? postalCode,
-      final String? country}) = _$CustomerEntityImpl;
-
-  @override
-  int get id;
-  @override
-  String get name;
-  @override
-  String get email;
-  @override
-  String? get phone;
-  @override
-  String? get address;
-  @override
-  String? get city;
-  @override
-  String? get state;
-  @override
-  String? get postalCode;
-  @override
-  String? get country;
-  @override
-  @JsonKey(ignore: true)
-  _$$CustomerEntityImplCopyWith<_$CustomerEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -4,7 +4,7 @@ part 'start_work_order_request.freezed.dart';
 part 'start_work_order_request.g.dart';
 
 @freezed
-class StartWorkOrderRequest with _$StartWorkOrderRequest {
+abstract class StartWorkOrderRequest with _$StartWorkOrderRequest {
   const factory StartWorkOrderRequest({
     @JsonKey(name: 'gps_coordinates') required String gpsCoordinates,
     String? notes,

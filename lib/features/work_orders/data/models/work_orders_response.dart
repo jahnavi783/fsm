@@ -5,7 +5,7 @@ part 'work_orders_response.freezed.dart';
 part 'work_orders_response.g.dart';
 
 @freezed
-class WorkOrdersResponse with _$WorkOrdersResponse {
+abstract class WorkOrdersResponse with _$WorkOrdersResponse {
   const factory WorkOrdersResponse({
     required int total,
     required int page,

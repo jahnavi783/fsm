@@ -8,7 +8,7 @@ part of 'profile_hive_model.dart';
 
 class ProfileHiveModelAdapter extends TypeAdapter<ProfileHiveModel> {
   @override
-  final int typeId = 10;
+  final typeId = 10;
 
   @override
   ProfileHiveModel read(BinaryReader reader) {
@@ -73,7 +73,7 @@ class ProfileHiveModelAdapter extends TypeAdapter<ProfileHiveModel> {
 class ProfilePreferencesHiveModelAdapter
     extends TypeAdapter<ProfilePreferencesHiveModel> {
   @override
-  final int typeId = 11;
+  final typeId = 11;
 
   @override
   ProfilePreferencesHiveModel read(BinaryReader reader) {
@@ -82,16 +82,16 @@ class ProfilePreferencesHiveModelAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProfilePreferencesHiveModel(
-      notificationsEnabled: fields[0] as bool,
-      pushNotificationsEnabled: fields[1] as bool,
-      emailNotificationsEnabled: fields[2] as bool,
-      locationTrackingEnabled: fields[3] as bool,
-      language: fields[4] as String,
-      darkModeEnabled: fields[5] as bool,
-      offlineSyncEnabled: fields[6] as bool,
-      syncIntervalMinutes: (fields[7] as num).toInt(),
-      autoLogoutEnabled: fields[8] as bool,
-      autoLogoutMinutes: (fields[9] as num).toInt(),
+      notificationsEnabled: fields[0] == null ? true : fields[0] as bool,
+      pushNotificationsEnabled: fields[1] == null ? true : fields[1] as bool,
+      emailNotificationsEnabled: fields[2] == null ? true : fields[2] as bool,
+      locationTrackingEnabled: fields[3] == null ? true : fields[3] as bool,
+      language: fields[4] == null ? 'en' : fields[4] as String,
+      darkModeEnabled: fields[5] == null ? false : fields[5] as bool,
+      offlineSyncEnabled: fields[6] == null ? true : fields[6] as bool,
+      syncIntervalMinutes: fields[7] == null ? 30 : (fields[7] as num).toInt(),
+      autoLogoutEnabled: fields[8] == null ? true : fields[8] as bool,
+      autoLogoutMinutes: fields[9] == null ? 60 : (fields[9] as num).toInt(),
     );
   }
 
@@ -136,9 +136,8 @@ class ProfilePreferencesHiveModelAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ProfileHiveModelImpl _$$ProfileHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProfileHiveModelImpl(
+_ProfileHiveModel _$ProfileHiveModelFromJson(Map<String, dynamic> json) =>
+    _ProfileHiveModel(
       id: (json['id'] as num).toInt(),
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
@@ -153,8 +152,7 @@ _$ProfileHiveModelImpl _$$ProfileHiveModelImplFromJson(
       cachedAt: DateTime.parse(json['cachedAt'] as String),
     );
 
-Map<String, dynamic> _$$ProfileHiveModelImplToJson(
-        _$ProfileHiveModelImpl instance) =>
+Map<String, dynamic> _$ProfileHiveModelToJson(_ProfileHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'firstName': instance.firstName,
@@ -169,9 +167,9 @@ Map<String, dynamic> _$$ProfileHiveModelImplToJson(
       'cachedAt': instance.cachedAt.toIso8601String(),
     };
 
-_$ProfilePreferencesHiveModelImpl _$$ProfilePreferencesHiveModelImplFromJson(
+_ProfilePreferencesHiveModel _$ProfilePreferencesHiveModelFromJson(
         Map<String, dynamic> json) =>
-    _$ProfilePreferencesHiveModelImpl(
+    _ProfilePreferencesHiveModel(
       notificationsEnabled: json['notificationsEnabled'] as bool? ?? true,
       pushNotificationsEnabled:
           json['pushNotificationsEnabled'] as bool? ?? true,
@@ -186,8 +184,8 @@ _$ProfilePreferencesHiveModelImpl _$$ProfilePreferencesHiveModelImplFromJson(
       autoLogoutMinutes: (json['autoLogoutMinutes'] as num?)?.toInt() ?? 60,
     );
 
-Map<String, dynamic> _$$ProfilePreferencesHiveModelImplToJson(
-        _$ProfilePreferencesHiveModelImpl instance) =>
+Map<String, dynamic> _$ProfilePreferencesHiveModelToJson(
+        _ProfilePreferencesHiveModel instance) =>
     <String, dynamic>{
       'notificationsEnabled': instance.notificationsEnabled,
       'pushNotificationsEnabled': instance.pushNotificationsEnabled,

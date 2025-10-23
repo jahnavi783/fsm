@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'document_entity.freezed.dart';
 
 @freezed
-class DocumentEntity with _$DocumentEntity {
+abstract class DocumentEntity with _$DocumentEntity {
   const DocumentEntity._();
   
   const factory DocumentEntity({

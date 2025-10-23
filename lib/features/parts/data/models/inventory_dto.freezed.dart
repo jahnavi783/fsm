@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,120 +9,73 @@ part of 'inventory_dto.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-InventoryDto _$InventoryDtoFromJson(Map<String, dynamic> json) {
-  return _InventoryDto.fromJson(json);
-}
 
 /// @nodoc
 mixin _$InventoryDto {
   @JsonKey(name: 'part_id')
-  int get partId => throw _privateConstructorUsedError;
+  int get partId;
   @JsonKey(name: 'part_number')
-  String get partNumber => throw _privateConstructorUsedError;
-  int get quantity => throw _privateConstructorUsedError;
+  String get partNumber;
+  int get quantity;
   @JsonKey(name: 'min_quantity')
-  int get minQuantity => throw _privateConstructorUsedError;
+  int get minQuantity;
   @JsonKey(name: 'max_quantity')
-  int get maxQuantity => throw _privateConstructorUsedError;
+  int get maxQuantity;
   @JsonKey(name: 'last_updated')
-  String get lastUpdated => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
+  String get lastUpdated;
+  String get location;
+  String? get notes;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $InventoryDtoCopyWith<InventoryDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InventoryDtoCopyWith<$Res> {
-  factory $InventoryDtoCopyWith(
-          InventoryDto value, $Res Function(InventoryDto) then) =
-      _$InventoryDtoCopyWithImpl<$Res, InventoryDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_id') int partId,
-      @JsonKey(name: 'part_number') String partNumber,
-      int quantity,
-      @JsonKey(name: 'min_quantity') int minQuantity,
-      @JsonKey(name: 'max_quantity') int maxQuantity,
-      @JsonKey(name: 'last_updated') String lastUpdated,
-      String location,
-      String? notes});
-}
-
-/// @nodoc
-class _$InventoryDtoCopyWithImpl<$Res, $Val extends InventoryDto>
-    implements $InventoryDtoCopyWith<$Res> {
-  _$InventoryDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of InventoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $InventoryDtoCopyWith<InventoryDto> get copyWith =>
+      _$InventoryDtoCopyWithImpl<InventoryDto>(
+          this as InventoryDto, _$identity);
+
+  /// Serializes this InventoryDto to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? partId = null,
-    Object? partNumber = null,
-    Object? quantity = null,
-    Object? minQuantity = null,
-    Object? maxQuantity = null,
-    Object? lastUpdated = null,
-    Object? location = null,
-    Object? notes = freezed,
-  }) {
-    return _then(_value.copyWith(
-      partId: null == partId
-          ? _value.partId
-          : partId // ignore: cast_nullable_to_non_nullable
-              as int,
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      minQuantity: null == minQuantity
-          ? _value.minQuantity
-          : minQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      maxQuantity: null == maxQuantity
-          ? _value.maxQuantity
-          : maxQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastUpdated: null == lastUpdated
-          ? _value.lastUpdated
-          : lastUpdated // ignore: cast_nullable_to_non_nullable
-              as String,
-      location: null == location
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as String,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InventoryDto &&
+            (identical(other.partId, partId) || other.partId == partId) &&
+            (identical(other.partNumber, partNumber) ||
+                other.partNumber == partNumber) &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            (identical(other.minQuantity, minQuantity) ||
+                other.minQuantity == minQuantity) &&
+            (identical(other.maxQuantity, maxQuantity) ||
+                other.maxQuantity == maxQuantity) &&
+            (identical(other.lastUpdated, lastUpdated) ||
+                other.lastUpdated == lastUpdated) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.notes, notes) || other.notes == notes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, partId, partNumber, quantity,
+      minQuantity, maxQuantity, lastUpdated, location, notes);
+
+  @override
+  String toString() {
+    return 'InventoryDto(partId: $partId, partNumber: $partNumber, quantity: $quantity, minQuantity: $minQuantity, maxQuantity: $maxQuantity, lastUpdated: $lastUpdated, location: $location, notes: $notes)';
   }
 }
 
 /// @nodoc
-abstract class _$$InventoryDtoImplCopyWith<$Res>
-    implements $InventoryDtoCopyWith<$Res> {
-  factory _$$InventoryDtoImplCopyWith(
-          _$InventoryDtoImpl value, $Res Function(_$InventoryDtoImpl) then) =
-      __$$InventoryDtoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $InventoryDtoCopyWith<$Res> {
+  factory $InventoryDtoCopyWith(
+          InventoryDto value, $Res Function(InventoryDto) _then) =
+      _$InventoryDtoCopyWithImpl;
   @useResult
   $Res call(
       {@JsonKey(name: 'part_id') int partId,
@@ -136,13 +89,14 @@ abstract class _$$InventoryDtoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$InventoryDtoImplCopyWithImpl<$Res>
-    extends _$InventoryDtoCopyWithImpl<$Res, _$InventoryDtoImpl>
-    implements _$$InventoryDtoImplCopyWith<$Res> {
-  __$$InventoryDtoImplCopyWithImpl(
-      _$InventoryDtoImpl _value, $Res Function(_$InventoryDtoImpl) _then)
-      : super(_value, _then);
+class _$InventoryDtoCopyWithImpl<$Res> implements $InventoryDtoCopyWith<$Res> {
+  _$InventoryDtoCopyWithImpl(this._self, this._then);
 
+  final InventoryDto _self;
+  final $Res Function(InventoryDto) _then;
+
+  /// Create a copy of InventoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,47 +109,255 @@ class __$$InventoryDtoImplCopyWithImpl<$Res>
     Object? location = null,
     Object? notes = freezed,
   }) {
-    return _then(_$InventoryDtoImpl(
+    return _then(_self.copyWith(
       partId: null == partId
-          ? _value.partId
+          ? _self.partId
           : partId // ignore: cast_nullable_to_non_nullable
               as int,
       partNumber: null == partNumber
-          ? _value.partNumber
+          ? _self.partNumber
           : partNumber // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: null == quantity
-          ? _value.quantity
+          ? _self.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
       minQuantity: null == minQuantity
-          ? _value.minQuantity
+          ? _self.minQuantity
           : minQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       maxQuantity: null == maxQuantity
-          ? _value.maxQuantity
+          ? _self.maxQuantity
           : maxQuantity // ignore: cast_nullable_to_non_nullable
               as int,
       lastUpdated: null == lastUpdated
-          ? _value.lastUpdated
+          ? _self.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
               as String,
       location: null == location
-          ? _value.location
+          ? _self.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
       notes: freezed == notes
-          ? _value.notes
+          ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [InventoryDto].
+extension InventoryDtoPatterns on InventoryDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_InventoryDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_InventoryDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_InventoryDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'part_number') String partNumber,
+            int quantity,
+            @JsonKey(name: 'min_quantity') int minQuantity,
+            @JsonKey(name: 'max_quantity') int maxQuantity,
+            @JsonKey(name: 'last_updated') String lastUpdated,
+            String location,
+            String? notes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto() when $default != null:
+        return $default(
+            _that.partId,
+            _that.partNumber,
+            _that.quantity,
+            _that.minQuantity,
+            _that.maxQuantity,
+            _that.lastUpdated,
+            _that.location,
+            _that.notes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'part_number') String partNumber,
+            int quantity,
+            @JsonKey(name: 'min_quantity') int minQuantity,
+            @JsonKey(name: 'max_quantity') int maxQuantity,
+            @JsonKey(name: 'last_updated') String lastUpdated,
+            String location,
+            String? notes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto():
+        return $default(
+            _that.partId,
+            _that.partNumber,
+            _that.quantity,
+            _that.minQuantity,
+            _that.maxQuantity,
+            _that.lastUpdated,
+            _that.location,
+            _that.notes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'part_number') String partNumber,
+            int quantity,
+            @JsonKey(name: 'min_quantity') int minQuantity,
+            @JsonKey(name: 'max_quantity') int maxQuantity,
+            @JsonKey(name: 'last_updated') String lastUpdated,
+            String location,
+            String? notes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryDto() when $default != null:
+        return $default(
+            _that.partId,
+            _that.partNumber,
+            _that.quantity,
+            _that.minQuantity,
+            _that.maxQuantity,
+            _that.lastUpdated,
+            _that.location,
+            _that.notes);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$InventoryDtoImpl implements _InventoryDto {
-  const _$InventoryDtoImpl(
+class _InventoryDto implements InventoryDto {
+  const _InventoryDto(
       {@JsonKey(name: 'part_id') required this.partId,
       @JsonKey(name: 'part_number') required this.partNumber,
       required this.quantity,
@@ -204,9 +366,8 @@ class _$InventoryDtoImpl implements _InventoryDto {
       @JsonKey(name: 'last_updated') required this.lastUpdated,
       required this.location,
       this.notes});
-
-  factory _$InventoryDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InventoryDtoImplFromJson(json);
+  factory _InventoryDto.fromJson(Map<String, dynamic> json) =>
+      _$InventoryDtoFromJson(json);
 
   @override
   @JsonKey(name: 'part_id')
@@ -230,16 +391,26 @@ class _$InventoryDtoImpl implements _InventoryDto {
   @override
   final String? notes;
 
+  /// Create a copy of InventoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'InventoryDto(partId: $partId, partNumber: $partNumber, quantity: $quantity, minQuantity: $minQuantity, maxQuantity: $maxQuantity, lastUpdated: $lastUpdated, location: $location, notes: $notes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$InventoryDtoCopyWith<_InventoryDto> get copyWith =>
+      __$InventoryDtoCopyWithImpl<_InventoryDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$InventoryDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InventoryDtoImpl &&
+            other is _InventoryDto &&
             (identical(other.partId, partId) || other.partId == partId) &&
             (identical(other.partNumber, partNumber) ||
                 other.partNumber == partNumber) &&
@@ -256,223 +427,89 @@ class _$InventoryDtoImpl implements _InventoryDto {
             (identical(other.notes, notes) || other.notes == notes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, partId, partNumber, quantity,
       minQuantity, maxQuantity, lastUpdated, location, notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InventoryDtoImplCopyWith<_$InventoryDtoImpl> get copyWith =>
-      __$$InventoryDtoImplCopyWithImpl<_$InventoryDtoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InventoryDtoImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _InventoryDto implements InventoryDto {
-  const factory _InventoryDto(
-      {@JsonKey(name: 'part_id') required final int partId,
-      @JsonKey(name: 'part_number') required final String partNumber,
-      required final int quantity,
-      @JsonKey(name: 'min_quantity') required final int minQuantity,
-      @JsonKey(name: 'max_quantity') required final int maxQuantity,
-      @JsonKey(name: 'last_updated') required final String lastUpdated,
-      required final String location,
-      final String? notes}) = _$InventoryDtoImpl;
-
-  factory _InventoryDto.fromJson(Map<String, dynamic> json) =
-      _$InventoryDtoImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'part_id')
-  int get partId;
-  @override
-  @JsonKey(name: 'part_number')
-  String get partNumber;
-  @override
-  int get quantity;
-  @override
-  @JsonKey(name: 'min_quantity')
-  int get minQuantity;
-  @override
-  @JsonKey(name: 'max_quantity')
-  int get maxQuantity;
-  @override
-  @JsonKey(name: 'last_updated')
-  String get lastUpdated;
-  @override
-  String get location;
-  @override
-  String? get notes;
-  @override
-  @JsonKey(ignore: true)
-  _$$InventoryDtoImplCopyWith<_$InventoryDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-InventoryUpdateDto _$InventoryUpdateDtoFromJson(Map<String, dynamic> json) {
-  return _InventoryUpdateDto.fromJson(json);
-}
-
-/// @nodoc
-mixin _$InventoryUpdateDto {
-  @JsonKey(name: 'part_id')
-  int get partId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'quantity_change')
-  int get quantityChange => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get reason => throw _privateConstructorUsedError;
-  String get timestamp => throw _privateConstructorUsedError;
-  @JsonKey(name: 'work_order_id')
-  String? get workOrderId => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $InventoryUpdateDtoCopyWith<InventoryUpdateDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InventoryUpdateDtoCopyWith<$Res> {
-  factory $InventoryUpdateDtoCopyWith(
-          InventoryUpdateDto value, $Res Function(InventoryUpdateDto) then) =
-      _$InventoryUpdateDtoCopyWithImpl<$Res, InventoryUpdateDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_id') int partId,
-      @JsonKey(name: 'quantity_change') int quantityChange,
-      String type,
-      String reason,
-      String timestamp,
-      @JsonKey(name: 'work_order_id') String? workOrderId,
-      String? notes});
-}
-
-/// @nodoc
-class _$InventoryUpdateDtoCopyWithImpl<$Res, $Val extends InventoryUpdateDto>
-    implements $InventoryUpdateDtoCopyWith<$Res> {
-  _$InventoryUpdateDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partId = null,
-    Object? quantityChange = null,
-    Object? type = null,
-    Object? reason = null,
-    Object? timestamp = null,
-    Object? workOrderId = freezed,
-    Object? notes = freezed,
-  }) {
-    return _then(_value.copyWith(
-      partId: null == partId
-          ? _value.partId
-          : partId // ignore: cast_nullable_to_non_nullable
-              as int,
-      quantityChange: null == quantityChange
-          ? _value.quantityChange
-          : quantityChange // ignore: cast_nullable_to_non_nullable
-              as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
-              as String,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  String toString() {
+    return 'InventoryDto(partId: $partId, partNumber: $partNumber, quantity: $quantity, minQuantity: $minQuantity, maxQuantity: $maxQuantity, lastUpdated: $lastUpdated, location: $location, notes: $notes)';
   }
 }
 
 /// @nodoc
-abstract class _$$InventoryUpdateDtoImplCopyWith<$Res>
-    implements $InventoryUpdateDtoCopyWith<$Res> {
-  factory _$$InventoryUpdateDtoImplCopyWith(_$InventoryUpdateDtoImpl value,
-          $Res Function(_$InventoryUpdateDtoImpl) then) =
-      __$$InventoryUpdateDtoImplCopyWithImpl<$Res>;
+abstract mixin class _$InventoryDtoCopyWith<$Res>
+    implements $InventoryDtoCopyWith<$Res> {
+  factory _$InventoryDtoCopyWith(
+          _InventoryDto value, $Res Function(_InventoryDto) _then) =
+      __$InventoryDtoCopyWithImpl;
   @override
   @useResult
   $Res call(
       {@JsonKey(name: 'part_id') int partId,
-      @JsonKey(name: 'quantity_change') int quantityChange,
-      String type,
-      String reason,
-      String timestamp,
-      @JsonKey(name: 'work_order_id') String? workOrderId,
+      @JsonKey(name: 'part_number') String partNumber,
+      int quantity,
+      @JsonKey(name: 'min_quantity') int minQuantity,
+      @JsonKey(name: 'max_quantity') int maxQuantity,
+      @JsonKey(name: 'last_updated') String lastUpdated,
+      String location,
       String? notes});
 }
 
 /// @nodoc
-class __$$InventoryUpdateDtoImplCopyWithImpl<$Res>
-    extends _$InventoryUpdateDtoCopyWithImpl<$Res, _$InventoryUpdateDtoImpl>
-    implements _$$InventoryUpdateDtoImplCopyWith<$Res> {
-  __$$InventoryUpdateDtoImplCopyWithImpl(_$InventoryUpdateDtoImpl _value,
-      $Res Function(_$InventoryUpdateDtoImpl) _then)
-      : super(_value, _then);
+class __$InventoryDtoCopyWithImpl<$Res>
+    implements _$InventoryDtoCopyWith<$Res> {
+  __$InventoryDtoCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _InventoryDto _self;
+  final $Res Function(_InventoryDto) _then;
+
+  /// Create a copy of InventoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? partId = null,
-    Object? quantityChange = null,
-    Object? type = null,
-    Object? reason = null,
-    Object? timestamp = null,
-    Object? workOrderId = freezed,
+    Object? partNumber = null,
+    Object? quantity = null,
+    Object? minQuantity = null,
+    Object? maxQuantity = null,
+    Object? lastUpdated = null,
+    Object? location = null,
     Object? notes = freezed,
   }) {
-    return _then(_$InventoryUpdateDtoImpl(
+    return _then(_InventoryDto(
       partId: null == partId
-          ? _value.partId
+          ? _self.partId
           : partId // ignore: cast_nullable_to_non_nullable
               as int,
-      quantityChange: null == quantityChange
-          ? _value.quantityChange
-          : quantityChange // ignore: cast_nullable_to_non_nullable
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantity: null == quantity
+          ? _self.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
+      minQuantity: null == minQuantity
+          ? _self.minQuantity
+          : minQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxQuantity: null == maxQuantity
+          ? _self.maxQuantity
+          : maxQuantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastUpdated: null == lastUpdated
+          ? _self.lastUpdated
+          : lastUpdated // ignore: cast_nullable_to_non_nullable
               as String,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
+      location: null == location
+          ? _self.location
+          : location // ignore: cast_nullable_to_non_nullable
               as String,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as String?,
       notes: freezed == notes
-          ? _value.notes
+          ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
@@ -480,9 +517,315 @@ class __$$InventoryUpdateDtoImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
+mixin _$InventoryUpdateDto {
+  @JsonKey(name: 'part_id')
+  int get partId;
+  @JsonKey(name: 'quantity_change')
+  int get quantityChange;
+  String get type;
+  String get reason;
+  String get timestamp;
+  @JsonKey(name: 'work_order_id')
+  String? get workOrderId;
+  String? get notes;
+
+  /// Create a copy of InventoryUpdateDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InventoryUpdateDtoCopyWith<InventoryUpdateDto> get copyWith =>
+      _$InventoryUpdateDtoCopyWithImpl<InventoryUpdateDto>(
+          this as InventoryUpdateDto, _$identity);
+
+  /// Serializes this InventoryUpdateDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InventoryUpdateDto &&
+            (identical(other.partId, partId) || other.partId == partId) &&
+            (identical(other.quantityChange, quantityChange) ||
+                other.quantityChange == quantityChange) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId) &&
+            (identical(other.notes, notes) || other.notes == notes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, partId, quantityChange, type,
+      reason, timestamp, workOrderId, notes);
+
+  @override
+  String toString() {
+    return 'InventoryUpdateDto(partId: $partId, quantityChange: $quantityChange, type: $type, reason: $reason, timestamp: $timestamp, workOrderId: $workOrderId, notes: $notes)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $InventoryUpdateDtoCopyWith<$Res> {
+  factory $InventoryUpdateDtoCopyWith(
+          InventoryUpdateDto value, $Res Function(InventoryUpdateDto) _then) =
+      _$InventoryUpdateDtoCopyWithImpl;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'part_id') int partId,
+      @JsonKey(name: 'quantity_change') int quantityChange,
+      String type,
+      String reason,
+      String timestamp,
+      @JsonKey(name: 'work_order_id') String? workOrderId,
+      String? notes});
+}
+
+/// @nodoc
+class _$InventoryUpdateDtoCopyWithImpl<$Res>
+    implements $InventoryUpdateDtoCopyWith<$Res> {
+  _$InventoryUpdateDtoCopyWithImpl(this._self, this._then);
+
+  final InventoryUpdateDto _self;
+  final $Res Function(InventoryUpdateDto) _then;
+
+  /// Create a copy of InventoryUpdateDto
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? partId = null,
+    Object? quantityChange = null,
+    Object? type = null,
+    Object? reason = null,
+    Object? timestamp = null,
+    Object? workOrderId = freezed,
+    Object? notes = freezed,
+  }) {
+    return _then(_self.copyWith(
+      partId: null == partId
+          ? _self.partId
+          : partId // ignore: cast_nullable_to_non_nullable
+              as int,
+      quantityChange: null == quantityChange
+          ? _self.quantityChange
+          : quantityChange // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: null == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [InventoryUpdateDto].
+extension InventoryUpdateDtoPatterns on InventoryUpdateDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_InventoryUpdateDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_InventoryUpdateDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_InventoryUpdateDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            String timestamp,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto() when $default != null:
+        return $default(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.timestamp, _that.workOrderId, _that.notes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            String timestamp,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto():
+        return $default(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.timestamp, _that.workOrderId, _that.notes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: 'part_id') int partId,
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            String timestamp,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateDto() when $default != null:
+        return $default(_that.partId, _that.quantityChange, _that.type,
+            _that.reason, _that.timestamp, _that.workOrderId, _that.notes);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
 @JsonSerializable()
-class _$InventoryUpdateDtoImpl implements _InventoryUpdateDto {
-  const _$InventoryUpdateDtoImpl(
+class _InventoryUpdateDto implements InventoryUpdateDto {
+  const _InventoryUpdateDto(
       {@JsonKey(name: 'part_id') required this.partId,
       @JsonKey(name: 'quantity_change') required this.quantityChange,
       required this.type,
@@ -490,9 +833,8 @@ class _$InventoryUpdateDtoImpl implements _InventoryUpdateDto {
       required this.timestamp,
       @JsonKey(name: 'work_order_id') this.workOrderId,
       this.notes});
-
-  factory _$InventoryUpdateDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InventoryUpdateDtoImplFromJson(json);
+  factory _InventoryUpdateDto.fromJson(Map<String, dynamic> json) =>
+      _$InventoryUpdateDtoFromJson(json);
 
   @override
   @JsonKey(name: 'part_id')
@@ -512,16 +854,26 @@ class _$InventoryUpdateDtoImpl implements _InventoryUpdateDto {
   @override
   final String? notes;
 
+  /// Create a copy of InventoryUpdateDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'InventoryUpdateDto(partId: $partId, quantityChange: $quantityChange, type: $type, reason: $reason, timestamp: $timestamp, workOrderId: $workOrderId, notes: $notes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$InventoryUpdateDtoCopyWith<_InventoryUpdateDto> get copyWith =>
+      __$InventoryUpdateDtoCopyWithImpl<_InventoryUpdateDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$InventoryUpdateDtoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InventoryUpdateDtoImpl &&
+            other is _InventoryUpdateDto &&
             (identical(other.partId, partId) || other.partId == partId) &&
             (identical(other.quantityChange, quantityChange) ||
                 other.quantityChange == quantityChange) &&
@@ -534,197 +886,83 @@ class _$InventoryUpdateDtoImpl implements _InventoryUpdateDto {
             (identical(other.notes, notes) || other.notes == notes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, partId, quantityChange, type,
       reason, timestamp, workOrderId, notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InventoryUpdateDtoImplCopyWith<_$InventoryUpdateDtoImpl> get copyWith =>
-      __$$InventoryUpdateDtoImplCopyWithImpl<_$InventoryUpdateDtoImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InventoryUpdateDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'InventoryUpdateDto(partId: $partId, quantityChange: $quantityChange, type: $type, reason: $reason, timestamp: $timestamp, workOrderId: $workOrderId, notes: $notes)';
   }
 }
 
-abstract class _InventoryUpdateDto implements InventoryUpdateDto {
-  const factory _InventoryUpdateDto(
-      {@JsonKey(name: 'part_id') required final int partId,
-      @JsonKey(name: 'quantity_change') required final int quantityChange,
-      required final String type,
-      required final String reason,
-      required final String timestamp,
-      @JsonKey(name: 'work_order_id') final String? workOrderId,
-      final String? notes}) = _$InventoryUpdateDtoImpl;
-
-  factory _InventoryUpdateDto.fromJson(Map<String, dynamic> json) =
-      _$InventoryUpdateDtoImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'part_id')
-  int get partId;
-  @override
-  @JsonKey(name: 'quantity_change')
-  int get quantityChange;
-  @override
-  String get type;
-  @override
-  String get reason;
-  @override
-  String get timestamp;
-  @override
-  @JsonKey(name: 'work_order_id')
-  String? get workOrderId;
-  @override
-  String? get notes;
-  @override
-  @JsonKey(ignore: true)
-  _$$InventoryUpdateDtoImplCopyWith<_$InventoryUpdateDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-InventoryUpdateRequest _$InventoryUpdateRequestFromJson(
-    Map<String, dynamic> json) {
-  return _InventoryUpdateRequest.fromJson(json);
-}
-
 /// @nodoc
-mixin _$InventoryUpdateRequest {
-  @JsonKey(name: 'quantity_change')
-  int get quantityChange => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get reason => throw _privateConstructorUsedError;
-  @JsonKey(name: 'work_order_id')
-  String? get workOrderId => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $InventoryUpdateRequestCopyWith<InventoryUpdateRequest> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InventoryUpdateRequestCopyWith<$Res> {
-  factory $InventoryUpdateRequestCopyWith(InventoryUpdateRequest value,
-          $Res Function(InventoryUpdateRequest) then) =
-      _$InventoryUpdateRequestCopyWithImpl<$Res, InventoryUpdateRequest>;
+abstract mixin class _$InventoryUpdateDtoCopyWith<$Res>
+    implements $InventoryUpdateDtoCopyWith<$Res> {
+  factory _$InventoryUpdateDtoCopyWith(
+          _InventoryUpdateDto value, $Res Function(_InventoryUpdateDto) _then) =
+      __$InventoryUpdateDtoCopyWithImpl;
+  @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'quantity_change') int quantityChange,
+      {@JsonKey(name: 'part_id') int partId,
+      @JsonKey(name: 'quantity_change') int quantityChange,
       String type,
       String reason,
+      String timestamp,
       @JsonKey(name: 'work_order_id') String? workOrderId,
       String? notes});
 }
 
 /// @nodoc
-class _$InventoryUpdateRequestCopyWithImpl<$Res,
-        $Val extends InventoryUpdateRequest>
-    implements $InventoryUpdateRequestCopyWith<$Res> {
-  _$InventoryUpdateRequestCopyWithImpl(this._value, this._then);
+class __$InventoryUpdateDtoCopyWithImpl<$Res>
+    implements _$InventoryUpdateDtoCopyWith<$Res> {
+  __$InventoryUpdateDtoCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final _InventoryUpdateDto _self;
+  final $Res Function(_InventoryUpdateDto) _then;
 
-  @pragma('vm:prefer-inline')
+  /// Create a copy of InventoryUpdateDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
+    Object? partId = null,
     Object? quantityChange = null,
     Object? type = null,
     Object? reason = null,
+    Object? timestamp = null,
     Object? workOrderId = freezed,
     Object? notes = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_InventoryUpdateDto(
+      partId: null == partId
+          ? _self.partId
+          : partId // ignore: cast_nullable_to_non_nullable
+              as int,
       quantityChange: null == quantityChange
-          ? _value.quantityChange
+          ? _self.quantityChange
           : quantityChange // ignore: cast_nullable_to_non_nullable
               as int,
       type: null == type
-          ? _value.type
+          ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
       reason: null == reason
-          ? _value.reason
+          ? _self.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as String,
+      timestamp: null == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as String,
       workOrderId: freezed == workOrderId
-          ? _value.workOrderId
+          ? _self.workOrderId
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as String?,
       notes: freezed == notes
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$InventoryUpdateRequestImplCopyWith<$Res>
-    implements $InventoryUpdateRequestCopyWith<$Res> {
-  factory _$$InventoryUpdateRequestImplCopyWith(
-          _$InventoryUpdateRequestImpl value,
-          $Res Function(_$InventoryUpdateRequestImpl) then) =
-      __$$InventoryUpdateRequestImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'quantity_change') int quantityChange,
-      String type,
-      String reason,
-      @JsonKey(name: 'work_order_id') String? workOrderId,
-      String? notes});
-}
-
-/// @nodoc
-class __$$InventoryUpdateRequestImplCopyWithImpl<$Res>
-    extends _$InventoryUpdateRequestCopyWithImpl<$Res,
-        _$InventoryUpdateRequestImpl>
-    implements _$$InventoryUpdateRequestImplCopyWith<$Res> {
-  __$$InventoryUpdateRequestImplCopyWithImpl(
-      _$InventoryUpdateRequestImpl _value,
-      $Res Function(_$InventoryUpdateRequestImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? quantityChange = null,
-    Object? type = null,
-    Object? reason = null,
-    Object? workOrderId = freezed,
-    Object? notes = freezed,
-  }) {
-    return _then(_$InventoryUpdateRequestImpl(
-      quantityChange: null == quantityChange
-          ? _value.quantityChange
-          : quantityChange // ignore: cast_nullable_to_non_nullable
-              as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      reason: null == reason
-          ? _value.reason
-          : reason // ignore: cast_nullable_to_non_nullable
-              as String,
-      workOrderId: freezed == workOrderId
-          ? _value.workOrderId
-          : workOrderId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      notes: freezed == notes
-          ? _value.notes
+          ? _self.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
@@ -732,17 +970,298 @@ class __$$InventoryUpdateRequestImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
+mixin _$InventoryUpdateRequest {
+  @JsonKey(name: 'quantity_change')
+  int get quantityChange;
+  String get type;
+  String get reason;
+  @JsonKey(name: 'work_order_id')
+  String? get workOrderId;
+  String? get notes;
+
+  /// Create a copy of InventoryUpdateRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InventoryUpdateRequestCopyWith<InventoryUpdateRequest> get copyWith =>
+      _$InventoryUpdateRequestCopyWithImpl<InventoryUpdateRequest>(
+          this as InventoryUpdateRequest, _$identity);
+
+  /// Serializes this InventoryUpdateRequest to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InventoryUpdateRequest &&
+            (identical(other.quantityChange, quantityChange) ||
+                other.quantityChange == quantityChange) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId) &&
+            (identical(other.notes, notes) || other.notes == notes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, quantityChange, type, reason, workOrderId, notes);
+
+  @override
+  String toString() {
+    return 'InventoryUpdateRequest(quantityChange: $quantityChange, type: $type, reason: $reason, workOrderId: $workOrderId, notes: $notes)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $InventoryUpdateRequestCopyWith<$Res> {
+  factory $InventoryUpdateRequestCopyWith(InventoryUpdateRequest value,
+          $Res Function(InventoryUpdateRequest) _then) =
+      _$InventoryUpdateRequestCopyWithImpl;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'quantity_change') int quantityChange,
+      String type,
+      String reason,
+      @JsonKey(name: 'work_order_id') String? workOrderId,
+      String? notes});
+}
+
+/// @nodoc
+class _$InventoryUpdateRequestCopyWithImpl<$Res>
+    implements $InventoryUpdateRequestCopyWith<$Res> {
+  _$InventoryUpdateRequestCopyWithImpl(this._self, this._then);
+
+  final InventoryUpdateRequest _self;
+  final $Res Function(InventoryUpdateRequest) _then;
+
+  /// Create a copy of InventoryUpdateRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? quantityChange = null,
+    Object? type = null,
+    Object? reason = null,
+    Object? workOrderId = freezed,
+    Object? notes = freezed,
+  }) {
+    return _then(_self.copyWith(
+      quantityChange: null == quantityChange
+          ? _self.quantityChange
+          : quantityChange // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [InventoryUpdateRequest].
+extension InventoryUpdateRequestPatterns on InventoryUpdateRequest {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_InventoryUpdateRequest value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_InventoryUpdateRequest value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_InventoryUpdateRequest value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest() when $default != null:
+        return $default(_that.quantityChange, _that.type, _that.reason,
+            _that.workOrderId, _that.notes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest():
+        return $default(_that.quantityChange, _that.type, _that.reason,
+            _that.workOrderId, _that.notes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(name: 'quantity_change') int quantityChange,
+            String type,
+            String reason,
+            @JsonKey(name: 'work_order_id') String? workOrderId,
+            String? notes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryUpdateRequest() when $default != null:
+        return $default(_that.quantityChange, _that.type, _that.reason,
+            _that.workOrderId, _that.notes);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
 @JsonSerializable()
-class _$InventoryUpdateRequestImpl implements _InventoryUpdateRequest {
-  const _$InventoryUpdateRequestImpl(
+class _InventoryUpdateRequest implements InventoryUpdateRequest {
+  const _InventoryUpdateRequest(
       {@JsonKey(name: 'quantity_change') required this.quantityChange,
       required this.type,
       required this.reason,
       @JsonKey(name: 'work_order_id') this.workOrderId,
       this.notes});
-
-  factory _$InventoryUpdateRequestImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InventoryUpdateRequestImplFromJson(json);
+  factory _InventoryUpdateRequest.fromJson(Map<String, dynamic> json) =>
+      _$InventoryUpdateRequestFromJson(json);
 
   @override
   @JsonKey(name: 'quantity_change')
@@ -757,16 +1276,27 @@ class _$InventoryUpdateRequestImpl implements _InventoryUpdateRequest {
   @override
   final String? notes;
 
+  /// Create a copy of InventoryUpdateRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'InventoryUpdateRequest(quantityChange: $quantityChange, type: $type, reason: $reason, workOrderId: $workOrderId, notes: $notes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$InventoryUpdateRequestCopyWith<_InventoryUpdateRequest> get copyWith =>
+      __$InventoryUpdateRequestCopyWithImpl<_InventoryUpdateRequest>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$InventoryUpdateRequestToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InventoryUpdateRequestImpl &&
+            other is _InventoryUpdateRequest &&
             (identical(other.quantityChange, quantityChange) ||
                 other.quantityChange == quantityChange) &&
             (identical(other.type, type) || other.type == type) &&
@@ -776,135 +1306,133 @@ class _$InventoryUpdateRequestImpl implements _InventoryUpdateRequest {
             (identical(other.notes, notes) || other.notes == notes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, quantityChange, type, reason, workOrderId, notes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InventoryUpdateRequestImplCopyWith<_$InventoryUpdateRequestImpl>
-      get copyWith => __$$InventoryUpdateRequestImplCopyWithImpl<
-          _$InventoryUpdateRequestImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InventoryUpdateRequestImplToJson(
-      this,
-    );
+  String toString() {
+    return 'InventoryUpdateRequest(quantityChange: $quantityChange, type: $type, reason: $reason, workOrderId: $workOrderId, notes: $notes)';
   }
 }
 
-abstract class _InventoryUpdateRequest implements InventoryUpdateRequest {
-  const factory _InventoryUpdateRequest(
-      {@JsonKey(name: 'quantity_change') required final int quantityChange,
-      required final String type,
-      required final String reason,
-      @JsonKey(name: 'work_order_id') final String? workOrderId,
-      final String? notes}) = _$InventoryUpdateRequestImpl;
-
-  factory _InventoryUpdateRequest.fromJson(Map<String, dynamic> json) =
-      _$InventoryUpdateRequestImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$InventoryUpdateRequestCopyWith<$Res>
+    implements $InventoryUpdateRequestCopyWith<$Res> {
+  factory _$InventoryUpdateRequestCopyWith(_InventoryUpdateRequest value,
+          $Res Function(_InventoryUpdateRequest) _then) =
+      __$InventoryUpdateRequestCopyWithImpl;
   @override
-  @JsonKey(name: 'quantity_change')
-  int get quantityChange;
-  @override
-  String get type;
-  @override
-  String get reason;
-  @override
-  @JsonKey(name: 'work_order_id')
-  String? get workOrderId;
-  @override
-  String? get notes;
-  @override
-  @JsonKey(ignore: true)
-  _$$InventoryUpdateRequestImplCopyWith<_$InventoryUpdateRequestImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'quantity_change') int quantityChange,
+      String type,
+      String reason,
+      @JsonKey(name: 'work_order_id') String? workOrderId,
+      String? notes});
 }
 
-PartsResponse _$PartsResponseFromJson(Map<String, dynamic> json) {
-  return _PartsResponse.fromJson(json);
+/// @nodoc
+class __$InventoryUpdateRequestCopyWithImpl<$Res>
+    implements _$InventoryUpdateRequestCopyWith<$Res> {
+  __$InventoryUpdateRequestCopyWithImpl(this._self, this._then);
+
+  final _InventoryUpdateRequest _self;
+  final $Res Function(_InventoryUpdateRequest) _then;
+
+  /// Create a copy of InventoryUpdateRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? quantityChange = null,
+    Object? type = null,
+    Object? reason = null,
+    Object? workOrderId = freezed,
+    Object? notes = freezed,
+  }) {
+    return _then(_InventoryUpdateRequest(
+      quantityChange: null == quantityChange
+          ? _self.quantityChange
+          : quantityChange // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      reason: null == reason
+          ? _self.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+      workOrderId: freezed == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      notes: freezed == notes
+          ? _self.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$PartsResponse {
-  List<PartDto> get parts =>
-      throw _privateConstructorUsedError; // Optional pagination fields for backward compatibility
+  List<PartDto>
+      get parts; // Optional pagination fields for backward compatibility
   @JsonKey(name: 'total_count')
-  int get totalCount => throw _privateConstructorUsedError;
+  int get totalCount;
   @JsonKey(name: 'current_page')
-  int get currentPage => throw _privateConstructorUsedError;
+  int get currentPage;
   @JsonKey(name: 'total_pages')
-  int get totalPages => throw _privateConstructorUsedError;
+  int get totalPages;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PartsResponseCopyWith<PartsResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartsResponseCopyWith<$Res> {
-  factory $PartsResponseCopyWith(
-          PartsResponse value, $Res Function(PartsResponse) then) =
-      _$PartsResponseCopyWithImpl<$Res, PartsResponse>;
-  @useResult
-  $Res call(
-      {List<PartDto> parts,
-      @JsonKey(name: 'total_count') int totalCount,
-      @JsonKey(name: 'current_page') int currentPage,
-      @JsonKey(name: 'total_pages') int totalPages});
-}
-
-/// @nodoc
-class _$PartsResponseCopyWithImpl<$Res, $Val extends PartsResponse>
-    implements $PartsResponseCopyWith<$Res> {
-  _$PartsResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $PartsResponseCopyWith<PartsResponse> get copyWith =>
+      _$PartsResponseCopyWithImpl<PartsResponse>(
+          this as PartsResponse, _$identity);
+
+  /// Serializes this PartsResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? parts = null,
-    Object? totalCount = null,
-    Object? currentPage = null,
-    Object? totalPages = null,
-  }) {
-    return _then(_value.copyWith(
-      parts: null == parts
-          ? _value.parts
-          : parts // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>,
-      totalCount: null == totalCount
-          ? _value.totalCount
-          : totalCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      currentPage: null == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalPages: null == totalPages
-          ? _value.totalPages
-          : totalPages // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PartsResponse &&
+            const DeepCollectionEquality().equals(other.parts, parts) &&
+            (identical(other.totalCount, totalCount) ||
+                other.totalCount == totalCount) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.totalPages, totalPages) ||
+                other.totalPages == totalPages));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(parts),
+      totalCount,
+      currentPage,
+      totalPages);
+
+  @override
+  String toString() {
+    return 'PartsResponse(parts: $parts, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
   }
 }
 
 /// @nodoc
-abstract class _$$PartsResponseImplCopyWith<$Res>
-    implements $PartsResponseCopyWith<$Res> {
-  factory _$$PartsResponseImplCopyWith(
-          _$PartsResponseImpl value, $Res Function(_$PartsResponseImpl) then) =
-      __$$PartsResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PartsResponseCopyWith<$Res> {
+  factory $PartsResponseCopyWith(
+          PartsResponse value, $Res Function(PartsResponse) _then) =
+      _$PartsResponseCopyWithImpl;
   @useResult
   $Res call(
       {List<PartDto> parts,
@@ -914,13 +1442,15 @@ abstract class _$$PartsResponseImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PartsResponseImplCopyWithImpl<$Res>
-    extends _$PartsResponseCopyWithImpl<$Res, _$PartsResponseImpl>
-    implements _$$PartsResponseImplCopyWith<$Res> {
-  __$$PartsResponseImplCopyWithImpl(
-      _$PartsResponseImpl _value, $Res Function(_$PartsResponseImpl) _then)
-      : super(_value, _then);
+class _$PartsResponseCopyWithImpl<$Res>
+    implements $PartsResponseCopyWith<$Res> {
+  _$PartsResponseCopyWithImpl(this._self, this._then);
 
+  final PartsResponse _self;
+  final $Res Function(PartsResponse) _then;
+
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -929,39 +1459,213 @@ class __$$PartsResponseImplCopyWithImpl<$Res>
     Object? currentPage = null,
     Object? totalPages = null,
   }) {
-    return _then(_$PartsResponseImpl(
+    return _then(_self.copyWith(
       parts: null == parts
-          ? _value._parts
+          ? _self.parts
           : parts // ignore: cast_nullable_to_non_nullable
               as List<PartDto>,
       totalCount: null == totalCount
-          ? _value.totalCount
+          ? _self.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
               as int,
       currentPage: null == currentPage
-          ? _value.currentPage
+          ? _self.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
       totalPages: null == totalPages
-          ? _value.totalPages
+          ? _self.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [PartsResponse].
+extension PartsResponsePatterns on PartsResponse {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartsResponse value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartsResponse value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartsResponse value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            List<PartDto> parts,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(
+            _that.parts, _that.totalCount, _that.currentPage, _that.totalPages);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            List<PartDto> parts,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse():
+        return $default(
+            _that.parts, _that.totalCount, _that.currentPage, _that.totalPages);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            List<PartDto> parts,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartsResponse() when $default != null:
+        return $default(
+            _that.parts, _that.totalCount, _that.currentPage, _that.totalPages);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$PartsResponseImpl implements _PartsResponse {
-  const _$PartsResponseImpl(
+class _PartsResponse implements PartsResponse {
+  const _PartsResponse(
       {required final List<PartDto> parts,
       @JsonKey(name: 'total_count') this.totalCount = 0,
       @JsonKey(name: 'current_page') this.currentPage = 1,
       @JsonKey(name: 'total_pages') this.totalPages = 1})
       : _parts = parts;
-
-  factory _$PartsResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PartsResponseImplFromJson(json);
+  factory _PartsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PartsResponseFromJson(json);
 
   final List<PartDto> _parts;
   @override
@@ -982,16 +1686,26 @@ class _$PartsResponseImpl implements _PartsResponse {
   @JsonKey(name: 'total_pages')
   final int totalPages;
 
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PartsResponse(parts: $parts, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartsResponseCopyWith<_PartsResponse> get copyWith =>
+      __$PartsResponseCopyWithImpl<_PartsResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PartsResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartsResponseImpl &&
+            other is _PartsResponse &&
             const DeepCollectionEquality().equals(other._parts, _parts) &&
             (identical(other.totalCount, totalCount) ||
                 other.totalCount == totalCount) &&
@@ -1001,7 +1715,7 @@ class _$PartsResponseImpl implements _PartsResponse {
                 other.totalPages == totalPages));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1010,166 +1724,60 @@ class _$PartsResponseImpl implements _PartsResponse {
       currentPage,
       totalPages);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PartsResponseImplCopyWith<_$PartsResponseImpl> get copyWith =>
-      __$$PartsResponseImplCopyWithImpl<_$PartsResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PartsResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PartsResponse(parts: $parts, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
   }
 }
 
-abstract class _PartsResponse implements PartsResponse {
-  const factory _PartsResponse(
-          {required final List<PartDto> parts,
-          @JsonKey(name: 'total_count') final int totalCount,
-          @JsonKey(name: 'current_page') final int currentPage,
-          @JsonKey(name: 'total_pages') final int totalPages}) =
-      _$PartsResponseImpl;
-
-  factory _PartsResponse.fromJson(Map<String, dynamic> json) =
-      _$PartsResponseImpl.fromJson;
-
-  @override
-  List<PartDto> get parts;
-  @override // Optional pagination fields for backward compatibility
-  @JsonKey(name: 'total_count')
-  int get totalCount;
-  @override
-  @JsonKey(name: 'current_page')
-  int get currentPage;
-  @override
-  @JsonKey(name: 'total_pages')
-  int get totalPages;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartsResponseImplCopyWith<_$PartsResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-InventoryResponse _$InventoryResponseFromJson(Map<String, dynamic> json) {
-  return _InventoryResponse.fromJson(json);
-}
-
 /// @nodoc
-mixin _$InventoryResponse {
-  List<InventoryDto> get inventory => throw _privateConstructorUsedError;
-  @JsonKey(name: 'total_count')
-  int get totalCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'current_page')
-  int get currentPage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'total_pages')
-  int get totalPages => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $InventoryResponseCopyWith<InventoryResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InventoryResponseCopyWith<$Res> {
-  factory $InventoryResponseCopyWith(
-          InventoryResponse value, $Res Function(InventoryResponse) then) =
-      _$InventoryResponseCopyWithImpl<$Res, InventoryResponse>;
+abstract mixin class _$PartsResponseCopyWith<$Res>
+    implements $PartsResponseCopyWith<$Res> {
+  factory _$PartsResponseCopyWith(
+          _PartsResponse value, $Res Function(_PartsResponse) _then) =
+      __$PartsResponseCopyWithImpl;
+  @override
   @useResult
   $Res call(
-      {List<InventoryDto> inventory,
+      {List<PartDto> parts,
       @JsonKey(name: 'total_count') int totalCount,
       @JsonKey(name: 'current_page') int currentPage,
       @JsonKey(name: 'total_pages') int totalPages});
 }
 
 /// @nodoc
-class _$InventoryResponseCopyWithImpl<$Res, $Val extends InventoryResponse>
-    implements $InventoryResponseCopyWith<$Res> {
-  _$InventoryResponseCopyWithImpl(this._value, this._then);
+class __$PartsResponseCopyWithImpl<$Res>
+    implements _$PartsResponseCopyWith<$Res> {
+  __$PartsResponseCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final _PartsResponse _self;
+  final $Res Function(_PartsResponse) _then;
 
-  @pragma('vm:prefer-inline')
+  /// Create a copy of PartsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
-    Object? inventory = null,
+    Object? parts = null,
     Object? totalCount = null,
     Object? currentPage = null,
     Object? totalPages = null,
   }) {
-    return _then(_value.copyWith(
-      inventory: null == inventory
-          ? _value.inventory
-          : inventory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryDto>,
+    return _then(_PartsResponse(
+      parts: null == parts
+          ? _self._parts
+          : parts // ignore: cast_nullable_to_non_nullable
+              as List<PartDto>,
       totalCount: null == totalCount
-          ? _value.totalCount
+          ? _self.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
               as int,
       currentPage: null == currentPage
-          ? _value.currentPage
+          ? _self.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
       totalPages: null == totalPages
-          ? _value.totalPages
-          : totalPages // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$InventoryResponseImplCopyWith<$Res>
-    implements $InventoryResponseCopyWith<$Res> {
-  factory _$$InventoryResponseImplCopyWith(_$InventoryResponseImpl value,
-          $Res Function(_$InventoryResponseImpl) then) =
-      __$$InventoryResponseImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {List<InventoryDto> inventory,
-      @JsonKey(name: 'total_count') int totalCount,
-      @JsonKey(name: 'current_page') int currentPage,
-      @JsonKey(name: 'total_pages') int totalPages});
-}
-
-/// @nodoc
-class __$$InventoryResponseImplCopyWithImpl<$Res>
-    extends _$InventoryResponseCopyWithImpl<$Res, _$InventoryResponseImpl>
-    implements _$$InventoryResponseImplCopyWith<$Res> {
-  __$$InventoryResponseImplCopyWithImpl(_$InventoryResponseImpl _value,
-      $Res Function(_$InventoryResponseImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? inventory = null,
-    Object? totalCount = null,
-    Object? currentPage = null,
-    Object? totalPages = null,
-  }) {
-    return _then(_$InventoryResponseImpl(
-      inventory: null == inventory
-          ? _value._inventory
-          : inventory // ignore: cast_nullable_to_non_nullable
-              as List<InventoryDto>,
-      totalCount: null == totalCount
-          ? _value.totalCount
-          : totalCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      currentPage: null == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalPages: null == totalPages
-          ? _value.totalPages
+          ? _self.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -1177,17 +1785,293 @@ class __$$InventoryResponseImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
+mixin _$InventoryResponse {
+  List<InventoryDto> get inventory;
+  @JsonKey(name: 'total_count')
+  int get totalCount;
+  @JsonKey(name: 'current_page')
+  int get currentPage;
+  @JsonKey(name: 'total_pages')
+  int get totalPages;
+
+  /// Create a copy of InventoryResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InventoryResponseCopyWith<InventoryResponse> get copyWith =>
+      _$InventoryResponseCopyWithImpl<InventoryResponse>(
+          this as InventoryResponse, _$identity);
+
+  /// Serializes this InventoryResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InventoryResponse &&
+            const DeepCollectionEquality().equals(other.inventory, inventory) &&
+            (identical(other.totalCount, totalCount) ||
+                other.totalCount == totalCount) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.totalPages, totalPages) ||
+                other.totalPages == totalPages));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(inventory),
+      totalCount,
+      currentPage,
+      totalPages);
+
+  @override
+  String toString() {
+    return 'InventoryResponse(inventory: $inventory, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $InventoryResponseCopyWith<$Res> {
+  factory $InventoryResponseCopyWith(
+          InventoryResponse value, $Res Function(InventoryResponse) _then) =
+      _$InventoryResponseCopyWithImpl;
+  @useResult
+  $Res call(
+      {List<InventoryDto> inventory,
+      @JsonKey(name: 'total_count') int totalCount,
+      @JsonKey(name: 'current_page') int currentPage,
+      @JsonKey(name: 'total_pages') int totalPages});
+}
+
+/// @nodoc
+class _$InventoryResponseCopyWithImpl<$Res>
+    implements $InventoryResponseCopyWith<$Res> {
+  _$InventoryResponseCopyWithImpl(this._self, this._then);
+
+  final InventoryResponse _self;
+  final $Res Function(InventoryResponse) _then;
+
+  /// Create a copy of InventoryResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? inventory = null,
+    Object? totalCount = null,
+    Object? currentPage = null,
+    Object? totalPages = null,
+  }) {
+    return _then(_self.copyWith(
+      inventory: null == inventory
+          ? _self.inventory
+          : inventory // ignore: cast_nullable_to_non_nullable
+              as List<InventoryDto>,
+      totalCount: null == totalCount
+          ? _self.totalCount
+          : totalCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _self.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _self.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [InventoryResponse].
+extension InventoryResponsePatterns on InventoryResponse {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_InventoryResponse value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_InventoryResponse value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_InventoryResponse value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            List<InventoryDto> inventory,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse() when $default != null:
+        return $default(_that.inventory, _that.totalCount, _that.currentPage,
+            _that.totalPages);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            List<InventoryDto> inventory,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse():
+        return $default(_that.inventory, _that.totalCount, _that.currentPage,
+            _that.totalPages);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            List<InventoryDto> inventory,
+            @JsonKey(name: 'total_count') int totalCount,
+            @JsonKey(name: 'current_page') int currentPage,
+            @JsonKey(name: 'total_pages') int totalPages)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _InventoryResponse() when $default != null:
+        return $default(_that.inventory, _that.totalCount, _that.currentPage,
+            _that.totalPages);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
 @JsonSerializable()
-class _$InventoryResponseImpl implements _InventoryResponse {
-  const _$InventoryResponseImpl(
+class _InventoryResponse implements InventoryResponse {
+  const _InventoryResponse(
       {required final List<InventoryDto> inventory,
       @JsonKey(name: 'total_count') required this.totalCount,
       @JsonKey(name: 'current_page') required this.currentPage,
       @JsonKey(name: 'total_pages') required this.totalPages})
       : _inventory = inventory;
-
-  factory _$InventoryResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InventoryResponseImplFromJson(json);
+  factory _InventoryResponse.fromJson(Map<String, dynamic> json) =>
+      _$InventoryResponseFromJson(json);
 
   final List<InventoryDto> _inventory;
   @override
@@ -1207,16 +2091,26 @@ class _$InventoryResponseImpl implements _InventoryResponse {
   @JsonKey(name: 'total_pages')
   final int totalPages;
 
+  /// Create a copy of InventoryResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'InventoryResponse(inventory: $inventory, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$InventoryResponseCopyWith<_InventoryResponse> get copyWith =>
+      __$InventoryResponseCopyWithImpl<_InventoryResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$InventoryResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InventoryResponseImpl &&
+            other is _InventoryResponse &&
             const DeepCollectionEquality()
                 .equals(other._inventory, _inventory) &&
             (identical(other.totalCount, totalCount) ||
@@ -1227,7 +2121,7 @@ class _$InventoryResponseImpl implements _InventoryResponse {
                 other.totalPages == totalPages));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1236,45 +2130,64 @@ class _$InventoryResponseImpl implements _InventoryResponse {
       currentPage,
       totalPages);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InventoryResponseImplCopyWith<_$InventoryResponseImpl> get copyWith =>
-      __$$InventoryResponseImplCopyWithImpl<_$InventoryResponseImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InventoryResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'InventoryResponse(inventory: $inventory, totalCount: $totalCount, currentPage: $currentPage, totalPages: $totalPages)';
   }
 }
 
-abstract class _InventoryResponse implements InventoryResponse {
-  const factory _InventoryResponse(
-          {required final List<InventoryDto> inventory,
-          @JsonKey(name: 'total_count') required final int totalCount,
-          @JsonKey(name: 'current_page') required final int currentPage,
-          @JsonKey(name: 'total_pages') required final int totalPages}) =
-      _$InventoryResponseImpl;
-
-  factory _InventoryResponse.fromJson(Map<String, dynamic> json) =
-      _$InventoryResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$InventoryResponseCopyWith<$Res>
+    implements $InventoryResponseCopyWith<$Res> {
+  factory _$InventoryResponseCopyWith(
+          _InventoryResponse value, $Res Function(_InventoryResponse) _then) =
+      __$InventoryResponseCopyWithImpl;
   @override
-  List<InventoryDto> get inventory;
-  @override
-  @JsonKey(name: 'total_count')
-  int get totalCount;
-  @override
-  @JsonKey(name: 'current_page')
-  int get currentPage;
-  @override
-  @JsonKey(name: 'total_pages')
-  int get totalPages;
-  @override
-  @JsonKey(ignore: true)
-  _$$InventoryResponseImplCopyWith<_$InventoryResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {List<InventoryDto> inventory,
+      @JsonKey(name: 'total_count') int totalCount,
+      @JsonKey(name: 'current_page') int currentPage,
+      @JsonKey(name: 'total_pages') int totalPages});
 }
+
+/// @nodoc
+class __$InventoryResponseCopyWithImpl<$Res>
+    implements _$InventoryResponseCopyWith<$Res> {
+  __$InventoryResponseCopyWithImpl(this._self, this._then);
+
+  final _InventoryResponse _self;
+  final $Res Function(_InventoryResponse) _then;
+
+  /// Create a copy of InventoryResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? inventory = null,
+    Object? totalCount = null,
+    Object? currentPage = null,
+    Object? totalPages = null,
+  }) {
+    return _then(_InventoryResponse(
+      inventory: null == inventory
+          ? _self._inventory
+          : inventory // ignore: cast_nullable_to_non_nullable
+              as List<InventoryDto>,
+      totalCount: null == totalCount
+          ? _self.totalCount
+          : totalCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentPage: null == currentPage
+          ? _self.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalPages: null == totalPages
+          ? _self.totalPages
+          : totalPages // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

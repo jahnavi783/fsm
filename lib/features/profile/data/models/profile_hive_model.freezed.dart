@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,52 +9,84 @@ part of 'profile_hive_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-ProfileHiveModel _$ProfileHiveModelFromJson(Map<String, dynamic> json) {
-  return _ProfileHiveModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ProfileHiveModel {
   @HiveField(0)
-  int get id => throw _privateConstructorUsedError;
+  int get id;
   @HiveField(1)
-  String get firstName => throw _privateConstructorUsedError;
+  String get firstName;
   @HiveField(2)
-  String get lastName => throw _privateConstructorUsedError;
+  String get lastName;
   @HiveField(3)
-  String get email => throw _privateConstructorUsedError;
+  String get email;
   @HiveField(4)
-  String? get phone => throw _privateConstructorUsedError;
+  String? get phone;
   @HiveField(5)
-  String? get role => throw _privateConstructorUsedError;
+  String? get role;
   @HiveField(6)
-  String? get city => throw _privateConstructorUsedError;
+  String? get city;
   @HiveField(7)
-  DateTime? get dob => throw _privateConstructorUsedError;
+  DateTime? get dob;
   @HiveField(8)
-  String? get profileImageUrl => throw _privateConstructorUsedError;
+  String? get profileImageUrl;
   @HiveField(9)
-  ProfilePreferencesHiveModel get preferences =>
-      throw _privateConstructorUsedError;
+  ProfilePreferencesHiveModel get preferences;
   @HiveField(10)
-  DateTime get cachedAt => throw _privateConstructorUsedError;
+  DateTime get cachedAt;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $ProfileHiveModelCopyWith<ProfileHiveModel> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$ProfileHiveModelCopyWithImpl<ProfileHiveModel>(
+          this as ProfileHiveModel, _$identity);
+
+  /// Serializes this ProfileHiveModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ProfileHiveModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.dob, dob) || other.dob == dob) &&
+            (identical(other.profileImageUrl, profileImageUrl) ||
+                other.profileImageUrl == profileImageUrl) &&
+            (identical(other.preferences, preferences) ||
+                other.preferences == preferences) &&
+            (identical(other.cachedAt, cachedAt) ||
+                other.cachedAt == cachedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email,
+      phone, role, city, dob, profileImageUrl, preferences, cachedAt);
+
+  @override
+  String toString() {
+    return 'ProfileHiveModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, role: $role, city: $city, dob: $dob, profileImageUrl: $profileImageUrl, preferences: $preferences, cachedAt: $cachedAt)';
+  }
 }
 
 /// @nodoc
-abstract class $ProfileHiveModelCopyWith<$Res> {
+abstract mixin class $ProfileHiveModelCopyWith<$Res> {
   factory $ProfileHiveModelCopyWith(
-          ProfileHiveModel value, $Res Function(ProfileHiveModel) then) =
-      _$ProfileHiveModelCopyWithImpl<$Res, ProfileHiveModel>;
+          ProfileHiveModel value, $Res Function(ProfileHiveModel) _then) =
+      _$ProfileHiveModelCopyWithImpl;
   @useResult
   $Res call(
       {@HiveField(0) int id,
@@ -73,15 +105,15 @@ abstract class $ProfileHiveModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProfileHiveModelCopyWithImpl<$Res, $Val extends ProfileHiveModel>
+class _$ProfileHiveModelCopyWithImpl<$Res>
     implements $ProfileHiveModelCopyWith<$Res> {
-  _$ProfileHiveModelCopyWithImpl(this._value, this._then);
+  _$ProfileHiveModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ProfileHiveModel _self;
+  final $Res Function(ProfileHiveModel) _then;
 
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -97,165 +129,296 @@ class _$ProfileHiveModelCopyWithImpl<$Res, $Val extends ProfileHiveModel>
     Object? preferences = null,
     Object? cachedAt = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       firstName: null == firstName
-          ? _value.firstName
+          ? _self.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
               as String,
       lastName: null == lastName
-          ? _value.lastName
+          ? _self.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
-          ? _value.email
+          ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
       phone: freezed == phone
-          ? _value.phone
+          ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
       role: freezed == role
-          ? _value.role
+          ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
               as String?,
       city: freezed == city
-          ? _value.city
+          ? _self.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
       dob: freezed == dob
-          ? _value.dob
+          ? _self.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       profileImageUrl: freezed == profileImageUrl
-          ? _value.profileImageUrl
+          ? _self.profileImageUrl
           : profileImageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       preferences: null == preferences
-          ? _value.preferences
+          ? _self.preferences
           : preferences // ignore: cast_nullable_to_non_nullable
               as ProfilePreferencesHiveModel,
       cachedAt: null == cachedAt
-          ? _value.cachedAt
+          ? _self.cachedAt
           : cachedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-    ) as $Val);
+    ));
   }
 
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProfilePreferencesHiveModelCopyWith<$Res> get preferences {
-    return $ProfilePreferencesHiveModelCopyWith<$Res>(_value.preferences,
+    return $ProfilePreferencesHiveModelCopyWith<$Res>(_self.preferences,
         (value) {
-      return _then(_value.copyWith(preferences: value) as $Val);
+      return _then(_self.copyWith(preferences: value));
     });
   }
 }
 
-/// @nodoc
-abstract class _$$ProfileHiveModelImplCopyWith<$Res>
-    implements $ProfileHiveModelCopyWith<$Res> {
-  factory _$$ProfileHiveModelImplCopyWith(_$ProfileHiveModelImpl value,
-          $Res Function(_$ProfileHiveModelImpl) then) =
-      __$$ProfileHiveModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@HiveField(0) int id,
-      @HiveField(1) String firstName,
-      @HiveField(2) String lastName,
-      @HiveField(3) String email,
-      @HiveField(4) String? phone,
-      @HiveField(5) String? role,
-      @HiveField(6) String? city,
-      @HiveField(7) DateTime? dob,
-      @HiveField(8) String? profileImageUrl,
-      @HiveField(9) ProfilePreferencesHiveModel preferences,
-      @HiveField(10) DateTime cachedAt});
+/// Adds pattern-matching-related methods to [ProfileHiveModel].
+extension ProfileHiveModelPatterns on ProfileHiveModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  $ProfilePreferencesHiveModelCopyWith<$Res> get preferences;
-}
-
-/// @nodoc
-class __$$ProfileHiveModelImplCopyWithImpl<$Res>
-    extends _$ProfileHiveModelCopyWithImpl<$Res, _$ProfileHiveModelImpl>
-    implements _$$ProfileHiveModelImplCopyWith<$Res> {
-  __$$ProfileHiveModelImplCopyWithImpl(_$ProfileHiveModelImpl _value,
-      $Res Function(_$ProfileHiveModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? email = null,
-    Object? phone = freezed,
-    Object? role = freezed,
-    Object? city = freezed,
-    Object? dob = freezed,
-    Object? profileImageUrl = freezed,
-    Object? preferences = null,
-    Object? cachedAt = null,
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ProfileHiveModel value)? $default, {
+    required TResult orElse(),
   }) {
-    return _then(_$ProfileHiveModelImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      role: freezed == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      dob: freezed == dob
-          ? _value.dob
-          : dob // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      profileImageUrl: freezed == profileImageUrl
-          ? _value.profileImageUrl
-          : profileImageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      preferences: null == preferences
-          ? _value.preferences
-          : preferences // ignore: cast_nullable_to_non_nullable
-              as ProfilePreferencesHiveModel,
-      cachedAt: null == cachedAt
-          ? _value.cachedAt
-          : cachedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ProfileHiveModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ProfileHiveModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) int id,
+            @HiveField(1) String firstName,
+            @HiveField(2) String lastName,
+            @HiveField(3) String email,
+            @HiveField(4) String? phone,
+            @HiveField(5) String? role,
+            @HiveField(6) String? city,
+            @HiveField(7) DateTime? dob,
+            @HiveField(8) String? profileImageUrl,
+            @HiveField(9) ProfilePreferencesHiveModel preferences,
+            @HiveField(10) DateTime cachedAt)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.firstName,
+            _that.lastName,
+            _that.email,
+            _that.phone,
+            _that.role,
+            _that.city,
+            _that.dob,
+            _that.profileImageUrl,
+            _that.preferences,
+            _that.cachedAt);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) int id,
+            @HiveField(1) String firstName,
+            @HiveField(2) String lastName,
+            @HiveField(3) String email,
+            @HiveField(4) String? phone,
+            @HiveField(5) String? role,
+            @HiveField(6) String? city,
+            @HiveField(7) DateTime? dob,
+            @HiveField(8) String? profileImageUrl,
+            @HiveField(9) ProfilePreferencesHiveModel preferences,
+            @HiveField(10) DateTime cachedAt)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel():
+        return $default(
+            _that.id,
+            _that.firstName,
+            _that.lastName,
+            _that.email,
+            _that.phone,
+            _that.role,
+            _that.city,
+            _that.dob,
+            _that.profileImageUrl,
+            _that.preferences,
+            _that.cachedAt);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @HiveField(0) int id,
+            @HiveField(1) String firstName,
+            @HiveField(2) String lastName,
+            @HiveField(3) String email,
+            @HiveField(4) String? phone,
+            @HiveField(5) String? role,
+            @HiveField(6) String? city,
+            @HiveField(7) DateTime? dob,
+            @HiveField(8) String? profileImageUrl,
+            @HiveField(9) ProfilePreferencesHiveModel preferences,
+            @HiveField(10) DateTime cachedAt)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfileHiveModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.firstName,
+            _that.lastName,
+            _that.email,
+            _that.phone,
+            _that.role,
+            _that.city,
+            _that.dob,
+            _that.profileImageUrl,
+            _that.preferences,
+            _that.cachedAt);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ProfileHiveModelImpl implements _ProfileHiveModel {
-  const _$ProfileHiveModelImpl(
+class _ProfileHiveModel implements ProfileHiveModel {
+  const _ProfileHiveModel(
       {@HiveField(0) required this.id,
       @HiveField(1) required this.firstName,
       @HiveField(2) required this.lastName,
@@ -267,9 +430,8 @@ class _$ProfileHiveModelImpl implements _ProfileHiveModel {
       @HiveField(8) this.profileImageUrl,
       @HiveField(9) required this.preferences,
       @HiveField(10) required this.cachedAt});
-
-  factory _$ProfileHiveModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProfileHiveModelImplFromJson(json);
+  factory _ProfileHiveModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfileHiveModelFromJson(json);
 
   @override
   @HiveField(0)
@@ -305,16 +467,26 @@ class _$ProfileHiveModelImpl implements _ProfileHiveModel {
   @HiveField(10)
   final DateTime cachedAt;
 
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ProfileHiveModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, role: $role, city: $city, dob: $dob, profileImageUrl: $profileImageUrl, preferences: $preferences, cachedAt: $cachedAt)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ProfileHiveModelCopyWith<_ProfileHiveModel> get copyWith =>
+      __$ProfileHiveModelCopyWithImpl<_ProfileHiveModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ProfileHiveModelToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProfileHiveModelImpl &&
+            other is _ProfileHiveModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
@@ -333,216 +505,219 @@ class _$ProfileHiveModelImpl implements _ProfileHiveModel {
                 other.cachedAt == cachedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email,
       phone, role, city, dob, profileImageUrl, preferences, cachedAt);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileHiveModelImplCopyWith<_$ProfileHiveModelImpl> get copyWith =>
-      __$$ProfileHiveModelImplCopyWithImpl<_$ProfileHiveModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ProfileHiveModelImplToJson(
-      this,
-    );
+  String toString() {
+    return 'ProfileHiveModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, role: $role, city: $city, dob: $dob, profileImageUrl: $profileImageUrl, preferences: $preferences, cachedAt: $cachedAt)';
   }
 }
 
-abstract class _ProfileHiveModel implements ProfileHiveModel {
-  const factory _ProfileHiveModel(
-          {@HiveField(0) required final int id,
-          @HiveField(1) required final String firstName,
-          @HiveField(2) required final String lastName,
-          @HiveField(3) required final String email,
-          @HiveField(4) final String? phone,
-          @HiveField(5) final String? role,
-          @HiveField(6) final String? city,
-          @HiveField(7) final DateTime? dob,
-          @HiveField(8) final String? profileImageUrl,
-          @HiveField(9) required final ProfilePreferencesHiveModel preferences,
-          @HiveField(10) required final DateTime cachedAt}) =
-      _$ProfileHiveModelImpl;
+/// @nodoc
+abstract mixin class _$ProfileHiveModelCopyWith<$Res>
+    implements $ProfileHiveModelCopyWith<$Res> {
+  factory _$ProfileHiveModelCopyWith(
+          _ProfileHiveModel value, $Res Function(_ProfileHiveModel) _then) =
+      __$ProfileHiveModelCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {@HiveField(0) int id,
+      @HiveField(1) String firstName,
+      @HiveField(2) String lastName,
+      @HiveField(3) String email,
+      @HiveField(4) String? phone,
+      @HiveField(5) String? role,
+      @HiveField(6) String? city,
+      @HiveField(7) DateTime? dob,
+      @HiveField(8) String? profileImageUrl,
+      @HiveField(9) ProfilePreferencesHiveModel preferences,
+      @HiveField(10) DateTime cachedAt});
 
-  factory _ProfileHiveModel.fromJson(Map<String, dynamic> json) =
-      _$ProfileHiveModelImpl.fromJson;
-
   @override
-  @HiveField(0)
-  int get id;
-  @override
-  @HiveField(1)
-  String get firstName;
-  @override
-  @HiveField(2)
-  String get lastName;
-  @override
-  @HiveField(3)
-  String get email;
-  @override
-  @HiveField(4)
-  String? get phone;
-  @override
-  @HiveField(5)
-  String? get role;
-  @override
-  @HiveField(6)
-  String? get city;
-  @override
-  @HiveField(7)
-  DateTime? get dob;
-  @override
-  @HiveField(8)
-  String? get profileImageUrl;
-  @override
-  @HiveField(9)
-  ProfilePreferencesHiveModel get preferences;
-  @override
-  @HiveField(10)
-  DateTime get cachedAt;
-  @override
-  @JsonKey(ignore: true)
-  _$$ProfileHiveModelImplCopyWith<_$ProfileHiveModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ProfilePreferencesHiveModelCopyWith<$Res> get preferences;
 }
 
-ProfilePreferencesHiveModel _$ProfilePreferencesHiveModelFromJson(
-    Map<String, dynamic> json) {
-  return _ProfilePreferencesHiveModel.fromJson(json);
+/// @nodoc
+class __$ProfileHiveModelCopyWithImpl<$Res>
+    implements _$ProfileHiveModelCopyWith<$Res> {
+  __$ProfileHiveModelCopyWithImpl(this._self, this._then);
+
+  final _ProfileHiveModel _self;
+  final $Res Function(_ProfileHiveModel) _then;
+
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? email = null,
+    Object? phone = freezed,
+    Object? role = freezed,
+    Object? city = freezed,
+    Object? dob = freezed,
+    Object? profileImageUrl = freezed,
+    Object? preferences = null,
+    Object? cachedAt = null,
+  }) {
+    return _then(_ProfileHiveModel(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      firstName: null == firstName
+          ? _self.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _self.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: freezed == phone
+          ? _self.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      role: freezed == role
+          ? _self.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _self.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dob: freezed == dob
+          ? _self.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      profileImageUrl: freezed == profileImageUrl
+          ? _self.profileImageUrl
+          : profileImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      preferences: null == preferences
+          ? _self.preferences
+          : preferences // ignore: cast_nullable_to_non_nullable
+              as ProfilePreferencesHiveModel,
+      cachedAt: null == cachedAt
+          ? _self.cachedAt
+          : cachedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+
+  /// Create a copy of ProfileHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProfilePreferencesHiveModelCopyWith<$Res> get preferences {
+    return $ProfilePreferencesHiveModelCopyWith<$Res>(_self.preferences,
+        (value) {
+      return _then(_self.copyWith(preferences: value));
+    });
+  }
 }
 
 /// @nodoc
 mixin _$ProfilePreferencesHiveModel {
   @HiveField(0)
-  bool get notificationsEnabled => throw _privateConstructorUsedError;
+  bool get notificationsEnabled;
   @HiveField(1)
-  bool get pushNotificationsEnabled => throw _privateConstructorUsedError;
+  bool get pushNotificationsEnabled;
   @HiveField(2)
-  bool get emailNotificationsEnabled => throw _privateConstructorUsedError;
+  bool get emailNotificationsEnabled;
   @HiveField(3)
-  bool get locationTrackingEnabled => throw _privateConstructorUsedError;
+  bool get locationTrackingEnabled;
   @HiveField(4)
-  String get language => throw _privateConstructorUsedError;
+  String get language;
   @HiveField(5)
-  bool get darkModeEnabled => throw _privateConstructorUsedError;
+  bool get darkModeEnabled;
   @HiveField(6)
-  bool get offlineSyncEnabled => throw _privateConstructorUsedError;
+  bool get offlineSyncEnabled;
   @HiveField(7)
-  int get syncIntervalMinutes => throw _privateConstructorUsedError;
+  int get syncIntervalMinutes;
   @HiveField(8)
-  bool get autoLogoutEnabled => throw _privateConstructorUsedError;
+  bool get autoLogoutEnabled;
   @HiveField(9)
-  int get autoLogoutMinutes => throw _privateConstructorUsedError;
+  int get autoLogoutMinutes;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ProfilePreferencesHiveModelCopyWith<ProfilePreferencesHiveModel>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProfilePreferencesHiveModelCopyWith<$Res> {
-  factory $ProfilePreferencesHiveModelCopyWith(
-          ProfilePreferencesHiveModel value,
-          $Res Function(ProfilePreferencesHiveModel) then) =
-      _$ProfilePreferencesHiveModelCopyWithImpl<$Res,
-          ProfilePreferencesHiveModel>;
-  @useResult
-  $Res call(
-      {@HiveField(0) bool notificationsEnabled,
-      @HiveField(1) bool pushNotificationsEnabled,
-      @HiveField(2) bool emailNotificationsEnabled,
-      @HiveField(3) bool locationTrackingEnabled,
-      @HiveField(4) String language,
-      @HiveField(5) bool darkModeEnabled,
-      @HiveField(6) bool offlineSyncEnabled,
-      @HiveField(7) int syncIntervalMinutes,
-      @HiveField(8) bool autoLogoutEnabled,
-      @HiveField(9) int autoLogoutMinutes});
-}
-
-/// @nodoc
-class _$ProfilePreferencesHiveModelCopyWithImpl<$Res,
-        $Val extends ProfilePreferencesHiveModel>
-    implements $ProfilePreferencesHiveModelCopyWith<$Res> {
-  _$ProfilePreferencesHiveModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of ProfilePreferencesHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $ProfilePreferencesHiveModelCopyWith<ProfilePreferencesHiveModel>
+      get copyWith => _$ProfilePreferencesHiveModelCopyWithImpl<
+              ProfilePreferencesHiveModel>(
+          this as ProfilePreferencesHiveModel, _$identity);
+
+  /// Serializes this ProfilePreferencesHiveModel to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? notificationsEnabled = null,
-    Object? pushNotificationsEnabled = null,
-    Object? emailNotificationsEnabled = null,
-    Object? locationTrackingEnabled = null,
-    Object? language = null,
-    Object? darkModeEnabled = null,
-    Object? offlineSyncEnabled = null,
-    Object? syncIntervalMinutes = null,
-    Object? autoLogoutEnabled = null,
-    Object? autoLogoutMinutes = null,
-  }) {
-    return _then(_value.copyWith(
-      notificationsEnabled: null == notificationsEnabled
-          ? _value.notificationsEnabled
-          : notificationsEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pushNotificationsEnabled: null == pushNotificationsEnabled
-          ? _value.pushNotificationsEnabled
-          : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      emailNotificationsEnabled: null == emailNotificationsEnabled
-          ? _value.emailNotificationsEnabled
-          : emailNotificationsEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      locationTrackingEnabled: null == locationTrackingEnabled
-          ? _value.locationTrackingEnabled
-          : locationTrackingEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      language: null == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      darkModeEnabled: null == darkModeEnabled
-          ? _value.darkModeEnabled
-          : darkModeEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      offlineSyncEnabled: null == offlineSyncEnabled
-          ? _value.offlineSyncEnabled
-          : offlineSyncEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      syncIntervalMinutes: null == syncIntervalMinutes
-          ? _value.syncIntervalMinutes
-          : syncIntervalMinutes // ignore: cast_nullable_to_non_nullable
-              as int,
-      autoLogoutEnabled: null == autoLogoutEnabled
-          ? _value.autoLogoutEnabled
-          : autoLogoutEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      autoLogoutMinutes: null == autoLogoutMinutes
-          ? _value.autoLogoutMinutes
-          : autoLogoutMinutes // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ProfilePreferencesHiveModel &&
+            (identical(other.notificationsEnabled, notificationsEnabled) ||
+                other.notificationsEnabled == notificationsEnabled) &&
+            (identical(
+                    other.pushNotificationsEnabled, pushNotificationsEnabled) ||
+                other.pushNotificationsEnabled == pushNotificationsEnabled) &&
+            (identical(other.emailNotificationsEnabled,
+                    emailNotificationsEnabled) ||
+                other.emailNotificationsEnabled == emailNotificationsEnabled) &&
+            (identical(
+                    other.locationTrackingEnabled, locationTrackingEnabled) ||
+                other.locationTrackingEnabled == locationTrackingEnabled) &&
+            (identical(other.language, language) ||
+                other.language == language) &&
+            (identical(other.darkModeEnabled, darkModeEnabled) ||
+                other.darkModeEnabled == darkModeEnabled) &&
+            (identical(other.offlineSyncEnabled, offlineSyncEnabled) ||
+                other.offlineSyncEnabled == offlineSyncEnabled) &&
+            (identical(other.syncIntervalMinutes, syncIntervalMinutes) ||
+                other.syncIntervalMinutes == syncIntervalMinutes) &&
+            (identical(other.autoLogoutEnabled, autoLogoutEnabled) ||
+                other.autoLogoutEnabled == autoLogoutEnabled) &&
+            (identical(other.autoLogoutMinutes, autoLogoutMinutes) ||
+                other.autoLogoutMinutes == autoLogoutMinutes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      notificationsEnabled,
+      pushNotificationsEnabled,
+      emailNotificationsEnabled,
+      locationTrackingEnabled,
+      language,
+      darkModeEnabled,
+      offlineSyncEnabled,
+      syncIntervalMinutes,
+      autoLogoutEnabled,
+      autoLogoutMinutes);
+
+  @override
+  String toString() {
+    return 'ProfilePreferencesHiveModel(notificationsEnabled: $notificationsEnabled, pushNotificationsEnabled: $pushNotificationsEnabled, emailNotificationsEnabled: $emailNotificationsEnabled, locationTrackingEnabled: $locationTrackingEnabled, language: $language, darkModeEnabled: $darkModeEnabled, offlineSyncEnabled: $offlineSyncEnabled, syncIntervalMinutes: $syncIntervalMinutes, autoLogoutEnabled: $autoLogoutEnabled, autoLogoutMinutes: $autoLogoutMinutes)';
   }
 }
 
 /// @nodoc
-abstract class _$$ProfilePreferencesHiveModelImplCopyWith<$Res>
-    implements $ProfilePreferencesHiveModelCopyWith<$Res> {
-  factory _$$ProfilePreferencesHiveModelImplCopyWith(
-          _$ProfilePreferencesHiveModelImpl value,
-          $Res Function(_$ProfilePreferencesHiveModelImpl) then) =
-      __$$ProfilePreferencesHiveModelImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ProfilePreferencesHiveModelCopyWith<$Res> {
+  factory $ProfilePreferencesHiveModelCopyWith(
+          ProfilePreferencesHiveModel value,
+          $Res Function(ProfilePreferencesHiveModel) _then) =
+      _$ProfilePreferencesHiveModelCopyWithImpl;
   @useResult
   $Res call(
       {@HiveField(0) bool notificationsEnabled,
@@ -558,15 +733,15 @@ abstract class _$$ProfilePreferencesHiveModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ProfilePreferencesHiveModelImplCopyWithImpl<$Res>
-    extends _$ProfilePreferencesHiveModelCopyWithImpl<$Res,
-        _$ProfilePreferencesHiveModelImpl>
-    implements _$$ProfilePreferencesHiveModelImplCopyWith<$Res> {
-  __$$ProfilePreferencesHiveModelImplCopyWithImpl(
-      _$ProfilePreferencesHiveModelImpl _value,
-      $Res Function(_$ProfilePreferencesHiveModelImpl) _then)
-      : super(_value, _then);
+class _$ProfilePreferencesHiveModelCopyWithImpl<$Res>
+    implements $ProfilePreferencesHiveModelCopyWith<$Res> {
+  _$ProfilePreferencesHiveModelCopyWithImpl(this._self, this._then);
 
+  final ProfilePreferencesHiveModel _self;
+  final $Res Function(ProfilePreferencesHiveModel) _then;
+
+  /// Create a copy of ProfilePreferencesHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -581,56 +756,275 @@ class __$$ProfilePreferencesHiveModelImplCopyWithImpl<$Res>
     Object? autoLogoutEnabled = null,
     Object? autoLogoutMinutes = null,
   }) {
-    return _then(_$ProfilePreferencesHiveModelImpl(
+    return _then(_self.copyWith(
       notificationsEnabled: null == notificationsEnabled
-          ? _value.notificationsEnabled
+          ? _self.notificationsEnabled
           : notificationsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       pushNotificationsEnabled: null == pushNotificationsEnabled
-          ? _value.pushNotificationsEnabled
+          ? _self.pushNotificationsEnabled
           : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       emailNotificationsEnabled: null == emailNotificationsEnabled
-          ? _value.emailNotificationsEnabled
+          ? _self.emailNotificationsEnabled
           : emailNotificationsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       locationTrackingEnabled: null == locationTrackingEnabled
-          ? _value.locationTrackingEnabled
+          ? _self.locationTrackingEnabled
           : locationTrackingEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       language: null == language
-          ? _value.language
+          ? _self.language
           : language // ignore: cast_nullable_to_non_nullable
               as String,
       darkModeEnabled: null == darkModeEnabled
-          ? _value.darkModeEnabled
+          ? _self.darkModeEnabled
           : darkModeEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       offlineSyncEnabled: null == offlineSyncEnabled
-          ? _value.offlineSyncEnabled
+          ? _self.offlineSyncEnabled
           : offlineSyncEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       syncIntervalMinutes: null == syncIntervalMinutes
-          ? _value.syncIntervalMinutes
+          ? _self.syncIntervalMinutes
           : syncIntervalMinutes // ignore: cast_nullable_to_non_nullable
               as int,
       autoLogoutEnabled: null == autoLogoutEnabled
-          ? _value.autoLogoutEnabled
+          ? _self.autoLogoutEnabled
           : autoLogoutEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
       autoLogoutMinutes: null == autoLogoutMinutes
-          ? _value.autoLogoutMinutes
+          ? _self.autoLogoutMinutes
           : autoLogoutMinutes // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [ProfilePreferencesHiveModel].
+extension ProfilePreferencesHiveModelPatterns on ProfilePreferencesHiveModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ProfilePreferencesHiveModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ProfilePreferencesHiveModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ProfilePreferencesHiveModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) bool notificationsEnabled,
+            @HiveField(1) bool pushNotificationsEnabled,
+            @HiveField(2) bool emailNotificationsEnabled,
+            @HiveField(3) bool locationTrackingEnabled,
+            @HiveField(4) String language,
+            @HiveField(5) bool darkModeEnabled,
+            @HiveField(6) bool offlineSyncEnabled,
+            @HiveField(7) int syncIntervalMinutes,
+            @HiveField(8) bool autoLogoutEnabled,
+            @HiveField(9) int autoLogoutMinutes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel() when $default != null:
+        return $default(
+            _that.notificationsEnabled,
+            _that.pushNotificationsEnabled,
+            _that.emailNotificationsEnabled,
+            _that.locationTrackingEnabled,
+            _that.language,
+            _that.darkModeEnabled,
+            _that.offlineSyncEnabled,
+            _that.syncIntervalMinutes,
+            _that.autoLogoutEnabled,
+            _that.autoLogoutMinutes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @HiveField(0) bool notificationsEnabled,
+            @HiveField(1) bool pushNotificationsEnabled,
+            @HiveField(2) bool emailNotificationsEnabled,
+            @HiveField(3) bool locationTrackingEnabled,
+            @HiveField(4) String language,
+            @HiveField(5) bool darkModeEnabled,
+            @HiveField(6) bool offlineSyncEnabled,
+            @HiveField(7) int syncIntervalMinutes,
+            @HiveField(8) bool autoLogoutEnabled,
+            @HiveField(9) int autoLogoutMinutes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel():
+        return $default(
+            _that.notificationsEnabled,
+            _that.pushNotificationsEnabled,
+            _that.emailNotificationsEnabled,
+            _that.locationTrackingEnabled,
+            _that.language,
+            _that.darkModeEnabled,
+            _that.offlineSyncEnabled,
+            _that.syncIntervalMinutes,
+            _that.autoLogoutEnabled,
+            _that.autoLogoutMinutes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @HiveField(0) bool notificationsEnabled,
+            @HiveField(1) bool pushNotificationsEnabled,
+            @HiveField(2) bool emailNotificationsEnabled,
+            @HiveField(3) bool locationTrackingEnabled,
+            @HiveField(4) String language,
+            @HiveField(5) bool darkModeEnabled,
+            @HiveField(6) bool offlineSyncEnabled,
+            @HiveField(7) int syncIntervalMinutes,
+            @HiveField(8) bool autoLogoutEnabled,
+            @HiveField(9) int autoLogoutMinutes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _ProfilePreferencesHiveModel() when $default != null:
+        return $default(
+            _that.notificationsEnabled,
+            _that.pushNotificationsEnabled,
+            _that.emailNotificationsEnabled,
+            _that.locationTrackingEnabled,
+            _that.language,
+            _that.darkModeEnabled,
+            _that.offlineSyncEnabled,
+            _that.syncIntervalMinutes,
+            _that.autoLogoutEnabled,
+            _that.autoLogoutMinutes);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$ProfilePreferencesHiveModelImpl
-    implements _ProfilePreferencesHiveModel {
-  const _$ProfilePreferencesHiveModelImpl(
+class _ProfilePreferencesHiveModel implements ProfilePreferencesHiveModel {
+  const _ProfilePreferencesHiveModel(
       {@HiveField(0) this.notificationsEnabled = true,
       @HiveField(1) this.pushNotificationsEnabled = true,
       @HiveField(2) this.emailNotificationsEnabled = true,
@@ -641,10 +1035,8 @@ class _$ProfilePreferencesHiveModelImpl
       @HiveField(7) this.syncIntervalMinutes = 30,
       @HiveField(8) this.autoLogoutEnabled = true,
       @HiveField(9) this.autoLogoutMinutes = 60});
-
-  factory _$ProfilePreferencesHiveModelImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$ProfilePreferencesHiveModelImplFromJson(json);
+  factory _ProfilePreferencesHiveModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfilePreferencesHiveModelFromJson(json);
 
   @override
   @JsonKey()
@@ -687,16 +1079,27 @@ class _$ProfilePreferencesHiveModelImpl
   @HiveField(9)
   final int autoLogoutMinutes;
 
+  /// Create a copy of ProfilePreferencesHiveModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ProfilePreferencesHiveModel(notificationsEnabled: $notificationsEnabled, pushNotificationsEnabled: $pushNotificationsEnabled, emailNotificationsEnabled: $emailNotificationsEnabled, locationTrackingEnabled: $locationTrackingEnabled, language: $language, darkModeEnabled: $darkModeEnabled, offlineSyncEnabled: $offlineSyncEnabled, syncIntervalMinutes: $syncIntervalMinutes, autoLogoutEnabled: $autoLogoutEnabled, autoLogoutMinutes: $autoLogoutMinutes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ProfilePreferencesHiveModelCopyWith<_ProfilePreferencesHiveModel>
+      get copyWith => __$ProfilePreferencesHiveModelCopyWithImpl<
+          _ProfilePreferencesHiveModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ProfilePreferencesHiveModelToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProfilePreferencesHiveModelImpl &&
+            other is _ProfilePreferencesHiveModel &&
             (identical(other.notificationsEnabled, notificationsEnabled) ||
                 other.notificationsEnabled == notificationsEnabled) &&
             (identical(
@@ -722,7 +1125,7 @@ class _$ProfilePreferencesHiveModelImpl
                 other.autoLogoutMinutes == autoLogoutMinutes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -737,71 +1140,101 @@ class _$ProfilePreferencesHiveModelImpl
       autoLogoutEnabled,
       autoLogoutMinutes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ProfilePreferencesHiveModelImplCopyWith<_$ProfilePreferencesHiveModelImpl>
-      get copyWith => __$$ProfilePreferencesHiveModelImplCopyWithImpl<
-          _$ProfilePreferencesHiveModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ProfilePreferencesHiveModelImplToJson(
-      this,
-    );
+  String toString() {
+    return 'ProfilePreferencesHiveModel(notificationsEnabled: $notificationsEnabled, pushNotificationsEnabled: $pushNotificationsEnabled, emailNotificationsEnabled: $emailNotificationsEnabled, locationTrackingEnabled: $locationTrackingEnabled, language: $language, darkModeEnabled: $darkModeEnabled, offlineSyncEnabled: $offlineSyncEnabled, syncIntervalMinutes: $syncIntervalMinutes, autoLogoutEnabled: $autoLogoutEnabled, autoLogoutMinutes: $autoLogoutMinutes)';
   }
 }
 
-abstract class _ProfilePreferencesHiveModel
-    implements ProfilePreferencesHiveModel {
-  const factory _ProfilePreferencesHiveModel(
-          {@HiveField(0) final bool notificationsEnabled,
-          @HiveField(1) final bool pushNotificationsEnabled,
-          @HiveField(2) final bool emailNotificationsEnabled,
-          @HiveField(3) final bool locationTrackingEnabled,
-          @HiveField(4) final String language,
-          @HiveField(5) final bool darkModeEnabled,
-          @HiveField(6) final bool offlineSyncEnabled,
-          @HiveField(7) final int syncIntervalMinutes,
-          @HiveField(8) final bool autoLogoutEnabled,
-          @HiveField(9) final int autoLogoutMinutes}) =
-      _$ProfilePreferencesHiveModelImpl;
-
-  factory _ProfilePreferencesHiveModel.fromJson(Map<String, dynamic> json) =
-      _$ProfilePreferencesHiveModelImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$ProfilePreferencesHiveModelCopyWith<$Res>
+    implements $ProfilePreferencesHiveModelCopyWith<$Res> {
+  factory _$ProfilePreferencesHiveModelCopyWith(
+          _ProfilePreferencesHiveModel value,
+          $Res Function(_ProfilePreferencesHiveModel) _then) =
+      __$ProfilePreferencesHiveModelCopyWithImpl;
   @override
-  @HiveField(0)
-  bool get notificationsEnabled;
-  @override
-  @HiveField(1)
-  bool get pushNotificationsEnabled;
-  @override
-  @HiveField(2)
-  bool get emailNotificationsEnabled;
-  @override
-  @HiveField(3)
-  bool get locationTrackingEnabled;
-  @override
-  @HiveField(4)
-  String get language;
-  @override
-  @HiveField(5)
-  bool get darkModeEnabled;
-  @override
-  @HiveField(6)
-  bool get offlineSyncEnabled;
-  @override
-  @HiveField(7)
-  int get syncIntervalMinutes;
-  @override
-  @HiveField(8)
-  bool get autoLogoutEnabled;
-  @override
-  @HiveField(9)
-  int get autoLogoutMinutes;
-  @override
-  @JsonKey(ignore: true)
-  _$$ProfilePreferencesHiveModelImplCopyWith<_$ProfilePreferencesHiveModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {@HiveField(0) bool notificationsEnabled,
+      @HiveField(1) bool pushNotificationsEnabled,
+      @HiveField(2) bool emailNotificationsEnabled,
+      @HiveField(3) bool locationTrackingEnabled,
+      @HiveField(4) String language,
+      @HiveField(5) bool darkModeEnabled,
+      @HiveField(6) bool offlineSyncEnabled,
+      @HiveField(7) int syncIntervalMinutes,
+      @HiveField(8) bool autoLogoutEnabled,
+      @HiveField(9) int autoLogoutMinutes});
 }
+
+/// @nodoc
+class __$ProfilePreferencesHiveModelCopyWithImpl<$Res>
+    implements _$ProfilePreferencesHiveModelCopyWith<$Res> {
+  __$ProfilePreferencesHiveModelCopyWithImpl(this._self, this._then);
+
+  final _ProfilePreferencesHiveModel _self;
+  final $Res Function(_ProfilePreferencesHiveModel) _then;
+
+  /// Create a copy of ProfilePreferencesHiveModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? notificationsEnabled = null,
+    Object? pushNotificationsEnabled = null,
+    Object? emailNotificationsEnabled = null,
+    Object? locationTrackingEnabled = null,
+    Object? language = null,
+    Object? darkModeEnabled = null,
+    Object? offlineSyncEnabled = null,
+    Object? syncIntervalMinutes = null,
+    Object? autoLogoutEnabled = null,
+    Object? autoLogoutMinutes = null,
+  }) {
+    return _then(_ProfilePreferencesHiveModel(
+      notificationsEnabled: null == notificationsEnabled
+          ? _self.notificationsEnabled
+          : notificationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pushNotificationsEnabled: null == pushNotificationsEnabled
+          ? _self.pushNotificationsEnabled
+          : pushNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      emailNotificationsEnabled: null == emailNotificationsEnabled
+          ? _self.emailNotificationsEnabled
+          : emailNotificationsEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      locationTrackingEnabled: null == locationTrackingEnabled
+          ? _self.locationTrackingEnabled
+          : locationTrackingEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      language: null == language
+          ? _self.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String,
+      darkModeEnabled: null == darkModeEnabled
+          ? _self.darkModeEnabled
+          : darkModeEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      offlineSyncEnabled: null == offlineSyncEnabled
+          ? _self.offlineSyncEnabled
+          : offlineSyncEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      syncIntervalMinutes: null == syncIntervalMinutes
+          ? _self.syncIntervalMinutes
+          : syncIntervalMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
+      autoLogoutEnabled: null == autoLogoutEnabled
+          ? _self.autoLogoutEnabled
+          : autoLogoutEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoLogoutMinutes: null == autoLogoutMinutes
+          ? _self.autoLogoutMinutes
+          : autoLogoutMinutes // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

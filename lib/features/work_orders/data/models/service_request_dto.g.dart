@@ -6,9 +6,8 @@ part of 'service_request_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ServiceRequestDtoImpl _$$ServiceRequestDtoImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ServiceRequestDtoImpl(
+_ServiceRequestDto _$ServiceRequestDtoFromJson(Map<String, dynamic> json) =>
+    _ServiceRequestDto(
       srNumber: json['sr_number'] as String,
       srType: json['sr_type'] as String,
       priority: json['priority'] as String?,
@@ -22,8 +21,7 @@ _$ServiceRequestDtoImpl _$$ServiceRequestDtoImplFromJson(
       visitDate: json['visit_date'] as String?,
     );
 
-Map<String, dynamic> _$$ServiceRequestDtoImplToJson(
-        _$ServiceRequestDtoImpl instance) =>
+Map<String, dynamic> _$ServiceRequestDtoToJson(_ServiceRequestDto instance) =>
     <String, dynamic>{
       'sr_number': instance.srNumber,
       'sr_type': instance.srType,

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'service_request_entity.freezed.dart';
 
 @freezed
-class ServiceRequestEntity with _$ServiceRequestEntity {
+abstract class ServiceRequestEntity with _$ServiceRequestEntity {
   const ServiceRequestEntity._();
   
   const factory ServiceRequestEntity({

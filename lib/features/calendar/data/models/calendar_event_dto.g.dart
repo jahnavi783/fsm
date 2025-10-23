@@ -6,9 +6,8 @@ part of 'calendar_event_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CalendarEventDtoImpl _$$CalendarEventDtoImplFromJson(
-        Map<String, dynamic> json) =>
-    _$CalendarEventDtoImpl(
+_CalendarEventDto _$CalendarEventDtoFromJson(Map<String, dynamic> json) =>
+    _CalendarEventDto(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       startTime: json['start_time'] as String,
@@ -24,8 +23,7 @@ _$CalendarEventDtoImpl _$$CalendarEventDtoImplFromJson(
       updatedAt: json['updated_at'] as String,
     );
 
-Map<String, dynamic> _$$CalendarEventDtoImplToJson(
-        _$CalendarEventDtoImpl instance) =>
+Map<String, dynamic> _$CalendarEventDtoToJson(_CalendarEventDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

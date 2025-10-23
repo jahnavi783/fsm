@@ -6,39 +6,37 @@ part of 'complete_work_order_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CompleteWorkOrderRequestImpl _$$CompleteWorkOrderRequestImplFromJson(
+_CompleteWorkOrderRequest _$CompleteWorkOrderRequestFromJson(
         Map<String, dynamic> json) =>
-    _$CompleteWorkOrderRequestImpl(
-      workLog: json['work_log'] as String,
-      partsUsed: (json['parts_used'] as List<dynamic>)
+    _CompleteWorkOrderRequest(
+      workLog: json['workLog'] as String,
+      partsUsed: (json['partsUsed'] as List<dynamic>)
           .map((e) => PartUsedRequestDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       images:
           (json['images'] as List<dynamic>).map((e) => e as String).toList(),
-      gpsCoordinates: json['gps_coordinates'] as String,
-      completionNotes: json['completion_notes'] as String?,
+      gpsCoordinates: json['gpsCoordinates'] as String,
+      completionNotes: json['completionNotes'] as String?,
     );
 
-Map<String, dynamic> _$$CompleteWorkOrderRequestImplToJson(
-        _$CompleteWorkOrderRequestImpl instance) =>
+Map<String, dynamic> _$CompleteWorkOrderRequestToJson(
+        _CompleteWorkOrderRequest instance) =>
     <String, dynamic>{
-      'work_log': instance.workLog,
-      'parts_used': instance.partsUsed,
+      'workLog': instance.workLog,
+      'partsUsed': instance.partsUsed,
       'images': instance.images,
-      'gps_coordinates': instance.gpsCoordinates,
-      'completion_notes': instance.completionNotes,
+      'gpsCoordinates': instance.gpsCoordinates,
+      'completionNotes': instance.completionNotes,
     };
 
-_$PartUsedRequestDtoImpl _$$PartUsedRequestDtoImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PartUsedRequestDtoImpl(
-      partNumber: json['part_number'] as String,
-      quantityUsed: (json['quantity_used'] as num).toInt(),
+_PartUsedRequestDto _$PartUsedRequestDtoFromJson(Map<String, dynamic> json) =>
+    _PartUsedRequestDto(
+      partNumber: json['partNumber'] as String,
+      quantityUsed: (json['quantityUsed'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$PartUsedRequestDtoImplToJson(
-        _$PartUsedRequestDtoImpl instance) =>
+Map<String, dynamic> _$PartUsedRequestDtoToJson(_PartUsedRequestDto instance) =>
     <String, dynamic>{
-      'part_number': instance.partNumber,
-      'quantity_used': instance.quantityUsed,
+      'partNumber': instance.partNumber,
+      'quantityUsed': instance.quantityUsed,
     };

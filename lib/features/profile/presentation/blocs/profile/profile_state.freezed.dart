@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,13 +9,248 @@ part of 'profile_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProfileState {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is ProfileState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileState()';
+  }
+}
+
+/// @nodoc
+class $ProfileStateCopyWith<$Res> {
+  $ProfileStateCopyWith(ProfileState _, $Res Function(ProfileState) __);
+}
+
+/// Adds pattern-matching-related methods to [ProfileState].
+extension ProfileStatePatterns on ProfileState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Updating value)? updating,
+    TResult Function(_Updated value)? updated,
+    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
+    TResult Function(_LoggedOut value)? loggedOut,
+    TResult Function(_AccountDeleted value)? accountDeleted,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _Loaded() when loaded != null:
+        return loaded(_that);
+      case _Updating() when updating != null:
+        return updating(_that);
+      case _Updated() when updated != null:
+        return updated(_that);
+      case _PreferencesUpdated() when preferencesUpdated != null:
+        return preferencesUpdated(_that);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut(_that);
+      case _AccountDeleted() when accountDeleted != null:
+        return accountDeleted(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Updating value) updating,
+    required TResult Function(_Updated value) updated,
+    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
+    required TResult Function(_LoggedOut value) loggedOut,
+    required TResult Function(_AccountDeleted value) accountDeleted,
+    required TResult Function(_Error value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial():
+        return initial(_that);
+      case _Loading():
+        return loading(_that);
+      case _Loaded():
+        return loaded(_that);
+      case _Updating():
+        return updating(_that);
+      case _Updated():
+        return updated(_that);
+      case _PreferencesUpdated():
+        return preferencesUpdated(_that);
+      case _LoggedOut():
+        return loggedOut(_that);
+      case _AccountDeleted():
+        return accountDeleted(_that);
+      case _Error():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Updating value)? updating,
+    TResult? Function(_Updated value)? updated,
+    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
+    TResult? Function(_LoggedOut value)? loggedOut,
+    TResult? Function(_AccountDeleted value)? accountDeleted,
+    TResult? Function(_Error value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _Loaded() when loaded != null:
+        return loaded(_that);
+      case _Updating() when updating != null:
+        return updating(_that);
+      case _Updated() when updated != null:
+        return updated(_that);
+      case _PreferencesUpdated() when preferencesUpdated != null:
+        return preferencesUpdated(_that);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut(_that);
+      case _AccountDeleted() when accountDeleted != null:
+        return accountDeleted(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
+        loaded,
+    TResult Function()? updating,
+    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
+        updated,
+    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
+        preferencesUpdated,
+    TResult Function()? loggedOut,
+    TResult Function()? accountDeleted,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial();
+      case _Loading() when loading != null:
+        return loading();
+      case _Loaded() when loaded != null:
+        return loaded(_that.profile, _that.preferences);
+      case _Updating() when updating != null:
+        return updating();
+      case _Updated() when updated != null:
+        return updated(_that.profile, _that.preferences);
+      case _PreferencesUpdated() when preferencesUpdated != null:
+        return preferencesUpdated(_that.profile, _that.preferences);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut();
+      case _AccountDeleted() when accountDeleted != null:
+        return accountDeleted();
+      case _Error() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -33,8 +268,44 @@ mixin _$ProfileState {
     required TResult Function() loggedOut,
     required TResult Function() accountDeleted,
     required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial():
+        return initial();
+      case _Loading():
+        return loading();
+      case _Loaded():
+        return loaded(_that.profile, _that.preferences);
+      case _Updating():
+        return updating();
+      case _Updated():
+        return updated(_that.profile, _that.preferences);
+      case _PreferencesUpdated():
+        return preferencesUpdated(_that.profile, _that.preferences);
+      case _LoggedOut():
+        return loggedOut();
+      case _AccountDeleted():
+        return accountDeleted();
+      case _Error():
+        return error(_that.message);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
@@ -49,994 +320,225 @@ mixin _$ProfileState {
     TResult? Function()? loggedOut,
     TResult? Function()? accountDeleted,
     TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProfileStateCopyWith<$Res> {
-  factory $ProfileStateCopyWith(
-          ProfileState value, $Res Function(ProfileState) then) =
-      _$ProfileStateCopyWithImpl<$Res, ProfileState>;
-}
-
-/// @nodoc
-class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
-    implements $ProfileStateCopyWith<$Res> {
-  _$ProfileStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial();
+      case _Loading() when loading != null:
+        return loading();
+      case _Loaded() when loaded != null:
+        return loaded(_that.profile, _that.preferences);
+      case _Updating() when updating != null:
+        return updating();
+      case _Updated() when updated != null:
+        return updated(_that.profile, _that.preferences);
+      case _PreferencesUpdated() when preferencesUpdated != null:
+        return preferencesUpdated(_that.profile, _that.preferences);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut();
+      case _AccountDeleted() when accountDeleted != null:
+        return accountDeleted();
+      case _Error() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _Initial implements ProfileState {
+  const _Initial();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Initial);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'ProfileState.initial()';
   }
+}
+
+/// @nodoc
+
+class _Loading implements ProfileState {
+  const _Loading();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType && other is _Loading);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Initial implements ProfileState {
-  const factory _Initial() = _$InitialImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
 
   @override
   String toString() {
     return 'ProfileState.loading()';
   }
+}
+
+/// @nodoc
+
+class _Loaded implements ProfileState {
+  const _Loaded({required this.profile, required this.preferences});
+
+  final ProfileEntity profile;
+  final ProfilePreferences preferences;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LoadedCopyWith<_Loaded> get copyWith =>
+      __$LoadedCopyWithImpl<_Loaded>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _Loaded &&
+            (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.preferences, preferences) ||
+                other.preferences == preferences));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Loading implements ProfileState {
-  const factory _Loading() = _$LoadingImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadedImplCopyWith<$Res> {
-  factory _$$LoadedImplCopyWith(
-          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
-      __$$LoadedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ProfileEntity profile, ProfilePreferences preferences});
-
-  $ProfileEntityCopyWith<$Res> get profile;
-  $ProfilePreferencesCopyWith<$Res> get preferences;
-}
-
-/// @nodoc
-class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$LoadedImpl>
-    implements _$$LoadedImplCopyWith<$Res> {
-  __$$LoadedImplCopyWithImpl(
-      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? profile = null,
-    Object? preferences = null,
-  }) {
-    return _then(_$LoadedImpl(
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as ProfileEntity,
-      preferences: null == preferences
-          ? _value.preferences
-          : preferences // ignore: cast_nullable_to_non_nullable
-              as ProfilePreferences,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfileEntityCopyWith<$Res> get profile {
-    return $ProfileEntityCopyWith<$Res>(_value.profile, (value) {
-      return _then(_value.copyWith(profile: value));
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfilePreferencesCopyWith<$Res> get preferences {
-    return $ProfilePreferencesCopyWith<$Res>(_value.preferences, (value) {
-      return _then(_value.copyWith(preferences: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required this.profile, required this.preferences});
-
-  @override
-  final ProfileEntity profile;
-  @override
-  final ProfilePreferences preferences;
+  int get hashCode => Object.hash(runtimeType, profile, preferences);
 
   @override
   String toString() {
     return 'ProfileState.loaded(profile: $profile, preferences: $preferences)';
   }
+}
+
+/// @nodoc
+abstract mixin class _$LoadedCopyWith<$Res>
+    implements $ProfileStateCopyWith<$Res> {
+  factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) =
+      __$LoadedCopyWithImpl;
+  @useResult
+  $Res call({ProfileEntity profile, ProfilePreferences preferences});
+
+  $ProfileEntityCopyWith<$Res> get profile;
+  $ProfilePreferencesCopyWith<$Res> get preferences;
+}
+
+/// @nodoc
+class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
+  __$LoadedCopyWithImpl(this._self, this._then);
+
+  final _Loaded _self;
+  final $Res Function(_Loaded) _then;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? profile = null,
+    Object? preferences = null,
+  }) {
+    return _then(_Loaded(
+      profile: null == profile
+          ? _self.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as ProfileEntity,
+      preferences: null == preferences
+          ? _self.preferences
+          : preferences // ignore: cast_nullable_to_non_nullable
+              as ProfilePreferences,
+    ));
+  }
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProfileEntityCopyWith<$Res> get profile {
+    return $ProfileEntityCopyWith<$Res>(_self.profile, (value) {
+      return _then(_self.copyWith(profile: value));
+    });
+  }
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProfilePreferencesCopyWith<$Res> get preferences {
+    return $ProfilePreferencesCopyWith<$Res>(_self.preferences, (value) {
+      return _then(_self.copyWith(preferences: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _Updating implements ProfileState {
+  const _Updating();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadedImpl &&
-            (identical(other.profile, profile) || other.profile == profile) &&
-            (identical(other.preferences, preferences) ||
-                other.preferences == preferences));
+        (other.runtimeType == runtimeType && other is _Updating);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, profile, preferences);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
-      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return loaded(profile, preferences);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return loaded?.call(profile, preferences);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(profile, preferences);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return loaded(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loaded?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Loaded implements ProfileState {
-  const factory _Loaded(
-      {required final ProfileEntity profile,
-      required final ProfilePreferences preferences}) = _$LoadedImpl;
-
-  ProfileEntity get profile;
-  ProfilePreferences get preferences;
-  @JsonKey(ignore: true)
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$UpdatingImplCopyWith<$Res> {
-  factory _$$UpdatingImplCopyWith(
-          _$UpdatingImpl value, $Res Function(_$UpdatingImpl) then) =
-      __$$UpdatingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$UpdatingImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$UpdatingImpl>
-    implements _$$UpdatingImplCopyWith<$Res> {
-  __$$UpdatingImplCopyWithImpl(
-      _$UpdatingImpl _value, $Res Function(_$UpdatingImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$UpdatingImpl implements _Updating {
-  const _$UpdatingImpl();
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'ProfileState.updating()';
   }
+}
+
+/// @nodoc
+
+class _Updated implements ProfileState {
+  const _Updated({required this.profile, required this.preferences});
+
+  final ProfileEntity profile;
+  final ProfilePreferences preferences;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UpdatedCopyWith<_Updated> get copyWith =>
+      __$UpdatedCopyWithImpl<_Updated>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UpdatingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _Updated &&
+            (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.preferences, preferences) ||
+                other.preferences == preferences));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return updating();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return updating?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (updating != null) {
-      return updating();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return updating(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return updating?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (updating != null) {
-      return updating(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Updating implements ProfileState {
-  const factory _Updating() = _$UpdatingImpl;
-}
-
-/// @nodoc
-abstract class _$$UpdatedImplCopyWith<$Res> {
-  factory _$$UpdatedImplCopyWith(
-          _$UpdatedImpl value, $Res Function(_$UpdatedImpl) then) =
-      __$$UpdatedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ProfileEntity profile, ProfilePreferences preferences});
-
-  $ProfileEntityCopyWith<$Res> get profile;
-  $ProfilePreferencesCopyWith<$Res> get preferences;
-}
-
-/// @nodoc
-class __$$UpdatedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$UpdatedImpl>
-    implements _$$UpdatedImplCopyWith<$Res> {
-  __$$UpdatedImplCopyWithImpl(
-      _$UpdatedImpl _value, $Res Function(_$UpdatedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? profile = null,
-    Object? preferences = null,
-  }) {
-    return _then(_$UpdatedImpl(
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as ProfileEntity,
-      preferences: null == preferences
-          ? _value.preferences
-          : preferences // ignore: cast_nullable_to_non_nullable
-              as ProfilePreferences,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfileEntityCopyWith<$Res> get profile {
-    return $ProfileEntityCopyWith<$Res>(_value.profile, (value) {
-      return _then(_value.copyWith(profile: value));
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfilePreferencesCopyWith<$Res> get preferences {
-    return $ProfilePreferencesCopyWith<$Res>(_value.preferences, (value) {
-      return _then(_value.copyWith(preferences: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$UpdatedImpl implements _Updated {
-  const _$UpdatedImpl({required this.profile, required this.preferences});
-
-  @override
-  final ProfileEntity profile;
-  @override
-  final ProfilePreferences preferences;
+  int get hashCode => Object.hash(runtimeType, profile, preferences);
 
   @override
   String toString() {
     return 'ProfileState.updated(profile: $profile, preferences: $preferences)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdatedImpl &&
-            (identical(other.profile, profile) || other.profile == profile) &&
-            (identical(other.preferences, preferences) ||
-                other.preferences == preferences));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, profile, preferences);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdatedImplCopyWith<_$UpdatedImpl> get copyWith =>
-      __$$UpdatedImplCopyWithImpl<_$UpdatedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return updated(profile, preferences);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return updated?.call(profile, preferences);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (updated != null) {
-      return updated(profile, preferences);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return updated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return updated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (updated != null) {
-      return updated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Updated implements ProfileState {
-  const factory _Updated(
-      {required final ProfileEntity profile,
-      required final ProfilePreferences preferences}) = _$UpdatedImpl;
-
-  ProfileEntity get profile;
-  ProfilePreferences get preferences;
-  @JsonKey(ignore: true)
-  _$$UpdatedImplCopyWith<_$UpdatedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PreferencesUpdatedImplCopyWith<$Res> {
-  factory _$$PreferencesUpdatedImplCopyWith(_$PreferencesUpdatedImpl value,
-          $Res Function(_$PreferencesUpdatedImpl) then) =
-      __$$PreferencesUpdatedImplCopyWithImpl<$Res>;
+abstract mixin class _$UpdatedCopyWith<$Res>
+    implements $ProfileStateCopyWith<$Res> {
+  factory _$UpdatedCopyWith(_Updated value, $Res Function(_Updated) _then) =
+      __$UpdatedCopyWithImpl;
   @useResult
   $Res call({ProfileEntity profile, ProfilePreferences preferences});
 
@@ -1045,69 +547,72 @@ abstract class _$$PreferencesUpdatedImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PreferencesUpdatedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$PreferencesUpdatedImpl>
-    implements _$$PreferencesUpdatedImplCopyWith<$Res> {
-  __$$PreferencesUpdatedImplCopyWithImpl(_$PreferencesUpdatedImpl _value,
-      $Res Function(_$PreferencesUpdatedImpl) _then)
-      : super(_value, _then);
+class __$UpdatedCopyWithImpl<$Res> implements _$UpdatedCopyWith<$Res> {
+  __$UpdatedCopyWithImpl(this._self, this._then);
 
+  final _Updated _self;
+  final $Res Function(_Updated) _then;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? profile = null,
     Object? preferences = null,
   }) {
-    return _then(_$PreferencesUpdatedImpl(
+    return _then(_Updated(
       profile: null == profile
-          ? _value.profile
+          ? _self.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as ProfileEntity,
       preferences: null == preferences
-          ? _value.preferences
+          ? _self.preferences
           : preferences // ignore: cast_nullable_to_non_nullable
               as ProfilePreferences,
     ));
   }
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProfileEntityCopyWith<$Res> get profile {
-    return $ProfileEntityCopyWith<$Res>(_value.profile, (value) {
-      return _then(_value.copyWith(profile: value));
+    return $ProfileEntityCopyWith<$Res>(_self.profile, (value) {
+      return _then(_self.copyWith(profile: value));
     });
   }
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProfilePreferencesCopyWith<$Res> get preferences {
-    return $ProfilePreferencesCopyWith<$Res>(_value.preferences, (value) {
-      return _then(_value.copyWith(preferences: value));
+    return $ProfilePreferencesCopyWith<$Res>(_self.preferences, (value) {
+      return _then(_self.copyWith(preferences: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$PreferencesUpdatedImpl implements _PreferencesUpdated {
-  const _$PreferencesUpdatedImpl(
-      {required this.profile, required this.preferences});
+class _PreferencesUpdated implements ProfileState {
+  const _PreferencesUpdated({required this.profile, required this.preferences});
 
-  @override
   final ProfileEntity profile;
-  @override
   final ProfilePreferences preferences;
 
-  @override
-  String toString() {
-    return 'ProfileState.preferencesUpdated(profile: $profile, preferences: $preferences)';
-  }
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PreferencesUpdatedCopyWith<_PreferencesUpdated> get copyWith =>
+      __$PreferencesUpdatedCopyWithImpl<_PreferencesUpdated>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PreferencesUpdatedImpl &&
+            other is _PreferencesUpdated &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.preferences, preferences) ||
                 other.preferences == preferences));
@@ -1116,638 +621,173 @@ class _$PreferencesUpdatedImpl implements _PreferencesUpdated {
   @override
   int get hashCode => Object.hash(runtimeType, profile, preferences);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'ProfileState.preferencesUpdated(profile: $profile, preferences: $preferences)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PreferencesUpdatedCopyWith<$Res>
+    implements $ProfileStateCopyWith<$Res> {
+  factory _$PreferencesUpdatedCopyWith(
+          _PreferencesUpdated value, $Res Function(_PreferencesUpdated) _then) =
+      __$PreferencesUpdatedCopyWithImpl;
+  @useResult
+  $Res call({ProfileEntity profile, ProfilePreferences preferences});
+
+  $ProfileEntityCopyWith<$Res> get profile;
+  $ProfilePreferencesCopyWith<$Res> get preferences;
+}
+
+/// @nodoc
+class __$PreferencesUpdatedCopyWithImpl<$Res>
+    implements _$PreferencesUpdatedCopyWith<$Res> {
+  __$PreferencesUpdatedCopyWithImpl(this._self, this._then);
+
+  final _PreferencesUpdated _self;
+  final $Res Function(_PreferencesUpdated) _then;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? profile = null,
+    Object? preferences = null,
+  }) {
+    return _then(_PreferencesUpdated(
+      profile: null == profile
+          ? _self.profile
+          : profile // ignore: cast_nullable_to_non_nullable
+              as ProfileEntity,
+      preferences: null == preferences
+          ? _self.preferences
+          : preferences // ignore: cast_nullable_to_non_nullable
+              as ProfilePreferences,
+    ));
+  }
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PreferencesUpdatedImplCopyWith<_$PreferencesUpdatedImpl> get copyWith =>
-      __$$PreferencesUpdatedImplCopyWithImpl<_$PreferencesUpdatedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return preferencesUpdated(profile, preferences);
+  $ProfileEntityCopyWith<$Res> get profile {
+    return $ProfileEntityCopyWith<$Res>(_self.profile, (value) {
+      return _then(_self.copyWith(profile: value));
+    });
   }
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return preferencesUpdated?.call(profile, preferences);
+  @pragma('vm:prefer-inline')
+  $ProfilePreferencesCopyWith<$Res> get preferences {
+    return $ProfilePreferencesCopyWith<$Res>(_self.preferences, (value) {
+      return _then(_self.copyWith(preferences: value));
+    });
   }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (preferencesUpdated != null) {
-      return preferencesUpdated(profile, preferences);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return preferencesUpdated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return preferencesUpdated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (preferencesUpdated != null) {
-      return preferencesUpdated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PreferencesUpdated implements ProfileState {
-  const factory _PreferencesUpdated(
-          {required final ProfileEntity profile,
-          required final ProfilePreferences preferences}) =
-      _$PreferencesUpdatedImpl;
-
-  ProfileEntity get profile;
-  ProfilePreferences get preferences;
-  @JsonKey(ignore: true)
-  _$$PreferencesUpdatedImplCopyWith<_$PreferencesUpdatedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LoggedOutImplCopyWith<$Res> {
-  factory _$$LoggedOutImplCopyWith(
-          _$LoggedOutImpl value, $Res Function(_$LoggedOutImpl) then) =
-      __$$LoggedOutImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoggedOutImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$LoggedOutImpl>
-    implements _$$LoggedOutImplCopyWith<$Res> {
-  __$$LoggedOutImplCopyWithImpl(
-      _$LoggedOutImpl _value, $Res Function(_$LoggedOutImpl) _then)
-      : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoggedOutImpl implements _LoggedOut {
-  const _$LoggedOutImpl();
+class _LoggedOut implements ProfileState {
+  const _LoggedOut();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoggedOut);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'ProfileState.loggedOut()';
   }
+}
+
+/// @nodoc
+
+class _AccountDeleted implements ProfileState {
+  const _AccountDeleted();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoggedOutImpl);
+        (other.runtimeType == runtimeType && other is _AccountDeleted);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return loggedOut();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return loggedOut?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loggedOut != null) {
-      return loggedOut();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return loggedOut(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loggedOut?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loggedOut != null) {
-      return loggedOut(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoggedOut implements ProfileState {
-  const factory _LoggedOut() = _$LoggedOutImpl;
-}
-
-/// @nodoc
-abstract class _$$AccountDeletedImplCopyWith<$Res> {
-  factory _$$AccountDeletedImplCopyWith(_$AccountDeletedImpl value,
-          $Res Function(_$AccountDeletedImpl) then) =
-      __$$AccountDeletedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AccountDeletedImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$AccountDeletedImpl>
-    implements _$$AccountDeletedImplCopyWith<$Res> {
-  __$$AccountDeletedImplCopyWithImpl(
-      _$AccountDeletedImpl _value, $Res Function(_$AccountDeletedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$AccountDeletedImpl implements _AccountDeleted {
-  const _$AccountDeletedImpl();
 
   @override
   String toString() {
     return 'ProfileState.accountDeleted()';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AccountDeletedImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
-  }) {
-    return accountDeleted();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return accountDeleted?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (accountDeleted != null) {
-      return accountDeleted();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return accountDeleted(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return accountDeleted?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (accountDeleted != null) {
-      return accountDeleted(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _AccountDeleted implements ProfileState {
-  const factory _AccountDeleted() = _$AccountDeletedImpl;
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$ErrorImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.message);
+class _Error implements ProfileState {
+  const _Error(this.message);
 
-  @override
   final String message;
 
-  @override
-  String toString() {
-    return 'ProfileState.error(message: $message)';
-  }
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ErrorCopyWith<_Error> get copyWith =>
+      __$ErrorCopyWithImpl<_Error>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _Error &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'ProfileState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ErrorCopyWith<$Res>
+    implements $ProfileStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
+      __$ErrorCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
+
+  final _Error _self;
+  final $Res Function(_Error) _then;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        loaded,
-    required TResult Function() updating,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        updated,
-    required TResult Function(
-            ProfileEntity profile, ProfilePreferences preferences)
-        preferencesUpdated,
-    required TResult Function() loggedOut,
-    required TResult Function() accountDeleted,
-    required TResult Function(String message) error,
+  $Res call({
+    Object? message = null,
   }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult? Function()? updating,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult? Function()? loggedOut,
-    TResult? Function()? accountDeleted,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        loaded,
-    TResult Function()? updating,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        updated,
-    TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
-        preferencesUpdated,
-    TResult Function()? loggedOut,
-    TResult Function()? accountDeleted,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Updating value) updating,
-    required TResult Function(_Updated value) updated,
-    required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
-    required TResult Function(_AccountDeleted value) accountDeleted,
-    required TResult Function(_Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Updating value)? updating,
-    TResult? Function(_Updated value)? updated,
-    TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
-    TResult? Function(_AccountDeleted value)? accountDeleted,
-    TResult? Function(_Error value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Updating value)? updating,
-    TResult Function(_Updated value)? updated,
-    TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
-    TResult Function(_AccountDeleted value)? accountDeleted,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(_Error(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class _Error implements ProfileState {
-  const factory _Error(final String message) = _$ErrorImpl;
-
-  String get message;
-  @JsonKey(ignore: true)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

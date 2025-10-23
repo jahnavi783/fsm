@@ -6,8 +6,7 @@ part of 'document_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DocumentDtoImpl _$$DocumentDtoImplFromJson(Map<String, dynamic> json) =>
-    _$DocumentDtoImpl(
+_DocumentDto _$DocumentDtoFromJson(Map<String, dynamic> json) => _DocumentDto(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String,
@@ -29,7 +28,7 @@ _$DocumentDtoImpl _$$DocumentDtoImplFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$DocumentDtoImplToJson(_$DocumentDtoImpl instance) =>
+Map<String, dynamic> _$DocumentDtoToJson(_DocumentDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -47,9 +46,8 @@ Map<String, dynamic> _$$DocumentDtoImplToJson(_$DocumentDtoImpl instance) =>
       'categories': instance.categories,
     };
 
-_$DocumentResponseDtoImpl _$$DocumentResponseDtoImplFromJson(
-        Map<String, dynamic> json) =>
-    _$DocumentResponseDtoImpl(
+_DocumentResponseDto _$DocumentResponseDtoFromJson(Map<String, dynamic> json) =>
+    _DocumentResponseDto(
       documents: (json['documents'] as List<dynamic>)
           .map((e) => DocumentDto.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -58,8 +56,8 @@ _$DocumentResponseDtoImpl _$$DocumentResponseDtoImplFromJson(
       pageSize: (json['pages'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$DocumentResponseDtoImplToJson(
-        _$DocumentResponseDtoImpl instance) =>
+Map<String, dynamic> _$DocumentResponseDtoToJson(
+        _DocumentResponseDto instance) =>
     <String, dynamic>{
       'documents': instance.documents,
       'total': instance.total,

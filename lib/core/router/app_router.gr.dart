@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -37,10 +38,7 @@ import 'package:fsm/features/work_orders/presentation/pages/work_order_details_p
 /// [_i1.CalendarPage]
 class CalendarRoute extends _i13.PageRouteInfo<void> {
   const CalendarRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          CalendarRoute.name,
-          initialChildren: children,
-        );
+      : super(CalendarRoute.name, initialChildren: children);
 
   static const String name = 'CalendarRoute';
 
@@ -56,10 +54,7 @@ class CalendarRoute extends _i13.PageRouteInfo<void> {
 /// [_i2.DashboardPage]
 class DashboardRoute extends _i13.PageRouteInfo<void> {
   const DashboardRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          DashboardRoute.name,
-          initialChildren: children,
-        );
+      : super(DashboardRoute.name, initialChildren: children);
 
   static const String name = 'DashboardRoute';
 
@@ -75,10 +70,7 @@ class DashboardRoute extends _i13.PageRouteInfo<void> {
 /// [_i3.DeveloperOptionsPage]
 class DeveloperOptionsRoute extends _i13.PageRouteInfo<void> {
   const DeveloperOptionsRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          DeveloperOptionsRoute.name,
-          initialChildren: children,
-        );
+      : super(DeveloperOptionsRoute.name, initialChildren: children);
 
   static const String name = 'DeveloperOptionsRoute';
 
@@ -99,10 +91,7 @@ class DocumentViewerRoute extends _i13.PageRouteInfo<DocumentViewerRouteArgs> {
     List<_i13.PageRouteInfo>? children,
   }) : super(
           DocumentViewerRoute.name,
-          args: DocumentViewerRouteArgs(
-            key: key,
-            documentId: documentId,
-          ),
+          args: DocumentViewerRouteArgs(key: key, documentId: documentId),
           rawPathParams: {'documentId': documentId},
           initialChildren: children,
         );
@@ -114,21 +103,17 @@ class DocumentViewerRoute extends _i13.PageRouteInfo<DocumentViewerRouteArgs> {
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<DocumentViewerRouteArgs>(
-          orElse: () => DocumentViewerRouteArgs(
-              documentId: pathParams.getInt('documentId')));
-      return _i4.DocumentViewerPage(
-        key: args.key,
-        documentId: args.documentId,
+        orElse: () => DocumentViewerRouteArgs(
+          documentId: pathParams.getInt('documentId'),
+        ),
       );
+      return _i4.DocumentViewerPage(key: args.key, documentId: args.documentId);
     },
   );
 }
 
 class DocumentViewerRouteArgs {
-  const DocumentViewerRouteArgs({
-    this.key,
-    required this.documentId,
-  });
+  const DocumentViewerRouteArgs({this.key, required this.documentId});
 
   final _i14.Key? key;
 
@@ -138,16 +123,23 @@ class DocumentViewerRouteArgs {
   String toString() {
     return 'DocumentViewerRouteArgs{key: $key, documentId: $documentId}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! DocumentViewerRouteArgs) return false;
+    return key == other.key && documentId == other.documentId;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ documentId.hashCode;
 }
 
 /// generated route for
 /// [_i5.DocumentsPage]
 class DocumentsRoute extends _i13.PageRouteInfo<void> {
   const DocumentsRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          DocumentsRoute.name,
-          initialChildren: children,
-        );
+      : super(DocumentsRoute.name, initialChildren: children);
 
   static const String name = 'DocumentsRoute';
 
@@ -163,10 +155,7 @@ class DocumentsRoute extends _i13.PageRouteInfo<void> {
 /// [_i6.LoginPage]
 class LoginRoute extends _i13.PageRouteInfo<void> {
   const LoginRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          LoginRoute.name,
-          initialChildren: children,
-        );
+      : super(LoginRoute.name, initialChildren: children);
 
   static const String name = 'LoginRoute';
 
@@ -182,10 +171,7 @@ class LoginRoute extends _i13.PageRouteInfo<void> {
 /// [_i7.MainNavigationPage]
 class MainNavigationRoute extends _i13.PageRouteInfo<void> {
   const MainNavigationRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          MainNavigationRoute.name,
-          initialChildren: children,
-        );
+      : super(MainNavigationRoute.name, initialChildren: children);
 
   static const String name = 'MainNavigationRoute';
 
@@ -207,11 +193,7 @@ class PartDetailsRoute extends _i13.PageRouteInfo<PartDetailsRouteArgs> {
     List<_i13.PageRouteInfo>? children,
   }) : super(
           PartDetailsRoute.name,
-          args: PartDetailsRouteArgs(
-            key: key,
-            partId: partId,
-            part: part,
-          ),
+          args: PartDetailsRouteArgs(key: key, partId: partId, part: part),
           initialChildren: children,
         );
 
@@ -231,11 +213,7 @@ class PartDetailsRoute extends _i13.PageRouteInfo<PartDetailsRouteArgs> {
 }
 
 class PartDetailsRouteArgs {
-  const PartDetailsRouteArgs({
-    this.key,
-    required this.partId,
-    this.part,
-  });
+  const PartDetailsRouteArgs({this.key, required this.partId, this.part});
 
   final _i14.Key? key;
 
@@ -247,16 +225,23 @@ class PartDetailsRouteArgs {
   String toString() {
     return 'PartDetailsRouteArgs{key: $key, partId: $partId, part: $part}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PartDetailsRouteArgs) return false;
+    return key == other.key && partId == other.partId && part == other.part;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ partId.hashCode ^ part.hashCode;
 }
 
 /// generated route for
 /// [_i9.PartsPage]
 class PartsRoute extends _i13.PageRouteInfo<void> {
   const PartsRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          PartsRoute.name,
-          initialChildren: children,
-        );
+      : super(PartsRoute.name, initialChildren: children);
 
   static const String name = 'PartsRoute';
 
@@ -272,10 +257,7 @@ class PartsRoute extends _i13.PageRouteInfo<void> {
 /// [_i10.ProfilePage]
 class ProfileRoute extends _i13.PageRouteInfo<void> {
   const ProfileRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          ProfileRoute.name,
-          initialChildren: children,
-        );
+      : super(ProfileRoute.name, initialChildren: children);
 
   static const String name = 'ProfileRoute';
 
@@ -291,10 +273,7 @@ class ProfileRoute extends _i13.PageRouteInfo<void> {
 /// [_i11.SplashPage]
 class SplashRoute extends _i13.PageRouteInfo<void> {
   const SplashRoute({List<_i13.PageRouteInfo>? children})
-      : super(
-          SplashRoute.name,
-          initialChildren: children,
-        );
+      : super(SplashRoute.name, initialChildren: children);
 
   static const String name = 'SplashRoute';
 
@@ -316,10 +295,7 @@ class WorkOrderDetailsRoute
     List<_i13.PageRouteInfo>? children,
   }) : super(
           WorkOrderDetailsRoute.name,
-          args: WorkOrderDetailsRouteArgs(
-            key: key,
-            workOrderId: workOrderId,
-          ),
+          args: WorkOrderDetailsRouteArgs(key: key, workOrderId: workOrderId),
           rawPathParams: {'workOrderId': workOrderId},
           initialChildren: children,
         );
@@ -331,8 +307,10 @@ class WorkOrderDetailsRoute
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<WorkOrderDetailsRouteArgs>(
-          orElse: () => WorkOrderDetailsRouteArgs(
-              workOrderId: pathParams.getInt('workOrderId')));
+        orElse: () => WorkOrderDetailsRouteArgs(
+          workOrderId: pathParams.getInt('workOrderId'),
+        ),
+      );
       return _i12.WorkOrderDetailsPage(
         key: args.key,
         workOrderId: args.workOrderId,
@@ -342,10 +320,7 @@ class WorkOrderDetailsRoute
 }
 
 class WorkOrderDetailsRouteArgs {
-  const WorkOrderDetailsRouteArgs({
-    this.key,
-    required this.workOrderId,
-  });
+  const WorkOrderDetailsRouteArgs({this.key, required this.workOrderId});
 
   final _i14.Key? key;
 
@@ -355,4 +330,14 @@ class WorkOrderDetailsRouteArgs {
   String toString() {
     return 'WorkOrderDetailsRouteArgs{key: $key, workOrderId: $workOrderId}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! WorkOrderDetailsRouteArgs) return false;
+    return key == other.key && workOrderId == other.workOrderId;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ workOrderId.hashCode;
 }

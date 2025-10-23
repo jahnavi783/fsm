@@ -5,7 +5,7 @@ part 'profile_dto.freezed.dart';
 part 'profile_dto.g.dart';
 
 @freezed
-class ProfileDto with _$ProfileDto {
+abstract class ProfileDto with _$ProfileDto {
   const factory ProfileDto({
     required int id,
     @JsonKey(name: 'first_name') required String firstName,
@@ -23,7 +23,7 @@ class ProfileDto with _$ProfileDto {
 }
 
 @freezed
-class ProfilePreferencesDto with _$ProfilePreferencesDto {
+abstract class ProfilePreferencesDto with _$ProfilePreferencesDto {
   const factory ProfilePreferencesDto({
     @JsonKey(name: 'notifications_enabled') @Default(true) bool notificationsEnabled,
     @JsonKey(name: 'push_notifications_enabled') @Default(true) bool pushNotificationsEnabled,

@@ -4,7 +4,7 @@ part 'resume_work_order_request.freezed.dart';
 part 'resume_work_order_request.g.dart';
 
 @freezed
-class ResumeWorkOrderRequest with _$ResumeWorkOrderRequest {
+abstract class ResumeWorkOrderRequest with _$ResumeWorkOrderRequest {
   const factory ResumeWorkOrderRequest({
     @JsonKey(name: 'gps_coordinates') required String gpsCoordinates,
     String? notes,

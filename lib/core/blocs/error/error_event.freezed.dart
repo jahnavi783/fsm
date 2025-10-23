@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,13 +9,194 @@ part of 'error_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+/// @nodoc
+mixin _$ErrorEvent implements DiagnosticableTreeMixin {
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties..add(DiagnosticsProperty('type', 'ErrorEvent'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is ErrorEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ErrorEvent()';
+  }
+}
 
 /// @nodoc
-mixin _$ErrorEvent {
+class $ErrorEventCopyWith<$Res> {
+  $ErrorEventCopyWith(ErrorEvent _, $Res Function(ErrorEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [ErrorEvent].
+extension ErrorEventPatterns on ErrorEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_ErrorOccurred value)? errorOccurred,
+    TResult Function(_ErrorDismissed value)? errorDismissed,
+    TResult Function(_RetryRequested value)? retryRequested,
+    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred() when errorOccurred != null:
+        return errorOccurred(_that);
+      case _ErrorDismissed() when errorDismissed != null:
+        return errorDismissed(_that);
+      case _RetryRequested() when retryRequested != null:
+        return retryRequested(_that);
+      case _CriticalErrorOccurred() when criticalErrorOccurred != null:
+        return criticalErrorOccurred(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_ErrorOccurred value) errorOccurred,
+    required TResult Function(_ErrorDismissed value) errorDismissed,
+    required TResult Function(_RetryRequested value) retryRequested,
+    required TResult Function(_CriticalErrorOccurred value)
+        criticalErrorOccurred,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred():
+        return errorOccurred(_that);
+      case _ErrorDismissed():
+        return errorDismissed(_that);
+      case _RetryRequested():
+        return retryRequested(_that);
+      case _CriticalErrorOccurred():
+        return criticalErrorOccurred(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_ErrorOccurred value)? errorOccurred,
+    TResult? Function(_ErrorDismissed value)? errorDismissed,
+    TResult? Function(_RetryRequested value)? retryRequested,
+    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred() when errorOccurred != null:
+        return errorOccurred(_that);
+      case _ErrorDismissed() when errorDismissed != null:
+        return errorDismissed(_that);
+      case _RetryRequested() when retryRequested != null:
+        return retryRequested(_that);
+      case _CriticalErrorOccurred() when criticalErrorOccurred != null:
+        return criticalErrorOccurred(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
+        errorOccurred,
+    TResult Function()? errorDismissed,
+    TResult Function(VoidCallback retryAction)? retryRequested,
+    TResult Function(String message, String details, StackTrace? stackTrace)?
+        criticalErrorOccurred,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred() when errorOccurred != null:
+        return errorOccurred(_that.failure, _that.context, _that.stackTrace);
+      case _ErrorDismissed() when errorDismissed != null:
+        return errorDismissed();
+      case _RetryRequested() when retryRequested != null:
+        return retryRequested(_that.retryAction);
+      case _CriticalErrorOccurred() when criticalErrorOccurred != null:
+        return criticalErrorOccurred(
+            _that.message, _that.details, _that.stackTrace);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -26,8 +207,35 @@ mixin _$ErrorEvent {
     required TResult Function(
             String message, String details, StackTrace? stackTrace)
         criticalErrorOccurred,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred():
+        return errorOccurred(_that.failure, _that.context, _that.stackTrace);
+      case _ErrorDismissed():
+        return errorDismissed();
+      case _RetryRequested():
+        return retryRequested(_that.retryAction);
+      case _CriticalErrorOccurred():
+        return criticalErrorOccurred(
+            _that.message, _that.details, _that.stackTrace);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Failure failure, String? context, StackTrace? stackTrace)?
@@ -36,139 +244,42 @@ mixin _$ErrorEvent {
     TResult? Function(VoidCallback retryAction)? retryRequested,
     TResult? Function(String message, String details, StackTrace? stackTrace)?
         criticalErrorOccurred,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult Function()? errorDismissed,
-    TResult Function(VoidCallback retryAction)? retryRequested,
-    TResult Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ErrorOccurred value) errorOccurred,
-    required TResult Function(_ErrorDismissed value) errorDismissed,
-    required TResult Function(_RetryRequested value) retryRequested,
-    required TResult Function(_CriticalErrorOccurred value)
-        criticalErrorOccurred,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ErrorOccurred value)? errorOccurred,
-    TResult? Function(_ErrorDismissed value)? errorDismissed,
-    TResult? Function(_RetryRequested value)? retryRequested,
-    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ErrorOccurred value)? errorOccurred,
-    TResult Function(_ErrorDismissed value)? errorDismissed,
-    TResult Function(_RetryRequested value)? retryRequested,
-    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ErrorEventCopyWith<$Res> {
-  factory $ErrorEventCopyWith(
-          ErrorEvent value, $Res Function(ErrorEvent) then) =
-      _$ErrorEventCopyWithImpl<$Res, ErrorEvent>;
-}
-
-/// @nodoc
-class _$ErrorEventCopyWithImpl<$Res, $Val extends ErrorEvent>
-    implements $ErrorEventCopyWith<$Res> {
-  _$ErrorEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$ErrorOccurredImplCopyWith<$Res> {
-  factory _$$ErrorOccurredImplCopyWith(
-          _$ErrorOccurredImpl value, $Res Function(_$ErrorOccurredImpl) then) =
-      __$$ErrorOccurredImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Failure failure, String? context, StackTrace? stackTrace});
-
-  $FailureCopyWith<$Res> get failure;
-}
-
-/// @nodoc
-class __$$ErrorOccurredImplCopyWithImpl<$Res>
-    extends _$ErrorEventCopyWithImpl<$Res, _$ErrorOccurredImpl>
-    implements _$$ErrorOccurredImplCopyWith<$Res> {
-  __$$ErrorOccurredImplCopyWithImpl(
-      _$ErrorOccurredImpl _value, $Res Function(_$ErrorOccurredImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? failure = null,
-    Object? context = freezed,
-    Object? stackTrace = freezed,
   }) {
-    return _then(_$ErrorOccurredImpl(
-      failure: null == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure,
-      context: freezed == context
-          ? _value.context
-          : context // ignore: cast_nullable_to_non_nullable
-              as String?,
-      stackTrace: freezed == stackTrace
-          ? _value.stackTrace
-          : stackTrace // ignore: cast_nullable_to_non_nullable
-              as StackTrace?,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FailureCopyWith<$Res> get failure {
-    return $FailureCopyWith<$Res>(_value.failure, (value) {
-      return _then(_value.copyWith(failure: value));
-    });
+    final _that = this;
+    switch (_that) {
+      case _ErrorOccurred() when errorOccurred != null:
+        return errorOccurred(_that.failure, _that.context, _that.stackTrace);
+      case _ErrorDismissed() when errorDismissed != null:
+        return errorDismissed();
+      case _RetryRequested() when retryRequested != null:
+        return retryRequested(_that.retryAction);
+      case _CriticalErrorOccurred() when criticalErrorOccurred != null:
+        return criticalErrorOccurred(
+            _that.message, _that.details, _that.stackTrace);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$ErrorOccurredImpl
-    with DiagnosticableTreeMixin
-    implements _ErrorOccurred {
-  const _$ErrorOccurredImpl(
-      {required this.failure, this.context, this.stackTrace});
+class _ErrorOccurred with DiagnosticableTreeMixin implements ErrorEvent {
+  const _ErrorOccurred({required this.failure, this.context, this.stackTrace});
 
-  @override
   final Failure failure;
-  @override
   final String? context;
-  @override
   final StackTrace? stackTrace;
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ErrorEvent.errorOccurred(failure: $failure, context: $context, stackTrace: $stackTrace)';
-  }
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ErrorOccurredCopyWith<_ErrorOccurred> get copyWith =>
+      __$ErrorOccurredCopyWithImpl<_ErrorOccurred>(this, _$identity);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ErrorEvent.errorOccurred'))
       ..add(DiagnosticsProperty('failure', failure))
@@ -180,7 +291,7 @@ class _$ErrorOccurredImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorOccurredImpl &&
+            other is _ErrorOccurred &&
             (identical(other.failure, failure) || other.failure == failure) &&
             (identical(other.context, context) || other.context == context) &&
             (identical(other.stackTrace, stackTrace) ||
@@ -190,290 +301,108 @@ class _$ErrorOccurredImpl
   @override
   int get hashCode => Object.hash(runtimeType, failure, context, stackTrace);
 
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ErrorOccurredImplCopyWith<_$ErrorOccurredImpl> get copyWith =>
-      __$$ErrorOccurredImplCopyWithImpl<_$ErrorOccurredImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            Failure failure, String? context, StackTrace? stackTrace)
-        errorOccurred,
-    required TResult Function() errorDismissed,
-    required TResult Function(VoidCallback retryAction) retryRequested,
-    required TResult Function(
-            String message, String details, StackTrace? stackTrace)
-        criticalErrorOccurred,
-  }) {
-    return errorOccurred(failure, context, stackTrace);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult? Function()? errorDismissed,
-    TResult? Function(VoidCallback retryAction)? retryRequested,
-    TResult? Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-  }) {
-    return errorOccurred?.call(failure, context, stackTrace);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult Function()? errorDismissed,
-    TResult Function(VoidCallback retryAction)? retryRequested,
-    TResult Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (errorOccurred != null) {
-      return errorOccurred(failure, context, stackTrace);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ErrorOccurred value) errorOccurred,
-    required TResult Function(_ErrorDismissed value) errorDismissed,
-    required TResult Function(_RetryRequested value) retryRequested,
-    required TResult Function(_CriticalErrorOccurred value)
-        criticalErrorOccurred,
-  }) {
-    return errorOccurred(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ErrorOccurred value)? errorOccurred,
-    TResult? Function(_ErrorDismissed value)? errorDismissed,
-    TResult? Function(_RetryRequested value)? retryRequested,
-    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-  }) {
-    return errorOccurred?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ErrorOccurred value)? errorOccurred,
-    TResult Function(_ErrorDismissed value)? errorDismissed,
-    TResult Function(_RetryRequested value)? retryRequested,
-    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (errorOccurred != null) {
-      return errorOccurred(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ErrorOccurred implements ErrorEvent {
-  const factory _ErrorOccurred(
-      {required final Failure failure,
-      final String? context,
-      final StackTrace? stackTrace}) = _$ErrorOccurredImpl;
-
-  Failure get failure;
-  String? get context;
-  StackTrace? get stackTrace;
-  @JsonKey(ignore: true)
-  _$$ErrorOccurredImplCopyWith<_$ErrorOccurredImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ErrorDismissedImplCopyWith<$Res> {
-  factory _$$ErrorDismissedImplCopyWith(_$ErrorDismissedImpl value,
-          $Res Function(_$ErrorDismissedImpl) then) =
-      __$$ErrorDismissedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ErrorDismissedImplCopyWithImpl<$Res>
-    extends _$ErrorEventCopyWithImpl<$Res, _$ErrorDismissedImpl>
-    implements _$$ErrorDismissedImplCopyWith<$Res> {
-  __$$ErrorDismissedImplCopyWithImpl(
-      _$ErrorDismissedImpl _value, $Res Function(_$ErrorDismissedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$ErrorDismissedImpl
-    with DiagnosticableTreeMixin
-    implements _ErrorDismissed {
-  const _$ErrorDismissedImpl();
-
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ErrorEvent.errorDismissed()';
+    return 'ErrorEvent.errorOccurred(failure: $failure, context: $context, stackTrace: $stackTrace)';
   }
+}
+
+/// @nodoc
+abstract mixin class _$ErrorOccurredCopyWith<$Res>
+    implements $ErrorEventCopyWith<$Res> {
+  factory _$ErrorOccurredCopyWith(
+          _ErrorOccurred value, $Res Function(_ErrorOccurred) _then) =
+      __$ErrorOccurredCopyWithImpl;
+  @useResult
+  $Res call({Failure failure, String? context, StackTrace? stackTrace});
+
+  $FailureCopyWith<$Res> get failure;
+}
+
+/// @nodoc
+class __$ErrorOccurredCopyWithImpl<$Res>
+    implements _$ErrorOccurredCopyWith<$Res> {
+  __$ErrorOccurredCopyWithImpl(this._self, this._then);
+
+  final _ErrorOccurred _self;
+  final $Res Function(_ErrorOccurred) _then;
+
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? failure = null,
+    Object? context = freezed,
+    Object? stackTrace = freezed,
+  }) {
+    return _then(_ErrorOccurred(
+      failure: null == failure
+          ? _self.failure
+          : failure // ignore: cast_nullable_to_non_nullable
+              as Failure,
+      context: freezed == context
+          ? _self.context
+          : context // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stackTrace: freezed == stackTrace
+          ? _self.stackTrace
+          : stackTrace // ignore: cast_nullable_to_non_nullable
+              as StackTrace?,
+    ));
+  }
+
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FailureCopyWith<$Res> get failure {
+    return $FailureCopyWith<$Res>(_self.failure, (value) {
+      return _then(_self.copyWith(failure: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _ErrorDismissed with DiagnosticableTreeMixin implements ErrorEvent {
+  const _ErrorDismissed();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'ErrorEvent.errorDismissed'));
+    properties..add(DiagnosticsProperty('type', 'ErrorEvent.errorDismissed'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ErrorDismissedImpl);
+        (other.runtimeType == runtimeType && other is _ErrorDismissed);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            Failure failure, String? context, StackTrace? stackTrace)
-        errorOccurred,
-    required TResult Function() errorDismissed,
-    required TResult Function(VoidCallback retryAction) retryRequested,
-    required TResult Function(
-            String message, String details, StackTrace? stackTrace)
-        criticalErrorOccurred,
-  }) {
-    return errorDismissed();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult? Function()? errorDismissed,
-    TResult? Function(VoidCallback retryAction)? retryRequested,
-    TResult? Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-  }) {
-    return errorDismissed?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult Function()? errorDismissed,
-    TResult Function(VoidCallback retryAction)? retryRequested,
-    TResult Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (errorDismissed != null) {
-      return errorDismissed();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ErrorOccurred value) errorOccurred,
-    required TResult Function(_ErrorDismissed value) errorDismissed,
-    required TResult Function(_RetryRequested value) retryRequested,
-    required TResult Function(_CriticalErrorOccurred value)
-        criticalErrorOccurred,
-  }) {
-    return errorDismissed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ErrorOccurred value)? errorOccurred,
-    TResult? Function(_ErrorDismissed value)? errorDismissed,
-    TResult? Function(_RetryRequested value)? retryRequested,
-    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-  }) {
-    return errorDismissed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ErrorOccurred value)? errorOccurred,
-    TResult Function(_ErrorDismissed value)? errorDismissed,
-    TResult Function(_RetryRequested value)? retryRequested,
-    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (errorDismissed != null) {
-      return errorDismissed(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ErrorDismissed implements ErrorEvent {
-  const factory _ErrorDismissed() = _$ErrorDismissedImpl;
-}
-
-/// @nodoc
-abstract class _$$RetryRequestedImplCopyWith<$Res> {
-  factory _$$RetryRequestedImplCopyWith(_$RetryRequestedImpl value,
-          $Res Function(_$RetryRequestedImpl) then) =
-      __$$RetryRequestedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({VoidCallback retryAction});
-}
-
-/// @nodoc
-class __$$RetryRequestedImplCopyWithImpl<$Res>
-    extends _$ErrorEventCopyWithImpl<$Res, _$RetryRequestedImpl>
-    implements _$$RetryRequestedImplCopyWith<$Res> {
-  __$$RetryRequestedImplCopyWithImpl(
-      _$RetryRequestedImpl _value, $Res Function(_$RetryRequestedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? retryAction = null,
-  }) {
-    return _then(_$RetryRequestedImpl(
-      retryAction: null == retryAction
-          ? _value.retryAction
-          : retryAction // ignore: cast_nullable_to_non_nullable
-              as VoidCallback,
-    ));
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ErrorEvent.errorDismissed()';
   }
 }
 
 /// @nodoc
 
-class _$RetryRequestedImpl
-    with DiagnosticableTreeMixin
-    implements _RetryRequested {
-  const _$RetryRequestedImpl({required this.retryAction});
+class _RetryRequested with DiagnosticableTreeMixin implements ErrorEvent {
+  const _RetryRequested({required this.retryAction});
 
-  @override
   final VoidCallback retryAction;
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ErrorEvent.retryRequested(retryAction: $retryAction)';
-  }
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$RetryRequestedCopyWith<_RetryRequested> get copyWith =>
+      __$RetryRequestedCopyWithImpl<_RetryRequested>(this, _$identity);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ErrorEvent.retryRequested'))
       ..add(DiagnosticsProperty('retryAction', retryAction));
@@ -483,7 +412,7 @@ class _$RetryRequestedImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RetryRequestedImpl &&
+            other is _RetryRequested &&
             (identical(other.retryAction, retryAction) ||
                 other.retryAction == retryAction));
   }
@@ -491,172 +420,67 @@ class _$RetryRequestedImpl
   @override
   int get hashCode => Object.hash(runtimeType, retryAction);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$RetryRequestedImplCopyWith<_$RetryRequestedImpl> get copyWith =>
-      __$$RetryRequestedImplCopyWithImpl<_$RetryRequestedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            Failure failure, String? context, StackTrace? stackTrace)
-        errorOccurred,
-    required TResult Function() errorDismissed,
-    required TResult Function(VoidCallback retryAction) retryRequested,
-    required TResult Function(
-            String message, String details, StackTrace? stackTrace)
-        criticalErrorOccurred,
-  }) {
-    return retryRequested(retryAction);
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ErrorEvent.retryRequested(retryAction: $retryAction)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult? Function()? errorDismissed,
-    TResult? Function(VoidCallback retryAction)? retryRequested,
-    TResult? Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-  }) {
-    return retryRequested?.call(retryAction);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult Function()? errorDismissed,
-    TResult Function(VoidCallback retryAction)? retryRequested,
-    TResult Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (retryRequested != null) {
-      return retryRequested(retryAction);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ErrorOccurred value) errorOccurred,
-    required TResult Function(_ErrorDismissed value) errorDismissed,
-    required TResult Function(_RetryRequested value) retryRequested,
-    required TResult Function(_CriticalErrorOccurred value)
-        criticalErrorOccurred,
-  }) {
-    return retryRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ErrorOccurred value)? errorOccurred,
-    TResult? Function(_ErrorDismissed value)? errorDismissed,
-    TResult? Function(_RetryRequested value)? retryRequested,
-    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-  }) {
-    return retryRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ErrorOccurred value)? errorOccurred,
-    TResult Function(_ErrorDismissed value)? errorDismissed,
-    TResult Function(_RetryRequested value)? retryRequested,
-    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (retryRequested != null) {
-      return retryRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _RetryRequested implements ErrorEvent {
-  const factory _RetryRequested({required final VoidCallback retryAction}) =
-      _$RetryRequestedImpl;
-
-  VoidCallback get retryAction;
-  @JsonKey(ignore: true)
-  _$$RetryRequestedImplCopyWith<_$RetryRequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CriticalErrorOccurredImplCopyWith<$Res> {
-  factory _$$CriticalErrorOccurredImplCopyWith(
-          _$CriticalErrorOccurredImpl value,
-          $Res Function(_$CriticalErrorOccurredImpl) then) =
-      __$$CriticalErrorOccurredImplCopyWithImpl<$Res>;
+abstract mixin class _$RetryRequestedCopyWith<$Res>
+    implements $ErrorEventCopyWith<$Res> {
+  factory _$RetryRequestedCopyWith(
+          _RetryRequested value, $Res Function(_RetryRequested) _then) =
+      __$RetryRequestedCopyWithImpl;
   @useResult
-  $Res call({String message, String details, StackTrace? stackTrace});
+  $Res call({VoidCallback retryAction});
 }
 
 /// @nodoc
-class __$$CriticalErrorOccurredImplCopyWithImpl<$Res>
-    extends _$ErrorEventCopyWithImpl<$Res, _$CriticalErrorOccurredImpl>
-    implements _$$CriticalErrorOccurredImplCopyWith<$Res> {
-  __$$CriticalErrorOccurredImplCopyWithImpl(_$CriticalErrorOccurredImpl _value,
-      $Res Function(_$CriticalErrorOccurredImpl) _then)
-      : super(_value, _then);
+class __$RetryRequestedCopyWithImpl<$Res>
+    implements _$RetryRequestedCopyWith<$Res> {
+  __$RetryRequestedCopyWithImpl(this._self, this._then);
 
+  final _RetryRequested _self;
+  final $Res Function(_RetryRequested) _then;
+
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? message = null,
-    Object? details = null,
-    Object? stackTrace = freezed,
+    Object? retryAction = null,
   }) {
-    return _then(_$CriticalErrorOccurredImpl(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      details: null == details
-          ? _value.details
-          : details // ignore: cast_nullable_to_non_nullable
-              as String,
-      stackTrace: freezed == stackTrace
-          ? _value.stackTrace
-          : stackTrace // ignore: cast_nullable_to_non_nullable
-              as StackTrace?,
+    return _then(_RetryRequested(
+      retryAction: null == retryAction
+          ? _self.retryAction
+          : retryAction // ignore: cast_nullable_to_non_nullable
+              as VoidCallback,
     ));
   }
 }
 
 /// @nodoc
 
-class _$CriticalErrorOccurredImpl
+class _CriticalErrorOccurred
     with DiagnosticableTreeMixin
-    implements _CriticalErrorOccurred {
-  const _$CriticalErrorOccurredImpl(
+    implements ErrorEvent {
+  const _CriticalErrorOccurred(
       {required this.message, required this.details, this.stackTrace});
 
-  @override
   final String message;
-  @override
   final String details;
-  @override
   final StackTrace? stackTrace;
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ErrorEvent.criticalErrorOccurred(message: $message, details: $details, stackTrace: $stackTrace)';
-  }
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CriticalErrorOccurredCopyWith<_CriticalErrorOccurred> get copyWith =>
+      __$CriticalErrorOccurredCopyWithImpl<_CriticalErrorOccurred>(
+          this, _$identity);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ErrorEvent.criticalErrorOccurred'))
       ..add(DiagnosticsProperty('message', message))
@@ -668,7 +492,7 @@ class _$CriticalErrorOccurredImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CriticalErrorOccurredImpl &&
+            other is _CriticalErrorOccurred &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.details, details) || other.details == details) &&
             (identical(other.stackTrace, stackTrace) ||
@@ -678,107 +502,53 @@ class _$CriticalErrorOccurredImpl
   @override
   int get hashCode => Object.hash(runtimeType, message, details, stackTrace);
 
-  @JsonKey(ignore: true)
   @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ErrorEvent.criticalErrorOccurred(message: $message, details: $details, stackTrace: $stackTrace)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$CriticalErrorOccurredCopyWith<$Res>
+    implements $ErrorEventCopyWith<$Res> {
+  factory _$CriticalErrorOccurredCopyWith(_CriticalErrorOccurred value,
+          $Res Function(_CriticalErrorOccurred) _then) =
+      __$CriticalErrorOccurredCopyWithImpl;
+  @useResult
+  $Res call({String message, String details, StackTrace? stackTrace});
+}
+
+/// @nodoc
+class __$CriticalErrorOccurredCopyWithImpl<$Res>
+    implements _$CriticalErrorOccurredCopyWith<$Res> {
+  __$CriticalErrorOccurredCopyWithImpl(this._self, this._then);
+
+  final _CriticalErrorOccurred _self;
+  final $Res Function(_CriticalErrorOccurred) _then;
+
+  /// Create a copy of ErrorEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$CriticalErrorOccurredImplCopyWith<_$CriticalErrorOccurredImpl>
-      get copyWith => __$$CriticalErrorOccurredImplCopyWithImpl<
-          _$CriticalErrorOccurredImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            Failure failure, String? context, StackTrace? stackTrace)
-        errorOccurred,
-    required TResult Function() errorDismissed,
-    required TResult Function(VoidCallback retryAction) retryRequested,
-    required TResult Function(
-            String message, String details, StackTrace? stackTrace)
-        criticalErrorOccurred,
+  $Res call({
+    Object? message = null,
+    Object? details = null,
+    Object? stackTrace = freezed,
   }) {
-    return criticalErrorOccurred(message, details, stackTrace);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult? Function()? errorDismissed,
-    TResult? Function(VoidCallback retryAction)? retryRequested,
-    TResult? Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-  }) {
-    return criticalErrorOccurred?.call(message, details, stackTrace);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Failure failure, String? context, StackTrace? stackTrace)?
-        errorOccurred,
-    TResult Function()? errorDismissed,
-    TResult Function(VoidCallback retryAction)? retryRequested,
-    TResult Function(String message, String details, StackTrace? stackTrace)?
-        criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (criticalErrorOccurred != null) {
-      return criticalErrorOccurred(message, details, stackTrace);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_ErrorOccurred value) errorOccurred,
-    required TResult Function(_ErrorDismissed value) errorDismissed,
-    required TResult Function(_RetryRequested value) retryRequested,
-    required TResult Function(_CriticalErrorOccurred value)
-        criticalErrorOccurred,
-  }) {
-    return criticalErrorOccurred(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ErrorOccurred value)? errorOccurred,
-    TResult? Function(_ErrorDismissed value)? errorDismissed,
-    TResult? Function(_RetryRequested value)? retryRequested,
-    TResult? Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-  }) {
-    return criticalErrorOccurred?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ErrorOccurred value)? errorOccurred,
-    TResult Function(_ErrorDismissed value)? errorDismissed,
-    TResult Function(_RetryRequested value)? retryRequested,
-    TResult Function(_CriticalErrorOccurred value)? criticalErrorOccurred,
-    required TResult orElse(),
-  }) {
-    if (criticalErrorOccurred != null) {
-      return criticalErrorOccurred(this);
-    }
-    return orElse();
+    return _then(_CriticalErrorOccurred(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      details: null == details
+          ? _self.details
+          : details // ignore: cast_nullable_to_non_nullable
+              as String,
+      stackTrace: freezed == stackTrace
+          ? _self.stackTrace
+          : stackTrace // ignore: cast_nullable_to_non_nullable
+              as StackTrace?,
+    ));
   }
 }
 
-abstract class _CriticalErrorOccurred implements ErrorEvent {
-  const factory _CriticalErrorOccurred(
-      {required final String message,
-      required final String details,
-      final StackTrace? stackTrace}) = _$CriticalErrorOccurredImpl;
-
-  String get message;
-  String get details;
-  StackTrace? get stackTrace;
-  @JsonKey(ignore: true)
-  _$$CriticalErrorOccurredImplCopyWith<_$CriticalErrorOccurredImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

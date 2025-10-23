@@ -2,18 +2,16 @@
 
 part of 'work_order_api_client.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
 class _WorkOrderApiClient implements WorkOrderApiClient {
-  _WorkOrderApiClient(
-    this._dio, {
-    this.baseUrl,
-    this.errorLogger,
-  });
+  _WorkOrderApiClient(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 
@@ -32,28 +30,22 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{
       r'page': page,
       r'limit': limit,
-      r'status': status?.name,
-      r'priority': priority?.name,
+      r'status': status,
+      r'priority': priority,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<WorkOrdersResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/work-orders',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<WorkOrdersResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/work-orders',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrdersResponse _value;
     try {
@@ -71,22 +63,16 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/work-orders/${id}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -108,33 +94,33 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'gps_coordinates',
-      gpsCoordinates,
-    ));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}/start',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
+    _data.files.addAll(
+      files.map(
+        (i) => MapEntry(
+          'files',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      ),
+    );
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(
+        method: 'PATCH',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'multipart/form-data',
+      )
+          .compose(
+            _dio.options,
+            '/work-orders/${id}/start',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -157,37 +143,34 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'reason',
-      reason,
-    ));
-    _data.fields.add(MapEntry(
-      'gps_coordinates',
-      gpsCoordinates,
-    ));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}/pause',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    _data.fields.add(MapEntry('reason', reason));
+    _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
+    _data.files.addAll(
+      files.map(
+        (i) => MapEntry(
+          'files',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      ),
+    );
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(
+        method: 'PATCH',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'multipart/form-data',
+      )
+          .compose(
+            _dio.options,
+            '/work-orders/${id}/pause',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -211,34 +194,34 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final _headers = <String, dynamic>{};
     final _data = FormData();
     if (gpsCoordinates != null) {
-      _data.fields.add(MapEntry(
-        'gps_coordinates',
-        gpsCoordinates,
-      ));
+      _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
     }
-    _data.files.addAll(files.map((i) => MapEntry(
-        'files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}/resume',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    _data.files.addAll(
+      files.map(
+        (i) => MapEntry(
+          'files',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      ),
+    );
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(
+        method: 'PATCH',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'multipart/form-data',
+      )
+          .compose(
+            _dio.options,
+            '/work-orders/${id}/resume',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -262,41 +245,35 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'work_log',
-      workLog,
-    ));
-    _data.fields.add(MapEntry(
-      'gps_coordinates',
-      gpsCoordinates,
-    ));
-    _data.fields.add(MapEntry(
-      'parts_used',
-      partsUsed,
-    ));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}/complete',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    _data.fields.add(MapEntry('work_log', workLog));
+    _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
+    _data.fields.add(MapEntry('parts_used', partsUsed));
+    _data.files.addAll(
+      files.map(
+        (i) => MapEntry(
+          'files',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      ),
+    );
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(
+        method: 'PATCH',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'multipart/form-data',
+      )
+          .compose(
+            _dio.options,
+            '/work-orders/${id}/complete',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -317,22 +294,16 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = body;
-    final _options = _setStreamType<WorkOrderResponse>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/work-orders/${id}/reject',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<WorkOrderResponse>(
+      Options(method: 'PATCH', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/work-orders/${id}/reject',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late WorkOrderResponse _value;
     try {
@@ -357,10 +328,7 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     return requestOptions;
   }
 
-  String _combineBaseUrls(
-    String dioBaseUrl,
-    String? baseUrl,
-  ) {
+  String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
     if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }
@@ -374,3 +342,5 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

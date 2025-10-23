@@ -4,7 +4,7 @@ part 'pause_work_order_request.freezed.dart';
 part 'pause_work_order_request.g.dart';
 
 @freezed
-class PauseWorkOrderRequest with _$PauseWorkOrderRequest {
+abstract class PauseWorkOrderRequest with _$PauseWorkOrderRequest {
   const factory PauseWorkOrderRequest({
     required String reason,
     @JsonKey(name: 'gps_coordinates') required String gpsCoordinates,

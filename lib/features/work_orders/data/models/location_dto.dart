@@ -5,7 +5,7 @@ part 'location_dto.freezed.dart';
 part 'location_dto.g.dart';
 
 @freezed
-class LocationDto with _$LocationDto {
+abstract class LocationDto with _$LocationDto {
   const factory LocationDto({
     required double latitude,
     required double longitude,

@@ -6,7 +6,7 @@ part 'user_dto.freezed.dart';
 part 'user_dto.g.dart';
 
 @freezed
-class UserDto with _$UserDto {
+abstract class UserDto with _$UserDto {
   const UserDto._();
 
   const factory UserDto({

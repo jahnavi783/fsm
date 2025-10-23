@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,48 +9,205 @@ part of 'permission_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PermissionState {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is PermissionState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PermissionState()';
+  }
+}
+
+/// @nodoc
+class $PermissionStateCopyWith<$Res> {
+  $PermissionStateCopyWith(
+      PermissionState _, $Res Function(PermissionState) __);
+}
+
+/// Adds pattern-matching-related methods to [PermissionState].
+extension PermissionStatePatterns on PermissionState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_PermissionChecked value)? permissionChecked,
+    TResult Function(_MultiplePermissionsChecked value)?
         multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
+    TResult Function(_PermissionRequested value)? permissionRequested,
+    TResult Function(_MultiplePermissionsRequested value)?
         multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) =>
-      throw _privateConstructorUsedError;
+    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
+    TResult Function(_SettingsOpened value)? settingsOpened,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _PermissionChecked() when permissionChecked != null:
+        return permissionChecked(_that);
+      case _MultiplePermissionsChecked()
+          when multiplePermissionsChecked != null:
+        return multiplePermissionsChecked(_that);
+      case _PermissionRequested() when permissionRequested != null:
+        return permissionRequested(_that);
+      case _MultiplePermissionsRequested()
+          when multiplePermissionsRequested != null:
+        return multiplePermissionsRequested(_that);
+      case _ServiceStatusChecked() when serviceStatusChecked != null:
+        return serviceStatusChecked(_that);
+      case _SettingsOpened() when settingsOpened != null:
+        return settingsOpened(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_PermissionChecked value) permissionChecked,
+    required TResult Function(_MultiplePermissionsChecked value)
         multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
+    required TResult Function(_PermissionRequested value) permissionRequested,
+    required TResult Function(_MultiplePermissionsRequested value)
         multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) =>
-      throw _privateConstructorUsedError;
+    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
+    required TResult Function(_SettingsOpened value) settingsOpened,
+    required TResult Function(_Error value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial():
+        return initial(_that);
+      case _Loading():
+        return loading(_that);
+      case _PermissionChecked():
+        return permissionChecked(_that);
+      case _MultiplePermissionsChecked():
+        return multiplePermissionsChecked(_that);
+      case _PermissionRequested():
+        return permissionRequested(_that);
+      case _MultiplePermissionsRequested():
+        return multiplePermissionsRequested(_that);
+      case _ServiceStatusChecked():
+        return serviceStatusChecked(_that);
+      case _SettingsOpened():
+        return settingsOpened(_that);
+      case _Error():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_PermissionChecked value)? permissionChecked,
+    TResult? Function(_MultiplePermissionsChecked value)?
+        multiplePermissionsChecked,
+    TResult? Function(_PermissionRequested value)? permissionRequested,
+    TResult? Function(_MultiplePermissionsRequested value)?
+        multiplePermissionsRequested,
+    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
+    TResult? Function(_SettingsOpened value)? settingsOpened,
+    TResult? Function(_Error value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial(_that);
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _PermissionChecked() when permissionChecked != null:
+        return permissionChecked(_that);
+      case _MultiplePermissionsChecked()
+          when multiplePermissionsChecked != null:
+        return multiplePermissionsChecked(_that);
+      case _PermissionRequested() when permissionRequested != null:
+        return permissionRequested(_that);
+      case _MultiplePermissionsRequested()
+          when multiplePermissionsRequested != null:
+        return multiplePermissionsRequested(_that);
+      case _ServiceStatusChecked() when serviceStatusChecked != null:
+        return serviceStatusChecked(_that);
+      case _SettingsOpened() when settingsOpened != null:
+        return settingsOpened(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
@@ -67,457 +224,205 @@ mixin _$PermissionState {
     TResult Function(bool success)? settingsOpened,
     TResult Function(String message, AppPermission? permission)? error,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial();
+      case _Loading() when loading != null:
+        return loading();
+      case _PermissionChecked() when permissionChecked != null:
+        return permissionChecked(_that.permission, _that.status);
+      case _MultiplePermissionsChecked()
+          when multiplePermissionsChecked != null:
+        return multiplePermissionsChecked(_that.statusMap);
+      case _PermissionRequested() when permissionRequested != null:
+        return permissionRequested(_that.result);
+      case _MultiplePermissionsRequested()
+          when multiplePermissionsRequested != null:
+        return multiplePermissionsRequested(_that.result);
+      case _ServiceStatusChecked() when serviceStatusChecked != null:
+        return serviceStatusChecked(_that.permission, _that.isEnabled);
+      case _SettingsOpened() when settingsOpened != null:
+        return settingsOpened(_that.success);
+      case _Error() when error != null:
+        return error(_that.message, _that.permission);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(
+            AppPermission permission, AppPermissionStatus status)
+        permissionChecked,
+    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
         multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
+    required TResult Function(PermissionResult result) permissionRequested,
+    required TResult Function(MultiplePermissionResult result)
         multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
+    required TResult Function(AppPermission permission, bool isEnabled)
+        serviceStatusChecked,
+    required TResult Function(bool success) settingsOpened,
+    required TResult Function(String message, AppPermission? permission) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial():
+        return initial();
+      case _Loading():
+        return loading();
+      case _PermissionChecked():
+        return permissionChecked(_that.permission, _that.status);
+      case _MultiplePermissionsChecked():
+        return multiplePermissionsChecked(_that.statusMap);
+      case _PermissionRequested():
+        return permissionRequested(_that.result);
+      case _MultiplePermissionsRequested():
+        return multiplePermissionsRequested(_that.result);
+      case _ServiceStatusChecked():
+        return serviceStatusChecked(_that.permission, _that.isEnabled);
+      case _SettingsOpened():
+        return settingsOpened(_that.success);
+      case _Error():
+        return error(_that.message, _that.permission);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(AppPermission permission, AppPermissionStatus status)?
+        permissionChecked,
+    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
         multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
+    TResult? Function(PermissionResult result)? permissionRequested,
+    TResult? Function(MultiplePermissionResult result)?
         multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PermissionStateCopyWith<$Res> {
-  factory $PermissionStateCopyWith(
-          PermissionState value, $Res Function(PermissionState) then) =
-      _$PermissionStateCopyWithImpl<$Res, PermissionState>;
-}
-
-/// @nodoc
-class _$PermissionStateCopyWithImpl<$Res, $Val extends PermissionState>
-    implements $PermissionStateCopyWith<$Res> {
-  _$PermissionStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
+    TResult? Function(AppPermission permission, bool isEnabled)?
+        serviceStatusChecked,
+    TResult? Function(bool success)? settingsOpened,
+    TResult? Function(String message, AppPermission? permission)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Initial() when initial != null:
+        return initial();
+      case _Loading() when loading != null:
+        return loading();
+      case _PermissionChecked() when permissionChecked != null:
+        return permissionChecked(_that.permission, _that.status);
+      case _MultiplePermissionsChecked()
+          when multiplePermissionsChecked != null:
+        return multiplePermissionsChecked(_that.statusMap);
+      case _PermissionRequested() when permissionRequested != null:
+        return permissionRequested(_that.result);
+      case _MultiplePermissionsRequested()
+          when multiplePermissionsRequested != null:
+        return multiplePermissionsRequested(_that.result);
+      case _ServiceStatusChecked() when serviceStatusChecked != null:
+        return serviceStatusChecked(_that.permission, _that.isEnabled);
+      case _SettingsOpened() when settingsOpened != null:
+        return settingsOpened(_that.success);
+      case _Error() when error != null:
+        return error(_that.message, _that.permission);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _Initial implements PermissionState {
+  const _Initial();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Initial);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'PermissionState.initial()';
   }
+}
+
+/// @nodoc
+
+class _Loading implements PermissionState {
+  const _Loading();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType && other is _Loading);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Initial implements PermissionState {
-  const factory _Initial() = _$InitialImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
 
   @override
   String toString() {
     return 'PermissionState.loading()';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Loading implements PermissionState {
-  const factory _Loading() = _$LoadingImpl;
-}
-
-/// @nodoc
-abstract class _$$PermissionCheckedImplCopyWith<$Res> {
-  factory _$$PermissionCheckedImplCopyWith(_$PermissionCheckedImpl value,
-          $Res Function(_$PermissionCheckedImpl) then) =
-      __$$PermissionCheckedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({AppPermission permission, AppPermissionStatus status});
-}
-
-/// @nodoc
-class __$$PermissionCheckedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$PermissionCheckedImpl>
-    implements _$$PermissionCheckedImplCopyWith<$Res> {
-  __$$PermissionCheckedImplCopyWithImpl(_$PermissionCheckedImpl _value,
-      $Res Function(_$PermissionCheckedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? permission = null,
-    Object? status = null,
-  }) {
-    return _then(_$PermissionCheckedImpl(
-      permission: null == permission
-          ? _value.permission
-          : permission // ignore: cast_nullable_to_non_nullable
-              as AppPermission,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as AppPermissionStatus,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$PermissionCheckedImpl implements _PermissionChecked {
-  const _$PermissionCheckedImpl(
-      {required this.permission, required this.status});
+class _PermissionChecked implements PermissionState {
+  const _PermissionChecked({required this.permission, required this.status});
 
-  @override
   final AppPermission permission;
-  @override
   final AppPermissionStatus status;
 
-  @override
-  String toString() {
-    return 'PermissionState.permissionChecked(permission: $permission, status: $status)';
-  }
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PermissionCheckedCopyWith<_PermissionChecked> get copyWith =>
+      __$PermissionCheckedCopyWithImpl<_PermissionChecked>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionCheckedImpl &&
+            other is _PermissionChecked &&
             (identical(other.permission, permission) ||
                 other.permission == permission) &&
             (identical(other.status, status) || other.status == status));
@@ -526,208 +431,77 @@ class _$PermissionCheckedImpl implements _PermissionChecked {
   @override
   int get hashCode => Object.hash(runtimeType, permission, status);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PermissionCheckedImplCopyWith<_$PermissionCheckedImpl> get copyWith =>
-      __$$PermissionCheckedImplCopyWithImpl<_$PermissionCheckedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return permissionChecked(permission, status);
+  String toString() {
+    return 'PermissionState.permissionChecked(permission: $permission, status: $status)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return permissionChecked?.call(permission, status);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (permissionChecked != null) {
-      return permissionChecked(permission, status);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return permissionChecked(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return permissionChecked?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (permissionChecked != null) {
-      return permissionChecked(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PermissionChecked implements PermissionState {
-  const factory _PermissionChecked(
-      {required final AppPermission permission,
-      required final AppPermissionStatus status}) = _$PermissionCheckedImpl;
-
-  AppPermission get permission;
-  AppPermissionStatus get status;
-  @JsonKey(ignore: true)
-  _$$PermissionCheckedImplCopyWith<_$PermissionCheckedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MultiplePermissionsCheckedImplCopyWith<$Res> {
-  factory _$$MultiplePermissionsCheckedImplCopyWith(
-          _$MultiplePermissionsCheckedImpl value,
-          $Res Function(_$MultiplePermissionsCheckedImpl) then) =
-      __$$MultiplePermissionsCheckedImplCopyWithImpl<$Res>;
+abstract mixin class _$PermissionCheckedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$PermissionCheckedCopyWith(
+          _PermissionChecked value, $Res Function(_PermissionChecked) _then) =
+      __$PermissionCheckedCopyWithImpl;
   @useResult
-  $Res call({Map<AppPermission, AppPermissionStatus> statusMap});
+  $Res call({AppPermission permission, AppPermissionStatus status});
 }
 
 /// @nodoc
-class __$$MultiplePermissionsCheckedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res,
-        _$MultiplePermissionsCheckedImpl>
-    implements _$$MultiplePermissionsCheckedImplCopyWith<$Res> {
-  __$$MultiplePermissionsCheckedImplCopyWithImpl(
-      _$MultiplePermissionsCheckedImpl _value,
-      $Res Function(_$MultiplePermissionsCheckedImpl) _then)
-      : super(_value, _then);
+class __$PermissionCheckedCopyWithImpl<$Res>
+    implements _$PermissionCheckedCopyWith<$Res> {
+  __$PermissionCheckedCopyWithImpl(this._self, this._then);
 
+  final _PermissionChecked _self;
+  final $Res Function(_PermissionChecked) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? statusMap = null,
+    Object? permission = null,
+    Object? status = null,
   }) {
-    return _then(_$MultiplePermissionsCheckedImpl(
-      statusMap: null == statusMap
-          ? _value._statusMap
-          : statusMap // ignore: cast_nullable_to_non_nullable
-              as Map<AppPermission, AppPermissionStatus>,
+    return _then(_PermissionChecked(
+      permission: null == permission
+          ? _self.permission
+          : permission // ignore: cast_nullable_to_non_nullable
+              as AppPermission,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as AppPermissionStatus,
     ));
   }
 }
 
 /// @nodoc
 
-class _$MultiplePermissionsCheckedImpl implements _MultiplePermissionsChecked {
-  const _$MultiplePermissionsCheckedImpl(
+class _MultiplePermissionsChecked implements PermissionState {
+  const _MultiplePermissionsChecked(
       {required final Map<AppPermission, AppPermissionStatus> statusMap})
       : _statusMap = statusMap;
 
   final Map<AppPermission, AppPermissionStatus> _statusMap;
-  @override
   Map<AppPermission, AppPermissionStatus> get statusMap {
     if (_statusMap is EqualUnmodifiableMapView) return _statusMap;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_statusMap);
   }
 
-  @override
-  String toString() {
-    return 'PermissionState.multiplePermissionsChecked(statusMap: $statusMap)';
-  }
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$MultiplePermissionsCheckedCopyWith<_MultiplePermissionsChecked>
+      get copyWith => __$MultiplePermissionsCheckedCopyWithImpl<
+          _MultiplePermissionsChecked>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MultiplePermissionsCheckedImpl &&
+            other is _MultiplePermissionsChecked &&
             const DeepCollectionEquality()
                 .equals(other._statusMap, _statusMap));
   }
@@ -736,153 +510,84 @@ class _$MultiplePermissionsCheckedImpl implements _MultiplePermissionsChecked {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_statusMap));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$MultiplePermissionsCheckedImplCopyWith<_$MultiplePermissionsCheckedImpl>
-      get copyWith => __$$MultiplePermissionsCheckedImplCopyWithImpl<
-          _$MultiplePermissionsCheckedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return multiplePermissionsChecked(statusMap);
+  String toString() {
+    return 'PermissionState.multiplePermissionsChecked(statusMap: $statusMap)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return multiplePermissionsChecked?.call(statusMap);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (multiplePermissionsChecked != null) {
-      return multiplePermissionsChecked(statusMap);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return multiplePermissionsChecked(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return multiplePermissionsChecked?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (multiplePermissionsChecked != null) {
-      return multiplePermissionsChecked(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _MultiplePermissionsChecked implements PermissionState {
-  const factory _MultiplePermissionsChecked(
-          {required final Map<AppPermission, AppPermissionStatus> statusMap}) =
-      _$MultiplePermissionsCheckedImpl;
-
-  Map<AppPermission, AppPermissionStatus> get statusMap;
-  @JsonKey(ignore: true)
-  _$$MultiplePermissionsCheckedImplCopyWith<_$MultiplePermissionsCheckedImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PermissionRequestedImplCopyWith<$Res> {
-  factory _$$PermissionRequestedImplCopyWith(_$PermissionRequestedImpl value,
-          $Res Function(_$PermissionRequestedImpl) then) =
-      __$$PermissionRequestedImplCopyWithImpl<$Res>;
+abstract mixin class _$MultiplePermissionsCheckedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$MultiplePermissionsCheckedCopyWith(
+          _MultiplePermissionsChecked value,
+          $Res Function(_MultiplePermissionsChecked) _then) =
+      __$MultiplePermissionsCheckedCopyWithImpl;
+  @useResult
+  $Res call({Map<AppPermission, AppPermissionStatus> statusMap});
+}
+
+/// @nodoc
+class __$MultiplePermissionsCheckedCopyWithImpl<$Res>
+    implements _$MultiplePermissionsCheckedCopyWith<$Res> {
+  __$MultiplePermissionsCheckedCopyWithImpl(this._self, this._then);
+
+  final _MultiplePermissionsChecked _self;
+  final $Res Function(_MultiplePermissionsChecked) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? statusMap = null,
+  }) {
+    return _then(_MultiplePermissionsChecked(
+      statusMap: null == statusMap
+          ? _self._statusMap
+          : statusMap // ignore: cast_nullable_to_non_nullable
+              as Map<AppPermission, AppPermissionStatus>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _PermissionRequested implements PermissionState {
+  const _PermissionRequested({required this.result});
+
+  final PermissionResult result;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PermissionRequestedCopyWith<_PermissionRequested> get copyWith =>
+      __$PermissionRequestedCopyWithImpl<_PermissionRequested>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PermissionRequested &&
+            (identical(other.result, result) || other.result == result));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, result);
+
+  @override
+  String toString() {
+    return 'PermissionState.permissionRequested(result: $result)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PermissionRequestedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$PermissionRequestedCopyWith(_PermissionRequested value,
+          $Res Function(_PermissionRequested) _then) =
+      __$PermissionRequestedCopyWithImpl;
   @useResult
   $Res call({PermissionResult result});
 
@@ -890,206 +595,77 @@ abstract class _$$PermissionRequestedImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PermissionRequestedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$PermissionRequestedImpl>
-    implements _$$PermissionRequestedImplCopyWith<$Res> {
-  __$$PermissionRequestedImplCopyWithImpl(_$PermissionRequestedImpl _value,
-      $Res Function(_$PermissionRequestedImpl) _then)
-      : super(_value, _then);
+class __$PermissionRequestedCopyWithImpl<$Res>
+    implements _$PermissionRequestedCopyWith<$Res> {
+  __$PermissionRequestedCopyWithImpl(this._self, this._then);
 
+  final _PermissionRequested _self;
+  final $Res Function(_PermissionRequested) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? result = null,
   }) {
-    return _then(_$PermissionRequestedImpl(
+    return _then(_PermissionRequested(
       result: null == result
-          ? _value.result
+          ? _self.result
           : result // ignore: cast_nullable_to_non_nullable
               as PermissionResult,
     ));
   }
 
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PermissionResultCopyWith<$Res> get result {
-    return $PermissionResultCopyWith<$Res>(_value.result, (value) {
-      return _then(_value.copyWith(result: value));
+    return $PermissionResultCopyWith<$Res>(_self.result, (value) {
+      return _then(_self.copyWith(result: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$PermissionRequestedImpl implements _PermissionRequested {
-  const _$PermissionRequestedImpl({required this.result});
+class _MultiplePermissionsRequested implements PermissionState {
+  const _MultiplePermissionsRequested({required this.result});
 
-  @override
-  final PermissionResult result;
+  final MultiplePermissionResult result;
 
-  @override
-  String toString() {
-    return 'PermissionState.permissionRequested(result: $result)';
-  }
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$MultiplePermissionsRequestedCopyWith<_MultiplePermissionsRequested>
+      get copyWith => __$MultiplePermissionsRequestedCopyWithImpl<
+          _MultiplePermissionsRequested>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionRequestedImpl &&
+            other is _MultiplePermissionsRequested &&
             (identical(other.result, result) || other.result == result));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, result);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PermissionRequestedImplCopyWith<_$PermissionRequestedImpl> get copyWith =>
-      __$$PermissionRequestedImplCopyWithImpl<_$PermissionRequestedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return permissionRequested(result);
+  String toString() {
+    return 'PermissionState.multiplePermissionsRequested(result: $result)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return permissionRequested?.call(result);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (permissionRequested != null) {
-      return permissionRequested(result);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return permissionRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return permissionRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (permissionRequested != null) {
-      return permissionRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _PermissionRequested implements PermissionState {
-  const factory _PermissionRequested({required final PermissionResult result}) =
-      _$PermissionRequestedImpl;
-
-  PermissionResult get result;
-  @JsonKey(ignore: true)
-  _$$PermissionRequestedImplCopyWith<_$PermissionRequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MultiplePermissionsRequestedImplCopyWith<$Res> {
-  factory _$$MultiplePermissionsRequestedImplCopyWith(
-          _$MultiplePermissionsRequestedImpl value,
-          $Res Function(_$MultiplePermissionsRequestedImpl) then) =
-      __$$MultiplePermissionsRequestedImplCopyWithImpl<$Res>;
+abstract mixin class _$MultiplePermissionsRequestedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$MultiplePermissionsRequestedCopyWith(
+          _MultiplePermissionsRequested value,
+          $Res Function(_MultiplePermissionsRequested) _then) =
+      __$MultiplePermissionsRequestedCopyWithImpl;
   @useResult
   $Res call({MultiplePermissionResult result});
 
@@ -1097,263 +673,60 @@ abstract class _$$MultiplePermissionsRequestedImplCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MultiplePermissionsRequestedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res,
-        _$MultiplePermissionsRequestedImpl>
-    implements _$$MultiplePermissionsRequestedImplCopyWith<$Res> {
-  __$$MultiplePermissionsRequestedImplCopyWithImpl(
-      _$MultiplePermissionsRequestedImpl _value,
-      $Res Function(_$MultiplePermissionsRequestedImpl) _then)
-      : super(_value, _then);
+class __$MultiplePermissionsRequestedCopyWithImpl<$Res>
+    implements _$MultiplePermissionsRequestedCopyWith<$Res> {
+  __$MultiplePermissionsRequestedCopyWithImpl(this._self, this._then);
 
+  final _MultiplePermissionsRequested _self;
+  final $Res Function(_MultiplePermissionsRequested) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? result = null,
   }) {
-    return _then(_$MultiplePermissionsRequestedImpl(
+    return _then(_MultiplePermissionsRequested(
       result: null == result
-          ? _value.result
+          ? _self.result
           : result // ignore: cast_nullable_to_non_nullable
               as MultiplePermissionResult,
     ));
   }
 
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MultiplePermissionResultCopyWith<$Res> get result {
-    return $MultiplePermissionResultCopyWith<$Res>(_value.result, (value) {
-      return _then(_value.copyWith(result: value));
+    return $MultiplePermissionResultCopyWith<$Res>(_self.result, (value) {
+      return _then(_self.copyWith(result: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$MultiplePermissionsRequestedImpl
-    implements _MultiplePermissionsRequested {
-  const _$MultiplePermissionsRequestedImpl({required this.result});
-
-  @override
-  final MultiplePermissionResult result;
-
-  @override
-  String toString() {
-    return 'PermissionState.multiplePermissionsRequested(result: $result)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MultiplePermissionsRequestedImpl &&
-            (identical(other.result, result) || other.result == result));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, result);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MultiplePermissionsRequestedImplCopyWith<
-          _$MultiplePermissionsRequestedImpl>
-      get copyWith => __$$MultiplePermissionsRequestedImplCopyWithImpl<
-          _$MultiplePermissionsRequestedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return multiplePermissionsRequested(result);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return multiplePermissionsRequested?.call(result);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (multiplePermissionsRequested != null) {
-      return multiplePermissionsRequested(result);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return multiplePermissionsRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return multiplePermissionsRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (multiplePermissionsRequested != null) {
-      return multiplePermissionsRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _MultiplePermissionsRequested implements PermissionState {
-  const factory _MultiplePermissionsRequested(
-          {required final MultiplePermissionResult result}) =
-      _$MultiplePermissionsRequestedImpl;
-
-  MultiplePermissionResult get result;
-  @JsonKey(ignore: true)
-  _$$MultiplePermissionsRequestedImplCopyWith<
-          _$MultiplePermissionsRequestedImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ServiceStatusCheckedImplCopyWith<$Res> {
-  factory _$$ServiceStatusCheckedImplCopyWith(_$ServiceStatusCheckedImpl value,
-          $Res Function(_$ServiceStatusCheckedImpl) then) =
-      __$$ServiceStatusCheckedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({AppPermission permission, bool isEnabled});
-}
-
-/// @nodoc
-class __$$ServiceStatusCheckedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$ServiceStatusCheckedImpl>
-    implements _$$ServiceStatusCheckedImplCopyWith<$Res> {
-  __$$ServiceStatusCheckedImplCopyWithImpl(_$ServiceStatusCheckedImpl _value,
-      $Res Function(_$ServiceStatusCheckedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? permission = null,
-    Object? isEnabled = null,
-  }) {
-    return _then(_$ServiceStatusCheckedImpl(
-      permission: null == permission
-          ? _value.permission
-          : permission // ignore: cast_nullable_to_non_nullable
-              as AppPermission,
-      isEnabled: null == isEnabled
-          ? _value.isEnabled
-          : isEnabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ServiceStatusCheckedImpl implements _ServiceStatusChecked {
-  const _$ServiceStatusCheckedImpl(
+class _ServiceStatusChecked implements PermissionState {
+  const _ServiceStatusChecked(
       {required this.permission, required this.isEnabled});
 
-  @override
   final AppPermission permission;
-  @override
   final bool isEnabled;
 
-  @override
-  String toString() {
-    return 'PermissionState.serviceStatusChecked(permission: $permission, isEnabled: $isEnabled)';
-  }
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ServiceStatusCheckedCopyWith<_ServiceStatusChecked> get copyWith =>
+      __$ServiceStatusCheckedCopyWithImpl<_ServiceStatusChecked>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ServiceStatusCheckedImpl &&
+            other is _ServiceStatusChecked &&
             (identical(other.permission, permission) ||
                 other.permission == permission) &&
             (identical(other.isEnabled, isEnabled) ||
@@ -1363,175 +736,108 @@ class _$ServiceStatusCheckedImpl implements _ServiceStatusChecked {
   @override
   int get hashCode => Object.hash(runtimeType, permission, isEnabled);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ServiceStatusCheckedImplCopyWith<_$ServiceStatusCheckedImpl>
-      get copyWith =>
-          __$$ServiceStatusCheckedImplCopyWithImpl<_$ServiceStatusCheckedImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return serviceStatusChecked(permission, isEnabled);
+  String toString() {
+    return 'PermissionState.serviceStatusChecked(permission: $permission, isEnabled: $isEnabled)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return serviceStatusChecked?.call(permission, isEnabled);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (serviceStatusChecked != null) {
-      return serviceStatusChecked(permission, isEnabled);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return serviceStatusChecked(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return serviceStatusChecked?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (serviceStatusChecked != null) {
-      return serviceStatusChecked(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ServiceStatusChecked implements PermissionState {
-  const factory _ServiceStatusChecked(
-      {required final AppPermission permission,
-      required final bool isEnabled}) = _$ServiceStatusCheckedImpl;
-
-  AppPermission get permission;
-  bool get isEnabled;
-  @JsonKey(ignore: true)
-  _$$ServiceStatusCheckedImplCopyWith<_$ServiceStatusCheckedImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SettingsOpenedImplCopyWith<$Res> {
-  factory _$$SettingsOpenedImplCopyWith(_$SettingsOpenedImpl value,
-          $Res Function(_$SettingsOpenedImpl) then) =
-      __$$SettingsOpenedImplCopyWithImpl<$Res>;
+abstract mixin class _$ServiceStatusCheckedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$ServiceStatusCheckedCopyWith(_ServiceStatusChecked value,
+          $Res Function(_ServiceStatusChecked) _then) =
+      __$ServiceStatusCheckedCopyWithImpl;
+  @useResult
+  $Res call({AppPermission permission, bool isEnabled});
+}
+
+/// @nodoc
+class __$ServiceStatusCheckedCopyWithImpl<$Res>
+    implements _$ServiceStatusCheckedCopyWith<$Res> {
+  __$ServiceStatusCheckedCopyWithImpl(this._self, this._then);
+
+  final _ServiceStatusChecked _self;
+  final $Res Function(_ServiceStatusChecked) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? permission = null,
+    Object? isEnabled = null,
+  }) {
+    return _then(_ServiceStatusChecked(
+      permission: null == permission
+          ? _self.permission
+          : permission // ignore: cast_nullable_to_non_nullable
+              as AppPermission,
+      isEnabled: null == isEnabled
+          ? _self.isEnabled
+          : isEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _SettingsOpened implements PermissionState {
+  const _SettingsOpened({required this.success});
+
+  final bool success;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SettingsOpenedCopyWith<_SettingsOpened> get copyWith =>
+      __$SettingsOpenedCopyWithImpl<_SettingsOpened>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SettingsOpened &&
+            (identical(other.success, success) || other.success == success));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, success);
+
+  @override
+  String toString() {
+    return 'PermissionState.settingsOpened(success: $success)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SettingsOpenedCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$SettingsOpenedCopyWith(
+          _SettingsOpened value, $Res Function(_SettingsOpened) _then) =
+      __$SettingsOpenedCopyWithImpl;
   @useResult
   $Res call({bool success});
 }
 
 /// @nodoc
-class __$$SettingsOpenedImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$SettingsOpenedImpl>
-    implements _$$SettingsOpenedImplCopyWith<$Res> {
-  __$$SettingsOpenedImplCopyWithImpl(
-      _$SettingsOpenedImpl _value, $Res Function(_$SettingsOpenedImpl) _then)
-      : super(_value, _then);
+class __$SettingsOpenedCopyWithImpl<$Res>
+    implements _$SettingsOpenedCopyWith<$Res> {
+  __$SettingsOpenedCopyWithImpl(this._self, this._then);
 
+  final _SettingsOpened _self;
+  final $Res Function(_SettingsOpened) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? success = null,
   }) {
-    return _then(_$SettingsOpenedImpl(
+    return _then(_SettingsOpened(
       success: null == success
-          ? _value.success
+          ? _self.success
           : success // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
@@ -1540,225 +846,24 @@ class __$$SettingsOpenedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SettingsOpenedImpl implements _SettingsOpened {
-  const _$SettingsOpenedImpl({required this.success});
+class _Error implements PermissionState {
+  const _Error({required this.message, this.permission});
 
-  @override
-  final bool success;
-
-  @override
-  String toString() {
-    return 'PermissionState.settingsOpened(success: $success)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SettingsOpenedImpl &&
-            (identical(other.success, success) || other.success == success));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, success);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SettingsOpenedImplCopyWith<_$SettingsOpenedImpl> get copyWith =>
-      __$$SettingsOpenedImplCopyWithImpl<_$SettingsOpenedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
-  }) {
-    return settingsOpened(success);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return settingsOpened?.call(success);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (settingsOpened != null) {
-      return settingsOpened(success);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return settingsOpened(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return settingsOpened?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (settingsOpened != null) {
-      return settingsOpened(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SettingsOpened implements PermissionState {
-  const factory _SettingsOpened({required final bool success}) =
-      _$SettingsOpenedImpl;
-
-  bool get success;
-  @JsonKey(ignore: true)
-  _$$SettingsOpenedImplCopyWith<_$SettingsOpenedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message, AppPermission? permission});
-}
-
-/// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$PermissionStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-    Object? permission = freezed,
-  }) {
-    return _then(_$ErrorImpl(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      permission: freezed == permission
-          ? _value.permission
-          : permission // ignore: cast_nullable_to_non_nullable
-              as AppPermission?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.message, this.permission});
-
-  @override
   final String message;
-  @override
   final AppPermission? permission;
 
-  @override
-  String toString() {
-    return 'PermissionState.error(message: $message, permission: $permission)';
-  }
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ErrorCopyWith<_Error> get copyWith =>
+      __$ErrorCopyWithImpl<_Error>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _Error &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.permission, permission) ||
                 other.permission == permission));
@@ -1767,144 +872,46 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message, permission);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'PermissionState.error(message: $message, permission: $permission)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ErrorCopyWith<$Res>
+    implements $PermissionStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
+      __$ErrorCopyWithImpl;
+  @useResult
+  $Res call({String message, AppPermission? permission});
+}
+
+/// @nodoc
+class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
+
+  final _Error _self;
+  final $Res Function(_Error) _then;
+
+  /// Create a copy of PermissionState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(
-            AppPermission permission, AppPermissionStatus status)
-        permissionChecked,
-    required TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)
-        multiplePermissionsChecked,
-    required TResult Function(PermissionResult result) permissionRequested,
-    required TResult Function(MultiplePermissionResult result)
-        multiplePermissionsRequested,
-    required TResult Function(AppPermission permission, bool isEnabled)
-        serviceStatusChecked,
-    required TResult Function(bool success) settingsOpened,
-    required TResult Function(String message, AppPermission? permission) error,
+  $Res call({
+    Object? message = null,
+    Object? permission = freezed,
   }) {
-    return error(message, permission);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult? Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult? Function(PermissionResult result)? permissionRequested,
-    TResult? Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult? Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult? Function(bool success)? settingsOpened,
-    TResult? Function(String message, AppPermission? permission)? error,
-  }) {
-    return error?.call(message, permission);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(AppPermission permission, AppPermissionStatus status)?
-        permissionChecked,
-    TResult Function(Map<AppPermission, AppPermissionStatus> statusMap)?
-        multiplePermissionsChecked,
-    TResult Function(PermissionResult result)? permissionRequested,
-    TResult Function(MultiplePermissionResult result)?
-        multiplePermissionsRequested,
-    TResult Function(AppPermission permission, bool isEnabled)?
-        serviceStatusChecked,
-    TResult Function(bool success)? settingsOpened,
-    TResult Function(String message, AppPermission? permission)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message, permission);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_PermissionChecked value) permissionChecked,
-    required TResult Function(_MultiplePermissionsChecked value)
-        multiplePermissionsChecked,
-    required TResult Function(_PermissionRequested value) permissionRequested,
-    required TResult Function(_MultiplePermissionsRequested value)
-        multiplePermissionsRequested,
-    required TResult Function(_ServiceStatusChecked value) serviceStatusChecked,
-    required TResult Function(_SettingsOpened value) settingsOpened,
-    required TResult Function(_Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_PermissionChecked value)? permissionChecked,
-    TResult? Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult? Function(_PermissionRequested value)? permissionRequested,
-    TResult? Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult? Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult? Function(_SettingsOpened value)? settingsOpened,
-    TResult? Function(_Error value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_PermissionChecked value)? permissionChecked,
-    TResult Function(_MultiplePermissionsChecked value)?
-        multiplePermissionsChecked,
-    TResult Function(_PermissionRequested value)? permissionRequested,
-    TResult Function(_MultiplePermissionsRequested value)?
-        multiplePermissionsRequested,
-    TResult Function(_ServiceStatusChecked value)? serviceStatusChecked,
-    TResult Function(_SettingsOpened value)? settingsOpened,
-    TResult Function(_Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(_Error(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      permission: freezed == permission
+          ? _self.permission
+          : permission // ignore: cast_nullable_to_non_nullable
+              as AppPermission?,
+    ));
   }
 }
 
-abstract class _Error implements PermissionState {
-  const factory _Error(
-      {required final String message,
-      final AppPermission? permission}) = _$ErrorImpl;
-
-  String get message;
-  AppPermission? get permission;
-  @JsonKey(ignore: true)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -7,7 +7,7 @@ part 'part_hive_model.g.dart';
 
 @freezed
 @HiveType(typeId: 7)
-class PartHiveModel with _$PartHiveModel {
+abstract class PartHiveModel with _$PartHiveModel {
   const factory PartHiveModel({
     @HiveField(0) required String partNumber,
     @HiveField(1) required String partName,

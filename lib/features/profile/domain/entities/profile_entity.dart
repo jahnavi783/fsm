@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'profile_entity.freezed.dart';
 
 @freezed
-class ProfileEntity with _$ProfileEntity {
+abstract class ProfileEntity with _$ProfileEntity {
   const ProfileEntity._();
   
   const factory ProfileEntity({
@@ -24,7 +24,7 @@ class ProfileEntity with _$ProfileEntity {
 }
 
 @freezed
-class ProfilePreferences with _$ProfilePreferences {
+abstract class ProfilePreferences with _$ProfilePreferences {
   const factory ProfilePreferences({
     @Default(true) bool notificationsEnabled,
     @Default(true) bool pushNotificationsEnabled,

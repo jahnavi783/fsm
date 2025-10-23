@@ -8,7 +8,7 @@ part of 'document_hive_model.dart';
 
 class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
   @override
-  final int typeId = 8;
+  final typeId = 8;
 
   @override
   DocumentHiveModel read(BinaryReader reader) {
@@ -98,9 +98,8 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DocumentHiveModelImpl _$$DocumentHiveModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$DocumentHiveModelImpl(
+_DocumentHiveModel _$DocumentHiveModelFromJson(Map<String, dynamic> json) =>
+    _DocumentHiveModel(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String,
@@ -124,8 +123,7 @@ _$DocumentHiveModelImpl _$$DocumentHiveModelImplFromJson(
       fileType: json['fileType'] as String,
     );
 
-Map<String, dynamic> _$$DocumentHiveModelImplToJson(
-        _$DocumentHiveModelImpl instance) =>
+Map<String, dynamic> _$DocumentHiveModelToJson(_DocumentHiveModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

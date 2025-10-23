@@ -16,7 +16,7 @@ part 'work_order_hive_model.g.dart';
 
 @freezed
 @HiveType(typeId: 1)
-class WorkOrderHiveModel with _$WorkOrderHiveModel {
+abstract class WorkOrderHiveModel with _$WorkOrderHiveModel {
   const factory WorkOrderHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String woNumber,
@@ -57,7 +57,7 @@ class WorkOrderHiveModel with _$WorkOrderHiveModel {
 
 @freezed
 @HiveType(typeId: 2)
-class PartUsedHiveModel with _$PartUsedHiveModel {
+abstract class PartUsedHiveModel with _$PartUsedHiveModel {
   const factory PartUsedHiveModel({
     @HiveField(0) required String partNumber,
     @HiveField(1) required int quantityUsed,
@@ -71,7 +71,7 @@ class PartUsedHiveModel with _$PartUsedHiveModel {
 
 @freezed
 @HiveType(typeId: 3)
-class CustomerHiveModel with _$CustomerHiveModel {
+abstract class CustomerHiveModel with _$CustomerHiveModel {
   const factory CustomerHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String name,
@@ -90,7 +90,7 @@ class CustomerHiveModel with _$CustomerHiveModel {
 
 @freezed
 @HiveType(typeId: 4)
-class LocationHiveModel with _$LocationHiveModel {
+abstract class LocationHiveModel with _$LocationHiveModel {
   const factory LocationHiveModel({
     @HiveField(0) required double latitude,
     @HiveField(1) required double longitude,
@@ -110,7 +110,7 @@ class LocationHiveModel with _$LocationHiveModel {
 
 @freezed
 @HiveType(typeId: 5)
-class ServiceRequestHiveModel with _$ServiceRequestHiveModel {
+abstract class ServiceRequestHiveModel with _$ServiceRequestHiveModel {
   const factory ServiceRequestHiveModel({
     @HiveField(0) required String srNumber,
     @HiveField(1) required String srType,
@@ -131,7 +131,7 @@ class ServiceRequestHiveModel with _$ServiceRequestHiveModel {
 
 @freezed
 @HiveType(typeId: 6)
-class WorkLogHiveModel with _$WorkLogHiveModel {
+abstract class WorkLogHiveModel with _$WorkLogHiveModel {
   const factory WorkLogHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required int workOrderId,
@@ -186,17 +186,10 @@ extension WorkOrderHiveModelX on WorkOrderHiveModel {
 
   PartEntity _convertPartEntity(parts_domain.PartEntity partsEntity) {
     return PartEntity(
-      id: 0, // Default ID since parts domain doesn't have ID
+      quantity: partsEntity.quantityAvailable,
       partNumber: partsEntity.partNumber,
-      name: partsEntity.partName,
-      description: partsEntity.category, // Use category as description
-      category: partsEntity.category,
-      price: partsEntity.unitPrice,
-      stockQuantity: partsEntity.quantityAvailable,
-      unit: 'each', // Default unit
-      compatibleModels: const [],
-      imageUrl: null,
-      specifications: null,
+      partName: partsEntity.partName,
+      unitPrice: partsEntity.unitPrice,
     );
   }
 }

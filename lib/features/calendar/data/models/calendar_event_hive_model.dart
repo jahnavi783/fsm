@@ -8,7 +8,7 @@ part 'calendar_event_hive_model.g.dart';
 
 @freezed
 @HiveType(typeId: HiveBoxes.calendarEventEntityTypeId)
-class CalendarEventHiveModel with _$CalendarEventHiveModel {
+abstract class CalendarEventHiveModel with _$CalendarEventHiveModel {
   const factory CalendarEventHiveModel({
     @HiveField(0) required int id,
     @HiveField(1) required String title,

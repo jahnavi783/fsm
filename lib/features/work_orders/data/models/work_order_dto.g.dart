@@ -6,8 +6,8 @@ part of 'work_order_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
-    _$WorkOrderDtoImpl(
+_WorkOrderDto _$WorkOrderDtoFromJson(Map<String, dynamic> json) =>
+    _WorkOrderDto(
       id: (json['id'] as num).toInt(),
       woNumber: json['wo_number'] as String,
       srId: (json['sr_id'] as num).toInt(),
@@ -26,7 +26,9 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
       pauseLogs: json['pause_logs'] as String?,
       rejectionLogs: json['rejection_logs'] as String?,
       workLog: json['work_log'] as String?,
-      partsUsed: json['parts_used'] as String?,
+      partsUsed: (json['parts_used'] as List<dynamic>?)
+          ?.map((e) => PartDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
       createdByUser: json['createdBy'] == null
@@ -69,7 +71,7 @@ _$WorkOrderDtoImpl _$$WorkOrderDtoImplFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$WorkOrderDtoImplToJson(_$WorkOrderDtoImpl instance) =>
+Map<String, dynamic> _$WorkOrderDtoToJson(_WorkOrderDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'wo_number': instance.woNumber,
@@ -105,15 +107,13 @@ Map<String, dynamic> _$$WorkOrderDtoImplToJson(_$WorkOrderDtoImpl instance) =>
       'images': instance.images,
     };
 
-_$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
-    _$UserDtoImpl(
+_UserDto _$UserDtoFromJson(Map<String, dynamic> json) => _UserDto(
       id: (json['id'] as num).toInt(),
       email: json['email'] as String,
       firstName: json['first_name'] as String,
     );
 
-Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserDtoToJson(_UserDto instance) => <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
       'first_name': instance.firstName,

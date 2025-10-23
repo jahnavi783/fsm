@@ -6,9 +6,8 @@ part of 'work_orders_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WorkOrdersResponseImpl _$$WorkOrdersResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$WorkOrdersResponseImpl(
+_WorkOrdersResponse _$WorkOrdersResponseFromJson(Map<String, dynamic> json) =>
+    _WorkOrdersResponse(
       total: (json['total'] as num).toInt(),
       page: (json['page'] as num).toInt(),
       pages: (json['pages'] as num).toInt(),
@@ -17,8 +16,7 @@ _$WorkOrdersResponseImpl _$$WorkOrdersResponseImplFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$WorkOrdersResponseImplToJson(
-        _$WorkOrdersResponseImpl instance) =>
+Map<String, dynamic> _$WorkOrdersResponseToJson(_WorkOrdersResponse instance) =>
     <String, dynamic>{
       'total': instance.total,
       'page': instance.page,

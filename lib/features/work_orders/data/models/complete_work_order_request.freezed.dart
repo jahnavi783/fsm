@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,120 +9,82 @@ part of 'complete_work_order_request.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-CompleteWorkOrderRequest _$CompleteWorkOrderRequestFromJson(
-    Map<String, dynamic> json) {
-  return _CompleteWorkOrderRequest.fromJson(json);
-}
 
 /// @nodoc
 mixin _$CompleteWorkOrderRequest {
-  @JsonKey(name: 'work_log')
-  String get workLog => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parts_used')
-  List<PartUsedRequestDto> get partsUsed => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
-  @JsonKey(name: 'gps_coordinates')
-  String get gpsCoordinates => throw _privateConstructorUsedError;
-  @JsonKey(name: 'completion_notes')
-  String? get completionNotes => throw _privateConstructorUsedError;
+  String get workLog;
+  List<PartUsedRequestDto> get partsUsed;
+  List<String> get images;
+  String get gpsCoordinates;
+  String? get completionNotes;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $CompleteWorkOrderRequestCopyWith<CompleteWorkOrderRequest> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CompleteWorkOrderRequestCopyWith<$Res> {
-  factory $CompleteWorkOrderRequestCopyWith(CompleteWorkOrderRequest value,
-          $Res Function(CompleteWorkOrderRequest) then) =
-      _$CompleteWorkOrderRequestCopyWithImpl<$Res, CompleteWorkOrderRequest>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'work_log') String workLog,
-      @JsonKey(name: 'parts_used') List<PartUsedRequestDto> partsUsed,
-      List<String> images,
-      @JsonKey(name: 'gps_coordinates') String gpsCoordinates,
-      @JsonKey(name: 'completion_notes') String? completionNotes});
-}
-
-/// @nodoc
-class _$CompleteWorkOrderRequestCopyWithImpl<$Res,
-        $Val extends CompleteWorkOrderRequest>
-    implements $CompleteWorkOrderRequestCopyWith<$Res> {
-  _$CompleteWorkOrderRequestCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of CompleteWorkOrderRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $CompleteWorkOrderRequestCopyWith<CompleteWorkOrderRequest> get copyWith =>
+      _$CompleteWorkOrderRequestCopyWithImpl<CompleteWorkOrderRequest>(
+          this as CompleteWorkOrderRequest, _$identity);
+
+  /// Serializes this CompleteWorkOrderRequest to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? workLog = null,
-    Object? partsUsed = null,
-    Object? images = null,
-    Object? gpsCoordinates = null,
-    Object? completionNotes = freezed,
-  }) {
-    return _then(_value.copyWith(
-      workLog: null == workLog
-          ? _value.workLog
-          : workLog // ignore: cast_nullable_to_non_nullable
-              as String,
-      partsUsed: null == partsUsed
-          ? _value.partsUsed
-          : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartUsedRequestDto>,
-      images: null == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      gpsCoordinates: null == gpsCoordinates
-          ? _value.gpsCoordinates
-          : gpsCoordinates // ignore: cast_nullable_to_non_nullable
-              as String,
-      completionNotes: freezed == completionNotes
-          ? _value.completionNotes
-          : completionNotes // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is CompleteWorkOrderRequest &&
+            (identical(other.workLog, workLog) || other.workLog == workLog) &&
+            const DeepCollectionEquality().equals(other.partsUsed, partsUsed) &&
+            const DeepCollectionEquality().equals(other.images, images) &&
+            (identical(other.gpsCoordinates, gpsCoordinates) ||
+                other.gpsCoordinates == gpsCoordinates) &&
+            (identical(other.completionNotes, completionNotes) ||
+                other.completionNotes == completionNotes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      workLog,
+      const DeepCollectionEquality().hash(partsUsed),
+      const DeepCollectionEquality().hash(images),
+      gpsCoordinates,
+      completionNotes);
+
+  @override
+  String toString() {
+    return 'CompleteWorkOrderRequest(workLog: $workLog, partsUsed: $partsUsed, images: $images, gpsCoordinates: $gpsCoordinates, completionNotes: $completionNotes)';
   }
 }
 
 /// @nodoc
-abstract class _$$CompleteWorkOrderRequestImplCopyWith<$Res>
-    implements $CompleteWorkOrderRequestCopyWith<$Res> {
-  factory _$$CompleteWorkOrderRequestImplCopyWith(
-          _$CompleteWorkOrderRequestImpl value,
-          $Res Function(_$CompleteWorkOrderRequestImpl) then) =
-      __$$CompleteWorkOrderRequestImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $CompleteWorkOrderRequestCopyWith<$Res> {
+  factory $CompleteWorkOrderRequestCopyWith(CompleteWorkOrderRequest value,
+          $Res Function(CompleteWorkOrderRequest) _then) =
+      _$CompleteWorkOrderRequestCopyWithImpl;
   @useResult
   $Res call(
-      {@JsonKey(name: 'work_log') String workLog,
-      @JsonKey(name: 'parts_used') List<PartUsedRequestDto> partsUsed,
+      {String workLog,
+      List<PartUsedRequestDto> partsUsed,
       List<String> images,
-      @JsonKey(name: 'gps_coordinates') String gpsCoordinates,
-      @JsonKey(name: 'completion_notes') String? completionNotes});
+      String gpsCoordinates,
+      String? completionNotes});
 }
 
 /// @nodoc
-class __$$CompleteWorkOrderRequestImplCopyWithImpl<$Res>
-    extends _$CompleteWorkOrderRequestCopyWithImpl<$Res,
-        _$CompleteWorkOrderRequestImpl>
-    implements _$$CompleteWorkOrderRequestImplCopyWith<$Res> {
-  __$$CompleteWorkOrderRequestImplCopyWithImpl(
-      _$CompleteWorkOrderRequestImpl _value,
-      $Res Function(_$CompleteWorkOrderRequestImpl) _then)
-      : super(_value, _then);
+class _$CompleteWorkOrderRequestCopyWithImpl<$Res>
+    implements $CompleteWorkOrderRequestCopyWith<$Res> {
+  _$CompleteWorkOrderRequestCopyWithImpl(this._self, this._then);
 
+  final CompleteWorkOrderRequest _self;
+  final $Res Function(CompleteWorkOrderRequest) _then;
+
+  /// Create a copy of CompleteWorkOrderRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -132,53 +94,223 @@ class __$$CompleteWorkOrderRequestImplCopyWithImpl<$Res>
     Object? gpsCoordinates = null,
     Object? completionNotes = freezed,
   }) {
-    return _then(_$CompleteWorkOrderRequestImpl(
+    return _then(_self.copyWith(
       workLog: null == workLog
-          ? _value.workLog
+          ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
               as String,
       partsUsed: null == partsUsed
-          ? _value._partsUsed
+          ? _self.partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
               as List<PartUsedRequestDto>,
       images: null == images
-          ? _value._images
+          ? _self.images
           : images // ignore: cast_nullable_to_non_nullable
               as List<String>,
       gpsCoordinates: null == gpsCoordinates
-          ? _value.gpsCoordinates
+          ? _self.gpsCoordinates
           : gpsCoordinates // ignore: cast_nullable_to_non_nullable
               as String,
       completionNotes: freezed == completionNotes
-          ? _value.completionNotes
+          ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [CompleteWorkOrderRequest].
+extension CompleteWorkOrderRequestPatterns on CompleteWorkOrderRequest {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_CompleteWorkOrderRequest value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_CompleteWorkOrderRequest value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_CompleteWorkOrderRequest value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            String workLog,
+            List<PartUsedRequestDto> partsUsed,
+            List<String> images,
+            String gpsCoordinates,
+            String? completionNotes)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest() when $default != null:
+        return $default(_that.workLog, _that.partsUsed, _that.images,
+            _that.gpsCoordinates, _that.completionNotes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String workLog, List<PartUsedRequestDto> partsUsed,
+            List<String> images, String gpsCoordinates, String? completionNotes)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest():
+        return $default(_that.workLog, _that.partsUsed, _that.images,
+            _that.gpsCoordinates, _that.completionNotes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String workLog,
+            List<PartUsedRequestDto> partsUsed,
+            List<String> images,
+            String gpsCoordinates,
+            String? completionNotes)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _CompleteWorkOrderRequest() when $default != null:
+        return $default(_that.workLog, _that.partsUsed, _that.images,
+            _that.gpsCoordinates, _that.completionNotes);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$CompleteWorkOrderRequestImpl implements _CompleteWorkOrderRequest {
-  const _$CompleteWorkOrderRequestImpl(
-      {@JsonKey(name: 'work_log') required this.workLog,
-      @JsonKey(name: 'parts_used')
+class _CompleteWorkOrderRequest implements CompleteWorkOrderRequest {
+  const _CompleteWorkOrderRequest(
+      {required this.workLog,
       required final List<PartUsedRequestDto> partsUsed,
       required final List<String> images,
-      @JsonKey(name: 'gps_coordinates') required this.gpsCoordinates,
-      @JsonKey(name: 'completion_notes') this.completionNotes})
+      required this.gpsCoordinates,
+      this.completionNotes})
       : _partsUsed = partsUsed,
         _images = images;
-
-  factory _$CompleteWorkOrderRequestImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CompleteWorkOrderRequestImplFromJson(json);
+  factory _CompleteWorkOrderRequest.fromJson(Map<String, dynamic> json) =>
+      _$CompleteWorkOrderRequestFromJson(json);
 
   @override
-  @JsonKey(name: 'work_log')
   final String workLog;
   final List<PartUsedRequestDto> _partsUsed;
   @override
-  @JsonKey(name: 'parts_used')
   List<PartUsedRequestDto> get partsUsed {
     if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
     // ignore: implicit_dynamic_type
@@ -194,22 +326,31 @@ class _$CompleteWorkOrderRequestImpl implements _CompleteWorkOrderRequest {
   }
 
   @override
-  @JsonKey(name: 'gps_coordinates')
   final String gpsCoordinates;
   @override
-  @JsonKey(name: 'completion_notes')
   final String? completionNotes;
 
+  /// Create a copy of CompleteWorkOrderRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'CompleteWorkOrderRequest(workLog: $workLog, partsUsed: $partsUsed, images: $images, gpsCoordinates: $gpsCoordinates, completionNotes: $completionNotes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$CompleteWorkOrderRequestCopyWith<_CompleteWorkOrderRequest> get copyWith =>
+      __$CompleteWorkOrderRequestCopyWithImpl<_CompleteWorkOrderRequest>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$CompleteWorkOrderRequestToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CompleteWorkOrderRequestImpl &&
+            other is _CompleteWorkOrderRequest &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality()
                 .equals(other._partsUsed, _partsUsed) &&
@@ -220,7 +361,7 @@ class _$CompleteWorkOrderRequestImpl implements _CompleteWorkOrderRequest {
                 other.completionNotes == completionNotes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -230,220 +371,391 @@ class _$CompleteWorkOrderRequestImpl implements _CompleteWorkOrderRequest {
       gpsCoordinates,
       completionNotes);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$CompleteWorkOrderRequestImplCopyWith<_$CompleteWorkOrderRequestImpl>
-      get copyWith => __$$CompleteWorkOrderRequestImplCopyWithImpl<
-          _$CompleteWorkOrderRequestImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CompleteWorkOrderRequestImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _CompleteWorkOrderRequest implements CompleteWorkOrderRequest {
-  const factory _CompleteWorkOrderRequest(
-      {@JsonKey(name: 'work_log') required final String workLog,
-      @JsonKey(name: 'parts_used')
-      required final List<PartUsedRequestDto> partsUsed,
-      required final List<String> images,
-      @JsonKey(name: 'gps_coordinates') required final String gpsCoordinates,
-      @JsonKey(name: 'completion_notes')
-      final String? completionNotes}) = _$CompleteWorkOrderRequestImpl;
-
-  factory _CompleteWorkOrderRequest.fromJson(Map<String, dynamic> json) =
-      _$CompleteWorkOrderRequestImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'work_log')
-  String get workLog;
-  @override
-  @JsonKey(name: 'parts_used')
-  List<PartUsedRequestDto> get partsUsed;
-  @override
-  List<String> get images;
-  @override
-  @JsonKey(name: 'gps_coordinates')
-  String get gpsCoordinates;
-  @override
-  @JsonKey(name: 'completion_notes')
-  String? get completionNotes;
-  @override
-  @JsonKey(ignore: true)
-  _$$CompleteWorkOrderRequestImplCopyWith<_$CompleteWorkOrderRequestImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-PartUsedRequestDto _$PartUsedRequestDtoFromJson(Map<String, dynamic> json) {
-  return _PartUsedRequestDto.fromJson(json);
-}
-
-/// @nodoc
-mixin _$PartUsedRequestDto {
-  @JsonKey(name: 'part_number')
-  String get partNumber => throw _privateConstructorUsedError;
-  @JsonKey(name: 'quantity_used')
-  int get quantityUsed => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PartUsedRequestDtoCopyWith<PartUsedRequestDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PartUsedRequestDtoCopyWith<$Res> {
-  factory $PartUsedRequestDtoCopyWith(
-          PartUsedRequestDto value, $Res Function(PartUsedRequestDto) then) =
-      _$PartUsedRequestDtoCopyWithImpl<$Res, PartUsedRequestDto>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'part_number') String partNumber,
-      @JsonKey(name: 'quantity_used') int quantityUsed});
-}
-
-/// @nodoc
-class _$PartUsedRequestDtoCopyWithImpl<$Res, $Val extends PartUsedRequestDto>
-    implements $PartUsedRequestDtoCopyWith<$Res> {
-  _$PartUsedRequestDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
-  }) {
-    return _then(_value.copyWith(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  String toString() {
+    return 'CompleteWorkOrderRequest(workLog: $workLog, partsUsed: $partsUsed, images: $images, gpsCoordinates: $gpsCoordinates, completionNotes: $completionNotes)';
   }
 }
 
 /// @nodoc
-abstract class _$$PartUsedRequestDtoImplCopyWith<$Res>
-    implements $PartUsedRequestDtoCopyWith<$Res> {
-  factory _$$PartUsedRequestDtoImplCopyWith(_$PartUsedRequestDtoImpl value,
-          $Res Function(_$PartUsedRequestDtoImpl) then) =
-      __$$PartUsedRequestDtoImplCopyWithImpl<$Res>;
+abstract mixin class _$CompleteWorkOrderRequestCopyWith<$Res>
+    implements $CompleteWorkOrderRequestCopyWith<$Res> {
+  factory _$CompleteWorkOrderRequestCopyWith(_CompleteWorkOrderRequest value,
+          $Res Function(_CompleteWorkOrderRequest) _then) =
+      __$CompleteWorkOrderRequestCopyWithImpl;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'part_number') String partNumber,
-      @JsonKey(name: 'quantity_used') int quantityUsed});
+      {String workLog,
+      List<PartUsedRequestDto> partsUsed,
+      List<String> images,
+      String gpsCoordinates,
+      String? completionNotes});
 }
 
 /// @nodoc
-class __$$PartUsedRequestDtoImplCopyWithImpl<$Res>
-    extends _$PartUsedRequestDtoCopyWithImpl<$Res, _$PartUsedRequestDtoImpl>
-    implements _$$PartUsedRequestDtoImplCopyWith<$Res> {
-  __$$PartUsedRequestDtoImplCopyWithImpl(_$PartUsedRequestDtoImpl _value,
-      $Res Function(_$PartUsedRequestDtoImpl) _then)
-      : super(_value, _then);
+class __$CompleteWorkOrderRequestCopyWithImpl<$Res>
+    implements _$CompleteWorkOrderRequestCopyWith<$Res> {
+  __$CompleteWorkOrderRequestCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _CompleteWorkOrderRequest _self;
+  final $Res Function(_CompleteWorkOrderRequest) _then;
+
+  /// Create a copy of CompleteWorkOrderRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
-    Object? partNumber = null,
-    Object? quantityUsed = null,
+    Object? workLog = null,
+    Object? partsUsed = null,
+    Object? images = null,
+    Object? gpsCoordinates = null,
+    Object? completionNotes = freezed,
   }) {
-    return _then(_$PartUsedRequestDtoImpl(
-      partNumber: null == partNumber
-          ? _value.partNumber
-          : partNumber // ignore: cast_nullable_to_non_nullable
+    return _then(_CompleteWorkOrderRequest(
+      workLog: null == workLog
+          ? _self.workLog
+          : workLog // ignore: cast_nullable_to_non_nullable
               as String,
-      quantityUsed: null == quantityUsed
-          ? _value.quantityUsed
-          : quantityUsed // ignore: cast_nullable_to_non_nullable
-              as int,
+      partsUsed: null == partsUsed
+          ? _self._partsUsed
+          : partsUsed // ignore: cast_nullable_to_non_nullable
+              as List<PartUsedRequestDto>,
+      images: null == images
+          ? _self._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      gpsCoordinates: null == gpsCoordinates
+          ? _self.gpsCoordinates
+          : gpsCoordinates // ignore: cast_nullable_to_non_nullable
+              as String,
+      completionNotes: freezed == completionNotes
+          ? _self.completionNotes
+          : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$PartUsedRequestDtoImpl implements _PartUsedRequestDto {
-  const _$PartUsedRequestDtoImpl(
-      {@JsonKey(name: 'part_number') required this.partNumber,
-      @JsonKey(name: 'quantity_used') required this.quantityUsed});
+mixin _$PartUsedRequestDto {
+  String get partNumber;
+  int get quantityUsed;
 
-  factory _$PartUsedRequestDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PartUsedRequestDtoImplFromJson(json);
+  /// Create a copy of PartUsedRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $PartUsedRequestDtoCopyWith<PartUsedRequestDto> get copyWith =>
+      _$PartUsedRequestDtoCopyWithImpl<PartUsedRequestDto>(
+          this as PartUsedRequestDto, _$identity);
 
-  @override
-  @JsonKey(name: 'part_number')
-  final String partNumber;
-  @override
-  @JsonKey(name: 'quantity_used')
-  final int quantityUsed;
-
-  @override
-  String toString() {
-    return 'PartUsedRequestDto(partNumber: $partNumber, quantityUsed: $quantityUsed)';
-  }
+  /// Serializes this PartUsedRequestDto to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartUsedRequestDtoImpl &&
+            other is PartUsedRequestDto &&
             (identical(other.partNumber, partNumber) ||
                 other.partNumber == partNumber) &&
             (identical(other.quantityUsed, quantityUsed) ||
                 other.quantityUsed == quantityUsed));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, partNumber, quantityUsed);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PartUsedRequestDtoImplCopyWith<_$PartUsedRequestDtoImpl> get copyWith =>
-      __$$PartUsedRequestDtoImplCopyWithImpl<_$PartUsedRequestDtoImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PartUsedRequestDtoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PartUsedRequestDto(partNumber: $partNumber, quantityUsed: $quantityUsed)';
   }
 }
 
-abstract class _PartUsedRequestDto implements PartUsedRequestDto {
-  const factory _PartUsedRequestDto(
-          {@JsonKey(name: 'part_number') required final String partNumber,
-          @JsonKey(name: 'quantity_used') required final int quantityUsed}) =
-      _$PartUsedRequestDtoImpl;
-
-  factory _PartUsedRequestDto.fromJson(Map<String, dynamic> json) =
-      _$PartUsedRequestDtoImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'part_number')
-  String get partNumber;
-  @override
-  @JsonKey(name: 'quantity_used')
-  int get quantityUsed;
-  @override
-  @JsonKey(ignore: true)
-  _$$PartUsedRequestDtoImplCopyWith<_$PartUsedRequestDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+/// @nodoc
+abstract mixin class $PartUsedRequestDtoCopyWith<$Res> {
+  factory $PartUsedRequestDtoCopyWith(
+          PartUsedRequestDto value, $Res Function(PartUsedRequestDto) _then) =
+      _$PartUsedRequestDtoCopyWithImpl;
+  @useResult
+  $Res call({String partNumber, int quantityUsed});
 }
+
+/// @nodoc
+class _$PartUsedRequestDtoCopyWithImpl<$Res>
+    implements $PartUsedRequestDtoCopyWith<$Res> {
+  _$PartUsedRequestDtoCopyWithImpl(this._self, this._then);
+
+  final PartUsedRequestDto _self;
+  final $Res Function(PartUsedRequestDto) _then;
+
+  /// Create a copy of PartUsedRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? partNumber = null,
+    Object? quantityUsed = null,
+  }) {
+    return _then(_self.copyWith(
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantityUsed: null == quantityUsed
+          ? _self.quantityUsed
+          : quantityUsed // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [PartUsedRequestDto].
+extension PartUsedRequestDtoPatterns on PartUsedRequestDto {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_PartUsedRequestDto value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_PartUsedRequestDto value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_PartUsedRequestDto value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(String partNumber, int quantityUsed)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto() when $default != null:
+        return $default(_that.partNumber, _that.quantityUsed);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(String partNumber, int quantityUsed) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto():
+        return $default(_that.partNumber, _that.quantityUsed);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(String partNumber, int quantityUsed)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _PartUsedRequestDto() when $default != null:
+        return $default(_that.partNumber, _that.quantityUsed);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _PartUsedRequestDto implements PartUsedRequestDto {
+  const _PartUsedRequestDto(
+      {required this.partNumber, required this.quantityUsed});
+  factory _PartUsedRequestDto.fromJson(Map<String, dynamic> json) =>
+      _$PartUsedRequestDtoFromJson(json);
+
+  @override
+  final String partNumber;
+  @override
+  final int quantityUsed;
+
+  /// Create a copy of PartUsedRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PartUsedRequestDtoCopyWith<_PartUsedRequestDto> get copyWith =>
+      __$PartUsedRequestDtoCopyWithImpl<_PartUsedRequestDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PartUsedRequestDtoToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PartUsedRequestDto &&
+            (identical(other.partNumber, partNumber) ||
+                other.partNumber == partNumber) &&
+            (identical(other.quantityUsed, quantityUsed) ||
+                other.quantityUsed == quantityUsed));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, partNumber, quantityUsed);
+
+  @override
+  String toString() {
+    return 'PartUsedRequestDto(partNumber: $partNumber, quantityUsed: $quantityUsed)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PartUsedRequestDtoCopyWith<$Res>
+    implements $PartUsedRequestDtoCopyWith<$Res> {
+  factory _$PartUsedRequestDtoCopyWith(
+          _PartUsedRequestDto value, $Res Function(_PartUsedRequestDto) _then) =
+      __$PartUsedRequestDtoCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String partNumber, int quantityUsed});
+}
+
+/// @nodoc
+class __$PartUsedRequestDtoCopyWithImpl<$Res>
+    implements _$PartUsedRequestDtoCopyWith<$Res> {
+  __$PartUsedRequestDtoCopyWithImpl(this._self, this._then);
+
+  final _PartUsedRequestDto _self;
+  final $Res Function(_PartUsedRequestDto) _then;
+
+  /// Create a copy of PartUsedRequestDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? partNumber = null,
+    Object? quantityUsed = null,
+  }) {
+    return _then(_PartUsedRequestDto(
+      partNumber: null == partNumber
+          ? _self.partNumber
+          : partNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      quantityUsed: null == quantityUsed
+          ? _self.quantityUsed
+          : quantityUsed // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

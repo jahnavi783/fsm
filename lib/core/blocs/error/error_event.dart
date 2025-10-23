@@ -6,7 +6,7 @@ import '../../error/failures.dart';
 part 'error_event.freezed.dart';
 
 @freezed
-class ErrorEvent with _$ErrorEvent {
+abstract class ErrorEvent with _$ErrorEvent {
   const factory ErrorEvent.errorOccurred({
     required Failure failure,
     String? context,

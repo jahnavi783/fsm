@@ -6,8 +6,7 @@ part of 'work_log_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$WorkLogDtoImpl _$$WorkLogDtoImplFromJson(Map<String, dynamic> json) =>
-    _$WorkLogDtoImpl(
+_WorkLogDto _$WorkLogDtoFromJson(Map<String, dynamic> json) => _WorkLogDto(
       id: (json['id'] as num).toInt(),
       workOrderId: (json['work_order_id'] as num).toInt(),
       type: json['type'] as String,
@@ -20,7 +19,7 @@ _$WorkLogDtoImpl _$$WorkLogDtoImplFromJson(Map<String, dynamic> json) =>
       userName: json['user_name'] as String?,
     );
 
-Map<String, dynamic> _$$WorkLogDtoImplToJson(_$WorkLogDtoImpl instance) =>
+Map<String, dynamic> _$WorkLogDtoToJson(_WorkLogDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'work_order_id': instance.workOrderId,

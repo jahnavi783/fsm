@@ -299,7 +299,8 @@ class LoadingState extends StatelessWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF116587).withOpacity(0.15),
+                                color:
+                                    const Color(0xFF116587).withOpacity(0.15),
                                 blurRadius: 16,
                                 offset: const Offset(0, 6),
                               ),

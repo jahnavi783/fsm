@@ -9,8 +9,7 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
+
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
 
@@ -50,23 +49,18 @@ class WorkOrderDetailsPage extends StatelessWidget {
                   Icon(
                     Icons.error_outline,
                     size: 64.sp,
-                    color: Theme.of(context).colorScheme.error,
+                    color: Colors.red,
                   ),
                   SizedBox(height: 16.h),
-                  const Text('Failed to load work order details'),
+                  Text(
+                    'Failed to initialize work order actions',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.red),
+                  ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Error: ${snapshot.error}',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey,
-                    ),
+                    snapshot.error.toString(),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.grey),
                     textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Go Back'),
                   ),
                 ],
               ),
@@ -98,6 +92,8 @@ class WorkOrderDetailsView extends StatefulWidget {
 }
 
 class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
+  WorkOrderActionBloc? _workOrderActionBloc;
+
   @override
   void initState() {
     super.initState();
@@ -107,38 +103,21 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _workOrderActionBloc = context.read<WorkOrderActionBloc>();
+  }
 
+  /// Helper method to safely execute operations when widget is still mounted
+  bool _executeIfMounted(VoidCallback callback) {
+    if (!mounted) return false;
+    callback();
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Work Order Details'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.primaryColor,
-                theme.primaryColor.withOpacity(0.8),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loaded: (workOrder, _, __, ___) => IconButton(
-                  icon: const Icon(Icons.more_vert),
-                  onPressed: () => _showWorkOrderActions(workOrder),
-                ),
-                orElse: () => const SizedBox.shrink(),
-              );
-            },
-          ),
-        ],
-      ),
       body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
         listener: (context, state) {
           state.maybeWhen(
@@ -146,7 +125,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(message),
-                  backgroundColor: Colors.green,
+                  backgroundColor: AppColors.success,
                 ),
               );
             },
@@ -154,7 +133,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(failure.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.error,
                 ),
               );
             },
@@ -162,7 +141,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(message),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppColors.warning,
                 ),
               );
             },
@@ -188,6 +167,19 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           );
         },
       ),
+      floatingActionButton:
+          BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            loaded: (workOrder, _, __, ___) =>
+                _buildWorkOrderActionFab(workOrder),
+            actionSuccess: (workOrder, _, __) =>
+                _buildWorkOrderActionFab(workOrder),
+            orElse: () => const SizedBox.shrink(),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -197,251 +189,903 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     bool isLocationLoading,
     bool isOffline,
   ) {
-    final theme = Theme.of(context);
-
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Card
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          workOrder.woNumber,
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      WorkOrderStatusChip(status: workOrder.status),
-                    ],
-                  ),
-
-                  SizedBox(height: 8.h),
-
-                  Text(
-                    workOrder.summary,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.8),
-                    ),
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  // Priority and Visit Date
-                  Row(
-                    children: [
-                      _buildInfoChip(
-                        'Priority',
-                        workOrder.priorityDisplayName,
-                        _getPriorityColor(workOrder.priority),
-                      ),
-                      SizedBox(width: 12.w),
-                      _buildInfoChip(
-                        'Visit Date',
-                        DateFormat('MMM dd, yyyy').format(workOrder.visitDate),
-                        theme.primaryColor,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // Description Card
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Description',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    workOrder.problemDescription.isNotEmpty
-                        ? workOrder.problemDescription
-                        : 'No description available',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // Customer Information
-          if (workOrder.customer != null) ...[
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Customer Information',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    _buildInfoRow(
-                        Icons.person, 'Name', workOrder.customer!.name),
-                    _buildInfoRow(
-                        Icons.email, 'Email', workOrder.customer!.email),
-                    if (workOrder.customer!.phone != null)
-                      _buildInfoRow(
-                          Icons.phone, 'Phone', workOrder.customer!.phone!),
-                    if (workOrder.customer!.address != null)
-                      _buildInfoRow(Icons.location_on, 'Address',
-                          workOrder.customer!.address!),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-          ],
-
-          // Location Information
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Location',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (isLocationLoading)
-                        SizedBox(
-                          width: 16.w,
-                          height: 16.h,
-                          child:
-                              const CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  _buildInfoRow(
-                      Icons.location_on, 'Address', workOrder.location),
-                  if (currentLocation != null) ...[
-                    SizedBox(height: 8.h),
-                    _buildInfoRow(
-                      Icons.gps_fixed,
-                      'Current GPS',
-                      '${currentLocation.latitude.toStringAsFixed(6)}, ${currentLocation.longitude.toStringAsFixed(6)}',
-                    ),
-                    if (currentLocation.accuracy != null)
-                      _buildInfoRow(
-                        Icons.gps_not_fixed,
-                        'Accuracy',
-                        '${currentLocation.accuracy!.toStringAsFixed(1)}m',
-                      ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // Work Log and Timeline
-          if (workOrder.workLogs.isNotEmpty) ...[
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Work Timeline',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    ...workOrder.workLogs.map((log) => _buildTimelineItem(log)),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-          ],
-
-          // Parts Used
-          if (workOrder.partsUsed.isNotEmpty) ...[
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Parts Used',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    ...workOrder.partsUsed.map((part) => _buildPartItem(part)),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-          ],
-
-          // Offline Indicator
-          if (isOffline) ...[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(12.w),
+    return CustomScrollView(
+      slivers: [
+        // App Bar with gradient background
+        SliverAppBar(
+          expandedHeight: 260.h,
+          floating: false,
+          pinned: true,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Container(
+              padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.orange),
+                color: Colors.white.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.wifi_off, color: Colors.orange, size: 20.sp),
-                  SizedBox(width: 8.w),
-                  Text(
-                    'You are currently offline',
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 16.sp,
               ),
             ),
-            SizedBox(height: 16.h),
+          ),
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF0F5F7A),
+                    Color(0xFF116587),
+                    Color(0xFF00B458),
+                    Color(0xFF00A74F),
+                  ],
+                  stops: [0.0, 0.3, 0.7, 1.0],
+                ),
+              ),
+              child: SafeArea(
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  margin: EdgeInsets.only(top: 40.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Work Order Number and Status
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  workOrder.woNumber,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: -0.5,
+                                    height: 1.1,
+                                  ),
+                                ),
+                              ),
+                              // Status Chip
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.getStatusColor(
+                                          workOrder.status.name)
+                                      .withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  workOrder.statusDisplayName,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            workOrder.summary,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.2,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 8.h),
+                          // Priority Chip
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 8.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _getPriorityColor(workOrder.priority)
+                                  .withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              workOrder.priorityDisplayName,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      // Visit Date and Duration
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _buildHeaderInfoChip(
+                              Icons.calendar_today,
+                              'Visit Date',
+                              DateFormat('MMM dd, yyyy')
+                                  .format(workOrder.visitDate),
+                            ),
+                            SizedBox(width: 12.w),
+                            _buildHeaderInfoChip(
+                              Icons.schedule,
+                              'Duration',
+                              workOrder.durationDays > 0
+                                  ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
+                                  : '0 days',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            _buildHeaderAction(
+              icon: Icons.refresh,
+              onTap: () {
+                context.read<WorkOrderActionBloc>().add(
+                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                    );
+              },
+            ),
+            SizedBox(width: 16.w),
           ],
+        ),
+
+        // Content with expandable sections
+        SliverPadding(
+          padding: EdgeInsets.all(16.w),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              // Offline Indicator
+              if (isOffline) ...[
+                _buildOfflineIndicator(),
+                SizedBox(height: 16.h),
+              ],
+
+              // Basic Information
+              _buildExpandableSection(
+                title: 'Work Order Information',
+                icon: Icons.info_outline,
+                initiallyExpanded: true,
+                content: _buildBasicInformation(workOrder),
+              ),
+
+              // Description
+              _buildExpandableSection(
+                title: 'Description',
+                icon: Icons.description_outlined,
+                content: _buildDescriptionSection(workOrder),
+              ),
+
+              // Customer Information
+              if (workOrder.customer != null)
+                _buildExpandableSection(
+                  title: 'Customer Contact Details',
+                  icon: Icons.person_outline,
+                  content: _buildCustomerSection(workOrder.customer!),
+                ),
+
+              // Machine Details
+              if (workOrder.serviceRequest != null)
+                _buildExpandableSection(
+                  title: 'Machine Details',
+                  icon: Icons.precision_manufacturing_outlined,
+                  content:
+                      _buildMachineDetailsSection(workOrder.serviceRequest!),
+                ),
+
+              // Location Information
+              _buildExpandableSection(
+                title: 'Location & GPS',
+                icon: Icons.location_on_outlined,
+                content: _buildLocationSection(
+                    workOrder, currentLocation, isLocationLoading),
+              ),
+
+              // Parts Used
+              if (workOrder.partsUsed.isNotEmpty)
+                _buildExpandableSection(
+                  title: 'Parts Used',
+                  icon: Icons.build_outlined,
+                  content: _buildPartsUsedSection(workOrder.partsUsed),
+                ),
+
+              // Work Logs & Timeline
+              if (workOrder.workLogs.isNotEmpty)
+                _buildExpandableSection(
+                  title: 'Work Timeline',
+                  icon: Icons.timeline_outlined,
+                  content: _buildWorkTimelineSection(workOrder.workLogs),
+                ),
+
+              // Add bottom padding for floating action button
+              SizedBox(height: 120.h),
+            ]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderAction({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12.r),
+        child: Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.2),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 18.sp,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderInfoChip(IconData icon, String label, String value) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 14.sp,
+          ),
+          SizedBox(width: 6.w),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildExpandableSection({
+    required String title,
+    required IconData icon,
+    required Widget content,
+    bool initiallyExpanded = false,
+  }) {
+    return Card(
+      margin: EdgeInsets.only(bottom: 16.h),
+      elevation: 2,
+      shadowColor: Colors.black.withOpacity(0.1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          initiallyExpanded: initiallyExpanded,
+          leading: Container(
+            width: 40.w,
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(
+              icon,
+              color: AppColors.primary,
+              size: 20.sp,
+            ),
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: content,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBasicInformation(WorkOrderEntity workOrder) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _buildInfoItem(
+                'Job ID',
+                workOrder.woNumber,
+                Icons.tag,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildInfoItem(
+                'Ticket ID',
+                'SR-${workOrder.srId.toString().padLeft(12, '0')}',
+                Icons.request_page,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        Row(
+          children: [
+            Expanded(
+              child: _buildInfoItem(
+                'Service Type',
+                workOrder.serviceRequest?.srType ?? 'repair',
+                Icons.build_circle_outlined,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildInfoItem(
+                'Priority',
+                workOrder.priorityDisplayName,
+                Icons.priority_high,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        _buildInfoItem(
+          'Status',
+          workOrder.statusDisplayName,
+          Icons.info_outline,
+        ),
+        SizedBox(height: 12.h),
+        Row(
+          children: [
+            Expanded(
+              child: _buildInfoItem(
+                'Created',
+                DateFormat('MMM dd, yyyy HH:mm').format(workOrder.createdAt),
+                Icons.schedule,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildInfoItem(
+                'Duration',
+                '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
+                Icons.timelapse,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDescriptionSection(WorkOrderEntity workOrder) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          workOrder.problemDescription.isNotEmpty
+              ? workOrder.problemDescription
+              : 'No description available',
+          style: theme.textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCustomerSection(dynamic customer) {
+    return Column(
+      children: [
+        _buildInfoItem(
+          'Customer Name',
+          customer.name ?? 'N/A',
+          Icons.person,
+        ),
+        SizedBox(height: 8.h),
+        Row(
+          children: [
+            Expanded(
+              child: _buildInfoItem(
+                'Location',
+                customer.city ?? customer.address ?? 'N/A',
+                Icons.location_on,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildInfoItem(
+                'Postal Code',
+                customer.postalCode ?? 'N/A',
+                Icons.local_post_office,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMachineDetailsSection(dynamic serviceRequest) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _buildInfoItem(
+                'Machine Serial',
+                serviceRequest.machineSerial ?? 'N/A',
+                Icons.qr_code,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildInfoItem(
+                'Model',
+                serviceRequest.model ?? 'Power Adapter',
+                Icons.devices,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        _buildInfoItem(
+          'Machine on Warranty',
+          serviceRequest.underWarranty ?? 'Warranty Exceeded',
+          Icons.verified_user_outlined,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLocationSection(
+    WorkOrderEntity workOrder,
+    LocationEntity? currentLocation,
+    bool isLocationLoading,
+  ) {
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        _buildInfoItem(
+          'Address',
+          workOrder.location,
+          Icons.location_on,
+        ),
+        SizedBox(height: 8.h),
+        if (currentLocation != null) ...[
+          _buildInfoItem(
+            'Current GPS',
+            '${currentLocation.latitude.toStringAsFixed(6)}, ${currentLocation.longitude.toStringAsFixed(6)}',
+            Icons.gps_fixed,
+          ),
+          SizedBox(height: 8.h),
+          _buildInfoItem(
+            'Accuracy',
+            '${currentLocation.accuracy?.toStringAsFixed(1)}m',
+            Icons.my_location,
+          ),
+        ] else if (isLocationLoading) ...[
+          Row(
+            children: [
+              Icon(
+                Icons.gps_fixed,
+                size: 16.sp,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+              SizedBox(width: 8.w),
+              Text(
+                'Getting current location...',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              SizedBox(
+                width: 16.w,
+                height: 16.h,
+                child: const CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildPartsUsedSection(List<PartUsedEntity> partsUsed) {
+    return Column(
+      children: partsUsed
+          .map((part) => Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: _buildPartItem(part),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildWorkTimelineSection(List<WorkLogEntity> workLogs) {
+    return Column(
+      children: workLogs
+          .map((log) => Padding(
+                padding: EdgeInsets.only(bottom: 12.h),
+                child: _buildTimelineItem(log),
+              ))
+          .toList(),
+    );
+  }
+
+  Widget _buildInfoItem(String label, String value, IconData icon) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: AppColors.outline.withOpacity(0.2),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16.sp,
+            color: theme.colorScheme.primary,
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOfflineIndicator() {
+    final theme = Theme.of(context);
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.orange.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: Colors.orange.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.wifi_off,
+            color: Colors.orange,
+            size: 20.sp,
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              'You are currently offline. Changes will sync when connection is restored.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.orange.shade700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWorkOrderActionFab(WorkOrderEntity workOrder) {
+    return FloatingActionButton.extended(
+      onPressed: () => _showWorkOrderActionsBottomSheet(workOrder),
+      icon: Icon(Icons.play_arrow, size: 20.sp),
+      label: Text(
+        'Start Job',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14.sp,
+        ),
+      ),
+      backgroundColor: AppColors.primary,
+      foregroundColor: Colors.white,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28.r),
+      ),
+    );
+  }
+
+  void _showWorkOrderActionsBottomSheet(WorkOrderEntity workOrder) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              Container(
+                margin: EdgeInsets.only(top: 12.h),
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+
+              // Header
+              Padding(
+                padding: EdgeInsets.all(20.w),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.settings,
+                      color: AppColors.primary,
+                      size: 24.sp,
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      'Work Order Actions',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Actions wrapped in Flexible to prevent overflow
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (workOrder.canBeStarted)
+                        _buildActionTile(
+                          icon: Icons.play_arrow,
+                          title: 'Start Work Order',
+                          subtitle: 'Begin working on this order',
+                          color: AppColors.success,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _startWorkOrder(context, workOrder);
+                          },
+                        ),
+                      if (workOrder.canBePaused)
+                        _buildActionTile(
+                          icon: Icons.pause,
+                          title: 'Pause Work Order',
+                          subtitle: 'Temporarily pause work',
+                          color: AppColors.warning,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _pauseWorkOrder(context, workOrder);
+                          },
+                        ),
+                      if (workOrder.canBeResumed)
+                        _buildActionTile(
+                          icon: Icons.play_arrow,
+                          title: 'Resume Work Order',
+                          subtitle: 'Continue working',
+                          color: AppColors.success,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _resumeWorkOrder(context, workOrder);
+                          },
+                        ),
+                      if (workOrder.canBeCompleted)
+                        _buildActionTile(
+                          icon: Icons.check_circle,
+                          title: 'Complete Work Order',
+                          subtitle: 'Mark as completed',
+                          color: AppColors.primary,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _completeWorkOrder(context, workOrder);
+                          },
+                        ),
+                      if (workOrder.canBeRejected)
+                        _buildActionTile(
+                          icon: Icons.close,
+                          title: 'Reject Work Order',
+                          subtitle: 'Reject this work order',
+                          color: AppColors.error,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _rejectWorkOrder(context, workOrder);
+                          },
+                        ),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        width: 48.w,
+        height: 48.w,
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Icon(
+          icon,
+          color: color,
+          size: 24.sp,
+        ),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontSize: 14.sp,
+          color: Colors.grey[600],
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 16.sp,
+        color: Colors.grey[400],
+      ),
+      onTap: onTap,
     );
   }
 
@@ -496,78 +1140,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     );
   }
 
-  Widget _buildInfoChip(String label, String value, Color color) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: color,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    final theme = Theme.of(context);
-
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            size: 16.sp,
-            color: theme.colorScheme.onSurface.withOpacity(0.6),
-          ),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTimelineItem(WorkLogEntity log) {
     final theme = Theme.of(context);
 
@@ -590,29 +1162,33 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  log.description,
+                  log.description.isNotEmpty
+                      ? log.description
+                      : 'Work Log Entry',
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
-                Text(
-                  DateFormat('MMM dd, yyyy HH:mm').format(log.timestamp),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
-                ),
-                if (log.notes != null) ...[
+                if (log.notes?.isNotEmpty == true) ...[
                   SizedBox(height: 4.h),
                   Text(
                     log.notes!,
                     style: TextStyle(
-                      fontSize: 12.sp,
-                      color: theme.colorScheme.onSurface.withOpacity(0.8),
+                      fontSize: 13.sp,
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],
+                SizedBox(height: 4.h),
+                Text(
+                  DateFormat('MMM dd, yyyy HH:mm').format(log.timestamp),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  ),
+                ),
               ],
             ),
           ),
@@ -637,16 +1213,20 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                   part.partName ?? part.partNumber,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
-                Text(
-                  part.partNumber,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                if (part.description?.isNotEmpty == true) ...[
+                  SizedBox(height: 2.h),
+                  Text(
+                    part.description!,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -663,65 +1243,36 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     );
   }
 
-  void _showWorkOrderActions(WorkOrderEntity workOrder) {
-    WorkOrderActionSheet.show(
-      context,
-      workOrder: workOrder,
-      onStart: workOrder.canBeStarted
-          ? () {
-              _startWorkOrder(context, workOrder);
-            }
-          : null,
-      onPause: workOrder.canBePaused
-          ? () {
-              _pauseWorkOrder(context, workOrder);
-            }
-          : null,
-      onResume: workOrder.canBeResumed
-          ? () {
-              _resumeWorkOrder(context, workOrder);
-            }
-          : null,
-      onComplete: workOrder.canBeCompleted
-          ? () {
-              _completeWorkOrder(context, workOrder);
-            }
-          : null,
-      onReject: workOrder.canBeRejected
-          ? () {
-              _rejectWorkOrder(context, workOrder);
-            }
-          : null,
-    );
-  }
-
   Color _getPriorityColor(WorkOrderPriority priority) {
     return AppColors.getPriorityColor(priority.name);
   }
 
+  // Action methods from original file
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _showLocationConfirmationDialog(
       context,
       'Start Work Order',
       'Are you sure you want to start this work order? Your current location will be captured.',
       () {
-        final state = context.read<WorkOrderActionBloc>().state;
-        state.maybeWhen(
-          loaded: (_, currentLocation, __, ___) {
-            if (currentLocation != null) {
-              context.read<WorkOrderActionBloc>().add(
-                    WorkOrderActionEvent.startWorkOrder(
-                      workOrderId: workOrder.id,
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    ),
-                  );
-            } else {
-              _showLocationErrorDialog(context);
-            }
-          },
-          orElse: () => _showLocationErrorDialog(context),
-        );
+        _executeIfMounted(() {
+          final state = _workOrderActionBloc?.state;
+          state?.maybeWhen(
+            loaded: (_, currentLocation, __, ___) {
+              if (currentLocation != null) {
+                _workOrderActionBloc?.add(
+                  WorkOrderActionEvent.startWorkOrder(
+                    workOrderId: workOrder.id,
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  ),
+                );
+              } else {
+                _showLocationErrorDialog(context);
+              }
+            },
+            orElse: () => _showLocationErrorDialog(context),
+          );
+        });
       },
     );
   }
@@ -732,24 +1283,26 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       'Pause Work Order',
       'Please provide a reason for pausing this work order:',
       (reason) {
-        final state = context.read<WorkOrderActionBloc>().state;
-        state.maybeWhen(
-          loaded: (_, currentLocation, __, ___) {
-            if (currentLocation != null) {
-              context.read<WorkOrderActionBloc>().add(
-                    WorkOrderActionEvent.pauseWorkOrder(
-                      workOrderId: workOrder.id,
-                      reason: reason,
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    ),
-                  );
-            } else {
-              _showLocationErrorDialog(context);
-            }
-          },
-          orElse: () => _showLocationErrorDialog(context),
-        );
+        _executeIfMounted(() {
+          final state = _workOrderActionBloc?.state;
+          state?.maybeWhen(
+            loaded: (_, currentLocation, __, ___) {
+              if (currentLocation != null) {
+                _workOrderActionBloc?.add(
+                  WorkOrderActionEvent.pauseWorkOrder(
+                    workOrderId: workOrder.id,
+                    reason: reason,
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  ),
+                );
+              } else {
+                _showLocationErrorDialog(context);
+              }
+            },
+            orElse: () => _showLocationErrorDialog(context),
+          );
+        });
       },
     );
   }
@@ -760,23 +1313,25 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       'Resume Work Order',
       'Are you sure you want to resume this work order? Your current location will be captured.',
       () {
-        final state = context.read<WorkOrderActionBloc>().state;
-        state.maybeWhen(
-          loaded: (_, currentLocation, __, ___) {
-            if (currentLocation != null) {
-              context.read<WorkOrderActionBloc>().add(
-                    WorkOrderActionEvent.resumeWorkOrder(
-                      workOrderId: workOrder.id,
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    ),
-                  );
-            } else {
-              _showLocationErrorDialog(context);
-            }
-          },
-          orElse: () => _showLocationErrorDialog(context),
-        );
+        _executeIfMounted(() {
+          final state = _workOrderActionBloc?.state;
+          state?.maybeWhen(
+            loaded: (_, currentLocation, __, ___) {
+              if (currentLocation != null) {
+                _workOrderActionBloc?.add(
+                  WorkOrderActionEvent.resumeWorkOrder(
+                    workOrderId: workOrder.id,
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  ),
+                );
+              } else {
+                _showLocationErrorDialog(context);
+              }
+            },
+            orElse: () => _showLocationErrorDialog(context),
+          );
+        });
       },
     );
   }
@@ -791,24 +1346,26 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       'Reject Work Order',
       'Please provide a reason for rejecting this work order:',
       (reason) {
-        final state = context.read<WorkOrderActionBloc>().state;
-        state.maybeWhen(
-          loaded: (_, currentLocation, __, ___) {
-            if (currentLocation != null) {
-              context.read<WorkOrderActionBloc>().add(
-                    WorkOrderActionEvent.rejectWorkOrder(
-                      workOrderId: workOrder.id,
-                      reason: reason,
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                    ),
-                  );
-            } else {
-              _showLocationErrorDialog(context);
-            }
-          },
-          orElse: () => _showLocationErrorDialog(context),
-        );
+        _executeIfMounted(() {
+          final state = _workOrderActionBloc?.state;
+          state?.maybeWhen(
+            loaded: (_, currentLocation, __, ___) {
+              if (currentLocation != null) {
+                _workOrderActionBloc?.add(
+                  WorkOrderActionEvent.rejectWorkOrder(
+                    workOrderId: workOrder.id,
+                    reason: reason,
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  ),
+                );
+              } else {
+                _showLocationErrorDialog(context);
+              }
+            },
+            orElse: () => _showLocationErrorDialog(context),
+          );
+        });
       },
     );
   }
@@ -821,22 +1378,88 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   ) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              onConfirm();
-            },
-            child: const Text('Confirm'),
+        ),
+        content: Text(
+          message,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+          ),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      side: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.8),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onConfirm();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    elevation: 2,
+                  ),
+                  child: Text(
+                    'Start',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
+        actionsPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
       ),
     );
   }
@@ -861,7 +1484,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
             TextField(
               controller: reasonController,
               decoration: const InputDecoration(
-                hintText: 'Enter reason...',
+                labelText: 'Reason',
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -876,10 +1499,9 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ),
           ElevatedButton(
             onPressed: () {
-              final reason = reasonController.text.trim();
-              if (reason.isNotEmpty) {
+              if (reasonController.text.trim().isNotEmpty) {
                 Navigator.of(context).pop();
-                onSubmit(reason);
+                onSubmit(reasonController.text.trim());
               }
             },
             child: const Text('Submit'),
@@ -902,34 +1524,23 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Please provide work completion details:'),
-              SizedBox(height: 16.h),
               TextField(
                 controller: workLogController,
                 decoration: const InputDecoration(
-                  labelText: 'Work Log *',
-                  hintText: 'Describe the work performed...',
+                  labelText: 'Work Log (Optional)',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 4,
-                autofocus: true,
+                maxLines: 3,
               ),
               SizedBox(height: 16.h),
               TextField(
                 controller: completionNotesController,
                 decoration: const InputDecoration(
-                  labelText: 'Completion Notes',
-                  hintText: 'Additional notes (optional)...',
+                  labelText: 'Completion Notes (Optional)',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 2,
-              ),
-              SizedBox(height: 16.h),
-              const Text(
-                'Note: Parts used and images can be added in future updates.',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                maxLines: 3,
               ),
             ],
           ),
@@ -941,35 +1552,33 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ),
           ElevatedButton(
             onPressed: () {
-              final workLog = workLogController.text.trim();
-              if (workLog.isNotEmpty) {
-                Navigator.of(context).pop();
-
-                final state = context.read<WorkOrderActionBloc>().state;
-                state.maybeWhen(
+              Navigator.of(context).pop();
+              _executeIfMounted(() {
+                final state = _workOrderActionBloc?.state;
+                state?.maybeWhen(
                   loaded: (_, currentLocation, __, ___) {
                     if (currentLocation != null) {
-                      context.read<WorkOrderActionBloc>().add(
-                            WorkOrderActionEvent.completeWorkOrder(
-                              workOrderId: workOrder.id,
-                              workLog: workLog,
-                              partsUsed: [], // Empty for now
-                              files: [], // Empty for now
-                              latitude: currentLocation.latitude,
-                              longitude: currentLocation.longitude,
-                              completionNotes:
-                                  completionNotesController.text.trim().isEmpty
-                                      ? null
-                                      : completionNotesController.text.trim(),
-                            ),
-                          );
+                      _workOrderActionBloc?.add(
+                        WorkOrderActionEvent.completeWorkOrder(
+                          workOrderId: workOrder.id,
+                          workLog: workLogController.text.trim(),
+                          partsUsed: const [],
+                          files: const [],
+                          latitude: currentLocation.latitude,
+                          longitude: currentLocation.longitude,
+                          completionNotes:
+                              completionNotesController.text.trim(),
+                        ),
+                      );
                     } else {
                       _showLocationErrorDialog(context);
                     }
                   },
-                  orElse: () => _showLocationErrorDialog(context),
+                  orElse: () {
+                    _showLocationErrorDialog(context);
+                  },
                 );
-              }
+              });
             },
             child: const Text('Complete'),
           ),
@@ -984,7 +1593,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.location_off, color: Colors.orange),
+            Icon(Icons.location_off, color: Colors.red, size: 24.sp),
             SizedBox(width: 8.w),
             const Text('Location Required'),
           ],
@@ -993,38 +1602,22 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'GPS location is required to perform work order actions. Please:',
+            Text(
+              'Location access is required to perform work order actions. Please ensure:',
+              style: TextStyle(fontSize: 14.sp),
             ),
             SizedBox(height: 12.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
-                Expanded(
-                  child: Text('Ensure location services are enabled'),
-                ),
-              ],
+            Text(
+              '• Location services are enabled',
+              style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
             ),
-            SizedBox(height: 4.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
-                Expanded(
-                  child: Text('Grant location permission to this app'),
-                ),
-              ],
+            Text(
+              '• App has location permissions',
+              style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
             ),
-            SizedBox(height: 4.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
-                Expanded(
-                  child: Text('Move to an area with better GPS signal'),
-                ),
-              ],
+            Text(
+              '• GPS signal is available',
+              style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
             ),
           ],
         ),
@@ -1036,11 +1629,13 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).pop();
-              context.read<WorkOrderActionBloc>().add(
-                    const WorkOrderActionEvent.captureLocation(),
-                  );
+              _executeIfMounted(() {
+                _workOrderActionBloc?.add(
+                  WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                );
+              });
             },
-            icon: const Icon(Icons.refresh),
+            icon: Icon(Icons.refresh, size: 18.sp),
             label: const Text('Retry'),
           ),
         ],

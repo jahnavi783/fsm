@@ -88,15 +88,17 @@ class _CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
           indicatorSize: TabBarIndicatorSize.tab,
           dividerColor: Colors.transparent,
           labelPadding: EdgeInsets.symmetric(horizontal: 4.w),
-          tabs: tabs.map((tab) => Tab(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8.h),
-              child: Text(
-                tab,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )).toList(),
+          tabs: tabs
+              .map((tab) => Tab(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Text(
+                        tab,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ))
+              .toList(),
         ),
       ),
     );

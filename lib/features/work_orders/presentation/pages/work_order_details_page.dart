@@ -9,6 +9,8 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_start_bottom_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_pause_bottom_sheet.dart';
 
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
@@ -899,17 +901,51 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   Widget _buildWorkOrderActionFab(WorkOrderEntity workOrder) {
+    // Determine primary action based on work order state
+    String label;
+    IconData icon;
+    Color backgroundColor;
+    VoidCallback? onPressed;
+
+    if (workOrder.canBeStarted) {
+      label = 'Start Job';
+      icon = Icons.play_arrow;
+      backgroundColor = AppColors.success;
+      onPressed = () => _startWorkOrder(context, workOrder);
+    } else if (workOrder.canBePaused) {
+      label = 'Pause Job';
+      icon = Icons.pause;
+      backgroundColor = AppColors.warning;
+      onPressed = () => _pauseWorkOrder(context, workOrder);
+    } else if (workOrder.canBeResumed) {
+      label = 'Resume Job';
+      icon = Icons.play_arrow;
+      backgroundColor = AppColors.success;
+      onPressed = () => _resumeWorkOrder(context, workOrder);
+    } else if (workOrder.canBeCompleted) {
+      label = 'Complete Job';
+      icon = Icons.check_circle;
+      backgroundColor = AppColors.primary;
+      onPressed = () => _completeWorkOrder(context, workOrder);
+    } else {
+      // Show actions menu for other states
+      label = 'Actions';
+      icon = Icons.more_vert;
+      backgroundColor = AppColors.primary;
+      onPressed = () => _showWorkOrderActionsBottomSheet(workOrder);
+    }
+
     return FloatingActionButton.extended(
-      onPressed: () => _showWorkOrderActionsBottomSheet(workOrder),
-      icon: Icon(Icons.play_arrow, size: 20.sp),
+      onPressed: onPressed,
+      icon: Icon(icon, size: 20.sp),
       label: Text(
-        'Start Job',
+        label,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 14.sp,
         ),
       ),
-      backgroundColor: AppColors.primary,
+      backgroundColor: backgroundColor,
       foregroundColor: Colors.white,
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -1249,62 +1285,33 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
 
   // Action methods from original file
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
-    _showLocationConfirmationDialog(
-      context,
-      'Start Work Order',
-      'Are you sure you want to start this work order? Your current location will be captured.',
-      () {
-        _executeIfMounted(() {
-          final state = _workOrderActionBloc?.state;
-          state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___) {
-              if (currentLocation != null) {
-                _workOrderActionBloc?.add(
-                  WorkOrderActionEvent.startWorkOrder(
-                    workOrderId: workOrder.id,
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                  ),
-                );
-              } else {
-                _showLocationErrorDialog(context);
-              }
-            },
-            orElse: () => _showLocationErrorDialog(context),
-          );
-        });
-      },
-    );
+    _executeIfMounted(() {
+      final state = _workOrderActionBloc?.state;
+      state?.maybeWhen(
+        loaded: (_, currentLocation, __, ___) {
+          _showStartWorkOrderBottomSheet(context, workOrder, currentLocation);
+        },
+        actionSuccess: (workOrderEntity, actionType, message) {
+          _showStartWorkOrderBottomSheet(context, workOrder, null);
+        },
+        orElse: () => _showLocationErrorDialog(context),
+      );
+    });
   }
 
   void _pauseWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
-    _showReasonDialog(
-      context,
-      'Pause Work Order',
-      'Please provide a reason for pausing this work order:',
-      (reason) {
-        _executeIfMounted(() {
-          final state = _workOrderActionBloc?.state;
-          state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___) {
-              if (currentLocation != null) {
-                _workOrderActionBloc?.add(
-                  WorkOrderActionEvent.pauseWorkOrder(
-                    workOrderId: workOrder.id,
-                    reason: reason,
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                  ),
-                );
-              } else {
-                _showLocationErrorDialog(context);
-              }
-            },
-            orElse: () => _showLocationErrorDialog(context),
-          );
-        });
-      },
-    );
+    _executeIfMounted(() {
+      final state = _workOrderActionBloc?.state;
+      state?.maybeWhen(
+        loaded: (_, currentLocation, __, ___) {
+          _showPauseWorkOrderBottomSheet(context, workOrder, currentLocation);
+        },
+        actionSuccess: (workOrderEntity, actionType, message) {
+          _showPauseWorkOrderBottomSheet(context, workOrder, null);
+        },
+        orElse: () => _showLocationErrorDialog(context),
+      );
+    });
   }
 
   void _resumeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
@@ -1585,6 +1592,54 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         ],
       ),
     );
+  }
+
+  void _showStartWorkOrderBottomSheet(
+    BuildContext context,
+    WorkOrderEntity workOrder,
+    LocationEntity? currentLocation,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider.value(
+        value: _workOrderActionBloc!,
+        child: WorkOrderStartBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
+      ),
+    ).then((result) {
+      // Handle result if needed
+      if (result == true) {
+        // Work order was started successfully
+      }
+    });
+  }
+
+  void _showPauseWorkOrderBottomSheet(
+    BuildContext context,
+    WorkOrderEntity workOrder,
+    LocationEntity? currentLocation,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider.value(
+        value: _workOrderActionBloc!,
+        child: WorkOrderPauseBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
+      ),
+    ).then((result) {
+      // Handle result if needed
+      if (result == true) {
+        // Work order was paused successfully
+      }
+    });
   }
 
   void _showLocationErrorDialog(BuildContext context) {

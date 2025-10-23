@@ -57,6 +57,9 @@ class AuthInterceptor extends Interceptor {
       headers: {
         ...requestOptions.headers,
         'Authorization': 'Bearer $accessToken',
+        // Add Ngrok-specific header to bypass browser warning
+        if (AppConfig.baseUrl.contains('ngrok-free.app') || AppConfig.baseUrl.contains('ngrok.io'))
+          'ngrok-skip-browser-warning': 'true',
       },
     );
 
@@ -78,6 +81,12 @@ class AuthInterceptor extends Interceptor {
       // Create a new Dio instance to avoid interceptors loop
       final tokenDio = Dio(BaseOptions(
         baseUrl: AppConfig.baseUrl,
+        headers: {
+          'Content-Type': 'application/json',
+          // Add Ngrok-specific header to bypass browser warning
+          if (AppConfig.baseUrl.contains('ngrok-free.app') || AppConfig.baseUrl.contains('ngrok.io'))
+            'ngrok-skip-browser-warning': 'true',
+        },
       ));
 
       // Call refresh token API

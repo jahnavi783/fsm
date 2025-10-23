@@ -135,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Expanded(
                           child: GradientElevatedButton(
+                            height: 65.h,
                             onPressed: isLoading ? null : _onSubmit,
                             isLoading: isLoading,
                             child: Text(

@@ -7,6 +7,58 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_image_captur
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_thumbnail.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_preview_dialog.dart';
 
+/// Timeline entry model to hold capture data with action type context
+class _TimelineEntry {
+  final WorkOrderImageCaptureEntity capture;
+  final String actionType;
+
+  const _TimelineEntry({
+    required this.capture,
+    required this.actionType,
+  });
+
+  /// Get color for this action type
+  Color get color {
+    switch (actionType.toLowerCase()) {
+      case 'start':
+        return const Color(0xFF4CAF50); // Green
+      case 'pause':
+        return const Color(0xFFFF9800); // Orange
+      case 'resume':
+        return const Color(0xFF4CAF50); // Green
+      case 'complete':
+        return const Color(0xFF2196F3); // Blue
+      case 'signature':
+        return const Color(0xFF9C27B0); // Purple
+      default:
+        return Colors.grey;
+    }
+  }
+
+  /// Get icon for this action type
+  IconData get icon {
+    switch (actionType.toLowerCase()) {
+      case 'start':
+        return Icons.play_arrow;
+      case 'pause':
+        return Icons.pause;
+      case 'resume':
+        return Icons.play_arrow;
+      case 'complete':
+        return Icons.check_circle;
+      case 'signature':
+        return Icons.edit;
+      default:
+        return Icons.circle;
+    }
+  }
+
+  /// Get display name for this action type
+  String get displayName {
+    return actionType.toUpperCase();
+  }
+}
+
 class WorkOrderImageGallerySection extends StatelessWidget {
   final WorkOrderGroupedImagesEntity groupedImages;
 
@@ -17,329 +69,443 @@ class WorkOrderImageGallerySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!groupedImages.hasAnyImages) {
-      return const SizedBox.shrink();
+    final timelineEntries = groupedImages.getAllTimelineEntries();
+
+    if (timelineEntries.isEmpty) {
+      return _buildEmptyState(context);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Section header
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Row(
-            children: [
-              Icon(
-                Icons.photo_library,
-                color: AppColors.primary,
-                size: 24.sp,
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Text(
-                  'Images & Documentation',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                child: Text(
-                  '${groupedImages.totalImageCount} ${groupedImages.totalImageCount == 1 ? 'image' : 'images'}',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+    // Convert to timeline entry objects
+    final entries = timelineEntries
+        .map((entry) => _TimelineEntry(
+              capture: entry['capture'] as WorkOrderImageCaptureEntity,
+              actionType: entry['actionType'] as String,
+            ))
+        .toList();
 
-        // Action type sections
-        if (groupedImages.startImages.isNotEmpty)
-          _buildActionSection(
-            context,
-            'Start',
-            groupedImages.startImages,
-            Colors.green,
-            Icons.play_arrow,
-          ),
-
-        if (groupedImages.pauseImages.isNotEmpty)
-          _buildActionSection(
-            context,
-            'Pause',
-            groupedImages.pauseImages,
-            Colors.orange,
-            Icons.pause,
-          ),
-
-        if (groupedImages.resumeImages.isNotEmpty)
-          _buildActionSection(
-            context,
-            'Resume',
-            groupedImages.resumeImages,
-            Colors.green,
-            Icons.play_arrow,
-          ),
-
-        if (groupedImages.completeImages.isNotEmpty)
-          _buildActionSection(
-            context,
-            'Complete',
-            groupedImages.completeImages,
-            Colors.blue,
-            Icons.check_circle,
-          ),
-
-        if (groupedImages.signatureImages.isNotEmpty)
-          _buildActionSection(
-            context,
-            'Signature',
-            groupedImages.signatureImages,
-            Colors.purple,
-            Icons.edit,
-          ),
-      ],
-    );
-  }
-
-  Widget _buildActionSection(
-    BuildContext context,
-    String actionType,
-    List<WorkOrderImageCaptureEntity> captures,
-    Color color,
-    IconData icon,
-  ) {
-    // Count total images
-    int totalImages =
-        captures.fold(0, (sum, capture) => sum + capture.imageUrls.length);
-
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        childrenPadding: EdgeInsets.all(16.w),
-        leading: Container(
-          width: 40.w,
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 20.sp,
-          ),
-        ),
-        title: Text(
-          actionType,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        subtitle: Text(
-          '$totalImages image${totalImages != 1 ? 's' : ''} • ${captures.length} capture${captures.length != 1 ? 's' : ''}',
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-          ),
-        ),
+    return Padding(
+      padding: EdgeInsets.only(top: 16.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...captures.map((capture) =>
-              _buildCaptureItem(context, capture, actionType, color)),
+          // Section header
+          _buildHeader(context, entries.length),
+          SizedBox(height: 16.h),
+
+          // Timeline entries
+          ...entries.asMap().entries.map((entry) {
+            final index = entry.key;
+            final timelineEntry = entry.value;
+            final isLast = index == entries.length - 1;
+
+            return _buildTimelineEntry(
+              context,
+              timelineEntry,
+              isLast,
+            );
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildCaptureItem(
+  /// Build section header with title and count
+  Widget _buildHeader(BuildContext context, int entryCount) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Row(
+        children: [
+          Icon(
+            Icons.timeline,
+            color: AppColors.primary,
+            size: 24.sp,
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              'Work Timeline',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Text(
+              '$entryCount ${entryCount == 1 ? 'event' : 'events'}',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build empty state when no timeline entries exist
+  Widget _buildEmptyState(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 48.h, horizontal: 32.w),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.photo_library_outlined,
+              size: 48.sp,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              'No documentation yet',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Images and documentation will appear here',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Build a single timeline entry
+  Widget _buildTimelineEntry(
     BuildContext context,
-    WorkOrderImageCaptureEntity capture,
-    String actionType,
-    Color color,
+    _TimelineEntry entry,
+    bool isLast,
   ) {
-    // Determine display date - use capturedAt if available, otherwise timestamp
+    return Padding(
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 24.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Timeline marker and line
+          Column(
+            children: [
+              // Marker circle with icon
+              _buildTimelineMarker(entry),
+
+              // Connecting line (if not last entry)
+              if (!isLast)
+                Container(
+                  width: 2.w,
+                  height: 40.h,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withOpacity(0.12),
+                ),
+            ],
+          ),
+
+          SizedBox(width: 16.w),
+
+          // Timeline content
+          Expanded(
+            child: _buildTimelineContent(context, entry),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build timeline marker (colored circle with icon)
+  Widget _buildTimelineMarker(_TimelineEntry entry) {
+    return Container(
+      width: 40.w,
+      height: 40.w,
+      decoration: BoxDecoration(
+        color: entry.color.withOpacity(0.15),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: entry.color,
+          width: 2.w,
+        ),
+      ),
+      child: Icon(
+        entry.icon,
+        color: entry.color,
+        size: 20.sp,
+      ),
+    );
+  }
+
+  /// Build timeline entry content card
+  Widget _buildTimelineContent(BuildContext context, _TimelineEntry entry) {
+    // Determine display date
     String? displayDate;
-    if (capture.capturedAt != null) {
-      displayDate = DateFormat('MMM dd, yyyy HH:mm').format(capture.capturedAt!);
-    } else if (capture.timestamp != null) {
+    if (entry.capture.capturedAt != null) {
+      displayDate =
+          DateFormat('MMM dd, yyyy HH:mm').format(entry.capture.capturedAt!);
+    } else if (entry.capture.timestamp != null) {
       try {
-        final parsedTimestamp = DateTime.parse(capture.timestamp!);
+        final parsedTimestamp = DateTime.parse(entry.capture.timestamp!);
         displayDate = DateFormat('MMM dd, yyyy HH:mm').format(parsedTimestamp);
       } catch (e) {
-        displayDate = capture.timestamp;
+        displayDate = entry.capture.timestamp;
       }
     }
 
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(8.r),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: entry.color.withOpacity(0.2),
+          width: 1.5,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Metadata row
-          if (displayDate != null)
-            Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  size: 14.sp,
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-                SizedBox(width: 4.w),
-                Text(
-                  displayDate,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.7),
+          // Header row with action badge and timestamp
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Action badge
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: entry.color.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
+                    color: entry.color.withOpacity(0.3),
+                    width: 1,
                   ),
                 ),
-                if (capture.capturedBy != null) ...[
-                  SizedBox(width: 12.w),
-                  Icon(
-                    Icons.person,
-                    size: 14.sp,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.6),
-                  ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: Text(
-                      '${capture.capturedBy!.firstName} ${capture.capturedBy!.lastName}',
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      entry.icon,
+                      size: 14.sp,
+                      color: entry.color,
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      entry.displayName,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                        color: entry.color,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Timestamp
+              if (displayDate != null)
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 14.sp,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.5),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      displayDate,
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withOpacity(0.7),
+                            .withOpacity(0.6),
+                        fontWeight: FontWeight.w500,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
-              ],
-            ),
+                  ],
+                ),
+            ],
+          ),
 
-          // Reason field (for pause entries)
-          if (capture.reason != null && capture.reason!.isNotEmpty) ...[
-            SizedBox(height: 6.h),
-            Row(
-              children: [
-                Icon(
+          SizedBox(height: 12.h),
+
+          // Metadata section
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // User info
+              if (entry.capture.capturedBy != null)
+                _buildMetadataRow(
+                  context,
+                  Icons.person_outline,
+                  '${entry.capture.capturedBy!.firstName} ${entry.capture.capturedBy!.lastName}',
+                ),
+
+              // GPS coordinates
+              if (entry.capture.latitude != null &&
+                  entry.capture.longitude != null) ...[
+                if (entry.capture.capturedBy != null) SizedBox(height: 6.h),
+                _buildMetadataRow(
+                  context,
+                  Icons.location_on_outlined,
+                  '${entry.capture.latitude!.toStringAsFixed(6)}, ${entry.capture.longitude!.toStringAsFixed(6)}',
+                ),
+              ],
+
+              // Reason (for pause actions)
+              if (entry.capture.reason != null &&
+                  entry.capture.reason!.isNotEmpty) ...[
+                SizedBox(height: 6.h),
+                _buildMetadataRow(
+                  context,
                   Icons.info_outline,
-                  size: 14.sp,
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Text(
-                    'Reason: ${capture.reason}',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.7),
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
+                  'Reason: ${entry.capture.reason}',
+                  isHighlighted: true,
                 ),
               ],
-            ),
-          ],
 
-          if (capture.latitude != null && capture.longitude != null) ...[
-            SizedBox(height: 6.h),
-            Row(
-              children: [
-                Icon(
-                  Icons.location_on,
-                  size: 14.sp,
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Text(
-                    '${capture.latitude!.toStringAsFixed(6)}, ${capture.longitude!.toStringAsFixed(6)}',
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.6),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              // Remarks
+              if (entry.capture.remarks != null &&
+                  entry.capture.remarks!.isNotEmpty) ...[
+                SizedBox(height: 6.h),
+                _buildMetadataRow(
+                  context,
+                  Icons.note_outlined,
+                  entry.capture.remarks!,
+                  isHighlighted: true,
                 ),
               ],
-            ),
-          ],
+            ],
+          ),
 
-          // Image thumbnails grid (only show if there are images)
-          if (capture.imageUrls.isNotEmpty) ...[
-            SizedBox(height: 12.h),
-            Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
-              children: capture.imageUrls.asMap().entries.map((entry) {
-                final index = entry.key;
-                final imageUrl = entry.value;
-
-                return WorkOrderImageThumbnail(
-                  imageUrl: imageUrl,
-                  width: 80.w,
-                  height: 80.h,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder: (context) => WorkOrderImagePreviewDialog(
-                        captures: [capture],
-                        initialIndex: index,
-                        actionType: actionType,
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
+          // Images section (if images exist)
+          if (entry.capture.imageUrls.isNotEmpty) ...[
+            SizedBox(height: 16.h),
+            _buildHorizontalImageScroll(context, entry),
           ],
         ],
       ),
+    );
+  }
+
+  /// Build metadata row with icon and text
+  Widget _buildMetadataRow(
+    BuildContext context,
+    IconData icon,
+    String text, {
+    bool isHighlighted = false,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 16.sp,
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+        ),
+        SizedBox(width: 8.w),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withOpacity(isHighlighted ? 0.8 : 0.6),
+              fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.w500,
+              fontStyle: isHighlighted ? FontStyle.italic : FontStyle.normal,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Build horizontal scrollable image gallery
+  Widget _buildHorizontalImageScroll(
+    BuildContext context,
+    _TimelineEntry entry,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Images label
+        Row(
+          children: [
+            Icon(
+              Icons.photo_library_outlined,
+              size: 16.sp,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+            ),
+            SizedBox(width: 6.w),
+            Text(
+              '${entry.capture.imageUrls.length} ${entry.capture.imageUrls.length == 1 ? 'image' : 'images'}',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+                color:
+                    Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 8.h),
+
+        // Horizontal scrollable image list
+        SizedBox(
+          height: 80.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: entry.capture.imageUrls.length,
+            separatorBuilder: (_, __) => SizedBox(width: 8.w),
+            itemBuilder: (context, index) {
+              final imageUrl = entry.capture.imageUrls[index];
+              return WorkOrderImageThumbnail(
+                imageUrl: imageUrl,
+                width: 80.w,
+                height: 80.h,
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierColor: Colors.black87,
+                    builder: (context) => WorkOrderImagePreviewDialog(
+                      captures: [entry.capture],
+                      initialIndex: index,
+                      actionType: entry.actionType,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -982,23 +982,66 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Location Required'),
-        content: const Text(
-          'Current location is required for this action. Please ensure location services are enabled and try again.',
+        title: Row(
+          children: [
+            Icon(Icons.location_off, color: Colors.orange),
+            SizedBox(width: 8.w),
+            const Text('Location Required'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'GPS location is required to perform work order actions. Please:',
+            ),
+            SizedBox(height: 12.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Expanded(
+                  child: Text('Ensure location services are enabled'),
+                ),
+              ],
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Expanded(
+                  child: Text('Grant location permission to this app'),
+                ),
+              ],
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Expanded(
+                  child: Text('Move to an area with better GPS signal'),
+                ),
+              ],
+            ),
+          ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).pop();
               context.read<WorkOrderActionBloc>().add(
                     const WorkOrderActionEvent.captureLocation(),
                   );
             },
-            child: const Text('Retry Location'),
+            icon: const Icon(Icons.refresh),
+            label: const Text('Retry'),
           ),
         ],
       ),

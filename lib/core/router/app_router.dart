@@ -68,6 +68,11 @@ class AppRouter extends RootStackRouter {
           guards: [authGuard],
         ),
         AutoRoute(
+          page: WorkOrderStartRoute.page,
+          path: '/work-order/:workOrderId/start',
+          guards: [authGuard],
+        ),
+        AutoRoute(
           page: DocumentViewerRoute.page,
           path: '/document/:documentId',
           guards: [authGuard],
@@ -93,6 +98,11 @@ extension AppRouterExtension on StackRouter {
     return push(WorkOrderDetailsRoute(workOrderId: workOrderId));
   }
 
+  /// Navigate to work order start page with deep linking support
+  Future<void> navigateToWorkOrderStart(int workOrderId) {
+    return push(WorkOrderStartRoute(workOrderId: workOrderId));
+  }
+
   /// Navigate to document viewer with deep linking support
   Future<void> navigateToDocument(int documentId) {
     return push(DocumentViewerRoute(documentId: documentId));
@@ -106,11 +116,11 @@ extension AppRouterExtension on StackRouter {
   /// Navigate to main app after authentication (replaces current route)
   /// This prevents back navigation to splash/login screens
   Future<void> navigateToMainApp() {
-    return replaceNamed('/main');
+    return replacePath('/main');
   }
 
   /// Navigate to login and clear stack
   Future<void> navigateToLogin() {
-    return replaceNamed('/login');
+    return replacePath('/login');
   }
 }

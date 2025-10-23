@@ -88,7 +88,7 @@ class WorkOrderActionBloc
         ));
 
         // Automatically capture location when work order is loaded
-        // add(const WorkOrderActionEvent.captureLocation());
+        add(const WorkOrderActionEvent.captureLocation());
       },
     );
   }
@@ -394,9 +394,27 @@ class WorkOrderActionBloc
         orElse: () => currentState,
       ));
     } catch (e) {
+      String errorMessage = 'Failed to capture location';
+      if (e.toString().contains('location service')) {
+        errorMessage =
+            'Location services are disabled. Please enable them in device settings.';
+      } else if (e.toString().contains('permission')) {
+        errorMessage =
+            'Location permission denied. Please grant location access in app settings.';
+      } else if (e.toString().contains('timeout')) {
+        errorMessage =
+            'Location request timed out. Please ensure you have a clear view of the sky and try again.';
+      } else if (e.toString().contains('accuracy')) {
+        errorMessage =
+            'GPS signal is too weak. Please move to an area with better reception and try again.';
+      } else {
+        errorMessage =
+            'Unable to get your current location. Please check your GPS settings and try again.';
+      }
+
       emit(WorkOrderActionState.locationError(
         workOrder: workOrder,
-        message: 'Failed to capture location: ${e.toString()}',
+        message: errorMessage,
       ));
     }
   }

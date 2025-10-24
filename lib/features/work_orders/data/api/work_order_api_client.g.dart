@@ -238,6 +238,8 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     required int id,
     required String workLog,
     required String gpsCoordinates,
+    required String customerName,
+    required File signature,
     required String partsUsed,
     List<File> files = const [],
   }) async {
@@ -247,6 +249,16 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     final _data = FormData();
     _data.fields.add(MapEntry('work_log', workLog));
     _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
+    _data.fields.add(MapEntry('customer_name', customerName));
+    _data.files.add(
+      MapEntry(
+        'signature',
+        MultipartFile.fromFileSync(
+          signature.path,
+          filename: signature.path.split(Platform.pathSeparator).last,
+        ),
+      ),
+    );
     _data.fields.add(MapEntry('parts_used', partsUsed));
     _data.files.addAll(
       files.map(

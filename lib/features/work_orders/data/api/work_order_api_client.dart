@@ -56,6 +56,8 @@ abstract class WorkOrderApiClient {
     @Path('id') required int id,
     @Part(name: 'work_log') required String workLog,
     @Part(name: 'gps_coordinates') required String gpsCoordinates,
+    @Part(name: 'customer_name') required String customerName,
+    @Part(name: 'signature') required File signature,
     @Part(name: 'parts_used') required String partsUsed,
     @Part(name: 'files') List<File> files = const [],
   });

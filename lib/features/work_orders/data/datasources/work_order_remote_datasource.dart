@@ -47,6 +47,8 @@ abstract class WorkOrderRemoteDataSource {
   Future<WorkOrderDto> completeWorkOrder({
     required int workOrderId,
     required String workLog,
+    required String customerName,
+    required File signature,
     required List<PartUsedEntity> partsUsed,
     required List<File> files,
     required double latitude,
@@ -152,6 +154,8 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   Future<WorkOrderDto> completeWorkOrder({
     required int workOrderId,
     required String workLog,
+    required String customerName,
+    required File signature,
     required List<PartUsedEntity> partsUsed,
     required List<File> files,
     required double latitude,
@@ -169,6 +173,8 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       id: workOrderId,
       workLog: workLog,
       gpsCoordinates: '[$longitude, $latitude]',
+      customerName: customerName,
+      signature: signature,
       partsUsed: partsUsedJson,
       files: files,
     );

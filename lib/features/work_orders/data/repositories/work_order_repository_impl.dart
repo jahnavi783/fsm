@@ -421,6 +421,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   Future<Either<Failure, WorkOrderEntity>> completeWorkOrder({
     required int workOrderId,
     required String workLog,
+    required String customerName,
+    required File signature,
     required List<PartUsedEntity> partsUsed,
     required List<File> files,
     required double latitude,
@@ -430,6 +432,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     _logger.workOrder('Completing work order $workOrderId', data: {
       'workOrderId': workOrderId,
       'workLogLength': workLog.length,
+      'customerName': customerName,
+      'hasSignature': true,
       'partsUsedCount': partsUsed.length,
       'filesCount': files.length,
       'latitude': latitude,
@@ -442,6 +446,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final workOrderDto = await _remoteDataSource.completeWorkOrder(
           workOrderId: workOrderId,
           workLog: workLog,
+          customerName: customerName,
+          signature: signature,
           partsUsed: partsUsed,
           files: files,
           latitude: latitude,

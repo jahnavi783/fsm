@@ -36,6 +36,8 @@ class WorkOrderActionEvent with _$WorkOrderActionEvent {
   const factory WorkOrderActionEvent.completeWorkOrder({
     required int workOrderId,
     required String workLog,
+    required String customerName,
+    required File signature,
     required List<PartUsedEntity> partsUsed,
     required List<File> files,
     required double latitude,

@@ -204,6 +204,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
     TResult Function(
             int workOrderId,
             String workLog,
+            String customerName,
+            File signature,
             List<PartUsedEntity> partsUsed,
             List<File> files,
             double latitude,
@@ -234,6 +236,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
         return completeWorkOrder(
             _that.workOrderId,
             _that.workLog,
+            _that.customerName,
+            _that.signature,
             _that.partsUsed,
             _that.files,
             _that.latitude,
@@ -279,6 +283,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
     required TResult Function(
             int workOrderId,
             String workLog,
+            String customerName,
+            File signature,
             List<PartUsedEntity> partsUsed,
             List<File> files,
             double latitude,
@@ -308,6 +314,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
         return completeWorkOrder(
             _that.workOrderId,
             _that.workLog,
+            _that.customerName,
+            _that.signature,
             _that.partsUsed,
             _that.files,
             _that.latitude,
@@ -352,6 +360,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
     TResult? Function(
             int workOrderId,
             String workLog,
+            String customerName,
+            File signature,
             List<PartUsedEntity> partsUsed,
             List<File> files,
             double latitude,
@@ -381,6 +391,8 @@ extension WorkOrderActionEventPatterns on WorkOrderActionEvent {
         return completeWorkOrder(
             _that.workOrderId,
             _that.workLog,
+            _that.customerName,
+            _that.signature,
             _that.partsUsed,
             _that.files,
             _that.latitude,
@@ -811,6 +823,8 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
   const _CompleteWorkOrder(
       {required this.workOrderId,
       required this.workLog,
+      required this.customerName,
+      required this.signature,
       required final List<PartUsedEntity> partsUsed,
       required final List<File> files,
       required this.latitude,
@@ -821,6 +835,8 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
 
   final int workOrderId;
   final String workLog;
+  final String customerName;
+  final File signature;
   final List<PartUsedEntity> _partsUsed;
   List<PartUsedEntity> get partsUsed {
     if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
@@ -854,6 +870,10 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
+            (identical(other.customerName, customerName) ||
+                other.customerName == customerName) &&
+            (identical(other.signature, signature) ||
+                other.signature == signature) &&
             const DeepCollectionEquality()
                 .equals(other._partsUsed, _partsUsed) &&
             const DeepCollectionEquality().equals(other._files, _files) &&
@@ -870,6 +890,8 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
       runtimeType,
       workOrderId,
       workLog,
+      customerName,
+      signature,
       const DeepCollectionEquality().hash(_partsUsed),
       const DeepCollectionEquality().hash(_files),
       latitude,
@@ -878,7 +900,7 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
 
   @override
   String toString() {
-    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, partsUsed: $partsUsed, files: $files, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
+    return 'WorkOrderActionEvent.completeWorkOrder(workOrderId: $workOrderId, workLog: $workLog, customerName: $customerName, signature: $signature, partsUsed: $partsUsed, files: $files, latitude: $latitude, longitude: $longitude, completionNotes: $completionNotes)';
   }
 }
 
@@ -892,6 +914,8 @@ abstract mixin class _$CompleteWorkOrderCopyWith<$Res>
   $Res call(
       {int workOrderId,
       String workLog,
+      String customerName,
+      File signature,
       List<PartUsedEntity> partsUsed,
       List<File> files,
       double latitude,
@@ -913,6 +937,8 @@ class __$CompleteWorkOrderCopyWithImpl<$Res>
   $Res call({
     Object? workOrderId = null,
     Object? workLog = null,
+    Object? customerName = null,
+    Object? signature = null,
     Object? partsUsed = null,
     Object? files = null,
     Object? latitude = null,
@@ -928,6 +954,14 @@ class __$CompleteWorkOrderCopyWithImpl<$Res>
           ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
               as String,
+      customerName: null == customerName
+          ? _self.customerName
+          : customerName // ignore: cast_nullable_to_non_nullable
+              as String,
+      signature: null == signature
+          ? _self.signature
+          : signature // ignore: cast_nullable_to_non_nullable
+              as File,
       partsUsed: null == partsUsed
           ? _self._partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable

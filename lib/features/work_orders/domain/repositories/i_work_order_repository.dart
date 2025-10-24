@@ -43,6 +43,8 @@ abstract class IWorkOrderRepository {
   Future<Either<Failure, WorkOrderEntity>> completeWorkOrder({
     required int workOrderId,
     required String workLog,
+    required String customerName,
+    required File signature,
     required List<PartUsedEntity> partsUsed,
     required List<File> files,
     required double latitude,

@@ -16,6 +16,8 @@ class CompleteWorkOrderUseCase {
     return _repository.completeWorkOrder(
       workOrderId: params.workOrderId,
       workLog: params.workLog,
+      customerName: params.customerName,
+      signature: params.signature,
       partsUsed: params.partsUsed,
       files: params.files,
       latitude: params.latitude,
@@ -28,6 +30,8 @@ class CompleteWorkOrderUseCase {
 class CompleteWorkOrderParams {
   final int workOrderId;
   final String workLog;
+  final String customerName;
+  final File signature;
   final List<PartUsedEntity> partsUsed;
   final List<File> files;
   final double latitude;
@@ -37,6 +41,8 @@ class CompleteWorkOrderParams {
   CompleteWorkOrderParams({
     required this.workOrderId,
     required this.workLog,
+    required this.customerName,
+    required this.signature,
     required this.partsUsed,
     required this.files,
     required this.latitude,

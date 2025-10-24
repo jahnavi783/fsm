@@ -11,6 +11,7 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/wo
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_start_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_pause_bottom_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_gallery_section.dart';
 
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
@@ -37,7 +38,6 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_details
 // Dialog components
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_confirmation_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/reason_dialog.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/complete_work_order_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
 
 @RoutePage()
@@ -588,36 +588,18 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   void _completeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
-    CompleteWorkOrderDialog.show(
-      context,
-      (workLog, completionNotes) {
-        _executeIfMounted(() {
-          final state = _workOrderActionBloc?.state;
-          state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___, ____, _____) {
-              if (currentLocation != null) {
-                _workOrderActionBloc?.add(
-                  WorkOrderActionEvent.completeWorkOrder(
-                    workOrderId: workOrder.id,
-                    workLog: workLog,
-                    partsUsed: const [],
-                    files: const [],
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                    completionNotes: completionNotes,
-                  ),
-                );
-              } else {
-                _showLocationErrorDialog(context);
-              }
-            },
-            orElse: () {
-              _showLocationErrorDialog(context);
-            },
-          );
-        });
-      },
-    );
+    _executeIfMounted(() {
+      final state = _workOrderActionBloc?.state;
+      state?.maybeWhen(
+        loaded: (_, currentLocation, __, ___, ____, _____) {
+          _showCompleteWorkOrderBottomSheet(context, workOrder, currentLocation);
+        },
+        actionSuccess: (workOrderEntity, actionType, message, _) {
+          _showCompleteWorkOrderBottomSheet(context, workOrder, null);
+        },
+        orElse: () => _showLocationErrorDialog(context),
+      );
+    });
   }
 
   void _rejectWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
@@ -694,6 +676,30 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       // Handle result if needed
       if (result == true) {
         // Work order was paused successfully
+      }
+    });
+  }
+
+  void _showCompleteWorkOrderBottomSheet(
+    BuildContext context,
+    WorkOrderEntity workOrder,
+    LocationEntity? currentLocation,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider.value(
+        value: _workOrderActionBloc!,
+        child: WorkOrderCompleteBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
+      ),
+    ).then((result) {
+      // Handle result if needed
+      if (result == true) {
+        // Work order was completed successfully
       }
     });
   }

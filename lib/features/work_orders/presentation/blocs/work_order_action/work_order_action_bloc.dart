@@ -54,10 +54,10 @@ class WorkOrderActionBloc
       resumeWorkOrder: (workOrderId, latitude, longitude, files, notes) =>
           _resumeWorkOrder(
               workOrderId, latitude, longitude, files, notes, emit),
-      completeWorkOrder: (workOrderId, workLog, partsUsed, files, latitude,
-              longitude, completionNotes) =>
-          _completeWorkOrder(workOrderId, workLog, partsUsed, files, latitude,
-              longitude, completionNotes, emit),
+      completeWorkOrder: (workOrderId, workLog, customerName, signature,
+              partsUsed, files, latitude, longitude, completionNotes) =>
+          _completeWorkOrder(workOrderId, workLog, customerName, signature,
+              partsUsed, files, latitude, longitude, completionNotes, emit),
       rejectWorkOrder: (workOrderId, reason, latitude, longitude) =>
           _rejectWorkOrder(workOrderId, reason, latitude, longitude, emit),
       captureLocation: () => _captureLocation(emit),
@@ -255,6 +255,8 @@ class WorkOrderActionBloc
   Future<void> _completeWorkOrder(
     int workOrderId,
     String workLog,
+    String customerName,
+    File signature,
     List<PartUsedEntity> partsUsed,
     List<File> files,
     double latitude,
@@ -284,6 +286,8 @@ class WorkOrderActionBloc
     final result = await _completeWorkOrderUseCase(CompleteWorkOrderParams(
       workOrderId: workOrderId,
       workLog: workLog,
+      customerName: customerName,
+      signature: signature,
       partsUsed: partsUsed,
       files: files,
       latitude: latitude,

@@ -1,13 +1,53 @@
+import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fsm/core/converters/json_array_converter.dart';
 import 'package:fsm/features/work_orders/data/models/service_request_dto.dart';
 import 'package:fsm/features/work_orders/data/models/customer_dto.dart';
 import 'package:fsm/features/work_orders/data/models/location_dto.dart';
 import 'package:fsm/features/work_orders/data/models/part_dto.dart';
+import 'package:fsm/features/work_orders/data/models/part_used_dto.dart';
 import 'package:fsm/features/work_orders/data/models/work_log_dto.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 part 'work_order_dto.freezed.dart';
 part 'work_order_dto.g.dart';
+
+// Helper functions for parts_used field conversion
+List<PartUsedDto>? _partsUsedFromJson(dynamic json) {
+  if (json == null) {
+    return null;
+  }
+
+  // Handle List case (if API sends array directly)
+  if (json is List) {
+    return json.map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  // Handle String case (JSON string)
+  if (json is String) {
+    if (json.isEmpty) {
+      return null;
+    }
+
+    try {
+      final List<dynamic> decoded = jsonDecode(json) as List<dynamic>;
+      return decoded.map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+dynamic _partsUsedToJson(List<PartUsedDto>? partsUsed) {
+  if (partsUsed == null) {
+    return null;
+  }
+
+  final List<Map<String, dynamic>> jsonList = partsUsed.map((e) => e.toJson()).toList();
+  return jsonEncode(jsonList);
+}
 
 @freezed
 abstract class WorkOrderDto with _$WorkOrderDto {
@@ -32,7 +72,12 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'pause_logs') String? pauseLogs,
     @JsonKey(name: 'rejection_logs') String? rejectionLogs,
     @JsonKey(name: 'work_log') String? workLog,
-    @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+    @JsonKey(
+      name: 'parts_used',
+      fromJson: _partsUsedFromJson,
+      toJson: _partsUsedToJson,
+    )
+    List<PartUsedDto>? partsUsed,
     @JsonKey(name: 'createdAt') required String createdAt,
     @JsonKey(name: 'updatedAt') required String updatedAt,
     @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -43,7 +88,8 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'location_details') LocationDto? locationDetails,
     @Default([]) List<WorkLogDto> workLogs,
     @Default([]) List<String> requiredSkills,
-    @Default([]) List<PartDto> requiredParts,
+    @JsonArrayConverter<PartDto>()
+    @Default([]) List<PartDto>? requiredParts,
     @Default([]) List<String> attachments,
     String? completionNotes,
     @Default([]) List<String> images,
@@ -86,14 +132,14 @@ extension WorkOrderDtoX on WorkOrderDto {
       completedAt: completedAt != null ? DateTime.parse(completedAt!) : null,
       pauseLogs: pauseLogs,
       workLog: workLog,
-      partsUsed: [], // parts_used is now a string field in the API
+      partsUsed: partsUsed?.map((p) => p.toEntity()).toList() ?? [],
       images: images,
       customer: customer?.toEntity(),
       locationDetails: locationDetails?.toEntity(),
       serviceRequest: serviceRequest?.toEntity(),
       workLogs: workLogs.map((w) => w.toEntity()).toList(),
       requiredSkills: requiredSkills,
-      requiredParts: requiredParts.map((p) => p.toEntity()).toList(),
+      requiredParts: requiredParts?.map((p) => p.toEntity()).toList() ?? [],
       attachments: attachments,
       completionNotes: completionNotes,
     );

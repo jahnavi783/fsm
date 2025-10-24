@@ -26,9 +26,7 @@ _WorkOrderDto _$WorkOrderDtoFromJson(Map<String, dynamic> json) =>
       pauseLogs: json['pause_logs'] as String?,
       rejectionLogs: json['rejection_logs'] as String?,
       workLog: json['work_log'] as String?,
-      partsUsed: (json['parts_used'] as List<dynamic>?)
-          ?.map((e) => PartDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      partsUsed: _partsUsedFromJson(json['parts_used']),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
       createdByUser: json['createdBy'] == null
@@ -91,7 +89,7 @@ Map<String, dynamic> _$WorkOrderDtoToJson(_WorkOrderDto instance) =>
       'pause_logs': instance.pauseLogs,
       'rejection_logs': instance.rejectionLogs,
       'work_log': instance.workLog,
-      'parts_used': instance.partsUsed,
+      'parts_used': _partsUsedToJson(instance.partsUsed),
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'createdBy': instance.createdByUser,

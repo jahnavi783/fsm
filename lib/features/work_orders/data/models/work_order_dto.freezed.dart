@@ -45,8 +45,11 @@ mixin _$WorkOrderDto {
   String? get rejectionLogs;
   @JsonKey(name: 'work_log')
   String? get workLog;
-  @JsonKey(name: 'parts_used')
-  List<PartDto>? get partsUsed;
+  @JsonKey(
+      name: 'parts_used',
+      fromJson: _partsUsedFromJson,
+      toJson: _partsUsedToJson)
+  List<PartUsedDto>? get partsUsed;
   @JsonKey(name: 'createdAt')
   String get createdAt;
   @JsonKey(name: 'updatedAt')
@@ -63,7 +66,8 @@ mixin _$WorkOrderDto {
   LocationDto? get locationDetails;
   List<WorkLogDto> get workLogs;
   List<String> get requiredSkills;
-  List<PartDto> get requiredParts;
+  @JsonArrayConverter<PartDto>()
+  List<PartDto>? get requiredParts;
   List<String> get attachments;
   String? get completionNotes;
   List<String> get images;
@@ -211,7 +215,11 @@ abstract mixin class $WorkOrderDtoCopyWith<$Res> {
       @JsonKey(name: 'pause_logs') String? pauseLogs,
       @JsonKey(name: 'rejection_logs') String? rejectionLogs,
       @JsonKey(name: 'work_log') String? workLog,
-      @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+      @JsonKey(
+          name: 'parts_used',
+          fromJson: _partsUsedFromJson,
+          toJson: _partsUsedToJson)
+      List<PartUsedDto>? partsUsed,
       @JsonKey(name: 'createdAt') String createdAt,
       @JsonKey(name: 'updatedAt') String updatedAt,
       @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -221,7 +229,7 @@ abstract mixin class $WorkOrderDtoCopyWith<$Res> {
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
       List<WorkLogDto> workLogs,
       List<String> requiredSkills,
-      List<PartDto> requiredParts,
+      @JsonArrayConverter<PartDto>() List<PartDto>? requiredParts,
       List<String> attachments,
       String? completionNotes,
       List<String> images});
@@ -273,7 +281,7 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
     Object? locationDetails = freezed,
     Object? workLogs = null,
     Object? requiredSkills = null,
-    Object? requiredParts = null,
+    Object? requiredParts = freezed,
     Object? attachments = null,
     Object? completionNotes = freezed,
     Object? images = null,
@@ -354,7 +362,7 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
       partsUsed: freezed == partsUsed
           ? _self.partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>?,
+              as List<PartUsedDto>?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -391,10 +399,10 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
           ? _self.requiredSkills
           : requiredSkills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      requiredParts: null == requiredParts
+      requiredParts: freezed == requiredParts
           ? _self.requiredParts
           : requiredParts // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>,
+              as List<PartDto>?,
       attachments: null == attachments
           ? _self.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
@@ -593,7 +601,11 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'pause_logs') String? pauseLogs,
             @JsonKey(name: 'rejection_logs') String? rejectionLogs,
             @JsonKey(name: 'work_log') String? workLog,
-            @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+            @JsonKey(
+                name: 'parts_used',
+                fromJson: _partsUsedFromJson,
+                toJson: _partsUsedToJson)
+            List<PartUsedDto>? partsUsed,
             @JsonKey(name: 'createdAt') String createdAt,
             @JsonKey(name: 'updatedAt') String updatedAt,
             @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -603,7 +615,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'location_details') LocationDto? locationDetails,
             List<WorkLogDto> workLogs,
             List<String> requiredSkills,
-            List<PartDto> requiredParts,
+            @JsonArrayConverter<PartDto>() List<PartDto>? requiredParts,
             List<String> attachments,
             String? completionNotes,
             List<String> images)?
@@ -685,7 +697,11 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'pause_logs') String? pauseLogs,
             @JsonKey(name: 'rejection_logs') String? rejectionLogs,
             @JsonKey(name: 'work_log') String? workLog,
-            @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+            @JsonKey(
+                name: 'parts_used',
+                fromJson: _partsUsedFromJson,
+                toJson: _partsUsedToJson)
+            List<PartUsedDto>? partsUsed,
             @JsonKey(name: 'createdAt') String createdAt,
             @JsonKey(name: 'updatedAt') String updatedAt,
             @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -695,7 +711,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'location_details') LocationDto? locationDetails,
             List<WorkLogDto> workLogs,
             List<String> requiredSkills,
-            List<PartDto> requiredParts,
+            @JsonArrayConverter<PartDto>() List<PartDto>? requiredParts,
             List<String> attachments,
             String? completionNotes,
             List<String> images)
@@ -775,7 +791,11 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'pause_logs') String? pauseLogs,
             @JsonKey(name: 'rejection_logs') String? rejectionLogs,
             @JsonKey(name: 'work_log') String? workLog,
-            @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+            @JsonKey(
+                name: 'parts_used',
+                fromJson: _partsUsedFromJson,
+                toJson: _partsUsedToJson)
+            List<PartUsedDto>? partsUsed,
             @JsonKey(name: 'createdAt') String createdAt,
             @JsonKey(name: 'updatedAt') String updatedAt,
             @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -785,7 +805,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             @JsonKey(name: 'location_details') LocationDto? locationDetails,
             List<WorkLogDto> workLogs,
             List<String> requiredSkills,
-            List<PartDto> requiredParts,
+            @JsonArrayConverter<PartDto>() List<PartDto>? requiredParts,
             List<String> attachments,
             String? completionNotes,
             List<String> images)?
@@ -855,7 +875,11 @@ class _WorkOrderDto implements WorkOrderDto {
       @JsonKey(name: 'pause_logs') this.pauseLogs,
       @JsonKey(name: 'rejection_logs') this.rejectionLogs,
       @JsonKey(name: 'work_log') this.workLog,
-      @JsonKey(name: 'parts_used') final List<PartDto>? partsUsed,
+      @JsonKey(
+          name: 'parts_used',
+          fromJson: _partsUsedFromJson,
+          toJson: _partsUsedToJson)
+      final List<PartUsedDto>? partsUsed,
       @JsonKey(name: 'createdAt') required this.createdAt,
       @JsonKey(name: 'updatedAt') required this.updatedAt,
       @JsonKey(name: 'createdBy') this.createdByUser,
@@ -865,7 +889,8 @@ class _WorkOrderDto implements WorkOrderDto {
       @JsonKey(name: 'location_details') this.locationDetails,
       final List<WorkLogDto> workLogs = const [],
       final List<String> requiredSkills = const [],
-      final List<PartDto> requiredParts = const [],
+      @JsonArrayConverter<PartDto>()
+      final List<PartDto>? requiredParts = const [],
       final List<String> attachments = const [],
       this.completionNotes,
       final List<String> images = const []})
@@ -929,10 +954,13 @@ class _WorkOrderDto implements WorkOrderDto {
   @override
   @JsonKey(name: 'work_log')
   final String? workLog;
-  final List<PartDto>? _partsUsed;
+  final List<PartUsedDto>? _partsUsed;
   @override
-  @JsonKey(name: 'parts_used')
-  List<PartDto>? get partsUsed {
+  @JsonKey(
+      name: 'parts_used',
+      fromJson: _partsUsedFromJson,
+      toJson: _partsUsedToJson)
+  List<PartUsedDto>? get partsUsed {
     final value = _partsUsed;
     if (value == null) return null;
     if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
@@ -979,13 +1007,16 @@ class _WorkOrderDto implements WorkOrderDto {
     return EqualUnmodifiableListView(_requiredSkills);
   }
 
-  final List<PartDto> _requiredParts;
+  final List<PartDto>? _requiredParts;
   @override
   @JsonKey()
-  List<PartDto> get requiredParts {
+  @JsonArrayConverter<PartDto>()
+  List<PartDto>? get requiredParts {
+    final value = _requiredParts;
+    if (value == null) return null;
     if (_requiredParts is EqualUnmodifiableListView) return _requiredParts;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_requiredParts);
+    return EqualUnmodifiableListView(value);
   }
 
   final List<String> _attachments;
@@ -1158,7 +1189,11 @@ abstract mixin class _$WorkOrderDtoCopyWith<$Res>
       @JsonKey(name: 'pause_logs') String? pauseLogs,
       @JsonKey(name: 'rejection_logs') String? rejectionLogs,
       @JsonKey(name: 'work_log') String? workLog,
-      @JsonKey(name: 'parts_used') List<PartDto>? partsUsed,
+      @JsonKey(
+          name: 'parts_used',
+          fromJson: _partsUsedFromJson,
+          toJson: _partsUsedToJson)
+      List<PartUsedDto>? partsUsed,
       @JsonKey(name: 'createdAt') String createdAt,
       @JsonKey(name: 'updatedAt') String updatedAt,
       @JsonKey(name: 'createdBy') UserDto? createdByUser,
@@ -1168,7 +1203,7 @@ abstract mixin class _$WorkOrderDtoCopyWith<$Res>
       @JsonKey(name: 'location_details') LocationDto? locationDetails,
       List<WorkLogDto> workLogs,
       List<String> requiredSkills,
-      List<PartDto> requiredParts,
+      @JsonArrayConverter<PartDto>() List<PartDto>? requiredParts,
       List<String> attachments,
       String? completionNotes,
       List<String> images});
@@ -1226,7 +1261,7 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
     Object? locationDetails = freezed,
     Object? workLogs = null,
     Object? requiredSkills = null,
-    Object? requiredParts = null,
+    Object? requiredParts = freezed,
     Object? attachments = null,
     Object? completionNotes = freezed,
     Object? images = null,
@@ -1307,7 +1342,7 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
       partsUsed: freezed == partsUsed
           ? _self._partsUsed
           : partsUsed // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>?,
+              as List<PartUsedDto>?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1344,10 +1379,10 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
           ? _self._requiredSkills
           : requiredSkills // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      requiredParts: null == requiredParts
+      requiredParts: freezed == requiredParts
           ? _self._requiredParts
           : requiredParts // ignore: cast_nullable_to_non_nullable
-              as List<PartDto>,
+              as List<PartDto>?,
       attachments: null == attachments
           ? _self._attachments
           : attachments // ignore: cast_nullable_to_non_nullable

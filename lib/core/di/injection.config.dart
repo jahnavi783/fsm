@@ -420,6 +420,7 @@ extension GetItInjectableX on _i174.GetIt {
         () async => _i332.WorkOrdersListBloc(
               await getAsync<_i874.GetWorkOrdersUseCase>(),
               await getAsync<_i556.IWorkOrderRepository>(),
+              await getAsync<_i589.IAuthRepository>(),
               gh<_i932.NetworkInfo>(),
             ));
     gh.factoryAsync<_i239.DocumentsBloc>(() async => _i239.DocumentsBloc(

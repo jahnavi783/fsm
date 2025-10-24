@@ -9,6 +9,7 @@ import 'package:fsm/core/error/hive_ce_error_handler.dart';
 import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/core/services/logging_service.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_orders_data.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
 import 'package:fsm/features/work_orders/data/datasources/work_order_remote_datasource.dart';
@@ -31,7 +32,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   );
 
   @override
-  Future<Either<Failure, List<WorkOrderEntity>>> getWorkOrders({
+  Future<Either<Failure, WorkOrdersData>> getWorkOrders({
     required int page,
     required int limit,
     WorkOrderStatus? status,
@@ -49,7 +50,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     try {
       if (await _networkInfo.isConnected) {
         // Try remote first
-        final workOrderDtos = await _remoteDataSource.getWorkOrders(
+        final response = await _remoteDataSource.getWorkOrders(
           page: page,
           limit: limit,
           status: status,
@@ -57,18 +58,31 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           searchQuery: searchQuery,
         );
 
-        // Cache successful response
+        // Cache successful response (both assigned and unassigned)
+        final allWorkOrders = [
+          ...response.workOrders,
+          ...response.unassignedWorkOrders,
+        ];
         final hiveModels =
-            workOrderDtos.map((dto) => _mapDtoToHiveModel(dto)).toList();
+            allWorkOrders.map((dto) => _mapDtoToHiveModel(dto)).toList();
         await _localDataSource.cacheWorkOrders(hiveModels);
 
         _logger.info(
-            'Successfully fetched and cached ${workOrderDtos.length} work orders',
+            'Successfully fetched and cached ${allWorkOrders.length} work orders '
+            '(${response.workOrders.length} assigned, ${response.unassignedWorkOrders.length} unassigned)',
             tag: 'WORK_ORDER_REPO');
 
-        // Return domain entities
-        final entities = workOrderDtos.map((dto) => dto.toEntity()).toList();
-        return Right(entities);
+        // Return domain data
+        final workOrdersData = WorkOrdersData(
+          workOrders: response.workOrders.map((dto) => dto.toEntity()).toList(),
+          unassignedWorkOrders:
+              response.unassignedWorkOrders.map((dto) => dto.toEntity()).toList(),
+          total: response.total,
+          page: response.page,
+          pages: response.pages,
+          unassignedCount: response.unassignedCount,
+        );
+        return Right(workOrdersData);
       } else {
         _logger.warning('No internet connection, falling back to cache',
             tag: 'WORK_ORDER_REPO');
@@ -90,7 +104,24 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             tag: 'WORK_ORDER_REPO');
 
         final entities = cachedModels.map((model) => model.toEntity()).toList();
-        return Right(entities);
+
+        // Separate assigned and unassigned from cache
+        final assignedEntities = entities
+            .where((e) => e.status != WorkOrderStatus.created)
+            .toList();
+        final unassignedEntities = entities
+            .where((e) => e.status == WorkOrderStatus.created)
+            .toList();
+
+        final workOrdersData = WorkOrdersData(
+          workOrders: assignedEntities,
+          unassignedWorkOrders: unassignedEntities,
+          total: entities.length,
+          page: page,
+          pages: 1,
+          unassignedCount: unassignedEntities.length,
+        );
+        return Right(workOrdersData);
       }
     } on DioException catch (e, stackTrace) {
       _logger.error('Dio exception in getWorkOrders',
@@ -817,6 +848,80 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     } catch (e, stackTrace) {
       _logger.error(
           'Unexpected error in getGroupedImages for ID: $workOrderId',
+          tag: 'WORK_ORDER_REPO',
+          error: e,
+          stackTrace: stackTrace);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, WorkOrderEntity>> assignWorkOrder({
+    required int workOrderId,
+    required int technicianId,
+  }) async {
+    _logger.info('Assigning work order $workOrderId to technician $technicianId',
+        tag: 'WORK_ORDER_REPO', data: {
+      'workOrderId': workOrderId,
+      'technicianId': technicianId,
+    });
+
+    try {
+      if (await _networkInfo.isConnected) {
+        final workOrderDto = await _remoteDataSource.assignWorkOrder(
+          workOrderId: workOrderId,
+          technicianId: technicianId,
+        );
+
+        // Update cache
+        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        await _localDataSource.updateWorkOrder(hiveModel);
+
+        _logger.info(
+            'Successfully assigned work order $workOrderId to technician $technicianId',
+            tag: 'WORK_ORDER_REPO');
+        return Right(workOrderDto.toEntity());
+      } else {
+        _logger.warning(
+            'Offline: queuing assign action for work order $workOrderId',
+            tag: 'WORK_ORDER_REPO');
+
+        // Store action for later sync
+        await _localDataSource.markWorkOrderForSync(workOrderId, 'assign');
+
+        // Update local status optimistically
+        final cachedModel =
+            await _localDataSource.getCachedWorkOrderById(workOrderId);
+        if (cachedModel == null) {
+          _logger.error(
+              'Work order $workOrderId not found in cache for assign action',
+              tag: 'WORK_ORDER_REPO');
+          return Left(CacheFailure(message: 'Work order not found in cache'));
+        }
+
+        final updatedModel = cachedModel.copyWith(
+          status: WorkOrderStatus.assigned.index,
+          isPendingSync: true,
+          pendingAction: 'assign',
+        );
+
+        await _localDataSource.updateWorkOrder(updatedModel);
+        _logger.info(
+            'Optimistically assigned work order $workOrderId offline',
+            tag: 'WORK_ORDER_REPO');
+        return Right(updatedModel.toEntity());
+      }
+    } on DioException catch (e, stackTrace) {
+      _logger.error('Dio exception in assignWorkOrder for ID: $workOrderId',
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(_handleDioException(e));
+    } on HiveError catch (e, stackTrace) {
+      _logger.error('Hive error in assignWorkOrder for ID: $workOrderId',
+          tag: 'WORK_ORDER_REPO', error: e, stackTrace: stackTrace);
+      return Left(HiveCEErrorHandler.handleHiveError(e));
+    } catch (e, stackTrace) {
+      _logger.error(
+          'Unexpected error in assignWorkOrder for ID: $workOrderId',
           tag: 'WORK_ORDER_REPO',
           error: e,
           stackTrace: stackTrace);

@@ -4,6 +4,7 @@ import 'package:fsm/core/network/network_info.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/domain/usecases/get_work_orders_usecase.dart';
 import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
+import 'package:fsm/features/auth/domain/repositories/i_auth_repository.dart';
 import 'work_orders_list_event.dart';
 import 'work_orders_list_state.dart';
 
@@ -12,11 +13,13 @@ class WorkOrdersListBloc
     extends Bloc<WorkOrdersListEvent, WorkOrdersListState> {
   final GetWorkOrdersUseCase _getWorkOrdersUseCase;
   final IWorkOrderRepository _repository;
+  final IAuthRepository _authRepository;
   final NetworkInfo _networkInfo;
 
   WorkOrdersListBloc(
     this._getWorkOrdersUseCase,
     this._repository,
+    this._authRepository,
     this._networkInfo,
   ) : super(const WorkOrdersListState.initial()) {
     on<WorkOrdersListEvent>(_onWorkOrdersListEvent);
@@ -37,6 +40,8 @@ class WorkOrdersListBloc
       searchWorkOrders: (query) => _searchWorkOrders(query, emit),
       clearFilters: () => _clearFilters(emit),
       syncPendingWorkOrders: () => _syncPendingWorkOrders(emit),
+      assignWorkOrderToSelf: (workOrderId) =>
+          _assignWorkOrderToSelf(workOrderId, emit),
     );
   }
 
@@ -54,7 +59,7 @@ class WorkOrdersListBloc
     } else {
       state.maybeWhen(
         loaded:
-            (_, __, ___, ____, _____, ______, _______, ________, _________) {},
+            (_, __, ___, ____, _____, ______, _______, ________, _________, __________, ___________) {},
         orElse: () => emit(const WorkOrdersListState.loading()),
       );
     }
@@ -73,7 +78,7 @@ class WorkOrdersListBloc
       (failure) async {
         final currentWorkOrders = state.maybeWhen(
           loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
-                  ________) =>
+                  ________, _________, __________) =>
               workOrders,
           orElse: () => <WorkOrderEntity>[],
         );
@@ -83,12 +88,14 @@ class WorkOrdersListBloc
           isOffline: !isConnected,
         ));
       },
-      (workOrders) async {
+      (workOrdersData) async {
         final hasPendingSync = await _checkPendingSync();
         emit(WorkOrdersListState.loaded(
-          workOrders: workOrders,
+          workOrders: workOrdersData.workOrders,
+          unassignedWorkOrders: workOrdersData.unassignedWorkOrders,
+          unassignedCount: workOrdersData.unassignedCount,
           currentPage: page,
-          hasReachedMax: workOrders.length < limit,
+          hasReachedMax: workOrdersData.workOrders.length < limit,
           statusFilter: status,
           priorityFilter: priority,
           searchQuery: searchQuery,
@@ -102,8 +109,8 @@ class WorkOrdersListBloc
   Future<void> _loadMoreWorkOrders(Emitter<WorkOrdersListState> emit) async {
     final currentState = state;
     if (!currentState.maybeWhen(
-      loaded: (_, __, hasReachedMax, isLoadingMore, ____, _____, ______,
-              _______, ________) =>
+      loaded: (_, __, ___, ____, hasReachedMax, isLoadingMore, ______,
+              _______, ________, _________, __________) =>
           !hasReachedMax && !isLoadingMore,
       orElse: () => false,
     )) {
@@ -112,17 +119,19 @@ class WorkOrdersListBloc
 
     final nextPage = currentState.maybeWhen(
       loaded:
-          (_, currentPage, __, ___, ____, _____, ______, _______, ________) =>
+          (_, __, ___, currentPage, ____, _____, ______, _______, ________, _________, __________) =>
               currentPage + 1,
       orElse: () => 1,
     );
 
     // Update state to show loading more
     emit(currentState.maybeWhen(
-      loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter,
+      loaded: (workOrders, unassignedWorkOrders, unassignedCount, currentPage, hasReachedMax, _, statusFilter,
               priorityFilter, searchQuery, isOffline, hasPendingSync) =>
           WorkOrdersListState.loaded(
         workOrders: workOrders,
+        unassignedWorkOrders: unassignedWorkOrders,
+        unassignedCount: unassignedCount,
         currentPage: currentPage,
         hasReachedMax: hasReachedMax,
         isLoadingMore: true,
@@ -139,20 +148,20 @@ class WorkOrdersListBloc
       page: nextPage,
       limit: 20,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
+                ________, _________, __________) =>
             statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
+                ________, _________, __________) =>
             priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
         loaded:
-            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+            (_, __, ___, ____, _____, ______, _______, ________, searchQuery, _________, __________) =>
                 searchQuery,
         orElse: () => null,
       ),
@@ -161,10 +170,12 @@ class WorkOrdersListBloc
     result.fold(
       (failure) {
         emit(currentState.maybeWhen(
-          loaded: (workOrders, currentPage, hasReachedMax, _, statusFilter,
+          loaded: (workOrders, unassignedWorkOrders, unassignedCount, currentPage, hasReachedMax, _, statusFilter,
                   priorityFilter, searchQuery, isOffline, hasPendingSync) =>
               WorkOrdersListState.loaded(
             workOrders: workOrders,
+            unassignedWorkOrders: unassignedWorkOrders,
+            unassignedCount: unassignedCount,
             currentPage: currentPage,
             hasReachedMax: hasReachedMax,
             isLoadingMore: false,
@@ -177,22 +188,24 @@ class WorkOrdersListBloc
           orElse: () => currentState,
         ));
       },
-      (newWorkOrders) {
+      (workOrdersData) {
         final currentWorkOrders = currentState.maybeWhen(
           loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
-                  ________) =>
+                  ________, _________, __________) =>
               workOrders,
           orElse: () => <WorkOrderEntity>[],
         );
-        final allWorkOrders = [...currentWorkOrders, ...newWorkOrders];
+        final allWorkOrders = [...currentWorkOrders, ...workOrdersData.workOrders];
 
         emit(currentState.maybeWhen(
-          loaded: (_, __, ___, ____, statusFilter, priorityFilter, searchQuery,
+          loaded: (_, unassignedWorkOrders, unassignedCount, ____, _____, ______, statusFilter, priorityFilter, searchQuery,
                   isOffline, hasPendingSync) =>
               WorkOrdersListState.loaded(
             workOrders: allWorkOrders,
+            unassignedWorkOrders: unassignedWorkOrders,
+            unassignedCount: unassignedCount,
             currentPage: nextPage,
-            hasReachedMax: newWorkOrders.length < 20,
+            hasReachedMax: workOrdersData.workOrders.length < 20,
             isLoadingMore: false,
             statusFilter: statusFilter,
             priorityFilter: priorityFilter,
@@ -211,20 +224,20 @@ class WorkOrdersListBloc
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
+                ________, _________, __________) =>
             statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
+                ________, _________, __________) =>
             priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
         loaded:
-            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+            (_, __, ___, ____, _____, ______, _______, ________, searchQuery, _________, __________) =>
                 searchQuery,
         orElse: () => null,
       ),
@@ -239,14 +252,14 @@ class WorkOrdersListBloc
       page: 1,
       status: status,
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
+                ________, _________, __________) =>
             priorityFilter,
         orElse: () => null,
       ),
       searchQuery: currentState.maybeWhen(
         loaded:
-            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+            (_, __, ___, ____, _____, ______, _______, ________, searchQuery, _________, __________) =>
                 searchQuery,
         orElse: () => null,
       ),
@@ -260,15 +273,15 @@ class WorkOrdersListBloc
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
+                ________, _________, __________) =>
             statusFilter,
         orElse: () => null,
       ),
       priority: priority,
       searchQuery: currentState.maybeWhen(
         loaded:
-            (_, __, ___, ____, _____, ______, searchQuery, _______, ________) =>
+            (_, __, ___, ____, _____, ______, _______, ________, searchQuery, _________, __________) =>
                 searchQuery,
         orElse: () => null,
       ),
@@ -282,14 +295,14 @@ class WorkOrdersListBloc
     add(WorkOrdersListEvent.loadWorkOrders(
       page: 1,
       status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, statusFilter, _____, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
+                ________, _________, __________) =>
             statusFilter,
         orElse: () => null,
       ),
       priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, priorityFilter, ______, _______,
-                ________) =>
+        loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
+                ________, _________, __________) =>
             priorityFilter,
         orElse: () => null,
       ),
@@ -309,7 +322,7 @@ class WorkOrdersListBloc
     final currentState = state;
     final currentWorkOrders = currentState.maybeWhen(
       loaded:
-          (workOrders, _, __, ___, ____, _____, ______, _______, ________) =>
+          (workOrders, _, __, ___, ____, _____, ______, _______, ________, _________, __________) =>
               workOrders,
       orElse: () => <WorkOrderEntity>[],
     );
@@ -328,6 +341,82 @@ class WorkOrdersListBloc
       (syncedWorkOrders) {
         // Refresh the work orders list after sync
         add(const WorkOrdersListEvent.refreshWorkOrders());
+      },
+    );
+  }
+
+  Future<void> _assignWorkOrderToSelf(
+    int workOrderId,
+    Emitter<WorkOrdersListState> emit,
+  ) async {
+    // Get current user ID
+    final userResult = await _authRepository.getCurrentUser();
+    final userId = userResult.fold(
+      (failure) {
+        emit(WorkOrdersListState.error(
+          failure: failure,
+          workOrders: state.maybeWhen(
+            loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
+                    ________, _________, __________) =>
+                workOrders,
+            orElse: () => [],
+          ),
+        ));
+        return null;
+      },
+      (user) => user.id,
+    );
+
+    if (userId == null) return;
+
+    // Call repository to assign work order
+    final result = await _repository.assignWorkOrder(
+      workOrderId: workOrderId,
+      technicianId: userId,
+    );
+
+    await result.fold(
+      (failure) async {
+        emit(WorkOrdersListState.error(
+          failure: failure,
+          workOrders: state.maybeWhen(
+            loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
+                    ________, _________, __________) =>
+                workOrders,
+            orElse: () => [],
+          ),
+        ));
+      },
+      (assignedWorkOrder) async {
+        // Remove from unassigned list and refresh
+        state.maybeWhen(
+          loaded: (workOrders, unassignedWorkOrders, unassignedCount,
+              currentPage, hasReachedMax, isLoadingMore, statusFilter,
+              priorityFilter, searchQuery, isOffline, hasPendingSync) {
+            // Remove the work order from unassigned list
+            final updatedUnassigned = unassignedWorkOrders
+                .where((wo) => wo.id != workOrderId)
+                .toList();
+
+            // Add to assigned work orders list
+            final updatedWorkOrders = [assignedWorkOrder, ...workOrders];
+
+            emit(WorkOrdersListState.loaded(
+              workOrders: updatedWorkOrders,
+              unassignedWorkOrders: updatedUnassigned,
+              unassignedCount: updatedUnassigned.length,
+              currentPage: currentPage,
+              hasReachedMax: hasReachedMax,
+              isLoadingMore: isLoadingMore,
+              statusFilter: statusFilter,
+              priorityFilter: priorityFilter,
+              searchQuery: searchQuery,
+              isOffline: isOffline,
+              hasPendingSync: hasPendingSync,
+            ));
+          },
+          orElse: () {},
+        );
       },
     );
   }

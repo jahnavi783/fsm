@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:either_dart/either.dart';
 import 'package:fsm/core/error/failures.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_orders_data.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 
 abstract class IWorkOrderRepository {
-  Future<Either<Failure, List<WorkOrderEntity>>> getWorkOrders({
+  Future<Either<Failure, WorkOrdersData>> getWorkOrders({
     required int page,
     required int limit,
     WorkOrderStatus? status,
@@ -67,4 +68,9 @@ abstract class IWorkOrderRepository {
 
   Future<Either<Failure, WorkOrderGroupedImagesEntity>> getGroupedImages(
       int workOrderId);
+
+  Future<Either<Failure, WorkOrderEntity>> assignWorkOrder({
+    required int workOrderId,
+    required int technicianId,
+  });
 }

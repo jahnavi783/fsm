@@ -168,6 +168,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
     TResult Function()? loading,
     TResult Function(
             List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
+            int unassignedCount,
             int currentPage,
             bool hasReachedMax,
             bool isLoadingMore,
@@ -192,6 +194,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
       case _Loaded() when loaded != null:
         return loaded(
             _that.workOrders,
+            _that.unassignedWorkOrders,
+            _that.unassignedCount,
             _that.currentPage,
             _that.hasReachedMax,
             _that.isLoadingMore,
@@ -228,6 +232,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
     required TResult Function() loading,
     required TResult Function(
             List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
+            int unassignedCount,
             int currentPage,
             bool hasReachedMax,
             bool isLoadingMore,
@@ -251,6 +257,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
       case _Loaded():
         return loaded(
             _that.workOrders,
+            _that.unassignedWorkOrders,
+            _that.unassignedCount,
             _that.currentPage,
             _that.hasReachedMax,
             _that.isLoadingMore,
@@ -286,6 +294,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
     TResult? Function()? loading,
     TResult? Function(
             List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
+            int unassignedCount,
             int currentPage,
             bool hasReachedMax,
             bool isLoadingMore,
@@ -309,6 +319,8 @@ extension WorkOrdersListStatePatterns on WorkOrdersListState {
       case _Loaded() when loaded != null:
         return loaded(
             _that.workOrders,
+            _that.unassignedWorkOrders,
+            _that.unassignedCount,
             _that.currentPage,
             _that.hasReachedMax,
             _that.isLoadingMore,
@@ -372,6 +384,8 @@ class _Loading implements WorkOrdersListState {
 class _Loaded implements WorkOrdersListState {
   const _Loaded(
       {required final List<WorkOrderEntity> workOrders,
+      final List<WorkOrderEntity> unassignedWorkOrders = const [],
+      this.unassignedCount = 0,
       this.currentPage = 1,
       this.hasReachedMax = false,
       this.isLoadingMore = false,
@@ -380,7 +394,8 @@ class _Loaded implements WorkOrdersListState {
       this.searchQuery,
       this.isOffline = false,
       this.hasPendingSync = false})
-      : _workOrders = workOrders;
+      : _workOrders = workOrders,
+        _unassignedWorkOrders = unassignedWorkOrders;
 
   final List<WorkOrderEntity> _workOrders;
   List<WorkOrderEntity> get workOrders {
@@ -389,6 +404,17 @@ class _Loaded implements WorkOrdersListState {
     return EqualUnmodifiableListView(_workOrders);
   }
 
+  final List<WorkOrderEntity> _unassignedWorkOrders;
+  @JsonKey()
+  List<WorkOrderEntity> get unassignedWorkOrders {
+    if (_unassignedWorkOrders is EqualUnmodifiableListView)
+      return _unassignedWorkOrders;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_unassignedWorkOrders);
+  }
+
+  @JsonKey()
+  final int unassignedCount;
   @JsonKey()
   final int currentPage;
   @JsonKey()
@@ -417,6 +443,10 @@ class _Loaded implements WorkOrdersListState {
             other is _Loaded &&
             const DeepCollectionEquality()
                 .equals(other._workOrders, _workOrders) &&
+            const DeepCollectionEquality()
+                .equals(other._unassignedWorkOrders, _unassignedWorkOrders) &&
+            (identical(other.unassignedCount, unassignedCount) ||
+                other.unassignedCount == unassignedCount) &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
             (identical(other.hasReachedMax, hasReachedMax) ||
@@ -439,6 +469,8 @@ class _Loaded implements WorkOrdersListState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_workOrders),
+      const DeepCollectionEquality().hash(_unassignedWorkOrders),
+      unassignedCount,
       currentPage,
       hasReachedMax,
       isLoadingMore,
@@ -450,7 +482,7 @@ class _Loaded implements WorkOrdersListState {
 
   @override
   String toString() {
-    return 'WorkOrdersListState.loaded(workOrders: $workOrders, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, statusFilter: $statusFilter, priorityFilter: $priorityFilter, searchQuery: $searchQuery, isOffline: $isOffline, hasPendingSync: $hasPendingSync)';
+    return 'WorkOrdersListState.loaded(workOrders: $workOrders, unassignedWorkOrders: $unassignedWorkOrders, unassignedCount: $unassignedCount, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, statusFilter: $statusFilter, priorityFilter: $priorityFilter, searchQuery: $searchQuery, isOffline: $isOffline, hasPendingSync: $hasPendingSync)';
   }
 }
 
@@ -462,6 +494,8 @@ abstract mixin class _$LoadedCopyWith<$Res>
   @useResult
   $Res call(
       {List<WorkOrderEntity> workOrders,
+      List<WorkOrderEntity> unassignedWorkOrders,
+      int unassignedCount,
       int currentPage,
       bool hasReachedMax,
       bool isLoadingMore,
@@ -484,6 +518,8 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   $Res call({
     Object? workOrders = null,
+    Object? unassignedWorkOrders = null,
+    Object? unassignedCount = null,
     Object? currentPage = null,
     Object? hasReachedMax = null,
     Object? isLoadingMore = null,
@@ -498,6 +534,14 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
           ? _self._workOrders
           : workOrders // ignore: cast_nullable_to_non_nullable
               as List<WorkOrderEntity>,
+      unassignedWorkOrders: null == unassignedWorkOrders
+          ? _self._unassignedWorkOrders
+          : unassignedWorkOrders // ignore: cast_nullable_to_non_nullable
+              as List<WorkOrderEntity>,
+      unassignedCount: null == unassignedCount
+          ? _self.unassignedCount
+          : unassignedCount // ignore: cast_nullable_to_non_nullable
+              as int,
       currentPage: null == currentPage
           ? _self.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable

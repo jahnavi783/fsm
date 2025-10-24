@@ -14,6 +14,11 @@ _WorkOrdersResponse _$WorkOrdersResponseFromJson(Map<String, dynamic> json) =>
       workOrders: (json['work_orders'] as List<dynamic>)
           .map((e) => WorkOrderDto.fromJson(e as Map<String, dynamic>))
           .toList(),
+      unassignedWorkOrders: (json['unassigned_work_orders'] as List<dynamic>?)
+              ?.map((e) => WorkOrderDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      unassignedCount: (json['unassigned_count'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$WorkOrdersResponseToJson(_WorkOrdersResponse instance) =>
@@ -22,4 +27,6 @@ Map<String, dynamic> _$WorkOrdersResponseToJson(_WorkOrdersResponse instance) =>
       'page': instance.page,
       'pages': instance.pages,
       'work_orders': instance.workOrders,
+      'unassigned_work_orders': instance.unassignedWorkOrders,
+      'unassigned_count': instance.unassignedCount,
     };

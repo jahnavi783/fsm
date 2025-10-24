@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:injectable/injectable.dart';
 import 'package:fsm/features/work_orders/data/api/work_order_api_client.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_dto.dart';
+import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
 import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/assign_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 abstract class WorkOrderRemoteDataSource {
-  Future<List<WorkOrderDto>> getWorkOrders({
+  Future<WorkOrdersResponse> getWorkOrders({
     required int page,
     required int limit,
     WorkOrderStatus? status,
@@ -60,6 +62,11 @@ abstract class WorkOrderRemoteDataSource {
   });
 
   Future<WorkOrderGroupedImagesResponseDto> getGroupedImages(int workOrderId);
+
+  Future<WorkOrderDto> assignWorkOrder({
+    required int workOrderId,
+    required int technicianId,
+  });
 }
 
 @Injectable(as: WorkOrderRemoteDataSource)
@@ -69,7 +76,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   WorkOrderRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<List<WorkOrderDto>> getWorkOrders({
+  Future<WorkOrdersResponse> getWorkOrders({
     required int page,
     required int limit,
     WorkOrderStatus? status,
@@ -83,7 +90,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       priority: priority,
       // searchQuery: searchQuery,
     );
-    return response.workOrders;
+    return response;
   }
 
   @override
@@ -190,5 +197,18 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
   Future<WorkOrderGroupedImagesResponseDto> getGroupedImages(
       int workOrderId) async {
     return await _apiClient.getGroupedImages(workOrderId);
+  }
+
+  @override
+  Future<WorkOrderDto> assignWorkOrder({
+    required int workOrderId,
+    required int technicianId,
+  }) async {
+    final request = AssignWorkOrderRequest(assignedTo: technicianId);
+    final response = await _apiClient.assignWorkOrder(
+      id: workOrderId,
+      body: request,
+    );
+    return response.workOrder;
   }
 }

@@ -25,6 +25,10 @@ class WorkOrdersListEvent with _$WorkOrdersListEvent {
   const factory WorkOrdersListEvent.searchWorkOrders(String query) = _SearchWorkOrders;
   
   const factory WorkOrdersListEvent.clearFilters() = _ClearFilters;
-  
+
   const factory WorkOrdersListEvent.syncPendingWorkOrders() = _SyncPendingWorkOrders;
+
+  const factory WorkOrdersListEvent.assignWorkOrderToSelf({
+    required int workOrderId,
+  }) = _AssignWorkOrderToSelf;
 }

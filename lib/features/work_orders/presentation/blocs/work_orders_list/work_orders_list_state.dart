@@ -12,6 +12,8 @@ class WorkOrdersListState with _$WorkOrdersListState {
   
   const factory WorkOrdersListState.loaded({
     required List<WorkOrderEntity> workOrders,
+    @Default([]) List<WorkOrderEntity> unassignedWorkOrders,
+    @Default(0) int unassignedCount,
     @Default(1) int currentPage,
     @Default(false) bool hasReachedMax,
     @Default(false) bool isLoadingMore,

@@ -59,6 +59,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult Function(_SearchWorkOrders value)? searchWorkOrders,
     TResult Function(_ClearFilters value)? clearFilters,
     TResult Function(_SyncPendingWorkOrders value)? syncPendingWorkOrders,
+    TResult Function(_AssignWorkOrderToSelf value)? assignWorkOrderToSelf,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -79,6 +80,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters(_that);
       case _SyncPendingWorkOrders() when syncPendingWorkOrders != null:
         return syncPendingWorkOrders(_that);
+      case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
+        return assignWorkOrderToSelf(_that);
       case _:
         return orElse();
     }
@@ -108,6 +111,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     required TResult Function(_ClearFilters value) clearFilters,
     required TResult Function(_SyncPendingWorkOrders value)
         syncPendingWorkOrders,
+    required TResult Function(_AssignWorkOrderToSelf value)
+        assignWorkOrderToSelf,
   }) {
     final _that = this;
     switch (_that) {
@@ -127,6 +132,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters(_that);
       case _SyncPendingWorkOrders():
         return syncPendingWorkOrders(_that);
+      case _AssignWorkOrderToSelf():
+        return assignWorkOrderToSelf(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -154,6 +161,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult? Function(_SearchWorkOrders value)? searchWorkOrders,
     TResult? Function(_ClearFilters value)? clearFilters,
     TResult? Function(_SyncPendingWorkOrders value)? syncPendingWorkOrders,
+    TResult? Function(_AssignWorkOrderToSelf value)? assignWorkOrderToSelf,
   }) {
     final _that = this;
     switch (_that) {
@@ -173,6 +181,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters(_that);
       case _SyncPendingWorkOrders() when syncPendingWorkOrders != null:
         return syncPendingWorkOrders(_that);
+      case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
+        return assignWorkOrderToSelf(_that);
       case _:
         return null;
     }
@@ -202,6 +212,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult Function(String query)? searchWorkOrders,
     TResult Function()? clearFilters,
     TResult Function()? syncPendingWorkOrders,
+    TResult Function(int workOrderId)? assignWorkOrderToSelf,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -223,6 +234,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters();
       case _SyncPendingWorkOrders() when syncPendingWorkOrders != null:
         return syncPendingWorkOrders();
+      case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
+        return assignWorkOrderToSelf(_that.workOrderId);
       case _:
         return orElse();
     }
@@ -253,6 +266,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     required TResult Function(String query) searchWorkOrders,
     required TResult Function() clearFilters,
     required TResult Function() syncPendingWorkOrders,
+    required TResult Function(int workOrderId) assignWorkOrderToSelf,
   }) {
     final _that = this;
     switch (_that) {
@@ -273,6 +287,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters();
       case _SyncPendingWorkOrders():
         return syncPendingWorkOrders();
+      case _AssignWorkOrderToSelf():
+        return assignWorkOrderToSelf(_that.workOrderId);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -302,6 +318,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult? Function(String query)? searchWorkOrders,
     TResult? Function()? clearFilters,
     TResult? Function()? syncPendingWorkOrders,
+    TResult? Function(int workOrderId)? assignWorkOrderToSelf,
   }) {
     final _that = this;
     switch (_that) {
@@ -322,6 +339,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return clearFilters();
       case _SyncPendingWorkOrders() when syncPendingWorkOrders != null:
         return syncPendingWorkOrders();
+      case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
+        return assignWorkOrderToSelf(_that.workOrderId);
       case _:
         return null;
     }
@@ -716,6 +735,72 @@ class _SyncPendingWorkOrders implements WorkOrdersListEvent {
   @override
   String toString() {
     return 'WorkOrdersListEvent.syncPendingWorkOrders()';
+  }
+}
+
+/// @nodoc
+
+class _AssignWorkOrderToSelf implements WorkOrdersListEvent {
+  const _AssignWorkOrderToSelf({required this.workOrderId});
+
+  final int workOrderId;
+
+  /// Create a copy of WorkOrdersListEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$AssignWorkOrderToSelfCopyWith<_AssignWorkOrderToSelf> get copyWith =>
+      __$AssignWorkOrderToSelfCopyWithImpl<_AssignWorkOrderToSelf>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _AssignWorkOrderToSelf &&
+            (identical(other.workOrderId, workOrderId) ||
+                other.workOrderId == workOrderId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, workOrderId);
+
+  @override
+  String toString() {
+    return 'WorkOrdersListEvent.assignWorkOrderToSelf(workOrderId: $workOrderId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$AssignWorkOrderToSelfCopyWith<$Res>
+    implements $WorkOrdersListEventCopyWith<$Res> {
+  factory _$AssignWorkOrderToSelfCopyWith(_AssignWorkOrderToSelf value,
+          $Res Function(_AssignWorkOrderToSelf) _then) =
+      __$AssignWorkOrderToSelfCopyWithImpl;
+  @useResult
+  $Res call({int workOrderId});
+}
+
+/// @nodoc
+class __$AssignWorkOrderToSelfCopyWithImpl<$Res>
+    implements _$AssignWorkOrderToSelfCopyWith<$Res> {
+  __$AssignWorkOrderToSelfCopyWithImpl(this._self, this._then);
+
+  final _AssignWorkOrderToSelf _self;
+  final $Res Function(_AssignWorkOrderToSelf) _then;
+
+  /// Create a copy of WorkOrdersListEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? workOrderId = null,
+  }) {
+    return _then(_AssignWorkOrderToSelf(
+      workOrderId: null == workOrderId
+          ? _self.workOrderId
+          : workOrderId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 

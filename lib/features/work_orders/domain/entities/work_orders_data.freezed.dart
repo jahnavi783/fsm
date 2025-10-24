@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'work_orders_response.dart';
+part of 'work_orders_data.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,98 +13,98 @@ part of 'work_orders_response.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$WorkOrdersResponse {
+mixin _$WorkOrdersData {
+  List<WorkOrderEntity> get workOrders;
+  List<WorkOrderEntity> get unassignedWorkOrders;
   int get total;
   int get page;
   int get pages;
-  @JsonKey(name: 'work_orders')
-  List<WorkOrderDto> get workOrders;
-  @JsonKey(name: 'unassigned_work_orders')
-  List<WorkOrderDto> get unassignedWorkOrders;
-  @JsonKey(name: 'unassigned_count')
   int get unassignedCount;
 
-  /// Create a copy of WorkOrdersResponse
+  /// Create a copy of WorkOrdersData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $WorkOrdersResponseCopyWith<WorkOrdersResponse> get copyWith =>
-      _$WorkOrdersResponseCopyWithImpl<WorkOrdersResponse>(
-          this as WorkOrdersResponse, _$identity);
-
-  /// Serializes this WorkOrdersResponse to a JSON map.
-  Map<String, dynamic> toJson();
+  $WorkOrdersDataCopyWith<WorkOrdersData> get copyWith =>
+      _$WorkOrdersDataCopyWithImpl<WorkOrdersData>(
+          this as WorkOrdersData, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is WorkOrdersResponse &&
-            (identical(other.total, total) || other.total == total) &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.pages, pages) || other.pages == pages) &&
+            other is WorkOrdersData &&
             const DeepCollectionEquality()
                 .equals(other.workOrders, workOrders) &&
             const DeepCollectionEquality()
                 .equals(other.unassignedWorkOrders, unassignedWorkOrders) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.pages, pages) || other.pages == pages) &&
             (identical(other.unassignedCount, unassignedCount) ||
                 other.unassignedCount == unassignedCount));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(workOrders),
+      const DeepCollectionEquality().hash(unassignedWorkOrders),
       total,
       page,
       pages,
-      const DeepCollectionEquality().hash(workOrders),
-      const DeepCollectionEquality().hash(unassignedWorkOrders),
       unassignedCount);
 
   @override
   String toString() {
-    return 'WorkOrdersResponse(total: $total, page: $page, pages: $pages, workOrders: $workOrders, unassignedWorkOrders: $unassignedWorkOrders, unassignedCount: $unassignedCount)';
+    return 'WorkOrdersData(workOrders: $workOrders, unassignedWorkOrders: $unassignedWorkOrders, total: $total, page: $page, pages: $pages, unassignedCount: $unassignedCount)';
   }
 }
 
 /// @nodoc
-abstract mixin class $WorkOrdersResponseCopyWith<$Res> {
-  factory $WorkOrdersResponseCopyWith(
-          WorkOrdersResponse value, $Res Function(WorkOrdersResponse) _then) =
-      _$WorkOrdersResponseCopyWithImpl;
+abstract mixin class $WorkOrdersDataCopyWith<$Res> {
+  factory $WorkOrdersDataCopyWith(
+          WorkOrdersData value, $Res Function(WorkOrdersData) _then) =
+      _$WorkOrdersDataCopyWithImpl;
   @useResult
   $Res call(
-      {int total,
+      {List<WorkOrderEntity> workOrders,
+      List<WorkOrderEntity> unassignedWorkOrders,
+      int total,
       int page,
       int pages,
-      @JsonKey(name: 'work_orders') List<WorkOrderDto> workOrders,
-      @JsonKey(name: 'unassigned_work_orders')
-      List<WorkOrderDto> unassignedWorkOrders,
-      @JsonKey(name: 'unassigned_count') int unassignedCount});
+      int unassignedCount});
 }
 
 /// @nodoc
-class _$WorkOrdersResponseCopyWithImpl<$Res>
-    implements $WorkOrdersResponseCopyWith<$Res> {
-  _$WorkOrdersResponseCopyWithImpl(this._self, this._then);
+class _$WorkOrdersDataCopyWithImpl<$Res>
+    implements $WorkOrdersDataCopyWith<$Res> {
+  _$WorkOrdersDataCopyWithImpl(this._self, this._then);
 
-  final WorkOrdersResponse _self;
-  final $Res Function(WorkOrdersResponse) _then;
+  final WorkOrdersData _self;
+  final $Res Function(WorkOrdersData) _then;
 
-  /// Create a copy of WorkOrdersResponse
+  /// Create a copy of WorkOrdersData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? workOrders = null,
+    Object? unassignedWorkOrders = null,
     Object? total = null,
     Object? page = null,
     Object? pages = null,
-    Object? workOrders = null,
-    Object? unassignedWorkOrders = null,
     Object? unassignedCount = null,
   }) {
     return _then(_self.copyWith(
+      workOrders: null == workOrders
+          ? _self.workOrders
+          : workOrders // ignore: cast_nullable_to_non_nullable
+              as List<WorkOrderEntity>,
+      unassignedWorkOrders: null == unassignedWorkOrders
+          ? _self.unassignedWorkOrders
+          : unassignedWorkOrders // ignore: cast_nullable_to_non_nullable
+              as List<WorkOrderEntity>,
       total: null == total
           ? _self.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -117,14 +117,6 @@ class _$WorkOrdersResponseCopyWithImpl<$Res>
           ? _self.pages
           : pages // ignore: cast_nullable_to_non_nullable
               as int,
-      workOrders: null == workOrders
-          ? _self.workOrders
-          : workOrders // ignore: cast_nullable_to_non_nullable
-              as List<WorkOrderDto>,
-      unassignedWorkOrders: null == unassignedWorkOrders
-          ? _self.unassignedWorkOrders
-          : unassignedWorkOrders // ignore: cast_nullable_to_non_nullable
-              as List<WorkOrderDto>,
       unassignedCount: null == unassignedCount
           ? _self.unassignedCount
           : unassignedCount // ignore: cast_nullable_to_non_nullable
@@ -133,8 +125,8 @@ class _$WorkOrdersResponseCopyWithImpl<$Res>
   }
 }
 
-/// Adds pattern-matching-related methods to [WorkOrdersResponse].
-extension WorkOrdersResponsePatterns on WorkOrdersResponse {
+/// Adds pattern-matching-related methods to [WorkOrdersData].
+extension WorkOrdersDataPatterns on WorkOrdersData {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -149,12 +141,12 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_WorkOrdersResponse value)? $default, {
+    TResult Function(_WorkOrdersData value)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse() when $default != null:
+      case _WorkOrdersData() when $default != null:
         return $default(_that);
       case _:
         return orElse();
@@ -176,11 +168,11 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_WorkOrdersResponse value) $default,
+    TResult Function(_WorkOrdersData value) $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse():
+      case _WorkOrdersData():
         return $default(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -201,11 +193,11 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_WorkOrdersResponse value)? $default,
+    TResult? Function(_WorkOrdersData value)? $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse() when $default != null:
+      case _WorkOrdersData() when $default != null:
         return $default(_that);
       case _:
         return null;
@@ -227,21 +219,20 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
+            List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
             int total,
             int page,
             int pages,
-            @JsonKey(name: 'work_orders') List<WorkOrderDto> workOrders,
-            @JsonKey(name: 'unassigned_work_orders')
-            List<WorkOrderDto> unassignedWorkOrders,
-            @JsonKey(name: 'unassigned_count') int unassignedCount)?
+            int unassignedCount)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse() when $default != null:
-        return $default(_that.total, _that.page, _that.pages, _that.workOrders,
-            _that.unassignedWorkOrders, _that.unassignedCount);
+      case _WorkOrdersData() when $default != null:
+        return $default(_that.workOrders, _that.unassignedWorkOrders,
+            _that.total, _that.page, _that.pages, _that.unassignedCount);
       case _:
         return orElse();
     }
@@ -263,20 +254,19 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
+            List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
             int total,
             int page,
             int pages,
-            @JsonKey(name: 'work_orders') List<WorkOrderDto> workOrders,
-            @JsonKey(name: 'unassigned_work_orders')
-            List<WorkOrderDto> unassignedWorkOrders,
-            @JsonKey(name: 'unassigned_count') int unassignedCount)
+            int unassignedCount)
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse():
-        return $default(_that.total, _that.page, _that.pages, _that.workOrders,
-            _that.unassignedWorkOrders, _that.unassignedCount);
+      case _WorkOrdersData():
+        return $default(_that.workOrders, _that.unassignedWorkOrders,
+            _that.total, _that.page, _that.pages, _that.unassignedCount);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -297,20 +287,19 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
+            List<WorkOrderEntity> workOrders,
+            List<WorkOrderEntity> unassignedWorkOrders,
             int total,
             int page,
             int pages,
-            @JsonKey(name: 'work_orders') List<WorkOrderDto> workOrders,
-            @JsonKey(name: 'unassigned_work_orders')
-            List<WorkOrderDto> unassignedWorkOrders,
-            @JsonKey(name: 'unassigned_count') int unassignedCount)?
+            int unassignedCount)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _WorkOrdersResponse() when $default != null:
-        return $default(_that.total, _that.page, _that.pages, _that.workOrders,
-            _that.unassignedWorkOrders, _that.unassignedCount);
+      case _WorkOrdersData() when $default != null:
+        return $default(_that.workOrders, _that.unassignedWorkOrders,
+            _that.total, _that.page, _that.pages, _that.unassignedCount);
       case _:
         return null;
     }
@@ -318,41 +307,29 @@ extension WorkOrdersResponsePatterns on WorkOrdersResponse {
 }
 
 /// @nodoc
-@JsonSerializable()
-class _WorkOrdersResponse implements WorkOrdersResponse {
-  const _WorkOrdersResponse(
-      {required this.total,
+
+class _WorkOrdersData implements WorkOrdersData {
+  const _WorkOrdersData(
+      {required final List<WorkOrderEntity> workOrders,
+      required final List<WorkOrderEntity> unassignedWorkOrders,
+      required this.total,
       required this.page,
       required this.pages,
-      @JsonKey(name: 'work_orders')
-      required final List<WorkOrderDto> workOrders,
-      @JsonKey(name: 'unassigned_work_orders')
-      final List<WorkOrderDto> unassignedWorkOrders = const [],
-      @JsonKey(name: 'unassigned_count') this.unassignedCount = 0})
+      required this.unassignedCount})
       : _workOrders = workOrders,
         _unassignedWorkOrders = unassignedWorkOrders;
-  factory _WorkOrdersResponse.fromJson(Map<String, dynamic> json) =>
-      _$WorkOrdersResponseFromJson(json);
 
+  final List<WorkOrderEntity> _workOrders;
   @override
-  final int total;
-  @override
-  final int page;
-  @override
-  final int pages;
-  final List<WorkOrderDto> _workOrders;
-  @override
-  @JsonKey(name: 'work_orders')
-  List<WorkOrderDto> get workOrders {
+  List<WorkOrderEntity> get workOrders {
     if (_workOrders is EqualUnmodifiableListView) return _workOrders;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_workOrders);
   }
 
-  final List<WorkOrderDto> _unassignedWorkOrders;
+  final List<WorkOrderEntity> _unassignedWorkOrders;
   @override
-  @JsonKey(name: 'unassigned_work_orders')
-  List<WorkOrderDto> get unassignedWorkOrders {
+  List<WorkOrderEntity> get unassignedWorkOrders {
     if (_unassignedWorkOrders is EqualUnmodifiableListView)
       return _unassignedWorkOrders;
     // ignore: implicit_dynamic_type
@@ -360,96 +337,100 @@ class _WorkOrdersResponse implements WorkOrdersResponse {
   }
 
   @override
-  @JsonKey(name: 'unassigned_count')
+  final int total;
+  @override
+  final int page;
+  @override
+  final int pages;
+  @override
   final int unassignedCount;
 
-  /// Create a copy of WorkOrdersResponse
+  /// Create a copy of WorkOrdersData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$WorkOrdersResponseCopyWith<_WorkOrdersResponse> get copyWith =>
-      __$WorkOrdersResponseCopyWithImpl<_WorkOrdersResponse>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$WorkOrdersResponseToJson(
-      this,
-    );
-  }
+  _$WorkOrdersDataCopyWith<_WorkOrdersData> get copyWith =>
+      __$WorkOrdersDataCopyWithImpl<_WorkOrdersData>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WorkOrdersResponse &&
-            (identical(other.total, total) || other.total == total) &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.pages, pages) || other.pages == pages) &&
+            other is _WorkOrdersData &&
             const DeepCollectionEquality()
                 .equals(other._workOrders, _workOrders) &&
             const DeepCollectionEquality()
                 .equals(other._unassignedWorkOrders, _unassignedWorkOrders) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.pages, pages) || other.pages == pages) &&
             (identical(other.unassignedCount, unassignedCount) ||
                 other.unassignedCount == unassignedCount));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(_workOrders),
+      const DeepCollectionEquality().hash(_unassignedWorkOrders),
       total,
       page,
       pages,
-      const DeepCollectionEquality().hash(_workOrders),
-      const DeepCollectionEquality().hash(_unassignedWorkOrders),
       unassignedCount);
 
   @override
   String toString() {
-    return 'WorkOrdersResponse(total: $total, page: $page, pages: $pages, workOrders: $workOrders, unassignedWorkOrders: $unassignedWorkOrders, unassignedCount: $unassignedCount)';
+    return 'WorkOrdersData(workOrders: $workOrders, unassignedWorkOrders: $unassignedWorkOrders, total: $total, page: $page, pages: $pages, unassignedCount: $unassignedCount)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$WorkOrdersResponseCopyWith<$Res>
-    implements $WorkOrdersResponseCopyWith<$Res> {
-  factory _$WorkOrdersResponseCopyWith(
-          _WorkOrdersResponse value, $Res Function(_WorkOrdersResponse) _then) =
-      __$WorkOrdersResponseCopyWithImpl;
+abstract mixin class _$WorkOrdersDataCopyWith<$Res>
+    implements $WorkOrdersDataCopyWith<$Res> {
+  factory _$WorkOrdersDataCopyWith(
+          _WorkOrdersData value, $Res Function(_WorkOrdersData) _then) =
+      __$WorkOrdersDataCopyWithImpl;
   @override
   @useResult
   $Res call(
-      {int total,
+      {List<WorkOrderEntity> workOrders,
+      List<WorkOrderEntity> unassignedWorkOrders,
+      int total,
       int page,
       int pages,
-      @JsonKey(name: 'work_orders') List<WorkOrderDto> workOrders,
-      @JsonKey(name: 'unassigned_work_orders')
-      List<WorkOrderDto> unassignedWorkOrders,
-      @JsonKey(name: 'unassigned_count') int unassignedCount});
+      int unassignedCount});
 }
 
 /// @nodoc
-class __$WorkOrdersResponseCopyWithImpl<$Res>
-    implements _$WorkOrdersResponseCopyWith<$Res> {
-  __$WorkOrdersResponseCopyWithImpl(this._self, this._then);
+class __$WorkOrdersDataCopyWithImpl<$Res>
+    implements _$WorkOrdersDataCopyWith<$Res> {
+  __$WorkOrdersDataCopyWithImpl(this._self, this._then);
 
-  final _WorkOrdersResponse _self;
-  final $Res Function(_WorkOrdersResponse) _then;
+  final _WorkOrdersData _self;
+  final $Res Function(_WorkOrdersData) _then;
 
-  /// Create a copy of WorkOrdersResponse
+  /// Create a copy of WorkOrdersData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $Res call({
+    Object? workOrders = null,
+    Object? unassignedWorkOrders = null,
     Object? total = null,
     Object? page = null,
     Object? pages = null,
-    Object? workOrders = null,
-    Object? unassignedWorkOrders = null,
     Object? unassignedCount = null,
   }) {
-    return _then(_WorkOrdersResponse(
+    return _then(_WorkOrdersData(
+      workOrders: null == workOrders
+          ? _self._workOrders
+          : workOrders // ignore: cast_nullable_to_non_nullable
+              as List<WorkOrderEntity>,
+      unassignedWorkOrders: null == unassignedWorkOrders
+          ? _self._unassignedWorkOrders
+          : unassignedWorkOrders // ignore: cast_nullable_to_non_nullable
+              as List<WorkOrderEntity>,
       total: null == total
           ? _self.total
           : total // ignore: cast_nullable_to_non_nullable
@@ -462,14 +443,6 @@ class __$WorkOrdersResponseCopyWithImpl<$Res>
           ? _self.pages
           : pages // ignore: cast_nullable_to_non_nullable
               as int,
-      workOrders: null == workOrders
-          ? _self._workOrders
-          : workOrders // ignore: cast_nullable_to_non_nullable
-              as List<WorkOrderDto>,
-      unassignedWorkOrders: null == unassignedWorkOrders
-          ? _self._unassignedWorkOrders
-          : unassignedWorkOrders // ignore: cast_nullable_to_non_nullable
-              as List<WorkOrderDto>,
       unassignedCount: null == unassignedCount
           ? _self.unassignedCount
           : unassignedCount // ignore: cast_nullable_to_non_nullable

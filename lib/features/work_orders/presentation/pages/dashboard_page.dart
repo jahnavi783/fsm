@@ -33,7 +33,7 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
 
@@ -100,6 +100,7 @@ class _DashboardPageState extends State<DashboardPage>
                 CustomTabBar(
                   controller: _tabController,
                   tabs: const [
+                    'Unassigned',
                     'Assigned',
                     'In Progress',
                     'Paused',
@@ -161,32 +162,39 @@ class _DashboardPageState extends State<DashboardPage>
   List<StatsCardData> _getStatsData(WorkOrdersListState state) {
     return [
       StatsCardData(
+        title: 'Unassigned',
+        count: _getUnassignedCount(state),
+        icon: Icons.inbox_outlined,
+        color: Colors.grey,
+        onTap: () => _switchToTab(0),
+      ),
+      StatsCardData(
         title: 'Assigned',
         count: _getCountForStatus(state, WorkOrderStatus.assigned),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.assigned),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.assigned),
-        onTap: () => _switchToTab(0),
+        onTap: () => _switchToTab(1),
       ),
       StatsCardData(
         title: 'In Progress',
         count: _getCountForStatus(state, WorkOrderStatus.inProgress),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.inProgress),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.inProgress),
-        onTap: () => _switchToTab(1),
+        onTap: () => _switchToTab(2),
       ),
       StatsCardData(
         title: 'Paused',
         count: _getCountForStatus(state, WorkOrderStatus.paused),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.paused),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.paused),
-        onTap: () => _switchToTab(2),
+        onTap: () => _switchToTab(3),
       ),
       StatsCardData(
         title: 'Completed',
         count: _getCountForStatus(state, WorkOrderStatus.completed),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.completed),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.completed),
-        onTap: () => _switchToTab(3),
+        onTap: () => _switchToTab(4),
       ),
     ];
   }
@@ -194,6 +202,13 @@ class _DashboardPageState extends State<DashboardPage>
   // Build current tab content based on selected tab
   Widget _buildCurrentTabContent(WorkOrdersListState state) {
     final currentIndex = _tabController.index;
+
+    // First tab (index 0) is for unassigned work orders
+    if (currentIndex == 0) {
+      return _buildUnassignedWorkOrdersSliver(state);
+    }
+
+    // Remaining tabs map to statuses (shifted by 1)
     final statuses = [
       WorkOrderStatus.assigned,
       WorkOrderStatus.inProgress,
@@ -201,7 +216,7 @@ class _DashboardPageState extends State<DashboardPage>
       WorkOrderStatus.completed,
     ];
 
-    final currentStatus = statuses[currentIndex];
+    final currentStatus = statuses[currentIndex - 1];
     return _buildWorkOrdersSliver(currentStatus, state);
   }
 
@@ -216,6 +231,8 @@ class _DashboardPageState extends State<DashboardPage>
       initial: () => const LoadingState(),
       loading: () => const LoadingState(),
       loaded: (workOrders,
+          unassignedWorkOrders,
+          unassignedCount,
           currentPage,
           hasReachedMax,
           isLoadingMore,
@@ -315,19 +332,159 @@ class _DashboardPageState extends State<DashboardPage>
 
   String _getCountForStatus(WorkOrdersListState state, WorkOrderStatus status) {
     return state.maybeWhen(
-      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________) {
+      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________, _________, __________) {
         return workOrders.where((wo) => wo.status == status).length.toString();
       },
       orElse: () => '-',
     );
   }
 
-  void _showSearchDialog(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
+  String _getUnassignedCount(WorkOrdersListState state) {
+    return state.maybeWhen(
+      loaded: (_, __, unassignedCount, ___, ____, _____, ______, _______, ________, _________, __________) {
+        return unassignedCount.toString();
+      },
+      orElse: () => '-',
+    );
+  }
+
+  Widget _buildUnassignedWorkOrdersSliver(WorkOrdersListState state) {
+    return state.when(
+      initial: () => const LoadingState(),
+      loading: () => const LoadingState(),
+      loaded: (workOrders,
+          unassignedWorkOrders,
+          unassignedCount,
+          currentPage,
+          hasReachedMax,
+          isLoadingMore,
+          statusFilter,
+          priorityFilter,
+          searchQuery,
+          isOffline,
+          hasPendingSync) {
+        if (unassignedWorkOrders.isEmpty) {
+          return SliverFillRemaining(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.inbox_outlined, size: 64.sp, color: Colors.grey),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'No unassigned work orders',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final workOrder = unassignedWorkOrders[index];
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: Column(
+                    children: [
+                      WorkOrderCard(
+                        workOrder: workOrder,
+                        onTap: () {
+                          context.router
+                              .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _assignWorkOrderToSelf(workOrder.id),
+                          icon: Icon(Icons.person_add, size: 18.sp),
+                          label: Text('Assign to Me', style: TextStyle(fontSize: 14.sp)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF116587),
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              childCount: unassignedWorkOrders.length,
+            ),
+          ),
+        );
+      },
+      error: (failure, workOrders, isOffline) => ErrorState(
+        message: failure.message,
+        isOffline: isOffline,
+        onRetry: () {
+          context.read<WorkOrdersListBloc>().add(
+                const WorkOrdersListEvent.refreshWorkOrders(),
+              );
+        },
+      ),
+      syncing: (workOrders) => const LoadingState(),
+    );
+  }
+
+  void _assignWorkOrderToSelf(int workOrderId) {
+    // Capture the outer context that has access to the WorkOrdersListBloc
+    final outerContext = context;
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Assign Work Order'),
+        content: const Text('Are you sure you want to assign this work order to yourself?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              // Use the captured outer context instead
+              outerContext.read<WorkOrdersListBloc>().add(
+                    WorkOrdersListEvent.assignWorkOrderToSelf(
+                      workOrderId: workOrderId,
+                    ),
+                  );
+              // Switch to Assigned tab after assignment
+              _switchToTab(1);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF116587),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Assign'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSearchDialog(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+    // Capture the outer context that has access to the WorkOrdersListBloc
+    final outerContext = context;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Search Work Orders'),
         content: TextField(
           controller: searchController,
@@ -337,9 +494,9 @@ class _DashboardPageState extends State<DashboardPage>
           ),
           autofocus: true,
           onSubmitted: (query) {
-            Navigator.of(context).pop();
+            Navigator.of(dialogContext).pop();
             if (query.isNotEmpty) {
-              context.read<WorkOrdersListBloc>().add(
+              outerContext.read<WorkOrdersListBloc>().add(
                     WorkOrdersListEvent.searchWorkOrders(query),
                   );
             }
@@ -347,15 +504,15 @@ class _DashboardPageState extends State<DashboardPage>
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(dialogContext).pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(dialogContext).pop();
               final query = searchController.text.trim();
               if (query.isNotEmpty) {
-                context.read<WorkOrdersListBloc>().add(
+                outerContext.read<WorkOrdersListBloc>().add(
                       WorkOrdersListEvent.searchWorkOrders(query),
                     );
               }

@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/document_entity.dart';
@@ -24,6 +26,8 @@ class DocumentViewerPage extends StatefulWidget {
 
 class _DocumentViewerPageState extends State<DocumentViewerPage> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? _chewieController;
   DocumentEntity? _document;
   bool _isLoading = true;
   String? _errorMessage;
@@ -39,6 +43,8 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   @override
   void dispose() {
     _pdfViewerController.dispose();
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -59,6 +65,11 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             _document = document;
             _isLoading = false;
           });
+          
+          // Initialize video player if document is a video
+          if (document.isVideo) {
+            _initializeVideoPlayer(document);
+          }
         },
       );
     } catch (e) {
@@ -66,6 +77,45 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         _errorMessage = 'Failed to load document: $e';
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _initializeVideoPlayer(DocumentEntity document) async {
+    try {
+      if (document.isAvailableOffline && document.localPath != null) {
+        _videoPlayerController =
+            VideoPlayerController.file(File(document.localPath!));
+      } else {
+        _videoPlayerController =
+            VideoPlayerController.networkUrl(Uri.parse(document.fileUrl));
+      }
+
+      await _videoPlayerController!.initialize();
+
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        autoPlay: true,
+        looping: false,
+        allowFullScreen: true,
+        allowMuting: true,
+        showControls: true,
+        materialProgressColors: ChewieProgressColors(
+          playedColor: Theme.of(context).colorScheme.primary,
+          handleColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Colors.grey,
+          bufferedColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        ),
+      );
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Failed to load video: $e';
+        });
+      }
     }
   }
 
@@ -132,7 +182,10 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         ],
       ),
       body: _buildBody(),
-      bottomNavigationBar: _document?.isPdf == true ? _buildPdfControls() : null,
+      bottomNavigationBar:
+          _document?.isPdf == true && !_document!.isVideo
+              ? _buildPdfControls()
+              : null,
     );
   }
 
@@ -191,6 +244,8 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
       return _buildPdfViewer();
     } else if (_document!.isImage) {
       return _buildImageViewer();
+    } else if (_document!.isVideo) {
+      return _buildVideoViewer();
     } else {
       return _buildUnsupportedFileType();
     }
@@ -296,6 +351,65 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildVideoViewer() {
+    if (_chewieController != null &&
+        _videoPlayerController != null &&
+        _videoPlayerController!.value.isInitialized) {
+      return Center(
+        child: Chewie(controller: _chewieController!),
+      );
+    } else if (_errorMessage != null) {
+      return _buildVideoError();
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
+  Widget _buildVideoError() {
+    final theme = Theme.of(context);
+    
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64.sp,
+              color: theme.colorScheme.error,
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              'Failed to load video',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              _errorMessage ?? 'An error occurred while loading the video',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                fontSize: 14.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            ElevatedButton.icon(
+              onPressed: _launchExternalUrl,
+              icon: const Icon(Icons.open_in_new),
+              label: const Text('Open in external app'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

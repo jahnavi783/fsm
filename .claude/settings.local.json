@@ -8,9 +8,14 @@
       "WebSearch",
       "Bash(flutter pub get:*)",
       "WebFetch(domain:pub.dev)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Read(//c/Users/ayushkum/AppData/Roaming/Claude/**)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "postman"
+  ],
+  "enableAllProjectMcpServers": true
 }

@@ -106,6 +106,7 @@ extension WorkOrderDtoX on WorkOrderDto {
       case 'assigned':
         return WorkOrderStatus.assigned;
       case 'in progress':
+      case 'in_progress': // Handle both API formats
         return WorkOrderStatus.inProgress;
       case 'paused':
         return WorkOrderStatus.paused;
@@ -114,6 +115,7 @@ extension WorkOrderDtoX on WorkOrderDto {
       case 'rejected':
         return WorkOrderStatus.rejected;
       case 'reassigned':
+      case 're_assigned': // Handle both API formats
         return WorkOrderStatus.reAssigned;
       default:
         return WorkOrderStatus.assigned;

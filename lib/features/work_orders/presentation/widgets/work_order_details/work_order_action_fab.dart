@@ -34,16 +34,24 @@ class WorkOrderActionFab extends StatelessWidget {
       icon = Icons.play_arrow;
       backgroundColor = AppColors.success;
       onPressed = onStart;
-    } else if (workOrder.canBePaused && onPause != null) {
-      label = 'Pause Job';
-      icon = Icons.pause;
-      backgroundColor = AppColors.warning;
-      onPressed = onPause;
     } else if (workOrder.canBeResumed && onResume != null) {
       label = 'Resume Job';
       icon = Icons.play_arrow;
       backgroundColor = AppColors.success;
       onPressed = onResume;
+    } else if (workOrder.canBePaused &&
+        workOrder.canBeCompleted &&
+        onShowActions != null) {
+      // For in-progress work orders, show actions menu to access both pause and complete
+      label = 'Actions';
+      icon = Icons.more_vert;
+      backgroundColor = AppColors.primary;
+      onPressed = onShowActions;
+    } else if (workOrder.canBePaused && onPause != null) {
+      label = 'Pause Job';
+      icon = Icons.pause;
+      backgroundColor = AppColors.warning;
+      onPressed = onPause;
     } else if (workOrder.canBeCompleted && onComplete != null) {
       label = 'Complete Job';
       icon = Icons.check_circle;

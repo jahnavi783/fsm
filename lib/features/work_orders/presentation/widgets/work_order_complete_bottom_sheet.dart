@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,8 +32,7 @@ class WorkOrderCompleteBottomSheet extends StatefulWidget {
 class _WorkOrderCompleteBottomSheetState
     extends State<WorkOrderCompleteBottomSheet> {
   final ImagePicker _picker = ImagePicker();
-  final TextEditingController _customerNameController =
-      TextEditingController();
+  final TextEditingController _customerNameController = TextEditingController();
   final TextEditingController _workLogController = TextEditingController();
   final TextEditingController _completionNotesController =
       TextEditingController();
@@ -206,26 +204,67 @@ class _WorkOrderCompleteBottomSheetState
 
   Future<File?> _saveSignatureAsFile() async {
     try {
-      final signatureData =
-          await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
-      if (signatureData == null) return null;
+      // Validate signature pad state
+      if (_signaturePadKey.currentState == null) {
+        throw Exception('Signature pad is not initialized');
+      }
 
+      // Convert signature to image
+      final signatureData =
+          await _signaturePadKey.currentState!.toImage(pixelRatio: 3.0);
+
+      // Convert to byte data
       final byteData =
           await signatureData.toByteData(format: ui.ImageByteFormat.png);
-      if (byteData == null) return null;
+      if (byteData == null) {
+        throw Exception('Failed to convert signature to image data');
+      }
 
+      // Validate image data size
       final buffer = byteData.buffer.asUint8List();
+      if (buffer.isEmpty) {
+        throw Exception('Signature image is empty');
+      }
+
+      // Save to temporary file
       final tempDir = await getTemporaryDirectory();
-      final file = File(
-          '${tempDir.path}/signature_${DateTime.now().millisecondsSinceEpoch}.png');
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final file = File('${tempDir.path}/signature_${timestamp}.png');
       await file.writeAsBytes(buffer);
+
+      // Verify file was created and has content
+      if (!await file.exists() || await file.length() == 0) {
+        throw Exception('Failed to save signature file');
+      }
+
       return file;
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving signature: $e'),
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    'Failed to save signature: ${e.toString()}',
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ),
+              ],
+            ),
             backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            margin: EdgeInsets.all(16.w),
+            duration: const Duration(seconds: 5),
           ),
         );
       }
@@ -554,76 +593,223 @@ class _WorkOrderCompleteBottomSheetState
                           SizedBox(height: 20.h),
 
                           // Signature Section (Required)
-                          Text(
-                            'Customer Signature *',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.draw_outlined,
+                                size: 18.sp,
+                                color: _hasSignature
+                                    ? AppColors.success
+                                    : theme.colorScheme.primary,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                'Customer Signature *',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: _hasSignature
+                                      ? AppColors.success
+                                      : theme.colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            height: 200.h,
+                          SizedBox(height: 12.h),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: 220.h,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: _hasSignature
                                     ? AppColors.success
-                                    : AppColors.outline.withOpacity(0.5),
-                                width: 2,
+                                    : AppColors.outline.withOpacity(0.7),
+                                width: _hasSignature ? 2.5 : 2,
                               ),
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(16.r),
+                              boxShadow: _hasSignature
+                                  ? [
+                                      BoxShadow(
+                                        color:
+                                            AppColors.success.withOpacity(0.1),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ]
+                                  : null,
+                              gradient: _hasSignature
+                                  ? LinearGradient(
+                                      colors: [
+                                        Colors.white,
+                                        AppColors.success.withOpacity(0.02),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : null,
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(11.r),
-                              child: SfSignaturePad(
-                                key: _signaturePadKey,
-                                backgroundColor: Colors.white,
-                                strokeColor: Colors.black,
-                                minimumStrokeWidth: 1.0,
-                                maximumStrokeWidth: 3.0,
-                                onDrawStart: () {
-                                  setState(() {
-                                    _hasSignature = true;
-                                  });
-                                },
+                              borderRadius: BorderRadius.circular(14.r),
+                              child: Stack(
+                                children: [
+                                  // Signature pad
+                                  SfSignaturePad(
+                                    key: _signaturePadKey,
+                                    backgroundColor: Colors.white,
+                                    strokeColor: theme.colorScheme.onSurface,
+                                    minimumStrokeWidth: 1.5,
+                                    maximumStrokeWidth: 3.5,
+                                    onDrawStart: () {
+                                      setState(() {
+                                        _hasSignature = true;
+                                      });
+                                      return false; // Allow drawing to start
+                                    },
+                                  ),
+                                  // Placeholder when no signature
+                                  if (!_hasSignature)
+                                    Positioned.fill(
+                                      child: IgnorePointer(
+                                        child: Container(
+                                          padding: EdgeInsets.all(20.w),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.gesture,
+                                                size: 32.sp,
+                                                color: theme
+                                                    .colorScheme.onSurface
+                                                    .withOpacity(0.3),
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Text(
+                                                'Tap and draw customer signature here',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: theme
+                                                      .colorScheme.onSurface
+                                                      .withOpacity(0.5),
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 8.h),
-                          Row(
-                            children: [
-                              Icon(
-                                _hasSignature ? Icons.check_circle : Icons.info,
-                                size: 16.sp,
+                          SizedBox(height: 12.h),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 8.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _hasSignature
+                                  ? AppColors.success.withOpacity(0.08)
+                                  : theme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(
                                 color: _hasSignature
-                                    ? AppColors.success
-                                    : AppColors.warning,
+                                    ? AppColors.success.withOpacity(0.3)
+                                    : theme.colorScheme.outline
+                                        .withOpacity(0.2),
                               ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: Text(
-                                  _hasSignature
-                                      ? 'Signature captured'
-                                      : 'Draw customer signature above',
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
+                            ),
+                            child: Row(
+                              children: [
+                                AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  child: Icon(
+                                    _hasSignature
+                                        ? Icons.check_circle
+                                        : Icons.info_outline,
+                                    key: ValueKey(_hasSignature),
+                                    size: 18.sp,
                                     color: _hasSignature
                                         ? AppColors.success
-                                        : theme.colorScheme.onSurface
-                                            .withOpacity(0.6),
+                                        : AppColors.warning,
                                   ),
                                 ),
-                              ),
-                              TextButton.icon(
-                                onPressed: _clearSignature,
-                                icon: Icon(Icons.clear, size: 16.sp),
-                                label: Text('Clear'),
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 4.h),
+                                SizedBox(width: 10.w),
+                                Expanded(
+                                  child: AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Text(
+                                      _hasSignature
+                                          ? 'Customer signature captured successfully'
+                                          : 'Customer signature is required to complete work order',
+                                      key: ValueKey(_hasSignature),
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: _hasSignature
+                                            ? FontWeight.w500
+                                            : FontWeight.w400,
+                                        color: _hasSignature
+                                            ? AppColors.success
+                                            : theme.colorScheme.onSurface
+                                                .withOpacity(0.7),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                if (_hasSignature)
+                                  Container(
+                                    margin: EdgeInsets.only(left: 8.w),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius:
+                                            BorderRadius.circular(20.r),
+                                        onTap: _clearSignature,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w,
+                                            vertical: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: theme.colorScheme.outline
+                                                  .withOpacity(0.5),
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.refresh,
+                                                size: 14.sp,
+                                                color: theme
+                                                    .colorScheme.onSurface
+                                                    .withOpacity(0.7),
+                                              ),
+                                              SizedBox(width: 4.w),
+                                              Text(
+                                                'Redo',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: theme
+                                                      .colorScheme.onSurface
+                                                      .withOpacity(0.7),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
 
                           SizedBox(height: 20.h),
@@ -917,12 +1103,36 @@ class _WorkOrderCompleteBottomSheetState
     }
 
     if (!_hasSignature) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please capture customer signature'),
-          backgroundColor: AppColors.warning,
-        ),
-      );
+      // Add haptic feedback for better UX
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    'Customer signature is required to complete the work order',
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: AppColors.warning,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            margin: EdgeInsets.all(16.w),
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
       return;
     }
 
@@ -939,12 +1149,43 @@ class _WorkOrderCompleteBottomSheetState
     // Save signature as file
     final signatureFile = await _saveSignatureAsFile();
     if (signatureFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to save signature'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    'Unable to save customer signature. Please try again.',
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            margin: EdgeInsets.all(16.w),
+            duration: const Duration(seconds: 4),
+            action: SnackBarAction(
+              label: 'Retry',
+              textColor: Colors.white,
+              onPressed: () {
+                // Allow user to try again
+                _completeWorkOrder();
+              },
+            ),
+          ),
+        );
+      }
       return;
     }
 
@@ -958,9 +1199,13 @@ class _WorkOrderCompleteBottomSheetState
             part.quantityController.text.trim().isNotEmpty)
         .map((part) => PartUsedEntity(
               partNumber: part.partNumberController.text.trim(),
-              quantityUsed: int.tryParse(part.quantityController.text.trim()) ?? 0,
+              quantityUsed:
+                  int.tryParse(part.quantityController.text.trim()) ?? 0,
             ))
         .toList();
+
+    // Check if widget is still mounted before using context
+    if (!mounted) return;
 
     context.read<WorkOrderActionBloc>().add(
           WorkOrderActionEvent.completeWorkOrder(

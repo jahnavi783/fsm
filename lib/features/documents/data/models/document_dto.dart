@@ -17,14 +17,18 @@ abstract class DocumentDto with _$DocumentDto {
     required String description,
     required String category,
     @JsonKey(name: 'related_model') String? relatedModel,
+
     /// API returns nested array of files instead of single file_url
     required List<FileDto> files,
+
     /// API returns uploaded_by as int (user ID)
     @JsonKey(name: 'uploaded_by') required int uploadedBy,
+
     /// API returns uploader as full user object
     required UploadedByDto uploader,
     @JsonKey(name: 'createdAt') required String createdAt,
     @JsonKey(name: 'updatedAt') String? updatedAt,
+
     /// keywords is a string, not an array
     String? keywords,
     @Default([]) List<String> tags,
@@ -50,14 +54,22 @@ abstract class DocumentDto with _$DocumentDto {
       fileName: primaryFile?.fileName ?? 'document',
       fileSize: primaryFile?.fileSize ?? 0,
       createdAt: DateTime.parse(createdAt),
-      updatedAt: updatedAt != null && updatedAt!.isNotEmpty ? DateTime.parse(updatedAt!) : DateTime.parse(createdAt),
+      updatedAt: updatedAt != null && updatedAt!.isNotEmpty
+          ? DateTime.parse(updatedAt!)
+          : DateTime.parse(createdAt),
       tags: tags,
       categories: [category],
       relatedModel: relatedModel,
       keywords: keywords,
       uploadedBy: uploadedBy,
       uploadedByName: uploader.fullName,
-      files: filesList,
+      // Map FileDto list to FileEntity list with offline metadata
+      files: filesList
+          .map((file) => file.toEntity(
+                isDownloaded: isDownloaded,
+                localPath: localPath,
+              ))
+          .toList(),
       isDownloaded: isDownloaded,
       localPath: localPath,
     );
@@ -100,6 +112,7 @@ abstract class DocumentResponseDto with _$DocumentResponseDto {
     @JsonKey(name: 'uploads') required List<DocumentDto> documents,
     required int total,
     required int page,
+
     /// API returns 'pages' for total pages
     required int pages,
   }) = _DocumentResponseDto;

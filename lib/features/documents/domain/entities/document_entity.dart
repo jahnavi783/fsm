@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../data/models/file_dto.dart';
+import 'file_entity.dart';
 
 part 'document_entity.freezed.dart';
 
@@ -24,15 +24,16 @@ abstract class DocumentEntity with _$DocumentEntity {
     String? keywords,
     int? uploadedBy,
     String? uploadedByName,
+
     /// Added files array from API
-    @Default([]) List<FileDto> files,
+    @Default([]) List<FileEntity> files,
     bool? isDownloaded,
     String? localPath,
   }) = _DocumentEntity;
-  
+
   // Business logic methods
   bool get isAvailableOffline => isDownloaded == true && localPath != null;
-  
+
   String get fileSizeFormatted {
     if (fileSize < 1024) {
       return '$fileSize B';
@@ -42,14 +43,16 @@ abstract class DocumentEntity with _$DocumentEntity {
       return '${(fileSize / (1024 * 1024)).toStringAsFixed(1)} MB';
     }
   }
-  
+
   String get fileExtension {
     return fileName.split('.').last.toLowerCase();
   }
-  
+
   bool get isPdf => fileExtension == 'pdf';
-  bool get isImage => ['jpg', 'jpeg', 'png', 'gif', 'bmp'].contains(fileExtension);
-  bool get isVideo => ['mp4', 'avi', 'mov', 'wmv', 'flv'].contains(fileExtension);
+  bool get isImage =>
+      ['jpg', 'jpeg', 'png', 'gif', 'bmp'].contains(fileExtension);
+  bool get isVideo =>
+      ['mp4', 'avi', 'mov', 'wmv', 'flv'].contains(fileExtension);
 }
 
 enum DocumentType {
@@ -63,7 +66,7 @@ enum DocumentType {
   certificate,
   warranty,
   other;
-  
+
   String get displayName {
     switch (this) {
       case DocumentType.manual:

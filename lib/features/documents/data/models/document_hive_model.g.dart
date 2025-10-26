@@ -37,13 +37,14 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       category: fields[17] as String,
       fileType: fields[18] as String,
       uploadedByName: fields[19] as String?,
+      filesCache: fields[20] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DocumentHiveModel obj) {
     writer
-      ..writeByte(20)
+      ..writeByte(21)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -83,7 +84,9 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       ..writeByte(18)
       ..write(obj.fileType)
       ..writeByte(19)
-      ..write(obj.uploadedByName);
+      ..write(obj.uploadedByName)
+      ..writeByte(20)
+      ..write(obj.filesCache);
   }
 
   @override
@@ -125,6 +128,7 @@ _DocumentHiveModel _$DocumentHiveModelFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       fileType: json['fileType'] as String,
       uploadedByName: json['uploadedByName'] as String?,
+      filesCache: json['filesCache'] as String?,
     );
 
 Map<String, dynamic> _$DocumentHiveModelToJson(_DocumentHiveModel instance) =>
@@ -149,4 +153,5 @@ Map<String, dynamic> _$DocumentHiveModelToJson(_DocumentHiveModel instance) =>
       'category': instance.category,
       'fileType': instance.fileType,
       'uploadedByName': instance.uploadedByName,
+      'filesCache': instance.filesCache,
     };

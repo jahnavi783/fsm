@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:fsm/core/constants/hive_boxes.dart';
 import 'package:fsm/features/documents/domain/entities/document_entity.dart';
+import 'package:fsm/features/documents/domain/entities/file_entity.dart';
 import 'document_dto.dart';
 
 part 'document_hive_model.freezed.dart';
@@ -31,8 +33,12 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
     @HiveField(16) required DateTime cachedAt,
     @HiveField(17) required String category,
     @HiveField(18) required String fileType,
+
     /// New field for uploader name
     @HiveField(19) String? uploadedByName,
+
+    /// JSON-serialized list of files with per-file offline metadata
+    @HiveField(20) String? filesCache,
   }) = _DocumentHiveModel;
 
   factory DocumentHiveModel.fromJson(Map<String, dynamic> json) =>
@@ -41,6 +47,21 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
   // Factory method for creating from DTO
   factory DocumentHiveModel.fromDto(DocumentDto dto) {
     final primaryFile = dto.files.isNotEmpty ? dto.files.first : null;
+
+    // Serialize files array to JSON for Hive storage
+    final filesJson = jsonEncode(
+      dto.files
+          .map((f) => {
+                'id': f.id,
+                'fileName': f.fileName,
+                'fileUrl': f.fileUrl,
+                'fileType': f.fileType,
+                'fileSize': f.fileSize,
+                'isDownloaded': false,
+                'localPath': null,
+              })
+          .toList(),
+    );
 
     return DocumentHiveModel(
       id: dto.id,
@@ -51,7 +72,9 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
       fileName: primaryFile?.fileName ?? 'document',
       fileSize: primaryFile?.fileSize ?? 0,
       createdAt: DateTime.parse(dto.createdAt),
-      updatedAt: dto.updatedAt != null && dto.updatedAt!.isNotEmpty ? DateTime.parse(dto.updatedAt!) : DateTime.parse(dto.createdAt),
+      updatedAt: dto.updatedAt != null && dto.updatedAt!.isNotEmpty
+          ? DateTime.parse(dto.updatedAt!)
+          : DateTime.parse(dto.createdAt),
       tags: dto.tags,
       categories: [dto.category],
       relatedModel: dto.relatedModel,
@@ -63,6 +86,7 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
       cachedAt: DateTime.now(),
       category: dto.category,
       fileType: dto.category,
+      filesCache: filesJson,
     );
   }
 }
@@ -70,6 +94,51 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
 // Extension for mapping to domain entity
 extension DocumentHiveModelX on DocumentHiveModel {
   DocumentEntity toEntity() {
+    // Deserialize files from JSON cache
+    List<FileEntity> deserializedFiles = [];
+    if (filesCache != null && filesCache!.isNotEmpty) {
+      try {
+        final filesList = jsonDecode(filesCache!) as List;
+        deserializedFiles = filesList.map((fileJson) {
+          return FileEntity(
+            id: fileJson['id'] as int,
+            fileName: fileJson['fileName'] as String?,
+            fileUrl: fileJson['fileUrl'] as String,
+            fileType: fileJson['fileType'] as String,
+            fileSize: fileJson['fileSize'] as int,
+            isDownloaded: fileJson['isDownloaded'] as bool?,
+            localPath: fileJson['localPath'] as String?,
+          );
+        }).toList();
+      } catch (e) {
+        // Fallback: create FileEntity from primary file if deserialization fails
+        deserializedFiles = [
+          FileEntity(
+            id: 0,
+            fileName: fileName,
+            fileUrl: fileUrl,
+            fileType: fileType,
+            fileSize: fileSize,
+            isDownloaded: isDownloaded,
+            localPath: localPath,
+          )
+        ];
+      }
+    } else {
+      // Fallback: create FileEntity from primary file metadata
+      deserializedFiles = [
+        FileEntity(
+          id: 0,
+          fileName: fileName,
+          fileUrl: fileUrl,
+          fileType: fileType,
+          fileSize: fileSize,
+          isDownloaded: isDownloaded,
+          localPath: localPath,
+        )
+      ];
+    }
+
     return DocumentEntity(
       id: id,
       title: title,
@@ -86,7 +155,7 @@ extension DocumentHiveModelX on DocumentHiveModel {
       keywords: keywords,
       uploadedBy: uploadedBy,
       uploadedByName: uploadedByName,
-      files: [], // Cached models don't store full file array
+      files: deserializedFiles,
       isDownloaded: isDownloaded,
       localPath: localPath,
     );
@@ -96,6 +165,21 @@ extension DocumentHiveModelX on DocumentHiveModel {
 // Factory method for creating from domain entity
 extension DocumentEntityX on DocumentEntity {
   DocumentHiveModel toHiveModel() {
+    // Serialize files to JSON
+    final filesJson = jsonEncode(
+      files
+          .map((f) => {
+                'id': f.id,
+                'fileName': f.fileName,
+                'fileUrl': f.fileUrl,
+                'fileType': f.fileType,
+                'fileSize': f.fileSize,
+                'isDownloaded': f.isDownloaded,
+                'localPath': f.localPath,
+              })
+          .toList(),
+    );
+
     return DocumentHiveModel(
       id: id,
       title: title,
@@ -117,6 +201,7 @@ extension DocumentEntityX on DocumentEntity {
       cachedAt: DateTime.now(),
       category: categories.isNotEmpty ? categories.first : 'general',
       fileType: type.name,
+      filesCache: filesJson,
     );
   }
 }

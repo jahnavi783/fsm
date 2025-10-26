@@ -32,7 +32,7 @@ mixin _$DocumentEntity {
   String? get uploadedByName;
 
   /// Added files array from API
-  List<FileDto> get files;
+  List<FileEntity> get files;
   bool? get isDownloaded;
   String? get localPath;
 
@@ -131,7 +131,7 @@ abstract mixin class $DocumentEntityCopyWith<$Res> {
       String? keywords,
       int? uploadedBy,
       String? uploadedByName,
-      List<FileDto> files,
+      List<FileEntity> files,
       bool? isDownloaded,
       String? localPath});
 }
@@ -232,7 +232,7 @@ class _$DocumentEntityCopyWithImpl<$Res>
       files: null == files
           ? _self.files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<FileDto>,
+              as List<FileEntity>,
       isDownloaded: freezed == isDownloaded
           ? _self.isDownloaded
           : isDownloaded // ignore: cast_nullable_to_non_nullable
@@ -354,7 +354,7 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? keywords,
             int? uploadedBy,
             String? uploadedByName,
-            List<FileDto> files,
+            List<FileEntity> files,
             bool? isDownloaded,
             String? localPath)?
         $default, {
@@ -418,7 +418,7 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? keywords,
             int? uploadedBy,
             String? uploadedByName,
-            List<FileDto> files,
+            List<FileEntity> files,
             bool? isDownloaded,
             String? localPath)
         $default,
@@ -480,7 +480,7 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? keywords,
             int? uploadedBy,
             String? uploadedByName,
-            List<FileDto> files,
+            List<FileEntity> files,
             bool? isDownloaded,
             String? localPath)?
         $default,
@@ -532,7 +532,7 @@ class _DocumentEntity extends DocumentEntity {
       this.keywords,
       this.uploadedBy,
       this.uploadedByName,
-      final List<FileDto> files = const [],
+      final List<FileEntity> files = const [],
       this.isDownloaded,
       this.localPath})
       : _tags = tags,
@@ -585,12 +585,12 @@ class _DocumentEntity extends DocumentEntity {
   final String? uploadedByName;
 
   /// Added files array from API
-  final List<FileDto> _files;
+  final List<FileEntity> _files;
 
   /// Added files array from API
   @override
   @JsonKey()
-  List<FileDto> get files {
+  List<FileEntity> get files {
     if (_files is EqualUnmodifiableListView) return _files;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_files);
@@ -698,7 +698,7 @@ abstract mixin class _$DocumentEntityCopyWith<$Res>
       String? keywords,
       int? uploadedBy,
       String? uploadedByName,
-      List<FileDto> files,
+      List<FileEntity> files,
       bool? isDownloaded,
       String? localPath});
 }
@@ -799,7 +799,7 @@ class __$DocumentEntityCopyWithImpl<$Res>
       files: null == files
           ? _self._files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<FileDto>,
+              as List<FileEntity>,
       isDownloaded: freezed == isDownloaded
           ? _self.isDownloaded
           : isDownloaded // ignore: cast_nullable_to_non_nullable

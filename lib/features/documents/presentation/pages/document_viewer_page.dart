@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/document_entity.dart';
+import '../../domain/entities/file_entity.dart';
 import '../../domain/usecases/get_document_by_id_usecase.dart';
 
 @RoutePage()
@@ -29,14 +30,17 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
   DocumentEntity? _document;
+  FileEntity? _selectedFile; // Track selected file for multi-file support
   bool _isLoading = true;
   String? _errorMessage;
   int _currentPage = 1;
   int _totalPages = 0;
+  late TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     _loadDocument();
   }
 
@@ -45,14 +49,15 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     _pdfViewerController.dispose();
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   Future<void> _loadDocument() async {
     try {
-      final useCase = getIt<GetDocumentByIdUseCase>();
+      final useCase = await getIt.getAsync<GetDocumentByIdUseCase>();
       final result = await useCase(widget.documentId);
-      
+
       result.fold(
         (failure) {
           setState(() {
@@ -63,12 +68,15 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         (document) {
           setState(() {
             _document = document;
+            // Select first file by default
+            _selectedFile =
+                document.files.isNotEmpty ? document.files.first : null;
             _isLoading = false;
           });
-          
-          // Initialize video player if document is a video
-          if (document.isVideo) {
-            _initializeVideoPlayer(document);
+
+          // Initialize video player if selected file is a video
+          if (_selectedFile?.isVideo == true) {
+            _initializeVideoPlayer(_selectedFile!);
           }
         },
       );
@@ -80,14 +88,14 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     }
   }
 
-  Future<void> _initializeVideoPlayer(DocumentEntity document) async {
+  Future<void> _initializeVideoPlayer(FileEntity file) async {
     try {
-      if (document.isAvailableOffline && document.localPath != null) {
+      if (file.isAvailableOffline && file.localPath != null) {
         _videoPlayerController =
-            VideoPlayerController.file(File(document.localPath!));
+            VideoPlayerController.file(File(file.localPath!));
       } else {
         _videoPlayerController =
-            VideoPlayerController.networkUrl(Uri.parse(document.fileUrl));
+            VideoPlayerController.networkUrl(Uri.parse(file.fileUrl));
       }
 
       await _videoPlayerController!.initialize();
@@ -119,15 +127,72 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     }
   }
 
+  void _showPdfSearchDialog() {
+    _searchController.clear();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Search in PDF',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        content: TextField(
+          controller: _searchController,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: 'Enter search text',
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          onSubmitted: (value) {
+            if (value.isNotEmpty) {
+              // Trigger search when user submits
+              _performPdfSearch(value);
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _pdfViewerController.clearSelection();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_searchController.text.isNotEmpty) {
+                _performPdfSearch(_searchController.text);
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Text('Search'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _performPdfSearch(String searchText) {
+    // Use the PdfViewerController to search
+    // Note: The actual search highlighting is handled by Syncfusion's built-in search
+    _pdfViewerController.searchText(searchText);
+  }
+
   Future<void> _launchExternalUrl() async {
-    if (_document?.fileUrl != null) {
-      final Uri uri = Uri.parse(_document!.fileUrl);
+    final fileUrl = _selectedFile?.fileUrl ?? _document?.fileUrl;
+    if (fileUrl != null && fileUrl.isNotEmpty) {
+      final Uri uri = Uri.parse(fileUrl);
       if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Could not open ${_document!.fileName}'),
-              backgroundColor: Theme.of(context).colorScheme.error,
+              content: Text(
+                'Could not open ${_selectedFile?.fileName ?? _document?.fileName}',
+              ),
             ),
           );
         }
@@ -137,18 +202,56 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Scaffold(
       appBar: AppBar(
         title: Text(_document?.title ?? 'Document'),
-        elevation: 0,
-        backgroundColor: theme.colorScheme.surface,
-        foregroundColor: theme.colorScheme.onSurface,
         actions: [
           if (_document != null) ...[
+            // File selector for multi-file documents
+            if (_document!.files.length > 1)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Center(
+                  child: DropdownButton<FileEntity>(
+                    value: _selectedFile,
+                    dropdownColor: Theme.of(context).colorScheme.surface,
+                    underline: SizedBox.shrink(),
+                    items: _document!.files.map((file) {
+                      return DropdownMenuItem(
+                        value: file,
+                        child: Text(
+                          file.fileName ?? 'File',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontSize: 12.sp,
+                                  ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (file) {
+                      if (file != null) {
+                        setState(() {
+                          _selectedFile = file;
+                          // Dispose old controllers and reinitialize if video
+                          _videoPlayerController?.dispose();
+                          _chewieController?.dispose();
+                          _videoPlayerController = null;
+                          _chewieController = null;
+                          _currentPage = 1;
+                          _totalPages = 0;
+                        });
+
+                        if (file.isVideo) {
+                          _initializeVideoPlayer(file);
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ),
+
             // Page info for PDFs
-            if (_document!.isPdf && _totalPages > 0)
+            if (_selectedFile?.isPdf == true && _totalPages > 0)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Center(
@@ -158,20 +261,29 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
                       vertical: 6.h,
                     ),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceVariant,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(16.r),
                     ),
                     child: Text(
                       '$_currentPage / $_totalPages',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                 ),
               ),
-            
+
+            // Search button for PDFs
+            if (_selectedFile?.isPdf == true)
+              IconButton(
+                onPressed: _showPdfSearchDialog,
+                icon: const Icon(Icons.search),
+                tooltip: 'Search in PDF',
+              ),
+
             // External launch button
             IconButton(
               onPressed: _launchExternalUrl,
@@ -183,7 +295,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
       ),
       body: _buildBody(),
       bottomNavigationBar:
-          _document?.isPdf == true && !_document!.isVideo
+          _selectedFile?.isPdf == true && !_selectedFile!.isVideo
               ? _buildPdfControls()
               : null,
     );
@@ -206,8 +318,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildErrorState({String? message}) {
-    final theme = Theme.of(context);
-    
     return Center(
       child: Padding(
         padding: EdgeInsets.all(32.w),
@@ -217,15 +327,12 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             Icon(
               Icons.error_outline,
               size: 64.sp,
-              color: theme.colorScheme.error,
+              color: Theme.of(context).colorScheme.error,
             ),
             SizedBox(height: 16.h),
             Text(
               message ?? _errorMessage ?? 'An error occurred',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontSize: 16.sp,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -240,11 +347,11 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildDocumentViewer() {
-    if (_document!.isPdf) {
+    if (_selectedFile?.isPdf == true) {
       return _buildPdfViewer();
-    } else if (_document!.isImage) {
+    } else if (_selectedFile?.isImage == true) {
       return _buildImageViewer();
-    } else if (_document!.isVideo) {
+    } else if (_selectedFile?.isVideo == true) {
       return _buildVideoViewer();
     } else {
       return _buildUnsupportedFileType();
@@ -252,9 +359,9 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildPdfViewer() {
-    if (_document!.isAvailableOffline) {
+    if (_selectedFile!.isAvailableOffline) {
       return SfPdfViewer.file(
-        File(_document!.localPath!),
+        File(_selectedFile!.localPath!),
         controller: _pdfViewerController,
         onDocumentLoaded: (PdfDocumentLoadedDetails details) {
           setState(() {
@@ -274,7 +381,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
       );
     } else {
       return SfPdfViewer.network(
-        _document!.fileUrl,
+        _selectedFile!.fileUrl,
         controller: _pdfViewerController,
         onDocumentLoaded: (PdfDocumentLoadedDetails details) {
           setState(() {
@@ -302,16 +409,16 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
       minScale: 0.5,
       maxScale: 4.0,
       child: Center(
-        child: _document!.isAvailableOffline
+        child: _selectedFile!.isAvailableOffline
             ? Image.file(
-                File(_document!.localPath!),
+                File(_selectedFile!.localPath!),
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return _buildImageError();
                 },
               )
             : Image.network(
-                _document!.fileUrl,
+                _selectedFile!.fileUrl,
                 fit: BoxFit.contain,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -333,22 +440,18 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildImageError() {
-    final theme = Theme.of(context);
-    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           Icons.broken_image,
           size: 64.sp,
-          color: theme.colorScheme.error,
+          color: Theme.of(context).colorScheme.error,
         ),
         SizedBox(height: 16.h),
         Text(
           'Failed to load image',
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: theme.colorScheme.onSurface,
-          ),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
     );
@@ -371,8 +474,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildVideoError() {
-    final theme = Theme.of(context);
-    
     return Center(
       child: Padding(
         padding: EdgeInsets.all(32.w),
@@ -382,23 +483,22 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             Icon(
               Icons.error_outline,
               size: 64.sp,
-              color: theme.colorScheme.error,
+              color: Theme.of(context).colorScheme.error,
             ),
             SizedBox(height: 16.h),
             Text(
               'Failed to load video',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(height: 8.h),
             Text(
               _errorMessage ?? 'An error occurred while loading the video',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-                fontSize: 14.sp,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7),
+                  ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -414,8 +514,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildUnsupportedFileType() {
-    final theme = Theme.of(context);
-    
     return Center(
       child: Padding(
         padding: EdgeInsets.all(32.w),
@@ -425,23 +523,25 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             Icon(
               Icons.insert_drive_file,
               size: 64.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.5),
             ),
             SizedBox(height: 16.h),
             Text(
               'Preview not available',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(height: 8.h),
             Text(
-              'This file type (${_document!.fileExtension.toUpperCase()}) cannot be previewed in the app.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-                fontSize: 14.sp,
-              ),
+              'This file type (${_selectedFile!.fileExtension.toUpperCase()}) cannot be previewed in the app.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7),
+                  ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
@@ -457,15 +557,13 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   Widget _buildPdfControls() {
-    final theme = Theme.of(context);
-    
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           top: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
       ),
@@ -490,7 +588,10 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: const Text('Go to page'),
+                    title: Text(
+                      'Go to page',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
                     content: TextField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(

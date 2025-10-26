@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../domain/entities/file_entity.dart';
 
 part 'file_dto.freezed.dart';
 part 'file_dto.g.dart';
@@ -44,5 +45,23 @@ abstract class FileDto with _$FileDto {
     } else {
       return '${(fileSize / (1024 * 1024)).toStringAsFixed(1)} MB';
     }
+  }
+}
+
+extension FileDtoX on FileDto {
+  /// Convert FileDto to FileEntity domain model
+  FileEntity toEntity({
+    bool? isDownloaded,
+    String? localPath,
+  }) {
+    return FileEntity(
+      id: id,
+      fileName: fileName,
+      fileUrl: fileUrl,
+      fileType: fileType,
+      fileSize: fileSize,
+      isDownloaded: isDownloaded,
+      localPath: localPath,
+    );
   }
 }

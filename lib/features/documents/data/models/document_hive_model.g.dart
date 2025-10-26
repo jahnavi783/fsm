@@ -17,7 +17,7 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DocumentHiveModel(
-      id: (fields[0] as num).toInt(),
+      id: fields[0] as String,
       title: fields[1] as String,
       description: fields[2] as String,
       type: (fields[3] as num).toInt(),
@@ -36,13 +36,14 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       cachedAt: fields[16] as DateTime,
       category: fields[17] as String,
       fileType: fields[18] as String,
+      uploadedByName: fields[19] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DocumentHiveModel obj) {
     writer
-      ..writeByte(19)
+      ..writeByte(20)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -80,7 +81,9 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
       ..writeByte(17)
       ..write(obj.category)
       ..writeByte(18)
-      ..write(obj.fileType);
+      ..write(obj.fileType)
+      ..writeByte(19)
+      ..write(obj.uploadedByName);
   }
 
   @override
@@ -100,7 +103,7 @@ class DocumentHiveModelAdapter extends TypeAdapter<DocumentHiveModel> {
 
 _DocumentHiveModel _$DocumentHiveModelFromJson(Map<String, dynamic> json) =>
     _DocumentHiveModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       type: (json['type'] as num).toInt(),
@@ -121,6 +124,7 @@ _DocumentHiveModel _$DocumentHiveModelFromJson(Map<String, dynamic> json) =>
       cachedAt: DateTime.parse(json['cachedAt'] as String),
       category: json['category'] as String,
       fileType: json['fileType'] as String,
+      uploadedByName: json['uploadedByName'] as String?,
     );
 
 Map<String, dynamic> _$DocumentHiveModelToJson(_DocumentHiveModel instance) =>
@@ -144,4 +148,5 @@ Map<String, dynamic> _$DocumentHiveModelToJson(_DocumentHiveModel instance) =>
       'cachedAt': instance.cachedAt.toIso8601String(),
       'category': instance.category,
       'fileType': instance.fileType,
+      'uploadedByName': instance.uploadedByName,
     };

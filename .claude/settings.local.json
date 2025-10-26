@@ -9,13 +9,14 @@
       "Bash(flutter pub get:*)",
       "WebFetch(domain:pub.dev)",
       "WebFetch(domain:github.com)",
-      "Read(//c/Users/ayushkum/AppData/Roaming/Claude/**)"
+      "Read(//c/Users/ayushkum/AppData/Roaming/Claude/**)",
+      "mcp__postmanlabs_postman-mcp-server__getAuthenticatedUser"
     ],
     "deny": [],
     "ask": []
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "postman"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

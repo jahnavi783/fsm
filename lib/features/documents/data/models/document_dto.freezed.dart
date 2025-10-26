@@ -14,27 +14,29 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$DocumentDto {
-  int get id;
+  /// API returns 'upload_id' as String, not 'id' as int
+  @JsonKey(name: 'upload_id')
+  String get uploadId;
   String get title;
   String get description;
-  @JsonKey(name: 'file_url')
-  String get fileUrl;
-  @JsonKey(name: 'file_type')
-  String get fileType;
-  @JsonKey(name: 'file_size')
-  int get fileSize;
   String get category;
   @JsonKey(name: 'related_model')
   String? get relatedModel;
-  String? get keywords;
+
+  /// API returns nested array of files instead of single file_url
+  List<FileDto> get files;
+
+  /// API returns uploaded_by as object, not just int
   @JsonKey(name: 'uploaded_by')
-  int? get uploadedBy;
-  @JsonKey(name: 'created_at')
+  UploadedByDto get uploadedBy;
+  @JsonKey(name: 'createdAt')
   String get createdAt;
-  @JsonKey(name: 'updated_at')
-  String get updatedAt;
+  @JsonKey(name: 'updatedAt')
+  String? get updatedAt;
+
+  /// Optional fields from API
+  List<String>? get keywords;
   List<String> get tags;
-  List<String> get categories;
 
   /// Create a copy of DocumentDto
   /// with the given fields replaced by the non-null parameter values.
@@ -51,54 +53,45 @@ mixin _$DocumentDto {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is DocumentDto &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.uploadId, uploadId) ||
+                other.uploadId == uploadId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
-            (identical(other.fileType, fileType) ||
-                other.fileType == fileType) &&
-            (identical(other.fileSize, fileSize) ||
-                other.fileSize == fileSize) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.relatedModel, relatedModel) ||
                 other.relatedModel == relatedModel) &&
-            (identical(other.keywords, keywords) ||
-                other.keywords == keywords) &&
+            const DeepCollectionEquality().equals(other.files, files) &&
             (identical(other.uploadedBy, uploadedBy) ||
                 other.uploadedBy == uploadedBy) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
-            const DeepCollectionEquality().equals(other.tags, tags) &&
-            const DeepCollectionEquality()
-                .equals(other.categories, categories));
+            const DeepCollectionEquality().equals(other.keywords, keywords) &&
+            const DeepCollectionEquality().equals(other.tags, tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
+      uploadId,
       title,
       description,
-      fileUrl,
-      fileType,
-      fileSize,
       category,
       relatedModel,
-      keywords,
+      const DeepCollectionEquality().hash(files),
       uploadedBy,
       createdAt,
       updatedAt,
-      const DeepCollectionEquality().hash(tags),
-      const DeepCollectionEquality().hash(categories));
+      const DeepCollectionEquality().hash(keywords),
+      const DeepCollectionEquality().hash(tags));
 
   @override
   String toString() {
-    return 'DocumentDto(id: $id, title: $title, description: $description, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize, category: $category, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories)';
+    return 'DocumentDto(uploadId: $uploadId, title: $title, description: $description, category: $category, relatedModel: $relatedModel, files: $files, uploadedBy: $uploadedBy, createdAt: $createdAt, updatedAt: $updatedAt, keywords: $keywords, tags: $tags)';
   }
 }
 
@@ -109,20 +102,19 @@ abstract mixin class $DocumentDtoCopyWith<$Res> {
       _$DocumentDtoCopyWithImpl;
   @useResult
   $Res call(
-      {int id,
+      {@JsonKey(name: 'upload_id') String uploadId,
       String title,
       String description,
-      @JsonKey(name: 'file_url') String fileUrl,
-      @JsonKey(name: 'file_type') String fileType,
-      @JsonKey(name: 'file_size') int fileSize,
       String category,
       @JsonKey(name: 'related_model') String? relatedModel,
-      String? keywords,
-      @JsonKey(name: 'uploaded_by') int? uploadedBy,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt,
-      List<String> tags,
-      List<String> categories});
+      List<FileDto> files,
+      @JsonKey(name: 'uploaded_by') UploadedByDto uploadedBy,
+      @JsonKey(name: 'createdAt') String createdAt,
+      @JsonKey(name: 'updatedAt') String? updatedAt,
+      List<String>? keywords,
+      List<String> tags});
+
+  $UploadedByDtoCopyWith<$Res> get uploadedBy;
 }
 
 /// @nodoc
@@ -137,26 +129,23 @@ class _$DocumentDtoCopyWithImpl<$Res> implements $DocumentDtoCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? uploadId = null,
     Object? title = null,
     Object? description = null,
-    Object? fileUrl = null,
-    Object? fileType = null,
-    Object? fileSize = null,
     Object? category = null,
     Object? relatedModel = freezed,
-    Object? keywords = freezed,
-    Object? uploadedBy = freezed,
+    Object? files = null,
+    Object? uploadedBy = null,
     Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? updatedAt = freezed,
+    Object? keywords = freezed,
     Object? tags = null,
-    Object? categories = null,
   }) {
     return _then(_self.copyWith(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
+      uploadId: null == uploadId
+          ? _self.uploadId
+          : uploadId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -165,18 +154,6 @@ class _$DocumentDtoCopyWithImpl<$Res> implements $DocumentDtoCopyWith<$Res> {
           ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      fileUrl: null == fileUrl
-          ? _self.fileUrl
-          : fileUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      fileType: null == fileType
-          ? _self.fileType
-          : fileType // ignore: cast_nullable_to_non_nullable
-              as String,
-      fileSize: null == fileSize
-          ? _self.fileSize
-          : fileSize // ignore: cast_nullable_to_non_nullable
-              as int,
       category: null == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -185,31 +162,41 @@ class _$DocumentDtoCopyWithImpl<$Res> implements $DocumentDtoCopyWith<$Res> {
           ? _self.relatedModel
           : relatedModel // ignore: cast_nullable_to_non_nullable
               as String?,
-      keywords: freezed == keywords
-          ? _self.keywords
-          : keywords // ignore: cast_nullable_to_non_nullable
-              as String?,
-      uploadedBy: freezed == uploadedBy
+      files: null == files
+          ? _self.files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<FileDto>,
+      uploadedBy: null == uploadedBy
           ? _self.uploadedBy
           : uploadedBy // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as UploadedByDto,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
-      updatedAt: null == updatedAt
+      updatedAt: freezed == updatedAt
           ? _self.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      keywords: freezed == keywords
+          ? _self.keywords
+          : keywords // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       tags: null == tags
           ? _self.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      categories: null == categories
-          ? _self.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ));
+  }
+
+  /// Create a copy of DocumentDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadedByDtoCopyWith<$Res> get uploadedBy {
+    return $UploadedByDtoCopyWith<$Res>(_self.uploadedBy, (value) {
+      return _then(_self.copyWith(uploadedBy: value));
+    });
   }
 }
 
@@ -307,20 +294,17 @@ extension DocumentDtoPatterns on DocumentDto {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            int id,
+            @JsonKey(name: 'upload_id') String uploadId,
             String title,
             String description,
-            @JsonKey(name: 'file_url') String fileUrl,
-            @JsonKey(name: 'file_type') String fileType,
-            @JsonKey(name: 'file_size') int fileSize,
             String category,
             @JsonKey(name: 'related_model') String? relatedModel,
-            String? keywords,
-            @JsonKey(name: 'uploaded_by') int? uploadedBy,
-            @JsonKey(name: 'created_at') String createdAt,
-            @JsonKey(name: 'updated_at') String updatedAt,
-            List<String> tags,
-            List<String> categories)?
+            List<FileDto> files,
+            @JsonKey(name: 'uploaded_by') UploadedByDto uploadedBy,
+            @JsonKey(name: 'createdAt') String createdAt,
+            @JsonKey(name: 'updatedAt') String? updatedAt,
+            List<String>? keywords,
+            List<String> tags)?
         $default, {
     required TResult orElse(),
   }) {
@@ -328,20 +312,17 @@ extension DocumentDtoPatterns on DocumentDto {
     switch (_that) {
       case _DocumentDto() when $default != null:
         return $default(
-            _that.id,
+            _that.uploadId,
             _that.title,
             _that.description,
-            _that.fileUrl,
-            _that.fileType,
-            _that.fileSize,
             _that.category,
             _that.relatedModel,
-            _that.keywords,
+            _that.files,
             _that.uploadedBy,
             _that.createdAt,
             _that.updatedAt,
-            _that.tags,
-            _that.categories);
+            _that.keywords,
+            _that.tags);
       case _:
         return orElse();
     }
@@ -363,40 +344,34 @@ extension DocumentDtoPatterns on DocumentDto {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            int id,
+            @JsonKey(name: 'upload_id') String uploadId,
             String title,
             String description,
-            @JsonKey(name: 'file_url') String fileUrl,
-            @JsonKey(name: 'file_type') String fileType,
-            @JsonKey(name: 'file_size') int fileSize,
             String category,
             @JsonKey(name: 'related_model') String? relatedModel,
-            String? keywords,
-            @JsonKey(name: 'uploaded_by') int? uploadedBy,
-            @JsonKey(name: 'created_at') String createdAt,
-            @JsonKey(name: 'updated_at') String updatedAt,
-            List<String> tags,
-            List<String> categories)
+            List<FileDto> files,
+            @JsonKey(name: 'uploaded_by') UploadedByDto uploadedBy,
+            @JsonKey(name: 'createdAt') String createdAt,
+            @JsonKey(name: 'updatedAt') String? updatedAt,
+            List<String>? keywords,
+            List<String> tags)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DocumentDto():
         return $default(
-            _that.id,
+            _that.uploadId,
             _that.title,
             _that.description,
-            _that.fileUrl,
-            _that.fileType,
-            _that.fileSize,
             _that.category,
             _that.relatedModel,
-            _that.keywords,
+            _that.files,
             _that.uploadedBy,
             _that.createdAt,
             _that.updatedAt,
-            _that.tags,
-            _that.categories);
+            _that.keywords,
+            _that.tags);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -417,40 +392,34 @@ extension DocumentDtoPatterns on DocumentDto {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            int id,
+            @JsonKey(name: 'upload_id') String uploadId,
             String title,
             String description,
-            @JsonKey(name: 'file_url') String fileUrl,
-            @JsonKey(name: 'file_type') String fileType,
-            @JsonKey(name: 'file_size') int fileSize,
             String category,
             @JsonKey(name: 'related_model') String? relatedModel,
-            String? keywords,
-            @JsonKey(name: 'uploaded_by') int? uploadedBy,
-            @JsonKey(name: 'created_at') String createdAt,
-            @JsonKey(name: 'updated_at') String updatedAt,
-            List<String> tags,
-            List<String> categories)?
+            List<FileDto> files,
+            @JsonKey(name: 'uploaded_by') UploadedByDto uploadedBy,
+            @JsonKey(name: 'createdAt') String createdAt,
+            @JsonKey(name: 'updatedAt') String? updatedAt,
+            List<String>? keywords,
+            List<String> tags)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DocumentDto() when $default != null:
         return $default(
-            _that.id,
+            _that.uploadId,
             _that.title,
             _that.description,
-            _that.fileUrl,
-            _that.fileType,
-            _that.fileSize,
             _that.category,
             _that.relatedModel,
-            _that.keywords,
+            _that.files,
             _that.uploadedBy,
             _that.createdAt,
             _that.updatedAt,
-            _that.tags,
-            _that.categories);
+            _that.keywords,
+            _that.tags);
       case _:
         return null;
     }
@@ -461,57 +430,73 @@ extension DocumentDtoPatterns on DocumentDto {
 @JsonSerializable()
 class _DocumentDto extends DocumentDto {
   const _DocumentDto(
-      {required this.id,
+      {@JsonKey(name: 'upload_id') required this.uploadId,
       required this.title,
       required this.description,
-      @JsonKey(name: 'file_url') required this.fileUrl,
-      @JsonKey(name: 'file_type') required this.fileType,
-      @JsonKey(name: 'file_size') required this.fileSize,
       required this.category,
       @JsonKey(name: 'related_model') this.relatedModel,
-      this.keywords,
-      @JsonKey(name: 'uploaded_by') this.uploadedBy,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      final List<String> tags = const [],
-      final List<String> categories = const []})
-      : _tags = tags,
-        _categories = categories,
+      required final List<FileDto> files,
+      @JsonKey(name: 'uploaded_by') required this.uploadedBy,
+      @JsonKey(name: 'createdAt') required this.createdAt,
+      @JsonKey(name: 'updatedAt') this.updatedAt,
+      final List<String>? keywords,
+      final List<String> tags = const []})
+      : _files = files,
+        _keywords = keywords,
+        _tags = tags,
         super._();
   factory _DocumentDto.fromJson(Map<String, dynamic> json) =>
       _$DocumentDtoFromJson(json);
 
+  /// API returns 'upload_id' as String, not 'id' as int
   @override
-  final int id;
+  @JsonKey(name: 'upload_id')
+  final String uploadId;
   @override
   final String title;
   @override
   final String description;
   @override
-  @JsonKey(name: 'file_url')
-  final String fileUrl;
-  @override
-  @JsonKey(name: 'file_type')
-  final String fileType;
-  @override
-  @JsonKey(name: 'file_size')
-  final int fileSize;
-  @override
   final String category;
   @override
   @JsonKey(name: 'related_model')
   final String? relatedModel;
+
+  /// API returns nested array of files instead of single file_url
+  final List<FileDto> _files;
+
+  /// API returns nested array of files instead of single file_url
   @override
-  final String? keywords;
+  List<FileDto> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
+
+  /// API returns uploaded_by as object, not just int
   @override
   @JsonKey(name: 'uploaded_by')
-  final int? uploadedBy;
+  final UploadedByDto uploadedBy;
   @override
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: 'createdAt')
   final String createdAt;
   @override
-  @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  @JsonKey(name: 'updatedAt')
+  final String? updatedAt;
+
+  /// Optional fields from API
+  final List<String>? _keywords;
+
+  /// Optional fields from API
+  @override
+  List<String>? get keywords {
+    final value = _keywords;
+    if (value == null) return null;
+    if (_keywords is EqualUnmodifiableListView) return _keywords;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   final List<String> _tags;
   @override
   @JsonKey()
@@ -519,15 +504,6 @@ class _DocumentDto extends DocumentDto {
     if (_tags is EqualUnmodifiableListView) return _tags;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tags);
-  }
-
-  final List<String> _categories;
-  @override
-  @JsonKey()
-  List<String> get categories {
-    if (_categories is EqualUnmodifiableListView) return _categories;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_categories);
   }
 
   /// Create a copy of DocumentDto
@@ -550,54 +526,45 @@ class _DocumentDto extends DocumentDto {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DocumentDto &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.uploadId, uploadId) ||
+                other.uploadId == uploadId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
-            (identical(other.fileType, fileType) ||
-                other.fileType == fileType) &&
-            (identical(other.fileSize, fileSize) ||
-                other.fileSize == fileSize) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.relatedModel, relatedModel) ||
                 other.relatedModel == relatedModel) &&
-            (identical(other.keywords, keywords) ||
-                other.keywords == keywords) &&
+            const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.uploadedBy, uploadedBy) ||
                 other.uploadedBy == uploadedBy) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
-            const DeepCollectionEquality().equals(other._tags, _tags) &&
-            const DeepCollectionEquality()
-                .equals(other._categories, _categories));
+            const DeepCollectionEquality().equals(other._keywords, _keywords) &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
+      uploadId,
       title,
       description,
-      fileUrl,
-      fileType,
-      fileSize,
       category,
       relatedModel,
-      keywords,
+      const DeepCollectionEquality().hash(_files),
       uploadedBy,
       createdAt,
       updatedAt,
-      const DeepCollectionEquality().hash(_tags),
-      const DeepCollectionEquality().hash(_categories));
+      const DeepCollectionEquality().hash(_keywords),
+      const DeepCollectionEquality().hash(_tags));
 
   @override
   String toString() {
-    return 'DocumentDto(id: $id, title: $title, description: $description, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize, category: $category, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories)';
+    return 'DocumentDto(uploadId: $uploadId, title: $title, description: $description, category: $category, relatedModel: $relatedModel, files: $files, uploadedBy: $uploadedBy, createdAt: $createdAt, updatedAt: $updatedAt, keywords: $keywords, tags: $tags)';
   }
 }
 
@@ -610,20 +577,20 @@ abstract mixin class _$DocumentDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
+      {@JsonKey(name: 'upload_id') String uploadId,
       String title,
       String description,
-      @JsonKey(name: 'file_url') String fileUrl,
-      @JsonKey(name: 'file_type') String fileType,
-      @JsonKey(name: 'file_size') int fileSize,
       String category,
       @JsonKey(name: 'related_model') String? relatedModel,
-      String? keywords,
-      @JsonKey(name: 'uploaded_by') int? uploadedBy,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt,
-      List<String> tags,
-      List<String> categories});
+      List<FileDto> files,
+      @JsonKey(name: 'uploaded_by') UploadedByDto uploadedBy,
+      @JsonKey(name: 'createdAt') String createdAt,
+      @JsonKey(name: 'updatedAt') String? updatedAt,
+      List<String>? keywords,
+      List<String> tags});
+
+  @override
+  $UploadedByDtoCopyWith<$Res> get uploadedBy;
 }
 
 /// @nodoc
@@ -638,26 +605,23 @@ class __$DocumentDtoCopyWithImpl<$Res> implements _$DocumentDtoCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = null,
+    Object? uploadId = null,
     Object? title = null,
     Object? description = null,
-    Object? fileUrl = null,
-    Object? fileType = null,
-    Object? fileSize = null,
     Object? category = null,
     Object? relatedModel = freezed,
-    Object? keywords = freezed,
-    Object? uploadedBy = freezed,
+    Object? files = null,
+    Object? uploadedBy = null,
     Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? updatedAt = freezed,
+    Object? keywords = freezed,
     Object? tags = null,
-    Object? categories = null,
   }) {
     return _then(_DocumentDto(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
+      uploadId: null == uploadId
+          ? _self.uploadId
+          : uploadId // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -666,18 +630,6 @@ class __$DocumentDtoCopyWithImpl<$Res> implements _$DocumentDtoCopyWith<$Res> {
           ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      fileUrl: null == fileUrl
-          ? _self.fileUrl
-          : fileUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      fileType: null == fileType
-          ? _self.fileType
-          : fileType // ignore: cast_nullable_to_non_nullable
-              as String,
-      fileSize: null == fileSize
-          ? _self.fileSize
-          : fileSize // ignore: cast_nullable_to_non_nullable
-              as int,
       category: null == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -686,42 +638,54 @@ class __$DocumentDtoCopyWithImpl<$Res> implements _$DocumentDtoCopyWith<$Res> {
           ? _self.relatedModel
           : relatedModel // ignore: cast_nullable_to_non_nullable
               as String?,
-      keywords: freezed == keywords
-          ? _self.keywords
-          : keywords // ignore: cast_nullable_to_non_nullable
-              as String?,
-      uploadedBy: freezed == uploadedBy
+      files: null == files
+          ? _self._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<FileDto>,
+      uploadedBy: null == uploadedBy
           ? _self.uploadedBy
           : uploadedBy // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as UploadedByDto,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
-      updatedAt: null == updatedAt
+      updatedAt: freezed == updatedAt
           ? _self.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      keywords: freezed == keywords
+          ? _self._keywords
+          : keywords // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       tags: null == tags
           ? _self._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      categories: null == categories
-          ? _self._categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ));
+  }
+
+  /// Create a copy of DocumentDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UploadedByDtoCopyWith<$Res> get uploadedBy {
+    return $UploadedByDtoCopyWith<$Res>(_self.uploadedBy, (value) {
+      return _then(_self.copyWith(uploadedBy: value));
+    });
   }
 }
 
 /// @nodoc
 mixin _$DocumentResponseDto {
-  @JsonKey(name: 'documents')
+  /// API returns 'uploads' array, not 'documents'
+  @JsonKey(name: 'uploads')
   List<DocumentDto> get documents;
   int get total;
   int get page;
-  @JsonKey(name: 'pages')
-  int get pageSize;
+
+  /// API returns 'pages' for total pages
+  int get pages;
 
   /// Create a copy of DocumentResponseDto
   /// with the given fields replaced by the non-null parameter values.
@@ -742,18 +706,17 @@ mixin _$DocumentResponseDto {
             const DeepCollectionEquality().equals(other.documents, documents) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.page, page) || other.page == page) &&
-            (identical(other.pageSize, pageSize) ||
-                other.pageSize == pageSize));
+            (identical(other.pages, pages) || other.pages == pages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(documents), total, page, pageSize);
+      const DeepCollectionEquality().hash(documents), total, page, pages);
 
   @override
   String toString() {
-    return 'DocumentResponseDto(documents: $documents, total: $total, page: $page, pageSize: $pageSize)';
+    return 'DocumentResponseDto(documents: $documents, total: $total, page: $page, pages: $pages)';
   }
 }
 
@@ -764,10 +727,10 @@ abstract mixin class $DocumentResponseDtoCopyWith<$Res> {
       _$DocumentResponseDtoCopyWithImpl;
   @useResult
   $Res call(
-      {@JsonKey(name: 'documents') List<DocumentDto> documents,
+      {@JsonKey(name: 'uploads') List<DocumentDto> documents,
       int total,
       int page,
-      @JsonKey(name: 'pages') int pageSize});
+      int pages});
 }
 
 /// @nodoc
@@ -786,7 +749,7 @@ class _$DocumentResponseDtoCopyWithImpl<$Res>
     Object? documents = null,
     Object? total = null,
     Object? page = null,
-    Object? pageSize = null,
+    Object? pages = null,
   }) {
     return _then(_self.copyWith(
       documents: null == documents
@@ -801,9 +764,9 @@ class _$DocumentResponseDtoCopyWithImpl<$Res>
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
-      pageSize: null == pageSize
-          ? _self.pageSize
-          : pageSize // ignore: cast_nullable_to_non_nullable
+      pages: null == pages
+          ? _self.pages
+          : pages // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -902,16 +865,15 @@ extension DocumentResponseDtoPatterns on DocumentResponseDto {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(@JsonKey(name: 'documents') List<DocumentDto> documents,
-            int total, int page, @JsonKey(name: 'pages') int pageSize)?
+    TResult Function(@JsonKey(name: 'uploads') List<DocumentDto> documents,
+            int total, int page, int pages)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _DocumentResponseDto() when $default != null:
-        return $default(
-            _that.documents, _that.total, _that.page, _that.pageSize);
+        return $default(_that.documents, _that.total, _that.page, _that.pages);
       case _:
         return orElse();
     }
@@ -932,15 +894,14 @@ extension DocumentResponseDtoPatterns on DocumentResponseDto {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(@JsonKey(name: 'documents') List<DocumentDto> documents,
-            int total, int page, @JsonKey(name: 'pages') int pageSize)
+    TResult Function(@JsonKey(name: 'uploads') List<DocumentDto> documents,
+            int total, int page, int pages)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DocumentResponseDto():
-        return $default(
-            _that.documents, _that.total, _that.page, _that.pageSize);
+        return $default(_that.documents, _that.total, _that.page, _that.pages);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -960,15 +921,14 @@ extension DocumentResponseDtoPatterns on DocumentResponseDto {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(@JsonKey(name: 'documents') List<DocumentDto> documents,
-            int total, int page, @JsonKey(name: 'pages') int pageSize)?
+    TResult? Function(@JsonKey(name: 'uploads') List<DocumentDto> documents,
+            int total, int page, int pages)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DocumentResponseDto() when $default != null:
-        return $default(
-            _that.documents, _that.total, _that.page, _that.pageSize);
+        return $default(_that.documents, _that.total, _that.page, _that.pages);
       case _:
         return null;
     }
@@ -979,17 +939,20 @@ extension DocumentResponseDtoPatterns on DocumentResponseDto {
 @JsonSerializable()
 class _DocumentResponseDto implements DocumentResponseDto {
   const _DocumentResponseDto(
-      {@JsonKey(name: 'documents') required final List<DocumentDto> documents,
+      {@JsonKey(name: 'uploads') required final List<DocumentDto> documents,
       required this.total,
       required this.page,
-      @JsonKey(name: 'pages') required this.pageSize})
+      required this.pages})
       : _documents = documents;
   factory _DocumentResponseDto.fromJson(Map<String, dynamic> json) =>
       _$DocumentResponseDtoFromJson(json);
 
+  /// API returns 'uploads' array, not 'documents'
   final List<DocumentDto> _documents;
+
+  /// API returns 'uploads' array, not 'documents'
   @override
-  @JsonKey(name: 'documents')
+  @JsonKey(name: 'uploads')
   List<DocumentDto> get documents {
     if (_documents is EqualUnmodifiableListView) return _documents;
     // ignore: implicit_dynamic_type
@@ -1000,9 +963,10 @@ class _DocumentResponseDto implements DocumentResponseDto {
   final int total;
   @override
   final int page;
+
+  /// API returns 'pages' for total pages
   @override
-  @JsonKey(name: 'pages')
-  final int pageSize;
+  final int pages;
 
   /// Create a copy of DocumentResponseDto
   /// with the given fields replaced by the non-null parameter values.
@@ -1029,18 +993,17 @@ class _DocumentResponseDto implements DocumentResponseDto {
                 .equals(other._documents, _documents) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.page, page) || other.page == page) &&
-            (identical(other.pageSize, pageSize) ||
-                other.pageSize == pageSize));
+            (identical(other.pages, pages) || other.pages == pages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_documents), total, page, pageSize);
+      const DeepCollectionEquality().hash(_documents), total, page, pages);
 
   @override
   String toString() {
-    return 'DocumentResponseDto(documents: $documents, total: $total, page: $page, pageSize: $pageSize)';
+    return 'DocumentResponseDto(documents: $documents, total: $total, page: $page, pages: $pages)';
   }
 }
 
@@ -1053,10 +1016,10 @@ abstract mixin class _$DocumentResponseDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'documents') List<DocumentDto> documents,
+      {@JsonKey(name: 'uploads') List<DocumentDto> documents,
       int total,
       int page,
-      @JsonKey(name: 'pages') int pageSize});
+      int pages});
 }
 
 /// @nodoc
@@ -1075,7 +1038,7 @@ class __$DocumentResponseDtoCopyWithImpl<$Res>
     Object? documents = null,
     Object? total = null,
     Object? page = null,
-    Object? pageSize = null,
+    Object? pages = null,
   }) {
     return _then(_DocumentResponseDto(
       documents: null == documents
@@ -1090,9 +1053,9 @@ class __$DocumentResponseDtoCopyWithImpl<$Res>
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
-      pageSize: null == pageSize
-          ? _self.pageSize
-          : pageSize // ignore: cast_nullable_to_non_nullable
+      pages: null == pages
+          ? _self.pages
+          : pages // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }

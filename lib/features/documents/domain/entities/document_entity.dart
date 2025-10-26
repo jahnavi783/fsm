@@ -1,13 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../data/models/file_dto.dart';
 
 part 'document_entity.freezed.dart';
 
 @freezed
 abstract class DocumentEntity with _$DocumentEntity {
   const DocumentEntity._();
-  
+
   const factory DocumentEntity({
-    required int id,
+    /// Changed to String to match API's upload_id
+    required String id,
     required String title,
     required String description,
     required DocumentType type,
@@ -21,6 +23,9 @@ abstract class DocumentEntity with _$DocumentEntity {
     String? relatedModel,
     String? keywords,
     int? uploadedBy,
+    String? uploadedByName,
+    /// Added files array from API
+    @Default([]) List<FileDto> files,
     bool? isDownloaded,
     String? localPath,
   }) = _DocumentEntity;

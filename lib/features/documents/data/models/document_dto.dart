@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/document_entity.dart';
+import 'file_dto.dart';
+import 'uploaded_by_dto.dart';
 
 part 'document_dto.freezed.dart';
 part 'document_dto.g.dart';
@@ -9,20 +11,21 @@ abstract class DocumentDto with _$DocumentDto {
   const DocumentDto._();
 
   const factory DocumentDto({
-    required int id,
+    /// API returns 'upload_id' as String, not 'id' as int
+    @JsonKey(name: 'upload_id') required String uploadId,
     required String title,
     required String description,
-    @JsonKey(name: 'file_url') required String fileUrl,
-    @JsonKey(name: 'file_type') required String fileType,
-    @JsonKey(name: 'file_size') required int fileSize,
     required String category,
     @JsonKey(name: 'related_model') String? relatedModel,
-    String? keywords,
-    @JsonKey(name: 'uploaded_by') int? uploadedBy,
-    @JsonKey(name: 'created_at') required String createdAt,
-    @JsonKey(name: 'updated_at') required String updatedAt,
+    /// API returns nested array of files instead of single file_url
+    required List<FileDto> files,
+    /// API returns uploaded_by as object, not just int
+    @JsonKey(name: 'uploaded_by') required UploadedByDto uploadedBy,
+    @JsonKey(name: 'createdAt') required String createdAt,
+    @JsonKey(name: 'updatedAt') String? updatedAt,
+    /// Optional fields from API
+    List<String>? keywords,
     @Default([]) List<String> tags,
-    @Default([]) List<String> categories,
   }) = _DocumentDto;
 
   factory DocumentDto.fromJson(Map<String, dynamic> json) =>
@@ -32,21 +35,28 @@ abstract class DocumentDto with _$DocumentDto {
     bool? isDownloaded,
     String? localPath,
   }) {
+    // Use the first file from the files array for compatibility
+    // Note: 'files' will be available after build_runner generates the code
+    final filesList = files;
+    final primaryFile = filesList.isNotEmpty ? filesList.first : null;
+
     return DocumentEntity(
-      id: id,
+      id: uploadId,
       title: title,
       description: description,
-      type: DocumentDto.parseDocumentType(fileType),
-      fileUrl: fileUrl,
-      fileName: DocumentDto.extractFileName(fileUrl),
-      fileSize: fileSize,
+      type: DocumentDto.parseDocumentType(category),
+      fileUrl: primaryFile?.fileUrl ?? '',
+      fileName: primaryFile?.filename ?? 'document',
+      fileSize: primaryFile?.fileSize ?? 0,
       createdAt: DateTime.parse(createdAt),
-      updatedAt: DateTime.parse(updatedAt),
+      updatedAt: updatedAt != null && updatedAt!.isNotEmpty ? DateTime.parse(updatedAt!) : DateTime.parse(createdAt),
       tags: tags,
-      categories: categories.isNotEmpty ? categories : [category],
+      categories: [category],
       relatedModel: relatedModel,
-      keywords: keywords,
-      uploadedBy: uploadedBy,
+      keywords: keywords?.join(', '),
+      uploadedBy: uploadedBy.id,
+      uploadedByName: uploadedBy.fullName,
+      files: filesList,
       isDownloaded: isDownloaded,
       localPath: localPath,
     );
@@ -77,20 +87,20 @@ abstract class DocumentDto with _$DocumentDto {
     }
   }
 
-  static String extractFileName(String url) {
-    final uri = Uri.parse(url);
-    final segments = uri.pathSegments;
-    return segments.isNotEmpty ? segments.last : 'document';
+  static String extractFileName(String filename) {
+    return filename.split('/').last;
   }
 }
 
 @freezed
 abstract class DocumentResponseDto with _$DocumentResponseDto {
   const factory DocumentResponseDto({
-    @JsonKey(name: 'documents') required List<DocumentDto> documents,
+    /// API returns 'uploads' array, not 'documents'
+    @JsonKey(name: 'uploads') required List<DocumentDto> documents,
     required int total,
     required int page,
-    @JsonKey(name: 'pages') required int pageSize,
+    /// API returns 'pages' for total pages
+    required int pages,
   }) = _DocumentResponseDto;
 
   factory DocumentResponseDto.fromJson(Map<String, dynamic> json) =>

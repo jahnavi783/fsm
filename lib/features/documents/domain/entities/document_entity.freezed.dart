@@ -14,7 +14,8 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$DocumentEntity {
-  int get id;
+  /// Changed to String to match API's upload_id
+  String get id;
   String get title;
   String get description;
   DocumentType get type;
@@ -28,6 +29,10 @@ mixin _$DocumentEntity {
   String? get relatedModel;
   String? get keywords;
   int? get uploadedBy;
+  String? get uploadedByName;
+
+  /// Added files array from API
+  List<FileDto> get files;
   bool? get isDownloaded;
   String? get localPath;
 
@@ -67,6 +72,9 @@ mixin _$DocumentEntity {
                 other.keywords == keywords) &&
             (identical(other.uploadedBy, uploadedBy) ||
                 other.uploadedBy == uploadedBy) &&
+            (identical(other.uploadedByName, uploadedByName) ||
+                other.uploadedByName == uploadedByName) &&
+            const DeepCollectionEquality().equals(other.files, files) &&
             (identical(other.isDownloaded, isDownloaded) ||
                 other.isDownloaded == isDownloaded) &&
             (identical(other.localPath, localPath) ||
@@ -90,12 +98,14 @@ mixin _$DocumentEntity {
       relatedModel,
       keywords,
       uploadedBy,
+      uploadedByName,
+      const DeepCollectionEquality().hash(files),
       isDownloaded,
       localPath);
 
   @override
   String toString() {
-    return 'DocumentEntity(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath)';
+    return 'DocumentEntity(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, uploadedByName: $uploadedByName, files: $files, isDownloaded: $isDownloaded, localPath: $localPath)';
   }
 }
 
@@ -106,7 +116,7 @@ abstract mixin class $DocumentEntityCopyWith<$Res> {
       _$DocumentEntityCopyWithImpl;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String title,
       String description,
       DocumentType type,
@@ -120,6 +130,8 @@ abstract mixin class $DocumentEntityCopyWith<$Res> {
       String? relatedModel,
       String? keywords,
       int? uploadedBy,
+      String? uploadedByName,
+      List<FileDto> files,
       bool? isDownloaded,
       String? localPath});
 }
@@ -151,6 +163,8 @@ class _$DocumentEntityCopyWithImpl<$Res>
     Object? relatedModel = freezed,
     Object? keywords = freezed,
     Object? uploadedBy = freezed,
+    Object? uploadedByName = freezed,
+    Object? files = null,
     Object? isDownloaded = freezed,
     Object? localPath = freezed,
   }) {
@@ -158,7 +172,7 @@ class _$DocumentEntityCopyWithImpl<$Res>
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -211,6 +225,14 @@ class _$DocumentEntityCopyWithImpl<$Res>
           ? _self.uploadedBy
           : uploadedBy // ignore: cast_nullable_to_non_nullable
               as int?,
+      uploadedByName: freezed == uploadedByName
+          ? _self.uploadedByName
+          : uploadedByName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      files: null == files
+          ? _self.files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<FileDto>,
       isDownloaded: freezed == isDownloaded
           ? _self.isDownloaded
           : isDownloaded // ignore: cast_nullable_to_non_nullable
@@ -317,7 +339,7 @@ extension DocumentEntityPatterns on DocumentEntity {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            int id,
+            String id,
             String title,
             String description,
             DocumentType type,
@@ -331,6 +353,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? relatedModel,
             String? keywords,
             int? uploadedBy,
+            String? uploadedByName,
+            List<FileDto> files,
             bool? isDownloaded,
             String? localPath)?
         $default, {
@@ -354,6 +378,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             _that.relatedModel,
             _that.keywords,
             _that.uploadedBy,
+            _that.uploadedByName,
+            _that.files,
             _that.isDownloaded,
             _that.localPath);
       case _:
@@ -377,7 +403,7 @@ extension DocumentEntityPatterns on DocumentEntity {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            int id,
+            String id,
             String title,
             String description,
             DocumentType type,
@@ -391,6 +417,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? relatedModel,
             String? keywords,
             int? uploadedBy,
+            String? uploadedByName,
+            List<FileDto> files,
             bool? isDownloaded,
             String? localPath)
         $default,
@@ -413,6 +441,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             _that.relatedModel,
             _that.keywords,
             _that.uploadedBy,
+            _that.uploadedByName,
+            _that.files,
             _that.isDownloaded,
             _that.localPath);
       case _:
@@ -435,7 +465,7 @@ extension DocumentEntityPatterns on DocumentEntity {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            int id,
+            String id,
             String title,
             String description,
             DocumentType type,
@@ -449,6 +479,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             String? relatedModel,
             String? keywords,
             int? uploadedBy,
+            String? uploadedByName,
+            List<FileDto> files,
             bool? isDownloaded,
             String? localPath)?
         $default,
@@ -471,6 +503,8 @@ extension DocumentEntityPatterns on DocumentEntity {
             _that.relatedModel,
             _that.keywords,
             _that.uploadedBy,
+            _that.uploadedByName,
+            _that.files,
             _that.isDownloaded,
             _that.localPath);
       case _:
@@ -497,14 +531,18 @@ class _DocumentEntity extends DocumentEntity {
       this.relatedModel,
       this.keywords,
       this.uploadedBy,
+      this.uploadedByName,
+      final List<FileDto> files = const [],
       this.isDownloaded,
       this.localPath})
       : _tags = tags,
         _categories = categories,
+        _files = files,
         super._();
 
+  /// Changed to String to match API's upload_id
   @override
-  final int id;
+  final String id;
   @override
   final String title;
   @override
@@ -543,6 +581,21 @@ class _DocumentEntity extends DocumentEntity {
   final String? keywords;
   @override
   final int? uploadedBy;
+  @override
+  final String? uploadedByName;
+
+  /// Added files array from API
+  final List<FileDto> _files;
+
+  /// Added files array from API
+  @override
+  @JsonKey()
+  List<FileDto> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
+
   @override
   final bool? isDownloaded;
   @override
@@ -584,6 +637,9 @@ class _DocumentEntity extends DocumentEntity {
                 other.keywords == keywords) &&
             (identical(other.uploadedBy, uploadedBy) ||
                 other.uploadedBy == uploadedBy) &&
+            (identical(other.uploadedByName, uploadedByName) ||
+                other.uploadedByName == uploadedByName) &&
+            const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.isDownloaded, isDownloaded) ||
                 other.isDownloaded == isDownloaded) &&
             (identical(other.localPath, localPath) ||
@@ -607,12 +663,14 @@ class _DocumentEntity extends DocumentEntity {
       relatedModel,
       keywords,
       uploadedBy,
+      uploadedByName,
+      const DeepCollectionEquality().hash(_files),
       isDownloaded,
       localPath);
 
   @override
   String toString() {
-    return 'DocumentEntity(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath)';
+    return 'DocumentEntity(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, uploadedByName: $uploadedByName, files: $files, isDownloaded: $isDownloaded, localPath: $localPath)';
   }
 }
 
@@ -625,7 +683,7 @@ abstract mixin class _$DocumentEntityCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String title,
       String description,
       DocumentType type,
@@ -639,6 +697,8 @@ abstract mixin class _$DocumentEntityCopyWith<$Res>
       String? relatedModel,
       String? keywords,
       int? uploadedBy,
+      String? uploadedByName,
+      List<FileDto> files,
       bool? isDownloaded,
       String? localPath});
 }
@@ -670,6 +730,8 @@ class __$DocumentEntityCopyWithImpl<$Res>
     Object? relatedModel = freezed,
     Object? keywords = freezed,
     Object? uploadedBy = freezed,
+    Object? uploadedByName = freezed,
+    Object? files = null,
     Object? isDownloaded = freezed,
     Object? localPath = freezed,
   }) {
@@ -677,7 +739,7 @@ class __$DocumentEntityCopyWithImpl<$Res>
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -730,6 +792,14 @@ class __$DocumentEntityCopyWithImpl<$Res>
           ? _self.uploadedBy
           : uploadedBy // ignore: cast_nullable_to_non_nullable
               as int?,
+      uploadedByName: freezed == uploadedByName
+          ? _self.uploadedByName
+          : uploadedByName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      files: null == files
+          ? _self._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<FileDto>,
       isDownloaded: freezed == isDownloaded
           ? _self.isDownloaded
           : isDownloaded // ignore: cast_nullable_to_non_nullable

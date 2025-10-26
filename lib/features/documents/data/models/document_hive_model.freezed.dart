@@ -14,8 +14,9 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$DocumentHiveModel {
+  /// Changed to String to match API's upload_id
   @HiveField(0)
-  int get id;
+  String get id;
   @HiveField(1)
   String get title;
   @HiveField(2)
@@ -52,6 +53,10 @@ mixin _$DocumentHiveModel {
   String get category;
   @HiveField(18)
   String get fileType;
+
+  /// New field for uploader name
+  @HiveField(19)
+  String? get uploadedByName;
 
   /// Create a copy of DocumentHiveModel
   /// with the given fields replaced by the non-null parameter values.
@@ -101,7 +106,9 @@ mixin _$DocumentHiveModel {
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.fileType, fileType) ||
-                other.fileType == fileType));
+                other.fileType == fileType) &&
+            (identical(other.uploadedByName, uploadedByName) ||
+                other.uploadedByName == uploadedByName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -126,12 +133,13 @@ mixin _$DocumentHiveModel {
         localPath,
         cachedAt,
         category,
-        fileType
+        fileType,
+        uploadedByName
       ]);
 
   @override
   String toString() {
-    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt, category: $category, fileType: $fileType)';
+    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt, category: $category, fileType: $fileType, uploadedByName: $uploadedByName)';
   }
 }
 
@@ -142,7 +150,7 @@ abstract mixin class $DocumentHiveModelCopyWith<$Res> {
       _$DocumentHiveModelCopyWithImpl;
   @useResult
   $Res call(
-      {@HiveField(0) int id,
+      {@HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) String description,
       @HiveField(3) int type,
@@ -160,7 +168,8 @@ abstract mixin class $DocumentHiveModelCopyWith<$Res> {
       @HiveField(15) String? localPath,
       @HiveField(16) DateTime cachedAt,
       @HiveField(17) String category,
-      @HiveField(18) String fileType});
+      @HiveField(18) String fileType,
+      @HiveField(19) String? uploadedByName});
 }
 
 /// @nodoc
@@ -195,12 +204,13 @@ class _$DocumentHiveModelCopyWithImpl<$Res>
     Object? cachedAt = null,
     Object? category = null,
     Object? fileType = null,
+    Object? uploadedByName = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -273,6 +283,10 @@ class _$DocumentHiveModelCopyWithImpl<$Res>
           ? _self.fileType
           : fileType // ignore: cast_nullable_to_non_nullable
               as String,
+      uploadedByName: freezed == uploadedByName
+          ? _self.uploadedByName
+          : uploadedByName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -371,7 +385,7 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            @HiveField(0) int id,
+            @HiveField(0) String id,
             @HiveField(1) String title,
             @HiveField(2) String description,
             @HiveField(3) int type,
@@ -389,7 +403,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             @HiveField(15) String? localPath,
             @HiveField(16) DateTime cachedAt,
             @HiveField(17) String category,
-            @HiveField(18) String fileType)?
+            @HiveField(18) String fileType,
+            @HiveField(19) String? uploadedByName)?
         $default, {
     required TResult orElse(),
   }) {
@@ -415,7 +430,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             _that.localPath,
             _that.cachedAt,
             _that.category,
-            _that.fileType);
+            _that.fileType,
+            _that.uploadedByName);
       case _:
         return orElse();
     }
@@ -437,7 +453,7 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            @HiveField(0) int id,
+            @HiveField(0) String id,
             @HiveField(1) String title,
             @HiveField(2) String description,
             @HiveField(3) int type,
@@ -455,7 +471,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             @HiveField(15) String? localPath,
             @HiveField(16) DateTime cachedAt,
             @HiveField(17) String category,
-            @HiveField(18) String fileType)
+            @HiveField(18) String fileType,
+            @HiveField(19) String? uploadedByName)
         $default,
   ) {
     final _that = this;
@@ -480,7 +497,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             _that.localPath,
             _that.cachedAt,
             _that.category,
-            _that.fileType);
+            _that.fileType,
+            _that.uploadedByName);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -501,7 +519,7 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            @HiveField(0) int id,
+            @HiveField(0) String id,
             @HiveField(1) String title,
             @HiveField(2) String description,
             @HiveField(3) int type,
@@ -519,7 +537,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             @HiveField(15) String? localPath,
             @HiveField(16) DateTime cachedAt,
             @HiveField(17) String category,
-            @HiveField(18) String fileType)?
+            @HiveField(18) String fileType,
+            @HiveField(19) String? uploadedByName)?
         $default,
   ) {
     final _that = this;
@@ -544,7 +563,8 @@ extension DocumentHiveModelPatterns on DocumentHiveModel {
             _that.localPath,
             _that.cachedAt,
             _that.category,
-            _that.fileType);
+            _that.fileType,
+            _that.uploadedByName);
       case _:
         return null;
     }
@@ -573,15 +593,17 @@ class _DocumentHiveModel implements DocumentHiveModel {
       @HiveField(15) this.localPath,
       @HiveField(16) required this.cachedAt,
       @HiveField(17) required this.category,
-      @HiveField(18) required this.fileType})
+      @HiveField(18) required this.fileType,
+      @HiveField(19) this.uploadedByName})
       : _tags = tags,
         _categories = categories;
   factory _DocumentHiveModel.fromJson(Map<String, dynamic> json) =>
       _$DocumentHiveModelFromJson(json);
 
+  /// Changed to String to match API's upload_id
   @override
   @HiveField(0)
-  final int id;
+  final String id;
   @override
   @HiveField(1)
   final String title;
@@ -650,6 +672,11 @@ class _DocumentHiveModel implements DocumentHiveModel {
   @HiveField(18)
   final String fileType;
 
+  /// New field for uploader name
+  @override
+  @HiveField(19)
+  final String? uploadedByName;
+
   /// Create a copy of DocumentHiveModel
   /// with the given fields replaced by the non-null parameter values.
   @override
@@ -702,7 +729,9 @@ class _DocumentHiveModel implements DocumentHiveModel {
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.fileType, fileType) ||
-                other.fileType == fileType));
+                other.fileType == fileType) &&
+            (identical(other.uploadedByName, uploadedByName) ||
+                other.uploadedByName == uploadedByName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -727,12 +756,13 @@ class _DocumentHiveModel implements DocumentHiveModel {
         localPath,
         cachedAt,
         category,
-        fileType
+        fileType,
+        uploadedByName
       ]);
 
   @override
   String toString() {
-    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt, category: $category, fileType: $fileType)';
+    return 'DocumentHiveModel(id: $id, title: $title, description: $description, type: $type, fileUrl: $fileUrl, fileName: $fileName, fileSize: $fileSize, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, categories: $categories, relatedModel: $relatedModel, keywords: $keywords, uploadedBy: $uploadedBy, isDownloaded: $isDownloaded, localPath: $localPath, cachedAt: $cachedAt, category: $category, fileType: $fileType, uploadedByName: $uploadedByName)';
   }
 }
 
@@ -745,7 +775,7 @@ abstract mixin class _$DocumentHiveModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@HiveField(0) int id,
+      {@HiveField(0) String id,
       @HiveField(1) String title,
       @HiveField(2) String description,
       @HiveField(3) int type,
@@ -763,7 +793,8 @@ abstract mixin class _$DocumentHiveModelCopyWith<$Res>
       @HiveField(15) String? localPath,
       @HiveField(16) DateTime cachedAt,
       @HiveField(17) String category,
-      @HiveField(18) String fileType});
+      @HiveField(18) String fileType,
+      @HiveField(19) String? uploadedByName});
 }
 
 /// @nodoc
@@ -798,12 +829,13 @@ class __$DocumentHiveModelCopyWithImpl<$Res>
     Object? cachedAt = null,
     Object? category = null,
     Object? fileType = null,
+    Object? uploadedByName = freezed,
   }) {
     return _then(_DocumentHiveModel(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -876,6 +908,10 @@ class __$DocumentHiveModelCopyWithImpl<$Res>
           ? _self.fileType
           : fileType // ignore: cast_nullable_to_non_nullable
               as String,
+      uploadedByName: freezed == uploadedByName
+          ? _self.uploadedByName
+          : uploadedByName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }

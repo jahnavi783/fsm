@@ -11,7 +11,8 @@ part 'document_hive_model.g.dart';
 @HiveType(typeId: HiveBoxes.documentEntityTypeId)
 abstract class DocumentHiveModel with _$DocumentHiveModel {
   const factory DocumentHiveModel({
-    @HiveField(0) required int id,
+    /// Changed to String to match API's upload_id
+    @HiveField(0) required String id,
     @HiveField(1) required String title,
     @HiveField(2) required String description,
     @HiveField(3) required int type, // DocumentType as int
@@ -30,6 +31,8 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
     @HiveField(16) required DateTime cachedAt,
     @HiveField(17) required String category,
     @HiveField(18) required String fileType,
+    /// New field for uploader name
+    @HiveField(19) String? uploadedByName,
   }) = _DocumentHiveModel;
 
   factory DocumentHiveModel.fromJson(Map<String, dynamic> json) =>
@@ -37,26 +40,29 @@ abstract class DocumentHiveModel with _$DocumentHiveModel {
 
   // Factory method for creating from DTO
   factory DocumentHiveModel.fromDto(DocumentDto dto) {
+    final primaryFile = dto.files.isNotEmpty ? dto.files.first : null;
+
     return DocumentHiveModel(
-      id: dto.id,
+      id: dto.uploadId,
       title: dto.title,
       description: dto.description,
-      type: DocumentDto.parseDocumentType(dto.fileType).index,
-      fileUrl: dto.fileUrl,
-      fileName: DocumentDto.extractFileName(dto.fileUrl),
-      fileSize: dto.fileSize,
+      type: DocumentDto.parseDocumentType(dto.category).index,
+      fileUrl: primaryFile?.fileUrl ?? '',
+      fileName: primaryFile?.filename ?? 'document',
+      fileSize: primaryFile?.fileSize ?? 0,
       createdAt: DateTime.parse(dto.createdAt),
-      updatedAt: DateTime.parse(dto.updatedAt),
+      updatedAt: dto.updatedAt != null && dto.updatedAt!.isNotEmpty ? DateTime.parse(dto.updatedAt!) : DateTime.parse(dto.createdAt),
       tags: dto.tags,
-      categories: dto.categories.isNotEmpty ? dto.categories : [dto.category],
+      categories: [dto.category],
       relatedModel: dto.relatedModel,
-      keywords: dto.keywords,
-      uploadedBy: dto.uploadedBy,
+      keywords: dto.keywords?.join(', '),
+      uploadedBy: dto.uploadedBy.id,
+      uploadedByName: dto.uploadedBy.fullName,
       isDownloaded: false,
       localPath: null,
       cachedAt: DateTime.now(),
       category: dto.category,
-      fileType: dto.fileType,
+      fileType: dto.category,
     );
   }
 }
@@ -79,6 +85,8 @@ extension DocumentHiveModelX on DocumentHiveModel {
       relatedModel: relatedModel,
       keywords: keywords,
       uploadedBy: uploadedBy,
+      uploadedByName: uploadedByName,
+      files: [], // Cached models don't store full file array
       isDownloaded: isDownloaded,
       localPath: localPath,
     );
@@ -103,6 +111,7 @@ extension DocumentEntityX on DocumentEntity {
       relatedModel: relatedModel,
       keywords: keywords,
       uploadedBy: uploadedBy,
+      uploadedByName: uploadedByName,
       isDownloaded: isDownloaded,
       localPath: localPath,
       cachedAt: DateTime.now(),

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/components/gradient_app_bar.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
@@ -107,41 +110,74 @@ class _DocumentsViewState extends State<DocumentsView> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Documents'),
-        elevation: 0,
-        backgroundColor: theme.colorScheme.surface,
-        foregroundColor: theme.colorScheme.onSurface,
+      appBar: GradientAppBarPrimary(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+              decoration: BoxDecoration(
+                color: AppColors.onPrimary.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              ),
+              child: Icon(
+                Icons.folder_rounded,
+                color: AppColors.onPrimary,
+                size: AppDimensions.iconSmall,
+              ),
+            ),
+            SizedBox(width: AppDimensions.spaceSmall.w),
+            const Text('Documents'),
+          ],
+        ),
         actions: [
           BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {
               if (state.downloadedDocumentsCount > 0) {
                 return Padding(
-                  padding: EdgeInsets.only(right: 16.w),
+                  padding:
+                      EdgeInsets.only(right: AppDimensions.paddingMedium.w),
                   child: Center(
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 4.h,
+                        horizontal: AppDimensions.paddingSmall,
+                        vertical: AppDimensions.paddingXSmall,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12.r),
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.success.withValues(alpha: 0.9),
+                            AppColors.success.withValues(alpha: 0.7),
+                          ],
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(AppDimensions.radiusLarge),
+                        border: Border.all(
+                          color: AppColors.onPrimary.withValues(alpha: 0.3),
+                          width: 1.w,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.success.withValues(alpha: 0.3),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.download_done,
-                            color: Colors.green,
-                            size: 16.sp,
+                            Icons.download_done_rounded,
+                            color: AppColors.onPrimary,
+                            size: 14.sp,
                           ),
-                          SizedBox(width: 4.w),
+                          SizedBox(width: AppDimensions.spaceXSmall.w),
                           Text(
                             '${state.downloadedDocumentsCount}',
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: Colors.green,
-                              fontWeight: FontWeight.w600,
+                              color: AppColors.onPrimary,
+                              fontWeight: FontWeight.w700,
                               fontSize: 12.sp,
                             ),
                           ),
@@ -179,98 +215,136 @@ class _DocumentsViewState extends State<DocumentsView> {
           }
         },
         builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<DocumentsBloc>().add(
-                    LoadDocuments(
-                      isRefresh: true,
-                      type: state.selectedType,
-                      category: state.selectedCategory,
-                      searchQuery: state.searchQuery,
-                    ),
-                  );
-            },
-            child: Column(
-              children: [
-                // Search bar
-                DocumentSearchBar(
-                  initialQuery: state.searchQuery,
-                  isLoading: state.isSearching,
-                  onSearchChanged: (query) {
-                    // Trigger search immediately - debouncing is handled by BLoC
-                    if (query.isNotEmpty) {
-                      context.read<DocumentsBloc>().add(
-                            SearchDocuments(
-                              query: query,
-                              type: state.selectedType,
-                              category: state.selectedCategory,
-                            ),
-                          );
-                    } else {
-                      // Clear search if query is empty
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.primary.withValues(alpha: 0.02),
+                  AppColors.surface,
+                ],
+              ),
+            ),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                context.read<DocumentsBloc>().add(
+                      LoadDocuments(
+                        isRefresh: true,
+                        type: state.selectedType,
+                        category: state.selectedCategory,
+                        searchQuery: state.searchQuery,
+                      ),
+                    );
+              },
+              child: Column(
+                children: [
+                  // Search bar
+                  DocumentSearchBar(
+                    initialQuery: state.searchQuery,
+                    isLoading: state.isSearching,
+                    onSearchChanged: (query) {
+                      // Trigger search immediately - debouncing is handled by BLoC
+                      if (query.isNotEmpty) {
+                        context.read<DocumentsBloc>().add(
+                              SearchDocuments(
+                                query: query,
+                                type: state.selectedType,
+                                category: state.selectedCategory,
+                              ),
+                            );
+                      } else {
+                        // Clear search if query is empty
+                        context.read<DocumentsBloc>().add(const ClearSearch());
+                      }
+                    },
+                    onSearchSubmitted: () {
+                      // Search is already triggered on change, no need for additional action
+                    },
+                    onClearSearch: () {
                       context.read<DocumentsBloc>().add(const ClearSearch());
-                    }
-                  },
-                  onSearchSubmitted: () {
-                    // Search is already triggered on change, no need for additional action
-                  },
-                  onClearSearch: () {
-                    context.read<DocumentsBloc>().add(const ClearSearch());
-                  },
-                ),
-
-                // Filters
-                DocumentCategoryFilter(
-                  categories: state.categories,
-                  selectedType: state.selectedType,
-                  selectedCategory: state.selectedCategory,
-                  onTypeChanged: (type) {
-                    context.read<DocumentsBloc>().add(FilterByType(type));
-                  },
-                  onCategoryChanged: (category) {
-                    context
-                        .read<DocumentsBloc>()
-                        .add(FilterByCategory(category));
-                  },
-                ),
-
-                // Download progress indicator
-                if (state.isDownloading && state.downloadingDocumentId != null)
-                  DownloadProgressIndicator(
-                    fileName: _getDownloadingFileName(state),
+                    },
                   ),
 
-                // Offline indicator
-                if (state.isOffline)
-                  Container(
-                    width: double.infinity,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    color: Colors.orange.withOpacity(0.1),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.cloud_off,
-                          color: Colors.orange,
-                          size: 16.sp,
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          'Offline mode - showing cached documents',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.orange,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ],
+                  // Filters
+                  DocumentCategoryFilter(
+                    categories: state.categories,
+                    selectedType: state.selectedType,
+                    selectedCategory: state.selectedCategory,
+                    onTypeChanged: (type) {
+                      context.read<DocumentsBloc>().add(FilterByType(type));
+                    },
+                    onCategoryChanged: (category) {
+                      context
+                          .read<DocumentsBloc>()
+                          .add(FilterByCategory(category));
+                    },
+                  ),
+
+                  // Download progress indicator
+                  if (state.isDownloading &&
+                      state.downloadingDocumentId != null)
+                    DownloadProgressIndicator(
+                      fileName: _getDownloadingFileName(state),
                     ),
-                  ),
 
-                // Documents list
-                Expanded(
-                  child: _buildDocumentsList(context, state),
-                ),
-              ],
+                  // Offline indicator
+                  if (state.isOffline)
+                    Container(
+                      width: double.infinity,
+                      margin: AppDimensions.marginHorizontalMedium,
+                      padding: AppDimensions.paddingAllSmall,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.warning.withValues(alpha: 0.15),
+                            AppColors.warning.withValues(alpha: 0.05),
+                          ],
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(AppDimensions.radiusSmall),
+                        border: Border.all(
+                          color: AppColors.warning.withValues(alpha: 0.3),
+                          width: 1.w,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding:
+                                EdgeInsets.all(AppDimensions.paddingXSmall),
+                            decoration: BoxDecoration(
+                              color: AppColors.warning.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(
+                                  AppDimensions.radiusXSmall),
+                            ),
+                            child: Icon(
+                              Icons.cloud_off_rounded,
+                              color: AppColors.warning,
+                              size: AppDimensions.iconSmall,
+                            ),
+                          ),
+                          SizedBox(width: AppDimensions.spaceSmall.w),
+                          Expanded(
+                            child: Text(
+                              'Offline - Showing cached documents',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: AppColors.warning.withValues(alpha: 0.9),
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  // Documents list
+                  Expanded(
+                    child: _buildDocumentsList(context, state),
+                  ),
+                ],
+              ),
             ),
           );
         },

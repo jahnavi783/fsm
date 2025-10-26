@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/app_dimensions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DocumentShimmer extends StatelessWidget {
@@ -13,147 +15,211 @@ class DocumentShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: AppDimensions.paddingVerticalSmall,
       itemCount: itemCount,
       itemBuilder: (context, index) {
-        return Card(
-          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+        return Container(
+          margin: AppDimensions.marginHorizontalMedium +
+              AppDimensions.marginVerticalSmall,
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradientWithOpacity(0.02),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow.withValues(alpha: 0.05),
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
-          child: Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Shimmer.fromColors(
-              baseColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
-              highlightColor: theme.colorScheme.surface,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Document type icon placeholder
-                      Container(
-                        width: 48.w,
-                        height: 48.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.r),
+          child: Card(
+            margin: EdgeInsets.zero,
+            elevation: 0,
+            color: theme.colorScheme.surface.withValues(alpha: 0.8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+              side: BorderSide(
+                color: AppColors.outline.withValues(alpha: 0.1),
+                width: 1.w,
+              ),
+            ),
+            child: Padding(
+              padding: AppDimensions.paddingAllMedium,
+              child: Shimmer.fromColors(
+                baseColor: AppColors.surfaceVariant.withValues(alpha: 0.4),
+                highlightColor: AppColors.surface.withValues(alpha: 0.8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Document type icon placeholder
+                        Container(
+                          width: AppDimensions.iconXLarge,
+                          height: AppDimensions.iconXLarge,
+                          decoration: BoxDecoration(
+                            color:
+                                AppColors.surfaceVariant.withValues(alpha: 0.6),
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusSmall),
+                            border: Border.all(
+                              color: AppColors.outline.withValues(alpha: 0.2),
+                              width: 1.w,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 12.w),
-                      
-                      // Document info placeholder
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Title placeholder
-                            Container(
-                              width: double.infinity,
-                              height: 16.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4.r),
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            
-                            // Description placeholder
-                            Container(
-                              width: double.infinity * 0.8,
-                              height: 14.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4.r),
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Container(
-                              width: double.infinity * 0.6,
-                              height: 14.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4.r),
-                              ),
-                            ),
-                            SizedBox(height: 12.h),
-                            
-                            // Metadata placeholder
-                            Row(
-                              children: [
-                                Container(
-                                  width: 60.w,
-                                  height: 20.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(4.r),
-                                  ),
+                        SizedBox(width: AppDimensions.spaceMedium.w),
+
+                        // Document info placeholder
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Title placeholder
+                              Container(
+                                width: double.infinity,
+                                height: 18.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.surfaceVariant
+                                      .withValues(alpha: 0.8),
+                                  borderRadius: BorderRadius.circular(
+                                      AppDimensions.radiusXSmall),
                                 ),
-                                SizedBox(width: 8.w),
-                                Container(
-                                  width: 40.w,
-                                  height: 12.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(4.r),
-                                  ),
+                              ),
+                              SizedBox(height: AppDimensions.spaceSmall),
+
+                              // Description placeholder
+                              Container(
+                                width: double.infinity * 0.9,
+                                height: 14.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.surfaceVariant
+                                      .withValues(alpha: 0.6),
+                                  borderRadius: BorderRadius.circular(
+                                      AppDimensions.radiusXSmall),
                                 ),
-                              ],
+                              ),
+                              SizedBox(height: AppDimensions.spaceXSmall),
+                              Container(
+                                width: double.infinity * 0.7,
+                                height: 14.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.surfaceVariant
+                                      .withValues(alpha: 0.6),
+                                  borderRadius: BorderRadius.circular(
+                                      AppDimensions.radiusXSmall),
+                                ),
+                              ),
+                              SizedBox(height: AppDimensions.spaceMedium),
+
+                              // Metadata placeholder
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 70.w,
+                                    height: 24.h,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(
+                                          AppDimensions.radiusXSmall),
+                                      border: Border.all(
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.1),
+                                        width: 0.5.w,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: AppDimensions.spaceSmall.w),
+                                  Container(
+                                    width: 50.w,
+                                    height: 18.h,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.surfaceVariant
+                                          .withValues(alpha: 0.5),
+                                      borderRadius: BorderRadius.circular(
+                                          AppDimensions.radiusXSmall),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Action button placeholder
+                        Container(
+                          width: 36.w,
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusSmall),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.2),
+                              width: 1.w,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      
-                      // Action button placeholder
-                      Container(
-                        width: 32.w,
-                        height: 32.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
+                      ],
+                    ),
+
+                    SizedBox(height: AppDimensions.spaceMedium),
+
+                    // Categories placeholder
+                    Row(
+                      children: [
+                        Container(
+                          width: 60.w,
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                            color:
+                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusXSmall),
+                            border: Border.all(
+                              color: AppColors.outline.withValues(alpha: 0.1),
+                              width: 0.5.w,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  
-                  SizedBox(height: 12.h),
-                  
-                  // Categories placeholder
-                  Row(
-                    children: [
-                      Container(
-                        width: 50.w,
-                        height: 16.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(3.r),
+                        SizedBox(width: AppDimensions.spaceXSmall.w),
+                        Container(
+                          width: 45.w,
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                            color:
+                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusXSmall),
+                            border: Border.all(
+                              color: AppColors.outline.withValues(alpha: 0.1),
+                              width: 0.5.w,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 6.w),
-                      Container(
-                        width: 40.w,
-                        height: 16.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(3.r),
+                        SizedBox(width: AppDimensions.spaceXSmall.w),
+                        Container(
+                          width: 40.w,
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                            color:
+                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            borderRadius: BorderRadius.circular(
+                                AppDimensions.radiusXSmall),
+                            border: Border.all(
+                              color: AppColors.outline.withValues(alpha: 0.1),
+                              width: 0.5.w,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 6.w),
-                      Container(
-                        width: 35.w,
-                        height: 16.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(3.r),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

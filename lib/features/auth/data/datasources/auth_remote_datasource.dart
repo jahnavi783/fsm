@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import '../api/auth_api_client.dart';
 import '../models/login_request.dart';
 import '../models/login_response.dart';
+import '../models/refresh_token_request.dart';
 import '../models/refresh_token_response.dart';
 import '../models/user_dto.dart';
 
@@ -25,9 +26,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<RefreshTokenResponse> refreshToken(String refreshToken) async {
-    return await _apiClient.refreshToken({
-      'refresh_token': refreshToken,
-    });
+    return await _apiClient.refreshToken(
+      RefreshTokenRequest(refreshToken: refreshToken),
+    );
   }
 
   @override

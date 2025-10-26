@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/login_request.dart';
 import '../models/login_response.dart';
+import '../models/refresh_token_request.dart';
 import '../models/refresh_token_response.dart';
 import '../models/user_dto.dart';
 
@@ -16,7 +17,7 @@ abstract class AuthApiClient {
 
   @POST('/auth/refresh-token')
   Future<RefreshTokenResponse> refreshToken(
-    @Body() Map<String, dynamic> body,
+    @Body() RefreshTokenRequest request,
   );
 
   @GET('/users/me')

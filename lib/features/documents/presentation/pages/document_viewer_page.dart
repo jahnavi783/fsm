@@ -108,11 +108,10 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         allowMuting: true,
         showControls: true,
         materialProgressColors: ChewieProgressColors(
-          playedColor: Theme.of(context).colorScheme.primary,
-          handleColor: Theme.of(context).colorScheme.primary,
-          backgroundColor: Colors.grey,
-          bufferedColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-        ),
+            playedColor: Theme.of(context).colorScheme.primary,
+            handleColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Colors.grey,
+            bufferedColor: Theme.of(context).colorScheme.primary),
       );
 
       if (mounted) {

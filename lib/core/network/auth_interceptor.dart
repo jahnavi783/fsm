@@ -142,7 +142,7 @@ class AuthInterceptor extends Interceptor {
 
       // Call refresh token API
       final response = await tokenDio.post('/auth/refresh-token', data: {
-        'refresh_token': refreshToken,
+        'refreshToken': refreshToken,
       });
 
       if (response.statusCode == 200) {

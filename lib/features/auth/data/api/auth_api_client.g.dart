@@ -47,12 +47,11 @@ class _AuthApiClient implements AuthApiClient {
   }
 
   @override
-  Future<RefreshTokenResponse> refreshToken(Map<String, dynamic> body) async {
+  Future<RefreshTokenResponse> refreshToken(RefreshTokenRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = request;
     final _options = _setStreamType<RefreshTokenResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(

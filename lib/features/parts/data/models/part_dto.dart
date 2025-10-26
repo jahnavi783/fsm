@@ -4,6 +4,19 @@ import '../../domain/entities/part_entity.dart';
 part 'part_dto.freezed.dart';
 part 'part_dto.g.dart';
 
+// Helper function to parse unit_price from string to double
+double _priceFromJson(dynamic price) {
+  if (price is String) {
+    return double.tryParse(price) ?? 0.0;
+  }
+  if (price is num) {
+    return price.toDouble();
+  }
+  return 0.0;
+}
+
+String _priceToJson(double price) => price.toString();
+
 @freezed
 abstract class PartDto with _$PartDto {
   const factory PartDto({
@@ -11,7 +24,8 @@ abstract class PartDto with _$PartDto {
     @JsonKey(name: 'part_name') required String partName,
     required String category,
     @JsonKey(name: 'quantity_available') required int quantityAvailable,
-    @JsonKey(name: 'unit_price') required double unitPrice,
+    @JsonKey(name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
+    required double unitPrice,
     required String status,
   }) = _PartDto;
 

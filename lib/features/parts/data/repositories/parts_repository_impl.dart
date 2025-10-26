@@ -175,8 +175,19 @@ class PartsRepositoryImpl implements IPartsRepository {
   Future<Either<Failure, List<String>>> getPartCategories() async {
     try {
       if (await _networkInfo.isConnected) {
-        final categories = await _remoteDataSource.getPartCategories();
-        return Right(categories);
+        try {
+          final categories = await _remoteDataSource.getPartCategories();
+          return Right(categories);
+        } catch (e) {
+          // If remote fails, fallback to cache
+          final cachedModels = await _localDataSource.getCachedParts();
+          final categories = cachedModels
+              .map((model) => model.category)
+              .toSet()
+              .toList()
+            ..sort();
+          return Right(categories);
+        }
       } else {
         // Get categories from cached parts
         final cachedModels = await _localDataSource.getCachedParts();
@@ -188,9 +199,31 @@ class PartsRepositoryImpl implements IPartsRepository {
         return Right(categories);
       }
     } on DioException catch (e) {
-      return Left(_handleDioException(e));
+      // Fallback to cache even on network errors
+      try {
+        final cachedModels = await _localDataSource.getCachedParts();
+        final categories = cachedModels
+            .map((model) => model.category)
+            .toSet()
+            .toList()
+          ..sort();
+        return Right(categories);
+      } catch (_) {
+        return Left(_handleDioException(e));
+      }
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      // Final fallback - return empty list or cached data
+      try {
+        final cachedModels = await _localDataSource.getCachedParts();
+        final categories = cachedModels
+            .map((model) => model.category)
+            .toSet()
+            .toList()
+          ..sort();
+        return Right(categories);
+      } catch (_) {
+        return Left(ServerFailure(message: e.toString()));
+      }
     }
   }
 
@@ -204,7 +237,25 @@ class PartsRepositoryImpl implements IPartsRepository {
         return const NetworkFailure(message: 'No internet connection');
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
-        final message = e.response?.data?['message'] ?? 'Server error';
+        String message = 'Server error';
+        try {
+          final data = e.response?.data;
+          if (data != null) {
+            if (data is Map) {
+              // Handle both Map<String, dynamic> and Map<String, Object?>
+              final messageValue = data.containsKey('message') 
+                  ? data['message'] 
+                  : null;
+              message = messageValue?.toString() ?? 'Server error';
+            } else if (data is String) {
+              message = data;
+            } else {
+              message = data.toString();
+            }
+          }
+        } catch (error) {
+          message = 'Server error: ${error.toString()}';
+        }
         return ServerFailure(message: message, statusCode: statusCode);
       default:
         return const ServerFailure(message: 'Unknown error occurred');

@@ -11,7 +11,7 @@ _PartDto _$PartDtoFromJson(Map<String, dynamic> json) => _PartDto(
       partName: json['part_name'] as String,
       category: json['category'] as String,
       quantityAvailable: (json['quantity_available'] as num).toInt(),
-      unitPrice: (json['unit_price'] as num).toDouble(),
+      unitPrice: _priceFromJson(json['unit_price']),
       status: json['status'] as String,
     );
 
@@ -20,7 +20,7 @@ Map<String, dynamic> _$PartDtoToJson(_PartDto instance) => <String, dynamic>{
       'part_name': instance.partName,
       'category': instance.category,
       'quantity_available': instance.quantityAvailable,
-      'unit_price': instance.unitPrice,
+      'unit_price': _priceToJson(instance.unitPrice),
       'status': instance.status,
     };
 

@@ -21,7 +21,7 @@ mixin _$PartDto {
   String get category;
   @JsonKey(name: 'quantity_available')
   int get quantityAvailable;
-  @JsonKey(name: 'unit_price')
+  @JsonKey(name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
   double get unitPrice;
   String get status;
 
@@ -74,7 +74,9 @@ abstract mixin class $PartDtoCopyWith<$Res> {
       @JsonKey(name: 'part_name') String partName,
       String category,
       @JsonKey(name: 'quantity_available') int quantityAvailable,
-      @JsonKey(name: 'unit_price') double unitPrice,
+      @JsonKey(
+          name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
+      double unitPrice,
       String status});
 }
 
@@ -224,7 +226,11 @@ extension PartDtoPatterns on PartDto {
             @JsonKey(name: 'part_name') String partName,
             String category,
             @JsonKey(name: 'quantity_available') int quantityAvailable,
-            @JsonKey(name: 'unit_price') double unitPrice,
+            @JsonKey(
+                name: 'unit_price',
+                fromJson: _priceFromJson,
+                toJson: _priceToJson)
+            double unitPrice,
             String status)?
         $default, {
     required TResult orElse(),
@@ -259,7 +265,11 @@ extension PartDtoPatterns on PartDto {
             @JsonKey(name: 'part_name') String partName,
             String category,
             @JsonKey(name: 'quantity_available') int quantityAvailable,
-            @JsonKey(name: 'unit_price') double unitPrice,
+            @JsonKey(
+                name: 'unit_price',
+                fromJson: _priceFromJson,
+                toJson: _priceToJson)
+            double unitPrice,
             String status)
         $default,
   ) {
@@ -292,7 +302,11 @@ extension PartDtoPatterns on PartDto {
             @JsonKey(name: 'part_name') String partName,
             String category,
             @JsonKey(name: 'quantity_available') int quantityAvailable,
-            @JsonKey(name: 'unit_price') double unitPrice,
+            @JsonKey(
+                name: 'unit_price',
+                fromJson: _priceFromJson,
+                toJson: _priceToJson)
+            double unitPrice,
             String status)?
         $default,
   ) {
@@ -315,7 +329,9 @@ class _PartDto implements PartDto {
       @JsonKey(name: 'part_name') required this.partName,
       required this.category,
       @JsonKey(name: 'quantity_available') required this.quantityAvailable,
-      @JsonKey(name: 'unit_price') required this.unitPrice,
+      @JsonKey(
+          name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
+      required this.unitPrice,
       required this.status});
   factory _PartDto.fromJson(Map<String, dynamic> json) =>
       _$PartDtoFromJson(json);
@@ -332,7 +348,7 @@ class _PartDto implements PartDto {
   @JsonKey(name: 'quantity_available')
   final int quantityAvailable;
   @override
-  @JsonKey(name: 'unit_price')
+  @JsonKey(name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
   final double unitPrice;
   @override
   final String status;
@@ -392,7 +408,9 @@ abstract mixin class _$PartDtoCopyWith<$Res> implements $PartDtoCopyWith<$Res> {
       @JsonKey(name: 'part_name') String partName,
       String category,
       @JsonKey(name: 'quantity_available') int quantityAvailable,
-      @JsonKey(name: 'unit_price') double unitPrice,
+      @JsonKey(
+          name: 'unit_price', fromJson: _priceFromJson, toJson: _priceToJson)
+      double unitPrice,
       String status});
 }
 

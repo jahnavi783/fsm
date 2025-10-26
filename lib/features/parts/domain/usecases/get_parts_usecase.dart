@@ -14,8 +14,8 @@ class GetPartsUseCase {
     String? category,
     PartStatus? status,
     String? searchQuery,
-  }) async {
-    return await _repository.getParts(
+  }) {
+    return _repository.getParts(
       category: category,
       status: status,
       searchQuery: searchQuery,

@@ -11,17 +11,70 @@ import '../widgets/parts_search_bar.dart';
 import '../widgets/parts_filter_chips.dart';
 
 @RoutePage()
-class PartsPage extends StatelessWidget {
+class PartsPage extends StatefulWidget {
   const PartsPage({super.key});
 
   @override
+  State<PartsPage> createState() => _PartsPageState();
+}
+
+class _PartsPageState extends State<PartsPage> {
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<PartsBloc>()
-        ..add(const PartsEvent.loadParts())
-        ..add(const PartsEvent.loadPartCategories())
-        ..add(const PartsEvent.loadLowStockParts()),
-      child: const _PartsPageView(),
+    return FutureBuilder<PartsBloc>(
+      future: getIt.getAsync<PartsBloc>(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64.sp,
+                    color: Colors.red,
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Failed to load Parts',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    snapshot.error.toString(),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        final bloc = snapshot.data!;
+        return BlocProvider.value(
+          value: bloc
+            ..add(const PartsEvent.loadParts())
+            ..add(const PartsEvent.loadPartCategories())
+            ..add(const PartsEvent.loadLowStockParts()),
+          child: const _PartsPageView(),
+        );
+      },
     );
   }
 }

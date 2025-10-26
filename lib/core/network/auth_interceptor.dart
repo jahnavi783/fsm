@@ -149,7 +149,7 @@ class AuthInterceptor extends Interceptor {
         final data = response.data;
         await _localDataSource.saveTokens(
           accessToken: data['access_token'],
-          refreshToken: data['refresh_token'],
+          refreshToken: refreshToken
         );
         _loggingService.info(
           'Tokens refreshed and saved successfully',

@@ -23,7 +23,7 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
 
   @override
   Future<void> cacheParts(List<PartHiveModel> parts) async {
-    final box = await _hiveService.getBox(HiveBoxes.parts);
+    final box = await _hiveService.getTypedBox<PartHiveModel>(HiveBoxes.parts);
 
     // Clear existing parts and add new ones
     await box.clear();
@@ -38,8 +38,8 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
     PartStatus? status,
     String? searchQuery,
   }) async {
-    final box = await _hiveService.getBox(HiveBoxes.parts);
-    final allParts = box.values.cast<PartHiveModel>().toList();
+    final box = await _hiveService.getTypedBox<PartHiveModel>(HiveBoxes.parts);
+    final allParts = box.values.toList();
 
     // Apply filters
     var filteredParts = allParts.where((part) {
@@ -77,13 +77,13 @@ class PartsLocalDataSourceImpl implements PartsLocalDataSource {
 
   @override
   Future<PartHiveModel?> getCachedPartByPartNumber(String partNumber) async {
-    final box = await _hiveService.getBox(HiveBoxes.parts);
+    final box = await _hiveService.getTypedBox<PartHiveModel>(HiveBoxes.parts);
     return box.get(partNumber);
   }
 
   @override
   Future<void> clearPartsCache() async {
-    final box = await _hiveService.getBox(HiveBoxes.parts);
+    final box = await _hiveService.getTypedBox<PartHiveModel>(HiveBoxes.parts);
     await box.clear();
   }
 }

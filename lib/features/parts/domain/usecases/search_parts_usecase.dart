@@ -12,15 +12,7 @@ class SearchPartsUseCase {
 
   Future<Either<Failure, List<PartEntity>>> call({
     required String query,
-  }) async {
-    if (query.trim().isEmpty) {
-      return const Left(ValidationFailure(
-        message: 'Search query cannot be empty',
-      ));
-    }
-
-    return await _repository.searchParts(
-      query: query.trim(),
-    );
+  }) {
+    return _repository.searchParts(query: query);
   }
 }

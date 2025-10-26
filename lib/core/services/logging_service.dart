@@ -32,6 +32,7 @@ enum LogLevel {
 
 /// Centralized logging service for the FSM app
 /// Provides structured logging with different levels and proper formatting
+/// Thread-safe implementation using atomic StringBuffer operations
 @singleton
 class LoggingService {
   static const String _tag = 'FSM_LOG';
@@ -53,10 +54,12 @@ class LoggingService {
     if (kDebugMode) {
       final timestamp = DateTime.now().toIso8601String().substring(11, 19);
       final logTag = tag ?? _tag;
-      print('ℹ️ [$timestamp] $logTag: $message');
+      final buffer = StringBuffer();
+      buffer.writeln('ℹ️ [$timestamp] $logTag: $message');
       if (data != null) {
-        print('  📄 Data: $data');
+        buffer.write('  📄 Data: $data');
       }
+      debugPrint(buffer.toString());
     }
   }
 
@@ -65,13 +68,15 @@ class LoggingService {
       {String? tag, Object? error, StackTrace? stackTrace}) {
     final timestamp = DateTime.now().toIso8601String().substring(11, 19);
     final logTag = tag ?? _tag;
-    print('❌ [$timestamp] $logTag: $message');
+    final buffer = StringBuffer();
+    buffer.writeln('❌ [$timestamp] $logTag: $message');
     if (error != null) {
-      print('  📄 Error: $error');
+      buffer.writeln('  📄 Error: $error');
     }
     if (stackTrace != null) {
-      print('  📚 Stack trace:\n$stackTrace');
+      buffer.write('  📚 Stack trace:\n$stackTrace');
     }
+    debugPrint(buffer.toString());
   }
 
   /// Log a debug message (only in debug mode)
@@ -140,7 +145,7 @@ class LoggingService {
     _log(LogLevel.debug, message, tag: tag ?? 'PERFORMANCE');
   }
 
-  /// Internal logging method
+  /// Internal logging method with atomic output
   void _log(LogLevel level, String message,
       {String? tag, Object? data, StackTrace? stackTrace}) {
     // Skip debug logs in production (except critical)
@@ -163,26 +168,30 @@ class LoggingService {
         stackTrace: stackTrace,
       );
 
-      // Also print to console for immediate visibility
-      if (kDebugMode) {
-        print(formattedMessage);
+      // Build complete log message atomically using StringBuffer
+      final buffer = StringBuffer();
+      buffer.writeln(formattedMessage);
 
-        if (data != null) {
-          print('  📄 Data: $data');
-        }
-
-        if (stackTrace != null &&
-            (level == LogLevel.error || level == LogLevel.critical)) {
-          print('  📚 Stack trace:\n$stackTrace');
-        }
+      if (data != null) {
+        buffer.writeln('  📄 Data: $data');
       }
+
+      if (stackTrace != null &&
+          (level == LogLevel.error || level == LogLevel.critical)) {
+        buffer.write('  📚 Stack trace:\n$stackTrace');
+      }
+
+      // Single atomic debugPrint call to prevent interleaving
+      debugPrint(buffer.toString());
     } else {
       // In production, only log critical errors
       if (level == LogLevel.critical) {
-        print(formattedMessage);
+        final buffer = StringBuffer();
+        buffer.writeln(formattedMessage);
         if (data != null) {
-          print('  Data: $data');
+          buffer.write('  Data: $data');
         }
+        debugPrint(buffer.toString());
       }
     }
 

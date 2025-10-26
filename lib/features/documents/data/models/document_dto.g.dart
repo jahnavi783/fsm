@@ -7,7 +7,7 @@ part of 'document_dto.dart';
 // **************************************************************************
 
 _DocumentDto _$DocumentDtoFromJson(Map<String, dynamic> json) => _DocumentDto(
-      uploadId: json['upload_id'] as String,
+      id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       category: json['category'] as String,
@@ -15,13 +15,12 @@ _DocumentDto _$DocumentDtoFromJson(Map<String, dynamic> json) => _DocumentDto(
       files: (json['files'] as List<dynamic>)
           .map((e) => FileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-      uploadedBy:
-          UploadedByDto.fromJson(json['uploaded_by'] as Map<String, dynamic>),
+      uploadedBy: (json['uploaded_by'] as num).toInt(),
+      uploader:
+          UploadedByDto.fromJson(json['uploader'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String?,
-      keywords: (json['keywords'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      keywords: json['keywords'] as String?,
       tags:
           (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               const [],
@@ -29,13 +28,14 @@ _DocumentDto _$DocumentDtoFromJson(Map<String, dynamic> json) => _DocumentDto(
 
 Map<String, dynamic> _$DocumentDtoToJson(_DocumentDto instance) =>
     <String, dynamic>{
-      'upload_id': instance.uploadId,
+      'id': instance.id,
       'title': instance.title,
       'description': instance.description,
       'category': instance.category,
       'related_model': instance.relatedModel,
       'files': instance.files,
       'uploaded_by': instance.uploadedBy,
+      'uploader': instance.uploader,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'keywords': instance.keywords,

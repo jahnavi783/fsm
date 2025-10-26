@@ -12,6 +12,7 @@ _UploadedByDto _$UploadedByDtoFromJson(Map<String, dynamic> json) =>
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String?,
       email: json['email'] as String,
+      roleId: (json['role_id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$UploadedByDtoToJson(_UploadedByDto instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$UploadedByDtoToJson(_UploadedByDto instance) =>
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'email': instance.email,
+      'role_id': instance.roleId,
     };

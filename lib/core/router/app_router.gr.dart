@@ -89,7 +89,7 @@ class DeveloperOptionsRoute extends _i14.PageRouteInfo<void> {
 class DocumentViewerRoute extends _i14.PageRouteInfo<DocumentViewerRouteArgs> {
   DocumentViewerRoute({
     _i15.Key? key,
-    required int documentId,
+    required String documentId,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           DocumentViewerRoute.name,
@@ -106,7 +106,7 @@ class DocumentViewerRoute extends _i14.PageRouteInfo<DocumentViewerRouteArgs> {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<DocumentViewerRouteArgs>(
         orElse: () => DocumentViewerRouteArgs(
-          documentId: pathParams.getInt('documentId'),
+          documentId: pathParams.getString('documentId'),
         ),
       );
       return _i4.DocumentViewerPage(key: args.key, documentId: args.documentId);
@@ -119,7 +119,7 @@ class DocumentViewerRouteArgs {
 
   final _i15.Key? key;
 
-  final int documentId;
+  final String documentId;
 
   @override
   String toString() {

@@ -46,7 +46,7 @@ class DocumentRepositoryImpl implements IDocumentRepository {
         if (type != null) {
           filteredDtos = documentDtos
               .where((dto) =>
-                  dto.fileType.toLowerCase() == type.name.toLowerCase())
+                  dto.category.toLowerCase() == type.name.toLowerCase())
               .toList();
         }
 
@@ -139,7 +139,7 @@ class DocumentRepositoryImpl implements IDocumentRepository {
   }
 
   @override
-  Future<Either<Failure, DocumentEntity>> getDocumentById(int id) async {
+  Future<Either<Failure, DocumentEntity>> getDocumentById(String id) async {
     try {
       // Check cache first
       final cachedDoc = await _localDataSource.getCachedDocumentById(id);
@@ -192,7 +192,7 @@ class DocumentRepositoryImpl implements IDocumentRepository {
 
   @override
   Future<Either<Failure, String>> downloadDocument({
-    required int documentId,
+    required String documentId,
     required String fileUrl,
     required String fileName,
   }) async {
@@ -262,7 +262,6 @@ class DocumentRepositoryImpl implements IDocumentRepository {
         final categories = <String>{};
         for (final dto in documentDtos) {
           categories.add(dto.category);
-          categories.addAll(dto.categories);
         }
 
         final categoryList = categories.toList()..sort();
@@ -308,7 +307,7 @@ class DocumentRepositoryImpl implements IDocumentRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteDownloadedDocument(int documentId) async {
+  Future<Either<Failure, void>> deleteDownloadedDocument(String documentId) async {
     try {
       await _localDataSource.deleteDocumentFile(documentId);
       return const Right(null);

@@ -15,7 +15,7 @@ extension NavigationExtensions on BuildContext {
   }
 
   /// Navigate to document viewer
-  Future<void> navigateToDocument(int documentId, {bool replace = false}) {
+  Future<void> navigateToDocument(String documentId, {bool replace = false}) {
     return NavigationHelpers.navigateToDocument(this, documentId,
         replace: replace);
   }
@@ -152,9 +152,8 @@ class DeepLinkHandler {
       }
     } else if (path.startsWith(documentPrefix)) {
       final idStr = path.substring(documentPrefix.length);
-      final id = int.tryParse(idStr);
-      if (id != null) {
-        return DocumentViewerRoute(documentId: id);
+      if (idStr != null) {
+        return DocumentViewerRoute(documentId: idStr);
       }
     } else if (path.startsWith(partPrefix)) {
       final idStr = path.substring(partPrefix.length);

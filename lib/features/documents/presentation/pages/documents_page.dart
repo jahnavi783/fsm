@@ -393,12 +393,12 @@ class _DocumentsViewState extends State<DocumentsView> {
   }
 
   String _getDownloadingFileName(DocumentsState state) {
-    final documentId = int.tryParse(state.downloadingDocumentId ?? '');
-    if (documentId != null) {
+    final documentId = state.downloadingDocumentId;
+    if (documentId != null && documentId.isNotEmpty) {
       final document = state.documents.firstWhere(
         (doc) => doc.id == documentId,
         orElse: () => DocumentEntity(
-          id: 0,
+          id: '',
           title: 'Unknown Document',
           description: '',
           type: DocumentType.other,

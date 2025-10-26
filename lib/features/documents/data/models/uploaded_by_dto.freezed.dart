@@ -20,6 +20,8 @@ mixin _$UploadedByDto {
   @JsonKey(name: 'last_name')
   String? get lastName;
   String get email;
+  @JsonKey(name: 'role_id')
+  int get roleId;
 
   /// Create a copy of UploadedByDto
   /// with the given fields replaced by the non-null parameter values.
@@ -42,16 +44,18 @@ mixin _$UploadedByDto {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.roleId, roleId) || other.roleId == roleId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email);
+  int get hashCode =>
+      Object.hash(runtimeType, id, firstName, lastName, email, roleId);
 
   @override
   String toString() {
-    return 'UploadedByDto(id: $id, firstName: $firstName, lastName: $lastName, email: $email)';
+    return 'UploadedByDto(id: $id, firstName: $firstName, lastName: $lastName, email: $email, roleId: $roleId)';
   }
 }
 
@@ -65,7 +69,8 @@ abstract mixin class $UploadedByDtoCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'first_name') String firstName,
       @JsonKey(name: 'last_name') String? lastName,
-      String email});
+      String email,
+      @JsonKey(name: 'role_id') int roleId});
 }
 
 /// @nodoc
@@ -85,6 +90,7 @@ class _$UploadedByDtoCopyWithImpl<$Res>
     Object? firstName = null,
     Object? lastName = freezed,
     Object? email = null,
+    Object? roleId = null,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -103,6 +109,10 @@ class _$UploadedByDtoCopyWithImpl<$Res>
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      roleId: null == roleId
+          ? _self.roleId
+          : roleId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -200,15 +210,20 @@ extension UploadedByDtoPatterns on UploadedByDto {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, @JsonKey(name: 'first_name') String firstName,
-            @JsonKey(name: 'last_name') String? lastName, String email)?
+    TResult Function(
+            int id,
+            @JsonKey(name: 'first_name') String firstName,
+            @JsonKey(name: 'last_name') String? lastName,
+            String email,
+            @JsonKey(name: 'role_id') int roleId)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _UploadedByDto() when $default != null:
-        return $default(_that.id, _that.firstName, _that.lastName, _that.email);
+        return $default(_that.id, _that.firstName, _that.lastName, _that.email,
+            _that.roleId);
       case _:
         return orElse();
     }
@@ -229,14 +244,19 @@ extension UploadedByDtoPatterns on UploadedByDto {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, @JsonKey(name: 'first_name') String firstName,
-            @JsonKey(name: 'last_name') String? lastName, String email)
+    TResult Function(
+            int id,
+            @JsonKey(name: 'first_name') String firstName,
+            @JsonKey(name: 'last_name') String? lastName,
+            String email,
+            @JsonKey(name: 'role_id') int roleId)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _UploadedByDto():
-        return $default(_that.id, _that.firstName, _that.lastName, _that.email);
+        return $default(_that.id, _that.firstName, _that.lastName, _that.email,
+            _that.roleId);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -256,14 +276,19 @@ extension UploadedByDtoPatterns on UploadedByDto {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, @JsonKey(name: 'first_name') String firstName,
-            @JsonKey(name: 'last_name') String? lastName, String email)?
+    TResult? Function(
+            int id,
+            @JsonKey(name: 'first_name') String firstName,
+            @JsonKey(name: 'last_name') String? lastName,
+            String email,
+            @JsonKey(name: 'role_id') int roleId)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _UploadedByDto() when $default != null:
-        return $default(_that.id, _that.firstName, _that.lastName, _that.email);
+        return $default(_that.id, _that.firstName, _that.lastName, _that.email,
+            _that.roleId);
       case _:
         return null;
     }
@@ -277,7 +302,8 @@ class _UploadedByDto extends UploadedByDto {
       {required this.id,
       @JsonKey(name: 'first_name') required this.firstName,
       @JsonKey(name: 'last_name') this.lastName,
-      required this.email})
+      required this.email,
+      @JsonKey(name: 'role_id') required this.roleId})
       : super._();
   factory _UploadedByDto.fromJson(Map<String, dynamic> json) =>
       _$UploadedByDtoFromJson(json);
@@ -292,6 +318,9 @@ class _UploadedByDto extends UploadedByDto {
   final String? lastName;
   @override
   final String email;
+  @override
+  @JsonKey(name: 'role_id')
+  final int roleId;
 
   /// Create a copy of UploadedByDto
   /// with the given fields replaced by the non-null parameter values.
@@ -318,16 +347,18 @@ class _UploadedByDto extends UploadedByDto {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.roleId, roleId) || other.roleId == roleId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email);
+  int get hashCode =>
+      Object.hash(runtimeType, id, firstName, lastName, email, roleId);
 
   @override
   String toString() {
-    return 'UploadedByDto(id: $id, firstName: $firstName, lastName: $lastName, email: $email)';
+    return 'UploadedByDto(id: $id, firstName: $firstName, lastName: $lastName, email: $email, roleId: $roleId)';
   }
 }
 
@@ -343,7 +374,8 @@ abstract mixin class _$UploadedByDtoCopyWith<$Res>
       {int id,
       @JsonKey(name: 'first_name') String firstName,
       @JsonKey(name: 'last_name') String? lastName,
-      String email});
+      String email,
+      @JsonKey(name: 'role_id') int roleId});
 }
 
 /// @nodoc
@@ -363,6 +395,7 @@ class __$UploadedByDtoCopyWithImpl<$Res>
     Object? firstName = null,
     Object? lastName = freezed,
     Object? email = null,
+    Object? roleId = null,
   }) {
     return _then(_UploadedByDto(
       id: null == id
@@ -381,6 +414,10 @@ class __$UploadedByDtoCopyWithImpl<$Res>
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      roleId: null == roleId
+          ? _self.roleId
+          : roleId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }

@@ -10,8 +10,8 @@ class GetDocumentByIdUseCase {
 
   GetDocumentByIdUseCase(this._repository);
 
-  Future<Either<Failure, DocumentEntity>> call(int documentId) async {
-    if (documentId <= 0) {
+  Future<Either<Failure, DocumentEntity>> call(String documentId) async {
+    if (documentId.isEmpty) {
       return const Left(ValidationFailure(
         message: 'Invalid document ID',
       ));

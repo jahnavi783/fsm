@@ -14,23 +14,23 @@ abstract class DocumentLocalDataSource {
 
   Future<void> cacheDocuments(List<DocumentHiveModel> documents);
 
-  Future<DocumentHiveModel?> getCachedDocumentById(int id);
+  Future<DocumentHiveModel?> getCachedDocumentById(String id);
 
   Future<void> cacheDocument(DocumentHiveModel document);
 
   Future<String> saveDocumentFile({
-    required int documentId,
+    required String documentId,
     required String fileName,
     required List<int> bytes,
   });
 
   Future<void> updateDocumentDownloadStatus({
-    required int documentId,
+    required String documentId,
     required bool isDownloaded,
     String? localPath,
   });
 
-  Future<void> deleteDocumentFile(int documentId);
+  Future<void> deleteDocumentFile(String documentId);
 
   Future<void> clearCache();
 
@@ -76,7 +76,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   }
 
   @override
-  Future<DocumentHiveModel?> getCachedDocumentById(int id) async {
+  Future<DocumentHiveModel?> getCachedDocumentById(String id) async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     return box.get(id);
   }
@@ -89,7 +89,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
 
   @override
   Future<String> saveDocumentFile({
-    required int documentId,
+    required String documentId,
     required String fileName,
     required List<int> bytes,
   }) async {
@@ -113,7 +113,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
 
   @override
   Future<void> updateDocumentDownloadStatus({
-    required int documentId,
+    required String documentId,
     required bool isDownloaded,
     String? localPath,
   }) async {
@@ -130,7 +130,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   }
 
   @override
-  Future<void> deleteDocumentFile(int documentId) async {
+  Future<void> deleteDocumentFile(String documentId) async {
     final box = await Hive.openBox<DocumentHiveModel>(_documentsBoxName);
     final document = box.get(documentId);
 

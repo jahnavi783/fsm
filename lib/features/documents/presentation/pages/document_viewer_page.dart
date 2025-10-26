@@ -13,7 +13,7 @@ import '../../domain/usecases/get_document_by_id_usecase.dart';
 
 @RoutePage()
 class DocumentViewerPage extends StatefulWidget {
-  final int documentId;
+  final String documentId;
 
   const DocumentViewerPage({
     super.key,

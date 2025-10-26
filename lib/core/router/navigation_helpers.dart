@@ -21,7 +21,7 @@ class NavigationHelpers {
   /// Navigate to document viewer with animation
   static Future<void> navigateToDocument(
     BuildContext context,
-    int documentId, {
+    String documentId, {
     bool replace = false,
   }) async {
     final router = context.router;

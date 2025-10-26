@@ -104,7 +104,7 @@ extension AppRouterExtension on StackRouter {
   }
 
   /// Navigate to document viewer with deep linking support
-  Future<void> navigateToDocument(int documentId) {
+  Future<void> navigateToDocument(String documentId) {
     return push(DocumentViewerRoute(documentId: documentId));
   }
 

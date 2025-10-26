@@ -30,7 +30,7 @@ class DocumentsEvent with _$DocumentsEvent {
 
   const factory DocumentsEvent.downloadDocument(DocumentEntity document) = DownloadDocument;
 
-  const factory DocumentsEvent.deleteDownloadedDocument(int documentId) = DeleteDownloadedDocument;
+  const factory DocumentsEvent.deleteDownloadedDocument(String documentId) = DeleteDownloadedDocument;
 
   const factory DocumentsEvent.loadCategories() = LoadCategories;
 

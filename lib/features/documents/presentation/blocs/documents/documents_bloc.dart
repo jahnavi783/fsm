@@ -216,7 +216,7 @@ class DocumentsBloc extends Bloc<DocumentsEvent, DocumentsState> {
   ) async {
     emit(state.copyWith(
       isDownloading: true,
-      downloadingDocumentId: event.document.id.toString(),
+      downloadingDocumentId: event.document.id,
       errorMessage: null,
     ));
 

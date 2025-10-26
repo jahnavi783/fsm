@@ -8,7 +8,7 @@ part of 'file_dto.dart';
 
 _FileDto _$FileDtoFromJson(Map<String, dynamic> json) => _FileDto(
       id: (json['id'] as num).toInt(),
-      filename: json['filename'] as String,
+      fileName: json['file_name'] as String?,
       fileUrl: json['file_url'] as String,
       fileType: json['file_type'] as String,
       fileSize: (json['file_size'] as num).toInt(),
@@ -16,7 +16,7 @@ _FileDto _$FileDtoFromJson(Map<String, dynamic> json) => _FileDto(
 
 Map<String, dynamic> _$FileDtoToJson(_FileDto instance) => <String, dynamic>{
       'id': instance.id,
-      'filename': instance.filename,
+      'file_name': instance.fileName,
       'file_url': instance.fileUrl,
       'file_type': instance.fileType,
       'file_size': instance.fileSize,

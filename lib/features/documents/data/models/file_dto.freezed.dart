@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FileDto {
   int get id;
-  String get filename;
+  @JsonKey(name: 'file_name')
+  String? get fileName;
   @JsonKey(name: 'file_url')
   String get fileUrl;
   @JsonKey(name: 'file_type')
@@ -39,8 +40,8 @@ mixin _$FileDto {
         (other.runtimeType == runtimeType &&
             other is FileDto &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.filename, filename) ||
-                other.filename == filename) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
             (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
             (identical(other.fileType, fileType) ||
                 other.fileType == fileType) &&
@@ -51,11 +52,11 @@ mixin _$FileDto {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, filename, fileUrl, fileType, fileSize);
+      Object.hash(runtimeType, id, fileName, fileUrl, fileType, fileSize);
 
   @override
   String toString() {
-    return 'FileDto(id: $id, filename: $filename, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
+    return 'FileDto(id: $id, fileName: $fileName, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
   }
 }
 
@@ -66,7 +67,7 @@ abstract mixin class $FileDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String filename,
+      @JsonKey(name: 'file_name') String? fileName,
       @JsonKey(name: 'file_url') String fileUrl,
       @JsonKey(name: 'file_type') String fileType,
       @JsonKey(name: 'file_size') int fileSize});
@@ -85,7 +86,7 @@ class _$FileDtoCopyWithImpl<$Res> implements $FileDtoCopyWith<$Res> {
   @override
   $Res call({
     Object? id = null,
-    Object? filename = null,
+    Object? fileName = freezed,
     Object? fileUrl = null,
     Object? fileType = null,
     Object? fileSize = null,
@@ -95,10 +96,10 @@ class _$FileDtoCopyWithImpl<$Res> implements $FileDtoCopyWith<$Res> {
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      filename: null == filename
-          ? _self.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
+      fileName: freezed == fileName
+          ? _self.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
       fileUrl: null == fileUrl
           ? _self.fileUrl
           : fileUrl // ignore: cast_nullable_to_non_nullable
@@ -210,7 +211,7 @@ extension FileDtoPatterns on FileDto {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
             int id,
-            String filename,
+            @JsonKey(name: 'file_name') String? fileName,
             @JsonKey(name: 'file_url') String fileUrl,
             @JsonKey(name: 'file_type') String fileType,
             @JsonKey(name: 'file_size') int fileSize)?
@@ -220,7 +221,7 @@ extension FileDtoPatterns on FileDto {
     final _that = this;
     switch (_that) {
       case _FileDto() when $default != null:
-        return $default(_that.id, _that.filename, _that.fileUrl, _that.fileType,
+        return $default(_that.id, _that.fileName, _that.fileUrl, _that.fileType,
             _that.fileSize);
       case _:
         return orElse();
@@ -244,7 +245,7 @@ extension FileDtoPatterns on FileDto {
   TResult when<TResult extends Object?>(
     TResult Function(
             int id,
-            String filename,
+            @JsonKey(name: 'file_name') String? fileName,
             @JsonKey(name: 'file_url') String fileUrl,
             @JsonKey(name: 'file_type') String fileType,
             @JsonKey(name: 'file_size') int fileSize)
@@ -253,7 +254,7 @@ extension FileDtoPatterns on FileDto {
     final _that = this;
     switch (_that) {
       case _FileDto():
-        return $default(_that.id, _that.filename, _that.fileUrl, _that.fileType,
+        return $default(_that.id, _that.fileName, _that.fileUrl, _that.fileType,
             _that.fileSize);
       case _:
         throw StateError('Unexpected subclass');
@@ -276,7 +277,7 @@ extension FileDtoPatterns on FileDto {
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
             int id,
-            String filename,
+            @JsonKey(name: 'file_name') String? fileName,
             @JsonKey(name: 'file_url') String fileUrl,
             @JsonKey(name: 'file_type') String fileType,
             @JsonKey(name: 'file_size') int fileSize)?
@@ -285,7 +286,7 @@ extension FileDtoPatterns on FileDto {
     final _that = this;
     switch (_that) {
       case _FileDto() when $default != null:
-        return $default(_that.id, _that.filename, _that.fileUrl, _that.fileType,
+        return $default(_that.id, _that.fileName, _that.fileUrl, _that.fileType,
             _that.fileSize);
       case _:
         return null;
@@ -298,7 +299,7 @@ extension FileDtoPatterns on FileDto {
 class _FileDto extends FileDto {
   const _FileDto(
       {required this.id,
-      required this.filename,
+      @JsonKey(name: 'file_name') this.fileName,
       @JsonKey(name: 'file_url') required this.fileUrl,
       @JsonKey(name: 'file_type') required this.fileType,
       @JsonKey(name: 'file_size') required this.fileSize})
@@ -309,7 +310,8 @@ class _FileDto extends FileDto {
   @override
   final int id;
   @override
-  final String filename;
+  @JsonKey(name: 'file_name')
+  final String? fileName;
   @override
   @JsonKey(name: 'file_url')
   final String fileUrl;
@@ -341,8 +343,8 @@ class _FileDto extends FileDto {
         (other.runtimeType == runtimeType &&
             other is _FileDto &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.filename, filename) ||
-                other.filename == filename) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
             (identical(other.fileUrl, fileUrl) || other.fileUrl == fileUrl) &&
             (identical(other.fileType, fileType) ||
                 other.fileType == fileType) &&
@@ -353,11 +355,11 @@ class _FileDto extends FileDto {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, filename, fileUrl, fileType, fileSize);
+      Object.hash(runtimeType, id, fileName, fileUrl, fileType, fileSize);
 
   @override
   String toString() {
-    return 'FileDto(id: $id, filename: $filename, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
+    return 'FileDto(id: $id, fileName: $fileName, fileUrl: $fileUrl, fileType: $fileType, fileSize: $fileSize)';
   }
 }
 
@@ -369,7 +371,7 @@ abstract mixin class _$FileDtoCopyWith<$Res> implements $FileDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String filename,
+      @JsonKey(name: 'file_name') String? fileName,
       @JsonKey(name: 'file_url') String fileUrl,
       @JsonKey(name: 'file_type') String fileType,
       @JsonKey(name: 'file_size') int fileSize});
@@ -388,7 +390,7 @@ class __$FileDtoCopyWithImpl<$Res> implements _$FileDtoCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
-    Object? filename = null,
+    Object? fileName = freezed,
     Object? fileUrl = null,
     Object? fileType = null,
     Object? fileSize = null,
@@ -398,10 +400,10 @@ class __$FileDtoCopyWithImpl<$Res> implements _$FileDtoCopyWith<$Res> {
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      filename: null == filename
-          ? _self.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
+      fileName: freezed == fileName
+          ? _self.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
       fileUrl: null == fileUrl
           ? _self.fileUrl
           : fileUrl // ignore: cast_nullable_to_non_nullable

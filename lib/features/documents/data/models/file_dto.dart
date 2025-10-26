@@ -11,7 +11,7 @@ abstract class FileDto with _$FileDto {
 
   const factory FileDto({
     required int id,
-    required String filename,
+    @JsonKey(name: 'file_name') String? fileName,
     @JsonKey(name: 'file_url') required String fileUrl,
     @JsonKey(name: 'file_type') required String fileType,
     @JsonKey(name: 'file_size') required int fileSize,
@@ -20,9 +20,12 @@ abstract class FileDto with _$FileDto {
   factory FileDto.fromJson(Map<String, dynamic> json) =>
       _$FileDtoFromJson(json);
 
-  /// Extract file extension from filename
+  /// Extract file extension from fileName
   String get fileExtension {
-    return filename.split('.').last.toLowerCase();
+    if (fileName?.isEmpty ?? true) {
+      return '';
+    }
+    return fileName!.split('.').last.toLowerCase();
   }
 
   /// Check if file is a PDF

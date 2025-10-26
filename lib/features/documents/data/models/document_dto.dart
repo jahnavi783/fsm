@@ -11,20 +11,22 @@ abstract class DocumentDto with _$DocumentDto {
   const DocumentDto._();
 
   const factory DocumentDto({
-    /// API returns 'upload_id' as String, not 'id' as int
-    @JsonKey(name: 'upload_id') required String uploadId,
+    /// API returns 'id' as String UUID
+    required String id,
     required String title,
     required String description,
     required String category,
     @JsonKey(name: 'related_model') String? relatedModel,
     /// API returns nested array of files instead of single file_url
     required List<FileDto> files,
-    /// API returns uploaded_by as object, not just int
-    @JsonKey(name: 'uploaded_by') required UploadedByDto uploadedBy,
+    /// API returns uploaded_by as int (user ID)
+    @JsonKey(name: 'uploaded_by') required int uploadedBy,
+    /// API returns uploader as full user object
+    required UploadedByDto uploader,
     @JsonKey(name: 'createdAt') required String createdAt,
     @JsonKey(name: 'updatedAt') String? updatedAt,
-    /// Optional fields from API
-    List<String>? keywords,
+    /// keywords is a string, not an array
+    String? keywords,
     @Default([]) List<String> tags,
   }) = _DocumentDto;
 
@@ -36,26 +38,25 @@ abstract class DocumentDto with _$DocumentDto {
     String? localPath,
   }) {
     // Use the first file from the files array for compatibility
-    // Note: 'files' will be available after build_runner generates the code
     final filesList = files;
     final primaryFile = filesList.isNotEmpty ? filesList.first : null;
 
     return DocumentEntity(
-      id: uploadId,
+      id: id,
       title: title,
       description: description,
       type: DocumentDto.parseDocumentType(category),
       fileUrl: primaryFile?.fileUrl ?? '',
-      fileName: primaryFile?.filename ?? 'document',
+      fileName: primaryFile?.fileName ?? 'document',
       fileSize: primaryFile?.fileSize ?? 0,
       createdAt: DateTime.parse(createdAt),
       updatedAt: updatedAt != null && updatedAt!.isNotEmpty ? DateTime.parse(updatedAt!) : DateTime.parse(createdAt),
       tags: tags,
       categories: [category],
       relatedModel: relatedModel,
-      keywords: keywords?.join(', '),
-      uploadedBy: uploadedBy.id,
-      uploadedByName: uploadedBy.fullName,
+      keywords: keywords,
+      uploadedBy: uploadedBy,
+      uploadedByName: uploader.fullName,
       files: filesList,
       isDownloaded: isDownloaded,
       localPath: localPath,

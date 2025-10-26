@@ -14,6 +14,7 @@ abstract class UploadedByDto with _$UploadedByDto {
     @JsonKey(name: 'first_name') required String firstName,
     @JsonKey(name: 'last_name') String? lastName,
     required String email,
+    @JsonKey(name: 'role_id') required int roleId,
   }) = _UploadedByDto;
 
   factory UploadedByDto.fromJson(Map<String, dynamic> json) =>

@@ -19,22 +19,22 @@ abstract class IDocumentRepository {
     required int limit,
   });
   
-  Future<Either<Failure, DocumentEntity>> getDocumentById(int id);
-  
+  Future<Either<Failure, DocumentEntity>> getDocumentById(String id);
+
   Future<Either<Failure, String>> downloadDocument({
-    required int documentId,
+    required String documentId,
     required String fileUrl,
     required String fileName,
   });
-  
+
   Future<Either<Failure, List<String>>> getDocumentCategories();
-  
+
   Future<Either<Failure, List<DocumentEntity>>> getCachedDocuments({
     DocumentType? type,
     String? category,
   });
-  
+
   Future<Either<Failure, void>> clearDocumentCache();
-  
-  Future<Either<Failure, void>> deleteDownloadedDocument(int documentId);
+
+  Future<Either<Failure, void>> deleteDownloadedDocument(String documentId);
 }

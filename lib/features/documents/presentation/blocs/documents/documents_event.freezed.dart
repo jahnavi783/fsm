@@ -219,7 +219,7 @@ extension DocumentsEventPatterns on DocumentsEvent {
     TResult Function(DocumentType? type)? filterByType,
     TResult Function(String? category)? filterByCategory,
     TResult Function(DocumentEntity document)? downloadDocument,
-    TResult Function(int documentId)? deleteDownloadedDocument,
+    TResult Function(String documentId)? deleteDownloadedDocument,
     TResult Function()? loadCategories,
     TResult Function()? clearSearch,
     TResult Function()? retryLastAction,
@@ -279,7 +279,7 @@ extension DocumentsEventPatterns on DocumentsEvent {
     required TResult Function(DocumentType? type) filterByType,
     required TResult Function(String? category) filterByCategory,
     required TResult Function(DocumentEntity document) downloadDocument,
-    required TResult Function(int documentId) deleteDownloadedDocument,
+    required TResult Function(String documentId) deleteDownloadedDocument,
     required TResult Function() loadCategories,
     required TResult Function() clearSearch,
     required TResult Function() retryLastAction,
@@ -337,7 +337,7 @@ extension DocumentsEventPatterns on DocumentsEvent {
     TResult? Function(DocumentType? type)? filterByType,
     TResult? Function(String? category)? filterByCategory,
     TResult? Function(DocumentEntity document)? downloadDocument,
-    TResult? Function(int documentId)? deleteDownloadedDocument,
+    TResult? Function(String documentId)? deleteDownloadedDocument,
     TResult? Function()? loadCategories,
     TResult? Function()? clearSearch,
     TResult? Function()? retryLastAction,
@@ -826,7 +826,7 @@ class _$DownloadDocumentCopyWithImpl<$Res>
 class DeleteDownloadedDocument implements DocumentsEvent {
   const DeleteDownloadedDocument(this.documentId);
 
-  final int documentId;
+  final String documentId;
 
   /// Create a copy of DocumentsEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -861,7 +861,7 @@ abstract mixin class $DeleteDownloadedDocumentCopyWith<$Res>
           $Res Function(DeleteDownloadedDocument) _then) =
       _$DeleteDownloadedDocumentCopyWithImpl;
   @useResult
-  $Res call({int documentId});
+  $Res call({String documentId});
 }
 
 /// @nodoc
@@ -882,7 +882,7 @@ class _$DeleteDownloadedDocumentCopyWithImpl<$Res>
       null == documentId
           ? _self.documentId
           : documentId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
     ));
   }
 }

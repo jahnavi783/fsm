@@ -188,8 +188,9 @@ class _DashboardPageState extends State<DashboardPage>
           isOffline,
           hasPendingSync) {
         // Find the current in-progress work order
-        final inProgressWorkOrders =
-            workOrders.where((wo) => wo.status == WorkOrderStatus.inProgress).toList();
+        final inProgressWorkOrders = workOrders
+            .where((wo) => wo.status == WorkOrderStatus.inProgress)
+            .toList();
 
         // Only show if there's exactly 1 in-progress work order
         if (inProgressWorkOrders.length == 1) {
@@ -202,17 +203,20 @@ class _DashboardPageState extends State<DashboardPage>
                   : null,
               onParts: () {
                 // TODO: Navigate to parts screen filtered for this WO
-                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                context.router
+                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
               },
               onDocs: () {
                 // TODO: Navigate to documents screen filtered for this WO
-                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                context.router
+                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
               },
               onComplete: workOrder.canBeCompleted
                   ? () => _handleWorkOrderAction(context, workOrder, 'complete')
                   : null,
               onTap: () {
-                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                context.router
+                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
               },
             ),
           );
@@ -394,7 +398,8 @@ class _DashboardPageState extends State<DashboardPage>
 
   String _getCountForStatus(WorkOrdersListState state, WorkOrderStatus status) {
     return state.maybeWhen(
-      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________, _________, __________) {
+      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________,
+          _________, __________) {
         return workOrders.where((wo) => wo.status == status).length.toString();
       },
       orElse: () => '-',
@@ -403,7 +408,8 @@ class _DashboardPageState extends State<DashboardPage>
 
   String _getUnassignedCount(WorkOrdersListState state) {
     return state.maybeWhen(
-      loaded: (_, __, unassignedCount, ___, ____, _____, ______, _______, ________, _________, __________) {
+      loaded: (_, __, unassignedCount, ___, ____, _____, ______, _______,
+          ________, _________, __________) {
         return unassignedCount.toString();
       },
       orElse: () => '-',
@@ -430,7 +436,8 @@ class _DashboardPageState extends State<DashboardPage>
           return const FSMEmptyStateList(
             icon: Icons.inbox_outlined,
             title: 'No Unassigned Work Orders',
-            description: 'All work orders have been assigned to field engineers.',
+            description:
+                'All work orders have been assigned to field engineers.',
             iconColor: AppColors.grey400,
           );
         }
@@ -448,8 +455,8 @@ class _DashboardPageState extends State<DashboardPage>
                       WorkOrderCard(
                         workOrder: workOrder,
                         onTap: () {
-                          context.router
-                              .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                          context.router.push(
+                              WorkOrderDetailsRoute(workOrderId: workOrder.id));
                         },
                       ),
                       SizedBox(height: 8.h),
@@ -458,11 +465,13 @@ class _DashboardPageState extends State<DashboardPage>
                         child: ElevatedButton.icon(
                           onPressed: () => _assignWorkOrderToSelf(workOrder.id),
                           icon: Icon(Icons.person_add, size: 18.sp),
-                          label: Text('Assign to Me', style: TextStyle(fontSize: 14.sp)),
+                          label: Text('Assign to Me',
+                              style: TextStyle(fontSize: 14.sp)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.onPrimary,
-                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.w, vertical: 12.h),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.r),
                             ),
@@ -499,7 +508,8 @@ class _DashboardPageState extends State<DashboardPage>
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Assign Work Order'),
-        content: const Text('Are you sure you want to assign this work order to yourself?'),
+        content: const Text(
+            'Are you sure you want to assign this work order to yourself?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

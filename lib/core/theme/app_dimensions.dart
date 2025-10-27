@@ -35,23 +35,58 @@ class AppDimensions {
 
   // Responsive Heights
   static double get buttonHeight => 48.h;
+  static double get buttonHeightLarge => 56.h; // For primary CTAs
   static double get inputHeight => 56.h;
   static double get appBarHeight => 80.h;
   static double get bottomNavHeight => 80.h;
   static double get cardMinHeight => 120.h;
   static double get listItemHeight => 72.h;
+  static double get listItemHeightCompact => 56.h;
+  static double get listItemHeightComfortable => 80.h;
+
+  // FAB Dimensions
+  static double get fabSize => 56.w; // Standard FAB
+  static double get fabSizeSmall => 40.w; // Mini FAB
+  static double get fabSizeLarge => 72.w; // Extended FAB
+
+  // Bottom Sheet Dimensions
+  static double get bottomSheetHandleWidth => 40.w;
+  static double get bottomSheetHandleHeight => 4.h;
+  static double get bottomSheetHeaderHeight => 56.h;
+  static double get bottomSheetMaxHeight => 0.9.sh; // 90% of screen height
+  static double get bottomSheetMinHeight => 0.3.sh; // 30% of screen height
+
+  // Touch Target Minimum (Accessibility)
+  static double get touchTargetMin => 48.w; // iOS/Android minimum
+  static double get touchTargetComfortable => 56.w; // Comfortable for field use
 
   // Responsive Widths
   static double get buttonMinWidth => 120.w;
   static double get cardMaxWidth => 400.w;
   static double get dialogMaxWidth => 560.w;
 
-  // Elevation
+  // Elevation & Shadow System
   static double get elevationNone => 0;
-  static double get elevationSmall => 2;
-  static double get elevationMedium => 4;
-  static double get elevationLarge => 8;
-  static double get elevationXLarge => 16;
+  static double get elevationSmall => 2; // Cards, buttons
+  static double get elevationMedium => 4; // Elevated cards, menus
+  static double get elevationLarge => 8; // Modals, drawers
+  static double get elevationXLarge => 16; // FABs, high-priority elements
+  static double get elevationModal => 24; // Full-screen modals
+
+  // Shadow Blur Radius (for custom shadows)
+  static double get shadowBlurSmall => 4.0;
+  static double get shadowBlurMedium => 8.0;
+  static double get shadowBlurLarge => 16.0;
+
+  // Shadow Spread Radius
+  static double get shadowSpreadSmall => 0.0;
+  static double get shadowSpreadMedium => 2.0;
+  static double get shadowSpreadLarge => 4.0;
+
+  // Shadow Offset
+  static Offset get shadowOffsetSmall => Offset(0, 2.h);
+  static Offset get shadowOffsetMedium => Offset(0, 4.h);
+  static Offset get shadowOffsetLarge => Offset(0, 8.h);
 
   // Responsive Spacing
   static double get spaceXSmall => 4.h;

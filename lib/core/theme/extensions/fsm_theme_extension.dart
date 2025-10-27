@@ -12,22 +12,34 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     required this.statusColors,
     required this.priorityColors,
     required this.shadowColors,
+    required this.actionColors,
+    required this.syncStatusColors,
+    required this.stockColors,
     required this.workOrderCardBackground,
     required this.workOrderCardBorder,
     required this.searchBarBackground,
     required this.chipBackground,
     required this.avatarBackground,
+    required this.fabBackground,
+    required this.bottomSheetBackground,
+    required this.offlineBannerBackground,
   });
 
   final LinearGradient cardGradient;
   final Map<String, Color> statusColors;
   final Map<String, Color> priorityColors;
   final Map<String, Color> shadowColors;
+  final Map<String, Color> actionColors;
+  final Map<String, Color> syncStatusColors;
+  final Map<String, Color> stockColors;
   final Color workOrderCardBackground;
   final Color workOrderCardBorder;
   final Color searchBarBackground;
   final Color chipBackground;
   final Color avatarBackground;
+  final Color fabBackground;
+  final Color bottomSheetBackground;
+  final Color offlineBannerBackground;
 
   /// Light theme extension
   static const FSMThemeExtension light = FSMThemeExtension(
@@ -55,11 +67,35 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       'elevated': Color(0x1A000000),
       'floating': Color(0x26000000),
     },
+    actionColors: {
+      'start': AppColors.actionStart,
+      'pause': AppColors.actionPause,
+      'resume': AppColors.actionResume,
+      'complete': AppColors.actionComplete,
+      'cancel': AppColors.actionCancel,
+      'reject': AppColors.actionReject,
+    },
+    syncStatusColors: {
+      'offline': AppColors.offline,
+      'syncing': AppColors.syncing,
+      'synced': AppColors.synced,
+      'failed': AppColors.syncFailed,
+      'pending': AppColors.pendingSync,
+    },
+    stockColors: {
+      'high': AppColors.stockHigh,
+      'medium': AppColors.stockMedium,
+      'low': AppColors.stockLow,
+      'out': AppColors.stockOut,
+    },
     workOrderCardBackground: AppColors.surface,
     workOrderCardBorder: AppColors.cardBorder,
     searchBarBackground: AppColors.searchBackground,
     chipBackground: AppColors.surfaceVariant,
     avatarBackground: AppColors.primary,
+    fabBackground: AppColors.primary,
+    bottomSheetBackground: AppColors.surface,
+    offlineBannerBackground: Color(0xFFFFF3E0), // Light orange
   );
 
   /// Dark theme extension
@@ -88,11 +124,35 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       'elevated': Color(0x60000000),
       'floating': Color(0x80000000),
     },
+    actionColors: {
+      'start': Color(0xFF81C784),
+      'pause': Color(0xFFFFB74D),
+      'resume': Color(0xFF64B5F6),
+      'complete': Color(0xFF81C784),
+      'cancel': Color(0xFFEF5350),
+      'reject': Color(0xFFA1887F),
+    },
+    syncStatusColors: {
+      'offline': Color(0xFFFFB74D),
+      'syncing': Color(0xFF64B5F6),
+      'synced': Color(0xFF81C784),
+      'failed': Color(0xFFEF5350),
+      'pending': Color(0xFFFFB74D),
+    },
+    stockColors: {
+      'high': Color(0xFF81C784),
+      'medium': Color(0xFFFFB74D),
+      'low': Color(0xFFEF5350),
+      'out': Color(0xFF9E9E9E),
+    },
     workOrderCardBackground: AppColors.surfaceDark,
     workOrderCardBorder: AppColors.outlineDark,
     searchBarBackground: Color(0xFF2A2A2A),
     chipBackground: AppColors.surfaceVariantDark,
     avatarBackground: AppColors.primaryDark,
+    fabBackground: AppColors.primaryDark,
+    bottomSheetBackground: AppColors.surfaceDark,
+    offlineBannerBackground: Color(0xFF3E2723), // Dark orange/brown
   );
 
   @override
@@ -101,22 +161,34 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     Map<String, Color>? statusColors,
     Map<String, Color>? priorityColors,
     Map<String, Color>? shadowColors,
+    Map<String, Color>? actionColors,
+    Map<String, Color>? syncStatusColors,
+    Map<String, Color>? stockColors,
     Color? workOrderCardBackground,
     Color? workOrderCardBorder,
     Color? searchBarBackground,
     Color? chipBackground,
     Color? avatarBackground,
+    Color? fabBackground,
+    Color? bottomSheetBackground,
+    Color? offlineBannerBackground,
   }) {
     return FSMThemeExtension(
       cardGradient: cardGradient ?? this.cardGradient,
       statusColors: statusColors ?? this.statusColors,
       priorityColors: priorityColors ?? this.priorityColors,
       shadowColors: shadowColors ?? this.shadowColors,
+      actionColors: actionColors ?? this.actionColors,
+      syncStatusColors: syncStatusColors ?? this.syncStatusColors,
+      stockColors: stockColors ?? this.stockColors,
       workOrderCardBackground: workOrderCardBackground ?? this.workOrderCardBackground,
       workOrderCardBorder: workOrderCardBorder ?? this.workOrderCardBorder,
       searchBarBackground: searchBarBackground ?? this.searchBarBackground,
       chipBackground: chipBackground ?? this.chipBackground,
       avatarBackground: avatarBackground ?? this.avatarBackground,
+      fabBackground: fabBackground ?? this.fabBackground,
+      bottomSheetBackground: bottomSheetBackground ?? this.bottomSheetBackground,
+      offlineBannerBackground: offlineBannerBackground ?? this.offlineBannerBackground,
     );
   }
 
@@ -131,11 +203,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       statusColors: _lerpColorMap(statusColors, other.statusColors, t),
       priorityColors: _lerpColorMap(priorityColors, other.priorityColors, t),
       shadowColors: _lerpColorMap(shadowColors, other.shadowColors, t),
+      actionColors: _lerpColorMap(actionColors, other.actionColors, t),
+      syncStatusColors: _lerpColorMap(syncStatusColors, other.syncStatusColors, t),
+      stockColors: _lerpColorMap(stockColors, other.stockColors, t),
       workOrderCardBackground: Color.lerp(workOrderCardBackground, other.workOrderCardBackground, t) ?? workOrderCardBackground,
       workOrderCardBorder: Color.lerp(workOrderCardBorder, other.workOrderCardBorder, t) ?? workOrderCardBorder,
       searchBarBackground: Color.lerp(searchBarBackground, other.searchBarBackground, t) ?? searchBarBackground,
       chipBackground: Color.lerp(chipBackground, other.chipBackground, t) ?? chipBackground,
       avatarBackground: Color.lerp(avatarBackground, other.avatarBackground, t) ?? avatarBackground,
+      fabBackground: Color.lerp(fabBackground, other.fabBackground, t) ?? fabBackground,
+      bottomSheetBackground: Color.lerp(bottomSheetBackground, other.bottomSheetBackground, t) ?? bottomSheetBackground,
+      offlineBannerBackground: Color.lerp(offlineBannerBackground, other.offlineBannerBackground, t) ?? offlineBannerBackground,
     );
   }
 
@@ -165,7 +243,7 @@ extension FSMThemeExtensionContext on BuildContext {
   }
 }
 
-/// Helper extension for getting status and priority colors
+/// Helper extension for getting theme colors
 extension FSMThemeHelpers on FSMThemeExtension {
   Color getStatusColor(String status) {
     return statusColors[status.toLowerCase()] ?? statusColors['assigned']!;
@@ -177,5 +255,25 @@ extension FSMThemeHelpers on FSMThemeExtension {
 
   Color getShadowColor(String type) {
     return shadowColors[type.toLowerCase()] ?? shadowColors['card']!;
+  }
+
+  Color getActionColor(String action) {
+    return actionColors[action.toLowerCase()] ?? actionColors['start']!;
+  }
+
+  Color getSyncStatusColor(String status) {
+    return syncStatusColors[status.toLowerCase()] ?? syncStatusColors['offline']!;
+  }
+
+  Color getStockColor(String level) {
+    return stockColors[level.toLowerCase()] ?? stockColors['medium']!;
+  }
+
+  /// Convenience method to get stock color by quantity levels
+  Color getStockColorByQuantity(int quantity, int minQuantity, int maxQuantity) {
+    if (quantity == 0) return stockColors['out']!;
+    if (quantity <= minQuantity) return stockColors['low']!;
+    if (quantity < maxQuantity * 0.5) return stockColors['medium']!;
+    return stockColors['high']!;
   }
 }

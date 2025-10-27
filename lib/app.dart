@@ -12,6 +12,10 @@ import 'core/router/app_router.dart';
 import 'core/services/error_boundary_service.dart';
 import 'core/theme/theme.dart';
 import 'core/widgets/error_boundary_widget.dart';
+import 'core/blocs/connectivity/connectivity_bloc.dart';
+import 'core/blocs/connectivity/connectivity_event.dart';
+import 'core/blocs/sync/sync_bloc.dart';
+import 'core/blocs/sync/sync_event.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
 GlobalKey<NavigatorState> GlobalNavigatorKey = GlobalKey<NavigatorState>();
@@ -95,14 +99,24 @@ class _MyAppState extends State<MyApp> {
         splitScreenMode: true,
         ensureScreenSize: true,
         builder: (context, child) {
-          // Get AuthBloc directly since it's now a singleton
+          // Get BLoCs directly since they're now singletons
           final authBloc = getIt<AuthBloc>();
+          final connectivityBloc = getIt<ConnectivityBloc>();
+          final syncBloc = getIt<SyncBloc>();
+
+          // Start connectivity and sync BLoCs
+          connectivityBloc.add(const ConnectivityEvent.started());
+          syncBloc.add(const SyncEvent.started());
 
           // End startup timer
           // _performanceService.endTimer('app_startup');
 
-          return BlocProvider.value(
-            value: authBloc,
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: authBloc),
+              BlocProvider.value(value: connectivityBloc),
+              BlocProvider.value(value: syncBloc),
+            ],
             child: MaterialApp.router(
               title: AppConfig.appName,
               debugShowCheckedModeBanner: AppConfig.isDebug,

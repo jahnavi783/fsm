@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/fsm_card.dart';
 import '../../domain/entities/part_entity.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
@@ -47,11 +49,9 @@ class _PartDetailsPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text('Part Details'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0,
+      appBar: FSMAppBar.gradient(
+        title: 'Part Details',
+        subtitle: part?.partName ?? 'Loading...',
         actions: [
           if (part != null)
             IconButton(
@@ -82,11 +82,7 @@ class _PartDetailsPageView extends StatelessWidget {
   }
 
   Widget _buildPartInfoCard() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+    return FSMCard(
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -188,11 +184,7 @@ class _PartDetailsPageView extends StatelessWidget {
   }
 
   Widget _buildInventoryCard() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+    return FSMCard(
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -268,11 +260,7 @@ class _PartDetailsPageView extends StatelessWidget {
 }
 
 Widget _buildInventoryHistoryCard() {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12.r),
-    ),
+  return FSMCard(
     child: Padding(
       padding: EdgeInsets.all(16.w),
       child: Column(

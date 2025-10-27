@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/fsm_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 class WorkOrderActionSheet extends StatelessWidget {
@@ -25,7 +26,7 @@ class WorkOrderActionSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
@@ -49,9 +50,9 @@ class WorkOrderActionSheet extends StatelessWidget {
               ),
             ),
           ),
-          
+
           SizedBox(height: 20.h),
-          
+
           // Work Order Info
           Text(
             workOrder.woNumber,
@@ -60,9 +61,9 @@ class WorkOrderActionSheet extends StatelessWidget {
               fontSize: 20.sp,
             ),
           ),
-          
+
           SizedBox(height: 4.h),
-          
+
           Text(
             workOrder.summary,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -72,9 +73,9 @@ class WorkOrderActionSheet extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          
+
           SizedBox(height: 24.h),
-          
+
           // Action Buttons
           Text(
             'Available Actions',
@@ -83,9 +84,9 @@ class WorkOrderActionSheet extends StatelessWidget {
               fontSize: 16.sp,
             ),
           ),
-          
+
           SizedBox(height: 16.h),
-          
+
           // Start Work Order
           if (workOrder.canBeStarted && onStart != null)
             _ActionButton(
@@ -97,7 +98,7 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onStart!();
               },
             ),
-          
+
           // Pause Work Order
           if (workOrder.canBePaused && onPause != null)
             _ActionButton(
@@ -109,7 +110,7 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onPause!();
               },
             ),
-          
+
           // Resume Work Order
           if (workOrder.canBeResumed && onResume != null)
             _ActionButton(
@@ -121,7 +122,7 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onResume!();
               },
             ),
-          
+
           // Complete Work Order
           if (workOrder.canBeCompleted && onComplete != null)
             _ActionButton(
@@ -133,7 +134,7 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onComplete!();
               },
             ),
-          
+
           // Reject Work Order
           if (workOrder.canBeRejected && onReject != null)
             _ActionButton(
@@ -145,7 +146,7 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onReject!();
               },
             ),
-          
+
           // View Details (always available)
           if (onViewDetails != null)
             _ActionButton(
@@ -157,9 +158,9 @@ class WorkOrderActionSheet extends StatelessWidget {
                 onViewDetails!();
               },
             ),
-          
+
           SizedBox(height: 16.h),
-          
+
           // Cancel Button
           SizedBox(
             width: double.infinity,
@@ -180,7 +181,7 @@ class WorkOrderActionSheet extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Bottom padding for safe area
           SizedBox(height: MediaQuery.of(context).padding.bottom),
         ],
@@ -198,11 +199,10 @@ class WorkOrderActionSheet extends StatelessWidget {
     VoidCallback? onReject,
     VoidCallback? onViewDetails,
   }) {
-    return showModalBottomSheet(
+    return FSMBottomSheet.show<void>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => WorkOrderActionSheet(
+      title: 'Work Order Actions',
+      content: WorkOrderActionSheet(
         workOrder: workOrder,
         onStart: onStart,
         onPause: onPause,
@@ -211,6 +211,10 @@ class WorkOrderActionSheet extends StatelessWidget {
         onReject: onReject,
         onViewDetails: onViewDetails,
       ),
+      showCloseButton: true,
+      isDismissible: true,
+      isScrollControlled: false,
+      enableDrag: true,
     );
   }
 }
@@ -231,7 +235,7 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: EdgeInsets.only(bottom: 12.h),
       child: InkWell(
@@ -262,9 +266,7 @@ class _ActionButton extends StatelessWidget {
                   size: 20.sp,
                 ),
               ),
-              
               SizedBox(width: 16.w),
-              
               Expanded(
                 child: Text(
                   label,
@@ -275,7 +277,6 @@ class _ActionButton extends StatelessWidget {
                   ),
                 ),
               ),
-              
               Icon(
                 Icons.arrow_forward_ios,
                 color: color,

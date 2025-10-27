@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/fsm_card.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
 import '../blocs/parts/parts_state.dart';
@@ -122,21 +124,25 @@ class _PartsPageViewState extends State<_PartsPageView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text('Parts Management'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0,
+      appBar: FSMAppBar.gradient(
+        title: 'Parts Management',
+        subtitle: 'Inventory & Stock Management',
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(48.h),
           child: Container(
-            color: Colors.white,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF1976D2), Color(0xFF42A5F5)],
+              ),
+            ),
             child: TabBar(
               controller: _tabController,
-              indicatorColor: Theme.of(context).primaryColor,
+              indicatorColor: Colors.white,
               indicatorWeight: 3,
-              labelColor: Theme.of(context).primaryColor,
-              unselectedLabelColor: Colors.grey[600],
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
               labelStyle: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
@@ -240,29 +246,38 @@ class _PartsPageViewState extends State<_PartsPageView>
       child: Row(
         children: [
           Expanded(
-            child: _buildSummaryCard(
-              title: 'Total Parts',
-              value: state.parts.length.toString(),
-              icon: Icons.inventory_2,
-              color: Colors.blue,
+            child: FSMCard(
+              padding: EdgeInsets.all(12.w),
+              child: _buildSummaryCardContent(
+                title: 'Total Parts',
+                value: state.parts.length.toString(),
+                icon: Icons.inventory_2,
+                color: Colors.blue,
+              ),
             ),
           ),
           SizedBox(width: 12.w),
           Expanded(
-            child: _buildSummaryCard(
-              title: 'Low Stock',
-              value: state.lowStockCount.toString(),
-              icon: Icons.warning,
-              color: Colors.orange,
+            child: FSMCard(
+              padding: EdgeInsets.all(12.w),
+              child: _buildSummaryCardContent(
+                title: 'Low Stock',
+                value: state.lowStockCount.toString(),
+                icon: Icons.warning,
+                color: Colors.orange,
+              ),
             ),
           ),
           SizedBox(width: 12.w),
           Expanded(
-            child: _buildSummaryCard(
-              title: 'Out of Stock',
-              value: state.outOfStockCount.toString(),
-              icon: Icons.error,
-              color: Colors.red,
+            child: FSMCard(
+              padding: EdgeInsets.all(12.w),
+              child: _buildSummaryCardContent(
+                title: 'Out of Stock',
+                value: state.outOfStockCount.toString(),
+                icon: Icons.error,
+                color: Colors.red,
+              ),
             ),
           ),
         ],
@@ -270,46 +285,38 @@ class _PartsPageViewState extends State<_PartsPageView>
     );
   }
 
-  Widget _buildSummaryCard({
+  Widget _buildSummaryCardContent({
     required String title,
     required String value,
     required IconData icon,
     required Color color,
   }) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            size: 24.sp,
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 24.sp,
+          color: color,
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
             color: color,
           ),
-          SizedBox(height: 4.h),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+        ),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 11.sp,
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 

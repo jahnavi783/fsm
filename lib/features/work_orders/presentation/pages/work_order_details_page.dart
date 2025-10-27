@@ -2,31 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_bottom_sheet_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
+import 'package:fsm/core/widgets/fsm_action_button.dart';
+import 'package:fsm/core/widgets/fsm_section_header.dart';
+import 'package:fsm/core/widgets/offline_banner.dart';
+import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_start_bottom_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_pause_bottom_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_gallery_section.dart';
 
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 
-// Import extracted components
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/header_action_button.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/header_info_chip.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/expandable_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/offline_indicator.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/work_order_action_fab.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/work_order_actions_bottom_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/action_in_progress_widget.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/error_widget.dart';
-
-// Section components
+// Import section components
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/basic_information_section.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/description_section.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/customer_section.dart';
@@ -39,6 +32,10 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_details
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_confirmation_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/reason_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
+
+// Import widget components that may be needed for action in progress and error
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/action_in_progress_widget.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/error_widget.dart';
 
 @RoutePage()
 class WorkOrderDetailsPage extends StatelessWidget {
@@ -179,24 +176,23 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           return state.when(
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (workOrder, currentLocation, isLocationLoading,
-                    isOffline, _, __) =>
+            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                    _, __) =>
                 _buildWorkOrderDetails(
                     workOrder, currentLocation, isLocationLoading, isOffline),
             actionInProgress: (workOrder, actionType, currentLocation) =>
                 ActionInProgressWidget(actionType: actionType),
             actionSuccess: (workOrder, actionType, message, _) =>
                 _buildWorkOrderDetails(workOrder, null, false, false),
-            error: (failure, workOrder, isOffline) =>
-                WorkOrderErrorWidget(
-                  message: failure.message,
-                  isOffline: isOffline,
-                  onRetry: () {
-                    context.read<WorkOrderActionBloc>().add(
-                          WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                        );
-                  },
-                ),
+            error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
+              message: failure.message,
+              isOffline: isOffline,
+              onRetry: () {
+                context.read<WorkOrderActionBloc>().add(
+                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                    );
+              },
+            ),
             locationError: (workOrder, message) =>
                 _buildWorkOrderDetails(workOrder, null, false, false),
           );
@@ -226,156 +222,83 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   ) {
     return CustomScrollView(
       slivers: [
-        // App Bar with gradient background
-        SliverAppBar(
-          expandedHeight: 260.h,
-          floating: false,
+        // App Bar with gradient background using FSMSliverAppBar
+        FSMSliverAppBar.gradient(
+          expandedHeight: 260,
           pinned: true,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Container(
-              padding: EdgeInsets.all(8.w),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 1,
-                ),
-              ),
-              child: Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
-                size: 16.sp,
-              ),
-            ),
-          ),
           flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF0F5F7A),
-                    Color(0xFF116587),
-                    Color(0xFF00B458),
-                    Color(0xFF00A74F),
-                  ],
-                  stops: [0.0, 0.3, 0.7, 1.0],
-                ),
-              ),
-              child: SafeArea(
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                  margin: EdgeInsets.only(top: 40.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Work Order Number and Status
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  workOrder.woNumber,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24.sp,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: -0.5,
-                                    height: 1.1,
-                                  ),
+            background: SafeArea(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                margin: EdgeInsets.only(top: 40.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Work Order Number and Status
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                workOrder.woNumber,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.5,
+                                  height: 1.1,
                                 ),
                               ),
-                              // Status Chip
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 8.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.getStatusColor(
-                                          workOrder.status.name)
-                                      .withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Text(
-                                  workOrder.statusDisplayName,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
+                            // Status Badge using shared component
+                            StatusBadge.status(
+                              status: workOrder.status.name,
+                              variant: StatusBadgeVariant.outlined,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          workOrder.summary,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.2,
                           ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            workOrder.summary,
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.2,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 8.h),
-                          // Priority Chip
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 8.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getPriorityColor(workOrder.priority)
-                                  .withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(20.r),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              workOrder.priorityDisplayName,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                      // Visit Date and Duration
-                      SingleChildScrollView(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 8.h),
+                        // Priority Badge using shared component
+                        StatusBadge.priority(
+                          priority: workOrder.priority.name,
+                          variant: StatusBadgeVariant.outlined,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    // Visit Date and Duration - Keep custom chips for gradient background
+                    SizedBox(
+                      height: 48.h,
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            HeaderInfoChip(
+                            _buildHeaderInfoChip(
                               icon: Icons.calendar_today,
                               label: 'Visit Date',
                               value: DateFormat('MMM dd, yyyy')
                                   .format(workOrder.visitDate),
                             ),
                             SizedBox(width: 12.w),
-                            HeaderInfoChip(
+                            _buildHeaderInfoChip(
                               icon: Icons.schedule,
                               label: 'Duration',
                               value: workOrder.durationDays > 0
@@ -385,16 +308,15 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
           actions: [
-            HeaderActionButton(
-              icon: Icons.refresh,
-              onTap: () {
+            FSMAppBarAction.refresh(
+              onPressed: () {
                 context.read<WorkOrderActionBloc>().add(
                       WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
                     );
@@ -404,75 +326,75 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ],
         ),
 
-        // Content with expandable sections
+        // Content with expandable sections using FSMCollapsibleSection
         SliverPadding(
           padding: EdgeInsets.all(16.w),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              // Offline Indicator
+              // Offline Indicator using shared OfflineBanner (only shows if offline)
               if (isOffline) ...[
-                const OfflineIndicator(),
+                const OfflineBanner(dismissible: false),
                 SizedBox(height: 16.h),
               ],
 
-              // Basic Information
-              ExpandableSection(
+              // Basic Information using FSMCollapsibleSection
+              FSMCollapsibleSection(
                 title: 'Work Order Information',
-                icon: Icons.info_outline,
                 initiallyExpanded: true,
-                content: BasicInformationSection(workOrder: workOrder),
+                child: BasicInformationSection(workOrder: workOrder),
               ),
+              SizedBox(height: 12.h),
 
               // Description
-              ExpandableSection(
+              FSMCollapsibleSection(
                 title: 'Description',
-                icon: Icons.description_outlined,
-                content: DescriptionSection(workOrder: workOrder),
+                child: DescriptionSection(workOrder: workOrder),
               ),
+              SizedBox(height: 12.h),
 
               // Customer Information
               if (workOrder.customer != null)
-                ExpandableSection(
+                FSMCollapsibleSection(
                   title: 'Customer Contact Details',
-                  icon: Icons.person_outline,
-                  content: CustomerSection(customer: workOrder.customer!),
+                  child: CustomerSection(customer: workOrder.customer!),
                 ),
+              if (workOrder.customer != null) SizedBox(height: 12.h),
 
               // Machine Details
               if (workOrder.serviceRequest != null)
-                ExpandableSection(
+                FSMCollapsibleSection(
                   title: 'Machine Details',
-                  icon: Icons.precision_manufacturing_outlined,
-                  content:
-                      MachineDetailsSection(serviceRequest: workOrder.serviceRequest!),
+                  child: MachineDetailsSection(
+                      serviceRequest: workOrder.serviceRequest!),
                 ),
+              if (workOrder.serviceRequest != null) SizedBox(height: 12.h),
 
               // Location Information
-              ExpandableSection(
+              FSMCollapsibleSection(
                 title: 'Location & GPS',
-                icon: Icons.location_on_outlined,
-                content: LocationSection(
+                child: LocationSection(
                   workOrder: workOrder,
                   currentLocation: currentLocation,
                   isLocationLoading: isLocationLoading,
                 ),
               ),
+              SizedBox(height: 12.h),
 
               // Parts Used
               if (workOrder.partsUsed.isNotEmpty)
-                ExpandableSection(
+                FSMCollapsibleSection(
                   title: 'Parts Used',
-                  icon: Icons.build_outlined,
-                  content: PartsUsedSection(partsUsed: workOrder.partsUsed),
+                  child: PartsUsedSection(partsUsed: workOrder.partsUsed),
                 ),
+              if (workOrder.partsUsed.isNotEmpty) SizedBox(height: 12.h),
 
               // Work Logs & Timeline
               if (workOrder.workLogs.isNotEmpty)
-                ExpandableSection(
+                FSMCollapsibleSection(
                   title: 'Work Timeline',
-                  icon: Icons.timeline_outlined,
-                  content: WorkTimelineSection(workLogs: workOrder.workLogs),
+                  child: WorkTimelineSection(workLogs: workOrder.workLogs),
                 ),
+              if (workOrder.workLogs.isNotEmpty) SizedBox(height: 12.h),
 
               // Images & Documentation
               _buildImagesSection(),
@@ -486,8 +408,60 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     );
   }
 
-  Color _getPriorityColor(WorkOrderPriority priority) {
-    return AppColors.getPriorityColor(priority.name);
+  /// Custom header info chip for gradient background (keeps visual consistency)
+  Widget _buildHeaderInfoChip({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 14.sp,
+          ),
+          SizedBox(width: 6.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.8),
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              Text(
+                value,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildImagesSection() {
@@ -516,18 +490,79 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     );
   }
 
+  /// Build FAB using FSMActionButton or FSMMultiActionButton based on available actions
   Widget _buildWorkOrderActionFab(WorkOrderEntity workOrder) {
-    return WorkOrderActionFab(
-      workOrder: workOrder,
-      onStart: () => _startWorkOrder(context, workOrder),
-      onPause: () => _pauseWorkOrder(context, workOrder),
-      onResume: () => _resumeWorkOrder(context, workOrder),
-      onComplete: () => _completeWorkOrder(context, workOrder),
-      onShowActions: () => _showWorkOrderActionsBottomSheet(workOrder),
+    // Determine if we need multi-action speed dial or simple FAB
+    final canBePaused = workOrder.canBePaused;
+    final canBeCompleted = workOrder.canBeCompleted;
+
+    // If both pause and complete are available, use multi-action
+    if (canBePaused && canBeCompleted) {
+      return FSMMultiActionButton(
+        icon: Icons.more_vert,
+        tooltip: 'Work Order Actions',
+        actions: [
+          if (canBePaused)
+            SpeedDialAction(
+              icon: Icons.pause,
+              label: 'Pause Job',
+              backgroundColor: AppColors.warning,
+              onPressed: () => _pauseWorkOrder(context, workOrder),
+            ),
+          if (canBeCompleted)
+            SpeedDialAction(
+              icon: Icons.check_circle,
+              label: 'Complete Job',
+              backgroundColor: AppColors.primary,
+              onPressed: () => _completeWorkOrder(context, workOrder),
+            ),
+        ],
+      );
+    }
+
+    // Otherwise, use simple extended FAB based on current state
+    String label;
+    IconData icon;
+    Color backgroundColor;
+    VoidCallback? onPressed;
+
+    if (workOrder.canBeStarted) {
+      label = 'Start Job';
+      icon = Icons.play_arrow;
+      backgroundColor = AppColors.success;
+      onPressed = () => _startWorkOrder(context, workOrder);
+    } else if (workOrder.canBeResumed) {
+      label = 'Resume Job';
+      icon = Icons.play_arrow;
+      backgroundColor = AppColors.success;
+      onPressed = () => _resumeWorkOrder(context, workOrder);
+    } else if (canBePaused) {
+      label = 'Pause Job';
+      icon = Icons.pause;
+      backgroundColor = AppColors.warning;
+      onPressed = () => _pauseWorkOrder(context, workOrder);
+    } else if (canBeCompleted) {
+      label = 'Complete Job';
+      icon = Icons.check_circle;
+      backgroundColor = AppColors.primary;
+      onPressed = () => _completeWorkOrder(context, workOrder);
+    } else {
+      // Show actions menu for other states
+      label = 'Actions';
+      icon = Icons.more_vert;
+      backgroundColor = AppColors.primary;
+      onPressed = () => _showWorkOrderActionsBottomSheet(workOrder);
+    }
+
+    return FSMActionButton.extended(
+      icon: icon,
+      label: label,
+      backgroundColor: backgroundColor,
+      onPressed: onPressed,
     );
   }
 
-  // Action methods
+  // Action methods (unchanged - preserve all business logic)
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
       final state = _workOrderActionBloc?.state;
@@ -592,7 +627,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       final state = _workOrderActionBloc?.state;
       state?.maybeWhen(
         loaded: (_, currentLocation, __, ___, ____, _____) {
-          _showCompleteWorkOrderBottomSheet(context, workOrder, currentLocation);
+          _showCompleteWorkOrderBottomSheet(
+              context, workOrder, currentLocation);
         },
         actionSuccess: (workOrderEntity, actionType, message, _) {
           _showCompleteWorkOrderBottomSheet(context, workOrder, null);
@@ -637,17 +673,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    showModalBottomSheet(
+    WorkOrderBottomSheetManager.showStartWorkOrder(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BlocProvider.value(
-        value: _workOrderActionBloc!,
-        child: WorkOrderStartBottomSheet(
-          workOrder: workOrder,
-          currentLocation: currentLocation,
-        ),
-      ),
+      workOrder: workOrder,
+      currentLocation: currentLocation,
     ).then((result) {
       // Handle result if needed
       if (result == true) {
@@ -661,17 +690,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    showModalBottomSheet(
+    WorkOrderBottomSheetManager.showPauseWorkOrder(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BlocProvider.value(
-        value: _workOrderActionBloc!,
-        child: WorkOrderPauseBottomSheet(
-          workOrder: workOrder,
-          currentLocation: currentLocation,
-        ),
-      ),
+      workOrder: workOrder,
+      currentLocation: currentLocation,
     ).then((result) {
       // Handle result if needed
       if (result == true) {
@@ -685,17 +707,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    showModalBottomSheet(
+    WorkOrderBottomSheetManager.showCompleteWorkOrder(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => BlocProvider.value(
-        value: _workOrderActionBloc!,
-        child: WorkOrderCompleteBottomSheet(
-          workOrder: workOrder,
-          currentLocation: currentLocation,
-        ),
-      ),
+      workOrder: workOrder,
+      currentLocation: currentLocation,
     ).then((result) {
       // Handle result if needed
       if (result == true) {
@@ -705,18 +720,14 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   void _showWorkOrderActionsBottomSheet(WorkOrderEntity workOrder) {
-    showModalBottomSheet(
+    WorkOrderBottomSheetManager.showActionSheet(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => WorkOrderActionsBottomSheet(
-        workOrder: workOrder,
-        onStart: () => _startWorkOrder(context, workOrder),
-        onPause: () => _pauseWorkOrder(context, workOrder),
-        onResume: () => _resumeWorkOrder(context, workOrder),
-        onComplete: () => _completeWorkOrder(context, workOrder),
-        onReject: () => _rejectWorkOrder(context, workOrder),
-      ),
+      workOrder: workOrder,
+      onStart: () => _startWorkOrder(context, workOrder),
+      onPause: () => _pauseWorkOrder(context, workOrder),
+      onResume: () => _resumeWorkOrder(context, workOrder),
+      onComplete: () => _completeWorkOrder(context, workOrder),
+      onReject: () => _rejectWorkOrder(context, workOrder),
     );
   }
 

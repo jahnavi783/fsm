@@ -10,7 +10,8 @@
       "WebFetch(domain:pub.dev)",
       "WebFetch(domain:github.com)",
       "Read(//c/Users/ayushkum/AppData/Roaming/Claude/**)",
-      "mcp__postmanlabs_postman-mcp-server__getAuthenticatedUser"
+      "mcp__postmanlabs_postman-mcp-server__getAuthenticatedUser",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

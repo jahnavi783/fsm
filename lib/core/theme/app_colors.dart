@@ -152,6 +152,55 @@ class AppColors {
     );
   }
 
+  // Semantic Action Colors (for work order actions)
+  static const Color actionStart = Color(0xFF4CAF50); // Green - start work
+  static const Color actionPause = Color(0xFFFF9800); // Orange - pause work
+  static const Color actionResume = Color(0xFF2196F3); // Blue - resume work
+  static const Color actionComplete = Color(0xFF4CAF50); // Green - complete work
+  static const Color actionCancel = Color(0xFFF44336); // Red - cancel
+  static const Color actionReject = Color(0xFF795548); // Brown - reject
+
+  // Semantic UI Colors
+  static const Color divider = Color(0xFFE0E0E0);
+  static const Color dividerLight = Color(0xFFF5F5F5);
+  static const Color disabled = Color(0xFFBDBDBD);
+  static const Color disabledText = Color(0xFF9E9E9E);
+
+  // Semantic Grey Scale (for text and subtle UI elements)
+  static const Color grey100 = Color(0xFFF5F5F5);
+  static const Color grey200 = Color(0xFFEEEEEE);
+  static const Color grey300 = Color(0xFFE0E0E0);
+  static const Color grey400 = Color(0xFFBDBDBD);
+  static const Color grey500 = Color(0xFF9E9E9E);
+  static const Color grey600 = Color(0xFF757575);
+  static const Color grey700 = Color(0xFF616161);
+  static const Color grey800 = Color(0xFF424242);
+  static const Color grey900 = Color(0xFF212121);
+
+  // Offline/Sync Status Colors
+  static const Color offline = Color(0xFFFF9800); // Orange - offline
+  static const Color syncing = Color(0xFF2196F3); // Blue - syncing
+  static const Color synced = Color(0xFF4CAF50); // Green - synced
+  static const Color syncFailed = Color(0xFFF44336); // Red - sync failed
+  static const Color pendingSync = Color(0xFFFF9800); // Orange - pending sync
+
+  // Inventory/Stock Colors
+  static const Color stockHigh = Color(0xFF4CAF50); // Green - good stock
+  static const Color stockMedium = Color(0xFFFF9800); // Orange - medium stock
+  static const Color stockLow = Color(0xFFF44336); // Red - low stock
+  static const Color stockOut = Color(0xFF757575); // Grey - out of stock
+
+  // Overlay/Background Colors
+  static const Color overlay = Color(0x80000000); // Semi-transparent black
+  static const Color overlayLight = Color(0x40000000); // Light overlay
+  static const Color modalBarrier = Color(0x8A000000); // Modal background
+
+  // Card/Surface Colors with opacity variants
+  static const Color cardShadow = Color(0x1A000000); // 10% black for shadows
+  static const Color cardBorderLight = Color(0xFFEEEEEE);
+  static const Color surfaceElevated = Color(0xFFFFFFFF);
+  static const Color surfaceDepressed = Color(0xFFF5F5F5);
+
   // Helper methods for status colors
   static Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
@@ -183,6 +232,52 @@ class AppColors {
         return priorityHigh;
       case 'urgent':
         return priorityUrgent;
+      default:
+        return grey;
+    }
+  }
+
+  // Helper method for action colors
+  static Color getActionColor(String action) {
+    switch (action.toLowerCase()) {
+      case 'start':
+        return actionStart;
+      case 'pause':
+        return actionPause;
+      case 'resume':
+        return actionResume;
+      case 'complete':
+        return actionComplete;
+      case 'cancel':
+        return actionCancel;
+      case 'reject':
+        return actionReject;
+      default:
+        return primary;
+    }
+  }
+
+  // Helper method for stock/inventory colors
+  static Color getStockColor(int quantity, int minQuantity, int maxQuantity) {
+    if (quantity == 0) return stockOut;
+    if (quantity <= minQuantity) return stockLow;
+    if (quantity < maxQuantity * 0.5) return stockMedium;
+    return stockHigh;
+  }
+
+  // Helper method for sync status colors
+  static Color getSyncStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'offline':
+        return offline;
+      case 'syncing':
+        return syncing;
+      case 'synced':
+        return synced;
+      case 'failed':
+        return syncFailed;
+      case 'pending':
+        return pendingSync;
       default:
         return grey;
     }

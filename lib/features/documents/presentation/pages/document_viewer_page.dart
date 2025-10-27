@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -202,8 +203,8 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_document?.title ?? 'Document'),
+      appBar: FSMAppBar.standard(
+        title: _document?.title ?? 'Document',
         actions: [
           if (_document != null) ...[
             // File selector for multi-file documents

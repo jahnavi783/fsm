@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/widgets/fsm_bottom_sheet.dart';
 import '../../domain/entities/document_entity.dart';
 import 'document_list_item.dart';
 import 'document_search_bar.dart';
@@ -45,11 +46,11 @@ class DocumentActionSheet extends StatefulWidget {
     Function(DocumentType?)? onTypeFilter,
     bool hasReachedMax = false,
   }) async {
-    return showModalBottomSheet<DocumentEntity>(
+    return FSMBottomSheet.show<DocumentEntity>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => DocumentActionSheet(
+      title: 'Select Document',
+      showCloseButton: true,
+      content: DocumentActionSheet(
         initialSearchQuery: initialSearchQuery,
         initialType: initialType,
         documents: documents,
@@ -120,51 +121,10 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
-      decoration: BoxDecoration(
-        color: theme.scaffoldBackgroundColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
         children: [
-          // Handle bar
-          Container(
-            width: 40.w,
-            height: 4.h,
-            margin: EdgeInsets.symmetric(vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(2.r),
-            ),
-          ),
-
-          // Title and close button
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Row(
-              children: [
-                Text(
-                  'Select Document',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(
-                    Icons.close,
-                    size: 24.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
           // Search bar
           DocumentSearchBar(
             initialQuery: widget.initialSearchQuery,
@@ -243,7 +203,7 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
     VoidCallback onTap,
   ) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: EdgeInsets.only(right: 8.w),
       child: FilterChip(
@@ -274,7 +234,7 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
 
   Widget _buildEmptyState(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(32.w),

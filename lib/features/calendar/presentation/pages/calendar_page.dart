@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/services/location_service.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
 import 'package:fsm/features/calendar/presentation/blocs/calendar/calendar_bloc.dart';
 import 'package:fsm/features/calendar/presentation/blocs/calendar/calendar_event.dart';
@@ -33,12 +34,12 @@ class _CalendarPageState extends State<CalendarPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    
+
     // Load initial calendar data for current month
     final now = DateTime.now();
     context.read<CalendarBloc>().add(
-      CalendarEvent.loadMonthlySchedule(month: now, isRefresh: true),
-    );
+          CalendarEvent.loadMonthlySchedule(month: now, isRefresh: true),
+        );
   }
 
   @override
@@ -49,23 +50,9 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Calendar'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.primaryColor,
-                theme.primaryColor.withValues(alpha: 0.8),
-              ],
-            ),
-          ),
-        ),
+      appBar: FSMAppBar.gradient(
+        title: 'Calendar',
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -80,13 +67,13 @@ class _CalendarPageState extends State<CalendarPage>
               switch (value) {
                 case 'refresh':
                   context.read<CalendarBloc>().add(
-                    const CalendarEvent.refreshEvents(),
-                  );
+                        const CalendarEvent.refreshEvents(),
+                      );
                   break;
                 case 'sync':
                   context.read<CalendarBloc>().add(
-                    const CalendarEvent.syncPendingChanges(),
-                  );
+                        const CalendarEvent.syncPendingChanges(),
+                      );
                   break;
                 case 'optimize_route':
                   _optimizeRoute();
@@ -147,8 +134,15 @@ class _CalendarPageState extends State<CalendarPage>
             children: [
               // View switcher and date navigation
               state.maybeWhen(
-                loaded: (events, currentDate, viewType, typeFilter, searchQuery, 
-                        isOffline, hasPendingSync, optimizedRoute, conflictingEvents) {
+                loaded: (events,
+                    currentDate,
+                    viewType,
+                    typeFilter,
+                    searchQuery,
+                    isOffline,
+                    hasPendingSync,
+                    optimizedRoute,
+                    conflictingEvents) {
                   return Column(
                     children: [
                       // Offline indicator
@@ -178,7 +172,7 @@ class _CalendarPageState extends State<CalendarPage>
                           ),
                         ),
                       ],
-                      
+
                       // Pending sync indicator
                       if (hasPendingSync) ...[
                         Container(
@@ -206,30 +200,30 @@ class _CalendarPageState extends State<CalendarPage>
                           ),
                         ),
                       ],
-                      
+
                       // Calendar view switcher
                       CalendarViewSwitcher(
                         currentViewType: viewType,
                         onViewChanged: (newViewType) {
                           context.read<CalendarBloc>().add(
-                            CalendarEvent.changeView(newViewType),
-                          );
+                                CalendarEvent.changeView(newViewType),
+                              );
                         },
                       ),
-                      
+
                       // Date navigation
                       DateNavigation(
                         currentDate: currentDate,
                         viewType: viewType,
                         onDateChanged: (date) {
                           context.read<CalendarBloc>().add(
-                            CalendarEvent.navigateToDate(date),
-                          );
+                                CalendarEvent.navigateToDate(date),
+                              );
                         },
                         onTodayTap: () {
                           context.read<CalendarBloc>().add(
-                            CalendarEvent.navigateToDate(DateTime.now()),
-                          );
+                                CalendarEvent.navigateToDate(DateTime.now()),
+                              );
                         },
                       ),
                     ],
@@ -237,7 +231,7 @@ class _CalendarPageState extends State<CalendarPage>
                 },
                 orElse: () => const SizedBox.shrink(),
               ),
-              
+
               // Main content
               Expanded(
                 child: TabBarView(
@@ -263,9 +257,8 @@ class _CalendarPageState extends State<CalendarPage>
     return state.when(
       initial: () => const Center(child: CircularProgressIndicator()),
       loading: () => const Center(child: CircularProgressIndicator()),
-      loaded: (events, currentDate, viewType, typeFilter, searchQuery, 
-              isOffline, hasPendingSync, optimizedRoute, conflictingEvents) {
-        
+      loaded: (events, currentDate, viewType, typeFilter, searchQuery,
+          isOffline, hasPendingSync, optimizedRoute, conflictingEvents) {
         // Filter events based on current filters
         var filteredEvents = events;
         if (_selectedTypeFilter != null) {
@@ -275,12 +268,16 @@ class _CalendarPageState extends State<CalendarPage>
         }
         if (_searchQuery != null && _searchQuery!.isNotEmpty) {
           filteredEvents = filteredEvents
-              .where((event) => 
-                  event.title.toLowerCase().contains(_searchQuery!.toLowerCase()) ||
-                  event.description.toLowerCase().contains(_searchQuery!.toLowerCase()))
+              .where((event) =>
+                  event.title
+                      .toLowerCase()
+                      .contains(_searchQuery!.toLowerCase()) ||
+                  event.description
+                      .toLowerCase()
+                      .contains(_searchQuery!.toLowerCase()))
               .toList();
         }
-        
+
         return Column(
           children: [
             // Calendar view
@@ -293,21 +290,21 @@ class _CalendarPageState extends State<CalendarPage>
                 onEventTap: (event) => _showEventDetails(context, event),
                 onDateTap: (date) {
                   context.read<CalendarBloc>().add(
-                    CalendarEvent.navigateToDate(date),
-                  );
+                        CalendarEvent.navigateToDate(date),
+                      );
                 },
                 onDateRangeSelected: (start, end) {
                   context.read<CalendarBloc>().add(
-                    CalendarEvent.loadEvents(
-                      startDate: start,
-                      endDate: end,
-                      isRefresh: true,
-                    ),
-                  );
+                        CalendarEvent.loadEvents(
+                          startDate: start,
+                          endDate: end,
+                          isRefresh: true,
+                        ),
+                      );
                 },
               ),
             ),
-            
+
             // Events list for selected date
             if (viewType == CalendarViewType.day) ...[
               Container(
@@ -352,8 +349,8 @@ class _CalendarPageState extends State<CalendarPage>
             ElevatedButton(
               onPressed: () {
                 context.read<CalendarBloc>().add(
-                  const CalendarEvent.refreshEvents(),
-                );
+                      const CalendarEvent.refreshEvents(),
+                    );
               },
               child: const Text('Retry'),
             ),
@@ -370,45 +367,45 @@ class _CalendarPageState extends State<CalendarPage>
           ],
         ),
       ),
-      eventCreated: (event, events, currentDate, viewType) => 
+      eventCreated: (event, events, currentDate, viewType) =>
           _buildCalendarView(CalendarState.loaded(
-            events: events,
-            currentDate: currentDate,
-            viewType: viewType,
-          )),
-      eventUpdated: (event, events, currentDate, viewType) => 
+        events: events,
+        currentDate: currentDate,
+        viewType: viewType,
+      )),
+      eventUpdated: (event, events, currentDate, viewType) =>
           _buildCalendarView(CalendarState.loaded(
-            events: events,
-            currentDate: currentDate,
-            viewType: viewType,
-          )),
-      eventDeleted: (eventId, events, currentDate, viewType) => 
+        events: events,
+        currentDate: currentDate,
+        viewType: viewType,
+      )),
+      eventDeleted: (eventId, events, currentDate, viewType) =>
           _buildCalendarView(CalendarState.loaded(
-            events: events,
-            currentDate: currentDate,
-            viewType: viewType,
-          )),
-      routeOptimized: (optimizedRoute, events, currentDate, viewType) => 
+        events: events,
+        currentDate: currentDate,
+        viewType: viewType,
+      )),
+      routeOptimized: (optimizedRoute, events, currentDate, viewType) =>
           _buildCalendarView(CalendarState.loaded(
-            events: events,
-            currentDate: currentDate,
-            viewType: viewType,
-            optimizedRoute: optimizedRoute,
-          )),
-      conflictsFound: (conflictingEvents, events, currentDate, viewType) => 
+        events: events,
+        currentDate: currentDate,
+        viewType: viewType,
+        optimizedRoute: optimizedRoute,
+      )),
+      conflictsFound: (conflictingEvents, events, currentDate, viewType) =>
           _buildCalendarView(CalendarState.loaded(
-            events: events,
-            currentDate: currentDate,
-            viewType: viewType,
-            conflictingEvents: conflictingEvents,
-          )),
+        events: events,
+        currentDate: currentDate,
+        viewType: viewType,
+        conflictingEvents: conflictingEvents,
+      )),
     );
   }
 
   Widget _buildRouteView(CalendarState state) {
     return state.maybeWhen(
-      loaded: (events, currentDate, viewType, typeFilter, searchQuery, 
-              isOffline, hasPendingSync, optimizedRoute, conflictingEvents) {
+      loaded: (events, currentDate, viewType, typeFilter, searchQuery,
+          isOffline, hasPendingSync, optimizedRoute, conflictingEvents) {
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -419,7 +416,7 @@ class _CalendarPageState extends State<CalendarPage>
                 onEventTap: (event) => _showEventDetails(context, event),
                 isLoading: false,
               ),
-              
+
               // Work orders for today
               if (optimizedRoute == null || optimizedRoute.isEmpty) ...[
                 _buildTodayWorkOrders(events),
@@ -432,7 +429,8 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
-  Widget _buildDayEventsList(List<CalendarEventEntity> events, DateTime currentDate) {
+  Widget _buildDayEventsList(
+      List<CalendarEventEntity> events, DateTime currentDate) {
     // Filter events for the current date
     final dayEvents = events.where((event) {
       final eventDate = DateTime(
@@ -496,7 +494,8 @@ class _CalendarPageState extends State<CalendarPage>
         event.startTime.day,
       );
       final todayDate = DateTime(today.year, today.month, today.day);
-      return eventDate == todayDate && event.type == CalendarEventType.workOrder;
+      return eventDate == todayDate &&
+          event.type == CalendarEventType.workOrder;
     }).toList();
 
     if (todayWorkOrders.isEmpty) {
@@ -543,9 +542,9 @@ class _CalendarPageState extends State<CalendarPage>
           ),
           SizedBox(height: 12.h),
           ...todayWorkOrders.map((event) => EventCard(
-            event: event,
-            onTap: () => _showEventDetails(context, event),
-          )),
+                event: event,
+                onTap: () => _showEventDetails(context, event),
+              )),
         ],
       ),
     );
@@ -581,7 +580,7 @@ class _CalendarPageState extends State<CalendarPage>
                   ),
                 ),
                 SizedBox(height: 20.h),
-                
+
                 // Event details
                 Expanded(
                   child: SingleChildScrollView(
@@ -627,9 +626,9 @@ class _CalendarPageState extends State<CalendarPage>
                   child: Text('All Types'),
                 ),
                 ...CalendarEventType.values.map((type) => DropdownMenuItem(
-                  value: type,
-                  child: Text(type.displayName),
-                )),
+                      value: type,
+                      child: Text(type.displayName),
+                    )),
               ],
               onChanged: (value) {
                 setState(() {
@@ -637,8 +636,8 @@ class _CalendarPageState extends State<CalendarPage>
                 });
                 Navigator.pop(context);
                 context.read<CalendarBloc>().add(
-                  CalendarEvent.filterByType(value),
-                );
+                      CalendarEvent.filterByType(value),
+                    );
               },
             ),
           ],
@@ -651,8 +650,8 @@ class _CalendarPageState extends State<CalendarPage>
               });
               Navigator.pop(context);
               context.read<CalendarBloc>().add(
-                const CalendarEvent.clearFilters(),
-              );
+                    const CalendarEvent.clearFilters(),
+                  );
             },
             child: const Text('Clear'),
           ),
@@ -667,7 +666,7 @@ class _CalendarPageState extends State<CalendarPage>
 
   void _showSearchDialog(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -685,8 +684,8 @@ class _CalendarPageState extends State<CalendarPage>
               _searchQuery = query.isEmpty ? null : query;
             });
             context.read<CalendarBloc>().add(
-              CalendarEvent.searchEvents(query),
-            );
+                  CalendarEvent.searchEvents(query),
+                );
           },
         ),
         actions: [
@@ -702,8 +701,8 @@ class _CalendarPageState extends State<CalendarPage>
                 _searchQuery = query.isEmpty ? null : query;
               });
               context.read<CalendarBloc>().add(
-                CalendarEvent.searchEvents(query),
-              );
+                    CalendarEvent.searchEvents(query),
+                  );
             },
             child: const Text('Search'),
           ),
@@ -745,8 +744,8 @@ class _CalendarPageState extends State<CalendarPage>
             onPressed: () {
               Navigator.pop(context);
               context.read<CalendarBloc>().add(
-                CalendarEvent.deleteEvent(event.id),
-              );
+                    CalendarEvent.deleteEvent(event.id),
+                  );
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: const Text('Delete'),
@@ -760,14 +759,14 @@ class _CalendarPageState extends State<CalendarPage>
     try {
       final position = await _locationService.getCurrentLocation();
       final today = DateTime.now();
-      
+
       context.read<CalendarBloc>().add(
-        CalendarEvent.optimizeRoute(
-          date: today,
-          currentLatitude: position.latitude??0,
-          currentLongitude: position.longitude??0,
-        ),
-      );
+            CalendarEvent.optimizeRoute(
+              date: today,
+              currentLatitude: position.latitude ?? 0,
+              currentLongitude: position.longitude ?? 0,
+            ),
+          );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

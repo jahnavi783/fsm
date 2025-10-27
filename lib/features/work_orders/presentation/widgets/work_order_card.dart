@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/fsm_card.dart';
+import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
 import 'package:intl/intl.dart';
 
+/// WorkOrderCard - Displays work order summary with status, priority, and actions
+///
+/// Refactored to use shared components:
+/// - [FSMCard.elevated] for card structure
+/// - [StatusBadge.status] for status display
+/// - [StatusBadge.priority] for priority display
+///
+/// Maintains all existing functionality including:
+/// - Tap to view details
+/// - Quick action buttons (start/pause/resume)
+/// - Overdue indicator
+/// - Customer and location display
 class WorkOrderCard extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final VoidCallback? onTap;
@@ -21,154 +34,124 @@ class WorkOrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return FSMCard.elevated(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with WO number and status
+          FSMCardHeader(
+            title: workOrder.woNumber,
+            trailing: StatusBadge.status(
+              status: workOrder.status.toString(),
+              variant: StatusBadgeVariant.subtle,
+              showIcon: true,
+            ),
+          ),
+
+          // Summary
+          Text(
+            workOrder.summary,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 14.sp,
+              color: theme.colorScheme.onSurface.withOpacity(0.8),
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+
+          SizedBox(height: 12.h),
+
+          // Priority and Visit Date Row
+          Row(
             children: [
-              // Header with WO number and status
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      workOrder.woNumber,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                  ),
-                  WorkOrderStatusChip(status: workOrder.status),
-                ],
+              // Priority Badge
+              StatusBadge.priority(
+                priority: workOrder.priority.toString(),
+                variant: StatusBadgeVariant.outlined,
+                showIcon: false,
               ),
 
-              SizedBox(height: 8.h),
+              SizedBox(width: 12.w),
 
-              // Summary
+              // Visit Date
+              Icon(
+                Icons.schedule,
+                size: 16.sp,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+              SizedBox(width: 4.w),
               Text(
-                workOrder.summary,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 14.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.8),
+                DateFormat('MMM dd, yyyy').format(workOrder.visitDate),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 12.sp,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
+            ],
+          ),
 
-              SizedBox(height: 12.h),
+          SizedBox(height: 12.h),
 
-              // Priority and Visit Date
-              Row(
-                children: [
-                  // Priority
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                    decoration: BoxDecoration(
-                      color: _getPriorityColor(workOrder.priority)
-                          .withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(
-                        color: _getPriorityColor(workOrder.priority),
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      workOrder.priorityDisplayName,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: _getPriorityColor(workOrder.priority),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(width: 12.w),
-
-                  // Visit Date
-                  Icon(
-                    Icons.schedule,
-                    size: 16.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    DateFormat('MMM dd, yyyy').format(workOrder.visitDate),
+          // Customer Info
+          if (workOrder.customer != null) ...[
+            Row(
+              children: [
+                Icon(
+                  Icons.person_outline,
+                  size: 16.sp,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+                SizedBox(width: 4.w),
+                Expanded(
+                  child: Text(
+                    workOrder.customer!.name,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12.sp,
                       color: theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
-
-              SizedBox(height: 12.h),
-
-              // Location and Customer
-              if (workOrder.customer != null) ...[
-                Row(
-                  children: [
-                    Icon(
-                      Icons.person_outline,
-                      size: 16.sp,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                    SizedBox(width: 4.w),
-                    Expanded(
-                      child: Text(
-                        workOrder.customer!.name,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 12.sp,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
                 ),
-                SizedBox(height: 4.h),
               ],
+            ),
+            SizedBox(height: 4.h),
+          ],
 
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    size: 16.sp,
+          // Location Info
+          Row(
+            children: [
+              Icon(
+                Icons.location_on_outlined,
+                size: 16.sp,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
+              SizedBox(width: 4.w),
+              Expanded(
+                child: Text(
+                  workOrder.location,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 12.sp,
                     color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
-                  SizedBox(width: 4.w),
-                  Expanded(
-                    child: Text(
-                      workOrder.location,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+            ],
+          ),
 
-              // Action button for actionable work orders
-              if (_shouldShowActionButton()) ...[
-                SizedBox(height: 16.h),
+          // Action button for actionable work orders
+          if (_shouldShowActionButton()) ...[
+            SizedBox(height: 16.h),
+            FSMCardFooter(
+              alignment: MainAxisAlignment.center,
+              actions: [
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: onActionTap,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _getActionButtonColor(theme),
+                      backgroundColor: _getActionButtonColor(),
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       shape: RoundedRectangleBorder(
@@ -185,47 +168,23 @@ class WorkOrderCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ],
 
-              // Overdue indicator
-              if (workOrder.isOverdue) ...[
-                SizedBox(height: 8.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6.r),
-                    border: Border.all(color: Colors.red, width: 1),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.warning_outlined,
-                        size: 14.sp,
-                        color: Colors.red,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'Overdue',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
+          // Overdue indicator
+          if (workOrder.isOverdue) ...[
+            SizedBox(height: 8.h),
+            StatusBadge(
+              label: 'Overdue',
+              variant: StatusBadgeVariant.outlined,
+              customColor: AppColors.error,
+              icon: Icons.warning_outlined,
+              showIcon: true,
+            ),
+          ],
+        ],
       ),
     );
-  }
-
-  Color _getPriorityColor(WorkOrderPriority priority) {
-    return AppColors.getPriorityColor(priority.name);
   }
 
   bool _shouldShowActionButton() {
@@ -241,10 +200,10 @@ class WorkOrderCard extends StatelessWidget {
     return 'View Details';
   }
 
-  Color _getActionButtonColor(ThemeData theme) {
-    if (workOrder.canBeStarted) return Colors.green;
-    if (workOrder.canBePaused) return Colors.orange;
-    if (workOrder.canBeResumed) return Colors.blue;
-    return theme.primaryColor;
+  Color _getActionButtonColor() {
+    if (workOrder.canBeStarted) return AppColors.actionStart;
+    if (workOrder.canBePaused) return AppColors.actionPause;
+    if (workOrder.canBeResumed) return AppColors.actionResume;
+    return AppColors.primary;
   }
 }

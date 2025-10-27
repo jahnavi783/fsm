@@ -91,7 +91,32 @@ flutter build apk --flavor prod --target lib/main_prod.dart --release
 ./scripts/build_android_prod.sh
 ```
 
+### API Testing
+
+**Postman Collection**: Located in `postman/` directory for API testing:
+- `FSM_Backend.postman_collection.json` - Complete API endpoint collection
+- `FSM_Backend.postman_environment.json` - Environment variables (dev/staging/prod)
+
+Import these files into Postman for manual API testing and debugging.
+
+**MCP Integration**: The `.mcp.json` configures Postman MCP server for Claude Code integration, enabling direct API interactions during development.
+
 ## Architecture Overview
+
+### Features
+
+The application includes the following feature modules:
+
+- **auth** - JWT authentication, login, token refresh, secure storage
+- **work_orders** - Work order lifecycle management, status transitions, GPS tracking
+- **documents** - Multi-file document viewer, PDF/image/video support, caching
+- **calendar** - Work order scheduling and calendar view
+- **parts** - Spare parts inventory management
+- **profile** - User profile and settings management
+- **chat** - Technical assistance and support chat
+- **permission** - Permission handling abstraction (location, storage, camera)
+- **main_navigation** - Bottom navigation and tab-based routing
+- **debug** - Development debugging tools (dev/staging only)
 
 ### Clean Architecture Pattern
 
@@ -132,9 +157,9 @@ features/<feature>/
 - `router/` - Auto Route configuration and guards
 - `services/` - Core services (logging, location, error boundary)
 - `storage/` - Hive service and cache management
-- `theme/` - Design system and theming
+- `theme/` - Design system (colors, dimensions, typography, extensions)
 - `utils/` - Extensions and helper functions
-- `widgets/` - Shared UI components
+- `widgets/` - Shared UI components (FSM design system components)
 
 ### State Management (BLoC)
 
@@ -304,20 +329,53 @@ Each defines:
 
 ## Important Conventions
 
-### UI Responsiveness
+### Theme and Styling
 
-**MANDATORY**: Use ScreenUtil for all dimensions:
-
+**Color Usage**: Always use `AppColors` constants instead of hardcoded colors:
 ```dart
 // Correct
-padding: EdgeInsets.all(16.w)
+color: AppColors.primary
+backgroundColor: AppColors.surface
+textColor: AppColors.onSurface
+
+// Incorrect
+color: Color(0xFF116587)  // ❌ Don't hardcode colors
+```
+
+**Theme Extensions**: Access theme-specific styles via context:
+```dart
+final theme = Theme.of(context);
+final fsmTheme = theme.extension<FSMThemeExtension>();
+
+// Use theme colors and styles
+final primaryColor = theme.colorScheme.primary;
+final customSpacing = fsmTheme?.customSpacing;
+```
+
+### UI Responsiveness
+
+**MANDATORY**: Use ScreenUtil for all dimensions via `AppDimensions`:
+
+```dart
+// Correct - Use AppDimensions constants
+padding: EdgeInsets.all(AppDimensions.paddingMedium)
 fontSize: 14.sp
-height: 100.h
-borderRadius: BorderRadius.circular(8.r)
+height: AppDimensions.buttonHeight
+borderRadius: BorderRadius.circular(AppDimensions.radiusSmall)
+
+// Also acceptable - Direct ScreenUtil for custom values
+padding: EdgeInsets.all(16.w)
 
 // Incorrect
 padding: EdgeInsets.all(16)  // ❌ Never use raw numbers
 ```
+
+**AppDimensions provides**:
+- Padding: `paddingXSmall` (4w) to `paddingXLarge` (32w)
+- Margins: `marginXSmall` (4w) to `marginXLarge` (32w)
+- Border Radius: `radiusXSmall` (4r) to `radiusCircular` (50r)
+- Icon Sizes: `iconXSmall` (16sp) to `iconXLarge` (48sp)
+- Heights: `buttonHeight`, `inputHeight`, `appBarHeight`, `listItemHeight`, etc.
 
 Initialize ScreenUtil in `main_common.dart` before runApp.
 
@@ -334,6 +392,70 @@ if (location == null) {
 ```
 
 **Flow**: Idle → Started → Paused ↔ Resumed → Completed
+
+### Document Handling
+
+**Multi-File Support**: Documents support multiple files with individual caching:
+- Each document can have multiple files (PDFs, images, videos)
+- Files are cached individually using `FileEntity` model
+- Document viewer handles different file types (PDF, image, video)
+- Uploader information is tracked for audit purposes
+
+**File Types**:
+- PDF: Viewed using Syncfusion PDF viewer
+- Images: Displayed with PhotoView for zoom/pan
+- Videos: Played using Chewie video player
+
+### Design System Components
+
+**FSM Component Library**: Use prefixed components from `lib/core/widgets/` for consistency:
+
+**Cards**:
+```dart
+// Elevated card (default)
+FSMCard(
+  child: content,
+  onTap: () {},
+)
+
+// Outlined card
+FSMCard.outlined(
+  child: content,
+  borderColor: AppColors.primary,
+)
+
+// Flat card (no elevation/border)
+FSMCard.flat(
+  child: content,
+)
+```
+
+**App Bars**:
+```dart
+FSMAppBar(
+  title: 'Title',
+  showBackButton: true,
+  actions: [IconButton(...)],
+)
+
+// With tabs
+FSMAppBar.withTabs(
+  title: 'Title',
+  tabs: ['Tab 1', 'Tab 2'],
+)
+```
+
+**Action Buttons**:
+```dart
+FSMActionButton(
+  label: 'Start',
+  icon: Icons.play_arrow,
+  onPressed: () {},
+  variant: FSMActionButtonVariant.primary,
+)
+```
+
+**Other Components**: `FSMBottomSheet`, `FSMEmptyState`, `FSMFilterChipGroup`, `FSMInfoRow`, `FSMListItem`, `FSMSearchBar`, `FSMSectionHeader`, `StatusBadge`, `OfflineBanner`
 
 ### Loading States
 
@@ -429,6 +551,9 @@ blocTest<MyBloc, MyState>(
 - `lib/core/storage/hive_service.dart` - Local storage initialization
 - `lib/core/constants/hive_boxes.dart` - Hive box names and type IDs
 - `lib/core/config/app_config.dart` - Environment configuration
+- `lib/core/theme/app_colors.dart` - Color constants (brand, semantic colors)
+- `lib/core/theme/app_dimensions.dart` - Responsive dimension constants
+- `lib/core/theme/extensions/fsm_theme_extension.dart` - Theme extensions
 - `lib/main_common.dart` - Shared app initialization
 
 ## Troubleshooting

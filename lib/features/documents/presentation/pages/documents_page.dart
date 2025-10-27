@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/components/gradient_app_bar.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
@@ -110,8 +110,8 @@ class _DocumentsViewState extends State<DocumentsView> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: GradientAppBarPrimary(
-        title: Row(
+      appBar: FSMAppBar.gradient(
+        titleWidget: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(

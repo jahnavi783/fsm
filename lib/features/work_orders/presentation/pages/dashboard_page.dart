@@ -4,11 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fsm/core/config/app_config.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
+import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/dashboard_sliver_app_bar.dart';
 import 'package:fsm/core/widgets/stats_card.dart';
 import 'package:fsm/core/widgets/custom_tab_bar.dart';
 import 'package:fsm/core/widgets/dashboard_states.dart';
 import 'package:fsm/core/widgets/work_order_sliver_list.dart';
+import 'package:fsm/core/widgets/fsm_action_button.dart';
+import 'package:fsm/core/widgets/fsm_empty_state.dart';
+import 'package:fsm/core/widgets/offline_banner.dart';
 import 'package:fsm/core/utils/work_order_status_helper.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
@@ -17,6 +21,20 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/wor
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
 
+/// DashboardPage - Work Orders dashboard with tabs and statistics
+///
+/// Refactored to use shared components:
+/// - [FSMActionButton.extended] for sync FAB
+/// - [FSMEmptyState] for empty list states
+/// - [OfflineBanner] for connectivity indicator
+///
+/// Maintains all existing functionality:
+/// - Tab-based filtering (Unassigned, Assigned, In Progress, Paused, Completed)
+/// - Stats grid display
+/// - Pull-to-refresh
+/// - Infinite scroll pagination
+/// - Work order action sheets
+/// - BLoC state management
 @RoutePage()
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -71,94 +89,104 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<WorkOrdersListBloc>().add(
-                    const WorkOrdersListEvent.refreshWorkOrders(),
-                  );
-            },
-            child: CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                // App Bar
-                DashboardSliverAppBar(
-                  showDebugButton: AppConfig.isDebug,
-                  onSearch: () => _showSearchDialog(context),
-                  onRefresh: () {
+      body: Column(
+        children: [
+          // Offline/Sync Banner at top
+          const OfflineBanner(),
+
+          // Main content
+          Expanded(
+            child: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
+              builder: (context, state) {
+                return RefreshIndicator(
+                  onRefresh: () async {
                     context.read<WorkOrdersListBloc>().add(
                           const WorkOrdersListEvent.refreshWorkOrders(),
                         );
                   },
-                ),
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      // App Bar
+                      DashboardSliverAppBar(
+                        showDebugButton: AppConfig.isDebug,
+                        onSearch: () => _showSearchDialog(context),
+                        onRefresh: () {
+                          context.read<WorkOrdersListBloc>().add(
+                                const WorkOrdersListEvent.refreshWorkOrders(),
+                              );
+                        },
+                      ),
 
-                // Stats Cards
-                _buildStatsGrid(state),
+                      // Stats Cards (kept as existing - already well-designed)
+                      _buildStatsGrid(state),
 
-                // Tab Bar
-                CustomTabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    'Unassigned',
-                    'Assigned',
-                    'In Progress',
-                    'Paused',
-                    'Completed'
-                  ],
-                ),
+                      // Tab Bar (kept as existing - custom tab bar)
+                      CustomTabBar(
+                        controller: _tabController,
+                        tabs: const [
+                          'Unassigned',
+                          'Assigned',
+                          'In Progress',
+                          'Paused',
+                          'Completed'
+                        ],
+                      ),
 
-                // Current tab content
-                _buildCurrentTabContent(state),
-              ],
+                      // Current tab content
+                      _buildCurrentTabContent(state),
+                    ],
+                  ),
+                );
+              },
             ),
+          ),
+        ],
+      ),
+      // Refactored: Use FSMActionButton.extended for sync FAB
+      floatingActionButton: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
+        builder: (context, state) {
+          // Show badge if there are pending changes
+          final hasPendingSync = state.maybeWhen(
+            loaded: (_, __, ___, ____, _____, ______, _______, ________, _________, __________, hasPendingSync) =>
+                hasPendingSync,
+            orElse: () => false,
+          );
+
+          return FSMActionButton.extended(
+            icon: Icons.sync_rounded,
+            label: 'Sync',
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.onPrimary,
+            onPressed: () {
+              context.read<WorkOrdersListBloc>().add(
+                    const WorkOrdersListEvent.syncPendingWorkOrders(),
+                  );
+            },
+            tooltip: 'Sync pending changes',
+            badge: hasPendingSync
+                ? Container(
+                    width: 10.w,
+                    height: 10.h,
+                    decoration: const BoxDecoration(
+                      color: AppColors.warning,
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : null,
           );
         },
-      ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28.r),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF116587).withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            context.read<WorkOrdersListBloc>().add(
-                  const WorkOrdersListEvent.syncPendingWorkOrders(),
-                );
-          },
-          icon: Icon(Icons.sync_rounded, size: 20.sp),
-          label: Text(
-            'Sync',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14.sp,
-              letterSpacing: 0.5,
-            ),
-          ),
-          backgroundColor: const Color(0xFF116587),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28.r),
-          ),
-        ),
       ),
     );
   }
 
-  // Build stats grid for sliver layout
+  // Build stats grid for sliver layout (kept as existing)
   Widget _buildStatsGrid(WorkOrdersListState state) {
     final statsData = _getStatsData(state);
     return StatsGrid(statsData: statsData);
   }
 
-  // Get stats data for each status
+  // Get stats data for each status (kept as existing)
   List<StatsCardData> _getStatsData(WorkOrdersListState state) {
     return [
       StatsCardData(
@@ -280,14 +308,17 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
+  // Refactored: Use FSMEmptyStateList for empty states
   Widget _buildEmptyStateSliver(WorkOrderStatus status) {
     final emptyStateInfo = WorkOrderStatusHelper.getEmptyStateInfo(status);
-    return EmptyState(
-      title: emptyStateInfo['title'],
-      subtitle: emptyStateInfo['subtitle'],
+
+    return FSMEmptyStateList(
       icon: emptyStateInfo['icon'],
-      color: emptyStateInfo['color'],
-      onRetry: () {
+      title: emptyStateInfo['title'],
+      description: emptyStateInfo['subtitle'],
+      iconColor: emptyStateInfo['color'],
+      actionLabel: 'Refresh',
+      onAction: () {
         context.read<WorkOrdersListBloc>().add(
               const WorkOrdersListEvent.refreshWorkOrders(),
             );
@@ -364,23 +395,12 @@ class _DashboardPageState extends State<DashboardPage>
           isOffline,
           hasPendingSync) {
         if (unassignedWorkOrders.isEmpty) {
-          return SliverFillRemaining(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.inbox_outlined, size: 64.sp, color: Colors.grey),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'No unassigned work orders',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          // Refactored: Use FSMEmptyState for unassigned empty state
+          return const FSMEmptyStateList(
+            icon: Icons.inbox_outlined,
+            title: 'No Unassigned Work Orders',
+            description: 'All work orders have been assigned to field engineers.',
+            iconColor: AppColors.grey400,
           );
         }
 
@@ -409,8 +429,8 @@ class _DashboardPageState extends State<DashboardPage>
                           icon: Icon(Icons.person_add, size: 18.sp),
                           label: Text('Assign to Me', style: TextStyle(fontSize: 14.sp)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF116587),
-                            foregroundColor: Colors.white,
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.onPrimary,
                             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.r),
@@ -467,8 +487,8 @@ class _DashboardPageState extends State<DashboardPage>
               _switchToTab(1);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF116587),
-              foregroundColor: Colors.white,
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.onPrimary,
             ),
             child: const Text('Assign'),
           ),

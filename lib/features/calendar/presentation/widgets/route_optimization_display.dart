@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
-import 'package:fsm/features/calendar/presentation/widgets/event_card.dart';
+import 'package:fsm/core/widgets/fsm_card.dart';
 import 'package:intl/intl.dart';
 
 class RouteOptimizationDisplay extends StatelessWidget {
@@ -21,16 +21,8 @@ class RouteOptimizationDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
-    return Container(
-      margin: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
+
+    return FSMCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,8 +32,8 @@ class RouteOptimizationDisplay extends StatelessWidget {
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.r),
-                topRight: Radius.circular(12.r),
+                topLeft: Radius.circular(8.r),
+                topRight: Radius.circular(8.r),
               ),
             ),
             child: Row(
@@ -92,7 +84,7 @@ class RouteOptimizationDisplay extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Route content
           if (optimizedRoute.isEmpty && !isLoading) ...[
             Padding(
@@ -109,7 +101,8 @@ class RouteOptimizationDisplay extends StatelessWidget {
                     Text(
                       'No work orders found for route optimization',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         fontSize: 14.sp,
                       ),
                       textAlign: TextAlign.center,
@@ -144,7 +137,8 @@ class RouteOptimizationDisplay extends StatelessWidget {
                     Text(
                       'Optimizing route...',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         fontSize: 14.sp,
                       ),
                     ),
@@ -164,12 +158,12 @@ class RouteOptimizationDisplay extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             Divider(
               height: 1,
               color: theme.colorScheme.outline.withValues(alpha: 0.2),
             ),
-            
+
             // Route steps
             ListView.separated(
               shrinkWrap: true,
@@ -190,9 +184,10 @@ class RouteOptimizationDisplay extends StatelessWidget {
 
   Widget _buildRouteSummary(ThemeData theme) {
     final totalDuration = _calculateTotalDuration();
-    final workOrderCount = optimizedRoute.where((e) => 
-        e.type == CalendarEventType.workOrder).length;
-    
+    final workOrderCount = optimizedRoute
+        .where((e) => e.type == CalendarEventType.workOrder)
+        .length;
+
     return Row(
       children: [
         Expanded(
@@ -257,9 +252,10 @@ class RouteOptimizationDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildRouteStep(BuildContext context, CalendarEventEntity event, int stepNumber) {
+  Widget _buildRouteStep(
+      BuildContext context, CalendarEventEntity event, int stepNumber) {
     final theme = Theme.of(context);
-    
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -282,9 +278,9 @@ class RouteOptimizationDisplay extends StatelessWidget {
             ),
           ),
         ),
-        
+
         SizedBox(width: 12.w),
-        
+
         // Event details
         Expanded(
           child: GestureDetector(
@@ -313,16 +309,19 @@ class RouteOptimizationDisplay extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 6.w, vertical: 2.h),
                         decoration: BoxDecoration(
-                          color: Color(int.parse(event.type.color.replaceFirst('#', '0xFF')))
+                          color: Color(int.parse(
+                                  event.type.color.replaceFirst('#', '0xFF')))
                               .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Text(
                           event.typeDisplayName,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Color(int.parse(event.type.color.replaceFirst('#', '0xFF'))),
+                            color: Color(int.parse(
+                                event.type.color.replaceFirst('#', '0xFF'))),
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500,
                           ),
@@ -330,30 +329,32 @@ class RouteOptimizationDisplay extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
                   SizedBox(height: 6.h),
-                  
                   Row(
                     children: [
                       Icon(
                         Icons.access_time,
                         size: 14.sp,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         DateFormat('HH:mm').format(event.startTime),
                         style: theme.textTheme.bodySmall?.copyWith(
                           fontSize: 12.sp,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
-                      if (event.location != null && event.location!.isNotEmpty) ...[
+                      if (event.location != null &&
+                          event.location!.isNotEmpty) ...[
                         SizedBox(width: 12.w),
                         Icon(
                           Icons.location_on_outlined,
                           size: 14.sp,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -361,7 +362,8 @@ class RouteOptimizationDisplay extends StatelessWidget {
                             event.location!,
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontSize: 12.sp,
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                              color: theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.6),
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -401,17 +403,17 @@ class RouteOptimizationDisplay extends StatelessWidget {
 
   Duration _calculateTotalDuration() {
     if (optimizedRoute.isEmpty) return Duration.zero;
-    
+
     final firstEvent = optimizedRoute.first;
     final lastEvent = optimizedRoute.last;
-    
+
     return lastEvent.endTime.difference(firstEvent.startTime);
   }
 
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes % 60;
-    
+
     if (hours > 0) {
       return '${hours}h ${minutes}m';
     } else {
@@ -421,13 +423,13 @@ class RouteOptimizationDisplay extends StatelessWidget {
 
   String _getTimeRange() {
     if (optimizedRoute.isEmpty) return '-';
-    
+
     final firstEvent = optimizedRoute.first;
     final lastEvent = optimizedRoute.last;
-    
+
     final startTime = DateFormat('HH:mm').format(firstEvent.startTime);
     final endTime = DateFormat('HH:mm').format(lastEvent.endTime);
-    
+
     return '$startTime - $endTime';
   }
 }

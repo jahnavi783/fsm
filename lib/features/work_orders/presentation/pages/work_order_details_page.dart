@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_bottom_sheet_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
+import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/core/widgets/fsm_action_button.dart';
@@ -141,76 +142,85 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            actionSuccess: (workOrder, actionType, message, _) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: AppColors.success,
-                ),
-              );
-            },
-            error: (failure, workOrder, isOffline) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(failure.message),
-                  backgroundColor: AppColors.error,
-                ),
-              );
-            },
-            locationError: (workOrder, message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: AppColors.warning,
-                ),
-              );
-            },
-            orElse: () {},
-          );
-        },
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                    _, __) =>
-                _buildWorkOrderDetails(
-                    workOrder, currentLocation, isLocationLoading, isOffline),
-            actionInProgress: (workOrder, actionType, currentLocation) =>
-                ActionInProgressWidget(actionType: actionType),
-            actionSuccess: (workOrder, actionType, message, _) =>
-                _buildWorkOrderDetails(workOrder, null, false, false),
-            error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
-              message: failure.message,
-              isOffline: isOffline,
-              onRetry: () {
-                context.read<WorkOrderActionBloc>().add(
-                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                    );
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && !context.router.canPop()) {
+          // If can't pop anymore, navigate to main dashboard
+          context.router.replaceAll([MainNavigationRoute()]);
+        }
+      },
+      child: Scaffold(
+        body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              actionSuccess: (workOrder, actionType, message, _) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                    backgroundColor: AppColors.success,
+                  ),
+                );
               },
-            ),
-            locationError: (workOrder, message) =>
-                _buildWorkOrderDetails(workOrder, null, false, false),
-          );
-        },
+              error: (failure, workOrder, isOffline) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(failure.message),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              },
+              locationError: (workOrder, message) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                    backgroundColor: AppColors.warning,
+                  ),
+                );
+              },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return state.when(
+              initial: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                      _, __) =>
+                  _buildWorkOrderDetails(
+                      workOrder, currentLocation, isLocationLoading, isOffline),
+              actionInProgress: (workOrder, actionType, currentLocation) =>
+                  ActionInProgressWidget(actionType: actionType),
+              actionSuccess: (workOrder, actionType, message, _) =>
+                  _buildWorkOrderDetails(workOrder, null, false, false),
+              error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
+                message: failure.message,
+                isOffline: isOffline,
+                onRetry: () {
+                  context.read<WorkOrderActionBloc>().add(
+                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                      );
+                },
+              ),
+              locationError: (workOrder, message) =>
+                  _buildWorkOrderDetails(workOrder, null, false, false),
+            );
+          },
+        ),
+        floatingActionButton:
+            BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loaded: (workOrder, _, __, ___, ____, _____) =>
+                  _buildWorkOrderActionFab(workOrder),
+              actionSuccess: (workOrder, _, __, ___) =>
+                  _buildWorkOrderActionFab(workOrder),
+              orElse: () => const SizedBox.shrink(),
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
-      floatingActionButton:
-          BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
-        builder: (context, state) {
-          return state.maybeWhen(
-            loaded: (workOrder, _, __, ___, ____, _____) =>
-                _buildWorkOrderActionFab(workOrder),
-            actionSuccess: (workOrder, _, __, ___) =>
-                _buildWorkOrderActionFab(workOrder),
-            orElse: () => const SizedBox.shrink(),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

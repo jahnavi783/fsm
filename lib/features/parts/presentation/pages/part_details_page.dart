@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/fsm_card.dart';
 import '../../domain/entities/part_entity.dart';
@@ -47,37 +48,46 @@ class _PartDetailsPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: FSMAppBar.gradient(
-        title: 'Part Details',
-        subtitle: part?.partName ?? 'Loading...',
-        actions: [
-          if (part != null)
-            IconButton(
-              onPressed: () => _showInventoryUpdateForm(context, part!),
-              icon: const Icon(Icons.edit),
-              tooltip: 'Update Inventory',
-            ),
-        ],
-      ),
-      body: part == null
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPartInfoCard(),
-                  SizedBox(height: 16.h),
-                  _buildInventoryCard(),
-                  SizedBox(height: 16.h),
-                  _buildSpecificationsCard(),
-                  SizedBox(height: 16.h),
-                  _buildInventoryHistoryCard(),
-                ],
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && !context.router.canPop()) {
+          // If can't pop anymore, navigate to main navigation
+          context.router.replaceAll([MainNavigationRoute()]);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: FSMAppBar.gradient(
+          title: 'Part Details',
+          subtitle: part?.partName ?? 'Loading...',
+          actions: [
+            if (part != null)
+              IconButton(
+                onPressed: () => _showInventoryUpdateForm(context, part!),
+                icon: const Icon(Icons.edit),
+                tooltip: 'Update Inventory',
               ),
-            ),
+          ],
+        ),
+        body: part == null
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPartInfoCard(),
+                    SizedBox(height: 16.h),
+                    _buildInventoryCard(),
+                    SizedBox(height: 16.h),
+                    _buildSpecificationsCard(),
+                    SizedBox(height: 16.h),
+                    _buildInventoryHistoryCard(),
+                  ],
+                ),
+              ),
+      ),
     );
   }
 

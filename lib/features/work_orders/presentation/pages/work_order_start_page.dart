@@ -118,103 +118,116 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Start Work Order'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.primaryColor,
-                theme.primaryColor.withOpacity(0.8),
-              ],
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && !context.router.canPop()) {
+          // If can't pop anymore, navigate to work order details
+          context.router.replaceAll([
+            MainNavigationRoute(),
+            WorkOrderDetailsRoute(workOrderId: widget.workOrderId),
+          ]);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Start Work Order'),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.primaryColor,
+                  theme.primaryColor.withOpacity(0.8),
+                ],
+              ),
             ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                context.router.push(
+                    WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
+              },
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () {
-              context.router
-                  .push(WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
-            },
-          ),
-        ],
-      ),
-      body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            actionSuccess: (workOrder, actionType, message, _) {
-              if (actionType == 'start') {
+        body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              actionSuccess: (workOrder, actionType, message, _) {
+                if (actionType == 'start') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  // Navigate back to work order details after successful start
+                  context.router.pushAndPopUntil(
+                    WorkOrderDetailsRoute(workOrderId: widget.workOrderId),
+                    predicate: (route) => route.isFirst,
+                  );
+                }
+              },
+              error: (failure, workOrder, isOffline) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(failure.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              },
+              locationError: (workOrder, message) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(message),
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.orange,
+                    action: SnackBarAction(
+                      label: 'Retry',
+                      onPressed: () {
+                        context.read<WorkOrderActionBloc>().add(
+                              const WorkOrderActionEvent.captureLocation(),
+                            );
+                      },
+                    ),
                   ),
                 );
-                // Navigate back to work order details after successful start
-                context.router.pushAndPopUntil(
-                  WorkOrderDetailsRoute(workOrderId: widget.workOrderId),
-                  predicate: (route) => route.isFirst,
-                );
-              }
-            },
-            error: (failure, workOrder, isOffline) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(failure.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            },
-            locationError: (workOrder, message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: Colors.orange,
-                  action: SnackBarAction(
-                    label: 'Retry',
-                    onPressed: () {
-                      context.read<WorkOrderActionBloc>().add(
-                            const WorkOrderActionEvent.captureLocation(),
-                          );
-                    },
-                  ),
-                ),
-              );
-            },
-            loaded: (workOrder, currentLocation, isLocationLoading, isOffline, _, __) {
-              // Auto-show start bottom sheet when work order is loaded
-              if (!_showStartBottomSheet && workOrder.canBeStarted) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _showStartWorkOrderBottomSheet(workOrder, currentLocation);
-                });
-                _showStartBottomSheet = true;
-              }
-            },
-            orElse: () {},
-          );
-        },
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (workOrder, currentLocation, isLocationLoading,
-                    isOffline, _, __) =>
-                _buildStartInterface(
-                    workOrder, currentLocation, isLocationLoading, isOffline),
-            actionInProgress: (workOrder, actionType, currentLocation) =>
-                _buildActionInProgress(workOrder, actionType),
-            actionSuccess: (workOrder, actionType, message, _) =>
-                _buildStartInterface(workOrder, null, false, false),
-            error: (failure, workOrder, isOffline) =>
-                _buildError(failure.message, isOffline),
-            locationError: (workOrder, message) =>
-                _buildStartInterface(workOrder, null, false, false),
-          );
-        },
+              },
+              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                  _, __) {
+                // Auto-show start bottom sheet when work order is loaded
+                if (!_showStartBottomSheet && workOrder.canBeStarted) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _showStartWorkOrderBottomSheet(workOrder, currentLocation);
+                  });
+                  _showStartBottomSheet = true;
+                }
+              },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return state.when(
+              initial: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                      _, __) =>
+                  _buildStartInterface(
+                      workOrder, currentLocation, isLocationLoading, isOffline),
+              actionInProgress: (workOrder, actionType, currentLocation) =>
+                  _buildActionInProgress(workOrder, actionType),
+              actionSuccess: (workOrder, actionType, message, _) =>
+                  _buildStartInterface(workOrder, null, false, false),
+              error: (failure, workOrder, isOffline) =>
+                  _buildError(failure.message, isOffline),
+              locationError: (workOrder, message) =>
+                  _buildStartInterface(workOrder, null, false, false),
+            );
+          },
+        ),
       ),
     );
   }

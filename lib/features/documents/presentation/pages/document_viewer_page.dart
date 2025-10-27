@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/document_entity.dart';
 import '../../domain/entities/file_entity.dart';
@@ -202,102 +203,115 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FSMAppBar.standard(
-        title: _document?.title ?? 'Document',
-        actions: [
-          if (_document != null) ...[
-            // File selector for multi-file documents
-            if (_document!.files.length > 1)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Center(
-                  child: DropdownButton<FileEntity>(
-                    value: _selectedFile,
-                    dropdownColor: Theme.of(context).colorScheme.surface,
-                    underline: SizedBox.shrink(),
-                    items: _document!.files.map((file) {
-                      return DropdownMenuItem(
-                        value: file,
-                        child: Text(
-                          file.fileName ?? 'File',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontSize: 12.sp,
-                                  ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (file) {
-                      if (file != null) {
-                        setState(() {
-                          _selectedFile = file;
-                          // Dispose old controllers and reinitialize if video
-                          _videoPlayerController?.dispose();
-                          _chewieController?.dispose();
-                          _videoPlayerController = null;
-                          _chewieController = null;
-                          _currentPage = 1;
-                          _totalPages = 0;
-                        });
-
-                        if (file.isVideo) {
-                          _initializeVideoPlayer(file);
-                        }
-                      }
-                    },
-                  ),
-                ),
-              ),
-
-            // Page info for PDFs
-            if (_selectedFile?.isPdf == true && _totalPages > 0)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Center(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 6.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Text(
-                      '$_currentPage / $_totalPages',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && !context.router.canPop()) {
+          // If can't pop anymore, navigate to main navigation
+          context.router.replaceAll([MainNavigationRoute()]);
+        }
+      },
+      child: Scaffold(
+        appBar: FSMAppBar.standard(
+          title: _document?.title ?? 'Document',
+          actions: [
+            if (_document != null) ...[
+              // File selector for multi-file documents
+              if (_document!.files.length > 1)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Center(
+                    child: DropdownButton<FileEntity>(
+                      value: _selectedFile,
+                      dropdownColor: Theme.of(context).colorScheme.surface,
+                      underline: SizedBox.shrink(),
+                      items: _document!.files.map((file) {
+                        return DropdownMenuItem(
+                          value: file,
+                          child: Text(
+                            file.fileName ?? 'File',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontSize: 12.sp,
+                                ),
                           ),
+                        );
+                      }).toList(),
+                      onChanged: (file) {
+                        if (file != null) {
+                          setState(() {
+                            _selectedFile = file;
+                            // Dispose old controllers and reinitialize if video
+                            _videoPlayerController?.dispose();
+                            _chewieController?.dispose();
+                            _videoPlayerController = null;
+                            _chewieController = null;
+                            _currentPage = 1;
+                            _totalPages = 0;
+                          });
+
+                          if (file.isVideo) {
+                            _initializeVideoPlayer(file);
+                          }
+                        }
+                      },
                     ),
                   ),
                 ),
-              ),
 
-            // Search button for PDFs
-            if (_selectedFile?.isPdf == true)
+              // Page info for PDFs
+              if (_selectedFile?.isPdf == true && _totalPages > 0)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 6.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Text(
+                        '$_currentPage / $_totalPages',
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                      ),
+                    ),
+                  ),
+                ),
+
+              // Search button for PDFs
+              if (_selectedFile?.isPdf == true)
+                IconButton(
+                  onPressed: _showPdfSearchDialog,
+                  icon: const Icon(Icons.search),
+                  tooltip: 'Search in PDF',
+                ),
+
+              // External launch button
               IconButton(
-                onPressed: _showPdfSearchDialog,
-                icon: const Icon(Icons.search),
-                tooltip: 'Search in PDF',
+                onPressed: _launchExternalUrl,
+                icon: const Icon(Icons.open_in_new),
+                tooltip: 'Open in external app',
               ),
-
-            // External launch button
-            IconButton(
-              onPressed: _launchExternalUrl,
-              icon: const Icon(Icons.open_in_new),
-              tooltip: 'Open in external app',
-            ),
+            ],
           ],
-        ],
+        ),
+        body: _buildBody(),
+        bottomNavigationBar:
+            _selectedFile?.isPdf == true && !_selectedFile!.isVideo
+                ? _buildPdfControls()
+                : null,
       ),
-      body: _buildBody(),
-      bottomNavigationBar:
-          _selectedFile?.isPdf == true && !_selectedFile!.isVideo
-              ? _buildPdfControls()
-              : null,
     );
   }
 

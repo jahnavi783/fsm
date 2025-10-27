@@ -20,6 +20,7 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/wor
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/current_work_order_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -51,7 +52,7 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
 
@@ -121,13 +122,15 @@ class _DashboardPageState extends State<DashboardPage>
                       // Stats Cards (kept as existing - already well-designed)
                       _buildStatsGrid(state),
 
-                      // Tab Bar (kept as existing - custom tab bar)
+                      // Current Work Order Card (for in-progress WO)
+                      _buildCurrentWorkOrderCard(state),
+
+                      // Tab Bar - 4 tabs (Unassigned, Assigned, Paused, Completed)
                       CustomTabBar(
                         controller: _tabController,
                         tabs: const [
                           'Unassigned',
                           'Assigned',
-                          'In Progress',
                           'Paused',
                           'Completed'
                         ],
@@ -143,57 +146,93 @@ class _DashboardPageState extends State<DashboardPage>
           ),
         ],
       ),
-      // Refactored: Use FSMActionButton.extended for sync FAB
-      floatingActionButton: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
-        builder: (context, state) {
-          // Show badge if there are pending changes
-          final hasPendingSync = state.maybeWhen(
-            loaded: (_, __, ___, ____, _____, ______, _______, ________, _________, __________, hasPendingSync) =>
-                hasPendingSync,
-            orElse: () => false,
-          );
-
-          return FSMActionButton.extended(
-            icon: Icons.sync_rounded,
-            label: 'Sync',
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.onPrimary,
-            onPressed: () {
-              context.read<WorkOrdersListBloc>().add(
-                    const WorkOrdersListEvent.syncPendingWorkOrders(),
-                  );
-            },
-            tooltip: 'Sync pending changes',
-            badge: hasPendingSync
-                ? Container(
-                    width: 10.w,
-                    height: 10.h,
-                    decoration: const BoxDecoration(
-                      color: AppColors.warning,
-                      shape: BoxShape.circle,
-                    ),
-                  )
-                : null,
+      // Simple AI Chatbot FAB (bottom-right)
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // TODO: Navigate to chatbot page when implemented
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('AI Assistant coming soon!'),
+              duration: Duration(seconds: 2),
+            ),
           );
         },
+        icon: const Icon(Icons.smart_toy),
+        label: const Text('AI Assistant'),
+        backgroundColor: AppColors.secondary,
+        foregroundColor: Colors.white,
+        elevation: 6,
+        tooltip: 'Open AI Assistant',
       ),
     );
   }
 
-  // Build stats grid for sliver layout (kept as existing)
+  // Build stats grid for sliver layout
   Widget _buildStatsGrid(WorkOrdersListState state) {
     final statsData = _getStatsData(state);
     return StatsGrid(statsData: statsData);
   }
 
-  // Get stats data for each status (kept as existing)
+  // Build Current Work Order Card (for in-progress work order)
+  Widget _buildCurrentWorkOrderCard(WorkOrdersListState state) {
+    return state.maybeWhen(
+      loaded: (workOrders,
+          unassignedWorkOrders,
+          unassignedCount,
+          currentPage,
+          hasReachedMax,
+          isLoadingMore,
+          statusFilter,
+          priorityFilter,
+          searchQuery,
+          isOffline,
+          hasPendingSync) {
+        // Find the current in-progress work order
+        final inProgressWorkOrders =
+            workOrders.where((wo) => wo.status == WorkOrderStatus.inProgress).toList();
+
+        // Only show if there's exactly 1 in-progress work order
+        if (inProgressWorkOrders.length == 1) {
+          final workOrder = inProgressWorkOrders.first;
+          return SliverToBoxAdapter(
+            child: CurrentWorkOrderCard(
+              workOrder: workOrder,
+              onPause: workOrder.canBePaused
+                  ? () => _handleWorkOrderAction(context, workOrder, 'pause')
+                  : null,
+              onParts: () {
+                // TODO: Navigate to parts screen filtered for this WO
+                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+              },
+              onDocs: () {
+                // TODO: Navigate to documents screen filtered for this WO
+                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+              },
+              onComplete: workOrder.canBeCompleted
+                  ? () => _handleWorkOrderAction(context, workOrder, 'complete')
+                  : null,
+              onTap: () {
+                context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+              },
+            ),
+          );
+        }
+
+        // Hide card if no in-progress work order or multiple (edge case)
+        return const SliverToBoxAdapter(child: SizedBox.shrink());
+      },
+      orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+    );
+  }
+
+  // Get stats data for each status - 2x2 grid (4 cards only)
   List<StatsCardData> _getStatsData(WorkOrdersListState state) {
     return [
       StatsCardData(
         title: 'Unassigned',
         count: _getUnassignedCount(state),
         icon: Icons.inbox_outlined,
-        color: Colors.grey,
+        color: AppColors.grey600,
         onTap: () => _switchToTab(0),
       ),
       StatsCardData(
@@ -204,30 +243,23 @@ class _DashboardPageState extends State<DashboardPage>
         onTap: () => _switchToTab(1),
       ),
       StatsCardData(
-        title: 'In Progress',
-        count: _getCountForStatus(state, WorkOrderStatus.inProgress),
-        icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.inProgress),
-        color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.inProgress),
-        onTap: () => _switchToTab(2),
-      ),
-      StatsCardData(
         title: 'Paused',
         count: _getCountForStatus(state, WorkOrderStatus.paused),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.paused),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.paused),
-        onTap: () => _switchToTab(3),
+        onTap: () => _switchToTab(2),
       ),
       StatsCardData(
         title: 'Completed',
         count: _getCountForStatus(state, WorkOrderStatus.completed),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.completed),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.completed),
-        onTap: () => _switchToTab(4),
+        onTap: () => _switchToTab(3),
       ),
     ];
   }
 
-  // Build current tab content based on selected tab
+  // Build current tab content based on selected tab (4 tabs)
   Widget _buildCurrentTabContent(WorkOrdersListState state) {
     final currentIndex = _tabController.index;
 
@@ -236,10 +268,9 @@ class _DashboardPageState extends State<DashboardPage>
       return _buildUnassignedWorkOrdersSliver(state);
     }
 
-    // Remaining tabs map to statuses (shifted by 1)
+    // Remaining 3 tabs map to statuses (Assigned, Paused, Completed)
     final statuses = [
       WorkOrderStatus.assigned,
-      WorkOrderStatus.inProgress,
       WorkOrderStatus.paused,
       WorkOrderStatus.completed,
     ];

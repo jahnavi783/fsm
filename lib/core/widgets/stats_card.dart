@@ -33,19 +33,19 @@ class StatsCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(18.r),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                   spreadRadius: 0,
                 ),
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
               ],
               border: Border.all(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 width: 1,
               ),
             ),
@@ -59,10 +59,10 @@ class StatsCard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10.w),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.12),
+                        color: color.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(
-                          color: color.withOpacity(0.2),
+                          color: color.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -137,9 +137,9 @@ class StatsGrid extends StatelessWidget {
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 10.w,
-          mainAxisSpacing: 10.h,
-          childAspectRatio: 1.4, // Slightly increased for better fit
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
+          childAspectRatio: 1.0, // Square cards for redesign
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) {

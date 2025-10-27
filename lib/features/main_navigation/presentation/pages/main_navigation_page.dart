@@ -96,78 +96,90 @@ class _MainNavigationView extends StatelessWidget {
               orElse: () {},
             );
           },
-          child: Scaffold(
-            body: child,
-            bottomNavigationBar: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: BottomNavigationBar(
-                currentIndex: tabsRouter.activeIndex,
-                onTap: (index) {
-                  tabsRouter.setActiveIndex(index);
-                  context.read<NavigationBloc>().add(
-                        NavigationEvent.tabChanged(index),
-                      );
-                },
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: theme.colorScheme.primary,
-                unselectedItemColor:
-                    theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                selectedLabelStyle: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+          child: PopScope(
+            canPop: tabsRouter.activeIndex == 0,
+            onPopInvokedWithResult: (didPop, result) {
+              if (!didPop && tabsRouter.activeIndex != 0) {
+                // If not on first tab (Dashboard), go back to Dashboard
+                tabsRouter.setActiveIndex(0);
+                context.read<NavigationBloc>().add(
+                      const NavigationEvent.tabChanged(0),
+                    );
+              }
+            },
+            child: Scaffold(
+              body: child,
+              bottomNavigationBar: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
                 ),
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w500,
+                child: BottomNavigationBar(
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: (index) {
+                    tabsRouter.setActiveIndex(index);
+                    context.read<NavigationBloc>().add(
+                          NavigationEvent.tabChanged(index),
+                        );
+                  },
+                  type: BottomNavigationBarType.fixed,
+                  selectedItemColor: theme.colorScheme.primary,
+                  unselectedItemColor:
+                      theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  selectedLabelStyle: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  unselectedLabelStyle: TextStyle(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  backgroundColor: theme.colorScheme.surface,
+                  elevation: 0,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: _buildNavIcon(
+                        Icons.dashboard_outlined,
+                        Icons.dashboard,
+                        0,
+                        tabsRouter.activeIndex,
+                      ),
+                      label: 'Dashboard',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildNavIcon(
+                        Icons.folder_outlined,
+                        Icons.folder,
+                        1,
+                        tabsRouter.activeIndex,
+                      ),
+                      label: 'Documents',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildNavIcon(
+                        Icons.inventory_2_outlined,
+                        Icons.inventory_2,
+                        2,
+                        tabsRouter.activeIndex,
+                      ),
+                      label: 'Parts',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildNavIcon(
+                        Icons.person_outline,
+                        Icons.person,
+                        3,
+                        tabsRouter.activeIndex,
+                      ),
+                      label: 'Profile',
+                    ),
+                  ],
                 ),
-                backgroundColor: theme.colorScheme.surface,
-                elevation: 0,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: _buildNavIcon(
-                      Icons.dashboard_outlined,
-                      Icons.dashboard,
-                      0,
-                      tabsRouter.activeIndex,
-                    ),
-                    label: 'Dashboard',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _buildNavIcon(
-                      Icons.folder_outlined,
-                      Icons.folder,
-                      1,
-                      tabsRouter.activeIndex,
-                    ),
-                    label: 'Documents',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _buildNavIcon(
-                      Icons.inventory_2_outlined,
-                      Icons.inventory_2,
-                      2,
-                      tabsRouter.activeIndex,
-                    ),
-                    label: 'Parts',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _buildNavIcon(
-                      Icons.person_outline,
-                      Icons.person,
-                      3,
-                      tabsRouter.activeIndex,
-                    ),
-                    label: 'Profile',
-                  ),
-                ],
               ),
             ),
           ),

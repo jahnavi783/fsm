@@ -465,7 +465,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   Future<void> _syncWorkOrders(Emitter<DashboardState> emit) async {
-
     final result = await _repository.syncPendingWorkOrders();
 
     result.fold(
@@ -473,8 +472,28 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         emit(DashboardState.error(
           failure: failure,
           workOrders: state.maybeWhen(
-            loaded: (_, workOrders, __, ___, ____, _____, ______, _______, ________, _________, __________, ___________, ____________, _____________, ______________, _______________, ________________, _________________, __________________) => workOrders,
-            syncing: (workOrders, _, __, ___, ____, _____, ______) => workOrders,
+            loaded: (_,
+                    workOrders,
+                    __,
+                    ___,
+                    ____,
+                    _____,
+                    ______,
+                    _______,
+                    ________,
+                    _________,
+                    __________,
+                    ___________,
+                    ____________,
+                    _____________,
+                    ______________,
+                    _______________,
+                    ________________,
+                    _________________,
+                    __________________) =>
+                workOrders,
+            syncing: (workOrders, _, __, ___, ____, _____, ______) =>
+                workOrders,
             orElse: () => <WorkOrderEntity>[],
           ),
         ));

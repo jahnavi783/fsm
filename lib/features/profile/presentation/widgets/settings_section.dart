@@ -116,7 +116,7 @@ class SettingsToggleItem extends SettingsItem {
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: Colors.green,
+        activeThumbColor: Colors.green,
       ),
     );
   }

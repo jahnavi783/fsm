@@ -10,6 +10,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
   const FSMThemeExtension({
     required this.cardGradient,
     required this.statusColors,
+    required this.statusTextColors,
     required this.priorityColors,
     required this.shadowColors,
     required this.actionColors,
@@ -27,6 +28,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
 
   final LinearGradient cardGradient;
   final Map<String, Color> statusColors;
+  final Map<String, Color> statusTextColors;
   final Map<String, Color> priorityColors;
   final Map<String, Color> shadowColors;
   final Map<String, Color> actionColors;
@@ -41,20 +43,26 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
   final Color bottomSheetBackground;
   final Color offlineBannerBackground;
 
-  /// Light theme extension
+  /// Light theme extension (Redesign 2025 - Teal/Green)
   static const FSMThemeExtension light = FSMThemeExtension(
-    cardGradient: LinearGradient(
-      colors: [Colors.white, Color(0xFFFAFAFA)],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-    ),
+    cardGradient: AppColors.primaryGradient, // Teal to Green gradient
     statusColors: {
+      'unassigned': AppColors.statusUnassigned,
       'assigned': AppColors.statusAssigned,
       'in_progress': AppColors.statusInProgress,
       'paused': AppColors.statusPaused,
       'completed': AppColors.statusCompleted,
       'cancelled': AppColors.statusCancelled,
       'rejected': AppColors.statusRejected,
+    },
+    statusTextColors: {
+      'unassigned': Color(0xFF424242),
+      'assigned': Color(0xFF1976D2),
+      'in_progress': Color(0xFFE65100),
+      'paused': Color(0xFF7B1FA2),
+      'completed': Color(0xFF388E3C),
+      'cancelled': Color(0xFFD32F2F),
+      'rejected': Color(0xFF5D4037),
     },
     priorityColors: {
       'low': AppColors.priorityLow,
@@ -92,32 +100,42 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     workOrderCardBorder: AppColors.cardBorder,
     searchBarBackground: AppColors.searchBackground,
     chipBackground: AppColors.surfaceVariant,
-    avatarBackground: AppColors.primary,
-    fabBackground: AppColors.primary,
+    avatarBackground: AppColors.primary, // Teal
+    fabBackground: AppColors.secondary, // Green accent for FAB
     bottomSheetBackground: AppColors.surface,
-    offlineBannerBackground: Color(0xFFFFF3E0), // Light orange
+    offlineBannerBackground: Color(0xFFFFF8E1), // Amber/Yellow
   );
 
-  /// Dark theme extension
+  /// Dark theme extension (Redesign 2025 - Teal/Green)
   static const FSMThemeExtension dark = FSMThemeExtension(
     cardGradient: LinearGradient(
-      colors: [Color(0xFF1E1E1E), Color(0xFF121212)],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
+      colors: [Color(0xFF00695C), Color(0xFF388E3C)], // Teal Dark to Green Dark
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
     ),
     statusColors: {
-      'assigned': Color(0xFF64B5F6),
-      'in_progress': Color(0xFFFFB74D),
-      'paused': Color(0xFFBA68C8),
-      'completed': Color(0xFF81C784),
+      'unassigned': Color(0xFF424242), // Dark gray
+      'assigned': Color(0xFF64B5F6), // Light blue
+      'in_progress': Color(0xFFFFB74D), // Orange
+      'paused': Color(0xFFBA68C8), // Purple
+      'completed': Color(0xFF81C784), // Green
+      'cancelled': Color(0xFFEF5350), // Red
+      'rejected': Color(0xFFA1887F), // Brown
+    },
+    statusTextColors: {
+      'unassigned': Color(0xFFE0E0E0),
+      'assigned': Color(0xFF90CAF9),
+      'in_progress': Color(0xFFFFCC02),
+      'paused': Color(0xFFCE93D8),
+      'completed': Color(0xFFA5D6A7),
       'cancelled': Color(0xFFEF5350),
-      'rejected': Color(0xFFA1887F),
+      'rejected': Color(0xFFBCAAA4),
     },
     priorityColors: {
-      'low': Color(0xFFFFD54F),
-      'medium': Color(0xFF7986CB),
-      'high': Color(0xFFE57373),
-      'urgent': Color(0xFFFF5722),
+      'low': Color(0xFF64B5F6), // Light blue (matches redesign)
+      'medium': Color(0xFFFFB74D), // Light orange (matches redesign)
+      'high': Color(0xFFE57373), // Light red (matches redesign)
+      'urgent': Color(0xFFE57373), // Light red (same as high)
     },
     shadowColors: {
       'card': Color(0x40000000),
@@ -149,16 +167,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     workOrderCardBorder: AppColors.outlineDark,
     searchBarBackground: Color(0xFF2A2A2A),
     chipBackground: AppColors.surfaceVariantDark,
-    avatarBackground: AppColors.primaryDark,
-    fabBackground: AppColors.primaryDark,
+    avatarBackground: AppColors.primaryDark, // Teal Light
+    fabBackground: AppColors.secondaryDark, // Green Light for FAB
     bottomSheetBackground: AppColors.surfaceDark,
-    offlineBannerBackground: Color(0xFF3E2723), // Dark orange/brown
+    offlineBannerBackground: Color(0xFF4E342E), // Dark amber/brown
   );
 
   @override
   FSMThemeExtension copyWith({
     LinearGradient? cardGradient,
     Map<String, Color>? statusColors,
+    Map<String, Color>? statusTextColors,
     Map<String, Color>? priorityColors,
     Map<String, Color>? shadowColors,
     Map<String, Color>? actionColors,
@@ -176,19 +195,23 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     return FSMThemeExtension(
       cardGradient: cardGradient ?? this.cardGradient,
       statusColors: statusColors ?? this.statusColors,
+      statusTextColors: statusTextColors ?? this.statusTextColors,
       priorityColors: priorityColors ?? this.priorityColors,
       shadowColors: shadowColors ?? this.shadowColors,
       actionColors: actionColors ?? this.actionColors,
       syncStatusColors: syncStatusColors ?? this.syncStatusColors,
       stockColors: stockColors ?? this.stockColors,
-      workOrderCardBackground: workOrderCardBackground ?? this.workOrderCardBackground,
+      workOrderCardBackground:
+          workOrderCardBackground ?? this.workOrderCardBackground,
       workOrderCardBorder: workOrderCardBorder ?? this.workOrderCardBorder,
       searchBarBackground: searchBarBackground ?? this.searchBarBackground,
       chipBackground: chipBackground ?? this.chipBackground,
       avatarBackground: avatarBackground ?? this.avatarBackground,
       fabBackground: fabBackground ?? this.fabBackground,
-      bottomSheetBackground: bottomSheetBackground ?? this.bottomSheetBackground,
-      offlineBannerBackground: offlineBannerBackground ?? this.offlineBannerBackground,
+      bottomSheetBackground:
+          bottomSheetBackground ?? this.bottomSheetBackground,
+      offlineBannerBackground:
+          offlineBannerBackground ?? this.offlineBannerBackground,
     );
   }
 
@@ -199,39 +222,58 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     }
 
     return FSMThemeExtension(
-      cardGradient: LinearGradient.lerp(cardGradient, other.cardGradient, t) ?? cardGradient,
+      cardGradient: LinearGradient.lerp(cardGradient, other.cardGradient, t) ??
+          cardGradient,
       statusColors: _lerpColorMap(statusColors, other.statusColors, t),
+      statusTextColors:
+          _lerpColorMap(statusTextColors, other.statusTextColors, t),
       priorityColors: _lerpColorMap(priorityColors, other.priorityColors, t),
       shadowColors: _lerpColorMap(shadowColors, other.shadowColors, t),
       actionColors: _lerpColorMap(actionColors, other.actionColors, t),
-      syncStatusColors: _lerpColorMap(syncStatusColors, other.syncStatusColors, t),
+      syncStatusColors:
+          _lerpColorMap(syncStatusColors, other.syncStatusColors, t),
       stockColors: _lerpColorMap(stockColors, other.stockColors, t),
-      workOrderCardBackground: Color.lerp(workOrderCardBackground, other.workOrderCardBackground, t) ?? workOrderCardBackground,
-      workOrderCardBorder: Color.lerp(workOrderCardBorder, other.workOrderCardBorder, t) ?? workOrderCardBorder,
-      searchBarBackground: Color.lerp(searchBarBackground, other.searchBarBackground, t) ?? searchBarBackground,
-      chipBackground: Color.lerp(chipBackground, other.chipBackground, t) ?? chipBackground,
-      avatarBackground: Color.lerp(avatarBackground, other.avatarBackground, t) ?? avatarBackground,
-      fabBackground: Color.lerp(fabBackground, other.fabBackground, t) ?? fabBackground,
-      bottomSheetBackground: Color.lerp(bottomSheetBackground, other.bottomSheetBackground, t) ?? bottomSheetBackground,
-      offlineBannerBackground: Color.lerp(offlineBannerBackground, other.offlineBannerBackground, t) ?? offlineBannerBackground,
+      workOrderCardBackground: Color.lerp(
+              workOrderCardBackground, other.workOrderCardBackground, t) ??
+          workOrderCardBackground,
+      workOrderCardBorder:
+          Color.lerp(workOrderCardBorder, other.workOrderCardBorder, t) ??
+              workOrderCardBorder,
+      searchBarBackground:
+          Color.lerp(searchBarBackground, other.searchBarBackground, t) ??
+              searchBarBackground,
+      chipBackground:
+          Color.lerp(chipBackground, other.chipBackground, t) ?? chipBackground,
+      avatarBackground:
+          Color.lerp(avatarBackground, other.avatarBackground, t) ??
+              avatarBackground,
+      fabBackground:
+          Color.lerp(fabBackground, other.fabBackground, t) ?? fabBackground,
+      bottomSheetBackground:
+          Color.lerp(bottomSheetBackground, other.bottomSheetBackground, t) ??
+              bottomSheetBackground,
+      offlineBannerBackground: Color.lerp(
+              offlineBannerBackground, other.offlineBannerBackground, t) ??
+          offlineBannerBackground,
     );
   }
 
-  Map<String, Color> _lerpColorMap(Map<String, Color> a, Map<String, Color> b, double t) {
+  Map<String, Color> _lerpColorMap(
+      Map<String, Color> a, Map<String, Color> b, double t) {
     final result = <String, Color>{};
     final keys = {...a.keys, ...b.keys};
-    
+
     for (final key in keys) {
       final colorA = a[key];
       final colorB = b[key];
-      
+
       if (colorA != null && colorB != null) {
         result[key] = Color.lerp(colorA, colorB, t)!;
       } else {
         result[key] = colorA ?? colorB!;
       }
     }
-    
+
     return result;
   }
 }
@@ -239,7 +281,8 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
 /// Extension methods for easy access to FSM theme extensions
 extension FSMThemeExtensionContext on BuildContext {
   FSMThemeExtension get fsmTheme {
-    return Theme.of(this).extension<FSMThemeExtension>() ?? FSMThemeExtension.light;
+    return Theme.of(this).extension<FSMThemeExtension>() ??
+        FSMThemeExtension.light;
   }
 }
 
@@ -262,7 +305,8 @@ extension FSMThemeHelpers on FSMThemeExtension {
   }
 
   Color getSyncStatusColor(String status) {
-    return syncStatusColors[status.toLowerCase()] ?? syncStatusColors['offline']!;
+    return syncStatusColors[status.toLowerCase()] ??
+        syncStatusColors['offline']!;
   }
 
   Color getStockColor(String level) {
@@ -270,7 +314,8 @@ extension FSMThemeHelpers on FSMThemeExtension {
   }
 
   /// Convenience method to get stock color by quantity levels
-  Color getStockColorByQuantity(int quantity, int minQuantity, int maxQuantity) {
+  Color getStockColorByQuantity(
+      int quantity, int minQuantity, int maxQuantity) {
     if (quantity == 0) return stockColors['out']!;
     if (quantity <= minQuantity) return stockColors['low']!;
     if (quantity < maxQuantity * 0.5) return stockColors['medium']!;

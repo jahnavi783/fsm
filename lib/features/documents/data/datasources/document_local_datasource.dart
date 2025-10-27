@@ -103,7 +103,7 @@ class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
     // Create a unique filename to avoid conflicts
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final fileExtension = fileName.split('.').last;
-    final uniqueFileName = '${documentId}_${timestamp}.$fileExtension';
+    final uniqueFileName = '${documentId}_$timestamp.$fileExtension';
 
     final file = File('${documentsDir.path}/$uniqueFileName');
     await file.writeAsBytes(bytes);

@@ -607,3 +607,4 @@ Additional project specifications and requirements are located in `.kiro/specs/f
 - `tasks.md` - Development task breakdown
 
 Treat these files as source of truth for feature implementation and user flows.
+- memorize Don't forget to update @.claude/todos.md as you progress through the plan, Update it after each phase

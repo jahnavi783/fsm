@@ -289,7 +289,7 @@ class StatusBadge extends StatelessWidget {
       case StatusBadgeVariant.outlined:
         return Colors.transparent;
       case StatusBadgeVariant.subtle:
-        return baseColor.withOpacity(0.1);
+        return baseColor.withValues(alpha: 0.1);
     }
   }
 
@@ -330,8 +330,10 @@ class StatusBadge extends StatelessWidget {
 
   static IconData _getStatusIcon(String status) {
     switch (status.toLowerCase()) {
+      case 'unassigned':
+        return Icons.assignment_outlined; // Outlined assignment icon for unassigned
       case 'assigned':
-        return Icons.assignment_outlined;
+        return Icons.assignment_ind_outlined; // Assigned to person
       case 'in_progress':
       case 'inprogress':
         return Icons.play_circle_outline;

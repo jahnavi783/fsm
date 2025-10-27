@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // Brand Colors (from old theme)
-  static const Color brandPrimary = Color(0xFF116587);
-  static const Color brandSecondary = Color(0xFF00A74F);
+  // Brand Colors - Teal/Green Theme (Redesign 2025)
+  static const Color brandPrimary = Color(0xFF00897B); // Teal
+  static const Color brandPrimaryDark = Color(0xFF00695C); // Teal Dark
+  static const Color brandPrimaryLight = Color(0xFF4DB6AC); // Teal Light
+  static const Color brandSecondary = Color(0xFF66BB6A); // Green Accent
 
   // Light Theme Colors
   static const Color primary = brandPrimary;
   static const Color onPrimary = Color(0xFFFFFFFF);
-  static const Color primaryContainer = Color(0xFFB8E6FF);
-  static const Color onPrimaryContainer = Color(0xFF001E2B);
+  static const Color primaryContainer = Color(0xFFB2DFDB); // Updated for teal
+  static const Color onPrimaryContainer = Color(0xFF00251A); // Updated for teal
 
   static const Color secondary = brandSecondary;
   static const Color onSecondary = Color(0xFFFFFFFF);
-  static const Color secondaryContainer = Color(0xFF7FFFC7);
+  static const Color secondaryContainer = Color(0xFFC8E6C9); // Updated for green
   static const Color onSecondaryContainer = Color(0xFF002114);
 
   static const Color tertiary = Color(0xFF6750A4);
@@ -23,7 +25,7 @@ class AppColors {
   static const Color tertiaryContainer = Color(0xFFEADDFF);
   static const Color onTertiaryContainer = Color(0xFF21005D);
 
-  static const Color error = Color(0xFFBA1A1A);
+  static const Color errorRed = Color(0xFFEF5350); // Redesign 2025
   static const Color onError = Color(0xFFFFFFFF);
   static const Color errorContainer = Color(0xFFFFDAD6);
   static const Color onErrorContainer = Color(0xFF410002);
@@ -43,18 +45,18 @@ class AppColors {
   static const Color scrim = Color(0xFF000000);
   static const Color inverseSurface = Color(0xFF2F3033);
   static const Color inverseOnSurface = Color(0xFFF1F0F4);
-  static const Color inversePrimary = Color(0xFF6DD3FF);
+  static const Color inversePrimary = Color(0xFF4DB6AC); // Updated to teal light
 
-  // Dark Theme Colors
-  static const Color primaryDark = Color(0xFF6DD3FF);
-  static const Color onPrimaryDark = Color(0xFF003547);
-  static const Color primaryContainerDark = Color(0xFF004D65);
-  static const Color onPrimaryContainerDark = Color(0xFFB8E6FF);
+  // Dark Theme Colors (Redesign 2025 - Teal/Green)
+  static const Color primaryDark = Color(0xFF4DB6AC); // Teal Light
+  static const Color onPrimaryDark = Color(0xFF00251A);
+  static const Color primaryContainerDark = Color(0xFF00695C); // Teal Dark
+  static const Color onPrimaryContainerDark = Color(0xFFB2DFDB);
 
-  static const Color secondaryDark = Color(0xFF63DFAB);
+  static const Color secondaryDark = Color(0xFF81C784); // Green Light
   static const Color onSecondaryDark = Color(0xFF003826);
-  static const Color secondaryContainerDark = Color(0xFF005138);
-  static const Color onSecondaryContainerDark = Color(0xFF7FFFC7);
+  static const Color secondaryContainerDark = Color(0xFF388E3C); // Green Dark
+  static const Color onSecondaryContainerDark = Color(0xFFC8E6C9);
 
   static const Color tertiaryDark = Color(0xFFD0BCFF);
   static const Color onTertiaryDark = Color(0xFF381E72);
@@ -79,31 +81,36 @@ class AppColors {
   static const Color scrimDark = Color(0xFF000000);
   static const Color inverseSurfaceDark = Color(0xFFE2E2E6);
   static const Color inverseOnSurfaceDark = Color(0xFF2F3033);
-  static const Color inversePrimaryDark = Color(0xFF116587);
+  static const Color inversePrimaryDark = Color(0xFF00897B); // Updated to teal
 
-  // Gradient Colors (from old theme)
-  static const Color gradientStart = brandPrimary;
-  static const Color gradientEnd = brandSecondary;
+  // Gradient Colors (Redesign 2025 - Teal to Green)
+  static const Color gradientStart = brandPrimary; // Teal
+  static const Color gradientEnd = brandSecondary; // Green
 
-  // Status Colors
+  // Semantic Status Colors (Redesign 2025)
   static const Color success = Color(0xFF4CAF50);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color info = Color(0xFF2196F3);
+  static const Color warning = Color(0xFFFFA726); // Updated to lighter orange
+  static const Color error = Color(0xFFEF5350); // Updated to lighter red
+  static const Color info = Color(0xFF42A5F5); // Updated to lighter blue
 
-  // Work Order Status Colors
-  static const Color statusAssigned = Color(0xFF2196F3);
-  static const Color statusInProgress = Color(0xFFFF9800);
-  static const Color statusPaused = Color(0xFF9C27B0);
-  static const Color statusCompleted = Color(0xFF4CAF50);
-  static const Color statusCancelled = Color(0xFFF44336);
-  static const Color statusRejected = Color(0xFF795548);
+  // Work Order Status Colors (Redesign 2025)
+  static const Color statusUnassigned = Color(0xFFF5F5F5); // Light gray background
+  static const Color statusUnassignedText = Color(0xFF757575); // Gray text
+  static const Color statusAssigned = Color(0xFFE3F2FD); // Light blue background
+  static const Color statusAssignedText = Color(0xFF1976D2); // Blue text
+  static const Color statusInProgress = Color(0xFFFF9800); // Orange (keep same)
+  static const Color statusPaused = Color(0xFFF3E5F5); // Light purple background
+  static const Color statusPausedText = Color(0xFF9C27B0); // Purple text
+  static const Color statusCompleted = Color(0xFFE8F5E9); // Light green background
+  static const Color statusCompletedText = Color(0xFF4CAF50); // Green text
+  static const Color statusCancelled = Color(0xFFF44336); // Red
+  static const Color statusRejected = Color(0xFF795548); // Brown
 
-  // Priority Colors - Updated to match Figma design
-  static const Color priorityLow = Color(0xFFFFBB00); // Yellow from Figma
-  static const Color priorityMedium = Color(0xFF497FE4); // Blue from Figma
-  static const Color priorityHigh = Color(0xFFA01313); // Red from Figma
-  static const Color priorityUrgent =
-      Color(0xFFA01313); // Same as high priority
+  // Priority Colors (Redesign 2025)
+  static const Color priorityLow = Color(0xFF1976D2); // Blue
+  static const Color priorityMedium = Color(0xFFF57C00); // Orange
+  static const Color priorityHigh = Color(0xFFD32F2F); // Red
+  static const Color priorityUrgent = Color(0xFFD32F2F); // Red (same as high)
 
   // Utility Colors
   static const Color transparent = Colors.transparent;
@@ -201,9 +208,11 @@ class AppColors {
   static const Color surfaceElevated = Color(0xFFFFFFFF);
   static const Color surfaceDepressed = Color(0xFFF5F5F5);
 
-  // Helper methods for status colors
+  // Helper methods for status colors (Redesign 2025)
   static Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
+      case 'unassigned':
+        return statusUnassigned;
       case 'assigned':
         return statusAssigned;
       case 'in_progress':
@@ -219,6 +228,29 @@ class AppColors {
         return statusRejected;
       default:
         return grey;
+    }
+  }
+
+  // Helper method for status text colors
+  static Color getStatusTextColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'unassigned':
+        return statusUnassignedText;
+      case 'assigned':
+        return statusAssignedText;
+      case 'in_progress':
+      case 'inprogress':
+        return white; // White text on orange background
+      case 'paused':
+        return statusPausedText;
+      case 'completed':
+        return statusCompletedText;
+      case 'cancelled':
+        return white; // White text on red background
+      case 'rejected':
+        return white; // White text on brown background
+      default:
+        return textPrimary;
     }
   }
 

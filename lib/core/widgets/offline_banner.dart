@@ -107,9 +107,9 @@ class OfflineBanner extends StatelessWidget {
     // Priority: Offline > Syncing > Pending Changes
     return connectivityState.maybeWhen(
       disconnected: () => _BannerData(
-        message: 'No Internet Connection',
+        message: "You're offline. Changes will sync when connected.",
         icon: Icons.wifi_off_outlined,
-        backgroundColor: fsmTheme.offlineBannerBackground,
+        backgroundColor: fsmTheme.offlineBannerBackground, // Amber/Yellow theme
         textColor: AppColors.textPrimary,
         pendingCount: null,
         showProgress: false,
@@ -117,7 +117,6 @@ class OfflineBanner extends StatelessWidget {
       connected: () {
         return syncState.maybeWhen(
           syncing: (totalItems, syncedItems, currentItem) {
-            final progress = totalItems > 0 ? (syncedItems / totalItems) : 0.0;
             return _BannerData(
               message: 'Syncing... ($syncedItems/$totalItems)',
               icon: Icons.sync,

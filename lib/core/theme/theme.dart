@@ -9,6 +9,7 @@
 /// - AppTheme: Complete light and dark theme configurations
 /// - ThemeConstants: Additional theme constants (animations, shadows, etc.)
 /// - Theme Components: Reusable themed widgets
+library;
 
 // Core Theme System
 export 'app_colors.dart';

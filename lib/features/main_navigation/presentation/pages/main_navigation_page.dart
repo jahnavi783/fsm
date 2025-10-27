@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
-import '../../../calendar/presentation/blocs/calendar/calendar_bloc.dart';
 import '../../../work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import '../../../work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/navigation/navigation_bloc.dart';
@@ -22,7 +21,7 @@ class MainNavigationPage extends StatelessWidget {
       future: Future.wait([
         getIt.getAsync<WorkOrdersListBloc>(),
         getIt.getAsync<WorkOrderActionBloc>(),
-        getIt.getAsync<CalendarBloc>(),
+        // CalendarBloc removed - Calendar moved to drawer navigation only
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
@@ -50,7 +49,6 @@ class MainNavigationPage extends StatelessWidget {
 
         final workOrdersListBloc = snapshot.data![0] as WorkOrdersListBloc;
         final workOrderActionBloc = snapshot.data![1] as WorkOrderActionBloc;
-        final calendarBloc = snapshot.data![2] as CalendarBloc;
 
         return MultiBlocProvider(
           providers: [
@@ -62,9 +60,6 @@ class MainNavigationPage extends StatelessWidget {
             ),
             BlocProvider.value(
               value: workOrderActionBloc,
-            ),
-            BlocProvider.value(
-              value: calendarBloc,
             ),
           ],
           child: const _MainNavigationView(),
@@ -82,7 +77,6 @@ class _MainNavigationView extends StatelessWidget {
     return AutoTabsRouter(
       routes: const [
         DashboardRoute(),
-        CalendarRoute(),
         DocumentsRoute(),
         PartsRoute(),
         ProfileRoute(),
@@ -148,18 +142,9 @@ class _MainNavigationView extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: _buildNavIcon(
-                      Icons.calendar_today_outlined,
-                      Icons.calendar_today,
-                      1,
-                      tabsRouter.activeIndex,
-                    ),
-                    label: 'Calendar',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _buildNavIcon(
                       Icons.folder_outlined,
                       Icons.folder,
-                      2,
+                      1,
                       tabsRouter.activeIndex,
                     ),
                     label: 'Documents',
@@ -168,7 +153,7 @@ class _MainNavigationView extends StatelessWidget {
                     icon: _buildNavIcon(
                       Icons.inventory_2_outlined,
                       Icons.inventory_2,
-                      3,
+                      2,
                       tabsRouter.activeIndex,
                     ),
                     label: 'Parts',
@@ -177,7 +162,7 @@ class _MainNavigationView extends StatelessWidget {
                     icon: _buildNavIcon(
                       Icons.person_outline,
                       Icons.person,
-                      4,
+                      3,
                       tabsRouter.activeIndex,
                     ),
                     label: 'Profile',

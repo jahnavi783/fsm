@@ -26,7 +26,7 @@ class CalendarViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final calendarEvents = events.map(_convertToCalendarEvent).toList();
 
-    return Container(
+    return SizedBox(
       height: _getCalendarHeight(),
       child: _buildCalendarView(calendarEvents),
     );

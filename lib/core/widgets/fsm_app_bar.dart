@@ -91,6 +91,54 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation = 0,
         toolbarHeight = null;
 
+  /// Simplified navigation app bar for redesign (2025)
+  ///
+  /// Features:
+  /// - Hamburger menu (left) to open drawer
+  /// - Centered title
+  /// - Search icon (right)
+  /// - Optional refresh/sync icon (when offline or always)
+  ///
+  /// Usage:
+  /// ```dart
+  /// FSMAppBar.navigation(
+  ///   title: 'Dashboard',
+  ///   onMenuTap: () => Scaffold.of(context).openDrawer(),
+  ///   onSearchTap: () => context.router.push(SearchRoute()),
+  ///   onRefreshTap: () => bloc.add(RefreshEvent()),
+  ///   showRefresh: isOffline, // Show refresh icon when offline
+  /// )
+  /// ```
+  factory FSMAppBar.navigation({
+    Key? key,
+    required String title,
+    required VoidCallback onMenuTap,
+    required VoidCallback onSearchTap,
+    VoidCallback? onRefreshTap,
+    bool showRefresh = false,
+  }) {
+    return FSMAppBar(
+      key: key,
+      title: title,
+      centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: onMenuTap,
+        tooltip: 'Menu',
+      ),
+      actions: [
+        if (showRefresh && onRefreshTap != null)
+          FSMAppBarAction.refresh(
+            onPressed: onRefreshTap,
+          ),
+        FSMAppBarAction.search(
+          onPressed: onSearchTap,
+        ),
+      ],
+      automaticallyImplyLeading: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

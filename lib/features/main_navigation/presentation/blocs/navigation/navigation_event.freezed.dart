@@ -56,6 +56,9 @@ extension NavigationEventPatterns on NavigationEvent {
     TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
     TResult Function(_NavigateToDocument value)? navigateToDocument,
     TResult Function(_NavigateToPart value)? navigateToPart,
+    TResult Function(_ToggleDrawer value)? toggleDrawer,
+    TResult Function(_OpenDrawer value)? openDrawer,
+    TResult Function(_CloseDrawer value)? closeDrawer,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -70,6 +73,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that);
+      case _ToggleDrawer() when toggleDrawer != null:
+        return toggleDrawer(_that);
+      case _OpenDrawer() when openDrawer != null:
+        return openDrawer(_that);
+      case _CloseDrawer() when closeDrawer != null:
+        return closeDrawer(_that);
       case _:
         return orElse();
     }
@@ -95,6 +104,9 @@ extension NavigationEventPatterns on NavigationEvent {
     required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
     required TResult Function(_NavigateToDocument value) navigateToDocument,
     required TResult Function(_NavigateToPart value) navigateToPart,
+    required TResult Function(_ToggleDrawer value) toggleDrawer,
+    required TResult Function(_OpenDrawer value) openDrawer,
+    required TResult Function(_CloseDrawer value) closeDrawer,
   }) {
     final _that = this;
     switch (_that) {
@@ -108,6 +120,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that);
       case _NavigateToPart():
         return navigateToPart(_that);
+      case _ToggleDrawer():
+        return toggleDrawer(_that);
+      case _OpenDrawer():
+        return openDrawer(_that);
+      case _CloseDrawer():
+        return closeDrawer(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -132,6 +150,9 @@ extension NavigationEventPatterns on NavigationEvent {
     TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
     TResult? Function(_NavigateToDocument value)? navigateToDocument,
     TResult? Function(_NavigateToPart value)? navigateToPart,
+    TResult? Function(_ToggleDrawer value)? toggleDrawer,
+    TResult? Function(_OpenDrawer value)? openDrawer,
+    TResult? Function(_CloseDrawer value)? closeDrawer,
   }) {
     final _that = this;
     switch (_that) {
@@ -145,6 +166,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that);
+      case _ToggleDrawer() when toggleDrawer != null:
+        return toggleDrawer(_that);
+      case _OpenDrawer() when openDrawer != null:
+        return openDrawer(_that);
+      case _CloseDrawer() when closeDrawer != null:
+        return closeDrawer(_that);
       case _:
         return null;
     }
@@ -169,6 +196,9 @@ extension NavigationEventPatterns on NavigationEvent {
     TResult Function(int workOrderId)? navigateToWorkOrder,
     TResult Function(int documentId)? navigateToDocument,
     TResult Function(int partId)? navigateToPart,
+    TResult Function()? toggleDrawer,
+    TResult Function()? openDrawer,
+    TResult Function()? closeDrawer,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -183,6 +213,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that.partId);
+      case _ToggleDrawer() when toggleDrawer != null:
+        return toggleDrawer();
+      case _OpenDrawer() when openDrawer != null:
+        return openDrawer();
+      case _CloseDrawer() when closeDrawer != null:
+        return closeDrawer();
       case _:
         return orElse();
     }
@@ -208,6 +244,9 @@ extension NavigationEventPatterns on NavigationEvent {
     required TResult Function(int workOrderId) navigateToWorkOrder,
     required TResult Function(int documentId) navigateToDocument,
     required TResult Function(int partId) navigateToPart,
+    required TResult Function() toggleDrawer,
+    required TResult Function() openDrawer,
+    required TResult Function() closeDrawer,
   }) {
     final _that = this;
     switch (_that) {
@@ -221,6 +260,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart():
         return navigateToPart(_that.partId);
+      case _ToggleDrawer():
+        return toggleDrawer();
+      case _OpenDrawer():
+        return openDrawer();
+      case _CloseDrawer():
+        return closeDrawer();
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -245,6 +290,9 @@ extension NavigationEventPatterns on NavigationEvent {
     TResult? Function(int workOrderId)? navigateToWorkOrder,
     TResult? Function(int documentId)? navigateToDocument,
     TResult? Function(int partId)? navigateToPart,
+    TResult? Function()? toggleDrawer,
+    TResult? Function()? openDrawer,
+    TResult? Function()? closeDrawer,
   }) {
     final _that = this;
     switch (_that) {
@@ -258,6 +306,12 @@ extension NavigationEventPatterns on NavigationEvent {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that.partId);
+      case _ToggleDrawer() when toggleDrawer != null:
+        return toggleDrawer();
+      case _OpenDrawer() when openDrawer != null:
+        return openDrawer();
+      case _CloseDrawer() when closeDrawer != null:
+        return closeDrawer();
       case _:
         return null;
     }
@@ -583,6 +637,66 @@ class __$NavigateToPartCopyWithImpl<$Res>
           : partId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
+  }
+}
+
+/// @nodoc
+
+class _ToggleDrawer implements NavigationEvent {
+  const _ToggleDrawer();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _ToggleDrawer);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationEvent.toggleDrawer()';
+  }
+}
+
+/// @nodoc
+
+class _OpenDrawer implements NavigationEvent {
+  const _OpenDrawer();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _OpenDrawer);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationEvent.openDrawer()';
+  }
+}
+
+/// @nodoc
+
+class _CloseDrawer implements NavigationEvent {
+  const _CloseDrawer();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _CloseDrawer);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationEvent.closeDrawer()';
   }
 }
 

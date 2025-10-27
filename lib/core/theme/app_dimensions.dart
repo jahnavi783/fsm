@@ -67,6 +67,7 @@ class AppDimensions {
 
   // Elevation & Shadow System
   static double get elevationNone => 0;
+  static double get elevationXSmall => 1; // Subtle elevation
   static double get elevationSmall => 2; // Cards, buttons
   static double get elevationMedium => 4; // Elevated cards, menus
   static double get elevationLarge => 8; // Modals, drawers
@@ -149,7 +150,8 @@ class AppDimensions {
 
   // Responsive Methods
   static bool get isMobile => 1.sw < mobileBreakpoint;
-  static bool get isTablet => 1.sw >= mobileBreakpoint && 1.sw < desktopBreakpoint;
+  static bool get isTablet =>
+      1.sw >= mobileBreakpoint && 1.sw < desktopBreakpoint;
   static bool get isDesktop => 1.sw >= desktopBreakpoint;
 
   // Responsive Padding Methods
@@ -157,24 +159,36 @@ class AppDimensions {
   static EdgeInsets get paddingAllMedium => EdgeInsets.all(paddingMedium);
   static EdgeInsets get paddingAllLarge => EdgeInsets.all(paddingLarge);
 
-  static EdgeInsets get paddingHorizontalSmall => EdgeInsets.symmetric(horizontal: paddingSmall);
-  static EdgeInsets get paddingHorizontalMedium => EdgeInsets.symmetric(horizontal: paddingMedium);
-  static EdgeInsets get paddingHorizontalLarge => EdgeInsets.symmetric(horizontal: paddingLarge);
+  static EdgeInsets get paddingHorizontalSmall =>
+      EdgeInsets.symmetric(horizontal: paddingSmall);
+  static EdgeInsets get paddingHorizontalMedium =>
+      EdgeInsets.symmetric(horizontal: paddingMedium);
+  static EdgeInsets get paddingHorizontalLarge =>
+      EdgeInsets.symmetric(horizontal: paddingLarge);
 
-  static EdgeInsets get paddingVerticalSmall => EdgeInsets.symmetric(vertical: paddingSmall);
-  static EdgeInsets get paddingVerticalMedium => EdgeInsets.symmetric(vertical: paddingMedium);
-  static EdgeInsets get paddingVerticalLarge => EdgeInsets.symmetric(vertical: paddingLarge);
+  static EdgeInsets get paddingVerticalSmall =>
+      EdgeInsets.symmetric(vertical: paddingSmall);
+  static EdgeInsets get paddingVerticalMedium =>
+      EdgeInsets.symmetric(vertical: paddingMedium);
+  static EdgeInsets get paddingVerticalLarge =>
+      EdgeInsets.symmetric(vertical: paddingLarge);
 
   // Responsive Margin Methods
   static EdgeInsets get marginAllSmall => EdgeInsets.all(marginSmall);
   static EdgeInsets get marginAllMedium => EdgeInsets.all(marginMedium);
   static EdgeInsets get marginAllLarge => EdgeInsets.all(marginLarge);
 
-  static EdgeInsets get marginHorizontalSmall => EdgeInsets.symmetric(horizontal: marginSmall);
-  static EdgeInsets get marginHorizontalMedium => EdgeInsets.symmetric(horizontal: marginMedium);
-  static EdgeInsets get marginHorizontalLarge => EdgeInsets.symmetric(horizontal: marginLarge);
+  static EdgeInsets get marginHorizontalSmall =>
+      EdgeInsets.symmetric(horizontal: marginSmall);
+  static EdgeInsets get marginHorizontalMedium =>
+      EdgeInsets.symmetric(horizontal: marginMedium);
+  static EdgeInsets get marginHorizontalLarge =>
+      EdgeInsets.symmetric(horizontal: marginLarge);
 
-  static EdgeInsets get marginVerticalSmall => EdgeInsets.symmetric(vertical: marginSmall);
-  static EdgeInsets get marginVerticalMedium => EdgeInsets.symmetric(vertical: marginMedium);
-  static EdgeInsets get marginVerticalLarge => EdgeInsets.symmetric(vertical: marginLarge);
+  static EdgeInsets get marginVerticalSmall =>
+      EdgeInsets.symmetric(vertical: marginSmall);
+  static EdgeInsets get marginVerticalMedium =>
+      EdgeInsets.symmetric(vertical: marginMedium);
+  static EdgeInsets get marginVerticalLarge =>
+      EdgeInsets.symmetric(vertical: marginLarge);
 }

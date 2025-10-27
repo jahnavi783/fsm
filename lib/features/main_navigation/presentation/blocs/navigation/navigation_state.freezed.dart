@@ -57,6 +57,8 @@ extension NavigationStatePatterns on NavigationState {
     TResult Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
     TResult Function(_NavigateToDocument value)? navigateToDocument,
     TResult Function(_NavigateToPart value)? navigateToPart,
+    TResult Function(_DrawerOpened value)? drawerOpened,
+    TResult Function(_DrawerClosed value)? drawerClosed,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -73,6 +75,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that);
+      case _DrawerOpened() when drawerOpened != null:
+        return drawerOpened(_that);
+      case _DrawerClosed() when drawerClosed != null:
+        return drawerClosed(_that);
       case _:
         return orElse();
     }
@@ -99,6 +105,8 @@ extension NavigationStatePatterns on NavigationState {
     required TResult Function(_NavigateToWorkOrder value) navigateToWorkOrder,
     required TResult Function(_NavigateToDocument value) navigateToDocument,
     required TResult Function(_NavigateToPart value) navigateToPart,
+    required TResult Function(_DrawerOpened value) drawerOpened,
+    required TResult Function(_DrawerClosed value) drawerClosed,
   }) {
     final _that = this;
     switch (_that) {
@@ -114,6 +122,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that);
       case _NavigateToPart():
         return navigateToPart(_that);
+      case _DrawerOpened():
+        return drawerOpened(_that);
+      case _DrawerClosed():
+        return drawerClosed(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -139,6 +151,8 @@ extension NavigationStatePatterns on NavigationState {
     TResult? Function(_NavigateToWorkOrder value)? navigateToWorkOrder,
     TResult? Function(_NavigateToDocument value)? navigateToDocument,
     TResult? Function(_NavigateToPart value)? navigateToPart,
+    TResult? Function(_DrawerOpened value)? drawerOpened,
+    TResult? Function(_DrawerClosed value)? drawerClosed,
   }) {
     final _that = this;
     switch (_that) {
@@ -154,6 +168,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that);
+      case _DrawerOpened() when drawerOpened != null:
+        return drawerOpened(_that);
+      case _DrawerClosed() when drawerClosed != null:
+        return drawerClosed(_that);
       case _:
         return null;
     }
@@ -179,6 +197,8 @@ extension NavigationStatePatterns on NavigationState {
     TResult Function(int workOrderId)? navigateToWorkOrder,
     TResult Function(int documentId)? navigateToDocument,
     TResult Function(int partId)? navigateToPart,
+    TResult Function()? drawerOpened,
+    TResult Function()? drawerClosed,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -195,6 +215,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that.partId);
+      case _DrawerOpened() when drawerOpened != null:
+        return drawerOpened();
+      case _DrawerClosed() when drawerClosed != null:
+        return drawerClosed();
       case _:
         return orElse();
     }
@@ -221,6 +245,8 @@ extension NavigationStatePatterns on NavigationState {
     required TResult Function(int workOrderId) navigateToWorkOrder,
     required TResult Function(int documentId) navigateToDocument,
     required TResult Function(int partId) navigateToPart,
+    required TResult Function() drawerOpened,
+    required TResult Function() drawerClosed,
   }) {
     final _that = this;
     switch (_that) {
@@ -236,6 +262,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart():
         return navigateToPart(_that.partId);
+      case _DrawerOpened():
+        return drawerOpened();
+      case _DrawerClosed():
+        return drawerClosed();
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -261,6 +291,8 @@ extension NavigationStatePatterns on NavigationState {
     TResult? Function(int workOrderId)? navigateToWorkOrder,
     TResult? Function(int documentId)? navigateToDocument,
     TResult? Function(int partId)? navigateToPart,
+    TResult? Function()? drawerOpened,
+    TResult? Function()? drawerClosed,
   }) {
     final _that = this;
     switch (_that) {
@@ -276,6 +308,10 @@ extension NavigationStatePatterns on NavigationState {
         return navigateToDocument(_that.documentId);
       case _NavigateToPart() when navigateToPart != null:
         return navigateToPart(_that.partId);
+      case _DrawerOpened() when drawerOpened != null:
+        return drawerOpened();
+      case _DrawerClosed() when drawerClosed != null:
+        return drawerClosed();
       case _:
         return null;
     }
@@ -621,6 +657,46 @@ class __$NavigateToPartCopyWithImpl<$Res>
           : partId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
+  }
+}
+
+/// @nodoc
+
+class _DrawerOpened implements NavigationState {
+  const _DrawerOpened();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _DrawerOpened);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationState.drawerOpened()';
+  }
+}
+
+/// @nodoc
+
+class _DrawerClosed implements NavigationState {
+  const _DrawerClosed();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _DrawerClosed);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'NavigationState.drawerClosed()';
   }
 }
 

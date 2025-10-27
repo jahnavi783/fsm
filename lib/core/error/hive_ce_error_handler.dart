@@ -7,7 +7,7 @@ import 'exceptions.dart';
 class HiveCEErrorHandler {
   /// Maps HiveError exceptions to appropriate Failure types
   static Failure handleHiveError(HiveError error) {
-    final message = error.message ?? 'Unknown Hive error';
+    final message = error.message;
 
     // Map specific Hive error messages to appropriate failures
     if (message.contains('Box not found') ||

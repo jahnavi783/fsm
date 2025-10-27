@@ -152,10 +152,8 @@ class DeepLinkHandler {
       }
     } else if (path.startsWith(documentPrefix)) {
       final idStr = path.substring(documentPrefix.length);
-      if (idStr != null) {
-        return DocumentViewerRoute(documentId: idStr);
-      }
-    } else if (path.startsWith(partPrefix)) {
+      return DocumentViewerRoute(documentId: idStr);
+        } else if (path.startsWith(partPrefix)) {
       final idStr = path.substring(partPrefix.length);
       final id = int.tryParse(idStr);
       if (id != null) {

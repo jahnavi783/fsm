@@ -9,4 +9,7 @@ class NavigationEvent with _$NavigationEvent {
   const factory NavigationEvent.navigateToWorkOrder(int workOrderId) = _NavigateToWorkOrder;
   const factory NavigationEvent.navigateToDocument(int documentId) = _NavigateToDocument;
   const factory NavigationEvent.navigateToPart(int partId) = _NavigateToPart;
+  const factory NavigationEvent.toggleDrawer() = _ToggleDrawer;
+  const factory NavigationEvent.openDrawer() = _OpenDrawer;
+  const factory NavigationEvent.closeDrawer() = _CloseDrawer;
 }

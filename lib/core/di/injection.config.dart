@@ -154,6 +154,8 @@ import '../../features/work_orders/domain/usecases/resume_work_order_usecase.dar
     as _i489;
 import '../../features/work_orders/domain/usecases/start_work_order_usecase.dart'
     as _i188;
+import '../../features/work_orders/presentation/blocs/dashboard/dashboard_bloc.dart'
+    as _i81;
 import '../../features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart'
     as _i532;
 import '../../features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart'
@@ -423,6 +425,12 @@ extension GetItInjectableX on _i174.GetIt {
               await getAsync<_i589.IAuthRepository>(),
               gh<_i932.NetworkInfo>(),
             ));
+    gh.factoryAsync<_i81.DashboardBloc>(() async => _i81.DashboardBloc(
+          await getAsync<_i874.GetWorkOrdersUseCase>(),
+          await getAsync<_i556.IWorkOrderRepository>(),
+          await getAsync<_i589.IAuthRepository>(),
+          gh<_i932.NetworkInfo>(),
+        ));
     gh.factoryAsync<_i239.DocumentsBloc>(() async => _i239.DocumentsBloc(
           await getAsync<_i911.GetDocumentsUseCase>(),
           await getAsync<_i633.SearchDocumentsUseCase>(),

@@ -10,4 +10,6 @@ class NavigationState with _$NavigationState {
   const factory NavigationState.navigateToWorkOrder(int workOrderId) = _NavigateToWorkOrder;
   const factory NavigationState.navigateToDocument(int documentId) = _NavigateToDocument;
   const factory NavigationState.navigateToPart(int partId) = _NavigateToPart;
+  const factory NavigationState.drawerOpened() = _DrawerOpened;
+  const factory NavigationState.drawerClosed() = _DrawerClosed;
 }

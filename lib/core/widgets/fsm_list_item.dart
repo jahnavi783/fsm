@@ -70,7 +70,7 @@ class FSMListItem extends StatelessWidget {
         dense = true;
 
   /// Standard two-line list item
-  FSMListItem.twoLine({
+  const FSMListItem.twoLine({
     super.key,
     required this.title,
     required this.subtitle,
@@ -88,7 +88,7 @@ class FSMListItem extends StatelessWidget {
         dense = false;
 
   /// Expanded three-line list item
-  FSMListItem.threeLine({
+  const FSMListItem.threeLine({
     super.key,
     required this.title,
     required this.subtitle,

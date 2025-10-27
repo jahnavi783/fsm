@@ -6,11 +6,13 @@ import 'dart:io';
 import '../constants/app_constants.dart';
 import '../constants/hive_boxes.dart';
 import '../../features/work_orders/data/models/work_order_hive_model.dart';
+import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
 import '../../features/documents/data/models/document_hive_model.dart';
 import '../../features/calendar/data/models/calendar_event_hive_model.dart';
 import '../../features/profile/data/models/profile_hive_model.dart';
 import '../../features/parts/data/models/part_hive_model.dart' as parts;
 
+@preResolve
 @singleton
 class HiveService {
   late Box _authBox;
@@ -86,6 +88,14 @@ class HiveService {
       if (!Hive.isAdapterRegistered(HiveBoxes.profilePreferencesEntityTypeId)) {
         Hive.registerAdapter(ProfilePreferencesHiveModelAdapter());
       }
+
+      // Register Work Order Completion Cache adapters
+      if (!Hive.isAdapterRegistered(HiveBoxes.workOrderCompletionCacheTypeId)) {
+        Hive.registerAdapter(WorkOrderCompletionCacheModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(HiveBoxes.cachedPartUsedTypeId)) {
+        Hive.registerAdapter(CachedPartUsedModelAdapter());
+      }
     } catch (e) {
       // Log adapter registration errors but don't crash the app
       print('Error registering Hive adapters: $e');
@@ -97,6 +107,8 @@ class HiveService {
     try {
       // Open typed boxes for different features
       await Hive.openBox<WorkOrderHiveModel>(HiveBoxes.workOrders);
+      await Hive.openBox<WorkOrderCompletionCacheModel>(
+          HiveBoxes.workOrderCompletionCache);
       await Hive.openBox<DocumentHiveModel>(HiveBoxes.documents);
       await Hive.openBox<parts.PartHiveModel>(HiveBoxes.parts);
       await Hive.openBox(HiveBoxes.inventory); // Generic box for inventory data

@@ -57,7 +57,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
   Future<void> _loadDocument() async {
     try {
-      final useCase = await getIt.getAsync<GetDocumentByIdUseCase>();
+      final useCase = getIt<GetDocumentByIdUseCase>();
       final result = await useCase(widget.documentId);
 
       result.fold(

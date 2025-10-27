@@ -138,6 +138,8 @@ import '../../features/work_orders/data/datasources/work_order_remote_datasource
     as _i255;
 import '../../features/work_orders/data/repositories/work_order_repository_impl.dart'
     as _i937;
+import '../../features/work_orders/data/services/work_order_completion_cache_service.dart'
+    as _i379;
 import '../../features/work_orders/domain/repositories/i_work_order_repository.dart'
     as _i556;
 import '../../features/work_orders/domain/usecases/complete_work_order_usecase.dart'
@@ -179,10 +181,10 @@ import '../storage/hive_service.dart' as _i459;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(
       this,
       environment,
@@ -201,7 +203,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
     gh.factory<_i544.PermissionRemoteDataSource>(
         () => _i544.PermissionRemoteDataSource());
-    gh.singletonAsync<_i459.HiveService>(() => _i459.HiveService.create());
+    await gh.singletonAsync<_i459.HiveService>(
+      () => _i459.HiveService.create(),
+      preResolve: true,
+    );
     gh.singleton<_i600.ErrorBoundaryService>(
         () => _i600.ErrorBoundaryService());
     gh.singleton<_i870.LazyLoadingService>(() => _i870.LazyLoadingService());
@@ -217,15 +222,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i494.CalendarLocalDataSourceImpl());
     gh.factory<_i506.DocumentLocalDataSource>(
         () => _i506.DocumentLocalDataSourceImpl());
-    gh.factoryAsync<_i701.WorkOrderLocalDataSource>(() async =>
-        _i701.WorkOrderLocalDataSourceImpl(
-            await getAsync<_i459.HiveService>()));
-    gh.factoryAsync<_i1038.CacheManager>(
-        () async => _i1038.CacheManager(await getAsync<_i459.HiveService>()));
+    gh.factory<_i701.WorkOrderLocalDataSource>(
+        () => _i701.WorkOrderLocalDataSourceImpl(gh<_i459.HiveService>()));
+    gh.factory<_i1038.CacheManager>(
+        () => _i1038.CacheManager(gh<_i459.HiveService>()));
+    gh.singleton<_i379.WorkOrderCompletionCacheService>(
+        () => _i379.WorkOrderCompletionCacheService(gh<_i459.HiveService>()));
     gh.factory<_i932.NetworkInfo>(
         () => _i932.NetworkInfoImpl(gh<_i895.Connectivity>()));
-    gh.factoryAsync<_i992.AuthLocalDataSource>(() async =>
-        _i992.AuthLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
+    gh.factory<_i992.AuthLocalDataSource>(
+        () => _i992.AuthLocalDataSourceImpl(gh<_i459.HiveService>()));
     gh.lazySingleton<_i165.IPermissionRepository>(() => permissionModule
         .permissionRepository(gh<_i544.PermissionRemoteDataSource>()));
     gh.factory<_i418.OpenAppSettingsUseCase>(
@@ -240,10 +246,10 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i165.IPermissionRepository>()));
     gh.factory<_i428.CheckPermissionStatusUseCase>(() =>
         _i428.CheckPermissionStatusUseCase(gh<_i165.IPermissionRepository>()));
-    gh.factoryAsync<_i641.PartsLocalDataSource>(() async =>
-        _i641.PartsLocalDataSourceImpl(await getAsync<_i459.HiveService>()));
-    gh.factoryAsync<_i530.AuthGuard>(() async =>
-        _i530.AuthGuard(await getAsync<_i992.AuthLocalDataSource>()));
+    gh.factory<_i641.PartsLocalDataSource>(
+        () => _i641.PartsLocalDataSourceImpl(gh<_i459.HiveService>()));
+    gh.factory<_i530.AuthGuard>(
+        () => _i530.AuthGuard(gh<_i992.AuthLocalDataSource>()));
     gh.singleton<_i256.ConnectivityBloc>(() => _i256.ConnectivityBloc(
           gh<_i932.NetworkInfo>(),
           gh<_i895.Connectivity>(),
@@ -256,217 +262,186 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i418.OpenAppSettingsUseCase>(),
           gh<_i165.IPermissionRepository>(),
         ));
-    gh.factoryAsync<_i908.AuthInterceptor>(() async => _i908.AuthInterceptor(
-          await getAsync<_i992.AuthLocalDataSource>(),
+    gh.factory<_i908.AuthInterceptor>(() => _i908.AuthInterceptor(
+          gh<_i992.AuthLocalDataSource>(),
           gh<_i520.LoggingService>(),
         ));
-    gh.singletonAsync<_i81.AppRouter>(() async =>
-        _i81.AppRouter(authGuard: await getAsync<_i530.AuthGuard>()));
+    gh.singleton<_i81.AppRouter>(
+        () => _i81.AppRouter(authGuard: gh<_i530.AuthGuard>()));
     gh.factory<_i669.LocationService>(
         () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
-    gh.singletonAsync<_i361.Dio>(() async => networkModule.provideDio(
-          await getAsync<_i908.AuthInterceptor>(),
+    gh.singleton<_i361.Dio>(() => networkModule.provideDio(
+          gh<_i908.AuthInterceptor>(),
           gh<_i520.LoggingService>(),
         ));
     gh.singleton<_i538.SyncBloc>(
         () => _i538.SyncBloc(gh<_i256.ConnectivityBloc>()));
-    gh.factoryAsync<_i584.CalendarApiClient>(() async =>
-        calendarApiModule.calendarApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i541.AuthApiClient>(
-        () async => authModule.authApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i751.ProfileApiClient>(() async =>
-        profileApiModule.profileApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i103.WorkOrderApiClient>(() async =>
-        workOrderApiModule.workOrderApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i1011.PartsApiClient>(
-        () async => partsApiModule.partsApiClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i936.DocumentApiClient>(() async =>
-        documentModule.documentApiClient(await getAsync<_i361.Dio>()));
-    gh.singletonAsync<_i667.DioClient>(
-        () async => _i667.DioClient(await getAsync<_i361.Dio>()));
-    gh.factoryAsync<_i161.AuthRemoteDataSource>(() async =>
-        _i161.AuthRemoteDataSourceImpl(await getAsync<_i541.AuthApiClient>()));
-    gh.factoryAsync<_i589.IAuthRepository>(() async => _i153.AuthRepositoryImpl(
-          await getAsync<_i161.AuthRemoteDataSource>(),
-          await getAsync<_i992.AuthLocalDataSource>(),
+    gh.factory<_i584.CalendarApiClient>(
+        () => calendarApiModule.calendarApiClient(gh<_i361.Dio>()));
+    gh.factory<_i541.AuthApiClient>(
+        () => authModule.authApiClient(gh<_i361.Dio>()));
+    gh.factory<_i751.ProfileApiClient>(
+        () => profileApiModule.profileApiClient(gh<_i361.Dio>()));
+    gh.factory<_i103.WorkOrderApiClient>(
+        () => workOrderApiModule.workOrderApiClient(gh<_i361.Dio>()));
+    gh.factory<_i1011.PartsApiClient>(
+        () => partsApiModule.partsApiClient(gh<_i361.Dio>()));
+    gh.factory<_i936.DocumentApiClient>(
+        () => documentModule.documentApiClient(gh<_i361.Dio>()));
+    gh.singleton<_i667.DioClient>(() => _i667.DioClient(gh<_i361.Dio>()));
+    gh.factory<_i161.AuthRemoteDataSource>(
+        () => _i161.AuthRemoteDataSourceImpl(gh<_i541.AuthApiClient>()));
+    gh.factory<_i589.IAuthRepository>(() => _i153.AuthRepositoryImpl(
+          gh<_i161.AuthRemoteDataSource>(),
+          gh<_i992.AuthLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
         ));
-    gh.factoryAsync<_i255.WorkOrderRemoteDataSource>(() async =>
-        _i255.WorkOrderRemoteDataSourceImpl(
-            await getAsync<_i103.WorkOrderApiClient>()));
-    gh.factoryAsync<_i123.CalendarRemoteDataSource>(() async =>
-        _i123.CalendarRemoteDataSourceImpl(
-            await getAsync<_i584.CalendarApiClient>()));
-    gh.factoryAsync<_i749.DocumentRemoteDataSource>(() async =>
-        _i749.DocumentRemoteDataSourceImpl(
-            await getAsync<_i936.DocumentApiClient>()));
-    gh.factoryAsync<_i831.CheckAuthUseCase>(() async =>
-        _i831.CheckAuthUseCase(await getAsync<_i589.IAuthRepository>()));
-    gh.factoryAsync<_i157.RefreshTokenUseCase>(() async =>
-        _i157.RefreshTokenUseCase(await getAsync<_i589.IAuthRepository>()));
-    gh.factoryAsync<_i188.LoginUseCase>(() async =>
-        _i188.LoginUseCase(await getAsync<_i589.IAuthRepository>()));
-    gh.factoryAsync<_i48.LogoutUseCase>(() async =>
-        _i48.LogoutUseCase(await getAsync<_i589.IAuthRepository>()));
-    gh.factoryAsync<_i327.ProfileRemoteDataSource>(() async =>
-        _i327.ProfileRemoteDataSourceImpl(
-            await getAsync<_i751.ProfileApiClient>()));
-    gh.factoryAsync<_i747.PartsRemoteDataSource>(() async =>
-        _i747.PartsRemoteDataSourceImpl(
-            await getAsync<_i1011.PartsApiClient>()));
-    gh.factoryAsync<_i342.ICalendarRepository>(
-        () async => _i712.CalendarRepositoryImpl(
-              await getAsync<_i123.CalendarRemoteDataSource>(),
-              gh<_i494.CalendarLocalDataSource>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i556.IWorkOrderRepository>(
-        () async => _i937.WorkOrderRepositoryImpl(
-              await getAsync<_i255.WorkOrderRemoteDataSource>(),
-              await getAsync<_i701.WorkOrderLocalDataSource>(),
-              gh<_i932.NetworkInfo>(),
-              gh<_i520.LoggingService>(),
-            ));
-    gh.singletonAsync<_i331.AuthBloc>(() async => _i331.AuthBloc(
-          await getAsync<_i188.LoginUseCase>(),
-          await getAsync<_i48.LogoutUseCase>(),
-          await getAsync<_i831.CheckAuthUseCase>(),
-          await getAsync<_i157.RefreshTokenUseCase>(),
-        ));
-    gh.factoryAsync<_i490.IPartsRepository>(
-        () async => _i644.PartsRepositoryImpl(
-              await getAsync<_i747.PartsRemoteDataSource>(),
-              await getAsync<_i641.PartsLocalDataSource>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i121.IDocumentRepository>(
-        () async => _i113.DocumentRepositoryImpl(
-              await getAsync<_i749.DocumentRemoteDataSource>(),
-              gh<_i506.DocumentLocalDataSource>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i614.GetDailyScheduleUseCase>(() async =>
-        _i614.GetDailyScheduleUseCase(
-            await getAsync<_i342.ICalendarRepository>()));
-    gh.factoryAsync<_i377.GetCalendarEventsUseCase>(() async =>
-        _i377.GetCalendarEventsUseCase(
-            await getAsync<_i342.ICalendarRepository>()));
-    gh.factoryAsync<_i316.OptimizeRouteUseCase>(() async =>
-        _i316.OptimizeRouteUseCase(
-            await getAsync<_i342.ICalendarRepository>()));
-    gh.factoryAsync<_i139.CalendarBloc>(() async => _i139.CalendarBloc(
-          await getAsync<_i377.GetCalendarEventsUseCase>(),
-          await getAsync<_i614.GetDailyScheduleUseCase>(),
-          await getAsync<_i316.OptimizeRouteUseCase>(),
-          await getAsync<_i342.ICalendarRepository>(),
+    gh.factory<_i255.WorkOrderRemoteDataSource>(() =>
+        _i255.WorkOrderRemoteDataSourceImpl(gh<_i103.WorkOrderApiClient>()));
+    gh.factory<_i123.CalendarRemoteDataSource>(() =>
+        _i123.CalendarRemoteDataSourceImpl(gh<_i584.CalendarApiClient>()));
+    gh.factory<_i749.DocumentRemoteDataSource>(() =>
+        _i749.DocumentRemoteDataSourceImpl(gh<_i936.DocumentApiClient>()));
+    gh.factory<_i831.CheckAuthUseCase>(
+        () => _i831.CheckAuthUseCase(gh<_i589.IAuthRepository>()));
+    gh.factory<_i157.RefreshTokenUseCase>(
+        () => _i157.RefreshTokenUseCase(gh<_i589.IAuthRepository>()));
+    gh.factory<_i188.LoginUseCase>(
+        () => _i188.LoginUseCase(gh<_i589.IAuthRepository>()));
+    gh.factory<_i48.LogoutUseCase>(
+        () => _i48.LogoutUseCase(gh<_i589.IAuthRepository>()));
+    gh.factory<_i327.ProfileRemoteDataSource>(
+        () => _i327.ProfileRemoteDataSourceImpl(gh<_i751.ProfileApiClient>()));
+    gh.factory<_i747.PartsRemoteDataSource>(
+        () => _i747.PartsRemoteDataSourceImpl(gh<_i1011.PartsApiClient>()));
+    gh.factory<_i342.ICalendarRepository>(() => _i712.CalendarRepositoryImpl(
+          gh<_i123.CalendarRemoteDataSource>(),
+          gh<_i494.CalendarLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
         ));
-    gh.factoryAsync<_i879.IProfileRepository>(
-        () async => _i334.ProfileRepositoryImpl(
-              await getAsync<_i327.ProfileRemoteDataSource>(),
-              gh<_i1046.ProfileLocalDataSource>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i188.StartWorkOrderUseCase>(() async =>
-        _i188.StartWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i489.ResumeWorkOrderUseCase>(() async =>
-        _i489.ResumeWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i460.CompleteWorkOrderUseCase>(() async =>
-        _i460.CompleteWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i959.PauseWorkOrderUseCase>(() async =>
-        _i959.PauseWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i874.GetWorkOrdersUseCase>(() async =>
-        _i874.GetWorkOrdersUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i1023.GetWorkOrderDetailsUseCase>(() async =>
-        _i1023.GetWorkOrderDetailsUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i310.RejectWorkOrderUseCase>(() async =>
-        _i310.RejectWorkOrderUseCase(
-            await getAsync<_i556.IWorkOrderRepository>()));
-    gh.factoryAsync<_i1036.CheckPartAvailabilityUseCase>(() async =>
-        _i1036.CheckPartAvailabilityUseCase(
-            await getAsync<_i490.IPartsRepository>()));
-    gh.factoryAsync<_i1054.GetLowStockPartsUseCase>(() async =>
-        _i1054.GetLowStockPartsUseCase(
-            await getAsync<_i490.IPartsRepository>()));
-    gh.factoryAsync<_i170.SearchPartsUseCase>(() async =>
-        _i170.SearchPartsUseCase(await getAsync<_i490.IPartsRepository>()));
-    gh.factoryAsync<_i637.GetPartsUseCase>(() async =>
-        _i637.GetPartsUseCase(await getAsync<_i490.IPartsRepository>()));
-    gh.factoryAsync<_i344.PartsBloc>(() async => _i344.PartsBloc(
-          await getAsync<_i637.GetPartsUseCase>(),
-          await getAsync<_i170.SearchPartsUseCase>(),
-          await getAsync<_i1054.GetLowStockPartsUseCase>(),
-          await getAsync<_i490.IPartsRepository>(),
+    gh.factory<_i556.IWorkOrderRepository>(() => _i937.WorkOrderRepositoryImpl(
+          gh<_i255.WorkOrderRemoteDataSource>(),
+          gh<_i701.WorkOrderLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+          gh<_i520.LoggingService>(),
         ));
-    gh.factoryAsync<_i1041.GetDocumentCategoriesUseCase>(() async =>
-        _i1041.GetDocumentCategoriesUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i633.SearchDocumentsUseCase>(() async =>
-        _i633.SearchDocumentsUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i937.GetDocumentByIdUseCase>(() async =>
-        _i937.GetDocumentByIdUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i911.GetDocumentsUseCase>(() async =>
-        _i911.GetDocumentsUseCase(await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i750.DownloadDocumentUseCase>(() async =>
-        _i750.DownloadDocumentUseCase(
-            await getAsync<_i121.IDocumentRepository>()));
-    gh.factoryAsync<_i332.WorkOrdersListBloc>(
-        () async => _i332.WorkOrdersListBloc(
-              await getAsync<_i874.GetWorkOrdersUseCase>(),
-              await getAsync<_i556.IWorkOrderRepository>(),
-              await getAsync<_i589.IAuthRepository>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i81.DashboardBloc>(() async => _i81.DashboardBloc(
-          await getAsync<_i874.GetWorkOrdersUseCase>(),
-          await getAsync<_i556.IWorkOrderRepository>(),
-          await getAsync<_i589.IAuthRepository>(),
+    gh.singleton<_i331.AuthBloc>(() => _i331.AuthBloc(
+          gh<_i188.LoginUseCase>(),
+          gh<_i48.LogoutUseCase>(),
+          gh<_i831.CheckAuthUseCase>(),
+          gh<_i157.RefreshTokenUseCase>(),
+        ));
+    gh.factory<_i490.IPartsRepository>(() => _i644.PartsRepositoryImpl(
+          gh<_i747.PartsRemoteDataSource>(),
+          gh<_i641.PartsLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
         ));
-    gh.factoryAsync<_i239.DocumentsBloc>(() async => _i239.DocumentsBloc(
-          await getAsync<_i911.GetDocumentsUseCase>(),
-          await getAsync<_i633.SearchDocumentsUseCase>(),
-          await getAsync<_i750.DownloadDocumentUseCase>(),
-          await getAsync<_i1041.GetDocumentCategoriesUseCase>(),
-          await getAsync<_i121.IDocumentRepository>(),
+    gh.factory<_i121.IDocumentRepository>(() => _i113.DocumentRepositoryImpl(
+          gh<_i749.DocumentRemoteDataSource>(),
+          gh<_i506.DocumentLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
         ));
-    gh.factoryAsync<_i478.UpdateProfileUseCase>(() async =>
-        _i478.UpdateProfileUseCase(await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i17.LogoutUseCase>(() async =>
-        _i17.LogoutUseCase(await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i154.GetPreferencesUseCase>(() async =>
-        _i154.GetPreferencesUseCase(
-            await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i965.GetProfileUseCase>(() async =>
-        _i965.GetProfileUseCase(await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i90.UpdatePreferencesUseCase>(() async =>
-        _i90.UpdatePreferencesUseCase(
-            await getAsync<_i879.IProfileRepository>()));
-    gh.factoryAsync<_i532.WorkOrderActionBloc>(
-        () async => _i532.WorkOrderActionBloc(
-              await getAsync<_i1023.GetWorkOrderDetailsUseCase>(),
-              await getAsync<_i188.StartWorkOrderUseCase>(),
-              await getAsync<_i959.PauseWorkOrderUseCase>(),
-              await getAsync<_i489.ResumeWorkOrderUseCase>(),
-              await getAsync<_i460.CompleteWorkOrderUseCase>(),
-              await getAsync<_i310.RejectWorkOrderUseCase>(),
-              gh<_i669.LocationService>(),
-              gh<_i932.NetworkInfo>(),
-            ));
-    gh.factoryAsync<_i349.ProfileBloc>(() async => _i349.ProfileBloc(
-          await getAsync<_i965.GetProfileUseCase>(),
-          await getAsync<_i478.UpdateProfileUseCase>(),
-          await getAsync<_i154.GetPreferencesUseCase>(),
-          await getAsync<_i90.UpdatePreferencesUseCase>(),
-          await getAsync<_i17.LogoutUseCase>(),
+    gh.factory<_i614.GetDailyScheduleUseCase>(
+        () => _i614.GetDailyScheduleUseCase(gh<_i342.ICalendarRepository>()));
+    gh.factory<_i377.GetCalendarEventsUseCase>(
+        () => _i377.GetCalendarEventsUseCase(gh<_i342.ICalendarRepository>()));
+    gh.factory<_i316.OptimizeRouteUseCase>(
+        () => _i316.OptimizeRouteUseCase(gh<_i342.ICalendarRepository>()));
+    gh.factory<_i139.CalendarBloc>(() => _i139.CalendarBloc(
+          gh<_i377.GetCalendarEventsUseCase>(),
+          gh<_i614.GetDailyScheduleUseCase>(),
+          gh<_i316.OptimizeRouteUseCase>(),
+          gh<_i342.ICalendarRepository>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i879.IProfileRepository>(() => _i334.ProfileRepositoryImpl(
+          gh<_i327.ProfileRemoteDataSource>(),
+          gh<_i1046.ProfileLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i188.StartWorkOrderUseCase>(
+        () => _i188.StartWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i489.ResumeWorkOrderUseCase>(
+        () => _i489.ResumeWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i460.CompleteWorkOrderUseCase>(
+        () => _i460.CompleteWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i959.PauseWorkOrderUseCase>(
+        () => _i959.PauseWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i874.GetWorkOrdersUseCase>(
+        () => _i874.GetWorkOrdersUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i1023.GetWorkOrderDetailsUseCase>(() =>
+        _i1023.GetWorkOrderDetailsUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i310.RejectWorkOrderUseCase>(
+        () => _i310.RejectWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i1036.CheckPartAvailabilityUseCase>(() =>
+        _i1036.CheckPartAvailabilityUseCase(gh<_i490.IPartsRepository>()));
+    gh.factory<_i1054.GetLowStockPartsUseCase>(
+        () => _i1054.GetLowStockPartsUseCase(gh<_i490.IPartsRepository>()));
+    gh.factory<_i170.SearchPartsUseCase>(
+        () => _i170.SearchPartsUseCase(gh<_i490.IPartsRepository>()));
+    gh.factory<_i637.GetPartsUseCase>(
+        () => _i637.GetPartsUseCase(gh<_i490.IPartsRepository>()));
+    gh.factory<_i344.PartsBloc>(() => _i344.PartsBloc(
+          gh<_i637.GetPartsUseCase>(),
+          gh<_i170.SearchPartsUseCase>(),
+          gh<_i1054.GetLowStockPartsUseCase>(),
+          gh<_i490.IPartsRepository>(),
+        ));
+    gh.factory<_i1041.GetDocumentCategoriesUseCase>(() =>
+        _i1041.GetDocumentCategoriesUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i633.SearchDocumentsUseCase>(
+        () => _i633.SearchDocumentsUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i937.GetDocumentByIdUseCase>(
+        () => _i937.GetDocumentByIdUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i911.GetDocumentsUseCase>(
+        () => _i911.GetDocumentsUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i750.DownloadDocumentUseCase>(
+        () => _i750.DownloadDocumentUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i332.WorkOrdersListBloc>(() => _i332.WorkOrdersListBloc(
+          gh<_i874.GetWorkOrdersUseCase>(),
+          gh<_i556.IWorkOrderRepository>(),
+          gh<_i589.IAuthRepository>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i81.DashboardBloc>(() => _i81.DashboardBloc(
+          gh<_i874.GetWorkOrdersUseCase>(),
+          gh<_i556.IWorkOrderRepository>(),
+          gh<_i589.IAuthRepository>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i239.DocumentsBloc>(() => _i239.DocumentsBloc(
+          gh<_i911.GetDocumentsUseCase>(),
+          gh<_i633.SearchDocumentsUseCase>(),
+          gh<_i750.DownloadDocumentUseCase>(),
+          gh<_i1041.GetDocumentCategoriesUseCase>(),
+          gh<_i121.IDocumentRepository>(),
+        ));
+    gh.factory<_i478.UpdateProfileUseCase>(
+        () => _i478.UpdateProfileUseCase(gh<_i879.IProfileRepository>()));
+    gh.factory<_i17.LogoutUseCase>(
+        () => _i17.LogoutUseCase(gh<_i879.IProfileRepository>()));
+    gh.factory<_i154.GetPreferencesUseCase>(
+        () => _i154.GetPreferencesUseCase(gh<_i879.IProfileRepository>()));
+    gh.factory<_i965.GetProfileUseCase>(
+        () => _i965.GetProfileUseCase(gh<_i879.IProfileRepository>()));
+    gh.factory<_i90.UpdatePreferencesUseCase>(
+        () => _i90.UpdatePreferencesUseCase(gh<_i879.IProfileRepository>()));
+    gh.factory<_i532.WorkOrderActionBloc>(() => _i532.WorkOrderActionBloc(
+          gh<_i1023.GetWorkOrderDetailsUseCase>(),
+          gh<_i188.StartWorkOrderUseCase>(),
+          gh<_i959.PauseWorkOrderUseCase>(),
+          gh<_i489.ResumeWorkOrderUseCase>(),
+          gh<_i460.CompleteWorkOrderUseCase>(),
+          gh<_i310.RejectWorkOrderUseCase>(),
+          gh<_i669.LocationService>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i349.ProfileBloc>(() => _i349.ProfileBloc(
+          gh<_i965.GetProfileUseCase>(),
+          gh<_i478.UpdateProfileUseCase>(),
+          gh<_i154.GetPreferencesUseCase>(),
+          gh<_i90.UpdatePreferencesUseCase>(),
+          gh<_i17.LogoutUseCase>(),
         ));
     return this;
   }

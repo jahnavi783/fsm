@@ -103,10 +103,8 @@ Future<void> _initializeAppWithErrorHandling() async {
 
 /// Initialize app services and dependencies
 Future<void> _initializeApp() async {
-  // Initialize local storage first (required by other services)
-  await HiveService.create();
-
   // Configure dependency injection with current environment
+  // Note: HiveService is now pre-resolved during DI initialization
   await configureDependencies(env.Environment.name);
 
   // Initialize performance monitoring

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsm/core/widgets/fsm_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
+import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_start_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_pause_bottom_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_bottom_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_bottom_sheet_new.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
 
 /// Work Order Bottom Sheet Manager
@@ -14,61 +16,79 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_
 class WorkOrderBottomSheetManager {
   
   /// Show start work order bottom sheet
-  /// Note: The content widget handles its own BLoC provider wrapping
+  /// Requires WorkOrderActionBloc from parent context
   static Future<bool?> showStartWorkOrder({
     required BuildContext context,
     required WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   }) {
+    // Capture the bloc instance from parent context before showing bottom sheet
+    final bloc = context.read<WorkOrderActionBloc>();
+
     return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       isDismissible: false,
       enableDrag: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => WorkOrderStartBottomSheet(
-        workOrder: workOrder,
-        currentLocation: currentLocation,
+      builder: (bottomSheetContext) => BlocProvider.value(
+        value: bloc,
+        child: WorkOrderStartBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
       ),
     );
   }
 
   /// Show pause work order bottom sheet
-  /// Note: The content widget handles its own BLoC provider wrapping
+  /// Requires WorkOrderActionBloc from parent context
   static Future<bool?> showPauseWorkOrder({
     required BuildContext context,
     required WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   }) {
+    // Capture the bloc instance from parent context before showing bottom sheet
+    final bloc = context.read<WorkOrderActionBloc>();
+
     return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       isDismissible: false,
       enableDrag: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => WorkOrderPauseBottomSheet(
-        workOrder: workOrder,
-        currentLocation: currentLocation,
+      builder: (bottomSheetContext) => BlocProvider.value(
+        value: bloc,
+        child: WorkOrderPauseBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
       ),
     );
   }
 
   /// Show complete work order bottom sheet
-  /// Note: The content widget handles its own BLoC provider wrapping
+  /// Requires WorkOrderActionBloc from parent context
   static Future<bool?> showCompleteWorkOrder({
     required BuildContext context,
     required WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   }) {
+    // Capture the bloc instance from parent context before showing bottom sheet
+    final bloc = context.read<WorkOrderActionBloc>();
+
     return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       isDismissible: false,
-      enableDrag: true,
+      enableDrag: false,
       backgroundColor: Colors.transparent,
-      builder: (context) => WorkOrderCompleteBottomSheet(
-        workOrder: workOrder,
-        currentLocation: currentLocation,
+      builder: (bottomSheetContext) => BlocProvider.value(
+        value: bloc,
+        child: WorkOrderCompleteBottomSheetNew(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+        ),
       ),
     );
   }

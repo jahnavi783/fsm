@@ -7,10 +7,12 @@ import 'package:fsm/features/calendar/data/models/calendar_event_hive_model.dart
 import 'package:fsm/features/documents/data/models/document_hive_model.dart';
 import 'package:fsm/features/parts/data/models/part_hive_model.dart';
 import 'package:fsm/features/profile/data/models/profile_hive_model.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_completion_cache_model.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_hive_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(CachedPartUsedModelAdapter());
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
@@ -21,12 +23,14 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(ProfilePreferencesHiveModelAdapter());
     registerAdapter(ServiceRequestHiveModelAdapter());
     registerAdapter(WorkLogHiveModelAdapter());
+    registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(CachedPartUsedModelAdapter());
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
@@ -37,6 +41,7 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(ProfilePreferencesHiveModelAdapter());
     registerAdapter(ServiceRequestHiveModelAdapter());
     registerAdapter(WorkLogHiveModelAdapter());
+    registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());
   }
 }

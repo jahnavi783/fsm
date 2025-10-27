@@ -17,54 +17,19 @@ class MainNavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: Future.wait([
-        getIt.getAsync<WorkOrdersListBloc>(),
-        getIt.getAsync<WorkOrderActionBloc>(),
-        // CalendarBloc removed - Calendar moved to drawer navigation only
-      ]),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text('Error initializing: ${snapshot.error}'),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final workOrdersListBloc = snapshot.data![0] as WorkOrdersListBloc;
-        final workOrderActionBloc = snapshot.data![1] as WorkOrderActionBloc;
-
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => getIt<NavigationBloc>(),
-            ),
-            BlocProvider.value(
-              value: workOrdersListBloc,
-            ),
-            BlocProvider.value(
-              value: workOrderActionBloc,
-            ),
-          ],
-          child: const _MainNavigationView(),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<NavigationBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<WorkOrdersListBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<WorkOrderActionBloc>(),
+        ),
+      ],
+      child: const _MainNavigationView(),
     );
   }
 }

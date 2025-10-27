@@ -49,57 +49,9 @@ class WorkOrderDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<WorkOrderActionBloc>(
-      future: getIt.getAsync<WorkOrderActionBloc>(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Work Order Details'),
-            ),
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Work Order Details'),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64.sp,
-                    color: Colors.red,
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Failed to initialize work order actions',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.red),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    snapshot.error.toString(),
-                    style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final workOrderActionBloc = snapshot.data!;
-
-        return BlocProvider.value(
-          value: workOrderActionBloc,
-          child: WorkOrderDetailsView(workOrderId: workOrderId),
-        );
-      },
+    return BlocProvider(
+      create: (context) => getIt<WorkOrderActionBloc>(),
+      child: WorkOrderDetailsView(workOrderId: workOrderId),
     );
   }
 }
@@ -239,7 +191,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         slivers: [
           // App Bar with gradient background using FSMSliverAppBar
           FSMSliverAppBar.gradient(
-            expandedHeight: 260,
+            expandedHeight: 265,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
@@ -299,30 +251,27 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 14.h),
                       // Visit Date and Duration - Keep custom chips for gradient background
-                      SizedBox(
-                        height: 48.h,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              _buildHeaderInfoChip(
-                                icon: Icons.calendar_today,
-                                label: 'Visit Date',
-                                value: DateFormat('MMM dd, yyyy')
-                                    .format(workOrder.visitDate),
-                              ),
-                              SizedBox(width: 12.w),
-                              _buildHeaderInfoChip(
-                                icon: Icons.schedule,
-                                label: 'Duration',
-                                value: workOrder.durationDays > 0
-                                    ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
-                                    : '0 days',
-                              ),
-                            ],
-                          ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _buildHeaderInfoChip(
+                              icon: Icons.calendar_today,
+                              label: 'Visit Date',
+                              value: DateFormat('MMM dd, yyyy')
+                                  .format(workOrder.visitDate),
+                            ),
+                            SizedBox(width: 12.w),
+                            _buildHeaderInfoChip(
+                              icon: Icons.schedule,
+                              label: 'Duration',
+                              value: workOrder.durationDays > 0
+                                  ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
+                                  : '0 days',
+                            ),
+                          ],
                         ),
                       ),
                     ],

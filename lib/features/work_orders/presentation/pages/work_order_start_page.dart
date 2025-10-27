@@ -23,62 +23,9 @@ class WorkOrderStartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<WorkOrderActionBloc>(
-      future: getIt.getAsync<WorkOrderActionBloc>(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Start Work Order'),
-            ),
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Start Work Order'),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64.sp,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                  SizedBox(height: 16.h),
-                  const Text('Failed to load work order'),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'Error: ${snapshot.error}',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Go Back'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final workOrderActionBloc = snapshot.data!;
-
-        return BlocProvider.value(
-          value: workOrderActionBloc,
-          child: WorkOrderStartView(workOrderId: workOrderId),
-        );
-      },
+    return BlocProvider(
+      create: (context) => getIt<WorkOrderActionBloc>(),
+      child: WorkOrderStartView(workOrderId: workOrderId),
     );
   }
 }
@@ -552,29 +499,35 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
+    // Capture the bloc instance from the page context BEFORE showing the bottom sheet
+    final bloc = context.read<WorkOrderActionBloc>();
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _StartWorkOrderBottomSheet(
-        workOrder: workOrder,
-        currentLocation: currentLocation,
-        notesController: _notesController,
-        selectedFiles: _selectedFiles,
-        onStart: (notes, files) {
-          if (currentLocation != null) {
-            context.read<WorkOrderActionBloc>().add(
-                  WorkOrderActionEvent.startWorkOrder(
-                    workOrderId: workOrder.id,
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                    files: files,
-                    notes: notes,
-                  ),
-                );
-            Navigator.of(context).pop(); // Close the bottom sheet
-          }
-        },
+      builder: (bottomSheetContext) => BlocProvider.value(
+        value: bloc, // Pass the existing bloc instance to the bottom sheet
+        child: _StartWorkOrderBottomSheet(
+          workOrder: workOrder,
+          currentLocation: currentLocation,
+          notesController: _notesController,
+          selectedFiles: _selectedFiles,
+          onStart: (notes, files) {
+            if (currentLocation != null) {
+              bloc.add(
+                    WorkOrderActionEvent.startWorkOrder(
+                      workOrderId: workOrder.id,
+                      latitude: currentLocation.latitude,
+                      longitude: currentLocation.longitude,
+                      files: files,
+                      notes: notes,
+                    ),
+                  );
+              Navigator.of(bottomSheetContext).pop(); // Close the bottom sheet
+            }
+          },
+        ),
       ),
     );
   }

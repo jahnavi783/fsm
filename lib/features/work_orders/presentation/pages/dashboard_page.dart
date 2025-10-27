@@ -267,20 +267,23 @@ class _DashboardPageState extends State<DashboardPage>
   Widget _buildCurrentTabContent(WorkOrdersListState state) {
     final currentIndex = _tabController.index;
 
-    // First tab (index 0) is for unassigned work orders
-    if (currentIndex == 0) {
-      return _buildUnassignedWorkOrdersSliver(state);
+    // Map tab indices to their respective build functions
+    switch (currentIndex) {
+      case 0:
+        // Unassigned tab
+        return _buildUnassignedWorkOrdersSliver(state);
+      case 1:
+        // Assigned tab
+        return _buildWorkOrdersSliver(WorkOrderStatus.assigned, state);
+      case 2:
+        // Paused tab
+        return _buildWorkOrdersSliver(WorkOrderStatus.paused, state);
+      case 3:
+        // Completed tab
+        return _buildWorkOrdersSliver(WorkOrderStatus.completed, state);
+      default:
+        return _buildUnassignedWorkOrdersSliver(state);
     }
-
-    // Remaining 3 tabs map to statuses (Assigned, Paused, Completed)
-    final statuses = [
-      WorkOrderStatus.assigned,
-      WorkOrderStatus.paused,
-      WorkOrderStatus.completed,
-    ];
-
-    final currentStatus = statuses[currentIndex - 1];
-    return _buildWorkOrdersSliver(currentStatus, state);
   }
 
   // Switch to specific tab (frontend filtering only)
@@ -312,12 +315,16 @@ class _DashboardPageState extends State<DashboardPage>
           return _buildEmptyStateSliver(status);
         }
 
-        return SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          sliver: WorkOrderSliverList(
-            workOrders: filteredWorkOrders,
-            isLoadingMore: isLoadingMore,
-            itemBuilder: (workOrder) => WorkOrderCard(
+        // Use WorkOrderSliverList with proper width constraints.
+        // Do NOT wrap in SliverPadding - the items handle their own width via SizedBox.
+        // Apply horizontal padding at the item level in the itemBuilder to avoid
+        // infinite width constraint errors that occur with SliverPadding + SliverList.
+        return WorkOrderSliverList(
+          workOrders: filteredWorkOrders,
+          isLoadingMore: isLoadingMore,
+          itemBuilder: (workOrder) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            child: WorkOrderCard(
               workOrder: workOrder,
               onTap: () {
                 context.router
@@ -432,7 +439,7 @@ class _DashboardPageState extends State<DashboardPage>
           isOffline,
           hasPendingSync) {
         if (unassignedWorkOrders.isEmpty) {
-          // Refactored: Use FSMEmptyState for unassigned empty state
+          // Use FSMEmptyStateList for unassigned empty state
           return const FSMEmptyStateList(
             icon: Icons.inbox_outlined,
             title: 'No Unassigned Work Orders',
@@ -442,14 +449,18 @@ class _DashboardPageState extends State<DashboardPage>
           );
         }
 
-        return SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final workOrder = unassignedWorkOrders[index];
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
+        // Optimized SliverList with proper width constraints to avoid
+        // infinite width errors. Do NOT wrap in SliverPadding - let SizedBox
+        // handle width constraints at the item level instead.
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final workOrder = unassignedWorkOrders[index];
+              return SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   child: Column(
                     children: [
                       WorkOrderCard(
@@ -480,10 +491,14 @@ class _DashboardPageState extends State<DashboardPage>
                       ),
                     ],
                   ),
-                );
-              },
-              childCount: unassignedWorkOrders.length,
-            ),
+                ),
+              );
+            },
+            childCount: unassignedWorkOrders.length,
+            // Optimize performance and avoid infinite constraint errors
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: false,
+            addSemanticIndexes: false,
           ),
         );
       },

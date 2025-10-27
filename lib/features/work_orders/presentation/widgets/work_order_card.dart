@@ -49,7 +49,7 @@ class WorkOrderCard extends StatelessWidget {
             ),
           ),
 
-          // Summary
+          // // Summary
           Text(
             workOrder.summary,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -59,10 +59,10 @@ class WorkOrderCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-
+          //
           SizedBox(height: 12.h),
-
-          // Priority and Visit Date Row
+          //
+          // // Priority and Visit Date Row
           Row(
             children: [
               // Priority Badge
@@ -90,35 +90,39 @@ class WorkOrderCard extends StatelessWidget {
               ),
             ],
           ),
-
-          SizedBox(height: 12.h),
-
-          // Customer Info
-          if (workOrder.customer != null) ...[
-            Row(
-              children: [
-                Icon(
-                  Icons.person_outline,
-                  size: 16.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Text(
-                    workOrder.customer!.name,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 12.sp,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
+          //
+          // SizedBox(height: 12.h),
+          //
+          // // Customer Info
+          // if (workOrder.customer != null) ...[
+          //   SizedBox(
+          //     width: double.infinity,
+          //     child: Row(
+          //       children: [
+          //         Icon(
+          //           Icons.person_outline,
+          //           size: 16.sp,
+          //           color: theme.colorScheme.onSurface.withOpacity(0.6),
+          //         ),
+          //         SizedBox(width: 4.w),
+          //         Expanded(
+          //           child: Text(
+          //             workOrder.customer!.name,
+          //             style: theme.textTheme.bodySmall?.copyWith(
+          //               fontSize: 12.sp,
+          //               color: theme.colorScheme.onSurface.withOpacity(0.6),
+          //             ),
+          //             overflow: TextOverflow.ellipsis,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          //   SizedBox(height: 4.h),
+          // ],
+          //
             SizedBox(height: 4.h),
-          ],
-
-          // Location Info
+          // // Location Info
           Row(
             children: [
               Icon(
@@ -141,35 +145,35 @@ class WorkOrderCard extends StatelessWidget {
           ),
 
           // Action button for actionable work orders
-          if (_shouldShowActionButton()) ...[
-            SizedBox(height: 16.h),
-            FSMCardFooter(
-              alignment: MainAxisAlignment.center,
-              actions: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: onActionTap,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _getActionButtonColor(),
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      _getActionButtonText(),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          // if (_shouldShowActionButton()) ...[
+          //   SizedBox(height: 16.h),
+          //   FSMCardFooter(
+          //     alignment: MainAxisAlignment.center,
+          //     actions: [
+          //       SizedBox(
+          //         width: double.infinity,
+          //         child: ElevatedButton(
+          //           onPressed: onActionTap,
+          //           style: ElevatedButton.styleFrom(
+          //             backgroundColor: _getActionButtonColor(),
+          //             foregroundColor: Colors.white,
+          //             padding: EdgeInsets.symmetric(vertical: 12.h),
+          //             shape: RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(8.r),
+          //             ),
+          //           ),
+          //           child: Text(
+          //             _getActionButtonText(),
+          //             style: TextStyle(
+          //               fontSize: 14.sp,
+          //               fontWeight: FontWeight.w600,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ],
 
           // Overdue indicator
           if (workOrder.isOverdue) ...[

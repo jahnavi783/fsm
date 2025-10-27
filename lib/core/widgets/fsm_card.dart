@@ -117,10 +117,11 @@ class FSMCard extends StatelessWidget {
     final effectiveBorderRadius = borderRadius ?? AppDimensions.radiusMedium;
     final effectiveBackgroundColor = backgroundColor ?? theme.cardColor;
     final effectivePadding = padding ?? AppDimensions.paddingAllMedium;
-    final effectiveMargin = margin ?? EdgeInsets.symmetric(
-      horizontal: AppDimensions.paddingMedium,
-      vertical: AppDimensions.paddingSmall,
-    );
+    final effectiveMargin = margin ??
+        EdgeInsets.symmetric(
+          horizontal: AppDimensions.paddingMedium,
+          vertical: AppDimensions.paddingSmall,
+        );
 
     Widget cardContent = child;
 
@@ -185,6 +186,7 @@ class FSMCard extends StatelessWidget {
 
     return Container(
       margin: effectiveMargin,
+      width: double.infinity,
       child: card,
     );
   }

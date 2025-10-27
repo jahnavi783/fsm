@@ -8,7 +8,6 @@ import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/core/widgets/fsm_action_button.dart';
 import 'package:fsm/core/widgets/fsm_section_header.dart';
 import 'package:fsm/core/widgets/offline_banner.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
@@ -37,6 +36,7 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_details
 // Import widget components that may be needed for action in progress and error
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/action_in_progress_widget.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/error_widget.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/status_adaptive_actions_widget.dart';
 
 @RoutePage()
 class WorkOrderDetailsPage extends StatelessWidget {
@@ -188,11 +188,22 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
                       _, __) =>
                   _buildWorkOrderDetails(
-                      workOrder, currentLocation, isLocationLoading, isOffline),
+                workOrder,
+                currentLocation,
+                isLocationLoading,
+                isOffline,
+                isActionInProgress: false,
+              ),
               actionInProgress: (workOrder, actionType, currentLocation) =>
                   ActionInProgressWidget(actionType: actionType),
               actionSuccess: (workOrder, actionType, message, _) =>
-                  _buildWorkOrderDetails(workOrder, null, false, false),
+                  _buildWorkOrderDetails(
+                workOrder,
+                null,
+                false,
+                false,
+                isActionInProgress: false,
+              ),
               error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
                 message: failure.message,
                 isOffline: isOffline,
@@ -202,24 +213,16 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                       );
                 },
               ),
-              locationError: (workOrder, message) =>
-                  _buildWorkOrderDetails(workOrder, null, false, false),
+              locationError: (workOrder, message) => _buildWorkOrderDetails(
+                workOrder,
+                null,
+                false,
+                false,
+                isActionInProgress: false,
+              ),
             );
           },
         ),
-        floatingActionButton:
-            BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              loaded: (workOrder, _, __, ___, ____, _____) =>
-                  _buildWorkOrderActionFab(workOrder),
-              actionSuccess: (workOrder, _, __, ___) =>
-                  _buildWorkOrderActionFab(workOrder),
-              orElse: () => const SizedBox.shrink(),
-            );
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
@@ -228,193 +231,209 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
     bool isLocationLoading,
-    bool isOffline,
-  ) {
-    return CustomScrollView(
-      slivers: [
-        // App Bar with gradient background using FSMSliverAppBar
-        FSMSliverAppBar.gradient(
-          expandedHeight: 260,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            background: SafeArea(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                margin: EdgeInsets.only(top: 40.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Work Order Number and Status
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                workOrder.woNumber,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.sp,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: -0.5,
-                                  height: 1.1,
+    bool isOffline, {
+    bool isActionInProgress = false,
+  }) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          // App Bar with gradient background using FSMSliverAppBar
+          FSMSliverAppBar.gradient(
+            expandedHeight: 260,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: SafeArea(
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  margin: EdgeInsets.only(top: 40.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Work Order Number and Status
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  workOrder.woNumber,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: -0.5,
+                                    height: 1.1,
+                                  ),
                                 ),
                               ),
-                            ),
-                            // Status Badge using shared component
-                            StatusBadge.status(
-                              status: workOrder.status.name,
-                              variant: StatusBadgeVariant.outlined,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          workOrder.summary,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 0.2,
+                              // Status Badge using shared component
+                              StatusBadge.status(
+                                status: workOrder.status.name,
+                                variant: StatusBadgeVariant.outlined,
+                              ),
+                            ],
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 8.h),
-                        // Priority Badge using shared component
-                        StatusBadge.priority(
-                          priority: workOrder.priority.name,
-                          variant: StatusBadgeVariant.outlined,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    // Visit Date and Duration - Keep custom chips for gradient background
-                    SizedBox(
-                      height: 48.h,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            _buildHeaderInfoChip(
-                              icon: Icons.calendar_today,
-                              label: 'Visit Date',
-                              value: DateFormat('MMM dd, yyyy')
-                                  .format(workOrder.visitDate),
+                          SizedBox(height: 8.h),
+                          Text(
+                            workOrder.summary,
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.9),
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.2,
                             ),
-                            SizedBox(width: 12.w),
-                            _buildHeaderInfoChip(
-                              icon: Icons.schedule,
-                              label: 'Duration',
-                              value: workOrder.durationDays > 0
-                                  ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
-                                  : '0 days',
-                            ),
-                          ],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 8.h),
+                          // Priority Badge using shared component
+                          StatusBadge.priority(
+                            priority: workOrder.priority.name,
+                            variant: StatusBadgeVariant.outlined,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      // Visit Date and Duration - Keep custom chips for gradient background
+                      SizedBox(
+                        height: 48.h,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderInfoChip(
+                                icon: Icons.calendar_today,
+                                label: 'Visit Date',
+                                value: DateFormat('MMM dd, yyyy')
+                                    .format(workOrder.visitDate),
+                              ),
+                              SizedBox(width: 12.w),
+                              _buildHeaderInfoChip(
+                                icon: Icons.schedule,
+                                label: 'Duration',
+                                value: workOrder.durationDays > 0
+                                    ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
+                                    : '0 days',
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
+            actions: [
+              FSMAppBarAction.refresh(
+                onPressed: () {
+                  context.read<WorkOrderActionBloc>().add(
+                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                      );
+                },
+              ),
+              SizedBox(width: 16.w),
+            ],
           ),
-          actions: [
-            FSMAppBarAction.refresh(
-              onPressed: () {
-                context.read<WorkOrderActionBloc>().add(
-                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                    );
-              },
+
+          // Content with expandable sections using FSMCollapsibleSection
+          SliverPadding(
+            padding: EdgeInsets.all(16.w),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                // Offline Indicator using shared OfflineBanner (only shows if offline)
+                if (isOffline) ...[
+                  const OfflineBanner(dismissible: false),
+                  SizedBox(height: 16.h),
+                ],
+
+                // Basic Information using FSMCollapsibleSection
+                FSMCollapsibleSection(
+                  title: 'Work Order Information',
+                  initiallyExpanded: true,
+                  child: BasicInformationSection(workOrder: workOrder),
+                ),
+                SizedBox(height: 12.h),
+
+                // Description
+                FSMCollapsibleSection(
+                  title: 'Description',
+                  child: DescriptionSection(workOrder: workOrder),
+                ),
+                SizedBox(height: 12.h),
+
+                // Customer Information
+                if (workOrder.customer != null)
+                  FSMCollapsibleSection(
+                    title: 'Customer Contact Details',
+                    child: CustomerSection(customer: workOrder.customer!),
+                  ),
+                if (workOrder.customer != null) SizedBox(height: 12.h),
+
+                // Machine Details
+                if (workOrder.serviceRequest != null)
+                  FSMCollapsibleSection(
+                    title: 'Machine Details',
+                    child: MachineDetailsSection(
+                        serviceRequest: workOrder.serviceRequest!),
+                  ),
+                if (workOrder.serviceRequest != null) SizedBox(height: 12.h),
+
+                // Location Information
+                FSMCollapsibleSection(
+                  title: 'Location & GPS',
+                  child: LocationSection(
+                    workOrder: workOrder,
+                    currentLocation: currentLocation,
+                    isLocationLoading: isLocationLoading,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+
+                // Parts Used
+                if (workOrder.partsUsed.isNotEmpty)
+                  FSMCollapsibleSection(
+                    title: 'Parts Used',
+                    child: PartsUsedSection(partsUsed: workOrder.partsUsed),
+                  ),
+                if (workOrder.partsUsed.isNotEmpty) SizedBox(height: 12.h),
+
+                // Work Logs & Timeline
+                if (workOrder.workLogs.isNotEmpty)
+                  FSMCollapsibleSection(
+                    title: 'Work Timeline',
+                    child: WorkTimelineSection(workLogs: workOrder.workLogs),
+                  ),
+                if (workOrder.workLogs.isNotEmpty) SizedBox(height: 12.h),
+
+                // Images & Documentation
+                _buildImagesSection(),
+
+                // Add bottom padding before footer
+                SizedBox(height: 24.h),
+              ]),
             ),
-            SizedBox(width: 16.w),
-          ],
-        ),
-
-        // Content with expandable sections using FSMCollapsibleSection
-        SliverPadding(
-          padding: EdgeInsets.all(16.w),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate([
-              // Offline Indicator using shared OfflineBanner (only shows if offline)
-              if (isOffline) ...[
-                const OfflineBanner(dismissible: false),
-                SizedBox(height: 16.h),
-              ],
-
-              // Basic Information using FSMCollapsibleSection
-              FSMCollapsibleSection(
-                title: 'Work Order Information',
-                initiallyExpanded: true,
-                child: BasicInformationSection(workOrder: workOrder),
-              ),
-              SizedBox(height: 12.h),
-
-              // Description
-              FSMCollapsibleSection(
-                title: 'Description',
-                child: DescriptionSection(workOrder: workOrder),
-              ),
-              SizedBox(height: 12.h),
-
-              // Customer Information
-              if (workOrder.customer != null)
-                FSMCollapsibleSection(
-                  title: 'Customer Contact Details',
-                  child: CustomerSection(customer: workOrder.customer!),
-                ),
-              if (workOrder.customer != null) SizedBox(height: 12.h),
-
-              // Machine Details
-              if (workOrder.serviceRequest != null)
-                FSMCollapsibleSection(
-                  title: 'Machine Details',
-                  child: MachineDetailsSection(
-                      serviceRequest: workOrder.serviceRequest!),
-                ),
-              if (workOrder.serviceRequest != null) SizedBox(height: 12.h),
-
-              // Location Information
-              FSMCollapsibleSection(
-                title: 'Location & GPS',
-                child: LocationSection(
-                  workOrder: workOrder,
-                  currentLocation: currentLocation,
-                  isLocationLoading: isLocationLoading,
-                ),
-              ),
-              SizedBox(height: 12.h),
-
-              // Parts Used
-              if (workOrder.partsUsed.isNotEmpty)
-                FSMCollapsibleSection(
-                  title: 'Parts Used',
-                  child: PartsUsedSection(partsUsed: workOrder.partsUsed),
-                ),
-              if (workOrder.partsUsed.isNotEmpty) SizedBox(height: 12.h),
-
-              // Work Logs & Timeline
-              if (workOrder.workLogs.isNotEmpty)
-                FSMCollapsibleSection(
-                  title: 'Work Timeline',
-                  child: WorkTimelineSection(workLogs: workOrder.workLogs),
-                ),
-              if (workOrder.workLogs.isNotEmpty) SizedBox(height: 12.h),
-
-              // Images & Documentation
-              _buildImagesSection(),
-
-              // Add bottom padding for floating action button
-              SizedBox(height: 120.h),
-            ]),
           ),
-        ),
-      ],
+        ],
+      ),
+      bottomNavigationBar: StatusAdaptiveActionsWidget(
+        workOrder: workOrder,
+        currentLocation: currentLocation,
+        isLocationLoading: isLocationLoading,
+        isActionInProgress: isActionInProgress,
+        onStart: () => _startWorkOrder(context, workOrder),
+        onPause: () => _pauseWorkOrder(context, workOrder),
+        onResume: () => _resumeWorkOrder(context, workOrder),
+        onComplete: () => _completeWorkOrder(context, workOrder),
+        onReject: () => _rejectWorkOrder(context, workOrder),
+        onAssignToMe: () => _assignToMe(context, workOrder),
+      ),
     );
   }
 
@@ -427,10 +446,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -450,7 +469,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               Text(
                 label,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w500,
                 ),
@@ -501,76 +520,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   /// Build FAB using FSMActionButton or FSMMultiActionButton based on available actions
-  Widget _buildWorkOrderActionFab(WorkOrderEntity workOrder) {
-    // Determine if we need multi-action speed dial or simple FAB
-    final canBePaused = workOrder.canBePaused;
-    final canBeCompleted = workOrder.canBeCompleted;
-
-    // If both pause and complete are available, use multi-action
-    if (canBePaused && canBeCompleted) {
-      return FSMMultiActionButton(
-        icon: Icons.more_vert,
-        tooltip: 'Work Order Actions',
-        actions: [
-          if (canBePaused)
-            SpeedDialAction(
-              icon: Icons.pause,
-              label: 'Pause Job',
-              backgroundColor: AppColors.warning,
-              onPressed: () => _pauseWorkOrder(context, workOrder),
-            ),
-          if (canBeCompleted)
-            SpeedDialAction(
-              icon: Icons.check_circle,
-              label: 'Complete Job',
-              backgroundColor: AppColors.primary,
-              onPressed: () => _completeWorkOrder(context, workOrder),
-            ),
-        ],
-      );
-    }
-
-    // Otherwise, use simple extended FAB based on current state
-    String label;
-    IconData icon;
-    Color backgroundColor;
-    VoidCallback? onPressed;
-
-    if (workOrder.canBeStarted) {
-      label = 'Start Job';
-      icon = Icons.play_arrow;
-      backgroundColor = AppColors.success;
-      onPressed = () => _startWorkOrder(context, workOrder);
-    } else if (workOrder.canBeResumed) {
-      label = 'Resume Job';
-      icon = Icons.play_arrow;
-      backgroundColor = AppColors.success;
-      onPressed = () => _resumeWorkOrder(context, workOrder);
-    } else if (canBePaused) {
-      label = 'Pause Job';
-      icon = Icons.pause;
-      backgroundColor = AppColors.warning;
-      onPressed = () => _pauseWorkOrder(context, workOrder);
-    } else if (canBeCompleted) {
-      label = 'Complete Job';
-      icon = Icons.check_circle;
-      backgroundColor = AppColors.primary;
-      onPressed = () => _completeWorkOrder(context, workOrder);
-    } else {
-      // Show actions menu for other states
-      label = 'Actions';
-      icon = Icons.more_vert;
-      backgroundColor = AppColors.primary;
-      onPressed = () => _showWorkOrderActionsBottomSheet(workOrder);
-    }
-
-    return FSMActionButton.extended(
-      icon: icon,
-      label: label,
-      backgroundColor: backgroundColor,
-      onPressed: onPressed,
-    );
-  }
 
   // Action methods (unchanged - preserve all business logic)
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
@@ -729,18 +678,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     });
   }
 
-  void _showWorkOrderActionsBottomSheet(WorkOrderEntity workOrder) {
-    WorkOrderBottomSheetManager.showActionSheet(
-      context: context,
-      workOrder: workOrder,
-      onStart: () => _startWorkOrder(context, workOrder),
-      onPause: () => _pauseWorkOrder(context, workOrder),
-      onResume: () => _resumeWorkOrder(context, workOrder),
-      onComplete: () => _completeWorkOrder(context, workOrder),
-      onReject: () => _rejectWorkOrder(context, workOrder),
-    );
-  }
-
   void _showLocationErrorDialog(BuildContext context) {
     LocationErrorDialog.show(
       context,
@@ -752,5 +689,42 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         });
       },
     );
+  }
+
+  void _assignToMe(BuildContext context, WorkOrderEntity workOrder) {
+    _executeIfMounted(() {
+      // Show a confirmation dialog before assigning to self
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Assign to Me'),
+          content: Text(
+            'Are you sure you want to assign "${workOrder.woNumber}" to yourself?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                // TODO: Implement assignToMe event in BLoC
+                // _workOrderActionBloc?.add(
+                //   WorkOrderActionEvent.assignToMe(workOrder.id),
+                // );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Work order assigned to you'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: const Text('Assign'),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

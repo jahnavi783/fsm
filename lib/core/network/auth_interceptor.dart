@@ -148,7 +148,7 @@ class AuthInterceptor extends Interceptor {
       if (response.statusCode == 200) {
         final data = response.data;
         await _localDataSource.saveTokens(
-          accessToken: data['access_token'],
+          accessToken: data['accessToken'],
           refreshToken: refreshToken
         );
         _loggingService.info(

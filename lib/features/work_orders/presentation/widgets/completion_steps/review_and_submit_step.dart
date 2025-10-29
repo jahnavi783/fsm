@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:image_picker/image_picker.dart';
@@ -264,13 +265,13 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
               color: widget.hasSignature
-                  ? AppColors.success.withOpacity(0.05)
-                  : theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  ? AppColors.success.withValues(alpha: 0.05)
+                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(
                 color: widget.hasSignature
                     ? AppColors.success
-                    : AppColors.outline.withOpacity(0.3),
+                    : AppColors.outline.withValues(alpha: 0.3),
                 width: widget.hasSignature ? 2 : 1,
               ),
             ),
@@ -283,7 +284,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(
-                      color: AppColors.outline.withOpacity(0.2),
+                      color: AppColors.outline.withValues(alpha: 0.2),
                     ),
                   ),
                   child: ClipRRect(
@@ -295,8 +296,10 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                       minimumStrokeWidth: 1.5,
                       maximumStrokeWidth: 3.5,
                       onDrawStart: () {
-                        widget.onSignatureDrawn();
-                        return true;
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          widget.onSignatureDrawn();
+                        });
+                        return false; // Allow drawing to start
                       },
                     ),
                   ),
@@ -334,14 +337,14 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                           Icon(
                             Icons.info_outline,
                             size: 18.sp,
-                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                           SizedBox(width: 8.w),
                           Text(
                             'Draw signature above',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                             ),
                           ),
                         ],
@@ -388,7 +391,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withOpacity(0.3),
+                  color: AppColors.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -435,10 +438,10 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             Container(
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.05),
+                color: AppColors.primary.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
-                  color: AppColors.primary.withOpacity(0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -492,7 +495,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                             '• ${part.part.partName} (Qty: ${part.quantityController.text})',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                           ),
                         )),
@@ -550,7 +553,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
               Icon(
                 Icons.info_outline,
                 size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               SizedBox(width: 8.w),
               Expanded(
@@ -558,7 +561,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   'Location, customer name, and signature are required to submit',
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontStyle: FontStyle.italic,
                   ),
                 ),

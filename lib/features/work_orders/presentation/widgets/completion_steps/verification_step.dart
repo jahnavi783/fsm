@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:fsm/core/theme/app_colors.dart';
@@ -117,13 +118,13 @@ class _VerificationStepState extends State<VerificationStep> {
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
             color: widget.hasSignature
-                ? AppColors.success.withOpacity(0.05)
-                : theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                ? AppColors.success.withValues(alpha: 0.05)
+                : theme.colorScheme.surfaceVariant.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
               color: widget.hasSignature
                   ? AppColors.success
-                  : AppColors.outline.withOpacity(0.3),
+                  : AppColors.outline.withValues(alpha: 0.3),
               width: widget.hasSignature ? 2 : 1,
             ),
           ),
@@ -136,7 +137,7 @@ class _VerificationStepState extends State<VerificationStep> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: AppColors.outline.withOpacity(0.2),
+                    color: AppColors.outline.withValues(alpha: 0.2),
                   ),
                 ),
                 child: ClipRRect(
@@ -148,8 +149,10 @@ class _VerificationStepState extends State<VerificationStep> {
                     minimumStrokeWidth: 1.5,
                     maximumStrokeWidth: 3.5,
                     onDrawStart: () {
-                      widget.onSignatureDrawn();
-                      return true;
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        widget.onSignatureDrawn();
+                      });
+                      return false; // Allow drawing to start
                     },
                   ),
                 ),
@@ -187,14 +190,14 @@ class _VerificationStepState extends State<VerificationStep> {
                         Icon(
                           Icons.info_outline,
                           size: 18.sp,
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
                         SizedBox(width: 8.w),
                         Text(
                           'Draw signature above',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
                       ],
@@ -241,7 +244,7 @@ class _VerificationStepState extends State<VerificationStep> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(
-                color: AppColors.outline.withOpacity(0.3),
+                color: AppColors.outline.withValues(alpha: 0.3),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -263,7 +266,7 @@ class _VerificationStepState extends State<VerificationStep> {
             Icon(
               Icons.info_outline,
               size: 16.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
             SizedBox(width: 8.w),
             Expanded(
@@ -271,7 +274,7 @@ class _VerificationStepState extends State<VerificationStep> {
                 'Customer signature is required to complete the work order',
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   fontStyle: FontStyle.italic,
                 ),
               ),

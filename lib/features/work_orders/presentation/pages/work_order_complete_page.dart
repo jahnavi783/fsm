@@ -1,31 +1,31 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/di/injection.dart';
+import 'package:fsm/core/services/logging_service.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
+import 'package:fsm/features/parts/domain/entities/part_entity.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_completion_cache_model.dart';
+import 'package:fsm/features/work_orders/data/services/work_order_completion_cache_service.dart';
+import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
+import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
+import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/di/injection.dart';
-import 'package:fsm/core/services/logging_service.dart';
-import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
-import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
-import 'package:fsm/features/parts/domain/entities/part_entity.dart';
-import 'package:fsm/features/work_orders/data/services/work_order_completion_cache_service.dart';
-import 'package:fsm/features/work_orders/data/models/work_order_completion_cache_model.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
-
-import '../widgets/completion_steps/work_and_parts_step.dart';
 import '../widgets/completion_steps/images_step.dart';
 import '../widgets/completion_steps/review_and_submit_step.dart';
+import '../widgets/completion_steps/work_and_parts_step.dart';
 
 /// Dedicated page for multi-step work order completion
 /// Step 1: Work Log + Parts Used (with multi-select)
@@ -188,7 +188,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
       setState(() {
         _isInitialized = true;
       });
-      LoggingService.logError('Error loading cache', tag: 'WorkOrderCompletePage', error: e);
+      LoggingService.logError('Error loading cache',
+          tag: 'WorkOrderCompletePage', error: e);
     }
   }
 
@@ -249,7 +250,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
 
       await _cacheService.saveCache(cache);
     } catch (e) {
-      LoggingService.logError('Error saving cache', tag: 'WorkOrderCompletePage', error: e);
+      LoggingService.logError('Error saving cache',
+          tag: 'WorkOrderCompletePage', error: e);
     }
   }
 
@@ -475,7 +477,9 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
               if (!mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(message.isNotEmpty ? message : 'Work order completed successfully'),
+                  content: Text(message.isNotEmpty
+                      ? message
+                      : 'Work order completed successfully'),
                   backgroundColor: AppColors.success,
                 ),
               );
@@ -519,48 +523,73 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                 Container(
                   padding: EdgeInsets.all(20.w),
                   color: theme.scaffoldBackgroundColor,
-                  child: EasyStepper(
-                    activeStep: _activeStep,
-                    lineStyle: const LineStyle(
-                      lineLength: 80,
-                      lineThickness: 2,
-                      lineSpace: 4,
-                      lineType: LineType.normal,
-                      unreachedLineColor: Colors.grey,
-                      finishedLineColor: AppColors.success,
-                      activeLineColor: AppColors.primary,
-                    ),
-                    activeStepBorderColor: AppColors.primary,
-                    activeStepIconColor: AppColors.primary,
-                    activeStepTextColor: AppColors.primary,
-                    finishedStepBorderColor: AppColors.success,
-                    finishedStepIconColor: AppColors.success,
-                    finishedStepTextColor: AppColors.success,
-                    internalPadding: 8,
-                    showLoadingAnimation: false,
-                    stepRadius: 24,
-                    showStepBorder: true,
-                    steps: [
-                      EasyStep(
-                        icon: const Icon(Icons.edit_note),
-                        title: 'Work & Parts',
-                        lineText: 'Step 1/3',
-                      ),
-                      EasyStep(
-                        icon: const Icon(Icons.photo_camera),
-                        title: 'Images',
-                        lineText: 'Step 2/3',
-                      ),
-                      EasyStep(
-                        icon: const Icon(Icons.how_to_reg),
-                        title: 'Review',
-                        lineText: 'Step 3/3',
-                      ),
-                    ],
-                    onStepReached: (index) {
-                      setState(() {
-                        _activeStep = index;
-                      });
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Responsive values based on screen width
+                      final screenWidth = MediaQuery.of(context).size.width;
+                      final isSmallScreen = screenWidth < 360;
+                      
+                      // Calculate line length based on available width
+                      final lineLength = (constraints.maxWidth - (3 * 48.w) - 40.w) / 2;
+                      
+                      return EasyStepper(
+                        activeStep: _activeStep,
+                        lineStyle: LineStyle(
+                          lineLength: lineLength.clamp(40.0, 100.0),
+                          lineThickness: 2.h,
+                          lineSpace: isSmallScreen ? 2 : 4,
+                          lineType: LineType.normal,
+                          unreachedLineColor: Colors.grey,
+                          finishedLineColor: AppColors.success,
+                          activeLineColor: AppColors.onPrimary,
+                        ),
+                        activeStepBorderColor: AppColors.primary,
+                        activeStepIconColor: AppColors.primary,
+                        activeStepTextColor: AppColors.primary,
+                        finishedStepBorderColor: AppColors.primary,
+                        finishedStepIconColor: AppColors.onPrimary,
+                        finishedStepTextColor: AppColors.primary,
+                        internalPadding: isSmallScreen ? 4 : 8,
+                        showLoadingAnimation: false,
+                        stepRadius: isSmallScreen ? 20.r : 24.r,
+                        showStepBorder: true,
+                        stepShape: StepShape.circle,
+                        stepBorderRadius: isSmallScreen ? 20.r : 24.r,
+                        borderThickness: 2.w,
+                        padding: EdgeInsets.zero,
+                        enableStepTapping: false,
+                        steps: [
+                          EasyStep(
+                            icon: Icon(
+                              Icons.edit_note,
+                              size: isSmallScreen ? 18.sp : 20.sp,
+                            ),
+                            title: 'Work & Parts',
+                            topTitle: true,
+                          ),
+                          EasyStep(
+                            icon: Icon(
+                              Icons.photo_camera,
+                              size: isSmallScreen ? 18.sp : 20.sp,
+                            ),
+                            title: 'Images',
+                            topTitle: true,
+                          ),
+                          EasyStep(
+                            icon: Icon(
+                              Icons.how_to_reg,
+                              size: isSmallScreen ? 18.sp : 20.sp,
+                            ),
+                            title: 'Review',
+                            topTitle: true,
+                          ),
+                        ],
+                        onStepReached: (index) {
+                          setState(() {
+                            _activeStep = index;
+                          });
+                        },
+                      );
                     },
                   ),
                 ),
@@ -724,9 +753,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                     ? () => _nextStep()
                     : () => _completeWorkOrder(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _activeStep < 2
-                  ? AppColors.primary
-                  : AppColors.success,
+              backgroundColor:
+                  _activeStep < 2 ? AppColors.primary : AppColors.success,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(

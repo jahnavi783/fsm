@@ -437,7 +437,7 @@ class _DocumentsViewRedesignState extends State<DocumentsViewRedesign> {
   }
 
   void _openDocument(BuildContext context, DocumentEntity document) {
-    context.router.pushNamed('/document/${document.id}');
+    context.router.pushPath('/document/${document.id}');
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {

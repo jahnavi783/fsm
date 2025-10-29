@@ -102,6 +102,8 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
       await _videoPlayerController!.initialize();
 
+      if (!mounted) return;
+      final primaryColor = Theme.of(context).colorScheme.primary;
       _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController!,
         autoPlay: true,
@@ -110,10 +112,10 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         allowMuting: true,
         showControls: true,
         materialProgressColors: ChewieProgressColors(
-            playedColor: Theme.of(context).colorScheme.primary,
-            handleColor: Theme.of(context).colorScheme.primary,
+            playedColor: primaryColor,
+            handleColor: primaryColor,
             backgroundColor: Colors.grey,
-            bufferedColor: Theme.of(context).colorScheme.primary),
+            bufferedColor: primaryColor),
       );
 
       if (mounted) {

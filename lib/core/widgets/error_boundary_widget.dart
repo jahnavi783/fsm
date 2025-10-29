@@ -123,7 +123,7 @@ class DefaultErrorWidget extends StatelessWidget {
           Text(
             message ?? _getErrorMessage(error),
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),
@@ -206,13 +206,13 @@ class EmptyStateWidget extends StatelessWidget {
           Icon(
             icon ?? Icons.inbox_outlined,
             size: 64.w,
-            color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
+            color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
           ),
           SizedBox(height: 16.h),
           Text(
             title,
             style: theme.textTheme.headlineSmall?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),
@@ -220,7 +220,7 @@ class EmptyStateWidget extends StatelessWidget {
           Text(
             message,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.5),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
             ),
             textAlign: TextAlign.center,
           ),

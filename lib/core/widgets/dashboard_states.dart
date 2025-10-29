@@ -49,18 +49,18 @@ class EmptyState extends StatelessWidget {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                color.withOpacity(0.08),
-                                color.withOpacity(0.15),
+                                color.withValues(alpha: 0.08),
+                                color.withValues(alpha: 0.15),
                               ],
                             ),
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: color.withOpacity(0.2),
+                              color: color.withValues(alpha: 0.2),
                               width: 2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: color.withOpacity(0.1),
+                                color: color.withValues(alpha: 0.1),
                                 blurRadius: 16,
                                 offset: const Offset(0, 6),
                               ),
@@ -121,7 +121,7 @@ class EmptyState extends StatelessWidget {
                       backgroundColor: color,
                       foregroundColor: Colors.white,
                       elevation: 6,
-                      shadowColor: color.withOpacity(0.3),
+                      shadowColor: color.withValues(alpha: 0.3),
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 10.h),
                       shape: RoundedRectangleBorder(
@@ -170,13 +170,13 @@ class ErrorState extends StatelessWidget {
                   padding: EdgeInsets.all(20.w),
                   decoration: BoxDecoration(
                     color: isOffline
-                        ? Colors.orange.withOpacity(0.1)
-                        : Colors.red.withOpacity(0.1),
+                        ? Colors.orange.withValues(alpha: 0.1)
+                        : Colors.red.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isOffline
-                          ? Colors.orange.withOpacity(0.2)
-                          : Colors.red.withOpacity(0.2),
+                          ? Colors.orange.withValues(alpha: 0.2)
+                          : Colors.red.withValues(alpha: 0.2),
                       width: 2,
                     ),
                   ),
@@ -288,19 +288,19 @@ class LoadingState extends StatelessWidget {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                const Color(0xFF116587).withOpacity(0.08),
-                                const Color(0xFF116587).withOpacity(0.15),
+                                const Color(0xFF116587).withValues(alpha: 0.08),
+                                const Color(0xFF116587).withValues(alpha: 0.15),
                               ],
                             ),
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF116587).withOpacity(0.2),
+                              color: const Color(0xFF116587).withValues(alpha: 0.2),
                               width: 2,
                             ),
                             boxShadow: [
                               BoxShadow(
                                 color:
-                                    const Color(0xFF116587).withOpacity(0.15),
+                                    const Color(0xFF116587).withValues(alpha: 0.15),
                                 blurRadius: 16,
                                 offset: const Offset(0, 6),
                               ),

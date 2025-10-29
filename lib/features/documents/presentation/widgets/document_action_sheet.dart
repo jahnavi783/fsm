@@ -225,7 +225,7 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
         side: BorderSide(
           color: isSelected
               ? theme.colorScheme.primary
-              : theme.colorScheme.outline.withOpacity(0.3),
+              : theme.colorScheme.outline.withValues(alpha: 0.3),
         ),
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       ),
@@ -244,13 +244,13 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
             Icon(
               Icons.search_off,
               size: 64.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.3),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
             ),
             SizedBox(height: 16.h),
             Text(
               'No documents found',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 fontSize: 16.sp,
               ),
             ),
@@ -258,7 +258,7 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
             Text(
               'Try adjusting your search or filters',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,

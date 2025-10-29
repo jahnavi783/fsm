@@ -1,16 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:fsm/core/router/app_router.dart';
+
 import '../../../../core/di/injection.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../../core/widgets/fsm_card.dart';
+import '../../../../core/widgets/fsm_empty_state.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
 import '../blocs/parts/parts_state.dart';
-import '../widgets/part_card.dart';
-import '../widgets/parts_search_bar.dart';
-import '../widgets/parts_filter_chips.dart';
+import '../widgets/part_list_card.dart';
+import '../widgets/quick_stats_bar.dart';
 
 @RoutePage()
 class PartsPage extends StatefulWidget {
@@ -45,11 +46,30 @@ class _PartsPageViewState extends State<_PartsPageView>
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
 
+  // Category tabs
+  final List<String> _categories = [
+    'All',
+    'Electrical',
+    'Hydraulic',
+    'Mechanical',
+    'Tools'
+  ];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _categories.length, vsync: this);
     _scrollController.addListener(_onScroll);
+
+    // Listen to tab changes
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        final category = _tabController.index == 0
+            ? null
+            : _categories[_tabController.index];
+        context.read<PartsBloc>().add(PartsEvent.filterByCategory(category));
+      }
+    });
   }
 
   @override
@@ -76,40 +96,12 @@ class _PartsPageViewState extends State<_PartsPageView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: FSMAppBar.gradient(
-        title: 'Parts Management',
-        subtitle: 'Inventory & Stock Management',
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.h),
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF1976D2), Color(0xFF42A5F5)],
-              ),
-            ),
-            child: TabBar(
-              controller: _tabController,
-              indicatorColor: Colors.white,
-              indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              labelStyle: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-              ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              tabs: const [
-                Tab(text: 'All Parts'),
-                Tab(text: 'Low Stock'),
-                Tab(text: 'Inventory'),
-              ],
-            ),
-          ),
+      appBar: FSMAppBar(
+        title: 'Parts',
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabs: _categories.map((category) => Tab(text: category)).toList(),
         ),
       ),
       body: BlocConsumer<PartsBloc, PartsState>(
@@ -126,62 +118,32 @@ class _PartsPageViewState extends State<_PartsPageView>
         builder: (context, state) {
           return Column(
             children: [
-              // Summary cards
-              _buildSummaryCards(state),
-
-              // Search and filters
-              if (_tabController.index == 0) ...[
-                PartsSearchBar(
-                  initialQuery: state.searchQuery,
-                  onChanged: (query) {
-                    if (query.isEmpty) {
-                      context
-                          .read<PartsBloc>()
-                          .add(const PartsEvent.clearSearch());
-                    }
-                  },
-                  onSubmitted: (query) {
-                    context
-                        .read<PartsBloc>()
-                        .add(PartsEvent.searchParts(query: query));
-                  },
-                  onClear: () {
-                    context
-                        .read<PartsBloc>()
-                        .add(const PartsEvent.clearSearch());
-                  },
-                ),
-                PartsFilterChips(
-                  categories: state.categories,
-                  selectedCategory: state.selectedCategory,
-                  selectedStatus: state.selectedStatus,
-                  onCategoryChanged: (category) {
-                    context
-                        .read<PartsBloc>()
-                        .add(PartsEvent.filterByCategory(category));
-                  },
-                  onStatusChanged: (status) {
-                    context
-                        .read<PartsBloc>()
-                        .add(PartsEvent.filterByStatus(status));
-                  },
-                  onClearFilters: () {
-                    context.read<PartsBloc>()
-                      ..add(const PartsEvent.filterByCategory(null))
-                      ..add(const PartsEvent.filterByStatus(null));
-                  },
-                ),
-              ],
+              // Quick Stats Bar
+              QuickStatsBar(
+                totalParts: state.parts.length,
+                inStock: state.parts.where((p) => p.isInStock).length,
+                lowStock: state.lowStockCount,
+                isLoading: state.isLoading && state.parts.isEmpty,
+                onTotalTap: () {
+                  _tabController.animateTo(0);
+                },
+                onInStockTap: () {
+                  // Navigate to All tab - stock level filtering not yet implemented in BLoC
+                  _tabController.animateTo(0);
+                },
+                onLowStockTap: () {
+                  // Navigate to All tab - stock level filtering not yet implemented in BLoC
+                  _tabController.animateTo(0);
+                },
+              ),
 
               // Content
               Expanded(
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
-                    _buildAllPartsTab(state),
-                    _buildLowStockTab(state),
-                    _buildInventoryTab(state),
-                  ],
+                  children: _categories
+                      .map((category) => _buildPartsTab(state, category))
+                      .toList(),
                 ),
               ),
             ],
@@ -191,125 +153,26 @@ class _PartsPageViewState extends State<_PartsPageView>
     );
   }
 
-  Widget _buildSummaryCards(PartsState state) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(16.w),
-      child: Row(
-        children: [
-          Expanded(
-            child: FSMCard(
-              padding: EdgeInsets.all(12.w),
-              child: _buildSummaryCardContent(
-                title: 'Total Parts',
-                value: state.parts.length.toString(),
-                icon: Icons.inventory_2,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: FSMCard(
-              padding: EdgeInsets.all(12.w),
-              child: _buildSummaryCardContent(
-                title: 'Low Stock',
-                value: state.lowStockCount.toString(),
-                icon: Icons.warning,
-                color: Colors.orange,
-              ),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: FSMCard(
-              padding: EdgeInsets.all(12.w),
-              child: _buildSummaryCardContent(
-                title: 'Out of Stock',
-                value: state.outOfStockCount.toString(),
-                icon: Icons.error,
-                color: Colors.red,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSummaryCardContent({
-    required String title,
-    required String value,
-    required IconData icon,
-    required Color color,
-  }) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 24.sp,
-          color: color,
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAllPartsTab(PartsState state) {
+  Widget _buildPartsTab(PartsState state, String category) {
     if (state.isLoading && state.parts.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (state.parts.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.inventory_2_outlined,
-              size: 64.sp,
-              color: Colors.grey[400],
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'No parts found',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            if (state.hasFilters) ...[
-              SizedBox(height: 8.h),
-              TextButton(
-                onPressed: () {
-                  context.read<PartsBloc>()
-                    ..add(const PartsEvent.clearSearch())
-                    ..add(const PartsEvent.filterByCategory(null))
-                    ..add(const PartsEvent.filterByStatus(null));
-                },
-                child: const Text('Clear filters'),
-              ),
-            ],
-          ],
-        ),
+      return FSMEmptyState.noData(
+        title: 'No Parts Found',
+        description: category == 'All'
+            ? 'No parts available in the inventory.'
+            : 'No $category parts found in the inventory.',
+        actionLabel: state.hasFilters ? 'Clear Filters' : null,
+        onAction: state.hasFilters
+            ? () {
+                context.read<PartsBloc>()
+                  ..add(const PartsEvent.clearSearch())
+                  ..add(const PartsEvent.filterByCategory(null))
+                  ..add(const PartsEvent.filterByStatus(null));
+              }
+            : null,
       );
     }
 
@@ -332,108 +195,28 @@ class _PartsPageViewState extends State<_PartsPageView>
           }
 
           final part = state.parts[index];
-          return PartCard(
+          return PartListCard(
             part: part,
+            location:
+                'Warehouse A', // TODO: Add actual location from part entity
             onTap: () {
-              // TODO: Navigate to part details
+              // Navigate to part details
+              context.router.navigateToPart(part.partNumber);
             },
-            onUpdateInventory: () {
-              _showInventoryUpdateForm(context, part);
+            onReserve: () {
+              // TODO: Implement reserve functionality
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Reserved ${part.partName}'),
+                ),
+              );
+            },
+            onDetails: () {
+              // Navigate to part details
+              context.router.navigateToPart(part.partNumber);
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildLowStockTab(PartsState state) {
-    if (state.lowStockParts.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle_outline,
-              size: 64.sp,
-              color: Colors.green[400],
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'No low stock parts',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'All parts are adequately stocked',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[500],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      itemCount: state.lowStockParts.length,
-      itemBuilder: (context, index) {
-        final part = state.lowStockParts[index];
-        return PartCard(
-          part: part,
-          onTap: () {
-            // TODO: Navigate to part details
-          },
-          onUpdateInventory: () {
-            _showInventoryUpdateForm(context, part);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildInventoryTab(PartsState state) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.construction,
-            size: 64.sp,
-            color: Colors.grey[400],
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            'Inventory Management',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            'Coming soon...',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[500],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showInventoryUpdateForm(BuildContext context, part) {
-    // TODO: Implement inventory update form
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Inventory update feature coming soon'),
       ),
     );
   }

@@ -54,7 +54,7 @@ class _CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -67,7 +67,7 @@ class _CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
             color: const Color(0xFF116587),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF116587).withOpacity(0.3),
+                color: const Color(0xFF116587).withValues(alpha: 0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

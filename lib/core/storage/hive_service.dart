@@ -4,6 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import '../constants/app_constants.dart';
+import '../services/logging_service.dart';
+import '../di/injection.dart';
 import '../constants/hive_boxes.dart';
 import '../../features/work_orders/data/models/work_order_hive_model.dart';
 import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
@@ -17,15 +19,16 @@ import '../../features/parts/data/models/part_hive_model.dart' as parts;
 class HiveService {
   late Box _authBox;
   late Box _settingsBox;
+  final LoggingService _loggingService;
 
   @factoryMethod
   static Future<HiveService> create() async {
-    final service = HiveService._();
+    final service = HiveService._(getIt<LoggingService>());
     await service._init();
     return service;
   }
 
-  HiveService._();
+  HiveService._(this._loggingService);
 
   Future<void> _init() async {
     // Initialize Hive CE with proper path
@@ -98,7 +101,7 @@ class HiveService {
       }
     } catch (e) {
       // Log adapter registration errors but don't crash the app
-      print('Error registering Hive adapters: $e');
+      _loggingService.error('Error registering Hive adapters: $e', error: e);
       rethrow;
     }
   }
@@ -119,7 +122,7 @@ class HiveService {
       await Hive.openBox<ProfilePreferencesHiveModel>(
           HiveBoxes.profilePreferences);
     } catch (e) {
-      print('Error opening feature boxes: $e');
+      _loggingService.error('Error opening feature boxes: $e', error: e);
       rethrow;
     }
   }
@@ -174,7 +177,7 @@ class HiveService {
       }
       return await Hive.openBox(boxName);
     } catch (e) {
-      print('Error getting box $boxName: $e');
+      _loggingService.error('Error getting box $boxName: $e', error: e);
       rethrow;
     }
   }
@@ -187,7 +190,7 @@ class HiveService {
       }
       return await Hive.openBox<T>(boxName);
     } catch (e) {
-      print('Error getting typed box $boxName: $e');
+      _loggingService.error('Error getting typed box $boxName: $e', error: e);
       rethrow;
     }
   }
@@ -198,17 +201,17 @@ class HiveService {
         await Hive.box(boxName).close();
       }
     } catch (e) {
-      print('Error closing box $boxName: $e');
+      _loggingService.error('Error closing box $boxName: $e', error: e);
       rethrow;
     }
   }
 
   Future<void> clearBox(String boxName) async {
     try {
-      final box = await getBox(boxName);
+      final box = Hive.box(boxName);
       await box.clear();
     } catch (e) {
-      print('Error clearing box $boxName: $e');
+      _loggingService.error('Error clearing box $boxName: $e', error: e);
       rethrow;
     }
   }
@@ -217,7 +220,7 @@ class HiveService {
     try {
       await Hive.close();
     } catch (e) {
-      print('Error closing all boxes: $e');
+      _loggingService.error('Error closing all boxes: $e', error: e);
       rethrow;
     }
   }

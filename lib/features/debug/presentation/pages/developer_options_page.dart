@@ -148,7 +148,7 @@ class DeveloperOptionsPage extends StatelessWidget {
                 description: 'Test and demonstrate the logging service',
                 icon: Icons.assignment,
                 onTap: () {
-                  context.router.pushNamed('/logging-demo');
+                  context.router.pushPath('/logging-demo');
                 },
               ),
               SizedBox(height: 16.h),

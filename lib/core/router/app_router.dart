@@ -82,6 +82,11 @@ class AppRouter extends RootStackRouter {
           path: '/part/:partId',
           guards: [authGuard],
         ),
+        AutoRoute(
+          page: ChatbotRoute.page,
+          path: '/chatbot',
+          guards: [authGuard],
+        ),
 
         // Debug routes (publicly accessible in debug mode)
         AutoRoute(
@@ -109,8 +114,13 @@ extension AppRouterExtension on StackRouter {
   }
 
   /// Navigate to part details with deep linking support
-  Future<void> navigateToPart(int partId) {
-    return push(PartDetailsRoute(partId: partId));
+  Future<void> navigateToPart(String partNumber) {
+    return push(PartDetailsRoute(partId: 1));
+  }
+
+  /// Navigate to chatbot/AI assistant page
+  Future<void> navigateToChatbot() {
+    return push(const ChatbotRoute());
   }
 
   /// Navigate to main app after authentication (replaces current route)

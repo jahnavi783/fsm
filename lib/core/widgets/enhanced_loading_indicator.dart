@@ -41,7 +41,7 @@ class EnhancedLoadingIndicator extends StatelessWidget {
           width: 200.w,
           child: LinearProgressIndicator(
             color: effectiveColor,
-            backgroundColor: effectiveColor.withOpacity(0.2),
+            backgroundColor: effectiveColor.withValues(alpha: 0.2),
           ),
         );
         break;
@@ -68,7 +68,7 @@ class EnhancedLoadingIndicator extends StatelessWidget {
           Text(
             message!,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+              color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           ),
@@ -194,7 +194,7 @@ class _PulseLoadingIndicatorState extends State<_PulseLoadingIndicator>
           width: widget.size,
           height: widget.size,
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(_animation.value),
+            color: widget.color.withValues(alpha: _animation.value),
             shape: BoxShape.circle,
           ),
         );

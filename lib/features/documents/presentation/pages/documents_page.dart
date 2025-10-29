@@ -361,7 +361,7 @@ class _DocumentsViewState extends State<DocumentsView> {
             Icon(
               state.isSearchMode ? Icons.search_off : Icons.description,
               size: 64.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.3),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
             ),
             SizedBox(height: 16.h),
             Text(
@@ -369,7 +369,7 @@ class _DocumentsViewState extends State<DocumentsView> {
                   ? 'No documents found for "${state.searchQuery}"'
                   : 'No documents available',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 fontSize: 16.sp,
               ),
               textAlign: TextAlign.center,
@@ -380,7 +380,7 @@ class _DocumentsViewState extends State<DocumentsView> {
                   ? 'Try adjusting your search terms or filters'
                   : 'Documents will appear here when available',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -393,7 +393,7 @@ class _DocumentsViewState extends State<DocumentsView> {
 
   void _openDocument(BuildContext context, DocumentEntity document) {
     // Navigate to document viewer
-    context.router.pushNamed('/document/${document.id}');
+    context.router.pushPath('/document/${document.id}');
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {

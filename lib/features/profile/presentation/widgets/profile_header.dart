@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/profile_entity.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -16,33 +19,30 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(
+        vertical: AppDimensions.paddingLarge * 2,
+        horizontal: AppDimensions.paddingLarge,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.grey[800]!,
-            Colors.grey[700]!,
+            AppColors.primary,
+            AppColors.primary,
           ],
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.r),
-          topRight: Radius.circular(16.r),
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              _buildAvatar(),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: _buildUserInfo(),
-              ),
-              // if (onEditPressed != null) _buildEditButton(),
-            ],
-          ),
+          // Centered Avatar
+          _buildAvatar(),
+
+          SizedBox(height: AppDimensions.spaceMedium),
+
+          // User Info - Centered
+          _buildUserInfo(),
         ],
       ),
     );
@@ -55,23 +55,29 @@ class ProfileHeader extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Colors.white,
-          width: 2.w,
+          color: AppColors.white,
+          width: 3.w,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black.withValues(alpha: 0.2),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: CircleAvatar(
         radius: 38.r,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         backgroundImage: profile.profileImageUrl != null
             ? NetworkImage(profile.profileImageUrl!)
             : null,
         child: profile.profileImageUrl == null
             ? Text(
                 profile.initials,
-                style: TextStyle(
-                  fontSize: 28.sp,
+                style: AppTextStyles.headlineMedium.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+                  color: AppColors.primary,
                 ),
               )
             : null,
@@ -81,45 +87,54 @@ class ProfileHeader extends StatelessWidget {
 
   Widget _buildUserInfo() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
+        // Name
         Text(
           profile.fullName,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+          style: AppTextStyles.headlineSmall.copyWith(
+            fontWeight: FontWeight.w700,
+            color: AppColors.white,
           ),
+          textAlign: TextAlign.center,
         ),
-        SizedBox(height: 4.h),
+
+        SizedBox(height: AppDimensions.spaceXSmall),
+
+        // Role
         if (profile.role != null)
           Text(
             profile.role!,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[300],
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.white.withValues(alpha: 0.9),
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+        // Employee ID (if available)
+        if (profile.id != null) ...[
+          SizedBox(height: AppDimensions.spaceXSmall),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppDimensions.paddingSmall,
+              vertical: AppDimensions.paddingXSmall / 2,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.white.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
+            ),
+            child: Text(
+              'ID: ${profile.id}',
+              style: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        SizedBox(height: 4.h),
-        Text(
-          profile.email,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: Colors.grey[400],
-          ),
-        ),
+        ],
       ],
     );
   }
-
-//   Widget _buildEditButton() {
-//     return IconButton(
-//       onPressed: onEditPressed,
-//       icon: Icon(
-//         Icons.edit,
-//         color: Colors.white,
-//         size: 24.sp,
-//       ),
-//     );
-//   }
 }

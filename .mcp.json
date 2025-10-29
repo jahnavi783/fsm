@@ -1,24 +1,24 @@
 {
 	"mcpServers": {
-		"postmanlabs/postman-mcp-server": {
-			"type": "stdio",
-			"command": "npx",
-			"args": [
-				"@postman/postman-mcp-server@latest"
-			],
-			"env": {
-				"POSTMAN_API_KEY": "${input:api_key}"
-			},
-			"gallery": "https://api.mcp.github.com",
-			"version": "1.0.0"
-		}
+//		"postmanlabs/postman-mcp-server": {
+//			"type": "stdio",
+//			"command": "npx",
+//			"args": [
+//				"@postman/postman-mcp-server@latest"
+//			],
+//			"env": {
+//				"POSTMAN_API_KEY": "${input:api_key}"
+//			},/doc
+//			"gallery": "https://api.mcp.github.com",
+//			"version": "1.0.0"
+//		}
 	},
 	"inputs": [
-		{
-			"id": "api_key",
-			"type": "promptString",
-			"description": "Your API key for the service",
-			"password": true
-		}
+//		{
+//			"id": "api_key",
+//			"type": "promptString",
+//			"description": "Your API key for the service",
+//			"password": true
+//		}
 	]
 }

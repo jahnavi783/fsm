@@ -52,7 +52,7 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 1);
     _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
 

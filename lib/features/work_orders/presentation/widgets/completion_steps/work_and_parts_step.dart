@@ -1,0 +1,618 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/di/injection.dart';
+import 'package:fsm/features/parts/domain/entities/part_entity.dart';
+import 'package:fsm/features/parts/domain/usecases/get_parts_usecase.dart';
+
+/// Model for part used input with quantity
+class PartUsedInput {
+  final PartEntity part;
+  final TextEditingController quantityController;
+
+  PartUsedInput({
+    required this.part,
+    required this.quantityController,
+  });
+
+  void dispose() {
+    quantityController.dispose();
+  }
+}
+
+/// Step 1: Work Log and Parts Used
+/// Collects work log and allows parts selection from inventory
+class WorkAndPartsStep extends StatefulWidget {
+  final TextEditingController workLogController;
+  final GlobalKey<FormState> formKey;
+  final List<PartUsedInput> partsUsed;
+  final Function(PartUsedInput) onAddPart;
+  final Function(int) onRemovePart;
+
+  const WorkAndPartsStep({
+    super.key,
+    required this.workLogController,
+    required this.formKey,
+    required this.partsUsed,
+    required this.onAddPart,
+    required this.onRemovePart,
+  });
+
+  @override
+  State<WorkAndPartsStep> createState() => _WorkAndPartsStepState();
+}
+
+class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
+  final _getPartsUseCase = getIt<GetPartsUseCase>();
+  List<PartEntity> _availableParts = [];
+  bool _isLoadingParts = false;
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadParts();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadParts() async {
+    setState(() {
+      _isLoadingParts = true;
+    });
+
+    final result = await _getPartsUseCase(searchQuery: _searchQuery);
+    result.fold(
+      (failure) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to load parts: ${failure.message}'),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+        setState(() {
+          _isLoadingParts = false;
+        });
+      },
+      (parts) {
+        setState(() {
+          _availableParts = parts.where((p) => p.status == PartStatus.active).toList();
+          _isLoadingParts = false;
+        });
+      },
+    );
+  }
+
+  void _showPartsSelectionDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.9,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            // Handle bar
+            Container(
+              margin: EdgeInsets.only(top: 12.h),
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+            ),
+
+            // Header
+            Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Column(
+                children: [
+                  Text(
+                    'Select Part',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+
+                  // Search bar
+                  TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search parts...',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _searchController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _searchController.clear();
+                                setState(() {
+                                  _searchQuery = '';
+                                });
+                                _loadParts();
+                              },
+                            )
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      contentPadding: EdgeInsets.all(16.w),
+                    ),
+                    onSubmitted: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                      _loadParts();
+                      Navigator.pop(context);
+                      _showPartsSelectionDialog();
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            // Parts list
+            Expanded(
+              child: _isLoadingParts
+                  ? const Center(child: CircularProgressIndicator())
+                  : _availableParts.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.inventory_2_outlined,
+                                size: 64.sp,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: 16.h),
+                              Text(
+                                'No parts available',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          controller: scrollController,
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          itemCount: _availableParts.length,
+                          itemBuilder: (context, index) {
+                            final part = _availableParts[index];
+                            final isAlreadyAdded = widget.partsUsed
+                                .any((p) => p.part.partNumber == part.partNumber);
+
+                            return Card(
+                              margin: EdgeInsets.only(bottom: 12.h),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(12.w),
+                                leading: Container(
+                                  width: 48.w,
+                                  height: 48.w,
+                                  decoration: BoxDecoration(
+                                    color: part.isInStock
+                                        ? AppColors.success.withOpacity(0.1)
+                                        : AppColors.error.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Icon(
+                                    Icons.inventory_2,
+                                    color: part.isInStock
+                                        ? AppColors.success
+                                        : AppColors.error,
+                                  ),
+                                ),
+                                title: Text(
+                                  part.partName,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      'Part #: ${part.partNumber}',
+                                      style: TextStyle(fontSize: 12.sp),
+                                    ),
+                                    Text(
+                                      'Available: ${part.quantityAvailable}',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: part.isInStock
+                                            ? AppColors.success
+                                            : AppColors.error,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: isAlreadyAdded
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: AppColors.success,
+                                        size: 24.sp,
+                                      )
+                                    : Icon(
+                                        Icons.add_circle_outline,
+                                        color: AppColors.primary,
+                                        size: 24.sp,
+                                      ),
+                                onTap: isAlreadyAdded
+                                    ? null
+                                    : () {
+                                        widget.onAddPart(PartUsedInput(
+                                          part: part,
+                                          quantityController:
+                                              TextEditingController(text: '1'),
+                                        ));
+                                        Navigator.pop(context);
+                                      },
+                              ),
+                            );
+                          },
+                        ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPartUsedCard(PartUsedInput partInput, int index) {
+    final part = partInput.part;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.outline.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Icon(
+                  Icons.inventory_2,
+                  color: AppColors.primary,
+                  size: 20.sp,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      part.partName,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Part #: ${part.partNumber}',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () => widget.onRemovePart(index),
+                icon: const Icon(Icons.delete, color: AppColors.error),
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.all(8.w),
+                  minimumSize: Size(32.w, 32.h),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Quantity Used',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    TextFormField(
+                      controller: partInput.quantityController,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Required';
+                        }
+                        final qty = int.tryParse(value);
+                        if (qty == null || qty <= 0) {
+                          return 'Invalid quantity';
+                        }
+                        if (qty > part.quantityAvailable) {
+                          return 'Only ${part.quantityAvailable} available';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Enter quantity',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 12.h,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Available',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '${part.quantityAvailable}',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: part.isInStock ? AppColors.success : AppColors.error,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Step header
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 32.w,
+                  height: 32.w,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      '1',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Work Details',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        'Work log and parts used',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: 24.h),
+
+          // Work Log Field (Required)
+          Text(
+            'Work Log *',
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          TextFormField(
+            controller: widget.workLogController,
+            maxLines: 4,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Please describe the work performed';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              hintText: 'Describe the work performed, issues resolved, etc...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(
+                  color: AppColors.outline.withOpacity(0.3),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: const BorderSide(
+                  color: AppColors.error,
+                ),
+              ),
+              contentPadding: EdgeInsets.all(16.w),
+            ),
+          ),
+
+          SizedBox(height: 24.h),
+
+          // Parts Used Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Parts Used (Optional)',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              TextButton.icon(
+                onPressed: _showPartsSelectionDialog,
+                icon: Icon(Icons.add, size: 18.sp),
+                label: const Text('Add Part'),
+              ),
+            ],
+          ),
+
+          if (widget.partsUsed.isNotEmpty) ...[
+            SizedBox(height: 8.h),
+            ...widget.partsUsed.asMap().entries.map((entry) {
+              final index = entry.key;
+              final part = entry.value;
+              return _buildPartUsedCard(part, index);
+            }),
+          ],
+
+          if (widget.partsUsed.isEmpty) ...[
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: AppColors.outline.withOpacity(0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    size: 20.sp,
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      'No parts added yet. Tap "Add Part" to select from inventory.',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          SizedBox(height: 16.h),
+
+          // Helper text
+          Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 16.sp,
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Text(
+                  'Work log is required. Parts are optional but recommended.',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

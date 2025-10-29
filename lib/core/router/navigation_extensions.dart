@@ -133,9 +133,9 @@ extension StackRouterExtensions on StackRouter {
 
 // Deep linking utilities
 class DeepLinkHandler {
-  static const String workOrderPrefix = '/work-order/';
-  static const String documentPrefix = '/document/';
-  static const String partPrefix = '/part/';
+  static const String workOrderPrefix = '/work-orders/';
+  static const String documentPrefix = '/documents/';
+  static const String partPrefix = '/parts/';
 
   /// Parse deep link and return appropriate route
   static PageRouteInfo? parseDeepLink(String link) {

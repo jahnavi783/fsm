@@ -112,12 +112,12 @@ class _MainNavigationView extends StatelessWidget {
                   items: [
                     BottomNavigationBarItem(
                       icon: _buildNavIcon(
-                        Icons.dashboard_outlined,
-                        Icons.dashboard,
+                        Icons.assignment_outlined,
+                        Icons.assignment,
                         0,
                         tabsRouter.activeIndex,
                       ),
-                      label: 'Dashboard',
+                      label: 'Work Orders',
                     ),
                     BottomNavigationBarItem(
                       icon: _buildNavIcon(

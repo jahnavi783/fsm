@@ -39,22 +39,51 @@ class AppRouter extends RootStackRouter {
           path: '/main',
           guards: [authGuard],
           children: [
+            // Work Orders tab with nested routes
             AutoRoute(
               page: DashboardRoute.page,
-              path: 'dashboard',
+              path: 'work-orders',
               initial: true,
+              children: [
+                AutoRoute(
+                  page: WorkOrderDetailsRoute.page,
+                  path: ':workOrderId',
+                ),
+                AutoRoute(
+                  page: WorkOrderStartRoute.page,
+                  path: ':workOrderId/start',
+                ),
+                AutoRoute(
+                  page: WorkOrderCompleteRoute.page,
+                  path: ':workOrderId/complete',
+                ),
+              ],
             ),
             AutoRoute(
               page: CalendarRoute.page,
               path: 'calendar',
             ),
+            // Documents tab with nested routes
             AutoRoute(
               page: DocumentsRoute.page,
               path: 'documents',
+              children: [
+                AutoRoute(
+                  page: DocumentViewerRoute.page,
+                  path: ':documentId',
+                ),
+              ],
             ),
+            // Parts tab with nested routes
             AutoRoute(
               page: PartsRoute.page,
               path: 'parts',
+              children: [
+                AutoRoute(
+                  page: PartDetailsRoute.page,
+                  path: ':partNumber',
+                ),
+              ],
             ),
             AutoRoute(
               page: ProfileRoute.page,
@@ -63,30 +92,31 @@ class AppRouter extends RootStackRouter {
           ],
         ),
 
-        // Detail routes with deep linking support (protected)
+        // Standalone routes with deep linking support (protected)
+        // These provide direct deep link access outside of tab navigation
         AutoRoute(
           page: WorkOrderDetailsRoute.page,
-          path: '/work-order/:workOrderId',
+          path: '/work-orders/:workOrderId',
           guards: [authGuard],
         ),
         AutoRoute(
           page: WorkOrderStartRoute.page,
-          path: '/work-order/:workOrderId/start',
+          path: '/work-orders/:workOrderId/start',
           guards: [authGuard],
         ),
         AutoRoute(
           page: WorkOrderCompleteRoute.page,
-          path: '/work-order/:workOrderId/complete',
+          path: '/work-orders/:workOrderId/complete',
           guards: [authGuard],
         ),
         AutoRoute(
           page: DocumentViewerRoute.page,
-          path: '/document/:documentId',
+          path: '/documents/:documentId',
           guards: [authGuard],
         ),
         AutoRoute(
           page: PartDetailsRoute.page,
-          path: '/part/:partNumber',
+          path: '/parts/:partNumber',
           guards: [authGuard],
         ),
         AutoRoute(

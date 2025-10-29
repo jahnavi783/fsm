@@ -1,17 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_route/auto_route.dart';
-import 'dart:io';
-import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
+import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
-import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 
 @RoutePage()
 class WorkOrderStartPage extends StatelessWidget {
@@ -44,8 +44,6 @@ class WorkOrderStartView extends StatefulWidget {
 }
 
 class _WorkOrderStartViewState extends State<WorkOrderStartView> {
-  final TextEditingController _notesController = TextEditingController();
-  final List<File> _selectedFiles = [];
   bool _showStartBottomSheet = false;
 
   @override
@@ -58,7 +56,6 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
 
   @override
   void dispose() {
-    _notesController.dispose();
     super.dispose();
   }
 
@@ -479,228 +476,11 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    // Capture the bloc instance from the page context BEFORE showing the bottom sheet
-    final bloc = context.read<WorkOrderActionBloc>();
-
-    showModalBottomSheet(
+    WorkOrderFormSheet.show(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (bottomSheetContext) => BlocProvider.value(
-        value: bloc, // Pass the existing bloc instance to the bottom sheet
-        child: _StartWorkOrderBottomSheet(
-          workOrder: workOrder,
-          currentLocation: currentLocation,
-          notesController: _notesController,
-          selectedFiles: _selectedFiles,
-          onStart: (notes, files) {
-            if (currentLocation != null) {
-              bloc.add(
-                    WorkOrderActionEvent.startWorkOrder(
-                      workOrderId: workOrder.id,
-                      latitude: currentLocation.latitude,
-                      longitude: currentLocation.longitude,
-                      files: files,
-                      notes: notes,
-                    ),
-                  );
-              Navigator.of(bottomSheetContext).pop(); // Close the bottom sheet
-            }
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class _StartWorkOrderBottomSheet extends StatefulWidget {
-  final WorkOrderEntity workOrder;
-  final LocationEntity? currentLocation;
-  final TextEditingController notesController;
-  final List<File> selectedFiles;
-  final Function(String?, List<File>) onStart;
-
-  const _StartWorkOrderBottomSheet({
-    required this.workOrder,
-    required this.currentLocation,
-    required this.notesController,
-    required this.selectedFiles,
-    required this.onStart,
-  });
-
-  @override
-  State<_StartWorkOrderBottomSheet> createState() =>
-      _StartWorkOrderBottomSheetState();
-}
-
-class _StartWorkOrderBottomSheetState
-    extends State<_StartWorkOrderBottomSheet> {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.r),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Handle bar
-          Center(
-            child: Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-            ),
-          ),
-
-          SizedBox(height: 20.h),
-
-          // Title
-          Text(
-            'Start Work Order',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            ),
-          ),
-
-          SizedBox(height: 4.h),
-
-          Text(
-            widget.workOrder.woNumber,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.primaryColor,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // Location confirmation
-          if (widget.currentLocation != null) ...[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.location_on, color: Colors.green, size: 16.sp),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Location Captured',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                        Text(
-                          '${widget.currentLocation!.latitude.toStringAsFixed(6)}, ${widget.currentLocation!.longitude.toStringAsFixed(6)}',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 11.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 16.h),
-          ],
-
-          // Notes field
-          TextField(
-            controller: widget.notesController,
-            decoration: InputDecoration(
-              labelText: 'Start Notes (Optional)',
-              hintText: 'Add any notes about starting this work order...',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            maxLines: 3,
-          ),
-
-          SizedBox(height: 24.h),
-
-          // Action buttons
-          Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                  ),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                flex: 2,
-                child: ElevatedButton(
-                  onPressed: widget.currentLocation != null
-                      ? () {
-                          final notes = widget.notesController.text.trim();
-                          widget.onStart(
-                            notes.isEmpty ? null : notes,
-                            widget.selectedFiles,
-                          );
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                  ),
-                  child: Text(
-                    'Start Work Order',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          // Bottom padding for safe area
-          SizedBox(height: MediaQuery.of(context).padding.bottom),
-        ],
-      ),
+      action: WorkOrderAction.start,
+      workOrder: workOrder,
+      location: currentLocation,
     );
   }
 }

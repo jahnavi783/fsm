@@ -57,6 +57,14 @@ abstract class NetworkModule {
                 tag: 'NETWORK');
             return false;
           }
+          // Don't retry requests with FormData - FormData can only be sent once
+          // because it's stream-based and gets finalized after the first send
+          if (error.requestOptions.data is FormData) {
+            loggingService.warning(
+                'Skipping retry for FormData request - FormData can only be sent once',
+                tag: 'RETRY');
+            return false;
+          }
           // Default retry logic for other errors
           return error.type != DioExceptionType.cancel &&
               error.type != DioExceptionType.unknown;

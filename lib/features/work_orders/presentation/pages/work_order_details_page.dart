@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:fsm/core/router/app_router.gr.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_bottom_sheet_manager.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_wizard.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/theme/app_colors.dart';
@@ -29,8 +29,6 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_details
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/work_timeline_section.dart';
 
 // Dialog components
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_confirmation_dialog.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/reason_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
 
 // Import widget components that may be needed for action in progress and error
@@ -494,32 +492,28 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   void _resumeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
-    LocationConfirmationDialog.show(
-      context,
-      'Resume Work Order',
-      'Are you sure you want to resume this work order? Your current location will be captured.',
-      () {
-        _executeIfMounted(() {
-          final state = _workOrderActionBloc?.state;
-          state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___, ____, _____) {
-              if (currentLocation != null) {
-                _workOrderActionBloc?.add(
-                  WorkOrderActionEvent.resumeWorkOrder(
-                    workOrderId: workOrder.id,
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                  ),
-                );
-              } else {
-                _showLocationErrorDialog(context);
-              }
-            },
-            orElse: () => _showLocationErrorDialog(context),
+    _executeIfMounted(() {
+      final state = _workOrderActionBloc?.state;
+      state?.maybeWhen(
+        loaded: (_, currentLocation, __, ___, ____, _____) {
+          WorkOrderFormSheet.show(
+            context: context,
+            action: WorkOrderAction.resume,
+            workOrder: workOrder,
+            location: currentLocation,
           );
-        });
-      },
-    );
+        },
+        actionSuccess: (workOrderEntity, actionType, message, _) {
+          WorkOrderFormSheet.show(
+            context: context,
+            action: WorkOrderAction.resume,
+            workOrder: workOrder,
+            location: null,
+          );
+        },
+        orElse: () => _showLocationErrorDialog(context),
+      );
+    });
   }
 
   void _completeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
@@ -527,21 +521,17 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       final state = _workOrderActionBloc?.state;
       state?.maybeWhen(
         loaded: (_, currentLocation, __, ___, ____, _____) {
-          context.router.push(
-            WorkOrderCompleteRoute(
-              workOrderId: workOrder.id,
-              workOrder: workOrder,
-              currentLocation: currentLocation,
-            ),
+          WorkOrderCompleteWizard.show(
+            context: context,
+            workOrder: workOrder,
+            location: currentLocation,
           );
         },
         actionSuccess: (workOrderEntity, actionType, message, _) {
-          context.router.push(
-            WorkOrderCompleteRoute(
-              workOrderId: workOrder.id,
-              workOrder: workOrder,
-              currentLocation: null,
-            ),
+          WorkOrderCompleteWizard.show(
+            context: context,
+            workOrder: workOrder,
+            location: null,
           );
         },
         orElse: () => _showLocationErrorDialog(context),
@@ -550,33 +540,28 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   }
 
   void _rejectWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
-    ReasonDialog.show(
-      context,
-      'Reject Work Order',
-      'Please provide a reason for rejecting this work order:',
-      (reason) {
-        _executeIfMounted(() {
-          final state = _workOrderActionBloc?.state;
-          state?.maybeWhen(
-            loaded: (_, currentLocation, __, ___, ____, _____) {
-              if (currentLocation != null) {
-                _workOrderActionBloc?.add(
-                  WorkOrderActionEvent.rejectWorkOrder(
-                    workOrderId: workOrder.id,
-                    reason: reason,
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitude,
-                  ),
-                );
-              } else {
-                _showLocationErrorDialog(context);
-              }
-            },
-            orElse: () => _showLocationErrorDialog(context),
+    _executeIfMounted(() {
+      final state = _workOrderActionBloc?.state;
+      state?.maybeWhen(
+        loaded: (_, currentLocation, __, ___, ____, _____) {
+          WorkOrderFormSheet.show(
+            context: context,
+            action: WorkOrderAction.reject,
+            workOrder: workOrder,
+            location: currentLocation,
           );
-        });
-      },
-    );
+        },
+        actionSuccess: (workOrderEntity, actionType, message, _) {
+          WorkOrderFormSheet.show(
+            context: context,
+            action: WorkOrderAction.reject,
+            workOrder: workOrder,
+            location: null,
+          );
+        },
+        orElse: () => _showLocationErrorDialog(context),
+      );
+    });
   }
 
   void _showStartWorkOrderBottomSheet(
@@ -584,16 +569,12 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    WorkOrderBottomSheetManager.showStartWorkOrder(
+    WorkOrderFormSheet.show(
       context: context,
+      action: WorkOrderAction.start,
       workOrder: workOrder,
-      currentLocation: currentLocation,
-    ).then((result) {
-      // Handle result if needed
-      if (result == true) {
-        // Work order was started successfully
-      }
-    });
+      location: currentLocation,
+    );
   }
 
   void _showPauseWorkOrderBottomSheet(
@@ -601,16 +582,12 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     WorkOrderEntity workOrder,
     LocationEntity? currentLocation,
   ) {
-    WorkOrderBottomSheetManager.showPauseWorkOrder(
+    WorkOrderFormSheet.show(
       context: context,
+      action: WorkOrderAction.pause,
       workOrder: workOrder,
-      currentLocation: currentLocation,
-    ).then((result) {
-      // Handle result if needed
-      if (result == true) {
-        // Work order was paused successfully
-      }
-    });
+      location: currentLocation,
+    );
   }
 
   void _showLocationErrorDialog(BuildContext context) {

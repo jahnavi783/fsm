@@ -19,5 +19,7 @@
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "postman"
-  ]
+  ],
+  "spinnerTipsEnabled": true,
+  "outputStyle": "Learning"
 }

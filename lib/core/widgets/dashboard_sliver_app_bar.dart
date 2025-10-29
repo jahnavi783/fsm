@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:fsm/core/router/app_router.gr.dart';
 
 class DashboardSliverAppBar extends StatelessWidget {
   final VoidCallback? onSearch;
-  final VoidCallback? onRefresh;
-  final bool showDebugButton;
+  final VoidCallback? onNotifications;
+  final int notificationCount;
 
   const DashboardSliverAppBar({
     super.key,
     this.onSearch,
-    this.onRefresh,
-    this.showDebugButton = false,
+    this.onNotifications,
+    this.notificationCount = 0,
   });
 
   @override
@@ -80,18 +78,11 @@ class DashboardSliverAppBar extends StatelessWidget {
                             onTap: onSearch ?? () {},
                           ),
                           SizedBox(width: 12.w),
-                          _buildHeaderAction(
-                            icon: Icons.refresh,
-                            onTap: onRefresh ?? () {},
+                          _buildNotificationAction(
+                            icon: Icons.notifications_outlined,
+                            onTap: onNotifications ?? () {},
+                            notificationCount: notificationCount,
                           ),
-                          if (showDebugButton) ...[
-                            SizedBox(width: 12.w),
-                            _buildHeaderAction(
-                              icon: Icons.bug_report,
-                              onTap: () => context.router
-                                  .push(const DeveloperOptionsRoute()),
-                            ),
-                          ],
                         ],
                       ),
                     ],
@@ -139,6 +130,77 @@ class DashboardSliverAppBar extends StatelessWidget {
             icon,
             color: Colors.white,
             size: 18.sp,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationAction({
+    required IconData icon,
+    required VoidCallback onTap,
+    required int notificationCount,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12.r),
+        child: Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 18.sp,
+              ),
+              if (notificationCount > 0)
+                Positioned(
+                  top: -4.h,
+                  right: -4.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: notificationCount > 9 ? 4.w : 6.w,
+                      vertical: 2.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 16.w,
+                      minHeight: 16.h,
+                    ),
+                    child: Center(
+                      child: Text(
+                        notificationCount > 99 ? '99+' : notificationCount.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 9.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

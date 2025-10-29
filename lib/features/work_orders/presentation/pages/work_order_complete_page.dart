@@ -13,6 +13,7 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/services/logging_service.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/parts/domain/entities/part_entity.dart';
@@ -450,8 +451,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
 
     if (!_isInitialized) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Complete Work Order'),
+        appBar: const FSMAppBar.gradient(
+          title: 'Complete Work Order',
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -508,23 +509,9 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
           );
 
           return Scaffold(
-            appBar: AppBar(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Complete Work Order'),
-                  if (widget.workOrder != null)
-                    Text(
-                      widget.workOrder!.woNumber,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
-                    ),
-                ],
-              ),
-              elevation: 0,
+            appBar: FSMAppBar.gradient(
+              title: 'Complete Work Order',
+              subtitle: widget.workOrder?.woNumber,
             ),
             body: Column(
               children: [

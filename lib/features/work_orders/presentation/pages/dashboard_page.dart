@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:fsm/core/config/app_config.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/dashboard_sliver_app_bar.dart';
@@ -110,13 +109,17 @@ class _DashboardPageState extends State<DashboardPage>
                     slivers: [
                       // App Bar
                       DashboardSliverAppBar(
-                        showDebugButton: AppConfig.isDebug,
                         onSearch: () => _showSearchDialog(context),
-                        onRefresh: () {
-                          context.read<WorkOrdersListBloc>().add(
-                                const WorkOrdersListEvent.refreshWorkOrders(),
-                              );
+                        onNotifications: () {
+                          // TODO: Navigate to notifications page when implemented
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Notifications coming soon!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
                         },
+                        notificationCount: 0, // TODO: Get from state/BLoC
                       ),
 
                       // Stats Cards (kept as existing - already well-designed)

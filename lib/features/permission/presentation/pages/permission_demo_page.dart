@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../domain/entities/permission_entity.dart';
@@ -94,17 +95,11 @@ class _PermissionDemoPageState extends State<PermissionDemoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Permission Demo',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+      appBar: FSMAppBar.standard(
+        title: 'Permission Demo',
         actions: [
-          IconButton(
+          FSMAppBarAction.refresh(
             onPressed: _checkAllPermissions,
-            icon: const Icon(Icons.refresh),
             tooltip: 'Refresh Permissions',
           ),
         ],

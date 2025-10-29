@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 
 import '../../../../core/config/app_config.dart';
 import '../../../../core/di/injection.dart';
@@ -16,8 +17,8 @@ class DeveloperOptionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!AppConfig.isDebug) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Developer Options'),
+        appBar: const FSMAppBar.standard(
+          title: 'Developer Options',
         ),
         body: Center(
           child: Text(
@@ -29,10 +30,8 @@ class DeveloperOptionsPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Developer Options'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
+      appBar: const FSMAppBar.standard(
+        title: 'Developer Options',
       ),
       body: SingleChildScrollView(
         child: Padding(

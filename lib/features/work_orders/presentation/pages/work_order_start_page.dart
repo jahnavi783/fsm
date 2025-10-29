@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import 'dart:io';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
@@ -63,27 +64,13 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     // PopScope allows hardware back button to work with Auto Router
     // Auto Router with includePrefixMatches handles navigation stack automatically
     return PopScope(
       canPop: true,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Start Work Order'),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  theme.primaryColor,
-                  theme.primaryColor.withOpacity(0.8),
-                ],
-              ),
-            ),
-          ),
+        appBar: FSMAppBar.gradient(
+          title: 'Start Work Order',
           actions: [
             IconButton(
               icon: const Icon(Icons.info_outline),
@@ -249,7 +236,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                   Text(
                     workOrder.summary,
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.8),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
                     ),
                   ),
                 ],
@@ -350,7 +337,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               width: double.infinity,
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: Colors.green),
               ),
@@ -390,7 +377,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
-                disabledBackgroundColor: Colors.grey.withOpacity(0.3),
+                disabledBackgroundColor: Colors.grey.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
@@ -405,7 +392,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               width: double.infinity,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(color: Colors.orange),
               ),
@@ -570,7 +557,7 @@ class _StartWorkOrderBottomSheetState
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurface.withOpacity(0.3),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
@@ -605,9 +592,9 @@ class _StartWorkOrderBottomSheetState
               width: double.infinity,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.green.withOpacity(0.3)),
+                border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [

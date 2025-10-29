@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../../core/router/app_router.gr.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
 import '../blocs/auth/auth_state.dart';
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
             loading: () {},
             authenticated: (user) {
               if (user.isTechnician) {
-                context.router.navigatePath('/main');
+                context.router.navigate(const MainNavigationRoute());
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

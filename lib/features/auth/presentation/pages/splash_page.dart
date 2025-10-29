@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/router/app_router.gr.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
 import '../blocs/auth/auth_state.dart';
@@ -78,7 +79,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           authenticated: (user) {
             if (user.isTechnician) {
               // Replace instead of push to remove splash from back stack
-              context.router.replacePath('/main');
+              context.router.replaceAll([const MainNavigationRoute()]);
             } else {
               // Show error for non-technician users
               ScaffoldMessenger.of(context).showSnackBar(
@@ -87,14 +88,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   backgroundColor: Colors.blue,
                 ),
               );
-              context.router.replacePath('/login');
+              context.router.replaceAll([const LoginRoute()]);
             }
           },
           unauthenticated: () {
-            context.router.replacePath('/login');
+            context.router.replaceAll([const LoginRoute()]);
           },
           error: (message) {
-            context.router.replacePath('/login');
+            context.router.replaceAll([const LoginRoute()]);
           },
         );
       },

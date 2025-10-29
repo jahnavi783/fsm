@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
@@ -392,8 +393,8 @@ class _DocumentsViewState extends State<DocumentsView> {
   }
 
   void _openDocument(BuildContext context, DocumentEntity document) {
-    // Navigate to document viewer
-    context.router.pushPath('/document/${document.id}');
+    // Navigate to document viewer using type-safe route
+    context.router.push(DocumentViewerRoute(documentId: document.id));
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {

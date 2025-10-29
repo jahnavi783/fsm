@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../features/auth/data/datasources/auth_local_datasource.dart';
+import '../app_router.gr.dart';
 
 /// Authentication guard for Auto Router
 ///
@@ -37,11 +38,11 @@ class AuthGuard extends AutoRouteGuard {
         resolver.next();
       } else {
         // User is not authenticated, redirect to login
-        router.navigatePath('/login');
+        router.replaceAll([const LoginRoute()]);
       }
     } catch (e) {
       // Error checking authentication (e.g., storage error), redirect to login
-      router.navigatePath('/login');
+      router.replaceAll([const LoginRoute()]);
     }
   }
 }

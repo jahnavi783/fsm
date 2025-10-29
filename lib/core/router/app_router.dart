@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fsm/app.dart';
+import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app_router.gr.dart';
@@ -73,13 +75,18 @@ class AppRouter extends RootStackRouter {
           guards: [authGuard],
         ),
         AutoRoute(
+          page: WorkOrderCompleteRoute.page,
+          path: '/work-order/:workOrderId/complete',
+          guards: [authGuard],
+        ),
+        AutoRoute(
           page: DocumentViewerRoute.page,
           path: '/document/:documentId',
           guards: [authGuard],
         ),
         AutoRoute(
           page: PartDetailsRoute.page,
-          path: '/part/:partId',
+          path: '/part/:partNumber',
           guards: [authGuard],
         ),
         AutoRoute(
@@ -108,14 +115,28 @@ extension AppRouterExtension on StackRouter {
     return push(WorkOrderStartRoute(workOrderId: workOrderId));
   }
 
+  /// Navigate to work order completion page
+  Future<void> navigateToWorkOrderComplete({
+    required int workOrderId,
+    WorkOrderEntity? workOrder,
+    LocationEntity? currentLocation,
+  }) {
+    return push(WorkOrderCompleteRoute(
+      workOrderId: workOrderId,
+      workOrder: workOrder,
+      currentLocation: currentLocation,
+    ));
+  }
+
   /// Navigate to document viewer with deep linking support
   Future<void> navigateToDocument(String documentId) {
     return push(DocumentViewerRoute(documentId: documentId));
   }
 
   /// Navigate to part details with deep linking support
+  /// Note: partNumber is used as the path parameter for deep linking
   Future<void> navigateToPart(String partNumber) {
-    return push(PartDetailsRoute(partId: 1));
+    return push(PartDetailsRoute(partNumber: partNumber));
   }
 
   /// Navigate to chatbot/AI assistant page
@@ -123,14 +144,14 @@ extension AppRouterExtension on StackRouter {
     return push(const ChatbotRoute());
   }
 
-  /// Navigate to main app after authentication (replaces current route)
+  /// Navigate to main app after authentication (replaces entire stack)
   /// This prevents back navigation to splash/login screens
   Future<void> navigateToMainApp() {
-    return replacePath('/main');
+    return replaceAll([const MainNavigationRoute()]);
   }
 
   /// Navigate to login and clear stack
   Future<void> navigateToLogin() {
-    return replacePath('/login');
+    return replaceAll([const LoginRoute()]);
   }
 }

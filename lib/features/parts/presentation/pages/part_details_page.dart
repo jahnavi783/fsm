@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/fsm_card.dart';
 import '../../domain/entities/part_entity.dart';
@@ -15,12 +14,12 @@ import '../widgets/inventory_indicator.dart';
 
 @RoutePage()
 class PartDetailsPage extends StatelessWidget {
-  final int partId;
+  final String partNumber;
   final PartEntity? part;
 
   const PartDetailsPage({
     super.key,
-    required this.partId,
+    @PathParam('partNumber') required this.partNumber,
     this.part,
   });
 
@@ -28,9 +27,9 @@ class PartDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<PartsBloc>()
-        ..add(PartsEvent.loadInventoryHistory(partId: partId)),
+        ..add(PartsEvent.loadInventoryHistory(partId: 0)),
       child: _PartDetailsPageView(
-        partId: partId,
+        partNumber: partNumber,
         part: part,
       ),
     );
@@ -38,37 +37,22 @@ class PartDetailsPage extends StatelessWidget {
 }
 
 class _PartDetailsPageView extends StatelessWidget {
-  final int partId;
+  final String partNumber;
   final PartEntity? part;
 
   const _PartDetailsPageView({
-    required this.partId,
+    required this.partNumber,
     this.part,
   });
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop && !context.router.canPop()) {
-          // If can't pop anymore, navigate to main navigation
-          context.router.replaceAll([MainNavigationRoute()]);
-        }
-      },
-      child: Scaffold(
-        backgroundColor: Colors.grey[50],
-        appBar: FSMAppBar.gradient(
+    // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: FSMAppBar.gradient(
           title: 'Part Details',
           subtitle: part?.partName ?? 'Loading...',
-          actions: [
-            if (part != null)
-              IconButton(
-                onPressed: () => _showInventoryUpdateForm(context, part!),
-                icon: const Icon(Icons.edit),
-                tooltip: 'Update Inventory',
-              ),
-          ],
         ),
         body: part == null
             ? const Center(child: CircularProgressIndicator())
@@ -87,7 +71,6 @@ class _PartDetailsPageView extends StatelessWidget {
                   ],
                 ),
               ),
-      ),
     );
   }
 
@@ -380,9 +363,9 @@ Widget _buildInfoChip({
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
     decoration: BoxDecoration(
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(6.r),
-      border: Border.all(color: color.withOpacity(0.3)),
+      border: Border.all(color: color.withValues(alpha: 0.3)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -511,13 +494,4 @@ String _getHistoryTitle(type) {
 
 String _formatDate(DateTime date) {
   return '${date.day}/${date.month}/${date.year}';
-}
-
-void _showInventoryUpdateForm(BuildContext context, PartEntity part) {
-  // TODO: Implement inventory update form
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('Inventory update feature coming soon'),
-    ),
-  );
 }

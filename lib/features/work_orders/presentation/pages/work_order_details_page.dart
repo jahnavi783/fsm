@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_bottom_sheet_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
-import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/core/widgets/fsm_section_header.dart';
@@ -94,16 +94,9 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop && !context.router.canPop()) {
-          // If can't pop anymore, navigate to main dashboard
-          context.router.replaceAll([MainNavigationRoute()]);
-        }
-      },
-      child: Scaffold(
-        body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
+    // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
+    return Scaffold(
+      body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
           listener: (context, state) {
             state.maybeWhen(
               actionSuccess: (workOrder, actionType, message, _) {
@@ -174,7 +167,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
               ),
             );
           },
-        ),
       ),
     );
   }
@@ -535,11 +527,22 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       final state = _workOrderActionBloc?.state;
       state?.maybeWhen(
         loaded: (_, currentLocation, __, ___, ____, _____) {
-          _showCompleteWorkOrderBottomSheet(
-              context, workOrder, currentLocation);
+          context.router.push(
+            WorkOrderCompleteRoute(
+              workOrderId: workOrder.id,
+              workOrder: workOrder,
+              currentLocation: currentLocation,
+            ),
+          );
         },
         actionSuccess: (workOrderEntity, actionType, message, _) {
-          _showCompleteWorkOrderBottomSheet(context, workOrder, null);
+          context.router.push(
+            WorkOrderCompleteRoute(
+              workOrderId: workOrder.id,
+              workOrder: workOrder,
+              currentLocation: null,
+            ),
+          );
         },
         orElse: () => _showLocationErrorDialog(context),
       );
@@ -606,23 +609,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       // Handle result if needed
       if (result == true) {
         // Work order was paused successfully
-      }
-    });
-  }
-
-  void _showCompleteWorkOrderBottomSheet(
-    BuildContext context,
-    WorkOrderEntity workOrder,
-    LocationEntity? currentLocation,
-  ) {
-    WorkOrderBottomSheetManager.showCompleteWorkOrder(
-      context: context,
-      workOrder: workOrder,
-      currentLocation: currentLocation,
-    ).then((result) {
-      // Handle result if needed
-      if (result == true) {
-        // Work order was completed successfully
       }
     });
   }

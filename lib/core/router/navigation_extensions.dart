@@ -21,8 +21,8 @@ extension NavigationExtensions on BuildContext {
   }
 
   /// Navigate to part details
-  Future<void> navigateToPart(int partId, {bool replace = false}) {
-    return NavigationHelpers.navigateToPart(this, partId, replace: replace);
+  Future<void> navigateToPart(String partNumber, {bool replace = false}) {
+    return NavigationHelpers.navigateToPart(this, partNumber, replace: replace);
   }
 
   /// Navigate to main app
@@ -87,27 +87,27 @@ extension NavigationExtensions on BuildContext {
 extension StackRouterExtensions on StackRouter {
   /// Navigate to work order details with deep linking support
   Future<void> navigateToWorkOrderDeepLink(int workOrderId) {
-    return navigatePath('/work-order/$workOrderId');
+    return push(WorkOrderDetailsRoute(workOrderId: workOrderId));
   }
 
   /// Navigate to document viewer with deep linking support
-  Future<void> navigateToDocumentDeepLink(int documentId) {
-    return navigatePath('/document/$documentId');
+  Future<void> navigateToDocumentDeepLink(String documentId) {
+    return push(DocumentViewerRoute(documentId: documentId));
   }
 
   /// Navigate to part details with deep linking support
-  Future<void> navigateToPartDeepLink(int partId) {
-    return navigatePath('/part/$partId');
+  Future<void> navigateToPartDeepLink(String partNumber) {
+    return push(PartDetailsRoute(partNumber: partNumber));
   }
 
   /// Navigate to main app after authentication
   Future<void> navigateToMainAppDeepLink() {
-    return navigatePath('/main');
+    return replaceAll([const MainNavigationRoute()]);
   }
 
   /// Navigate to login and clear stack
   Future<void> navigateToLoginDeepLink() {
-    return navigatePath('/login');
+    return replaceAll([const LoginRoute()]);
   }
 
   /// Navigate with custom transition
@@ -154,10 +154,9 @@ class DeepLinkHandler {
       final idStr = path.substring(documentPrefix.length);
       return DocumentViewerRoute(documentId: idStr);
         } else if (path.startsWith(partPrefix)) {
-      final idStr = path.substring(partPrefix.length);
-      final id = int.tryParse(idStr);
-      if (id != null) {
-        return PartDetailsRoute(partId: id);
+      final partNumber = path.substring(partPrefix.length);
+      if (partNumber.isNotEmpty) {
+        return PartDetailsRoute(partNumber: partNumber);
       }
     }
 
@@ -175,7 +174,7 @@ class DeepLinkHandler {
   }
 
   /// Generate deep link for part
-  static String generatePartLink(int partId) {
-    return '$partPrefix$partId';
+  static String generatePartLink(String partNumber) {
+    return '$partPrefix$partNumber';
   }
 }

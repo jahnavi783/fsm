@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/router/app_router.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/fsm_empty_state.dart';
 import '../blocs/parts/parts_bloc.dart';
@@ -99,6 +99,8 @@ class _PartsPageViewState extends State<_PartsPageView>
       appBar: FSMAppBar(
         title: 'Parts',
         bottom: TabBar(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
           controller: _tabController,
           isScrollable: true,
           tabs: _categories.map((category) => Tab(text: category)).toList(),
@@ -126,14 +128,17 @@ class _PartsPageViewState extends State<_PartsPageView>
                 isLoading: state.isLoading && state.parts.isEmpty,
                 onTotalTap: () {
                   _tabController.animateTo(0);
+                  context.read<PartsBloc>().add(const PartsEvent.loadParts());
                 },
                 onInStockTap: () {
-                  // Navigate to All tab - stock level filtering not yet implemented in BLoC
                   _tabController.animateTo(0);
+                  context.read<PartsBloc>().add(const PartsEvent.loadParts());
                 },
                 onLowStockTap: () {
-                  // Navigate to All tab - stock level filtering not yet implemented in BLoC
                   _tabController.animateTo(0);
+                  context
+                      .read<PartsBloc>()
+                      .add(const PartsEvent.loadLowStockParts());
                 },
               ),
 
@@ -201,19 +206,13 @@ class _PartsPageViewState extends State<_PartsPageView>
                 'Warehouse A', // TODO: Add actual location from part entity
             onTap: () {
               // Navigate to part details
-              context.router.navigateToPart(part.partNumber);
-            },
-            onReserve: () {
-              // TODO: Implement reserve functionality
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Reserved ${part.partName}'),
-                ),
-              );
+              context.router.push(
+                  PartDetailsRoute(partNumber: part.partNumber, part: part));
             },
             onDetails: () {
               // Navigate to part details
-              context.router.navigateToPart(part.partNumber);
+              context.router.push(
+                  PartDetailsRoute(partNumber: part.partNumber, part: part));
             },
           );
         },

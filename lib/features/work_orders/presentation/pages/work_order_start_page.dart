@@ -65,17 +65,10 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // PopScope allows hardware back button to work with Auto Router
+    // Auto Router with includePrefixMatches handles navigation stack automatically
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop && !context.router.canPop()) {
-          // If can't pop anymore, navigate to work order details
-          context.router.replaceAll([
-            MainNavigationRoute(),
-            WorkOrderDetailsRoute(workOrderId: widget.workOrderId),
-          ]);
-        }
-      },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Start Work Order'),

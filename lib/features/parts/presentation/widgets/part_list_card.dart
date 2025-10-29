@@ -206,42 +206,6 @@ class PartListCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // Reserve Button
-            if (onReserve != null && !part.isOutOfStock)
-              SizedBox(
-                height: 32.h,
-                child: OutlinedButton(
-                  onPressed: onReserve,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.primary,
-                    side: BorderSide(
-                      color: AppColors.primary,
-                      width: 1.5,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.bookmark_add_outlined, size: 16.sp),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'Reserve',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-            SizedBox(width: 8.w),
-
             // Details Button
             if (onDetails != null)
               SizedBox(

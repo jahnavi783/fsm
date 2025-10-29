@@ -11,8 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:flutter/material.dart' as _i17;
-import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i8;
-import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i13;
+import 'package:fsm/features/auth/presentation/pages/login_page.dart' as _i7;
+import 'package:fsm/features/auth/presentation/pages/splash_page.dart' as _i12;
 import 'package:fsm/features/calendar/presentation/pages/calendar_page.dart'
     as _i1;
 import 'package:fsm/features/chat/presentation/pages/chatbot_page.dart' as _i2;
@@ -22,18 +22,22 @@ import 'package:fsm/features/documents/presentation/pages/document_viewer_page.d
     as _i5;
 import 'package:fsm/features/documents/presentation/pages/documents_page.dart'
     as _i6;
-import 'package:fsm/features/documents/presentation/pages/documents_page_redesign.dart'
-    as _i7;
 import 'package:fsm/features/main_navigation/presentation/pages/main_navigation_page.dart'
-    as _i9;
+    as _i8;
 import 'package:fsm/features/parts/domain/entities/part_entity.dart' as _i18;
 import 'package:fsm/features/parts/presentation/pages/part_details_page.dart'
-    as _i10;
-import 'package:fsm/features/parts/presentation/pages/parts_page.dart' as _i11;
+    as _i9;
+import 'package:fsm/features/parts/presentation/pages/parts_page.dart' as _i10;
 import 'package:fsm/features/profile/presentation/pages/profile_page.dart'
-    as _i12;
+    as _i11;
+import 'package:fsm/features/work_orders/domain/entities/location_entity.dart'
+    as _i20;
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
+    as _i19;
 import 'package:fsm/features/work_orders/presentation/pages/dashboard_page.dart'
     as _i3;
+import 'package:fsm/features/work_orders/presentation/pages/work_order_complete_page.dart'
+    as _i13;
 import 'package:fsm/features/work_orders/presentation/pages/work_order_details_page.dart'
     as _i14;
 import 'package:fsm/features/work_orders/presentation/pages/work_order_start_page.dart'
@@ -173,23 +177,7 @@ class DocumentsRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.DocumentsPageRedesign]
-class DocumentsRouteRedesign extends _i16.PageRouteInfo<void> {
-  const DocumentsRouteRedesign({List<_i16.PageRouteInfo>? children})
-      : super(DocumentsRouteRedesign.name, initialChildren: children);
-
-  static const String name = 'DocumentsRouteRedesign';
-
-  static _i16.PageInfo page = _i16.PageInfo(
-    name,
-    builder: (data) {
-      return const _i7.DocumentsPageRedesign();
-    },
-  );
-}
-
-/// generated route for
-/// [_i8.LoginPage]
+/// [_i7.LoginPage]
 class LoginRoute extends _i16.PageRouteInfo<void> {
   const LoginRoute({List<_i16.PageRouteInfo>? children})
       : super(LoginRoute.name, initialChildren: children);
@@ -199,13 +187,13 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i8.LoginPage();
+      return const _i7.LoginPage();
     },
   );
 }
 
 /// generated route for
-/// [_i9.MainNavigationPage]
+/// [_i8.MainNavigationPage]
 class MainNavigationRoute extends _i16.PageRouteInfo<void> {
   const MainNavigationRoute({List<_i16.PageRouteInfo>? children})
       : super(MainNavigationRoute.name, initialChildren: children);
@@ -215,22 +203,27 @@ class MainNavigationRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i9.MainNavigationPage();
+      return const _i8.MainNavigationPage();
     },
   );
 }
 
 /// generated route for
-/// [_i10.PartDetailsPage]
+/// [_i9.PartDetailsPage]
 class PartDetailsRoute extends _i16.PageRouteInfo<PartDetailsRouteArgs> {
   PartDetailsRoute({
     _i17.Key? key,
-    required int partId,
+    required String partNumber,
     _i18.PartEntity? part,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           PartDetailsRoute.name,
-          args: PartDetailsRouteArgs(key: key, partId: partId, part: part),
+          args: PartDetailsRouteArgs(
+            key: key,
+            partNumber: partNumber,
+            part: part,
+          ),
+          rawPathParams: {'partNumber': partNumber},
           initialChildren: children,
         );
 
@@ -239,10 +232,15 @@ class PartDetailsRoute extends _i16.PageRouteInfo<PartDetailsRouteArgs> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<PartDetailsRouteArgs>();
-      return _i10.PartDetailsPage(
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<PartDetailsRouteArgs>(
+        orElse: () => PartDetailsRouteArgs(
+          partNumber: pathParams.getString('partNumber'),
+        ),
+      );
+      return _i9.PartDetailsPage(
         key: args.key,
-        partId: args.partId,
+        partNumber: args.partNumber,
         part: args.part,
       );
     },
@@ -250,32 +248,34 @@ class PartDetailsRoute extends _i16.PageRouteInfo<PartDetailsRouteArgs> {
 }
 
 class PartDetailsRouteArgs {
-  const PartDetailsRouteArgs({this.key, required this.partId, this.part});
+  const PartDetailsRouteArgs({this.key, required this.partNumber, this.part});
 
   final _i17.Key? key;
 
-  final int partId;
+  final String partNumber;
 
   final _i18.PartEntity? part;
 
   @override
   String toString() {
-    return 'PartDetailsRouteArgs{key: $key, partId: $partId, part: $part}';
+    return 'PartDetailsRouteArgs{key: $key, partNumber: $partNumber, part: $part}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! PartDetailsRouteArgs) return false;
-    return key == other.key && partId == other.partId && part == other.part;
+    return key == other.key &&
+        partNumber == other.partNumber &&
+        part == other.part;
   }
 
   @override
-  int get hashCode => key.hashCode ^ partId.hashCode ^ part.hashCode;
+  int get hashCode => key.hashCode ^ partNumber.hashCode ^ part.hashCode;
 }
 
 /// generated route for
-/// [_i11.PartsPage]
+/// [_i10.PartsPage]
 class PartsRoute extends _i16.PageRouteInfo<void> {
   const PartsRoute({List<_i16.PageRouteInfo>? children})
       : super(PartsRoute.name, initialChildren: children);
@@ -285,13 +285,13 @@ class PartsRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i11.PartsPage();
+      return const _i10.PartsPage();
     },
   );
 }
 
 /// generated route for
-/// [_i12.ProfilePage]
+/// [_i11.ProfilePage]
 class ProfileRoute extends _i16.PageRouteInfo<void> {
   const ProfileRoute({List<_i16.PageRouteInfo>? children})
       : super(ProfileRoute.name, initialChildren: children);
@@ -301,13 +301,13 @@ class ProfileRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i12.ProfilePage();
+      return const _i11.ProfilePage();
     },
   );
 }
 
 /// generated route for
-/// [_i13.SplashPage]
+/// [_i12.SplashPage]
 class SplashRoute extends _i16.PageRouteInfo<void> {
   const SplashRoute({List<_i16.PageRouteInfo>? children})
       : super(SplashRoute.name, initialChildren: children);
@@ -317,9 +317,91 @@ class SplashRoute extends _i16.PageRouteInfo<void> {
   static _i16.PageInfo page = _i16.PageInfo(
     name,
     builder: (data) {
-      return const _i13.SplashPage();
+      return const _i12.SplashPage();
     },
   );
+}
+
+/// generated route for
+/// [_i13.WorkOrderCompletePage]
+class WorkOrderCompleteRoute
+    extends _i16.PageRouteInfo<WorkOrderCompleteRouteArgs> {
+  WorkOrderCompleteRoute({
+    _i17.Key? key,
+    required int workOrderId,
+    _i19.WorkOrderEntity? workOrder,
+    _i20.LocationEntity? currentLocation,
+    List<_i16.PageRouteInfo>? children,
+  }) : super(
+          WorkOrderCompleteRoute.name,
+          args: WorkOrderCompleteRouteArgs(
+            key: key,
+            workOrderId: workOrderId,
+            workOrder: workOrder,
+            currentLocation: currentLocation,
+          ),
+          rawPathParams: {'workOrderId': workOrderId},
+          initialChildren: children,
+        );
+
+  static const String name = 'WorkOrderCompleteRoute';
+
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<WorkOrderCompleteRouteArgs>(
+        orElse: () => WorkOrderCompleteRouteArgs(
+          workOrderId: pathParams.getInt('workOrderId'),
+        ),
+      );
+      return _i13.WorkOrderCompletePage(
+        key: args.key,
+        workOrderId: args.workOrderId,
+        workOrder: args.workOrder,
+        currentLocation: args.currentLocation,
+      );
+    },
+  );
+}
+
+class WorkOrderCompleteRouteArgs {
+  const WorkOrderCompleteRouteArgs({
+    this.key,
+    required this.workOrderId,
+    this.workOrder,
+    this.currentLocation,
+  });
+
+  final _i17.Key? key;
+
+  final int workOrderId;
+
+  final _i19.WorkOrderEntity? workOrder;
+
+  final _i20.LocationEntity? currentLocation;
+
+  @override
+  String toString() {
+    return 'WorkOrderCompleteRouteArgs{key: $key, workOrderId: $workOrderId, workOrder: $workOrder, currentLocation: $currentLocation}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! WorkOrderCompleteRouteArgs) return false;
+    return key == other.key &&
+        workOrderId == other.workOrderId &&
+        workOrder == other.workOrder &&
+        currentLocation == other.currentLocation;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      workOrderId.hashCode ^
+      workOrder.hashCode ^
+      currentLocation.hashCode;
 }
 
 /// generated route for

@@ -42,6 +42,7 @@ class _MainNavigationView extends StatelessWidget {
     return AutoTabsRouter(
       routes: const [
         DashboardRoute(),
+        CalendarRoute(),
         DocumentsRoute(),
         PartsRoute(),
         ProfileRoute(),
@@ -61,6 +62,8 @@ class _MainNavigationView extends StatelessWidget {
               orElse: () {},
             );
           },
+          // PopScope properly integrates hardware back button with Auto Router
+          // When on first tab (Dashboard), allow exit; otherwise navigate to Dashboard
           child: PopScope(
             canPop: tabsRouter.activeIndex == 0,
             onPopInvokedWithResult: (didPop, result) {
@@ -118,9 +121,18 @@ class _MainNavigationView extends StatelessWidget {
                     ),
                     BottomNavigationBarItem(
                       icon: _buildNavIcon(
+                        Icons.calendar_today_outlined,
+                        Icons.calendar_today,
+                        1,
+                        tabsRouter.activeIndex,
+                      ),
+                      label: 'Calendar',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildNavIcon(
                         Icons.folder_outlined,
                         Icons.folder,
-                        1,
+                        2,
                         tabsRouter.activeIndex,
                       ),
                       label: 'Documents',
@@ -129,7 +141,7 @@ class _MainNavigationView extends StatelessWidget {
                       icon: _buildNavIcon(
                         Icons.inventory_2_outlined,
                         Icons.inventory_2,
-                        2,
+                        3,
                         tabsRouter.activeIndex,
                       ),
                       label: 'Parts',
@@ -138,7 +150,7 @@ class _MainNavigationView extends StatelessWidget {
                       icon: _buildNavIcon(
                         Icons.person_outline,
                         Icons.person,
-                        3,
+                        4,
                         tabsRouter.activeIndex,
                       ),
                       label: 'Profile',

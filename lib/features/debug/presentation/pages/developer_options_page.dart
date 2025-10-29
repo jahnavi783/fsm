@@ -148,7 +148,13 @@ class DeveloperOptionsPage extends StatelessWidget {
                 description: 'Test and demonstrate the logging service',
                 icon: Icons.assignment,
                 onTap: () {
-                  context.router.pushPath('/logging-demo');
+                  // TODO: Implement logging demo page with route
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Logging demo page coming soon'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 },
               ),
               SizedBox(height: 16.h),

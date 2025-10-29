@@ -9,6 +9,7 @@ import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
 import 'core/network/dio_client.dart';
 import 'core/router/app_router.dart';
+import 'core/router/observers/app_route_observer.dart';
 import 'core/services/error_boundary_service.dart';
 import 'core/theme/theme.dart';
 import 'core/widgets/error_boundary_widget.dart';
@@ -120,7 +121,16 @@ class _MyAppState extends State<MyApp> {
             child: MaterialApp.router(
               title: AppConfig.appName,
               debugShowCheckedModeBanner: AppConfig.isDebug,
-              routerConfig: appRouter.config(),
+              routerConfig: appRouter.config(
+                // Enable prefix matching for deep linking support
+                // This allows Auto Route to build proper navigation stacks from deep links
+                includePrefixMatches: true,
+                // Navigation observers for tracking and debugging
+                // Always return fresh instances per Auto Route best practices
+                navigatorObservers: () => [
+                  AppRouteObserver(),
+                ],
+              ),
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: ThemeMode.light,

@@ -33,22 +33,22 @@ class NavigationHelpers {
   /// Navigate to part details with animation
   static Future<void> navigateToPart(
     BuildContext context,
-    int partId, {
+    String partNumber, {
     bool replace = false,
   }) async {
     final router = context.router;
     await router.push(
-      PartDetailsRoute(partId: partId),
+      PartDetailsRoute(partNumber: partNumber),
     );
   }
 
   // Navigate to main app after successful authentication
   static Future<void> navigateToMain(BuildContext context) async {
-    await context.router.navigatePath('/main');
+    await context.router.replaceAll([const MainNavigationRoute()]);
   }
 
   static Future<void> navigateToLogin(BuildContext context) async {
-    await context.router.navigatePath('/login');
+    await context.router.replaceAll([const LoginRoute()]);
   }
 
   /// Navigate to specific tab in main navigation

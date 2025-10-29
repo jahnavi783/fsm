@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/document_entity.dart';
 import '../../domain/entities/file_entity.dart';
@@ -205,16 +204,9 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop && !context.router.canPop()) {
-          // If can't pop anymore, navigate to main navigation
-          context.router.replaceAll([MainNavigationRoute()]);
-        }
-      },
-      child: Scaffold(
-        appBar: FSMAppBar.standard(
+    // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
+    return Scaffold(
+      appBar: FSMAppBar.standard(
           title: _document?.title ?? 'Document',
           actions: [
             if (_document != null) ...[
@@ -313,7 +305,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             _selectedFile?.isPdf == true && !_selectedFile!.isVideo
                 ? _buildPdfControls()
                 : null,
-      ),
     );
   }
 

@@ -11,7 +11,10 @@
       "WebFetch(domain:github.com)",
       "Read(//c/Users/ayushkum/AppData/Roaming/Claude/**)",
       "mcp__postmanlabs_postman-mcp-server__getAuthenticatedUser",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
@@ -20,6 +23,6 @@
   "enabledMcpjsonServers": [
     "postman"
   ],
-  "spinnerTipsEnabled": true,
-  "outputStyle": "Learning"
+  "outputStyle": "Learning",
+  "spinnerTipsEnabled": true
 }

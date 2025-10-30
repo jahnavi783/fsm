@@ -36,6 +36,23 @@ class AuthInterceptor extends Interceptor {
         tag: 'AUTH_INTERCEPTOR',
       );
 
+      // Don't retry FormData requests - they can't be reused after being finalized
+      if (err.requestOptions.data is FormData) {
+        _loggingService.warning(
+          'Cannot retry FormData request after 401 - FormData is already finalized. User must retry manually.',
+          tag: 'AUTH_INTERCEPTOR',
+        );
+        await _localDataSource.clearAuthData();
+        return handler.reject(
+          DioException(
+            requestOptions: err.requestOptions,
+            error: 'Session expired during file upload. Please login and try again.',
+            response: err.response,
+            type: DioExceptionType.badResponse,
+          ),
+        );
+      }
+
       final refreshed = await _refreshToken();
       if (refreshed) {
         _loggingService.info(

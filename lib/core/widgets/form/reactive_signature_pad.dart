@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/forms/reactive_signature_control.dart';
 import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/form/reactive_signature_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 

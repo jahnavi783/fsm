@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../domain/entities/profile_entity.dart';
 import '../../../domain/usecases/get_preferences_usecase.dart';
 import '../../../domain/usecases/get_profile_usecase.dart';
@@ -26,12 +27,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) : super(const ProfileState.initial()) {
     on<ProfileEvent>((event, emit) async {
       await event.when(
-        loadProfile: () => _onLoadProfile(emit),
-        updateProfile: (profile) => _onUpdateProfile(emit, profile),
-        loadPreferences: () => _onLoadPreferences(emit),
-        updatePreferences: (preferences) => _onUpdatePreferences(emit, preferences),
-        deleteAccount: () => _onDeleteAccount(emit),
-      );
+          loadProfile: () => _onLoadProfile(emit),
+          updateProfile: (profile) => _onUpdateProfile(emit, profile),
+          loadPreferences: () => _onLoadPreferences(emit),
+          updatePreferences: (preferences) =>
+              _onUpdatePreferences(emit, preferences));
     });
   }
 
@@ -39,7 +39,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(const ProfileState.loading());
 
     final result = await _getProfileUseCase();
-    
+
     result.fold(
       (failure) => emit(ProfileState.error(failure.message)),
       (profile) {
@@ -53,7 +53,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Future<void> _onUpdateProfile(Emitter<ProfileState> emit, ProfileEntity profile) async {
+  Future<void> _onUpdateProfile(
+      Emitter<ProfileState> emit, ProfileEntity profile) async {
     if (_currentProfile == null || _currentPreferences == null) {
       emit(const ProfileState.error('Profile not loaded'));
       return;
@@ -62,7 +63,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(const ProfileState.updating());
 
     final result = await _updateProfileUseCase(profile);
-    
+
     result.fold(
       (failure) => emit(ProfileState.error(failure.message)),
       (updatedProfile) {
@@ -82,7 +83,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     final result = await _getPreferencesUseCase();
-    
+
     result.fold(
       (failure) => emit(ProfileState.error(failure.message)),
       (preferences) {
@@ -95,7 +96,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Future<void> _onUpdatePreferences(Emitter<ProfileState> emit, ProfilePreferences preferences) async {
+  Future<void> _onUpdatePreferences(
+      Emitter<ProfileState> emit, ProfilePreferences preferences) async {
     if (_currentProfile == null) {
       emit(const ProfileState.error('Profile not loaded'));
       return;
@@ -104,15 +106,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(const ProfileState.updating());
 
     final result = await _updatePreferencesUseCase(preferences);
-    
+
     result.fold(
       (failure) => emit(ProfileState.error(failure.message)),
       (updatedPreferences) {
         _currentPreferences = updatedPreferences;
         // Update the profile with new preferences
-        final updatedProfile = _currentProfile!.copyWith(preferences: updatedPreferences);
+        final updatedProfile =
+            _currentProfile!.copyWith(preferences: updatedPreferences);
         _currentProfile = updatedProfile;
-        
+
         emit(ProfileState.preferencesUpdated(
           profile: updatedProfile,
           preferences: updatedPreferences,
@@ -126,7 +129,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     // Note: Delete account use case would need to be implemented
     // For now, we'll just emit an error
-    emit(const ProfileState.error('Delete account functionality not implemented'));
+    emit(const ProfileState.error(
+        'Delete account functionality not implemented'));
   }
 
   // Getters for current state

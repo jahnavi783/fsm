@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/forms/work_order_validators.dart';
 import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/form/work_order_validators.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Reusable reactive multiline text input field

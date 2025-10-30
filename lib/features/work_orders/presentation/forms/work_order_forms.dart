@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:fsm/core/forms/reactive_file_control.dart';
-import 'package:fsm/core/forms/reactive_signature_control.dart';
+import 'package:fsm/core/widgets/form/reactive_file_control.dart';
+import 'package:fsm/core/widgets/form/reactive_signature_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Form group builders for work order actions

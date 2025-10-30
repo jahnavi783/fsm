@@ -14,7 +14,8 @@
       "Bash(cat:*)",
       "Bash(find:*)",
       "Bash(git checkout:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

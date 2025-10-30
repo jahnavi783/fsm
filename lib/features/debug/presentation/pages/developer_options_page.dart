@@ -17,7 +17,7 @@ class DeveloperOptionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!AppConfig.isDebug) {
       return Scaffold(
-        appBar: const FSMAppBar.standard(
+        appBar: const FSMAppBar.gradient(
           title: 'Developer Options',
         ),
         body: Center(
@@ -30,7 +30,7 @@ class DeveloperOptionsPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: const FSMAppBar.standard(
+      appBar: const FSMAppBar.gradient(
         title: 'Developer Options',
       ),
       body: SingleChildScrollView(

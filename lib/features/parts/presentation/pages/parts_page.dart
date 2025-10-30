@@ -96,8 +96,24 @@ class _PartsPageViewState extends State<_PartsPageView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: FSMAppBar(
+      appBar: FSMAppBar.gradient(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'Menu',
+        ),
         title: 'Parts',
+        automaticallyImplyLeading: false,
+        actions: [
+          FSMAppBarAction.search(
+            onPressed: () {
+              // TODO: Implement search navigation when SearchRoute is available
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Search coming soon')),
+              );
+            },
+          ),
+        ],
         bottom: TabBar(
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,

@@ -1,25 +1,27 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/widgets/dashboard_sliver_app_bar.dart';
-import 'package:fsm/core/widgets/stats_card.dart';
+import 'package:fsm/core/utils/work_order_status_helper.dart';
 import 'package:fsm/core/widgets/custom_tab_bar.dart';
 import 'package:fsm/core/widgets/dashboard_states.dart';
-import 'package:fsm/core/widgets/work_order_sliver_list.dart';
 import 'package:fsm/core/widgets/fsm_action_button.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
 import 'package:fsm/core/widgets/fsm_empty_state.dart';
 import 'package:fsm/core/widgets/offline_banner.dart';
-import 'package:fsm/core/utils/work_order_status_helper.dart';
+import 'package:fsm/core/widgets/stats_card.dart';
+import 'package:fsm/core/widgets/work_order_sliver_list.dart';
+import 'package:fsm/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:fsm/features/auth/presentation/blocs/auth/auth_state.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_state.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/current_work_order_card.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -107,19 +109,46 @@ class _DashboardPageState extends State<DashboardPage>
                   child: CustomScrollView(
                     controller: _scrollController,
                     slivers: [
-                      // App Bar
-                      DashboardSliverAppBar(
-                        onSearch: () => _showSearchDialog(context),
-                        onNotifications: () {
-                          // TODO: Navigate to notifications page when implemented
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Notifications coming soon!'),
-                              duration: Duration(seconds: 2),
+                      // App Bar with navigation (hamburger menu + search) and welcome message
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, authState) {
+                          // Get user name from auth state
+                          final userName = authState.maybeWhen(
+                            authenticated: (user) => user.firstName,
+                            orElse: () => 'User',
+                          );
+
+                          return FSMSliverAppBar.gradient(
+                            leading: IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer(),
+                              tooltip: 'Menu',
                             ),
+                            title: 'Welcome $userName',
+                            subtitle: 'Manage your work orders',
+                            automaticallyImplyLeading: false,
+                            pinned: true,
+                            actions: [
+                              FSMAppBarAction.search(
+                                onPressed: () => _showSearchDialog(context),
+                              ),
+                              FSMAppBarAction.notification(
+                                onPressed: () {
+                                  // TODO: Navigate to notifications page when implemented
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Notifications coming soon!'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                count: 0, // TODO: Get from state/BLoC
+                              ),
+                            ],
                           );
                         },
-                        notificationCount: 0, // TODO: Get from state/BLoC
                       ),
 
                       // Stats Cards (kept as existing - already well-designed)

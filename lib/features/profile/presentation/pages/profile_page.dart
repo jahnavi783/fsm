@@ -46,8 +46,24 @@ class ProfileView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: FSMAppBar.gradient(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'Menu',
+        ),
         title: 'Profile',
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          FSMAppBarAction.search(
+            onPressed: () {
+              // TODO: Implement search navigation when SearchRoute is available
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Search coming soon')),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {

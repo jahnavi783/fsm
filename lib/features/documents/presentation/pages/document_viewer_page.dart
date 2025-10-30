@@ -206,7 +206,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   Widget build(BuildContext context) {
     // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
     return Scaffold(
-      appBar: FSMAppBar.standard(
+      appBar: FSMAppBar.gradient(
           title: _document?.title ?? 'Document',
           actions: [
             if (_document != null) ...[

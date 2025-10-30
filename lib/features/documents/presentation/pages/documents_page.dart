@@ -73,6 +73,11 @@ class _DocumentsViewState extends State<DocumentsView> {
 
     return Scaffold(
       appBar: FSMAppBar.gradient(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: 'Menu',
+        ),
         titleWidget: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -92,7 +97,16 @@ class _DocumentsViewState extends State<DocumentsView> {
             const Text('Documents'),
           ],
         ),
+        automaticallyImplyLeading: false,
         actions: [
+          FSMAppBarAction.search(
+            onPressed: () {
+              // TODO: Implement global search navigation when available
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Global search coming soon')),
+              );
+            },
+          ),
           BlocBuilder<DocumentsBloc, DocumentsState>(
             builder: (context, state) {
               if (state.downloadedDocumentsCount > 0) {

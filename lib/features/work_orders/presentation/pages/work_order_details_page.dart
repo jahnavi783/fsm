@@ -180,8 +180,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       body: CustomScrollView(
         slivers: [
           // App Bar with gradient background using FSMSliverAppBar
+          // Uses standardized 120.0 height for consistency across all screens
           FSMSliverAppBar.gradient(
-            expandedHeight: 265,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(

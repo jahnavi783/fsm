@@ -20,8 +20,15 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const FSMAppBar(
+      appBar: FSMAppBar.navigation(
         title: 'Calendar',
+        onMenuTap: () => Scaffold.of(context).openDrawer(),
+        onSearchTap: () {
+          // TODO: Implement search navigation when SearchRoute is available
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Search coming soon')),
+          );
+        },
       ),
       body: const FSMEmptyState(
         icon: Icons.calendar_today,

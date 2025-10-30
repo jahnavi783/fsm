@@ -95,7 +95,7 @@ class _PermissionDemoPageState extends State<PermissionDemoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FSMAppBar.standard(
+      appBar: FSMAppBar.gradient(
         title: 'Permission Demo',
         actions: [
           FSMAppBarAction.refresh(

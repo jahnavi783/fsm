@@ -4,27 +4,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/theme/app_dimensions.dart';
 
-/// FSMAppBar - Standardized app bar component with gradient variant
+/// FSMAppBar - Standardized app bar component with consistent theming
+///
+/// **STANDARDIZATION (2025 Redesign):**
+/// - Height: 80.h (AppDimensions.appBarHeight) across ALL screens
+/// - Background: Teal-to-Green gradient (AppColors.primaryGradient)
+/// - Title Font: 18.sp, FontWeight.w600, color: white (AppColors.onPrimary)
+/// - Subtitle Font: 12.sp, FontWeight.normal, color: white with 80% opacity
+/// - Icon Color: White (AppColors.onPrimary)
+/// - Icon Size: 24.0 (AppDimensions.iconMedium)
 ///
 /// Provides multiple app bar variants:
-/// - [FSMAppBar.standard] - Solid color app bar
-/// - [FSMAppBar.gradient] - Gradient background app bar
-/// - [FSMAppBar.withSearch] - App bar with integrated search
-/// - [FSMAppBar.scrollable] - SliverAppBar with hide-on-scroll behavior
+/// - [FSMAppBar.standard] - Solid color app bar (deprecated, use .gradient)
+/// - [FSMAppBar.gradient] - **RECOMMENDED** Gradient background app bar
+/// - [FSMAppBar.navigation] - Navigation variant with hamburger + search
 ///
 /// Supports:
 /// - Custom title and subtitle
 /// - Action buttons (refresh, notifications, etc.)
 /// - Back button handling
-/// - Integrated search bar (show/hide on scroll)
 /// - Gradient background
-/// - Scroll behavior (hide on scroll, pin, float)
 ///
 /// Use cases:
 /// - Dashboard header
 /// - Work order details header
-/// - Search screens
-/// - List screens with scrollable content
+/// - All main tab pages (Calendar, Documents, Parts, Profile)
+/// - Detail pages
 class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Widget? titleWidget;
@@ -75,6 +80,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
         toolbarHeight = null;
 
   /// App bar with gradient background
+  /// Uses standardized theme colors and dimensions for consistency
   const FSMAppBar.gradient({
     super.key,
     this.title,
@@ -86,10 +92,10 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.systemOverlayStyle,
     this.bottom,
+    this.toolbarHeight,
   })  : backgroundColor = null,
         gradient = AppColors.primaryGradient,
-        elevation = 0,
-        toolbarHeight = null;
+        elevation = 0;
 
   /// Simplified navigation app bar for redesign (2025)
   ///
@@ -234,6 +240,13 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 /// FSMSliverAppBar - Scrollable app bar with collapse behavior
 ///
+/// **STANDARDIZATION (2025 Redesign):**
+/// - Collapsed Height: 80.h (same as FSMAppBar for consistency)
+/// - Expanded Height: 120.0 (default for dashboard/main screens)
+/// - Background: Teal-to-Green gradient (AppColors.primaryGradient)
+/// - Title/Subtitle: Same styling as FSMAppBar (18.sp / 12.sp)
+/// - Icon Color: White (AppColors.onPrimary)
+///
 /// Provides a collapsible app bar with flexible space for headers, images, etc.
 class FSMSliverAppBar extends StatelessWidget {
   final String? title;
@@ -274,6 +287,7 @@ class FSMSliverAppBar extends StatelessWidget {
   });
 
   /// Scrollable app bar with gradient and flexible space
+  /// Uses standardized 120.0 expanded height for consistency
   const FSMSliverAppBar.gradient({
     super.key,
     this.title,
@@ -283,7 +297,7 @@ class FSMSliverAppBar extends StatelessWidget {
     this.leading,
     this.automaticallyImplyLeading = true,
     this.flexibleSpace,
-    this.expandedHeight = 200.0,
+    this.expandedHeight = 120.0,
     this.floating = false,
     this.pinned = true,
     this.snap = false,

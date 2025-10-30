@@ -31,7 +31,7 @@ class ChatbotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const FSMAppBar(
+      appBar: const FSMAppBar.gradient(
         title: 'AI Assistant',
       ),
       body: SingleChildScrollView(

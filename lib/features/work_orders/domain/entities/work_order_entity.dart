@@ -117,8 +117,6 @@ enum WorkOrderStatus {
 
       case WorkOrderStatus.reAssigned:
         return 're_assigned';
-      default:
-        return super.toString();
     }
   }
 }

@@ -54,8 +54,6 @@ extension ProfileEventPatterns on ProfileEvent {
     TResult Function(_UpdateProfile value)? updateProfile,
     TResult Function(_LoadPreferences value)? loadPreferences,
     TResult Function(_UpdatePreferences value)? updatePreferences,
-    TResult Function(_Logout value)? logout,
-    TResult Function(_DeleteAccount value)? deleteAccount,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -68,10 +66,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences(_that);
       case _UpdatePreferences() when updatePreferences != null:
         return updatePreferences(_that);
-      case _Logout() when logout != null:
-        return logout(_that);
-      case _DeleteAccount() when deleteAccount != null:
-        return deleteAccount(_that);
       case _:
         return orElse();
     }
@@ -96,8 +90,6 @@ extension ProfileEventPatterns on ProfileEvent {
     required TResult Function(_UpdateProfile value) updateProfile,
     required TResult Function(_LoadPreferences value) loadPreferences,
     required TResult Function(_UpdatePreferences value) updatePreferences,
-    required TResult Function(_Logout value) logout,
-    required TResult Function(_DeleteAccount value) deleteAccount,
   }) {
     final _that = this;
     switch (_that) {
@@ -109,10 +101,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences(_that);
       case _UpdatePreferences():
         return updatePreferences(_that);
-      case _Logout():
-        return logout(_that);
-      case _DeleteAccount():
-        return deleteAccount(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -136,8 +124,6 @@ extension ProfileEventPatterns on ProfileEvent {
     TResult? Function(_UpdateProfile value)? updateProfile,
     TResult? Function(_LoadPreferences value)? loadPreferences,
     TResult? Function(_UpdatePreferences value)? updatePreferences,
-    TResult? Function(_Logout value)? logout,
-    TResult? Function(_DeleteAccount value)? deleteAccount,
   }) {
     final _that = this;
     switch (_that) {
@@ -149,10 +135,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences(_that);
       case _UpdatePreferences() when updatePreferences != null:
         return updatePreferences(_that);
-      case _Logout() when logout != null:
-        return logout(_that);
-      case _DeleteAccount() when deleteAccount != null:
-        return deleteAccount(_that);
       case _:
         return null;
     }
@@ -176,8 +158,6 @@ extension ProfileEventPatterns on ProfileEvent {
     TResult Function(ProfileEntity profile)? updateProfile,
     TResult Function()? loadPreferences,
     TResult Function(ProfilePreferences preferences)? updatePreferences,
-    TResult Function()? logout,
-    TResult Function()? deleteAccount,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -190,10 +170,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences();
       case _UpdatePreferences() when updatePreferences != null:
         return updatePreferences(_that.preferences);
-      case _Logout() when logout != null:
-        return logout();
-      case _DeleteAccount() when deleteAccount != null:
-        return deleteAccount();
       case _:
         return orElse();
     }
@@ -218,8 +194,6 @@ extension ProfileEventPatterns on ProfileEvent {
     required TResult Function(ProfileEntity profile) updateProfile,
     required TResult Function() loadPreferences,
     required TResult Function(ProfilePreferences preferences) updatePreferences,
-    required TResult Function() logout,
-    required TResult Function() deleteAccount,
   }) {
     final _that = this;
     switch (_that) {
@@ -231,10 +205,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences();
       case _UpdatePreferences():
         return updatePreferences(_that.preferences);
-      case _Logout():
-        return logout();
-      case _DeleteAccount():
-        return deleteAccount();
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -258,8 +228,6 @@ extension ProfileEventPatterns on ProfileEvent {
     TResult? Function(ProfileEntity profile)? updateProfile,
     TResult? Function()? loadPreferences,
     TResult? Function(ProfilePreferences preferences)? updatePreferences,
-    TResult? Function()? logout,
-    TResult? Function()? deleteAccount,
   }) {
     final _that = this;
     switch (_that) {
@@ -271,10 +239,6 @@ extension ProfileEventPatterns on ProfileEvent {
         return loadPreferences();
       case _UpdatePreferences() when updatePreferences != null:
         return updatePreferences(_that.preferences);
-      case _Logout() when logout != null:
-        return logout();
-      case _DeleteAccount() when deleteAccount != null:
-        return deleteAccount();
       case _:
         return null;
     }
@@ -471,46 +435,6 @@ class __$UpdatePreferencesCopyWithImpl<$Res>
     return $ProfilePreferencesCopyWith<$Res>(_self.preferences, (value) {
       return _then(_self.copyWith(preferences: value));
     });
-  }
-}
-
-/// @nodoc
-
-class _Logout implements ProfileEvent {
-  const _Logout();
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Logout);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  String toString() {
-    return 'ProfileEvent.logout()';
-  }
-}
-
-/// @nodoc
-
-class _DeleteAccount implements ProfileEvent {
-  const _DeleteAccount();
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _DeleteAccount);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  String toString() {
-    return 'ProfileEvent.deleteAccount()';
   }
 }
 

@@ -121,7 +121,6 @@ import '../../features/profile/domain/usecases/get_preferences_usecase.dart'
     as _i154;
 import '../../features/profile/domain/usecases/get_profile_usecase.dart'
     as _i965;
-import '../../features/profile/domain/usecases/logout_usecase.dart' as _i17;
 import '../../features/profile/domain/usecases/update_preferences_usecase.dart'
     as _i90;
 import '../../features/profile/domain/usecases/update_profile_usecase.dart'
@@ -266,27 +265,29 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i992.AuthLocalDataSource>(),
           gh<_i520.LoggingService>(),
         ));
-    gh.singleton<_i81.AppRouter>(
-        () => _i81.AppRouter(authGuard: gh<_i530.AuthGuard>()));
     gh.factory<_i669.LocationService>(
         () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
+    await gh.singletonAsync<_i81.AppRouter>(
+      () => _i81.AppRouter.create(gh<_i530.AuthGuard>()),
+      preResolve: true,
+    );
     gh.singleton<_i361.Dio>(() => networkModule.provideDio(
           gh<_i908.AuthInterceptor>(),
           gh<_i520.LoggingService>(),
         ));
     gh.singleton<_i538.SyncBloc>(
         () => _i538.SyncBloc(gh<_i256.ConnectivityBloc>()));
-    gh.factory<_i541.AuthApiClient>(
+    gh.lazySingleton<_i541.AuthApiClient>(
         () => authModule.authApiClient(gh<_i361.Dio>()));
-    gh.factory<_i584.CalendarApiClient>(
+    gh.lazySingleton<_i584.CalendarApiClient>(
         () => calendarApiModule.calendarApiClient(gh<_i361.Dio>()));
-    gh.factory<_i936.DocumentApiClient>(
+    gh.lazySingleton<_i936.DocumentApiClient>(
         () => documentModule.documentApiClient(gh<_i361.Dio>()));
-    gh.factory<_i1011.PartsApiClient>(
+    gh.lazySingleton<_i1011.PartsApiClient>(
         () => partsApiModule.partsApiClient(gh<_i361.Dio>()));
-    gh.factory<_i751.ProfileApiClient>(
+    gh.lazySingleton<_i751.ProfileApiClient>(
         () => profileApiModule.profileApiClient(gh<_i361.Dio>()));
-    gh.factory<_i103.WorkOrderApiClient>(
+    gh.lazySingleton<_i103.WorkOrderApiClient>(
         () => workOrderApiModule.workOrderApiClient(gh<_i361.Dio>()));
     gh.singleton<_i667.DioClient>(() => _i667.DioClient(gh<_i361.Dio>()));
     gh.factory<_i161.AuthRemoteDataSource>(
@@ -420,8 +421,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i154.GetPreferencesUseCase(gh<_i879.IProfileRepository>()));
     gh.factory<_i965.GetProfileUseCase>(
         () => _i965.GetProfileUseCase(gh<_i879.IProfileRepository>()));
-    gh.factory<_i17.LogoutUseCase>(
-        () => _i17.LogoutUseCase(gh<_i879.IProfileRepository>()));
     gh.factory<_i90.UpdatePreferencesUseCase>(
         () => _i90.UpdatePreferencesUseCase(gh<_i879.IProfileRepository>()));
     gh.factory<_i478.UpdateProfileUseCase>(
@@ -441,7 +440,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i478.UpdateProfileUseCase>(),
           gh<_i154.GetPreferencesUseCase>(),
           gh<_i90.UpdatePreferencesUseCase>(),
-          gh<_i17.LogoutUseCase>(),
         ));
     return this;
   }

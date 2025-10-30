@@ -4,6 +4,6 @@ import 'package:fsm/features/calendar/data/api/calendar_api_client.dart';
 
 @module
 abstract class CalendarApiModule {
-  @injectable
+  @lazySingleton
   CalendarApiClient calendarApiClient(Dio dio) => CalendarApiClient(dio);
 }

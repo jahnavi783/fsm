@@ -31,7 +31,7 @@ class DocumentThumbnail extends StatelessWidget {
       decoration: BoxDecoration(
         color: document.isImage
             ? Colors.transparent
-            : theme.colorScheme.primary.withOpacity(0.1),
+            : theme.colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: effectiveBorderRadius,
       ),
       child: ClipRRect(
@@ -57,7 +57,7 @@ class DocumentThumbnail extends StatelessWidget {
           width: width ?? 56.w,
           height: height ?? 56.h,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withOpacity(0.1),
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: borderRadius ?? BorderRadius.circular(8.r),
           ),
           child: Center(

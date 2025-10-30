@@ -184,6 +184,8 @@ class PermissionHelper {
 
     if (isGranted) return true;
 
+    if (!context.mounted) return false;
+
     final result = await requestMultiplePermissionsWithDialog(
       context: context,
       permissions: criticalPermissions,

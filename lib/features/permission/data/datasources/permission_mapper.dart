@@ -30,7 +30,7 @@ class PermissionMapper {
       case AppPermission.contacts:
         return ph.Permission.contacts;
       case AppPermission.calendar:
-        return ph.Permission.calendar;
+        return ph.Permission.calendarFullAccess;
       case AppPermission.reminders:
         return ph.Permission.reminders;
       case AppPermission.sensors:

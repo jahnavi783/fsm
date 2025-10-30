@@ -29,7 +29,7 @@ class BasicInfoStep extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Row(
@@ -69,7 +69,7 @@ class BasicInfoStep extends StatelessWidget {
                         'Customer details and work summary',
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -108,7 +108,7 @@ class BasicInfoStep extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withOpacity(0.3),
+                  color: AppColors.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -157,7 +157,7 @@ class BasicInfoStep extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withOpacity(0.3),
+                  color: AppColors.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
@@ -185,7 +185,7 @@ class BasicInfoStep extends StatelessWidget {
               Icon(
                 Icons.info_outline,
                 size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               SizedBox(width: 8.w),
               Expanded(

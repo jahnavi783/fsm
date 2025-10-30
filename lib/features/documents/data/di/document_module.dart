@@ -4,6 +4,6 @@ import '../api/document_api_client.dart';
 
 @module
 abstract class DocumentModule {
-  @injectable
+  @lazySingleton
   DocumentApiClient documentApiClient(Dio dio) => DocumentApiClient(dio);
 }

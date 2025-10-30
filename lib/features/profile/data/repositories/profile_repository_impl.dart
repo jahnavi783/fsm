@@ -237,10 +237,10 @@ class ProfileRepositoryImpl implements IProfileRepository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
-      if (await _networkInfo.isConnected) {
-        // Logout from server
-        await _remoteDataSource.logout();
-      }
+      // if (await _networkInfo.isConnected) {
+      //   // Logout from server
+      //   // await _remoteDataSource.logout();
+      // }
 
       // Clear local cache regardless of network status
       await _localDataSource.clearCache();

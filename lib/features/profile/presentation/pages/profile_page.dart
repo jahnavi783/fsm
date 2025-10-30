@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../blocs/profile/profile_bloc.dart';
 import '../blocs/profile/profile_event.dart';
 import '../blocs/profile/profile_state.dart';
@@ -29,6 +31,16 @@ class ProfilePage extends StatelessWidget {
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
+  Future<void> _handleLogout(BuildContext context) async {
+    final shouldLogout =
+        await LogoutConfirmationDialog.show(context);
+    if (shouldLogout == true && context.mounted) {
+      // Use AuthBloc for logout instead of ProfileBloc
+      // This ensures proper cleanup of auth state and navigation
+      context.read<AuthBloc>().add(const AuthEvent.logout());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,16 +57,6 @@ class ProfileView extends StatelessWidget {
                 SnackBar(
                   content: Text(message),
                   backgroundColor: Colors.red,
-                ),
-              );
-            },
-            loggedOut: () {
-              // Navigate to login page
-              // This would typically be handled by the app router
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Logged out successfully'),
-                  backgroundColor: Colors.green,
                 ),
               );
             },
@@ -87,11 +89,11 @@ class ProfileView extends StatelessWidget {
                 _buildLoadedContent(context, profile, preferences),
             preferencesUpdated: (profile, preferences) =>
                 _buildLoadedContent(context, profile, preferences),
-            loggedOut: () => const Center(
-              child: Text('Logged out. Redirecting...'),
-            ),
             accountDeleted: () => const Center(
               child: Text('Account deleted. Redirecting...'),
+            ),
+            loggedOut: () => const Center(
+              child: Text('Logged out. Redirecting...'),
             ),
             error: (message) => Center(
               child: Column(
@@ -149,7 +151,7 @@ class ProfileView extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 4,
                   offset: const Offset(0, 2),
@@ -349,15 +351,7 @@ class ProfileView extends StatelessWidget {
                 icon: Icons.logout,
                 iconColor: Colors.orange,
                 textColor: Colors.orange,
-                onTap: () async {
-                  final shouldLogout =
-                      await LogoutConfirmationDialog.show(context);
-                  if (shouldLogout == true) {
-                    context
-                        .read<ProfileBloc>()
-                        .add(const ProfileEvent.logout());
-                  }
-                },
+                onTap: () => _handleLogout(context),
               ),
             ],
           ),

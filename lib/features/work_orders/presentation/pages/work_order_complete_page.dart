@@ -24,6 +24,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 import '../widgets/completion_steps/images_step.dart';
+import '../widgets/completion_steps/models/part_used_input.dart';
 import '../widgets/completion_steps/review_and_submit_step.dart';
 import '../widgets/completion_steps/work_and_parts_step.dart';
 
@@ -528,10 +529,11 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                       // Responsive values based on screen width
                       final screenWidth = MediaQuery.of(context).size.width;
                       final isSmallScreen = screenWidth < 360;
-                      
+
                       // Calculate line length based on available width
-                      final lineLength = (constraints.maxWidth - (3 * 48.w) - 40.w) / 2;
-                      
+                      final lineLength =
+                          (constraints.maxWidth - (3 * 48.w) - 40.w) / 2;
+
                       return EasyStepper(
                         activeStep: _activeStep,
                         lineStyle: LineStyle(

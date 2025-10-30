@@ -114,26 +114,26 @@ class ProfileHeader extends StatelessWidget {
           ),
 
         // Employee ID (if available)
-        if (profile.id != null) ...[
-          SizedBox(height: AppDimensions.spaceXSmall),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingSmall,
-              vertical: AppDimensions.paddingXSmall / 2,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
-            ),
-            child: Text(
-              'ID: ${profile.id}',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.white,
-                fontWeight: FontWeight.w600,
-              ),
+        ...[
+        SizedBox(height: AppDimensions.spaceXSmall),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.paddingSmall,
+            vertical: AppDimensions.paddingXSmall / 2,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.white.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
+          ),
+          child: Text(
+            'ID: ${profile.id}',
+            style: AppTextStyles.labelSmall.copyWith(
+              color: AppColors.white,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ],
+        ),
+      ],
       ],
     );
   }

@@ -4,6 +4,6 @@ import '../api/auth_api_client.dart';
 
 @module
 abstract class AuthModule {
-  @injectable
+  @lazySingleton
   AuthApiClient authApiClient(Dio dio) => AuthApiClient(dio);
 }

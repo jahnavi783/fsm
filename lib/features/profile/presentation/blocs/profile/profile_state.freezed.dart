@@ -56,8 +56,8 @@ extension ProfileStatePatterns on ProfileState {
     TResult Function(_Updating value)? updating,
     TResult Function(_Updated value)? updated,
     TResult Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult Function(_LoggedOut value)? loggedOut,
     TResult Function(_AccountDeleted value)? accountDeleted,
+    TResult Function(_LoggedOut value)? loggedOut,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -75,10 +75,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that);
       case _PreferencesUpdated() when preferencesUpdated != null:
         return preferencesUpdated(_that);
-      case _LoggedOut() when loggedOut != null:
-        return loggedOut(_that);
       case _AccountDeleted() when accountDeleted != null:
         return accountDeleted(_that);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut(_that);
       case _Error() when error != null:
         return error(_that);
       case _:
@@ -107,8 +107,8 @@ extension ProfileStatePatterns on ProfileState {
     required TResult Function(_Updating value) updating,
     required TResult Function(_Updated value) updated,
     required TResult Function(_PreferencesUpdated value) preferencesUpdated,
-    required TResult Function(_LoggedOut value) loggedOut,
     required TResult Function(_AccountDeleted value) accountDeleted,
+    required TResult Function(_LoggedOut value) loggedOut,
     required TResult Function(_Error value) error,
   }) {
     final _that = this;
@@ -125,10 +125,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that);
       case _PreferencesUpdated():
         return preferencesUpdated(_that);
-      case _LoggedOut():
-        return loggedOut(_that);
       case _AccountDeleted():
         return accountDeleted(_that);
+      case _LoggedOut():
+        return loggedOut(_that);
       case _Error():
         return error(_that);
       case _:
@@ -156,8 +156,8 @@ extension ProfileStatePatterns on ProfileState {
     TResult? Function(_Updating value)? updating,
     TResult? Function(_Updated value)? updated,
     TResult? Function(_PreferencesUpdated value)? preferencesUpdated,
-    TResult? Function(_LoggedOut value)? loggedOut,
     TResult? Function(_AccountDeleted value)? accountDeleted,
+    TResult? Function(_LoggedOut value)? loggedOut,
     TResult? Function(_Error value)? error,
   }) {
     final _that = this;
@@ -174,10 +174,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that);
       case _PreferencesUpdated() when preferencesUpdated != null:
         return preferencesUpdated(_that);
-      case _LoggedOut() when loggedOut != null:
-        return loggedOut(_that);
       case _AccountDeleted() when accountDeleted != null:
         return accountDeleted(_that);
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut(_that);
       case _Error() when error != null:
         return error(_that);
       case _:
@@ -208,8 +208,8 @@ extension ProfileStatePatterns on ProfileState {
         updated,
     TResult Function(ProfileEntity profile, ProfilePreferences preferences)?
         preferencesUpdated,
-    TResult Function()? loggedOut,
     TResult Function()? accountDeleted,
+    TResult Function()? loggedOut,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -227,10 +227,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that.profile, _that.preferences);
       case _PreferencesUpdated() when preferencesUpdated != null:
         return preferencesUpdated(_that.profile, _that.preferences);
-      case _LoggedOut() when loggedOut != null:
-        return loggedOut();
       case _AccountDeleted() when accountDeleted != null:
         return accountDeleted();
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut();
       case _Error() when error != null:
         return error(_that.message);
       case _:
@@ -265,8 +265,8 @@ extension ProfileStatePatterns on ProfileState {
     required TResult Function(
             ProfileEntity profile, ProfilePreferences preferences)
         preferencesUpdated,
-    required TResult Function() loggedOut,
     required TResult Function() accountDeleted,
+    required TResult Function() loggedOut,
     required TResult Function(String message) error,
   }) {
     final _that = this;
@@ -283,10 +283,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that.profile, _that.preferences);
       case _PreferencesUpdated():
         return preferencesUpdated(_that.profile, _that.preferences);
-      case _LoggedOut():
-        return loggedOut();
       case _AccountDeleted():
         return accountDeleted();
+      case _LoggedOut():
+        return loggedOut();
       case _Error():
         return error(_that.message);
       case _:
@@ -317,8 +317,8 @@ extension ProfileStatePatterns on ProfileState {
         updated,
     TResult? Function(ProfileEntity profile, ProfilePreferences preferences)?
         preferencesUpdated,
-    TResult? Function()? loggedOut,
     TResult? Function()? accountDeleted,
+    TResult? Function()? loggedOut,
     TResult? Function(String message)? error,
   }) {
     final _that = this;
@@ -335,10 +335,10 @@ extension ProfileStatePatterns on ProfileState {
         return updated(_that.profile, _that.preferences);
       case _PreferencesUpdated() when preferencesUpdated != null:
         return preferencesUpdated(_that.profile, _that.preferences);
-      case _LoggedOut() when loggedOut != null:
-        return loggedOut();
       case _AccountDeleted() when accountDeleted != null:
         return accountDeleted();
+      case _LoggedOut() when loggedOut != null:
+        return loggedOut();
       case _Error() when error != null:
         return error(_that.message);
       case _:
@@ -690,26 +690,6 @@ class __$PreferencesUpdatedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _LoggedOut implements ProfileState {
-  const _LoggedOut();
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _LoggedOut);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  String toString() {
-    return 'ProfileState.loggedOut()';
-  }
-}
-
-/// @nodoc
-
 class _AccountDeleted implements ProfileState {
   const _AccountDeleted();
 
@@ -725,6 +705,26 @@ class _AccountDeleted implements ProfileState {
   @override
   String toString() {
     return 'ProfileState.accountDeleted()';
+  }
+}
+
+/// @nodoc
+
+class _LoggedOut implements ProfileState {
+  const _LoggedOut();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _LoggedOut);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'ProfileState.loggedOut()';
   }
 }
 

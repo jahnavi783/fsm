@@ -4,6 +4,6 @@ import 'profile_api_client.dart';
 
 @module
 abstract class ProfileApiModule {
-  @injectable
+  @lazySingleton
   ProfileApiClient profileApiClient(Dio dio) => ProfileApiClient(dio);
 }

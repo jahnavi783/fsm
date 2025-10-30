@@ -21,7 +21,7 @@ class HiveService {
   late Box _settingsBox;
   final LoggingService _loggingService;
 
-  @factoryMethod
+  @FactoryMethod()
   static Future<HiveService> create() async {
     final service = HiveService._(getIt<LoggingService>());
     await service._init();

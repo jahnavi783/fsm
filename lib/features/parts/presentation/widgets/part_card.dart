@@ -95,10 +95,10 @@ class PartCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(part.status).withOpacity(0.1),
+                    color: _getStatusColor(part.status).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6.r),
                     border: Border.all(
-                        color: _getStatusColor(part.status).withOpacity(0.3)),
+                        color: _getStatusColor(part.status).withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     _getStatusText(part.status),

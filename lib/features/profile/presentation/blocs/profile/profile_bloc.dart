@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import '../../../domain/entities/profile_entity.dart';
 import '../../../domain/usecases/get_preferences_usecase.dart';
 import '../../../domain/usecases/get_profile_usecase.dart';
-import '../../../domain/usecases/logout_usecase.dart';
 import '../../../domain/usecases/update_preferences_usecase.dart';
 import '../../../domain/usecases/update_profile_usecase.dart';
 import 'profile_event.dart';
@@ -15,7 +14,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UpdateProfileUseCase _updateProfileUseCase;
   final GetPreferencesUseCase _getPreferencesUseCase;
   final UpdatePreferencesUseCase _updatePreferencesUseCase;
-  final LogoutUseCase _logoutUseCase;
 
   ProfileEntity? _currentProfile;
   ProfilePreferences? _currentPreferences;
@@ -25,7 +23,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     this._updateProfileUseCase,
     this._getPreferencesUseCase,
     this._updatePreferencesUseCase,
-    this._logoutUseCase,
   ) : super(const ProfileState.initial()) {
     on<ProfileEvent>((event, emit) async {
       await event.when(
@@ -33,7 +30,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         updateProfile: (profile) => _onUpdateProfile(emit, profile),
         loadPreferences: () => _onLoadPreferences(emit),
         updatePreferences: (preferences) => _onUpdatePreferences(emit, preferences),
-        logout: () => _onLogout(emit),
         deleteAccount: () => _onDeleteAccount(emit),
       );
     });
@@ -121,21 +117,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           profile: updatedProfile,
           preferences: updatedPreferences,
         ));
-      },
-    );
-  }
-
-  Future<void> _onLogout(Emitter<ProfileState> emit) async {
-    emit(const ProfileState.updating());
-
-    final result = await _logoutUseCase();
-    
-    result.fold(
-      (failure) => emit(ProfileState.error(failure.message)),
-      (_) {
-        _currentProfile = null;
-        _currentPreferences = null;
-        emit(const ProfileState.loggedOut());
       },
     );
   }

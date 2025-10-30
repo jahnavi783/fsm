@@ -9,11 +9,19 @@ import 'app_router.gr.dart';
 import 'guards/auth_guard.dart';
 
 @AutoRouterConfig()
+@preResolve
 @singleton
 class AppRouter extends RootStackRouter {
   final AuthGuard authGuard;
 
-  AppRouter({required this.authGuard});
+  AppRouter._(this.authGuard);
+
+  @FactoryMethod()
+  static Future<AppRouter> create(AuthGuard authGuard) async {
+    final router = AppRouter._(authGuard);
+    // Pre-warm router configuration if needed
+    return router;
+  }
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalNavigatorKey;

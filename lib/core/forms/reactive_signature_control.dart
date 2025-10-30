@@ -8,13 +8,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Stores signature as File after conversion from ui.Image
 class ReactiveSignatureControl extends FormControl<File?> {
   ReactiveSignatureControl({
-    File? value,
+    super.value,
     super.validators,
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     super.disabled,
     super.touched,
-  }) : super(value: value);
+  });
 
   /// Set signature from ui.Image (captured from signature pad)
   Future<void> setSignatureFromImage(ui.Image image) async {

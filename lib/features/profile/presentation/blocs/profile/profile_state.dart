@@ -20,7 +20,7 @@ class ProfileState with _$ProfileState {
     required ProfileEntity profile,
     required ProfilePreferences preferences,
   }) = _PreferencesUpdated;
-  const factory ProfileState.loggedOut() = _LoggedOut;
   const factory ProfileState.accountDeleted() = _AccountDeleted;
+  const factory ProfileState.loggedOut() = _LoggedOut;
   const factory ProfileState.error(String message) = _Error;
 }

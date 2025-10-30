@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
-import 'work_and_parts_step.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
+
+import 'models/part_used_input.dart';
 
 /// Step 3: Review and Submit
 /// Collects location, customer name, signature and shows review of all data
@@ -266,7 +267,8 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             decoration: BoxDecoration(
               color: widget.hasSignature
                   ? AppColors.success.withValues(alpha: 0.05)
-                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  : theme.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(
                 color: widget.hasSignature
@@ -337,14 +339,16 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                           Icon(
                             Icons.info_outline,
                             size: 18.sp,
-                            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                            color: theme.colorScheme.onSurface
+                                .withValues(alpha: 0.5),
                           ),
                           SizedBox(width: 8.w),
                           Text(
                             'Draw signature above',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                              color: theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.5),
                             ),
                           ),
                         ],
@@ -495,7 +499,8 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                             '• ${part.part.partName} (Qty: ${part.quantityController.text})',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                              color: theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.7),
                             ),
                           ),
                         )),
@@ -532,7 +537,9 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     widget.hasSignature,
                   ),
 
-                  if (widget.completionNotesController.text.trim().isNotEmpty) ...[
+                  if (widget.completionNotesController.text
+                      .trim()
+                      .isNotEmpty) ...[
                     SizedBox(height: 12.h),
                     _buildReviewItem(
                       'Additional Notes',

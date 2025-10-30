@@ -119,7 +119,7 @@ class _VerificationStepState extends State<VerificationStep> {
           decoration: BoxDecoration(
             color: widget.hasSignature
                 ? AppColors.success.withValues(alpha: 0.05)
-                : theme.colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
               color: widget.hasSignature

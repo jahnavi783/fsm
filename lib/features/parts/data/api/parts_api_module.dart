@@ -4,6 +4,6 @@ import 'parts_api_client.dart';
 
 @module
 abstract class PartsApiModule {
-  @injectable
+  @lazySingleton
   PartsApiClient partsApiClient(Dio dio) => PartsApiClient(dio);
 }

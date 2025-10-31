@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// FSMFilterChipGroup - Multi-select/single-select filter chips component
@@ -125,11 +124,11 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
-    final effectiveHeight = widget.height ?? 48.h;
+    final effectiveHeight = widget.height ?? DesignTokens.buttonHeightMd.h;
     final effectivePadding = widget.padding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
         );
 
     return Container(
@@ -140,24 +139,24 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
           // Active filter count badge
           if (widget.showFilterCount && _selectedValues.isNotEmpty) ...[
             Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.w,
-                vertical: 6.h,
+              padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space2 + DesignTokens.space1,
+                vertical: DesignTokens.space1 + 2,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+                color: theme.colorScheme.primary,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               ),
               child: Text(
                 '${_selectedValues.length}',
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: AppColors.onPrimary,
+                  color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,
-                  fontSize: 12.sp,
+                  fontSize: DesignTokens.fontSize12.sp,
                 ),
               ),
             ),
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
           ],
 
           // Scrollable chip list
@@ -177,7 +176,7 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
                   isDisabled: isDisabled,
                   leadingIcon: option.leadingIcon,
                   backgroundColor: widget.chipBackgroundColor ?? fsmTheme.chipBackground,
-                  selectedColor: widget.selectedChipColor ?? AppColors.primary,
+                  selectedColor: widget.selectedChipColor ?? theme.colorScheme.primary,
                   onTap: isDisabled ? null : () => _handleChipTap(option.value),
                 );
               },
@@ -186,23 +185,23 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
 
           // Clear all button
           if (widget.showClearAll && _selectedValues.isNotEmpty) ...[
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
             TextButton(
               onPressed: _handleClearAll,
               style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 8.h,
+                padding: REdgeInsets.symmetric(
+                  horizontal: DesignTokens.space3,
+                  vertical: DesignTokens.space2,
                 ),
-                minimumSize: Size(AppDimensions.touchTargetMin, 32.h),
+                minimumSize: Size(DesignTokens.buttonHeightMd, DesignTokens.buttonHeightSm),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
                 widget.clearAllLabel,
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: AppColors.primary,
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
+                  fontSize: DesignTokens.fontSize12.sp,
                 ),
               ),
             ),
@@ -238,31 +237,31 @@ class _FilterChip extends StatelessWidget {
     final theme = Theme.of(context);
 
     final effectiveBackgroundColor = isDisabled
-        ? AppColors.grey200
+        ? theme.colorScheme.surfaceContainerHighest
         : isSelected
             ? selectedColor
             : backgroundColor;
 
     final effectiveTextColor = isDisabled
-        ? AppColors.disabledText
+        ? theme.colorScheme.onSurface.withValues(alpha: 0.38)
         : isSelected
-            ? AppColors.onPrimary
-            : AppColors.textPrimary;
+            ? theme.colorScheme.onPrimary
+            : theme.colorScheme.onSurface;
 
     return Material(
       color: effectiveBackgroundColor,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         child: Container(
           constraints: BoxConstraints(
-            minHeight: AppDimensions.chipHeight,
-            minWidth: AppDimensions.touchTargetMin,
+            minHeight: DesignTokens.buttonHeightSm,
+            minWidth: DesignTokens.buttonHeightMd,
           ),
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.chipPadding,
-            vertical: 6.h,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space3,
+            vertical: DesignTokens.space1 + 2,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -270,17 +269,17 @@ class _FilterChip extends StatelessWidget {
               if (leadingIcon != null) ...[
                 Icon(
                   leadingIcon,
-                  size: AppDimensions.iconSmall,
+                  size: DesignTokens.iconXs.sp,
                   color: effectiveTextColor,
                 ),
-                SizedBox(width: 6.w),
+                RSizedBox(width: DesignTokens.space1 + 2),
               ],
               Text(
                 label,
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: effectiveTextColor,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  fontSize: 13.sp,
+                  fontSize: DesignTokens.fontSize14.sp,
                 ),
               ),
             ],

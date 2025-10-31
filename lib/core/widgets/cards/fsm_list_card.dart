@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMListCard - Generic card component for list items
 ///
@@ -60,27 +59,27 @@ class FSMListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectiveMargin = margin ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
         );
-    final effectivePadding = padding ?? AppDimensions.paddingAllMedium;
+    final effectivePadding = padding ?? REdgeInsets.all(DesignTokens.space4);
 
     return Card(
       margin: effectiveMargin,
-      elevation: elevation ?? AppDimensions.elevationSmall,
+      elevation: elevation ?? 1.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         side: BorderSide(
-          color: borderColor ?? AppColors.grey200,
+          color: borderColor ?? theme.colorScheme.outlineVariant,
           width: 1,
         ),
       ),
-      color: backgroundColor ?? AppColors.surface,
+      color: backgroundColor ?? theme.cardColor,
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         child: Padding(
           padding: effectivePadding,
           child: Column(
@@ -94,7 +93,7 @@ class FSMListCard extends StatelessWidget {
                   // Leading widget
                   if (leading != null) ...[
                     leading!,
-                    SizedBox(width: AppDimensions.spaceMedium),
+                    RSizedBox(width: DesignTokens.space4),
                   ],
 
                   // Title and subtitle
@@ -107,8 +106,7 @@ class FSMListCard extends StatelessWidget {
                           title,
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
-                            color: AppColors.textPrimary,
+                            fontSize: DesignTokens.fontSize16.sp,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -116,12 +114,12 @@ class FSMListCard extends StatelessWidget {
 
                         // Subtitle
                         if (subtitle != null) ...[
-                          SizedBox(height: 4.h),
+                          RSizedBox(height: DesignTokens.space1),
                           Text(
                             subtitle!,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              fontSize: 13.sp,
-                              color: AppColors.textSecondary,
+                              fontSize: DesignTokens.fontSize14.sp,
+                              color: theme.colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -133,13 +131,13 @@ class FSMListCard extends StatelessWidget {
 
                   // Status badge
                   if (statusBadge != null) ...[
-                    SizedBox(width: AppDimensions.spaceSmall),
+                    RSizedBox(width: DesignTokens.space2),
                     statusBadge!,
                   ],
 
                   // Trailing widget
                   if (trailing != null) ...[
-                    SizedBox(width: AppDimensions.spaceSmall),
+                    RSizedBox(width: DesignTokens.space2),
                     trailing!,
                   ],
                 ],
@@ -147,12 +145,12 @@ class FSMListCard extends StatelessWidget {
 
               // Description
               if (description != null) ...[
-                SizedBox(height: AppDimensions.spaceSmall),
+                RSizedBox(height: DesignTokens.space2),
                 Text(
                   description!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 13.sp,
-                    color: AppColors.textTertiary,
+                    fontSize: DesignTokens.fontSize14.sp,
+                    color: theme.colorScheme.onSurfaceVariant,
                     height: 1.4,
                   ),
                   maxLines: 2,
@@ -162,23 +160,23 @@ class FSMListCard extends StatelessWidget {
 
               // Metadata rows
               if (metadataRows != null && metadataRows!.isNotEmpty) ...[
-                SizedBox(height: AppDimensions.spaceMedium),
+                RSizedBox(height: DesignTokens.space4),
                 ...metadataRows!.map((row) => Padding(
-                      padding: EdgeInsets.only(bottom: AppDimensions.spaceSmall),
+                      padding: REdgeInsets.only(bottom: DesignTokens.space2),
                       child: row,
                     )),
               ],
 
               // Action buttons
               if (actionButtons != null && actionButtons!.isNotEmpty) ...[
-                SizedBox(height: AppDimensions.spaceMedium),
+                RSizedBox(height: DesignTokens.space4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: actionButtons!
                       .expand((button) => [
                             button,
                             if (button != actionButtons!.last)
-                              SizedBox(width: AppDimensions.spaceSmall),
+                              RSizedBox(width: DesignTokens.space2),
                           ])
                       .toList(),
                 ),
@@ -212,21 +210,22 @@ class FSMListCardMetadataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           icon,
-          size: iconSize ?? 16.sp,
-          color: iconColor ?? AppColors.grey600,
+          size: iconSize ?? DesignTokens.iconSm.sp,
+          color: iconColor ?? theme.colorScheme.onSurfaceVariant,
         ),
-        SizedBox(width: AppDimensions.spaceSmall),
+        RSizedBox(width: DesignTokens.space2),
         Expanded(
           child: Text(
             text,
             style: TextStyle(
-              fontSize: fontSize ?? 12.sp,
-              color: textColor ?? AppColors.textSecondary,
+              fontSize: fontSize ?? DesignTokens.fontSize12.sp,
+              color: textColor ?? theme.colorScheme.onSurfaceVariant,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -244,21 +243,23 @@ class FSMListCardLeading {
   /// Icon in colored container
   static Widget icon({
     required IconData icon,
+    required BuildContext context,
     Color? iconColor,
     Color? backgroundColor,
     double? size,
   }) {
-    final effectiveSize = size ?? 48.w;
+    final theme = Theme.of(context);
+    final effectiveSize = size ?? DesignTokens.space12.w;
     return Container(
       width: effectiveSize,
       height: effectiveSize,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: backgroundColor ?? theme.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       child: Icon(
         icon,
-        color: iconColor ?? AppColors.primary,
+        color: iconColor ?? theme.colorScheme.primary,
         size: effectiveSize * 0.5,
       ),
     );
@@ -266,21 +267,23 @@ class FSMListCardLeading {
 
   /// Avatar (circular)
   static Widget avatar({
+    required BuildContext context,
     String? imageUrl,
     String? name,
     double? size,
     Color? backgroundColor,
   }) {
-    final effectiveSize = size ?? 48.w;
+    final theme = Theme.of(context);
+    final effectiveSize = size ?? DesignTokens.space12.w;
     return CircleAvatar(
       radius: effectiveSize / 2,
       backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
-      backgroundColor: backgroundColor ?? AppColors.primary,
+      backgroundColor: backgroundColor ?? theme.colorScheme.primary,
       child: imageUrl == null && name != null
           ? Text(
               name.substring(0, 1).toUpperCase(),
               style: TextStyle(
-                color: AppColors.onPrimary,
+                color: theme.colorScheme.onPrimary,
                 fontSize: (effectiveSize * 0.4).sp,
                 fontWeight: FontWeight.w600,
               ),
@@ -295,25 +298,26 @@ class FSMListCardLeading {
     double? size,
     BoxFit fit = BoxFit.cover,
   }) {
-    final effectiveSize = size ?? 56.w;
+    final effectiveSize = size ?? (DesignTokens.space12 + DesignTokens.space2).w;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       child: Image.network(
         imageUrl,
         width: effectiveSize,
         height: effectiveSize,
         fit: fit,
         errorBuilder: (context, error, stackTrace) {
+          final theme = Theme.of(context);
           return Container(
             width: effectiveSize,
             height: effectiveSize,
             decoration: BoxDecoration(
-              color: AppColors.grey100,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
             ),
             child: Icon(
               Icons.broken_image_outlined,
-              color: AppColors.grey400,
+              color: theme.colorScheme.onSurfaceVariant,
               size: effectiveSize * 0.5,
             ),
           );
@@ -328,7 +332,7 @@ class FSMListCardLeading {
     required Color color,
     double? size,
   }) {
-    final effectiveSize = size ?? 40.w;
+    final effectiveSize = size ?? DesignTokens.space8.w;
     return Container(
       width: effectiveSize,
       height: effectiveSize,
@@ -354,11 +358,15 @@ class FSMListCardTrailing {
   FSMListCardTrailing._();
 
   /// Chevron icon (for navigation)
-  static Widget chevron({Color? color}) {
+  static Widget chevron({
+    required BuildContext context,
+    Color? color,
+  }) {
+    final theme = Theme.of(context);
     return Icon(
       Icons.chevron_right,
-      color: color ?? AppColors.grey400,
-      size: 20.sp,
+      color: color ?? theme.colorScheme.onSurfaceVariant,
+      size: DesignTokens.iconSm.sp,
     );
   }
 
@@ -366,29 +374,33 @@ class FSMListCardTrailing {
   static Widget iconButton({
     required IconData icon,
     required VoidCallback onTap,
+    required BuildContext context,
     Color? color,
   }) {
+    final theme = Theme.of(context);
     return IconButton(
       icon: Icon(icon),
-      color: color ?? AppColors.grey600,
+      color: color ?? theme.colorScheme.onSurfaceVariant,
       onPressed: onTap,
       constraints: BoxConstraints(
-        minWidth: AppDimensions.touchTargetMin,
-        minHeight: AppDimensions.touchTargetMin,
+        minWidth: DesignTokens.buttonHeightMd,
+        minHeight: DesignTokens.buttonHeightMd,
       ),
       padding: EdgeInsets.zero,
-      iconSize: 20.sp,
+      iconSize: DesignTokens.iconSm.sp,
     );
   }
 
   /// More options button (three dots)
   static Widget moreOptions({
     required VoidCallback onTap,
+    required BuildContext context,
     Color? color,
   }) {
     return iconButton(
       icon: Icons.more_vert,
       onTap: onTap,
+      context: context,
       color: color,
     );
   }

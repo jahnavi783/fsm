@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/widgets/form/reactive_file_control.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -25,6 +26,8 @@ class ReactiveImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ReactiveFormField<List<File>, List<File>>(
       formControlName: formControlName,
       builder: (ReactiveFormFieldState<List<File>, List<File>> field) {
@@ -39,25 +42,24 @@ class ReactiveImagePicker extends StatelessWidget {
                 children: [
                   Text(
                     label!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontSize: DesignTokens.fontSize14.sp,
+                      fontWeight: DesignTokens.fontWeightSemiBold,
                     ),
                   ),
                   if (required) ...[
-                    SizedBox(width: 4.w),
+                    RSizedBox(width: DesignTokens.space1),
                     Text(
                       '*',
-                      style: TextStyle(
-                        color: AppColors.error,
-                        fontSize: 14.sp,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.error,
+                        fontSize: DesignTokens.fontSize14.sp,
                       ),
                     ),
                   ],
                 ],
               ),
-              SizedBox(height: 12.h),
+              RSizedBox(height: DesignTokens.space3),
             ],
 
             // Add image button
@@ -65,51 +67,51 @@ class ReactiveImagePicker extends StatelessWidget {
               onTap: files.length < maxImages
                   ? () => _showImageSourceDialog(context, field)
                   : null,
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(16.w),
+                padding: REdgeInsets.all(DesignTokens.space4),
                 decoration: BoxDecoration(
                   color: files.length < maxImages
-                      ? AppColors.primary.withValues(alpha: 0.05)
-                      : AppColors.grey200,
-                  borderRadius: BorderRadius.circular(8.r),
+                      ? theme.colorScheme.primary.withValues(alpha: 0.05)
+                      : theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                   border: Border.all(
                     color: hasError
-                        ? AppColors.error
-                        : AppColors.outline.withValues(alpha: 0.5),
-                    width: 1.5,
+                        ? theme.colorScheme.error
+                        : theme.colorScheme.outline.withValues(alpha: 0.5),
+                    width: DesignTokens.borderWidthMedium,
                   ),
                 ),
                 child: Column(
                   children: [
                     Icon(
                       Icons.add_photo_alternate_outlined,
-                      size: 32.sp,
+                      size: DesignTokens.iconLg.sp,
                       color: files.length < maxImages
-                          ? AppColors.primary
-                          : AppColors.grey500,
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurfaceVariant,
                     ),
-                    SizedBox(height: 8.h),
+                    RSizedBox(height: DesignTokens.space2),
                     Text(
                       files.length < maxImages
                           ? 'Add Photos'
                           : 'Maximum $maxImages photos',
-                      style: TextStyle(
-                        fontSize: 14.sp,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: DesignTokens.fontSize14.sp,
                         color: files.length < maxImages
-                            ? AppColors.primary
-                            : AppColors.grey600,
-                        fontWeight: FontWeight.w500,
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurfaceVariant,
+                        fontWeight: DesignTokens.fontWeightMedium,
                       ),
                     ),
                     if (files.isNotEmpty) ...[
-                      SizedBox(height: 4.h),
+                      RSizedBox(height: DesignTokens.space1),
                       Text(
                         '${files.length} of $maxImages photos',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.grey600,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: DesignTokens.fontSize12.sp,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -120,14 +122,14 @@ class ReactiveImagePicker extends StatelessWidget {
 
             // Image grid
             if (files.isNotEmpty) ...[
-              SizedBox(height: 16.h),
+              RSizedBox(height: DesignTokens.space4),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 8.w,
-                  mainAxisSpacing: 8.h,
+                  crossAxisSpacing: DesignTokens.space2.w,
+                  mainAxisSpacing: DesignTokens.space2.h,
                   childAspectRatio: 1,
                 ),
                 itemCount: files.length,
@@ -146,12 +148,12 @@ class ReactiveImagePicker extends StatelessWidget {
 
             // Error message
             if (hasError) ...[
-              SizedBox(height: 8.h),
+              RSizedBox(height: DesignTokens.space2),
               Text(
                 field.errorText!,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: AppColors.error,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: DesignTokens.fontSize12.sp,
+                  color: theme.colorScheme.error,
                 ),
               ),
             ],
@@ -165,15 +167,17 @@ class ReactiveImagePicker extends StatelessWidget {
     BuildContext context,
     ReactiveFormFieldState<List<File>, List<File>> field,
   ) async {
+    final theme = Theme.of(context);
+
     await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (bottomSheetContext) => Container(
-        padding: EdgeInsets.all(20.w),
+        padding: REdgeInsets.all(DesignTokens.space5),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20.r),
+            top: Radius.circular(DesignTokens.radiusLg.r),
           ),
         ),
         child: Column(
@@ -184,20 +188,20 @@ class ReactiveImagePicker extends StatelessWidget {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: AppColors.grey400,
-                borderRadius: BorderRadius.circular(2.r),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
               ),
             ),
-            SizedBox(height: 20.h),
+            RSizedBox(height: DesignTokens.space5),
 
             Text(
               'Add Photo',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontSize: DesignTokens.fontSize18.sp,
+                fontWeight: DesignTokens.fontWeightSemiBold,
               ),
             ),
-            SizedBox(height: 20.h),
+            RSizedBox(height: DesignTokens.space5),
 
             _ImageSourceOption(
               icon: Icons.camera_alt,
@@ -207,7 +211,7 @@ class ReactiveImagePicker extends StatelessWidget {
                 _pickImage(ImageSource.camera, field);
               },
             ),
-            SizedBox(height: 12.h),
+            RSizedBox(height: DesignTokens.space3),
             _ImageSourceOption(
               icon: Icons.photo_library,
               label: 'Choose from Gallery',
@@ -257,31 +261,40 @@ class _ImageSourceOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: REdgeInsets.all(DesignTokens.space4),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.outline),
-          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: theme.colorScheme.outline,
+            width: DesignTokens.borderWidthThin,
+          ),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         ),
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.all(12.w),
+              padding: REdgeInsets.all(DesignTokens.space3),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8.r),
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 24.sp),
+              child: Icon(
+                icon,
+                color: theme.colorScheme.primary,
+                size: DesignTokens.iconMd.sp,
+              ),
             ),
-            SizedBox(width: 16.w),
+            RSizedBox(width: DesignTokens.space4),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                fontSize: DesignTokens.fontSize16.sp,
+                fontWeight: DesignTokens.fontWeightMedium,
               ),
             ),
           ],
@@ -302,36 +315,41 @@ class _ImageThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: AppColors.outline),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+        border: Border.all(
+          color: theme.colorScheme.outline,
+          width: DesignTokens.borderWidthThin,
+        ),
       ),
       child: Stack(
         fit: StackFit.expand,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
             child: Image.file(
               file,
               fit: BoxFit.cover,
             ),
           ),
           Positioned(
-            top: 4.h,
-            right: 4.w,
+            top: DesignTokens.space1.h,
+            right: DesignTokens.space1.w,
             child: GestureDetector(
               onTap: onRemove,
               child: Container(
-                padding: EdgeInsets.all(4.w),
+                padding: REdgeInsets.all(DesignTokens.space1),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
+                  color: theme.colorScheme.scrim.withValues(alpha: 0.6),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.close,
-                  size: 16.sp,
-                  color: Colors.white,
+                  size: DesignTokens.iconSm.sp,
+                  color: theme.colorScheme.onInverseSurface,
                 ),
               ),
             ),

@@ -1,19 +1,142 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_colors.dart';
-import 'app_dimensions.dart';
-import 'app_text_styles.dart';
+import 'design_tokens.dart';
 import 'extensions/fsm_theme_extension.dart';
 
 class AppTheme {
   AppTheme._();
+
+  /// Creates responsive text theme using DesignTokens
+  ///
+  /// Typography is configured here instead of a separate class to:
+  /// - Apply responsive scaling (.sp) at theme creation time
+  /// - Avoid ScreenUtil timing issues with static getters
+  /// - Keep typography configuration centralized in one place
+  static TextTheme _createTextTheme() {
+    const fontFamily = 'Inter';
+
+    return TextTheme(
+      // Display styles - Large headings
+      displayLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize48.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        letterSpacing: -0.25,
+        height: DesignTokens.lineHeightTight,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize36.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        height: DesignTokens.lineHeightTight,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize32.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        height: DesignTokens.lineHeightTight,
+      ),
+
+      // Headline styles - Section headings
+      headlineLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize32.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize28.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize24.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        height: DesignTokens.lineHeightNormal,
+      ),
+
+      // Title styles - Card/list titles
+      titleLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize20.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.15,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      titleMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize16.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.15,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      titleSmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize14.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.1,
+        height: DesignTokens.lineHeightNormal,
+      ),
+
+      // Body styles - Content text
+      bodyLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize16.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        letterSpacing: 0.5,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize14.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        letterSpacing: 0.25,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      bodySmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize12.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+        letterSpacing: 0.4,
+        height: DesignTokens.lineHeightNormal,
+      ),
+
+      // Label styles - Buttons, chips, etc.
+      labelLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize14.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.1,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize12.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.5,
+        height: DesignTokens.lineHeightNormal,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: DesignTokens.fontSize11.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+        letterSpacing: 0.5,
+        height: DesignTokens.lineHeightNormal,
+      ),
+    );
+  }
 
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: _lightColorScheme,
     scaffoldBackgroundColor: AppColors.background,
+    textTheme: _createTextTheme(),
     extensions: const <ThemeExtension<dynamic>>[
       FSMThemeExtension.light,
     ],
@@ -21,23 +144,25 @@ class AppTheme {
     // App Bar Theme
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
-      elevation: 0,
-      scrolledUnderElevation: 0,
+      elevation: DesignTokens.elevationNone,
+      scrolledUnderElevation: DesignTokens.elevationNone,
       centerTitle: true,
       iconTheme: IconThemeData(
         color: AppColors.onPrimary,
-        size: AppDimensions.iconMedium,
+        size: DesignTokens.iconMd.sp,
       ),
       actionsIconTheme: IconThemeData(
         color: AppColors.onPrimary,
-        size: AppDimensions.iconMedium,
+        size: DesignTokens.iconMd.sp,
       ),
-      titleTextStyle: AppTextStyles.headlineSmall.copyWith(
+      titleTextStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize20.sp,
+        fontWeight: DesignTokens.fontWeightSemiBold,
         color: AppColors.onPrimary,
-        fontWeight: FontWeight.w600,
       ),
       systemOverlayStyle: SystemUiOverlayStyle.light,
-      toolbarHeight: AppDimensions.appBarHeight,
+      toolbarHeight: DesignTokens.appBarHeight.h,
     ),
 
     // Bottom Navigation Bar Theme
@@ -45,23 +170,27 @@ class AppTheme {
       backgroundColor: AppColors.surface,
       selectedItemColor: AppColors.primary,
       unselectedItemColor: AppColors.onSurface.withValues(alpha: 0.6),
-      selectedLabelStyle: AppTextStyles.labelSmall.copyWith(
-        fontWeight: FontWeight.w600,
+      selectedLabelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize11.sp,
+        fontWeight: DesignTokens.fontWeightSemiBold,
       ),
-      unselectedLabelStyle: AppTextStyles.labelSmall.copyWith(
-        fontWeight: FontWeight.w500,
+      unselectedLabelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize11.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
       ),
       type: BottomNavigationBarType.fixed,
-      elevation: 8,
+      elevation: DesignTokens.elevationLg,
     ),
 
     // Card Theme
     cardTheme: CardThemeData(
       color: AppColors.surface,
-      elevation: AppDimensions.elevationSmall,
+      elevation: DesignTokens.elevationSm,
       shadowColor: AppColors.shadow,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
     ),
 
@@ -70,19 +199,21 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.onPrimary,
-        elevation: 0,
+        elevation: DesignTokens.elevationNone,
         shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingLarge,
-          vertical: AppDimensions.paddingMedium,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space6,
+          vertical: DesignTokens.space4,
         ),
-        textStyle: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
+        textStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: DesignTokens.fontSize14.sp,
+          fontWeight: DesignTokens.fontWeightSemiBold,
         ),
-        minimumSize: Size(0, AppDimensions.buttonHeight),
+        minimumSize: Size(0, DesignTokens.buttonHeightMd.h),
       ),
     ),
 
@@ -90,12 +221,14 @@ class AppTheme {
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: AppColors.primary,
-        textStyle: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
+        textStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: DesignTokens.fontSize14.sp,
+          fontWeight: DesignTokens.fontWeightSemiBold,
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
         ),
       ),
     ),
@@ -106,16 +239,18 @@ class AppTheme {
         foregroundColor: AppColors.primary,
         side: BorderSide(color: AppColors.primary, width: 1.5),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingLarge,
-          vertical: AppDimensions.paddingMedium,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space6,
+          vertical: DesignTokens.space4,
         ),
-        textStyle: AppTextStyles.labelLarge.copyWith(
-          fontWeight: FontWeight.w600,
+        textStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: DesignTokens.fontSize14.sp,
+          fontWeight: DesignTokens.fontWeightSemiBold,
         ),
-        minimumSize: Size(0, AppDimensions.buttonHeight),
+        minimumSize: Size(0, DesignTokens.buttonHeightMd.h),
       ),
     ),
 
@@ -124,48 +259,54 @@ class AppTheme {
       filled: true,
       fillColor: AppColors.surface,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         borderSide: BorderSide(color: AppColors.outline),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         borderSide: BorderSide(color: AppColors.outline),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-        borderSide: BorderSide(color: AppColors.primary, width: 2),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+        borderSide: BorderSide(color: AppColors.primary, width: DesignTokens.borderWidthMedium),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         borderSide: BorderSide(color: AppColors.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-        borderSide: BorderSide(color: AppColors.error, width: 2),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+        borderSide: BorderSide(color: AppColors.error, width: DesignTokens.borderWidthMedium),
       ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingMedium,
+      contentPadding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space4,
       ),
-      hintStyle: AppTextStyles.bodyMedium.copyWith(
+      hintStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize14.sp,
         color: AppColors.onSurface.withValues(alpha: 0.6),
       ),
-      labelStyle: AppTextStyles.bodyMedium.copyWith(
+      labelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize14.sp,
         color: AppColors.onSurface.withValues(alpha: 0.8),
       ),
-      floatingLabelStyle: AppTextStyles.bodySmall.copyWith(
+      floatingLabelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize12.sp,
         color: AppColors.primary,
       ),
     ),
 
     // List Tile Theme
     listTileTheme: ListTileThemeData(
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      contentPadding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       tileColor: AppColors.surface,
       selectedTileColor: AppColors.primary.withValues(alpha: 0.1),
@@ -178,16 +319,23 @@ class AppTheme {
       backgroundColor: AppColors.surfaceVariant,
       selectedColor: AppColors.primary,
       disabledColor: AppColors.onSurface.withValues(alpha: 0.12),
-      labelStyle: AppTextStyles.labelMedium,
-      secondaryLabelStyle: AppTextStyles.labelMedium.copyWith(
+      labelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize12.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
+      ),
+      secondaryLabelStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize12.sp,
+        fontWeight: DesignTokens.fontWeightMedium,
         color: AppColors.onPrimary,
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingSmall,
-        vertical: AppDimensions.paddingXSmall,
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space2,
+        vertical: DesignTokens.space1,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
       ),
     ),
 
@@ -202,21 +350,23 @@ class AppTheme {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
       foregroundColor: AppColors.onPrimary,
-      elevation: AppDimensions.elevationMedium,
+      elevation: DesignTokens.elevationMd,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
     ),
 
     // Snack Bar Theme
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.inverseSurface,
-      contentTextStyle: AppTextStyles.bodyMedium.copyWith(
+      contentTextStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize14.sp,
         color: AppColors.inverseOnSurface,
       ),
       actionTextColor: AppColors.inversePrimary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       behavior: SnackBarBehavior.floating,
     ),
@@ -224,38 +374,27 @@ class AppTheme {
     // Dialog Theme
     dialogTheme: DialogThemeData(
       backgroundColor: AppColors.surface,
-      elevation: AppDimensions.elevationLarge,
+      elevation: DesignTokens.elevationLg,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
       ),
-      titleTextStyle: AppTextStyles.headlineSmall,
-      contentTextStyle: AppTextStyles.bodyMedium,
+      titleTextStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize24.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+      ),
+      contentTextStyle: TextStyle(
+        fontFamily: 'Inter',
+        fontSize: DesignTokens.fontSize14.sp,
+        fontWeight: DesignTokens.fontWeightRegular,
+      ),
     ),
 
     // Divider Theme
     dividerTheme: DividerThemeData(
       color: AppColors.outline.withValues(alpha: 0.2),
-      thickness: 1,
-      space: AppDimensions.paddingMedium,
-    ),
-
-    // Text Theme
-    textTheme: TextTheme(
-      displayLarge: AppTextStyles.displayLarge,
-      displayMedium: AppTextStyles.displayMedium,
-      displaySmall: AppTextStyles.displaySmall,
-      headlineLarge: AppTextStyles.headlineLarge,
-      headlineMedium: AppTextStyles.headlineMedium,
-      headlineSmall: AppTextStyles.headlineSmall,
-      titleLarge: AppTextStyles.titleLarge,
-      titleMedium: AppTextStyles.titleMedium,
-      titleSmall: AppTextStyles.titleSmall,
-      bodyLarge: AppTextStyles.bodyLarge,
-      bodyMedium: AppTextStyles.bodyMedium,
-      bodySmall: AppTextStyles.bodySmall,
-      labelLarge: AppTextStyles.labelLarge,
-      labelMedium: AppTextStyles.labelMedium,
-      labelSmall: AppTextStyles.labelSmall,
+      thickness: DesignTokens.borderWidthThin,
+      space: DesignTokens.space4,
     ),
   );
 

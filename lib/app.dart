@@ -94,8 +94,8 @@ class _MyAppState extends State<MyApp> {
         );
       },
       child: ScreenUtilInit(
-        // Design size from Figma/design specs (iPhone 11 Pro dimensions)
-        designSize: const Size(375, 812),
+        // Design size updated to Size(390, 844) per design system requirements
+        designSize: const Size(390, 844),
         minTextAdapt: true,
         splitScreenMode: true,
         ensureScreenSize: true,

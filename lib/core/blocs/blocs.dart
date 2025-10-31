@@ -1,14 +1,15 @@
-// Connectivity BLoC
-export 'connectivity/connectivity_bloc.dart';
-export 'connectivity/connectivity_event.dart';
-export 'connectivity/connectivity_state.dart';
+/// Barrel export for BLoC optimization utilities
+///
+/// This file exports all BLoC-related utilities and patterns for easy importing.
+///
+/// Usage:
+/// ```dart
+/// import 'package:your_app/core/blocs/blocs.dart';
+///
+/// class MyPage extends StatelessWidget with BlocBuildConditions {
+///   // Use mixin methods and helper utilities
+/// }
+/// ```
 
-// Error BLoC
-export 'error/error_bloc.dart';
-export 'error/error_event.dart';
-export 'error/error_state.dart';
-
-// Sync BLoC
-export 'sync/sync_bloc.dart';
-export 'sync/sync_event.dart';
-export 'sync/sync_state.dart';
+export 'bloc_build_conditions.dart';
+export 'bloc_listener_helpers.dart';

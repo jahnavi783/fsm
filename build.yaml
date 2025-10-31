@@ -1,20 +1,32 @@
 # build.yaml
-# ...
+# Configuration for build_runner code generation
 
 targets:
   $default:
     builders:
+      # Freezed configuration for immutable data classes
       freezed:
         options:
           union_key: type
           union_value_case: pascal
+          # Enable map generation for better debugging
+          map: true
+          # Generate copyWith methods
+          copyWith: true
 
-      flutter_gen_runner: # or flutter_gen
-        options:
-          output: lib/build_gen/ # Optional (default: lib/gen/)
-          line_length: 120 # Optional
-      hive_ce_generator:hive_generator:
+      # Flutter Gen - DISABLED due to version conflicts
+      # Uncomment when version compatibility is resolved
+      # flutter_gen_runner:
+      #   options:
+      #     output: lib/build_gen/
+      #     line_length: 120
+
+      # Hive CE generator for local storage models
+      hive_ce_generator:
         enabled: true
         generate_for:
           - lib/features/*/data/models/*_hive_model.dart
           - lib/core/storage/models/*_hive_model.dart
+        options:
+          # Ensure type adapters are generated with proper naming
+          type_adapter_suffix: Adapter

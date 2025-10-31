@@ -1,0 +1,158 @@
+name: Design System Compliance
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'lib/features/**/presentation/**'
+      - 'lib/core/widgets/**'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'lib/features/**/presentation/**'
+      - 'lib/core/widgets/**'
+
+jobs:
+  check-design-system-violations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for hardcoded Colors usage
+        id: colors-check
+        run: |
+          echo "🎨 Checking for hardcoded Colors violations..."
+
+          # Find all Colors.* usage except Colors.transparent
+          VIOLATIONS=$(grep -rn \
+            --include="*.dart" \
+            --exclude-dir=".dart_tool" \
+            --exclude-dir="build" \
+            --exclude="*.g.dart" \
+            --exclude="*.freezed.dart" \
+            -E "Colors\.(red|blue|green|grey|gray|white|black|yellow|orange|purple|pink|cyan|teal|lime|indigo|brown|amber|deepOrange|deepPurple|lightBlue|lightGreen|blueGrey|blueGray)" \
+            lib/features/**/presentation lib/core/widgets 2>/dev/null || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Found hardcoded Colors violations:"
+            echo "$VIOLATIONS"
+            echo "colors_violations=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ No Colors violations found"
+            echo "colors_violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for raw EdgeInsets usage
+        id: edgeinsets-check
+        run: |
+          echo "📐 Checking for raw EdgeInsets violations..."
+
+          # Find EdgeInsets usage without R prefix
+          VIOLATIONS=$(grep -rn \
+            --include="*.dart" \
+            --exclude-dir=".dart_tool" \
+            --exclude-dir="build" \
+            --exclude="*.g.dart" \
+            --exclude="*.freezed.dart" \
+            -E "EdgeInsets\.(all|only|symmetric|fromLTRB)\(" \
+            lib/features/**/presentation lib/core/widgets 2>/dev/null || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Found raw EdgeInsets violations (use REdgeInsets instead):"
+            echo "$VIOLATIONS"
+            echo "edgeinsets_violations=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ No EdgeInsets violations found"
+            echo "edgeinsets_violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for hardcoded SizedBox usage
+        id: sizedbox-check
+        run: |
+          echo "📦 Checking for hardcoded SizedBox violations..."
+
+          # Find SizedBox with hardcoded width/height values
+          VIOLATIONS=$(grep -rn \
+            --include="*.dart" \
+            --exclude-dir=".dart_tool" \
+            --exclude-dir="build" \
+            --exclude="*.g.dart" \
+            --exclude="*.freezed.dart" \
+            -E "SizedBox\((width|height):\s*[0-9]+(\.[0-9]+)?" \
+            lib/features/**/presentation lib/core/widgets 2>/dev/null || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Found hardcoded SizedBox violations (use RSizedBox or DesignTokens instead):"
+            echo "$VIOLATIONS"
+            echo "sizedbox_violations=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ No SizedBox violations found"
+            echo "sizedbox_violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check page line count
+        id: linecount-check
+        run: |
+          echo "📄 Checking page line counts (max 300 lines)..."
+
+          VIOLATIONS=""
+          while IFS= read -r file; do
+            LINES=$(wc -l < "$file")
+            if [ $LINES -gt 300 ]; then
+              VIOLATIONS="${VIOLATIONS}${file}: ${LINES} lines (exceeds 300 line limit)\n"
+            fi
+          done < <(find lib/features -name "*_page.dart" 2>/dev/null)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ Found page files exceeding 300 lines:"
+            echo -e "$VIOLATIONS"
+            echo "linecount_violations=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ All page files are under 300 lines"
+            echo "linecount_violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for direct .w/.h/.sp usage without DesignTokens
+        id: responsive-check
+        run: |
+          echo "📱 Checking for direct responsive extension usage..."
+
+          # Find direct usage of numeric values with .w/.h/.sp (potential violations)
+          # This is a warning check, not a hard failure
+          VIOLATIONS=$(grep -rn \
+            --include="*.dart" \
+            --exclude-dir=".dart_tool" \
+            --exclude-dir="build" \
+            --exclude="*.g.dart" \
+            --exclude="*.freezed.dart" \
+            --exclude="design_tokens.dart" \
+            --exclude="app_theme.dart" \
+            -E "[0-9]+(\.[0-9]+)?\.(w|h|sp|r)" \
+            lib/features/**/presentation lib/core/widgets 2>/dev/null || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "⚠️  Found potential direct responsive extension usage (consider using DesignTokens):"
+            echo "$VIOLATIONS"
+            echo "responsive_violations=true" >> $GITHUB_OUTPUT
+            # Don't exit - this is a warning only
+          else
+            echo "✅ No direct responsive extension usage found"
+            echo "responsive_violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "📊 Design System Compliance Check Summary"
+          echo "=========================================="
+          echo "Colors violations: ${{ steps.colors-check.outputs.colors_violations || 'check failed' }}"
+          echo "EdgeInsets violations: ${{ steps.edgeinsets-check.outputs.edgeinsets_violations || 'check failed' }}"
+          echo "SizedBox violations: ${{ steps.sizedbox-check.outputs.sizedbox_violations || 'check failed' }}"
+          echo "Line count violations: ${{ steps.linecount-check.outputs.linecount_violations || 'check failed' }}"
+          echo "Responsive extensions: ${{ steps.responsive-check.outputs.responsive_violations || 'check failed' }} (warning only)"

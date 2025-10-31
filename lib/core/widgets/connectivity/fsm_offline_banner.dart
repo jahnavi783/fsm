@@ -5,8 +5,7 @@ import 'package:fsm/core/blocs/connectivity/connectivity_bloc.dart';
 import 'package:fsm/core/blocs/connectivity/connectivity_state.dart';
 import 'package:fsm/core/blocs/sync/sync_bloc.dart';
 import 'package:fsm/core/blocs/sync/sync_state.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// OfflineBanner - Persistent connectivity indicator with sync status
@@ -60,7 +59,7 @@ class OfflineBanner extends StatelessWidget {
 
             return AnimatedSlide(
               offset: shouldShow ? Offset.zero : const Offset(0, -1),
-              duration: AppDimensions.animationMedium,
+              duration: DesignTokens.durationNormal,
               curve: Curves.easeInOut,
               child: _BannerContent(
                 message: customMessage ?? bannerData.message,
@@ -102,6 +101,7 @@ class OfflineBanner extends StatelessWidget {
     SyncState syncState,
     BuildContext context,
   ) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
     // Priority: Offline > Syncing > Pending Changes
@@ -109,8 +109,8 @@ class OfflineBanner extends StatelessWidget {
       disconnected: () => _BannerData(
         message: "You're offline. Changes will sync when connected.",
         icon: Icons.wifi_off_outlined,
-        backgroundColor: fsmTheme.offlineBannerBackground, // Amber/Yellow theme
-        textColor: AppColors.textPrimary,
+        backgroundColor: fsmTheme.offlineBannerBackground,
+        textColor: theme.colorScheme.onSurface,
         pendingCount: null,
         showProgress: false,
       ),
@@ -120,8 +120,8 @@ class OfflineBanner extends StatelessWidget {
             return _BannerData(
               message: 'Syncing... ($syncedItems/$totalItems)',
               icon: Icons.sync,
-              backgroundColor: AppColors.syncing.withValues(alpha: 0.1),
-              textColor: AppColors.syncing,
+              backgroundColor: fsmTheme.syncSyncing.withValues(alpha: 0.1),
+              textColor: fsmTheme.syncSyncing,
               pendingCount: totalItems,
               showProgress: true,
             );
@@ -129,16 +129,16 @@ class OfflineBanner extends StatelessWidget {
           pendingSync: (pendingItems, lastSyncTime) => _BannerData(
             message: 'Pending Changes',
             icon: Icons.cloud_upload_outlined,
-            backgroundColor: AppColors.pendingSync.withValues(alpha: 0.1),
-            textColor: AppColors.pendingSync,
+            backgroundColor: fsmTheme.syncPending.withValues(alpha: 0.1),
+            textColor: fsmTheme.syncPending,
             pendingCount: pendingItems,
             showProgress: false,
           ),
           orElse: () => _BannerData(
             message: 'Connected',
             icon: Icons.check_circle_outline,
-            backgroundColor: AppColors.synced.withValues(alpha: 0.1),
-            textColor: AppColors.synced,
+            backgroundColor: fsmTheme.syncSynced.withValues(alpha: 0.1),
+            textColor: fsmTheme.syncSynced,
             pendingCount: null,
             showProgress: false,
           ),
@@ -147,8 +147,8 @@ class OfflineBanner extends StatelessWidget {
       orElse: () => _BannerData(
         message: 'Checking Connection...',
         icon: Icons.signal_wifi_statusbar_null,
-        backgroundColor: AppColors.grey200,
-        textColor: AppColors.textSecondary,
+        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+        textColor: theme.colorScheme.onSurfaceVariant,
         pendingCount: null,
         showProgress: false,
       ),
@@ -210,13 +210,13 @@ class _BannerContentState extends State<_BannerContent> {
 
     Widget banner = Material(
       color: widget.backgroundColor,
-      elevation: AppDimensions.elevationSmall,
+      elevation: DesignTokens.elevationSm,
       child: InkWell(
         onTap: widget.onTap,
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingMedium,
-            vertical: AppDimensions.paddingSmall,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
           ),
           child: SafeArea(
             bottom: false,
@@ -225,19 +225,19 @@ class _BannerContentState extends State<_BannerContent> {
                 // Icon
                 Icon(
                   widget.icon,
-                  size: AppDimensions.iconSmall,
+                  size: DesignTokens.iconSm.sp,
                   color: widget.textColor,
                 ),
 
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
 
                 // Message
                 Expanded(
                   child: Text(
                     widget.message,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
+                      fontSize: DesignTokens.fontSize12.sp,
+                      fontWeight: DesignTokens.fontWeightSemiBold,
                       color: widget.textColor,
                     ),
                   ),
@@ -247,37 +247,37 @@ class _BannerContentState extends State<_BannerContent> {
                 if (widget.pendingCount != null &&
                     widget.pendingCount! > 0) ...[
                   Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 4.h,
+                    padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space2,
+                      vertical: DesignTokens.space1,
                     ),
                     decoration: BoxDecoration(
                       color: widget.textColor,
                       borderRadius:
-                          BorderRadius.circular(AppDimensions.radiusXSmall),
+                          BorderRadius.circular(DesignTokens.radiusXs.r),
                     ),
                     child: Text(
                       '${widget.pendingCount}',
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontSize: DesignTokens.fontSize11.sp,
+                        fontWeight: DesignTokens.fontWeightBold,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
-                  SizedBox(width: AppDimensions.paddingSmall),
+                  RSizedBox(width: DesignTokens.space2),
                 ],
 
                 // Dismiss button
                 if (widget.dismissible) ...[
                   IconButton(
-                    icon: Icon(Icons.close),
-                    iconSize: AppDimensions.iconSmall,
+                    icon: const Icon(Icons.close),
+                    iconSize: DesignTokens.iconSm.sp,
                     color: widget.textColor,
                     onPressed: _dismiss,
                     constraints: BoxConstraints(
-                      minWidth: AppDimensions.touchTargetMin,
-                      minHeight: AppDimensions.touchTargetMin,
+                      minWidth: 48.w, // Material Design minimum touch target
+                      minHeight: 48.h,
                     ),
                     padding: EdgeInsets.zero,
                     tooltip: 'Dismiss',
@@ -336,6 +336,9 @@ class CompactOfflineBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
       builder: (context, connectivityState) {
         final isOffline = connectivityState.maybeWhen(
@@ -348,29 +351,29 @@ class CompactOfflineBanner extends StatelessWidget {
         }
 
         return Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 8.w,
-            vertical: 4.h,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space2,
+            vertical: DesignTokens.space1,
           ),
           decoration: BoxDecoration(
-            color: AppColors.offline,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+            color: fsmTheme.syncOffline,
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.wifi_off_outlined,
-                size: AppDimensions.iconXSmall,
-                color: AppColors.white,
+                size: DesignTokens.iconXs.sp,
+                color: theme.colorScheme.onPrimary,
               ),
-              SizedBox(width: 4.w),
+              RSizedBox(width: DesignTokens.space1),
               Text(
                 'Offline',
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  fontSize: DesignTokens.fontSize10.sp,
+                  fontWeight: DesignTokens.fontWeightSemiBold,
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ],

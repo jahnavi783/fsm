@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// StatusBadge - Consistent status/priority chip component for the FSM app
@@ -212,14 +211,14 @@ class StatusBadge extends StatelessWidget {
     final textColor = _getTextColor(baseColor);
     final borderColor = _getBorderColor(baseColor);
 
-    final effectiveFontSize = fontSize ?? 12.sp;
+    final effectiveFontSize = fontSize ?? DesignTokens.fontSize12.sp;
     final effectivePadding = padding ??
-        EdgeInsets.symmetric(
-          horizontal: 8.w,
-          vertical: 4.h,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space2,
+          vertical: DesignTokens.space1,
         );
     final effectiveBorderRadius =
-        borderRadius ?? AppDimensions.radiusXSmall;
+        borderRadius ?? DesignTokens.radiusSm.r;
 
     Widget badge = Container(
       padding: effectivePadding,
@@ -239,7 +238,7 @@ class StatusBadge extends StatelessWidget {
               size: effectiveFontSize * 1.2,
               color: textColor,
             ),
-            SizedBox(width: 4.w),
+            RSizedBox(width: DesignTokens.space1),
           ],
           Text(
             label,
@@ -278,7 +277,7 @@ class StatusBadge extends StatelessWidget {
       case StatusBadgeType.sync:
         return fsmTheme.getSyncStatusColor(label.toLowerCase());
       case StatusBadgeType.custom:
-        return AppColors.primary;
+        return fsmTheme.workOrderUrgent; // Default to a theme color
     }
   }
 

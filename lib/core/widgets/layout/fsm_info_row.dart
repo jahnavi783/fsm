@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMInfoRow - Metadata display row (icon + label + value)
 ///
@@ -90,10 +89,10 @@ class FSMInfoRow extends StatelessWidget {
     this.showCopyButton = true,
     this.onTap,
   })  : icon = Icons.phone_outlined,
-        iconColor = AppColors.info,
+        iconColor = null,
         dense = false,
         labelColor = null,
-        valueColor = AppColors.info,
+        valueColor = null,
         maxLines = 1,
         padding = null,
         trailing = null;
@@ -106,10 +105,10 @@ class FSMInfoRow extends StatelessWidget {
     this.showCopyButton = true,
     this.onTap,
   })  : icon = Icons.email_outlined,
-        iconColor = AppColors.info,
+        iconColor = null,
         dense = false,
         labelColor = null,
-        valueColor = AppColors.info,
+        valueColor = null,
         maxLines = 1,
         padding = null,
         trailing = null;
@@ -122,7 +121,7 @@ class FSMInfoRow extends StatelessWidget {
     this.showCopyButton = false,
     this.onTap,
   })  : icon = Icons.location_on_outlined,
-        iconColor = AppColors.error,
+        iconColor = null,
         dense = false,
         labelColor = null,
         valueColor = null,
@@ -136,7 +135,7 @@ class FSMInfoRow extends StatelessWidget {
     required this.value,
     this.label = 'Date',
   })  : icon = Icons.calendar_today_outlined,
-        iconColor = AppColors.primary,
+        iconColor = null,
         dense = false,
         showCopyButton = false,
         onTap = null,
@@ -152,7 +151,7 @@ class FSMInfoRow extends StatelessWidget {
     required this.value,
     this.label = 'Time',
   })  : icon = Icons.access_time_outlined,
-        iconColor = AppColors.primary,
+        iconColor = null,
         dense = false,
         showCopyButton = false,
         onTap = null,
@@ -177,14 +176,14 @@ class FSMInfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectivePadding = padding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: dense ? AppDimensions.paddingSmall : AppDimensions.paddingMedium,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: dense ? DesignTokens.space2 : DesignTokens.space4,
         );
 
-    final effectiveLabelColor = labelColor ?? AppColors.textSecondary;
-    final effectiveValueColor = valueColor ?? AppColors.textPrimary;
-    final effectiveIconColor = iconColor ?? AppColors.grey600;
+    final effectiveLabelColor = labelColor ?? theme.colorScheme.onSurfaceVariant;
+    final effectiveValueColor = valueColor ?? theme.colorScheme.onSurface;
+    final effectiveIconColor = iconColor ?? theme.colorScheme.primary;
 
     Widget content = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,10 +192,10 @@ class FSMInfoRow extends StatelessWidget {
         if (icon != null) ...[
           Icon(
             icon,
-            size: dense ? AppDimensions.iconSmall : AppDimensions.iconMedium,
+            size: dense ? DesignTokens.iconSm.sp : DesignTokens.iconMd.sp,
             color: effectiveIconColor,
           ),
-          SizedBox(width: AppDimensions.paddingMedium),
+          RSizedBox(width: DesignTokens.space4),
         ],
 
         // Label and Value
@@ -208,19 +207,17 @@ class FSMInfoRow extends StatelessWidget {
               Text(
                 label,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: dense ? 11.sp : 12.sp,
                   color: effectiveLabelColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),
 
-              SizedBox(height: dense ? 2.h : 4.h),
+              RSizedBox(height: dense ? DesignTokens.space1 : DesignTokens.space1),
 
               // Value
               Text(
                 value,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: dense ? 13.sp : 14.sp,
                   color: effectiveValueColor,
                   fontWeight: FontWeight.w600,
                 ),
@@ -233,24 +230,24 @@ class FSMInfoRow extends StatelessWidget {
 
         // Copy button
         if (showCopyButton) ...[
-          SizedBox(width: AppDimensions.paddingSmall),
+          RSizedBox(width: DesignTokens.space2),
           IconButton(
-            icon: Icon(Icons.copy_outlined),
-            iconSize: AppDimensions.iconSmall,
+            icon: const Icon(Icons.copy_outlined),
+            iconSize: DesignTokens.iconSm.sp,
             onPressed: () => _copyToClipboard(context),
             tooltip: 'Copy',
             constraints: BoxConstraints(
-              minWidth: AppDimensions.touchTargetMin,
-              minHeight: AppDimensions.touchTargetMin,
+              minWidth: DesignTokens.buttonHeightMd,
+              minHeight: DesignTokens.buttonHeightMd,
             ),
             padding: EdgeInsets.zero,
-            color: AppColors.grey600,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ],
 
         // Trailing widget
         if (trailing != null) ...[
-          SizedBox(width: AppDimensions.paddingSmall),
+          RSizedBox(width: DesignTokens.space2),
           trailing!,
         ],
       ],
@@ -297,8 +294,9 @@ class FSMInfoRowGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectivePadding = padding ?? AppDimensions.paddingAllMedium;
-    final effectiveBorderRadius = borderRadius ?? AppDimensions.radiusMedium;
+    final theme = Theme.of(context);
+    final effectivePadding = padding ?? REdgeInsets.all(DesignTokens.space4);
+    final effectiveBorderRadius = borderRadius ?? DesignTokens.radiusMd.r;
 
     List<Widget> items = [];
 
@@ -310,10 +308,10 @@ class FSMInfoRowGroup extends StatelessWidget {
         items.add(
           Divider(
             height: 1.h,
-            thickness: AppDimensions.dividerThickness,
-            color: AppColors.divider,
-            indent: AppDimensions.paddingMedium,
-            endIndent: AppDimensions.paddingMedium,
+            thickness: 1,
+            color: theme.colorScheme.outlineVariant,
+            indent: DesignTokens.space4.w,
+            endIndent: DesignTokens.space4.w,
           ),
         );
       }
@@ -367,16 +365,16 @@ class FSMInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectiveMargin = margin ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
         );
 
     return Card(
       margin: effectiveMargin,
-      elevation: AppDimensions.elevationSmall,
+      elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,25 +382,24 @@ class FSMInfoCard extends StatelessWidget {
           // Title
           if (title != null) ...[
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppDimensions.paddingMedium,
-                AppDimensions.paddingMedium,
-                AppDimensions.paddingMedium,
-                AppDimensions.paddingSmall,
+              padding: REdgeInsets.fromLTRB(
+                DesignTokens.space4,
+                DesignTokens.space4,
+                DesignTokens.space4,
+                DesignTokens.space2,
               ),
               child: Text(
                 title!,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontSize: 16.sp,
-                  color: AppColors.textPrimary,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ),
             Divider(
               height: 1.h,
-              thickness: AppDimensions.dividerThickness,
-              color: AppColors.divider,
+              thickness: 1,
+              color: theme.colorScheme.outlineVariant,
             ),
           ],
 

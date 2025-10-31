@@ -18,9 +18,7 @@
       "Bash(mkdir:*)",
       "mcp__MCP_DOCKER__resolve-library-id",
       "mcp__MCP_DOCKER__get-library-docs",
-      "Bash(nul)",
-      "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "Bash(nul)"
     ],
     "deny": [],
     "ask": []

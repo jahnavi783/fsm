@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../blocs/connectivity/connectivity_bloc.dart';
-import '../blocs/connectivity/connectivity_state.dart';
-import '../theme/theme.dart';
+import 'package:fsm/core/blocs/connectivity/connectivity_bloc.dart';
+import 'package:fsm/core/blocs/connectivity/connectivity_state.dart';
+import 'package:fsm/core/theme/theme.dart';
 
 class ConnectivityIndicator extends StatelessWidget {
   final bool showWhenConnected;

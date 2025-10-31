@@ -1,16 +1,18 @@
 ### 1. Create BLoC Optimization Infrastructure
 
-- [ ] 1.1 Create BlocBuildConditions mixin for reusable buildWhen patterns
+- [x] 1.1 Create BlocBuildConditions mixin for reusable buildWhen patterns
   - Create `lib/core/blocs/bloc_build_conditions.dart` with common buildWhen methods
   - Implement property-based comparison patterns (not runtimeType)
   - Add specific conditions for WorkOrderState, DocumentState, etc.
   - _Requirements: 5.5, 5.4_
+  - _Status: Complete - comprehensive mixin with work order, document, parts, and profile conditions_
 
-- [ ] 1.2 Create BLoC helper utilities for common patterns
-  - Create `lib/core/blocs/blocP_listener_helpers.dart` with static helper methods
+- [x] 1.2 Create BLoC helper utilities for common patterns
+  - Create `lib/core/blocs/bloc_listener_helpers.dart` with static helper methods
   - Implement showSnackBarOnError, navigateOnSuccess patterns
   - Add MultiBlocListener configuration helpers
   - _Requirements: 5.2, 5.3_
+  - _Status: Complete - comprehensive helpers for snackbars, navigation, dialogs, auth, connectivity, and sync_
 
 ### 2. Fix Hardcoded Styling Violations
 
@@ -40,8 +42,9 @@
 - [x] 3.1 Mark AppDimensions and AppColors as deprecated
   - DesignTokens class already exists and is comprehensive
   - FSMThemeExtension already provides strongly-typed domain colors
-  - AppColors and AppDimensions should be marked as deprecated
+  - AppColors and AppDimensions marked with @Deprecated annotations
   - _Requirements: 1.1, 1.2_
+  - _Status: Complete - deprecation annotations added with migration examples_
 
 - [ ] 3.2 Update import statements to use design system
   - Replace `app_colors.dart` and `app_dimensions.dart` imports with `widgets.dart` barrel
@@ -234,8 +237,9 @@
 - [x] 14.2 Implement ScreenUtil 5.9.3+ patterns
   - DesignTokens already uses proper REdgeInsets and RSizedBox patterns
   - Const constructor support is implemented
-  - ScreenUtilInit configuration needs verification in main.dart
+  - ScreenUtilInit configuration verified in app.dart with Size(390, 844)
   - _Requirements: 1.6, 1.8, 10.6, 10.7_
+  - _Status: Complete - properly configured with minTextAdapt and splitScreenMode_
 
 ### 15. Final Integration and Validation
 

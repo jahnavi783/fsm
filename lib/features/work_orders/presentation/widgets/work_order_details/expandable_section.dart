@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import '../../../../../core/theme/design_tokens.dart';
+import '../../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 class ExpandableSection extends StatelessWidget {
   final String title;
@@ -18,10 +19,13 @@ class ExpandableSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final fsmTheme = context.fsmTheme;
+    
     return Card(
-      margin: EdgeInsets.only(bottom: 16.h),
+      margin: REdgeInsets.only(bottom: DesignTokens.space4),
       elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: fsmTheme.shadowCard,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
       ),
@@ -35,12 +39,12 @@ class ExpandableSection extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(
               icon,
-              color: AppColors.primary,
+              color: colorScheme.primary,
               size: 20.sp,
             ),
           ),
@@ -49,12 +53,12 @@ class ExpandableSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: colorScheme.onSurface,
             ),
           ),
           children: [
             Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: REdgeInsets.all(DesignTokens.space4),
               child: content,
             ),
           ],

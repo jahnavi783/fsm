@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/app_text_styles.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/work_order_entity.dart';
 import 'work_order_list_card.dart';
 
@@ -74,18 +75,19 @@ class WorkOrderListTabs extends StatelessWidget {
         children: [
           // Tab Bar
           Container(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             child: TabBar(
               isScrollable: true,
-              labelColor: AppColors.primary,
-              unselectedLabelColor: AppColors.textSecondary,
+              labelColor: Theme.of(context).colorScheme.primary,
+              unselectedLabelColor:
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               labelStyle: AppTextStyles.labelMedium.copyWith(
                 fontWeight: FontWeight.w700,
               ),
               unselectedLabelStyle: AppTextStyles.labelMedium.copyWith(
                 fontWeight: FontWeight.w500,
               ),
-              indicatorColor: AppColors.primary,
+              indicatorColor: Theme.of(context).colorScheme.primary,
               indicatorWeight: 3.h,
               tabs: [
                 _buildTab('Unassigned', _getCountForStatus('unassigned')),
@@ -121,14 +123,17 @@ class WorkOrderListTabs extends StatelessWidget {
         children: [
           Text(label),
           if (count > 0) ...[
-            SizedBox(width: 6.w),
+            DesignTokens.horizontalSpace(DesignTokens.space1 + 2),
             Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 6.w,
-                vertical: 2.h,
+              padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space1,
+                vertical: DesignTokens.space1 / 2,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
               ),
               child: Text(
@@ -136,7 +141,7 @@ class WorkOrderListTabs extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ),
@@ -152,7 +157,8 @@ class WorkOrderListTabs extends StatelessWidget {
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+          valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary),
         ),
       );
     }
@@ -162,9 +168,9 @@ class WorkOrderListTabs extends StatelessWidget {
     }
 
     Widget listView = ListView.builder(
-      padding: EdgeInsets.only(
-        top: AppDimensions.paddingSmall,
-        bottom: AppDimensions.paddingLarge,
+      padding: REdgeInsets.only(
+        top: DesignTokens.space2,
+        bottom: DesignTokens.space6,
       ),
       itemCount: filteredWorkOrders.length,
       itemBuilder: (context, index) {
@@ -184,7 +190,7 @@ class WorkOrderListTabs extends StatelessWidget {
     if (onRefresh != null) {
       listView = RefreshIndicator(
         onRefresh: onRefresh!,
-        color: AppColors.primary,
+        color: Theme.of(context).colorScheme.primary,
         child: listView,
       );
     }
@@ -229,13 +235,14 @@ class WorkOrderListTabs extends StatelessWidget {
           Icon(
             icon,
             size: 64.sp,
-            color: AppColors.textSecondary.withValues(alpha: 0.5),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
           ),
-          SizedBox(height: AppDimensions.paddingMedium),
+          DesignTokens.verticalSpaceMedium,
           Text(
             message,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
         ],
@@ -294,7 +301,8 @@ class WorkOrderListForStatus extends StatelessWidget {
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+          valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary),
         ),
       );
     }
@@ -307,13 +315,16 @@ class WorkOrderListForStatus extends StatelessWidget {
             Icon(
               Icons.assignment_outlined,
               size: 64.sp,
-              color: AppColors.textSecondary.withValues(alpha: 0.5),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.5),
             ),
-            SizedBox(height: AppDimensions.paddingMedium),
+            DesignTokens.verticalSpaceMedium,
             Text(
               'No work orders',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
           ],
@@ -322,9 +333,9 @@ class WorkOrderListForStatus extends StatelessWidget {
     }
 
     Widget listView = ListView.builder(
-      padding: EdgeInsets.only(
-        top: AppDimensions.paddingSmall,
-        bottom: AppDimensions.paddingLarge,
+      padding: REdgeInsets.only(
+        top: DesignTokens.space2,
+        bottom: DesignTokens.space6,
       ),
       itemCount: filteredWorkOrders.length,
       itemBuilder: (context, index) {
@@ -343,7 +354,7 @@ class WorkOrderListForStatus extends StatelessWidget {
     if (onRefresh != null) {
       listView = RefreshIndicator(
         onRefresh: onRefresh!,
-        color: AppColors.primary,
+        color: Theme.of(context).colorScheme.primary,
         child: listView,
       );
     }

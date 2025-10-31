@@ -1,0 +1,774 @@
+
+ ▐▛███▜▌   Claude Code v2.0.30
+▝▜█████▛▘  Sonnet 4.5 · Claude Pro
+  ▘▘ ▝▝    D:\FSM\fsm-app
+
+ ⚠ Output styles are deprecated (currently using Learning). Review your options in /output-style.
+══════════════════════════════════════════════════════════════════════════════════ Conversation compacted · ctrl+o for history ══════════════════════════════════════════════════════════════════════════════════
+  ⎿  Read lib\core\widgets\navigation\fsm_tab_bar.dart (118 lines)
+  ⎿  Read lib\core\widgets\quick_action_button.dart (281 lines)
+  ⎿  Read lib\core\widgets\stats_card.dart (195 lines)
+  ⎿  Read lib\core\widgets\optimized_splash_screen.dart (278 lines)
+  ⎿  Read lib\core\widgets\optimized_image.dart (216 lines)
+  ⎿  Todo list read (8 items)
+
+● I'll continue with Phase 2: Work Orders Feature Cleanup. Let me start by analyzing the work order pages and widgets to understand the violations and begin the systematic cleanup.
+
+● Read(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Read 652 lines
+
+● Read(lib\features\work_orders\presentation\pages\dashboard_page.dart)
+  ⎿  Read 651 lines
+
+● Read(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Read 416 lines
+
+● Read(lib\features\work_orders\presentation\widgets\current_work_order_card.dart)
+  ⎿  Read 176 lines
+
+● I'll now continue with Phase 2: Work Orders Feature Cleanup. I've analyzed the work order files and found significant violations. Let me start systematically fixing them.
+
+  ★ Insight ─────────────────────────────────────
+  Work Order Files Analysis:
+  - work_order_details_page.dart: 18+ violations (AppColors, raw EdgeInsets, hardcoded SizedBox, hardcoded TextStyles)
+  - current_work_order_card.dart: 13+ violations (AppColors for warning/success/info/secondary)
+  - work_order_list_card.dart: 11+ violations (AppDimensions, AppTextStyles - both deprecated)
+  - dashboard_page.dart: Mostly clean, just minor raw EdgeInsets fixes needed
+
+  These files are critical as they're the most frequently used in the app. Fixing them will have the highest impact on design system compliance.
+  ─────────────────────────────────────────────────
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 2 additions and 1 removal
+        6    import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_wizard.dart';
+        7    import 'package:intl/intl.dart';
+        8    import 'package:fsm/core/di/injection.dart';
+        9 -  import 'package:fsm/core/theme/app_colors.dart';
+        9 +  import 'package:fsm/core/theme/design_tokens.dart';
+       10    import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+       11 +  import 'package:fsm/core/theme/spacing_theme.dart';
+       12    import 'package:fsm/core/widgets/fsm_app_bar.dart';
+       13    import 'package:fsm/core/widgets/fsm_section_header.dart';
+       14    import 'package:fsm/core/widgets/offline_banner.dart';
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 6 additions and 3 removals
+       100              listener: (context, state) {
+       101                state.maybeWhen(
+       102                  actionSuccess: (workOrder, actionType, message, _) {
+       103 +                  final fsmTheme = context.fsmTheme;
+       104                    ScaffoldMessenger.of(context).showSnackBar(
+       105                      SnackBar(
+       106                        content: Text(message),
+       107 -                      backgroundColor: AppColors.success,
+       107 +                      backgroundColor: fsmTheme.success,
+       108                      ),
+       109                    );
+       110                  },
+       111                  error: (failure, workOrder, isOffline) {
+       112 +                  final theme = Theme.of(context);
+       113                    ScaffoldMessenger.of(context).showSnackBar(
+       114                      SnackBar(
+       115                        content: Text(failure.message),
+       116 -                      backgroundColor: AppColors.error,
+       116 +                      backgroundColor: theme.colorScheme.error,
+       117                      ),
+       118                    );
+       119                  },
+       120                  locationError: (workOrder, message) {
+       121 +                  final fsmTheme = context.fsmTheme;
+       122                    ScaffoldMessenger.of(context).showSnackBar(
+       123                      SnackBar(
+       124                        content: Text(message),
+       125 -                      backgroundColor: AppColors.warning,
+       125 +                      backgroundColor: fsmTheme.warning,
+       126                      ),
+       127                    );
+       128                  },
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 5 additions and 3 removals
+       191                flexibleSpace: FlexibleSpaceBar(
+       192                  background: SafeArea(
+       193                    child: Container(
+       194 -                    padding:
+       195 -                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+       196 -                    margin: EdgeInsets.only(top: 40.h),
+       194 +                    padding: REdgeInsets.symmetric(
+       195 +                      horizontal: DesignTokens.space5,
+       196 +                      vertical: DesignTokens.space3,
+       197 +                    ),
+       198 +                    margin: REdgeInsets.only(top: DesignTokens.space10),
+       199                      child: Column(
+       200                        crossAxisAlignment: CrossAxisAlignment.start,
+       201                        mainAxisAlignment: MainAxisAlignment.start,
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 2 additions and 3 removals
+       212                                  Expanded(
+       213                                    child: Text(
+       214                                      workOrder.woNumber,
+       215 -                                    style: TextStyle(
+       215 +                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+       216                                        color: Theme.of(context).colorScheme.onPrimary,
+       217 -                                      fontSize: 24.sp,
+       218 -                                      fontWeight: FontWeight.w800,
+       217 +                                      fontWeight: DesignTokens.fontWeightBold,
+       218                                        letterSpacing: -0.5,
+       219                                        height: 1.1,
+       220                                      ),
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 4 additions and 5 removals
+       227                                  ),
+       228                                ],
+       229                              ),
+       230 -                            SizedBox(height: 8.h),
+       230 +                            DesignTokens.verticalSpaceSmall,
+       231                              Text(
+       232                                workOrder.summary,
+       233 -                              style: TextStyle(
+       233 +                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+       234                                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
+       235 -                                fontSize: 15.sp,
+       236 -                                fontWeight: FontWeight.w500,
+       235 +                                fontWeight: DesignTokens.fontWeightMedium,
+       236                                  letterSpacing: 0.2,
+       237                                ),
+       238                                maxLines: 2,
+       239                                overflow: TextOverflow.ellipsis,
+       240                              ),
+       241 -                            SizedBox(height: 8.h),
+       241 +                            DesignTokens.verticalSpaceSmall,
+       242                              // Priority Badge using shared component
+       243                              StatusBadge.priority(
+       244                                priority: workOrder.priority.name,
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 2 additions and 2 removals
+       246                              ),
+       247                            ],
+       248                          ),
+       249 -                        SizedBox(height: 14.h),
+       249 +                        RSizedBox(height: DesignTokens.space4),
+       250                          // Visit Date and Duration - Keep custom chips for gradient background
+       251                          SingleChildScrollView(
+       252                            scrollDirection: Axis.horizontal,
+     ...
+       258                                  value: DateFormat('MMM dd, yyyy')
+       259                                      .format(workOrder.visitDate),
+       260                                ),
+       261 -                              SizedBox(width: 12.w),
+       261 +                              RSizedBox(width: DesignTokens.space3),
+       262                                _buildHeaderInfoChip(
+       263                                  icon: Icons.schedule,
+       264                                  label: 'Duration',
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 1 addition and 1 removal
+       278                  FSMAppBarAction.refresh(
+       279                    onPressed: _handleRefresh,
+       280                  ),
+       281 -                SizedBox(width: 16.w),
+       281 +                RSizedBox(width: DesignTokens.space4),
+       282                ],
+       283              ),
+       284    
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 2 additions and 2 removals
+       284    
+       285              // Content with expandable sections using FSMCollapsibleSection
+       286              SliverPadding(
+       287 -              padding: EdgeInsets.all(16.w),
+       287 +              padding: REdgeInsets.all(DesignTokens.space4),
+       288                sliver: SliverList(
+       289                  delegate: SliverChildListDelegate([
+       290                    // Offline Indicator using shared OfflineBanner (only shows if offline)
+       291                    if (isOffline) ...[
+       292                      const OfflineBanner(dismissible: false),
+       293 -                    SizedBox(height: 16.h),
+       293 +                    DesignTokens.verticalSpaceMedium,
+       294                    ],
+       295    
+       296                    // Basic Information using FSMCollapsibleSection
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 8 additions and 8 removals
+       299                      initiallyExpanded: true,
+       300                      child: BasicInformationSection(workOrder: workOrder),
+       301                    ),
+       302 -                  SizedBox(height: 12.h),
+       302 +                  DesignTokens.verticalSpace(DesignTokens.space3),
+       303    
+       304                    // Description
+       305                    FSMCollapsibleSection(
+       306                      title: 'Description',
+       307                      child: DescriptionSection(workOrder: workOrder),
+       308                    ),
+       309 -                  SizedBox(height: 12.h),
+       309 +                  DesignTokens.verticalSpace(DesignTokens.space3),
+       310    
+       311                    // Customer Information
+       312                    if (workOrder.customer != null)
+     ...
+       314                        title: 'Customer Contact Details',
+       315                        child: CustomerSection(customer: workOrder.customer!),
+       316                      ),
+       317 -                  if (workOrder.customer != null) SizedBox(height: 12.h),
+       317 +                  if (workOrder.customer != null) DesignTokens.verticalSpace(DesignTokens.space3),
+       318    
+       319                    // Machine Details
+       320                    if (workOrder.serviceRequest != null)
+     ...
+       323                        child: MachineDetailsSection(
+       324                            serviceRequest: workOrder.serviceRequest!),
+       325                      ),
+       326 -                  if (workOrder.serviceRequest != null) SizedBox(height: 12.h),
+       326 +                  if (workOrder.serviceRequest != null) DesignTokens.verticalSpace(DesignTokens.space3),
+       327    
+       328                    // Location Information
+       329                    FSMCollapsibleSection(
+     ...
+       334                        isLocationLoading: isLocationLoading,
+       335                      ),
+       336                    ),
+       337 -                  SizedBox(height: 12.h),
+       337 +                  DesignTokens.verticalSpace(DesignTokens.space3),
+       338    
+       339                    // Parts Used
+       340                    if (workOrder.partsUsed.isNotEmpty)
+     ...
+       342                        title: 'Parts Used',
+       343                        child: PartsUsedSection(partsUsed: workOrder.partsUsed),
+       344                      ),
+       345 -                  if (workOrder.partsUsed.isNotEmpty) SizedBox(height: 12.h),
+       345 +                  if (workOrder.partsUsed.isNotEmpty) DesignTokens.verticalSpace(DesignTokens.space3),
+       346    
+       347                    // Work Logs & Timeline
+       348                    if (workOrder.workLogs.isNotEmpty)
+     ...
+       350                        title: 'Work Timeline',
+       351                        child: WorkTimelineSection(workLogs: workOrder.workLogs),
+       352                      ),
+       353 -                  if (workOrder.workLogs.isNotEmpty) SizedBox(height: 12.h),
+       353 +                  if (workOrder.workLogs.isNotEmpty) DesignTokens.verticalSpace(DesignTokens.space3),
+       354    
+       355                    // Images & Documentation
+       356                    _buildImagesSection(),
+       357    
+       358                    // Add bottom padding before footer
+       359 -                  SizedBox(height: 24.h),
+       359 +                  DesignTokens.verticalSpaceLarge,
+       360                  ]),
+       361                ),
+       362              ),
+
+● Update(lib\features\work_orders\presentation\pages\work_order_details_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\work_order_details_page.dart with 20 additions and 16 removals
+       383        required String label,
+       384        required String value,
+       385      }) {
+       386 +      final theme = Theme.of(context);
+       387 +      final spacing = context.spacing;
+       388 +  
+       389        return Container(
+       390 -        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+       390 +        padding: REdgeInsets.symmetric(
+       391 +          horizontal: DesignTokens.space3,
+       392 +          vertical: DesignTokens.space2,
+       393 +        ),
+       394          decoration: BoxDecoration(
+       395 -          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
+       396 -          borderRadius: BorderRadius.circular(12.r),
+       395 +          color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
+       396 +          borderRadius: BorderRadius.circular(spacing.radiusMd.r),
+       397            border: Border.all(
+       398 -            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+       399 -            width: 1,
+       398 +            color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
+       399 +            width: DesignTokens.borderWidthThin,
+       400            ),
+       401          ),
+       402          child: Row(
+     ...
+       398            children: [
+       399              Icon(
+       400                icon,
+       401 -              color: Theme.of(context).colorScheme.onPrimary,
+       402 -              size: 14.sp,
+       401 +              color: theme.colorScheme.onPrimary,
+       402 +              size: DesignTokens.iconXs.sp,
+       403              ),
+       404 -            SizedBox(width: 6.w),
+       404 +            RSizedBox(width: DesignTokens.space2),
+       405              Column(
+       406                crossAxisAlignment: CrossAxisAlignment.start,
+       407                mainAxisSize: MainAxisSize.min,
+       408                children: [
+       409                  Text(
+       410                    label,
+       411 -                  style: TextStyle(
+       412 -                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+       413 -                    fontSize: 10.sp,
+       414 -                    fontWeight: FontWeight.w500,
+       411 +                  style: theme.textTheme.labelSmall?.copyWith(
+       412 +                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
+       413 +                    fontWeight: DesignTokens.fontWeightMedium,
+       414                    ),
+       415                    overflow: TextOverflow.ellipsis,
+       416                    maxLines: 1,
+       417                  ),
+       418                  Text(
+       419                    value,
+       420 -                  style: TextStyle(
+       421 -                    color: Theme.of(context).colorScheme.onPrimary,
+       422 -                    fontSize: 12.sp,
+       423 -                    fontWeight: FontWeight.w600,
+       420 +                  style: theme.textTheme.labelMedium?.copyWith(
+       421 +                    color: theme.colorScheme.onPrimary,
+       422 +                    fontWeight: DesignTokens.fontWeightSemiBold,
+       423                    ),
+       424                    overflow: TextOverflow.ellipsis,
+       425                    maxLines: 1,
+
+● Now let me fix the current_work_order_card.dart file:
+
+● Update(lib\features\work_orders\presentation\widgets\current_work_order_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\current_work_order_card.dart with 2 additions and 1 removal
+       1    import 'package:flutter/material.dart';
+       2    import 'package:flutter_screenutil/flutter_screenutil.dart';
+       3 -  import 'package:fsm/core/theme/app_colors.dart';
+       3    import 'package:fsm/core/theme/design_tokens.dart';
+       4 +  import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+       5 +  import 'package:fsm/core/theme/spacing_theme.dart';
+       6    import 'package:fsm/core/widgets/status_badge.dart';
+       7    import 'package:fsm/core/widgets/priority_indicator.dart';
+       8    import 'package:fsm/core/widgets/metadata_row.dart';
+
+● Update(lib\features\work_orders\presentation\widgets\current_work_order_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\current_work_order_card.dart with 17 additions and 10 removals
+       40    
+       41      @override
+       42      Widget build(BuildContext context) {
+       43 +      final theme = Theme.of(context);
+       44 +      final fsmTheme = context.fsmTheme;
+       45 +      final spacing = context.spacing;
+       46 +  
+       47        final startTime = workOrder.startedAt;
+       48        final timeText = startTime != null
+       49            ? 'Started: ${DateFormat('h:mm a').format(startTime)}'
+       50            : 'Not started';
+       51    
+       52        return Padding(
+       53 -        padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
+       53 +        padding: REdgeInsets.symmetric(
+       54 +          horizontal: DesignTokens.space4,
+       55 +          vertical: DesignTokens.space2,
+       56 +        ),
+       57          child: Material(
+       58 -          color: Theme.of(context).colorScheme.surface,
+       59 -          borderRadius: BorderRadius.circular(12.r),
+       60 -          elevation: 4,
+       61 -          shadowColor: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.26),
+       58 +          color: theme.colorScheme.surface,
+       59 +          borderRadius: BorderRadius.circular(spacing.radiusMd.r),
+       60 +          elevation: DesignTokens.elevationSmall,
+       61 +          shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.26),
+       62            child: InkWell(
+       63              onTap: onTap,
+       64 -            borderRadius: BorderRadius.circular(12.r),
+       64 +            borderRadius: BorderRadius.circular(spacing.radiusMd.r),
+       65              child: Container(
+       66                decoration: BoxDecoration(
+       67 -                borderRadius: BorderRadius.circular(12.r),
+       67 +                borderRadius: BorderRadius.circular(spacing.radiusMd.r),
+       68                  border: Border(
+       69                    left: BorderSide(
+       70 -                    color: AppColors.warning,
+       71 -                    width: 4.w,
+       70 +                    color: fsmTheme.warning,
+       71 +                    width: DesignTokens.borderWidthMedium.w,
+       72                    ),
+       73                  ),
+       74                ),
+       75                child: Padding(
+       76 -                padding: EdgeInsets.all(16.w),
+       76 +                padding: REdgeInsets.all(DesignTokens.space4),
+       77                  child: Column(
+       78                    crossAxisAlignment: CrossAxisAlignment.start,
+       79                    children: [
+
+● Update(lib\features\work_orders\presentation\widgets\current_work_order_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\current_work_order_card.dart with 8 additions and 10 removals
+        93                        ],
+        94                      ),
+        95    
+        96 -                    SizedBox(height: 12.h),
+        96 +                    DesignTokens.verticalSpace(DesignTokens.space3),
+        97    
+        98                      // WO Number
+        99                      Text(
+       100                        workOrder.woNumber,
+       101 -                      style: TextStyle(
+       102 -                        fontSize: 16.sp,
+       103 -                        fontWeight: FontWeight.w700,
+       104 -                        color: AppColors.textPrimary,
+       101 +                      style: theme.textTheme.titleMedium?.copyWith(
+       102 +                        fontWeight: DesignTokens.fontWeightBold,
+       103 +                        color: theme.colorScheme.onSurface,
+       104                        ),
+       105                      ),
+       106    
+       107 -                    SizedBox(height: 8.h),
+       107 +                    DesignTokens.verticalSpaceSmall,
+       108    
+       109                      // Issue Description (max 2 lines)
+       110                      Text(
+       111                        workOrder.problemDescription,
+       112 -                      style: TextStyle(
+       113 -                        fontSize: 14.sp,
+       114 -                        color: AppColors.textSecondary,
+       112 +                      style: theme.textTheme.bodyMedium?.copyWith(
+       113 +                        color: theme.colorScheme.onSurfaceVariant,
+       114                          height: 1.4,
+       115                        ),
+       116                        maxLines: 2,
+       117                        overflow: TextOverflow.ellipsis,
+       118                      ),
+       119    
+       120 -                    SizedBox(height: 12.h),
+       120 +                    DesignTokens.verticalSpace(DesignTokens.space3),
+       121    
+       122                      // Metadata: Location + Time
+       123                      MetadataRow(
+
+● Update(lib\features\work_orders\presentation\widgets\current_work_order_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\current_work_order_card.dart with 11 additions and 7 removals
+       133                        ],
+       134                      ),
+       135    
+       136 -                    SizedBox(height: 16.h),
+       136 +                    DesignTokens.verticalSpaceMedium,
+       137    
+       138                      // Quick Actions Row
+       139                      Wrap(
+       140 -                      spacing: 8.w,
+       141 -                      runSpacing: 8.h,
+       140 +                      spacing: DesignTokens.space2.w,
+       141 +                      runSpacing: DesignTokens.space2.h,
+       142                        children: [
+       143                          if (onPause != null)
+       144                            QuickActionButton(
+       145                              icon: Icons.pause,
+       146                              label: 'Pause',
+       147                              onPressed: onPause!,
+       148 -                            backgroundColor: AppColors.warning,
+       148 +                            backgroundColor: fsmTheme.warning,
+       149 +                            color: theme.colorScheme.onPrimary,
+       150                            ),
+       151                          if (onParts != null)
+       152                            QuickActionButton(
+       153                              icon: Icons.inventory_2_outlined,
+       154                              label: 'Parts',
+       155                              onPressed: onParts!,
+       156 -                            backgroundColor: AppColors.info,
+       156 +                            backgroundColor: fsmTheme.info,
+       157 +                            color: theme.colorScheme.onPrimary,
+       158                            ),
+       159                          if (onDocs != null)
+       160                            QuickActionButton(
+       161                              icon: Icons.description_outlined,
+       162                              label: 'Docs',
+       163                              onPressed: onDocs!,
+       164 -                            backgroundColor: AppColors.secondary,
+       164 +                            backgroundColor: theme.colorScheme.secondary,
+       165 +                            color: theme.colorScheme.onSecondary,
+       166                            ),
+       167                          if (onComplete != null)
+       168                            QuickActionButton(
+       169                              icon: Icons.check_circle_outline,
+       170                              label: 'Complete',
+       171                              onPressed: onComplete!,
+       172 -                            backgroundColor: AppColors.success,
+       172 +                            backgroundColor: fsmTheme.success,
+       173 +                            color: theme.colorScheme.onPrimary,
+       174                            ),
+       175                        ],
+       176                      ),
+
+● Now let me fix the work_order_list_card.dart file which has AppDimensions and AppTextStyles violations:
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 1 addition and 1 removal
+       3    
+       4    import '../../../../core/theme/design_tokens.dart';
+       5    import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+       6 -  import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+       6 +  import '../../../../core/theme/spacing_theme.dart';
+       7    import '../../../../core/widgets/metadata_row.dart';
+       8    import '../../../../core/widgets/priority_indicator.dart';
+       9    import '../../../../core/widgets/quick_action_button.dart';
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 9 additions and 7 removals
+       69    
+       70      @override
+       71      Widget build(BuildContext context) {
+       72 +      final theme = Theme.of(context);
+       73        final fsmTheme = context.fsmTheme;
+       74 +      final spacing = context.spacing;
+       75        final priorityColor = fsmTheme.getPriorityColor(workOrder.priority.toString());
+       76    
+       77        return Container(
+     ...
+        78            vertical: DesignTokens.space2,
+        79          ),
+        80          child: Material(
+        81 -          color: Theme.of(context).colorScheme.surface,
+        82 -          elevation: AppDimensions.elevationXSmall,
+        83 -          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        81 +          color: theme.colorScheme.surface,
+        82 +          elevation: DesignTokens.elevationXSmall,
+        83 +          borderRadius: BorderRadius.circular(spacing.radiusSm.r),
+        84            child: InkWell(
+        85              onTap: onTap,
+        86 -            borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        86 +            borderRadius: BorderRadius.circular(spacing.radiusSm.r),
+        87              child: Container(
+        88                decoration: BoxDecoration(
+        89                  border: Border(
+        90                    left: BorderSide(
+        91                      color: priorityColor,
+        92 -                    width: 3.w,
+        92 +                    width: DesignTokens.borderWidthMedium.w,
+        93                    ),
+        94                  ),
+        95 -                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        95 +                borderRadius: BorderRadius.circular(spacing.radiusSm.r),
+        96                ),
+        97                child: Padding(
+        98 -                padding: REdgeInsets.all(DesignTokens.space2),
+        98 +                padding: REdgeInsets.all(DesignTokens.space3),
+        99                  child: Column(
+       100                    crossAxisAlignment: CrossAxisAlignment.start,
+       101                    children: [
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 3 additions and 3 removals
+       108                          Expanded(
+       109                            child: Text(
+       110                              'WO #${workOrder.id}',
+       111 -                            style: AppTextStyles.titleSmall.copyWith(
+       112 -                              fontWeight: FontWeight.w700,
+       113 -                              color: Theme.of(context).colorScheme.onSurface,
+       111 +                            style: theme.textTheme.titleSmall?.copyWith(
+       112 +                              fontWeight: DesignTokens.fontWeightBold,
+       113 +                              color: theme.colorScheme.onSurface,
+       114                              ),
+       115                            ),
+       116                          ),
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 2 additions and 2 removals
+       128                      // Description (max 2 lines)
+       129                      Text(
+       130                        workOrder.issue,
+       131 -                      style: AppTextStyles.bodySmall.copyWith(
+       132 -                        color: Theme.of(context).colorScheme.onSurface,
+       131 +                      style: theme.textTheme.bodySmall?.copyWith(
+       132 +                        color: theme.colorScheme.onSurface,
+       133                          height: 1.3,
+       134                        ),
+       135                        maxLines: 2,
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 2 additions and 2 removals
+       163        final status = workOrder.status.toString();
+       164    
+       165        return Wrap(
+       166 -        spacing: AppDimensions.paddingXSmall,
+       167 -        runSpacing: AppDimensions.paddingXSmall,
+       166 +        spacing: DesignTokens.space2.w,
+       167 +        runSpacing: DesignTokens.space2.h,
+       168          children: [
+       169            // Start button (for unassigned/assigned)
+       170            if ((status == 'unassigned' || status == 'assigned') && onStart != null)
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 1 addition and 1 removal
+       319            child: Icon(
+       320              Icons.more_horiz,
+       321              color: Theme.of(context).colorScheme.onPrimary,
+       322 -            size: AppDimensions.iconLarge,
+       322 +            size: DesignTokens.iconLg.sp,
+       323            ),
+       324          ),
+       325          child: WorkOrderListCard(
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 9 additions and 6 removals
+       349    
+       350      @override
+       351      Widget build(BuildContext context) {
+       352 +      final theme = Theme.of(context);
+       353 +      final fsmTheme = context.fsmTheme;
+       354 +      final spacing = context.spacing;
+       355        final status = workOrder.status.toString();
+       356    
+       357        return Container(
+     ...
+       358            children: [
+       359              // Handle bar
+       360              Container(
+       361 -              width: 40.w,
+       362 -              height: 4.h,
+       361 +              width: DesignTokens.space10.w,
+       362 +              height: DesignTokens.borderWidthMedium.h,
+       363                decoration: BoxDecoration(
+       364 -                color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+       365 -                borderRadius: BorderRadius.circular(2.r),
+       364 +                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+       365 +                borderRadius: BorderRadius.circular(spacing.radiusXs.r),
+       366                ),
+       367              ),
+       368    
+     ...
+       370    
+       371              Text(
+       372                'WO #${workOrder.id}',
+       373 -              style: AppTextStyles.titleMedium.copyWith(
+       374 -                fontWeight: FontWeight.w600,
+       373 +              style: theme.textTheme.titleMedium?.copyWith(
+       374 +                fontWeight: DesignTokens.fontWeightSemiBold,
+       375                ),
+       376              ),
+       377    
+
+● Update(lib\features\work_orders\presentation\widgets\work_order_list_card.dart)
+  ⎿  Updated lib\features\work_orders\presentation\widgets\work_order_list_card.dart with 6 additions and 6 removals
+       384              if ((status == 'unassigned' || status == 'assigned') &&
+       385                  onStart != null)
+       386                ListTile(
+       387 -                leading: Icon(Icons.play_arrow, color: context.fsmTheme.actionStart),
+       387 +                leading: Icon(Icons.play_arrow, color: fsmTheme.actionStart),
+       388                  title: const Text('Start Work Order'),
+       389                  onTap: () => _handleStart(context, onStart!),
+       390                ),
+     ...
+       392              if ((status == 'in_progress' || status == 'inprogress') &&
+       393                  onPause != null)
+       394                ListTile(
+       395 -                leading: Icon(Icons.pause, color: context.fsmTheme.actionPause),
+       395 +                leading: Icon(Icons.pause, color: fsmTheme.actionPause),
+       396                  title: const Text('Pause Work Order'),
+       397                  onTap: () => _handlePause(context, onPause!),
+       398                ),
+     ...
+       400              if ((status == 'in_progress' || status == 'inprogress') &&
+       401                  onComplete != null)
+       402                ListTile(
+       403 -                leading: Icon(Icons.check_circle, color: context.fsmTheme.actionComplete),
+       403 +                leading: Icon(Icons.check_circle, color: fsmTheme.actionComplete),
+       404                  title: const Text('Complete Work Order'),
+       405                  onTap: () => _handleComplete(context, onComplete!),
+       406                ),
+       407    
+       408              if (onDelete != null) ...[
+       409 -              Divider(),
+       409 +              const Divider(),
+       410                ListTile(
+       411 -                leading: Icon(Icons.delete, color: context.fsmTheme.error),
+       412 -                title: Text('Delete', style: TextStyle(color: context.fsmTheme.error)),
+       411 +                leading: Icon(Icons.delete, color: theme.colorScheme.error),
+       412 +                title: Text('Delete', style: TextStyle(color: theme.colorScheme.error)),
+       413                  onTap: () => _handleDelete(context, onDelete!),
+       414                ),
+       415              ],
+
+● Now let me fix the minor violations in dashboard_page.dart:
+
+● Update(lib\features\work_orders\presentation\pages\dashboard_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\dashboard_page.dart with 2 additions                                             
+        5    
+        6    import '../../../../core/blocs/bloc_build_conditions.dart';
+        7    import '../../../../core/router/app_router.gr.dart';
+        8 +  import '../../../../core/theme/design_tokens.dart';
+        9    import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+       10 +  import '../../../../core/theme/spacing_theme.dart';
+       11    import '../../../../core/utils/work_order_status_helper.dart';
+       12    import '../../../../core/widgets/widgets.dart' hide CustomTabBar, StatsGrid, StatsCardData; // Barrel import, hide duplicates
+       13    import '../../../../core/widgets/custom_tab_bar.dart';
+
+● Update(lib\features\work_orders\presentation\pages\dashboard_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\dashboard_page.dart with 4 additions and 1 removal
+       357              workOrders: filteredWorkOrders,
+       358              isLoadingMore: isLoadingMore,
+       359              itemBuilder: (workOrder) => Padding(
+       360 -              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+       360 +              padding: REdgeInsets.symmetric(
+       361 +                horizontal: DesignTokens.space4,
+       362 +                vertical: DesignTokens.space3,
+       363 +              ),
+       364                child: WorkOrderCard(
+       365                  workOrder: workOrder,
+       366                  onTap: () {
+
+● Update(lib\features\work_orders\presentation\pages\dashboard_page.dart)
+  ⎿  Updated lib\features\work_orders\presentation\pages\dashboard_page.dart with 17 additions and 10 removals
+       493              delegate: SliverChildBuilderDelegate(
+       494                (context, index) {
+       495                  final workOrder = unassignedWorkOrders[index];
+       496 +                final theme = Theme.of(context);
+       497 +                final spacing = context.spacing;
+       498 +  
+       499                  return SizedBox(
+       500                    width: double.infinity,
+       501                    child: Padding(
+       502 -                    padding:
+       503 -                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+       502 +                    padding: REdgeInsets.symmetric(
+       503 +                      horizontal: DesignTokens.space4,
+       504 +                      vertical: DesignTokens.space3,
+       505 +                    ),
+       506                      child: Column(
+       507                        children: [
+       508                          WorkOrderCard(
+     ...
+       507                                  WorkOrderDetailsRoute(workOrderId: workOrder.id));
+       508                            },
+       509                          ),
+       510 -                        SizedBox(height: 8.h),
+       510 +                        DesignTokens.verticalSpaceSmall,
+       511                          SizedBox(
+       512                            width: double.infinity,
+       513                            child: ElevatedButton.icon(
+       514                              onPressed: () => _assignWorkOrderToSelf(workOrder.id),
+       515 -                            icon: Icon(Icons.person_add, size: 18.sp),
+       515 +                            icon: Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
+       516                              label: Text('Assign to Me',
+       517 -                                style: TextStyle(fontSize: 14.sp)),
+       517 +                                style: theme.textTheme.labelLarge),
+       518                              style: ElevatedButton.styleFrom(
+       519 -                              backgroundColor: Theme.of(context).colorScheme.primary,
+       520 -                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+       521 -                              padding: EdgeInsets.symmetric(
+       522 -                                  horizontal: 16.w, vertical: 12.h),
+       519 +                              backgroundColor: theme.colorScheme.primary,
+       520 +                              foregroundColor: theme.colorScheme.onPrimary,
+       521 +                              padding: REdgeInsets.symmetric(
+       522 +                                horizontal: DesignTokens.space4,
+       523 +                                vertical: DesignTokens.space3,
+       524 +                              ),
+       525                                shape: RoundedRectangleBorder(
+       526 -                                borderRadius: BorderRadius.circular(8.r),
+       526 +                                borderRadius: BorderRadius.circular(spacing.radiusSm.r),
+       527                                ),
+       528                              ),
+       529                            ),
+  ⎿  Session limit reached ∙ resets 9:30pm
+     /upgrade to increase your usage limit.
+
+
+
+

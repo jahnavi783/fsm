@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/theme/design_tokens.dart';
+import '../../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 class OfflineIndicator extends StatelessWidget {
   const OfflineIndicator({super.key});
@@ -7,13 +9,15 @@ class OfflineIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.1),
+        color: fsmTheme.syncOffline.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: Colors.orange.withOpacity(0.3),
+          color: fsmTheme.syncOffline.withOpacity(0.3),
           width: 1,
         ),
       ),
@@ -21,15 +25,15 @@ class OfflineIndicator extends StatelessWidget {
         children: [
           Icon(
             Icons.wifi_off,
-            color: Colors.orange,
+            color: fsmTheme.syncOffline,
             size: 20.sp,
           ),
-          SizedBox(width: 12.w),
+          DesignTokens.horizontalSpaceMd,
           Expanded(
             child: Text(
               'You are currently offline. Changes will sync when connection is restored.',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.orange.shade700,
+                color: fsmTheme.syncOffline,
               ),
             ),
           ),

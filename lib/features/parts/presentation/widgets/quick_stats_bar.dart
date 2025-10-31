@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart' show DesignTokens;
 
 /// QuickStatsBar - Horizontal stat chips for parts overview
 ///
@@ -65,12 +66,12 @@ class QuickStatsBar extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
-      padding: EdgeInsets.symmetric(
-        vertical: AppDimensions.paddingSmall,
+      padding: REdgeInsets.symmetric(
+        vertical: DesignTokens.space2,
       ),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -163,8 +164,8 @@ class _StatChip extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: AppDimensions.paddingSmall,
+          padding: REdgeInsets.symmetric(
+            vertical: DesignTokens.space2,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -210,11 +211,11 @@ class _LoadingStatsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
-      padding: EdgeInsets.all(AppDimensions.paddingMedium),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),

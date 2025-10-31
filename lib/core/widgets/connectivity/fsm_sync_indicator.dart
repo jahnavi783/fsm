@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../blocs/sync/sync_bloc.dart';
-import '../blocs/sync/sync_state.dart';
-import '../blocs/sync/sync_event.dart';
-import '../theme/theme.dart';
+import 'package:fsm/core/blocs/sync/sync_bloc.dart';
+import 'package:fsm/core/blocs/sync/sync_state.dart';
+import 'package:fsm/core/blocs/sync/sync_event.dart';
+import 'package:fsm/core/theme/theme.dart';
 
 class SyncIndicator extends StatelessWidget {
   final bool showWhenSynced;

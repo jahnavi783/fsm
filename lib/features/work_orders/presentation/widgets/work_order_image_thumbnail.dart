@@ -19,6 +19,8 @@ class WorkOrderImageThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -27,7 +29,7 @@ class WorkOrderImageThumbnail extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
           ),
         ),
         clipBehavior: Clip.antiAlias,
@@ -35,18 +37,18 @@ class WorkOrderImageThumbnail extends StatelessWidget {
           imageUrl: imageUrl,
           fit: BoxFit.cover,
           placeholder: (context, url) => Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: theme.colorScheme.surfaceContainerHighest,
+            highlightColor: theme.colorScheme.surface,
             child: Container(
-              color: Colors.white,
+              color: theme.colorScheme.surfaceContainerHighest,
             ),
           ),
           errorWidget: (context, url, error) => Container(
-            color: Colors.grey[200],
+            color: theme.colorScheme.surfaceContainerHighest,
             child: Center(
               child: Icon(
                 Icons.broken_image,
-                color: Colors.grey[400],
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                 size: 32.sp,
               ),
             ),

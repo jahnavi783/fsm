@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// @deprecated Use Theme.of(context).colorScheme for Material colors and context.fsmTheme for domain colors.
+///
+/// AppColors is deprecated and will be removed in v2.1.0.
+///
+/// Migration:
+/// ```dart
+/// // OLD - Material colors
+/// Container(color: AppColors.primary)
+///
+/// // NEW - Material colors
+/// Container(color: Theme.of(context).colorScheme.primary)
+///
+/// // OLD - Domain colors
+/// Container(color: AppColors.statusPending)
+///
+/// // NEW - Domain colors
+/// Container(color: context.fsmTheme.statusPending)
+/// ```
+///
+/// See lib/core/theme/extensions/fsm_theme_extension.dart for domain-specific colors.
+@Deprecated('Use Theme.of(context).colorScheme for Material colors and context.fsmTheme for domain colors. Will be removed in v2.1.0')
 class AppColors {
   AppColors._();
 

@@ -108,7 +108,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
@@ -150,13 +150,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                         suffixIcon: _searchController.text.isNotEmpty
                             ? IconButton(
                                 icon: const Icon(Icons.clear),
-                                onPressed: () {
-                                  _searchController.clear();
-                                  setState(() {
-                                    _searchQuery = '';
-                                  });
-                                  _loadParts();
-                                },
+                                onPressed: _handleClearSearch,
                               )
                             : null,
                         border: OutlineInputBorder(
@@ -187,14 +181,14 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                 Icon(
                                   Icons.inventory_2_outlined,
                                   size: 64.sp,
-                                  color: Colors.grey,
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
                                 ),
                                 SizedBox(height: 16.h),
                                 Text(
                                   'No parts available',
                                   style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Colors.grey,
+                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ],
@@ -315,7 +309,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: Offset(0, -2.h),
                       ),
@@ -326,24 +320,10 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     child: ElevatedButton(
                       onPressed: _selectedPartNumbers.isEmpty
                           ? null
-                          : () {
-                              final selectedParts = _availableParts
-                                  .where((p) => _selectedPartNumbers.contains(p.partNumber))
-                                  .map((part) => PartUsedInput(
-                                        part: part,
-                                        quantityController: TextEditingController(text: '1'),
-                                      ))
-                                  .toList();
-                              
-                              if (widget.onAddMultipleParts != null) {
-                                widget.onAddMultipleParts!(selectedParts);
-                              }
-                              
-                              Navigator.pop(context);
-                            },
+                          : _handleAddSelectedParts,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.onPrimary,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
@@ -366,6 +346,30 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
         ),
       ),
     );
+  }
+
+  void _handleClearSearch() {
+    _searchController.clear();
+    setState(() {
+      _searchQuery = '';
+    });
+    _loadParts();
+  }
+
+  void _handleAddSelectedParts() {
+    final selectedParts = _availableParts
+        .where((p) => _selectedPartNumbers.contains(p.partNumber))
+        .map((part) => PartUsedInput(
+              part: part,
+              quantityController: TextEditingController(text: '1'),
+            ))
+        .toList();
+    
+    if (widget.onAddMultipleParts != null) {
+      widget.onAddMultipleParts!(selectedParts);
+    }
+    
+    Navigator.pop(context);
   }
 
 
@@ -400,7 +404,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: AppColors.onPrimary,
                       ),
                     ),
                   ),

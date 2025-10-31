@@ -1,7 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/widgets/fsm_bottom_sheet.dart';
+import 'package:fsm/core/widgets/navigation/fsm_bottom_sheet.dart'
+    show FSMBottomSheet;
+
 import '../../domain/entities/document_entity.dart';
 import 'document_list_item.dart';
 import 'document_search_bar.dart';

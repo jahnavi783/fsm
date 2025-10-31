@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../../core/widgets/fsm_card.dart';
+import '../../../../core/widgets/cards/fsm_card.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../domain/entities/part_entity.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
@@ -57,7 +58,7 @@ class _PartDetailsPageView extends StatelessWidget {
         body: part == null
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-                padding: EdgeInsets.all(16.w),
+                padding: REdgeInsets.all(DesignTokens.space4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -77,7 +78,7 @@ class _PartDetailsPageView extends StatelessWidget {
   Widget _buildPartInfoCard() {
     return FSMCard(
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: REdgeInsets.all(DesignTokens.space4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -179,7 +180,7 @@ class _PartDetailsPageView extends StatelessWidget {
   Widget _buildInventoryCard() {
     return FSMCard(
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: REdgeInsets.all(DesignTokens.space4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -255,7 +256,7 @@ class _PartDetailsPageView extends StatelessWidget {
 Widget _buildInventoryHistoryCard() {
   return FSMCard(
     child: Padding(
-      padding: EdgeInsets.all(16.w),
+      padding: REdgeInsets.all(DesignTokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -273,7 +274,7 @@ Widget _buildInventoryHistoryCard() {
               if (state.inventoryHistory.isEmpty) {
                 return Center(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    padding: REdgeInsets.symmetric(vertical: DesignTokens.space5),
                     child: Text(
                       'No inventory history available',
                       style: TextStyle(
@@ -361,7 +362,7 @@ Widget _buildInfoChip({
   required Color color,
 }) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+    padding: REdgeInsets.symmetric(horizontal: DesignTokens.space2, vertical: DesignTokens.space1),
     decoration: BoxDecoration(
       color: color.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(6.r),

@@ -1,40 +1,38 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_wizard.dart';
-import 'package:intl/intl.dart';
 import 'package:fsm/core/di/injection.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/core/widgets/fsm_section_header.dart';
+import 'package:fsm/core/widgets/layout/fsm_section_header.dart';
 import 'package:fsm/core/widgets/offline_banner.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
+import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_event.dart';
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_gallery_section.dart';
-
-import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
-
-// Import section components
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/basic_information_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/description_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/customer_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/machine_details_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/location_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/parts_used_section.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/work_timeline_section.dart';
-
-// Dialog components
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
-
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_complete_wizard.dart';
 // Import widget components that may be needed for action in progress and error
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/action_in_progress_widget.dart';
+// Dialog components
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/error_widget.dart';
+// Import section components
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/basic_information_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/customer_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/description_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/location_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/machine_details_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/parts_used_section.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/work_timeline_section.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/status_adaptive_actions_widget.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_gallery_section.dart';
+import 'package:intl/intl.dart';
 
 @RoutePage()
 class WorkOrderDetailsPage extends StatelessWidget {
@@ -95,76 +93,79 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
     return Scaffold(
       body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-          listener: (context, state) {
-            state.maybeWhen(
-              actionSuccess: (workOrder, actionType, message, _) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: AppColors.success,
-                  ),
-                );
+        listener: (context, state) {
+          state.maybeWhen(
+            actionSuccess: (workOrder, actionType, message, _) {
+              final fsmTheme = context.fsmTheme;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(message),
+                  backgroundColor: fsmTheme.success,
+                ),
+              );
+            },
+            error: (failure, workOrder, isOffline) {
+              final theme = Theme.of(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(failure.message),
+                  backgroundColor: theme.colorScheme.error,
+                ),
+              );
+            },
+            locationError: (workOrder, message) {
+              final fsmTheme = context.fsmTheme;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(message),
+                  backgroundColor: fsmTheme.warning,
+                ),
+              );
+            },
+            orElse: () {},
+          );
+        },
+        builder: (context, state) {
+          return state.when(
+            initial: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                    _, __) =>
+                _buildWorkOrderDetails(
+              workOrder,
+              currentLocation,
+              isLocationLoading,
+              isOffline,
+              isActionInProgress: false,
+            ),
+            actionInProgress: (workOrder, actionType, currentLocation) =>
+                ActionInProgressWidget(actionType: actionType),
+            actionSuccess: (workOrder, actionType, message, _) =>
+                _buildWorkOrderDetails(
+              workOrder,
+              null,
+              false,
+              false,
+              isActionInProgress: false,
+            ),
+            error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
+              message: failure.message,
+              isOffline: isOffline,
+              onRetry: () {
+                context.read<WorkOrderActionBloc>().add(
+                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                    );
               },
-              error: (failure, workOrder, isOffline) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(failure.message),
-                    backgroundColor: AppColors.error,
-                  ),
-                );
-              },
-              locationError: (workOrder, message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: AppColors.warning,
-                  ),
-                );
-              },
-              orElse: () {},
-            );
-          },
-          builder: (context, state) {
-            return state.when(
-              initial: () => const Center(child: CircularProgressIndicator()),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                      _, __) =>
-                  _buildWorkOrderDetails(
-                workOrder,
-                currentLocation,
-                isLocationLoading,
-                isOffline,
-                isActionInProgress: false,
-              ),
-              actionInProgress: (workOrder, actionType, currentLocation) =>
-                  ActionInProgressWidget(actionType: actionType),
-              actionSuccess: (workOrder, actionType, message, _) =>
-                  _buildWorkOrderDetails(
-                workOrder,
-                null,
-                false,
-                false,
-                isActionInProgress: false,
-              ),
-              error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
-                message: failure.message,
-                isOffline: isOffline,
-                onRetry: () {
-                  context.read<WorkOrderActionBloc>().add(
-                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                      );
-                },
-              ),
-              locationError: (workOrder, message) => _buildWorkOrderDetails(
-                workOrder,
-                null,
-                false,
-                false,
-                isActionInProgress: false,
-              ),
-            );
-          },
+            ),
+            locationError: (workOrder, message) => _buildWorkOrderDetails(
+              workOrder,
+              null,
+              false,
+              false,
+              isActionInProgress: false,
+            ),
+          );
+        },
       ),
     );
   }
@@ -186,9 +187,11 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                  margin: EdgeInsets.only(top: 40.h),
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space5,
+                    vertical: DesignTokens.space3,
+                  ),
+                  margin: REdgeInsets.only(top: DesignTokens.space10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -205,13 +208,17 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                               Expanded(
                                 child: Text(
                                   workOrder.woNumber,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24.sp,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: -0.5,
-                                    height: 1.1,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        fontWeight: DesignTokens.fontWeightBold,
+                                        letterSpacing: -0.5,
+                                        height: 1.1,
+                                      ),
                                 ),
                               ),
                               // Status Badge using shared component
@@ -221,19 +228,24 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.h),
+                          DesignTokens.verticalSpaceSmall,
                           Text(
                             workOrder.summary,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.9),
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.2,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary
+                                      .withValues(alpha: 0.9),
+                                  fontWeight: DesignTokens.fontWeightMedium,
+                                  letterSpacing: 0.2,
+                                ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 8.h),
+                          DesignTokens.verticalSpaceSmall,
                           // Priority Badge using shared component
                           StatusBadge.priority(
                             priority: workOrder.priority.name,
@@ -241,7 +253,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 14.h),
+                      RSizedBox(height: DesignTokens.space4),
                       // Visit Date and Duration - Keep custom chips for gradient background
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -253,7 +265,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                               value: DateFormat('MMM dd, yyyy')
                                   .format(workOrder.visitDate),
                             ),
-                            SizedBox(width: 12.w),
+                            RSizedBox(width: DesignTokens.space3),
                             _buildHeaderInfoChip(
                               icon: Icons.schedule,
                               label: 'Duration',
@@ -271,25 +283,21 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
             ),
             actions: [
               FSMAppBarAction.refresh(
-                onPressed: () {
-                  context.read<WorkOrderActionBloc>().add(
-                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                      );
-                },
+                onPressed: _handleRefresh,
               ),
-              SizedBox(width: 16.w),
+              RSizedBox(width: DesignTokens.space4),
             ],
           ),
 
           // Content with expandable sections using FSMCollapsibleSection
           SliverPadding(
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // Offline Indicator using shared OfflineBanner (only shows if offline)
                 if (isOffline) ...[
                   const OfflineBanner(dismissible: false),
-                  SizedBox(height: 16.h),
+                  DesignTokens.verticalSpaceMedium,
                 ],
 
                 // Basic Information using FSMCollapsibleSection
@@ -298,14 +306,14 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                   initiallyExpanded: true,
                   child: BasicInformationSection(workOrder: workOrder),
                 ),
-                SizedBox(height: 12.h),
+                DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Description
                 FSMCollapsibleSection(
                   title: 'Description',
                   child: DescriptionSection(workOrder: workOrder),
                 ),
-                SizedBox(height: 12.h),
+                DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Customer Information
                 if (workOrder.customer != null)
@@ -313,7 +321,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                     title: 'Customer Contact Details',
                     child: CustomerSection(customer: workOrder.customer!),
                   ),
-                if (workOrder.customer != null) SizedBox(height: 12.h),
+                if (workOrder.customer != null)
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Machine Details
                 if (workOrder.serviceRequest != null)
@@ -322,7 +331,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                     child: MachineDetailsSection(
                         serviceRequest: workOrder.serviceRequest!),
                   ),
-                if (workOrder.serviceRequest != null) SizedBox(height: 12.h),
+                if (workOrder.serviceRequest != null)
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Location Information
                 FSMCollapsibleSection(
@@ -333,7 +343,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                     isLocationLoading: isLocationLoading,
                   ),
                 ),
-                SizedBox(height: 12.h),
+                DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Parts Used
                 if (workOrder.partsUsed.isNotEmpty)
@@ -341,7 +351,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                     title: 'Parts Used',
                     child: PartsUsedSection(partsUsed: workOrder.partsUsed),
                   ),
-                if (workOrder.partsUsed.isNotEmpty) SizedBox(height: 12.h),
+                if (workOrder.partsUsed.isNotEmpty)
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Work Logs & Timeline
                 if (workOrder.workLogs.isNotEmpty)
@@ -349,13 +360,14 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                     title: 'Work Timeline',
                     child: WorkTimelineSection(workLogs: workOrder.workLogs),
                   ),
-                if (workOrder.workLogs.isNotEmpty) SizedBox(height: 12.h),
+                if (workOrder.workLogs.isNotEmpty)
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                 // Images & Documentation
                 _buildImagesSection(),
 
                 // Add bottom padding before footer
-                SizedBox(height: 24.h),
+                DesignTokens.verticalSpaceLarge,
               ]),
             ),
           ),
@@ -382,14 +394,20 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     required String label,
     required String value,
   }) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space3,
+        vertical: DesignTokens.space2,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12.r),
+        color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(spacing.radiusMd.r),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
+          color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
+          width: DesignTokens.borderWidthThin,
         ),
       ),
       child: Row(
@@ -397,30 +415,28 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         children: [
           Icon(
             icon,
-            color: Colors.white,
-            size: 14.sp,
+            color: theme.colorScheme.onPrimary,
+            size: DesignTokens.iconXs.sp,
           ),
-          SizedBox(width: 6.w),
+          RSizedBox(width: DesignTokens.space2),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 label,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.8),
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w500,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
+                  fontWeight: DesignTokens.fontWeightMedium,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
               Text(
                 value,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                  fontWeight: DesignTokens.fontWeightSemiBold,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -615,28 +631,40 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: _handleAssignCancel,
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                // TODO: Implement assignToMe event in BLoC
-                // _workOrderActionBloc?.add(
-                //   WorkOrderActionEvent.assignToMe(workOrder.id),
-                // );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Work order assigned to you'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              },
+              onPressed: _handleAssignToMe,
               child: const Text('Assign'),
             ),
           ],
         ),
       );
     });
+  }
+
+  void _handleAssignCancel() {
+    Navigator.pop(context);
+  }
+
+  void _handleAssignToMe() {
+    Navigator.pop(context);
+    // TODO: Implement assignToMe event in BLoC
+    // _workOrderActionBloc?.add(
+    //   WorkOrderActionEvent.assignToMe(workOrder.id),
+    // );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Work order assigned to you'),
+        backgroundColor: context.fsmTheme.success,
+      ),
+    );
+  }
+
+  void _handleRefresh() {
+    context.read<WorkOrderActionBloc>().add(
+          WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+        );
   }
 }

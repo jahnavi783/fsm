@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class BasicInformationSection extends StatelessWidget {
   final WorkOrderEntity workOrder;
@@ -26,7 +27,7 @@ class BasicInformationSection extends StatelessWidget {
                 icon: Icons.tag,
               ),
             ),
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpaceMd,
             Expanded(
               child: InfoItemCard(
                 label: 'Ticket ID',
@@ -36,7 +37,7 @@ class BasicInformationSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        DesignTokens.verticalSpaceMd,
         Row(
           children: [
             Expanded(
@@ -46,7 +47,7 @@ class BasicInformationSection extends StatelessWidget {
                 icon: Icons.build_circle_outlined,
               ),
             ),
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpaceMd,
             Expanded(
               child: InfoItemCard(
                 label: 'Priority',
@@ -56,13 +57,13 @@ class BasicInformationSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        DesignTokens.verticalSpaceMd,
         InfoItemCard(
           label: 'Status',
           value: workOrder.statusDisplayName,
           icon: Icons.info_outline,
         ),
-        SizedBox(height: 12.h),
+        DesignTokens.verticalSpaceMd,
         Row(
           children: [
             Expanded(
@@ -72,7 +73,7 @@ class BasicInformationSection extends StatelessWidget {
                 icon: Icons.schedule,
               ),
             ),
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpaceMd,
             Expanded(
               child: InfoItemCard(
                 label: 'Duration',

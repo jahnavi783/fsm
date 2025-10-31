@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMShimmerLoading - Shimmer effect wrapper for skeleton screens
 ///
@@ -18,7 +18,7 @@ import 'package:fsm/core/theme/app_dimensions.dart';
 ///   child: Container(
 ///     width: 200.w,
 ///     height: 20.h,
-///     color: Colors.white,
+///     color: theme.colorScheme.surface,
 ///   ),
 /// )
 /// ```
@@ -40,9 +40,10 @@ class FSMShimmerLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isLoading) return child;
 
+    final theme = Theme.of(context);
     return Shimmer.fromColors(
-      baseColor: baseColor ?? AppColors.grey200,
-      highlightColor: highlightColor ?? AppColors.grey50,
+      baseColor: baseColor ?? theme.colorScheme.surfaceContainerHighest,
+      highlightColor: highlightColor ?? theme.colorScheme.surface,
       child: child,
     );
   }
@@ -65,13 +66,16 @@ class FSMShimmerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: AppColors.grey200,
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(
-          borderRadius ?? AppDimensions.radiusSmall,
+          borderRadius ?? spacing.radiusSm.r,
         ),
       ),
     );
@@ -89,11 +93,13 @@ class FSMShimmerCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: AppColors.grey200,
+        color: theme.colorScheme.surfaceContainerHighest,
         shape: BoxShape.circle,
       ),
     );
@@ -113,10 +119,12 @@ class FSMShimmerTextLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacing = context.spacing;
+
     return FSMShimmerBox(
       width: width,
       height: height,
-      borderRadius: AppDimensions.radiusSmall,
+      borderRadius: spacing.radiusSm,
     );
   }
 }
@@ -136,25 +144,28 @@ class FSMShimmerListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return FSMShimmerLoading(
       isLoading: true,
       child: Container(
-        height: height ?? 80.h,
-        padding: AppDimensions.paddingAllMedium,
-        margin: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        height: height ?? DesignTokens.listItemHeight.h,
+        padding: spacing.paddingMd,
+        margin: REdgeInsets.symmetric(
+          horizontal: spacing.space4,
+          vertical: spacing.space2,
         ),
         decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          color: theme.colorScheme.surface,
+          borderRadius: spacing.radiusMdBr,
         ),
         child: Row(
           children: [
             // Leading icon/avatar
             if (showLeading) ...[
-              FSMShimmerCircle(size: 40.sp),
-              SizedBox(width: AppDimensions.spaceMedium),
+              FSMShimmerCircle(size: DesignTokens.iconXl.sp),
+              spacing.horizontalSpaceMedium,
             ],
 
             // Content
@@ -163,20 +174,20 @@ class FSMShimmerListCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FSMShimmerTextLine(width: 150.w, height: 16.h),
-                  SizedBox(height: AppDimensions.spaceSmall),
-                  FSMShimmerTextLine(width: 100.w, height: 12.h),
+                  FSMShimmerTextLine(width: 150.w, height: DesignTokens.fontSize16.h),
+                  spacing.verticalSpaceSmall,
+                  FSMShimmerTextLine(width: 100.w, height: DesignTokens.fontSize12.h),
                 ],
               ),
             ),
 
             // Trailing icon
             if (showTrailing) ...[
-              SizedBox(width: AppDimensions.spaceMedium),
+              spacing.horizontalSpaceMedium,
               FSMShimmerBox(
-                width: 24.w,
-                height: 24.w,
-                borderRadius: AppDimensions.radiusSmall,
+                width: DesignTokens.iconMd.w,
+                height: DesignTokens.iconMd.w,
+                borderRadius: spacing.radiusSm,
               ),
             ],
           ],
@@ -192,18 +203,23 @@ class FSMShimmerWorkOrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return FSMShimmerLoading(
       isLoading: true,
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        margin: REdgeInsets.symmetric(
+          horizontal: spacing.space4,
+          vertical: spacing.space2,
         ),
-        padding: AppDimensions.paddingAllMedium,
+        padding: spacing.paddingMd,
         decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-          border: Border.all(color: AppColors.grey200),
+          color: theme.colorScheme.surface,
+          borderRadius: spacing.radiusMdBr,
+          border: Border.all(
+            color: theme.colorScheme.outlineVariant,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,35 +227,35 @@ class FSMShimmerWorkOrderCard extends StatelessWidget {
             // Header row
             Row(
               children: [
-                FSMShimmerBox(width: 60.w, height: 20.h),
+                FSMShimmerBox(width: 60.w, height: DesignTokens.fontSize14.h),
                 const Spacer(),
-                FSMShimmerBox(width: 80.w, height: 24.h),
+                FSMShimmerBox(width: 80.w, height: DesignTokens.fontSize16.h),
               ],
             ),
-            SizedBox(height: AppDimensions.spaceMedium),
+            spacing.verticalSpaceMedium,
 
             // Title
-            FSMShimmerTextLine(width: double.infinity, height: 18.h),
-            SizedBox(height: AppDimensions.spaceSmall),
+            FSMShimmerTextLine(width: double.infinity, height: DesignTokens.fontSize18.h),
+            spacing.verticalSpaceSmall,
 
             // Description
-            FSMShimmerTextLine(width: 200.w, height: 14.h),
-            SizedBox(height: AppDimensions.spaceMedium),
+            FSMShimmerTextLine(width: 200.w, height: DesignTokens.fontSize14.h),
+            spacing.verticalSpaceMedium,
 
             // Metadata rows
             Row(
               children: [
-                FSMShimmerBox(width: 16.w, height: 16.w),
-                SizedBox(width: AppDimensions.spaceSmall),
-                FSMShimmerTextLine(width: 120.w, height: 12.h),
+                FSMShimmerBox(width: DesignTokens.iconXs.w, height: DesignTokens.iconXs.w),
+                spacing.horizontalSpaceSmall,
+                FSMShimmerTextLine(width: 120.w, height: DesignTokens.fontSize12.h),
               ],
             ),
-            SizedBox(height: AppDimensions.spaceSmall),
+            spacing.verticalSpaceSmall,
             Row(
               children: [
-                FSMShimmerBox(width: 16.w, height: 16.w),
-                SizedBox(width: AppDimensions.spaceSmall),
-                FSMShimmerTextLine(width: 100.w, height: 12.h),
+                FSMShimmerBox(width: DesignTokens.iconXs.w, height: DesignTokens.iconXs.w),
+                spacing.horizontalSpaceSmall,
+                FSMShimmerTextLine(width: 100.w, height: DesignTokens.fontSize12.h),
               ],
             ),
           ],

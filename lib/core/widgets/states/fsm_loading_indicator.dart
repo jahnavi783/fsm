@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMLoadingIndicator - Consolidated loading state display widget
 ///
@@ -34,23 +34,23 @@ class FSMLoadingIndicator extends StatelessWidget {
     this.padding,
   });
 
-  /// Loading work orders variant
+  /// Loading work orders variant - color will use theme primary
   const FSMLoadingIndicator.workOrders({
     super.key,
     this.title = 'Loading Work Orders',
     this.subtitle = 'Please wait while we fetch your work orders...',
   })  : style = FSMLoadingStyle.circular,
-        color = AppColors.primary,
+        color = null, // Will use theme primary
         showAnimation = true,
         padding = null;
 
-  /// Syncing variant
+  /// Syncing variant - color will use theme secondary
   const FSMLoadingIndicator.syncing({
     super.key,
     this.title = 'Syncing Data',
     this.subtitle = 'Please wait while we sync your latest data...',
   })  : style = FSMLoadingStyle.circular,
-        color = AppColors.secondary,
+        color = null, // Will use theme secondary
         showAnimation = true,
         padding = null;
 
@@ -60,7 +60,7 @@ class FSMLoadingIndicator extends StatelessWidget {
     this.title = 'Processing',
     this.subtitle = 'Your request is being processed...',
   })  : style = FSMLoadingStyle.dots,
-        color = AppColors.primary,
+        color = null, // Will use theme primary
         showAnimation = true,
         padding = null;
 
@@ -70,15 +70,16 @@ class FSMLoadingIndicator extends StatelessWidget {
     this.title = 'Uploading',
     this.subtitle = 'Uploading your files...',
   })  : style = FSMLoadingStyle.pulse,
-        color = AppColors.secondary,
+        color = null, // Will use theme secondary
         showAnimation = true,
         padding = null;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveColor = color ?? AppColors.primary;
-    final effectivePadding = padding ?? AppDimensions.paddingAllLarge;
+    final spacing = context.spacing;
+    final effectiveColor = color ?? theme.colorScheme.primary;
+    final effectivePadding = padding ?? spacing.paddingLg;
 
     return Container(
       constraints: BoxConstraints(
@@ -95,7 +96,7 @@ class FSMLoadingIndicator extends StatelessWidget {
               // Animated loading indicator
               if (showAnimation)
                 TweenAnimationBuilder<double>(
-                  duration: const Duration(milliseconds: 1000),
+                  duration: DesignTokens.durationSlow,
                   tween: Tween(begin: 0.0, end: 1.0),
                   builder: (context, value, child) {
                     return Transform.scale(
@@ -110,23 +111,21 @@ class FSMLoadingIndicator extends StatelessWidget {
               else
                 _buildLoadingWidget(effectiveColor),
 
-              SizedBox(height: AppDimensions.spaceLarge),
+              DesignTokens.verticalSpaceLarge,
 
               // Title
               Text(
                 title,
                 style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18.sp,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.3,
+                  fontWeight: DesignTokens.fontWeightBold,
+                  color: theme.colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
 
-              SizedBox(height: AppDimensions.spaceSmall),
+              DesignTokens.verticalSpaceSmall,
 
               // Subtitle
               Container(
@@ -134,10 +133,7 @@ class FSMLoadingIndicator extends StatelessWidget {
                 child: Text(
                   subtitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 13.sp,
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                    letterSpacing: 0.1,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 3,
@@ -155,7 +151,7 @@ class FSMLoadingIndicator extends StatelessWidget {
     switch (style) {
       case FSMLoadingStyle.circular:
         return Container(
-          padding: EdgeInsets.all(20.w),
+          padding: REdgeInsets.all(DesignTokens.space5),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -168,22 +164,22 @@ class FSMLoadingIndicator extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: effectiveColor.withValues(alpha: 0.2),
-              width: 2,
+              width: DesignTokens.borderWidthMedium,
             ),
             boxShadow: [
               BoxShadow(
                 color: effectiveColor.withValues(alpha: 0.15),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+                blurRadius: DesignTokens.space4,
+                offset: Offset(0, DesignTokens.space2),
               ),
             ],
           ),
-          child: SizedBox(
-            width: 32.w,
-            height: 32.w,
+          child: RSizedBox(
+            width: DesignTokens.iconLg.w,
+            height: DesignTokens.iconLg.w,
             child: CircularProgressIndicator(
               color: effectiveColor,
-              strokeWidth: 3,
+              strokeWidth: DesignTokens.borderWidthThick,
             ),
           ),
         );
@@ -226,7 +222,7 @@ class FSMLoadingIndicatorSliver extends StatelessWidget {
   })  : title = title ?? 'Loading Work Orders',
         subtitle = subtitle ?? 'Please wait while we fetch your work orders...',
         style = FSMLoadingStyle.circular,
-        color = AppColors.primary,
+        color = null, // Will use theme primary
         showAnimation = true;
 
   /// Syncing variant
@@ -237,7 +233,7 @@ class FSMLoadingIndicatorSliver extends StatelessWidget {
   })  : title = title ?? 'Syncing Data',
         subtitle = subtitle ?? 'Please wait while we sync your latest data...',
         style = FSMLoadingStyle.circular,
-        color = AppColors.secondary,
+        color = null, // Will use theme secondary
         showAnimation = true;
 
   @override
@@ -270,15 +266,15 @@ class FSMLoadingIndicatorCompact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveColor = color ?? AppColors.primary;
-    final effectiveSize = size ?? 24.w;
+    final effectiveColor = color ?? theme.colorScheme.primary;
+    final effectiveSize = size ?? DesignTokens.iconMd.w;
 
-    Widget loadingWidget = SizedBox(
+    Widget loadingWidget = RSizedBox(
       width: effectiveSize,
       height: effectiveSize,
       child: CircularProgressIndicator(
         color: effectiveColor,
-        strokeWidth: 2.w,
+        strokeWidth: DesignTokens.borderWidthMedium.w,
       ),
     );
 
@@ -287,12 +283,11 @@ class FSMLoadingIndicatorCompact extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           loadingWidget,
-          SizedBox(height: AppDimensions.spaceSmall),
+          DesignTokens.verticalSpaceSmall,
           Text(
             message!,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 12.sp,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
           ),
@@ -340,7 +335,7 @@ class _FSMDotsLoadingIndicatorState extends State<_FSMDotsLoadingIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return RSizedBox(
       width: widget.size * 3,
       height: widget.size,
       child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
 
 class TimelineContent extends StatelessWidget {
@@ -16,9 +17,9 @@ class TimelineContent extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: 16.w,
-        bottom: 24.h,
+      padding: REdgeInsets.only(
+        left: DesignTokens.space4,
+        bottom: DesignTokens.space6,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +33,7 @@ class TimelineContent extends StatelessWidget {
             ),
           ),
           if (log.notes?.isNotEmpty == true) ...[
-            SizedBox(height: 4.h),
+            DesignTokens.verticalSpaceXs,
             Text(
               log.notes!,
               style: TextStyle(
@@ -41,7 +42,7 @@ class TimelineContent extends StatelessWidget {
               ),
             ),
           ],
-          SizedBox(height: 4.h),
+          DesignTokens.verticalSpaceXs,
           Text(
             DateFormat('MMM dd, yyyy HH:mm').format(log.timestamp),
             style: TextStyle(
@@ -51,7 +52,7 @@ class TimelineContent extends StatelessWidget {
           ),
           // Add location info if available
           if (log.latitude != null && log.longitude != null) ...[
-            SizedBox(height: 4.h),
+            DesignTokens.verticalSpaceXs,
             Row(
               children: [
                 Icon(
@@ -59,7 +60,7 @@ class TimelineContent extends StatelessWidget {
                   size: 12.sp,
                   color: theme.colorScheme.onSurface.withOpacity(0.5),
                 ),
-                SizedBox(width: 4.w),
+                DesignTokens.horizontalSpaceXs,
                 Text(
                   '${log.latitude!.toStringAsFixed(6)}, ${log.longitude!.toStringAsFixed(6)}',
                   style: TextStyle(

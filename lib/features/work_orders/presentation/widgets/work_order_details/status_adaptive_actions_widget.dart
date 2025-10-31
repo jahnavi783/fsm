@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 /// StatusAdaptiveActionsWidget
 ///
@@ -50,7 +52,8 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4, vertical: DesignTokens.space4),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
@@ -61,7 +64,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.fsmTheme.shadowCard,
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -76,6 +79,9 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
 
   /// Build appropriate buttons based on work order status
   Widget _buildActionButtons(BuildContext context, bool isLoading) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     switch (workOrder.status) {
       case WorkOrderStatus.created:
         // Unassigned → "Assign to Me"
@@ -83,7 +89,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
           context,
           label: 'Assign to Me',
           icon: Icons.person_add,
-          color: AppColors.primary,
+          color: theme.colorScheme.primary,
           onPressed: !isLoading ? onAssignToMe : null,
           isLoading: isLoading,
         );
@@ -94,11 +100,11 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
           context,
           primaryLabel: 'Start Job',
           primaryIcon: Icons.play_arrow,
-          primaryColor: AppColors.success,
+          primaryColor: fsmTheme.statusCompleted,
           primaryOnPressed: !isLoading ? onStart : null,
           secondaryLabel: 'Reject',
           secondaryIcon: Icons.close,
-          secondaryColor: AppColors.error,
+          secondaryColor: theme.colorScheme.error,
           secondaryOnPressed: !isLoading ? onReject : null,
           isLoading: isLoading,
         );
@@ -110,11 +116,11 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
           context,
           primaryLabel: 'Pause Job',
           primaryIcon: Icons.pause,
-          primaryColor: AppColors.warning,
+          primaryColor: fsmTheme.statusPending,
           primaryOnPressed: !isLoading && locationAvailable ? onPause : null,
           secondaryLabel: 'Complete Job',
           secondaryIcon: Icons.check_circle,
-          secondaryColor: AppColors.primary,
+          secondaryColor: theme.colorScheme.primary,
           secondaryOnPressed:
               !isLoading && locationAvailable ? onComplete : null,
           isLoading: isLoading,
@@ -128,7 +134,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
           context,
           label: 'Resume Job',
           icon: Icons.play_arrow,
-          color: AppColors.success,
+          color: fsmTheme.statusCompleted,
           onPressed: !isLoading && locationAvailable ? onResume : null,
           isLoading: isLoading,
           showLocationWarning: !locationAvailable && !isLocationLoading,
@@ -158,7 +164,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
         if (showLocationWarning) ...[
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(12.w),
+            padding: REdgeInsets.all(DesignTokens.space3),
             decoration: BoxDecoration(
               color: AppColors.warning.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
@@ -173,7 +179,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                   color: AppColors.warning,
                   size: 16.sp,
                 ),
-                SizedBox(width: 8.w),
+                DesignTokens.horizontalSpaceSmall,
                 Expanded(
                   child: Text(
                     'Waiting for location...',
@@ -187,14 +193,14 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 12.h),
+          DesignTokens.verticalSpace(DesignTokens.space3),
         ],
-        SizedBox(
+        RSizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: isLoading
-                ? SizedBox(
+                ? RSizedBox(
                     width: 20.w,
                     height: 20.w,
                     child: CircularProgressIndicator(
@@ -214,10 +220,13 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: color,
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
               disabledBackgroundColor: color.withValues(alpha: 0.5),
-              disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
-              padding: EdgeInsets.symmetric(vertical: 14.h),
+              disabledForegroundColor: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.5),
+              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
@@ -248,7 +257,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
         if (showLocationWarning) ...[
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(12.w),
+            padding: REdgeInsets.all(DesignTokens.space3),
             decoration: BoxDecoration(
               color: AppColors.warning.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
@@ -263,7 +272,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                   color: AppColors.warning,
                   size: 16.sp,
                 ),
-                SizedBox(width: 8.w),
+                DesignTokens.horizontalSpaceSmall,
                 Expanded(
                   child: Text(
                     'Waiting for location...',
@@ -277,7 +286,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 12.h),
+          DesignTokens.verticalSpace(DesignTokens.space3),
         ],
         Row(
           children: [
@@ -286,7 +295,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: isLoading ? null : primaryOnPressed,
                 icon: isLoading
-                    ? SizedBox(
+                    ? RSizedBox(
                         width: 18.w,
                         height: 18.w,
                         child: CircularProgressIndicator(
@@ -307,10 +316,13 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   disabledBackgroundColor: primaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  disabledForegroundColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.5),
+                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
@@ -318,7 +330,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               ),
             ),
 
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpace(DesignTokens.space3),
 
             // Secondary button (right, 50% width)
             Expanded(
@@ -335,11 +347,14 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: secondaryColor,
-                  foregroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   disabledBackgroundColor:
                       secondaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  disabledForegroundColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.5),
+                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),

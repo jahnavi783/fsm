@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/core/widgets/priority_indicator.dart';
 import 'package:fsm/core/widgets/metadata_row.dart';
@@ -38,33 +40,40 @@ class CurrentWorkOrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+
     final startTime = workOrder.startedAt;
     final timeText = startTime != null
         ? 'Started: ${DateFormat('h:mm a').format(startTime)}'
         : 'Not started';
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
       child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        elevation: 4,
-        shadowColor: Colors.black26,
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(spacing.radiusMd.r),
+        elevation: DesignTokens.elevationSmall,
+        shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.26),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(spacing.radiusMd.r),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(spacing.radiusMd.r),
               border: Border(
                 left: BorderSide(
-                  color: AppColors.warning,
-                  width: 4.w,
+                  color: fsmTheme.warning,
+                  width: DesignTokens.borderWidthMedium.w,
                 ),
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: REdgeInsets.all(DesignTokens.space4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,33 +93,31 @@ class CurrentWorkOrderCard extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 12.h),
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                   // WO Number
                   Text(
                     workOrder.woNumber,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: DesignTokens.fontWeightBold,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
 
-                  SizedBox(height: 8.h),
+                  DesignTokens.verticalSpaceSmall,
 
                   // Issue Description (max 2 lines)
                   Text(
                     workOrder.problemDescription,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.textSecondary,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                       height: 1.4,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
 
-                  SizedBox(height: 12.h),
+                  DesignTokens.verticalSpace(DesignTokens.space3),
 
                   // Metadata: Location + Time
                   MetadataRow(
@@ -126,40 +133,44 @@ class CurrentWorkOrderCard extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 16.h),
+                  DesignTokens.verticalSpaceMedium,
 
                   // Quick Actions Row
                   Wrap(
-                    spacing: 8.w,
-                    runSpacing: 8.h,
+                    spacing: DesignTokens.space2.w,
+                    runSpacing: DesignTokens.space2.h,
                     children: [
                       if (onPause != null)
                         QuickActionButton(
                           icon: Icons.pause,
                           label: 'Pause',
                           onPressed: onPause!,
-                          backgroundColor: AppColors.warning,
+                          backgroundColor: fsmTheme.warning,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       if (onParts != null)
                         QuickActionButton(
                           icon: Icons.inventory_2_outlined,
                           label: 'Parts',
                           onPressed: onParts!,
-                          backgroundColor: AppColors.info,
+                          backgroundColor: fsmTheme.info,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       if (onDocs != null)
                         QuickActionButton(
                           icon: Icons.description_outlined,
                           label: 'Docs',
                           onPressed: onDocs!,
-                          backgroundColor: AppColors.secondary,
+                          backgroundColor: theme.colorScheme.secondary,
+                          color: theme.colorScheme.onSecondary,
                         ),
                       if (onComplete != null)
                         QuickActionButton(
                           icon: Icons.check_circle_outline,
                           label: 'Complete',
                           onPressed: onComplete!,
-                          backgroundColor: AppColors.success,
+                          backgroundColor: fsmTheme.success,
+                          color: theme.colorScheme.onPrimary,
                         ),
                     ],
                   ),

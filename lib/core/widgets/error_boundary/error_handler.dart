@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/error/error_bloc.dart';
-import '../blocs/error/error_state.dart';
-import '../theme/theme.dart';
+import 'package:fsm/core/blocs/error/error_bloc.dart';
+import 'package:fsm/core/blocs/error/error_state.dart';
+import 'package:fsm/core/theme/theme.dart';
 
 class GlobalErrorHandler extends StatelessWidget {
   final Widget child;

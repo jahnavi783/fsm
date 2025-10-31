@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class PartsSearchBar extends StatefulWidget {
   final String? initialQuery;
@@ -52,7 +53,8 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -96,9 +98,9 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
                 )
               : null,
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 12.h,
+          contentPadding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space3,
           ),
         ),
         style: TextStyle(

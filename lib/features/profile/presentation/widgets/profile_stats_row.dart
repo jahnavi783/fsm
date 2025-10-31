@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
@@ -166,7 +167,7 @@ class _StatCard extends StatelessWidget {
             color: color,
           ),
 
-          SizedBox(height: 6.h),
+          DesignTokens.verticalSpace(DesignTokens.space1 + 2),
 
           // Value
           Text(
@@ -177,7 +178,7 @@ class _StatCard extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 2.h),
+          DesignTokens.verticalSpace(2),
 
           // Label
           Text(
@@ -229,7 +230,7 @@ class _LoadingStatsRow extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              SizedBox(height: 8.h),
+              DesignTokens.verticalSpaceSmall,
               Container(
                 width: 40.w,
                 height: 20.h,
@@ -238,7 +239,7 @@ class _LoadingStatsRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4.r),
                 ),
               ),
-              SizedBox(height: 4.h),
+              DesignTokens.verticalSpaceXs,
               Container(
                 width: 50.w,
                 height: 12.h,

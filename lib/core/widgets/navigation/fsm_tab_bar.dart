@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 class CustomTabBar extends StatelessWidget {
   final TabController controller;
@@ -41,57 +43,61 @@ class _CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      color: theme.scaffoldBackgroundColor,
+      padding: REdgeInsets.symmetric(
+        horizontal: spacing.space4,
+        vertical: spacing.space2,
+      ),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(28.r),
+          color: theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(spacing.radiusXl.r),
           border: Border.all(
-            color: Colors.grey[200]!,
-            width: 1,
+            color: theme.colorScheme.outlineVariant,
+            width: DesignTokens.borderWidthThin,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+              color: theme.colorScheme.shadow.withValues(alpha: 0.03),
+              blurRadius: DesignTokens.space2,
+              offset: Offset(0, DesignTokens.space1),
             ),
           ],
         ),
         child: TabBar(
           controller: controller,
           indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(26.r),
-            color: const Color(0xFF116587),
+            borderRadius: BorderRadius.circular(spacing.radiusXl.r),
+            color: theme.colorScheme.primary,
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF116587).withValues(alpha: 0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                blurRadius: DesignTokens.space2,
+                offset: Offset(0, DesignTokens.space1),
               ),
             ],
           ),
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey[600],
-          labelStyle: TextStyle(
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w700,
+          labelColor: theme.colorScheme.onPrimary,
+          unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+          labelStyle: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: DesignTokens.fontWeightBold,
             letterSpacing: 0.2,
           ),
-          unselectedLabelStyle: TextStyle(
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w600,
+          unselectedLabelStyle: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: DesignTokens.fontWeightSemiBold,
             letterSpacing: 0.1,
           ),
           indicatorSize: TabBarIndicatorSize.tab,
           dividerColor: Colors.transparent,
-          labelPadding: EdgeInsets.symmetric(horizontal: 4.w),
+          labelPadding: REdgeInsets.symmetric(horizontal: spacing.space1),
           tabs: tabs
               .map((tab) => Tab(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      padding: REdgeInsets.symmetric(vertical: spacing.space2),
                       child: Text(
                         tab,
                         textAlign: TextAlign.center,

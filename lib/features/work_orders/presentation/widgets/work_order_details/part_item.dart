@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class PartItem extends StatelessWidget {
   final PartUsedEntity part;
@@ -15,7 +16,7 @@ class PartItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: REdgeInsets.symmetric(vertical: DesignTokens.space1),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -32,7 +33,7 @@ class PartItem extends StatelessWidget {
                   ),
                 ),
                 if (part.description?.isNotEmpty == true) ...[
-                  SizedBox(height: 2.h),
+                  RSizedBox(height: 2.h),
                   Text(
                     part.description!,
                     style: TextStyle(

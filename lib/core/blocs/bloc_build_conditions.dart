@@ -22,7 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 mixin BlocBuildConditions {
   /// Common build condition for loading state changes
   /// Only rebuilds when isLoading property changes
-  bool buildWhenLoading<S extends BlocState>(S previous, S current) {
+  bool buildWhenLoading<S>(S previous, S current) {
     // Use dynamic property access to handle different state types
     try {
       final prevLoading = (previous as dynamic).isLoading as bool?;
@@ -36,7 +36,7 @@ mixin BlocBuildConditions {
 
   /// Common build condition for data changes
   /// Only rebuilds when data property changes
-  bool buildWhenData<S extends BlocState>(S previous, S current) {
+  bool buildWhenData<S>(S previous, S current) {
     try {
       final prevData = (previous as dynamic).data;
       final currData = (current as dynamic).data;
@@ -49,7 +49,7 @@ mixin BlocBuildConditions {
 
   /// Common build condition for error state changes
   /// Only rebuilds when hasError property changes
-  bool buildWhenError<S extends BlocState>(S previous, S current) {
+  bool buildWhenError<S>(S previous, S current) {
     try {
       final prevError = (previous as dynamic).hasError as bool?;
       final currError = (current as dynamic).hasError as bool?;
@@ -62,7 +62,7 @@ mixin BlocBuildConditions {
 
   /// Common build condition for status changes
   /// Only rebuilds when status property changes
-  bool buildWhenStatus<S extends BlocState>(S previous, S current) {
+  bool buildWhenStatus<S>(S previous, S current) {
     try {
       final prevStatus = (previous as dynamic).status;
       final currStatus = (current as dynamic).status;
@@ -75,7 +75,7 @@ mixin BlocBuildConditions {
 
   /// Specific build condition for WorkOrder-related states
   /// Optimized for work order list and detail pages
-  bool buildWhenWorkOrders<S extends BlocState>(S previous, S current) {
+  bool buildWhenWorkOrders<S>(S previous, S current) {
     try {
       final prevWorkOrders = (previous as dynamic).workOrders;
       final currWorkOrders = (current as dynamic).workOrders;
@@ -95,7 +95,7 @@ mixin BlocBuildConditions {
 
   /// Specific build condition for Document-related states
   /// Optimized for document list and viewer pages
-  bool buildWhenDocuments<S extends BlocState>(S previous, S current) {
+  bool buildWhenDocuments<S>(S previous, S current) {
     try {
       final prevDocuments = (previous as dynamic).documents;
       final currDocuments = (current as dynamic).documents;
@@ -115,7 +115,7 @@ mixin BlocBuildConditions {
 
   /// Specific build condition for Parts-related states
   /// Optimized for parts inventory and detail pages
-  bool buildWhenParts<S extends BlocState>(S previous, S current) {
+  bool buildWhenParts<S>(S previous, S current) {
     try {
       final prevParts = (previous as dynamic).parts;
       final currParts = (current as dynamic).parts;
@@ -135,7 +135,7 @@ mixin BlocBuildConditions {
 
   /// Specific build condition for Profile-related states
   /// Optimized for user profile and settings pages
-  bool buildWhenProfile<S extends BlocState>(S previous, S current) {
+  bool buildWhenProfile<S>(S previous, S current) {
     try {
       final prevProfile = (previous as dynamic).profile;
       final currProfile = (current as dynamic).profile;
@@ -155,28 +155,28 @@ mixin BlocBuildConditions {
 
   /// Combined build condition for data or loading changes
   /// Useful for pages that need to rebuild on either data or loading state changes
-  bool buildWhenDataOrLoading<S extends BlocState>(S previous, S current) {
+  bool buildWhenDataOrLoading<S>(S previous, S current) {
     return buildWhenData(previous, current) ||
         buildWhenLoading(previous, current);
   }
 
   /// Combined build condition for data or error changes
   /// Useful for pages that need to rebuild on either data or error state changes
-  bool buildWhenDataOrError<S extends BlocState>(S previous, S current) {
+  bool buildWhenDataOrError<S>(S previous, S current) {
     return buildWhenData(previous, current) ||
         buildWhenError(previous, current);
   }
 
   /// Combined build condition for loading or error changes
   /// Useful for pages that show loading indicators or error states
-  bool buildWhenLoadingOrError<S extends BlocState>(S previous, S current) {
+  bool buildWhenLoadingOrError<S>(S previous, S current) {
     return buildWhenLoading(previous, current) ||
         buildWhenError(previous, current);
   }
 
   /// Comprehensive build condition that covers most common state changes
   /// Use this when you need to rebuild on data, loading, or error changes
-  bool buildWhenCommon<S extends BlocState>(S previous, S current) {
+  bool buildWhenCommon<S>(S previous, S current) {
     return buildWhenData(previous, current) ||
         buildWhenLoading(previous, current) ||
         buildWhenError(previous, current);

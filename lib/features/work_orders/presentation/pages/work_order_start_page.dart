@@ -12,6 +12,7 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/wo
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 @RoutePage()
 class WorkOrderStartPage extends StatelessWidget {
@@ -71,10 +72,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
           actions: [
             IconButton(
               icon: const Icon(Icons.info_outline),
-              onPressed: () {
-                context.router.push(
-                    WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
-              },
+              onPressed: _handleViewDetails,
             ),
           ],
         ),
@@ -86,7 +84,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(message),
-                      backgroundColor: Colors.green,
+                      backgroundColor: context.fsmTheme.success,
                     ),
                   );
                   // Navigate back to work order details after successful start
@@ -100,7 +98,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(failure.message),
-                    backgroundColor: Colors.red,
+                    backgroundColor: context.fsmTheme.error,
                   ),
                 );
               },
@@ -108,14 +106,10 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(message),
-                    backgroundColor: Colors.orange,
+                    backgroundColor: context.fsmTheme.warning,
                     action: SnackBarAction(
                       label: 'Retry',
-                      onPressed: () {
-                        context.read<WorkOrderActionBloc>().add(
-                              const WorkOrderActionEvent.captureLocation(),
-                            );
-                      },
+                      onPressed: _handleRetryLocation,
                     ),
                   ),
                 );
@@ -172,7 +166,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
             Icon(
               Icons.info_outline,
               size: 64.sp,
-              color: Colors.orange,
+              color: context.fsmTheme.warning,
             ),
             SizedBox(height: 16.h),
             Text(
@@ -187,15 +181,12 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               'Current Status: ${workOrder.status.displayName}',
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
             SizedBox(height: 24.h),
             ElevatedButton(
-              onPressed: () {
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
+              onPressed: _handleViewDetails,
               child: const Text('View Work Order Details'),
             ),
           ],
@@ -257,10 +248,10 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                             ? Icons.gps_not_fixed
                             : Icons.gps_fixed,
                         color: isLocationLoading
-                            ? Colors.orange
+                            ? context.fsmTheme.syncSyncing
                             : currentLocation != null
-                                ? Colors.green
-                                : Colors.red,
+                                ? context.fsmTheme.syncSynced
+                                : context.fsmTheme.syncFailed,
                         size: 20.sp,
                       ),
                       SizedBox(width: 8.w),
@@ -292,7 +283,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                       Text(
                         'Accuracy: ${currentLocation.accuracy!.toStringAsFixed(1)}m',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -300,23 +291,19 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                     Text(
                       'Capturing GPS location...',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.orange,
+                        color: context.fsmTheme.syncSyncing,
                       ),
                     ),
                   ] else ...[
                     Text(
                       'Location not available',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.red,
+                        color: context.fsmTheme.syncFailed,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     TextButton.icon(
-                      onPressed: () {
-                        context.read<WorkOrderActionBloc>().add(
-                              const WorkOrderActionEvent.captureLocation(),
-                            );
-                      },
+                      onPressed: _handleRetryLocation,
                       icon: const Icon(Icons.refresh),
                       label: const Text('Retry Location'),
                     ),
@@ -334,19 +321,19 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               width: double.infinity,
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
+                color: context.fsmTheme.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: Colors.green),
+                border: Border.all(color: context.fsmTheme.success),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle, color: Colors.green, size: 20.sp),
+                  Icon(Icons.check_circle, color: context.fsmTheme.success, size: 20.sp),
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
                       'Ready to start work order',
                       style: TextStyle(
-                        color: Colors.green,
+                        color: context.fsmTheme.success,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -460,11 +447,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
           ),
           SizedBox(height: 16.h),
           ElevatedButton(
-            onPressed: () {
-              context.read<WorkOrderActionBloc>().add(
-                    WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                  );
-            },
+            onPressed: _handleRetryLoad,
             child: const Text('Retry'),
           ),
         ],
@@ -482,5 +465,22 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
       workOrder: workOrder,
       location: currentLocation,
     );
+  }
+
+  void _handleViewDetails() {
+    context.router.push(
+        WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
+  }
+
+  void _handleRetryLocation() {
+    context.read<WorkOrderActionBloc>().add(
+          const WorkOrderActionEvent.captureLocation(),
+        );
+  }
+
+  void _handleRetryLoad() {
+    context.read<WorkOrderActionBloc>().add(
+          WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+        );
   }
 }

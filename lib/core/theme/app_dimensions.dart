@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// @deprecated Use [DesignTokens] instead.
+///
+/// AppDimensions is deprecated and will be removed in v2.1.0.
+///
+/// Migration:
+/// ```dart
+/// // OLD
+/// padding: EdgeInsets.all(AppDimensions.paddingMedium),
+///
+/// // NEW
+/// padding: REdgeInsets.all(DesignTokens.space4),
+/// ```
+///
+/// See lib/core/theme/design_tokens.dart for the new design token system.
+@Deprecated('Use DesignTokens instead. Will be removed in v2.1.0')
 class AppDimensions {
   AppDimensions._();
 

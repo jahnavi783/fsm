@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+
 import '../../domain/entities/part_entity.dart';
 
 class PartsFilterChips extends StatelessWidget {
@@ -26,7 +28,7 @@ class PartsFilterChips extends StatelessWidget {
 
     return Container(
       height: 50.h,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       child: Row(
         children: [
           Expanded(
@@ -44,7 +46,7 @@ class PartsFilterChips extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     ...categories.map((category) => Padding(
-                          padding: EdgeInsets.only(right: 8.w),
+                          padding: REdgeInsets.only(right: DesignTokens.space2),
                           child: _buildFilterChip(
                             context: context,
                             label: category,
@@ -60,7 +62,8 @@ class PartsFilterChips extends StatelessWidget {
                       height: 30.h,
                       width: 1.w,
                       color: Colors.grey[300],
-                      margin: EdgeInsets.symmetric(horizontal: 8.w),
+                      margin: REdgeInsets.symmetric(
+                          horizontal: DesignTokens.space2),
                     ),
                   ],
 

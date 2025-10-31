@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// FSMActionButton - Contextual floating action button with badge support
@@ -99,11 +98,12 @@ class FSMActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
     final effectiveBackgroundColor = backgroundColor ?? fsmTheme.fabBackground;
-    final effectiveForegroundColor = foregroundColor ?? AppColors.onPrimary;
-    final effectiveElevation = elevation ?? AppDimensions.elevationXLarge;
+    final effectiveForegroundColor = foregroundColor ?? theme.colorScheme.onPrimary;
+    final effectiveElevation = elevation ?? DesignTokens.elevationXl;
 
     Widget fab;
 
@@ -115,12 +115,12 @@ class FSMActionButton extends StatelessWidget {
         backgroundColor: effectiveBackgroundColor,
         foregroundColor: effectiveForegroundColor,
         elevation: effectiveElevation,
-        icon: Icon(icon, size: AppDimensions.iconMedium),
+        icon: Icon(icon, size: DesignTokens.iconMd.sp),
         label: Text(
           label!,
           style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
+            fontSize: DesignTokens.fontSize14.sp,
+            fontWeight: DesignTokens.fontWeightSemiBold,
           ),
         ),
       );
@@ -133,7 +133,7 @@ class FSMActionButton extends StatelessWidget {
         foregroundColor: effectiveForegroundColor,
         elevation: effectiveElevation,
         shape: shape,
-        child: Icon(icon, size: AppDimensions.iconSmall),
+        child: Icon(icon, size: DesignTokens.iconSm.sp),
       );
     } else {
       // Standard FAB
@@ -144,7 +144,7 @@ class FSMActionButton extends StatelessWidget {
         foregroundColor: effectiveForegroundColor,
         elevation: effectiveElevation,
         shape: shape,
-        child: Icon(icon, size: AppDimensions.iconMedium),
+        child: Icon(icon, size: DesignTokens.iconMd.sp),
       );
     }
 
@@ -155,8 +155,8 @@ class FSMActionButton extends StatelessWidget {
         children: [
           fab,
           Positioned(
-            top: -4.h,
-            right: -4.w,
+            top: -(DesignTokens.space1.h),
+            right: -(DesignTokens.space1.w),
             child: badge!,
           ),
         ],
@@ -225,7 +225,7 @@ class _FSMMultiActionButtonState extends State<FSMMultiActionButton>
     _isExpanded = widget.initiallyExpanded;
 
     _controller = AnimationController(
-      duration: AppDimensions.animationMedium,
+      duration: DesignTokens.durationNormal,
       vsync: this,
     );
 
@@ -267,11 +267,12 @@ class _FSMMultiActionButtonState extends State<FSMMultiActionButton>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
     final effectiveBackgroundColor =
         widget.backgroundColor ?? fsmTheme.fabBackground;
     final effectiveForegroundColor =
-        widget.foregroundColor ?? AppColors.onPrimary;
+        widget.foregroundColor ?? theme.colorScheme.onPrimary;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -293,7 +294,7 @@ class _FSMMultiActionButtonState extends State<FSMMultiActionButton>
                     end: Offset(0, -(index + 1) * 1.2),
                   ).animate(_expandAnimation),
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: 12.h),
+                    padding: REdgeInsets.only(bottom: DesignTokens.space3),
                     child: _SpeedDialActionButton(
                       icon: action.icon,
                       label: action.label,
@@ -319,7 +320,7 @@ class _FSMMultiActionButtonState extends State<FSMMultiActionButton>
           tooltip: widget.tooltip,
           backgroundColor: effectiveBackgroundColor,
           foregroundColor: effectiveForegroundColor,
-          elevation: AppDimensions.elevationXLarge,
+          elevation: DesignTokens.elevationXl,
           child: AnimatedBuilder(
             animation: _rotationAnimation,
             builder: (context, child) {
@@ -329,7 +330,7 @@ class _FSMMultiActionButtonState extends State<FSMMultiActionButton>
                   _isExpanded
                       ? (widget.expandedIcon ?? Icons.close)
                       : widget.icon,
-                  size: AppDimensions.iconMedium,
+                  size: DesignTokens.iconMd.sp,
                 ),
               );
             },
@@ -366,30 +367,30 @@ class _SpeedDialActionButton extends StatelessWidget {
         // Label (if provided)
         if (label != null) ...[
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 6.h,
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space3,
+              vertical: DesignTokens.space1 + 2,
             ),
             decoration: BoxDecoration(
               color: theme.cardColor,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.cardShadow,
-                  blurRadius: AppDimensions.shadowBlurSmall,
-                  offset: AppDimensions.shadowOffsetSmall,
+                  color: theme.colorScheme.shadow.withValues(alpha: 0.15),
+                  blurRadius: DesignTokens.space2,
+                  offset: Offset(0, DesignTokens.borderWidthMedium),
                 ),
               ],
             ),
             child: Text(
               label!,
               style: theme.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 13.sp,
+                fontWeight: DesignTokens.fontWeightSemiBold,
+                fontSize: DesignTokens.fontSize12.sp + 1,
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          DesignTokens.horizontalSpaceMd,
         ],
 
         // Mini FAB
@@ -397,8 +398,8 @@ class _SpeedDialActionButton extends StatelessWidget {
           onPressed: onPressed,
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
-          elevation: AppDimensions.elevationMedium,
-          child: Icon(icon, size: AppDimensions.iconSmall),
+          elevation: DesignTokens.elevationMd,
+          child: Icon(icon, size: DesignTokens.iconSm.sp),
         ),
       ],
     );
@@ -470,9 +471,10 @@ class FSMActionButtonBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBackgroundColor = backgroundColor ?? AppColors.error;
-    final effectiveTextColor = textColor ?? AppColors.onError;
-    final effectiveSize = size ?? 20.w;
+    final theme = Theme.of(context);
+    final effectiveBackgroundColor = backgroundColor ?? theme.colorScheme.error;
+    final effectiveTextColor = textColor ?? theme.colorScheme.onError;
+    final effectiveSize = size ?? DesignTokens.iconSm.w;
 
     if (child != null) {
       return Container(
@@ -480,7 +482,7 @@ class FSMActionButtonBadge extends StatelessWidget {
           minWidth: effectiveSize,
           minHeight: effectiveSize,
         ),
-        padding: EdgeInsets.all(2.w),
+        padding: REdgeInsets.all(DesignTokens.borderWidthMedium),
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
           shape: BoxShape.circle,
@@ -495,9 +497,9 @@ class FSMActionButtonBadge extends StatelessWidget {
           minWidth: effectiveSize,
           minHeight: effectiveSize,
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: 4.w,
-          vertical: 2.h,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space1,
+          vertical: DesignTokens.borderWidthMedium,
         ),
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
@@ -508,8 +510,8 @@ class FSMActionButtonBadge extends StatelessWidget {
             text!,
             style: TextStyle(
               color: effectiveTextColor,
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w700,
+              fontSize: DesignTokens.fontSize10.sp,
+              fontWeight: DesignTokens.fontWeightBold,
             ),
           ),
         ),

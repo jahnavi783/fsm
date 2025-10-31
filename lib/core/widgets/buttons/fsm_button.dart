@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../theme/design_tokens.dart';
+import '../../theme/spacing_theme.dart';
 
 /// Unified button component following Material 3 design principles.
 ///
@@ -79,23 +79,24 @@ class FsmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final spacing = context.spacing; // Theme-aware spacing
 
     // Determine button height based on size
     final height = switch (size) {
-      FsmButtonSize.small => DesignTokens.buttonHeightSm.h,
-      FsmButtonSize.medium => DesignTokens.buttonHeightMd.h,
-      FsmButtonSize.large => DesignTokens.buttonHeightLg.h,
+      FsmButtonSize.small => spacing.buttonHeightSm.h,
+      FsmButtonSize.medium => spacing.buttonHeightMd.h,
+      FsmButtonSize.large => spacing.buttonHeightLg.h,
     };
 
     // Determine icon size based on button size
     final iconSize = switch (size) {
-      FsmButtonSize.small => DesignTokens.iconXs.sp,
-      FsmButtonSize.medium => DesignTokens.iconSm.sp,
-      FsmButtonSize.large => DesignTokens.iconMd.sp,
+      FsmButtonSize.small => spacing.iconXs.sp,
+      FsmButtonSize.medium => spacing.iconSm.sp,
+      FsmButtonSize.large => spacing.iconMd.sp,
     };
 
     // Build button content (text + optional icon/loading)
-    Widget buttonChild = _buildButtonContent(theme, iconSize);
+    Widget buttonChild = _buildButtonContent(context, theme, iconSize);
 
     // Wrap in SizedBox for height constraint and optional width
     Widget button = SizedBox(
@@ -128,7 +129,9 @@ class FsmButton extends StatelessWidget {
   }
 
   /// Builds button content with loading indicator, icon, or just text
-  Widget _buildButtonContent(ThemeData theme, double iconSize) {
+  Widget _buildButtonContent(BuildContext context, ThemeData theme, double iconSize) {
+    final spacing = context.spacing;
+
     if (isLoading) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -137,11 +140,9 @@ class FsmButton extends StatelessWidget {
           SizedBox(
             width: iconSize,
             height: iconSize,
-            child: CircularProgressIndicator(
-              strokeWidth: DesignTokens.borderWidthMedium.w,
-            ),
+            child: const CircularProgressIndicator(strokeWidth: 2),
           ),
-          DesignTokens.horizontalSpaceSmall,
+          spacing.horizontalSpaceSmall,
           Text(text, style: theme.textTheme.labelLarge),
         ],
       );
@@ -153,7 +154,7 @@ class FsmButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: iconSize),
-          DesignTokens.horizontalSpaceSmall,
+          spacing.horizontalSpaceSmall,
           Text(text, style: theme.textTheme.labelLarge),
         ],
       );
@@ -226,21 +227,22 @@ class FsmIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final spacing = context.spacing;
 
     final effectiveBackgroundColor = backgroundColor ?? colorScheme.primary;
     final effectiveIconColor = iconColor ?? colorScheme.onPrimary;
 
     // Determine button and icon sizes
     final buttonSize = switch (size) {
-      FsmIconButtonSize.small => DesignTokens.buttonHeightSm.w,
-      FsmIconButtonSize.medium => DesignTokens.buttonHeightMd.w,
-      FsmIconButtonSize.large => DesignTokens.buttonHeightLg.w,
+      FsmIconButtonSize.small => spacing.buttonHeightSm.w,
+      FsmIconButtonSize.medium => spacing.buttonHeightMd.w,
+      FsmIconButtonSize.large => spacing.buttonHeightLg.w,
     };
 
     final iconSize = switch (size) {
-      FsmIconButtonSize.small => DesignTokens.iconSm.sp,
-      FsmIconButtonSize.medium => DesignTokens.iconMd.sp,
-      FsmIconButtonSize.large => DesignTokens.iconLg.sp,
+      FsmIconButtonSize.small => spacing.iconSm.sp,
+      FsmIconButtonSize.medium => spacing.iconMd.sp,
+      FsmIconButtonSize.large => spacing.iconLg.sp,
     };
 
     Widget buttonChild = isLoading
@@ -248,7 +250,7 @@ class FsmIconButton extends StatelessWidget {
             width: iconSize,
             height: iconSize,
             child: CircularProgressIndicator(
-              strokeWidth: DesignTokens.borderWidthMedium.w,
+              strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(effectiveIconColor),
             ),
           )

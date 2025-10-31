@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../utils/responsive_helper.dart';
-import 'enhanced_loading_indicator.dart';
-import 'optimized_image.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/utils/responsive_helper.dart';
+import 'package:fsm/core/widgets/enhanced_loading_indicator.dart';
+import 'package:fsm/core/widgets/optimized_image.dart';
 
 /// Optimized splash screen with responsive design and branding
 class OptimizedSplashScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
     super.initState();
 
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: DesignTokens.durationSlow,
       vsync: this,
     );
 
@@ -72,39 +72,41 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       body: ResponsiveBuilder(
         builder: (context, deviceType) {
           return Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: _buildGradientBackground(),
+            decoration: _buildGradientBackground(theme),
             child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(flex: 2),
                   _buildLogo(),
-                  SizedBox(
+                  RSizedBox(
                       height: ResponsiveHelper.getResponsiveValue(
                     context,
-                    mobile: 32.h,
-                    tablet: 40.h,
-                    desktop: 48.h,
+                    mobile: DesignTokens.space8.h,
+                    tablet: DesignTokens.space10.h,
+                    desktop: DesignTokens.space12.h,
                   )),
                   _buildAppName(),
                   const Spacer(flex: 2),
                   _buildLoadingSection(),
-                  SizedBox(
+                  RSizedBox(
                       height: ResponsiveHelper.getResponsiveValue(
                     context,
-                    mobile: 48.h,
-                    tablet: 56.h,
-                    desktop: 64.h,
+                    mobile: DesignTokens.space12.h,
+                    tablet: DesignTokens.space14.h,
+                    desktop: DesignTokens.space16.h,
                   )),
                   _buildBrandingFooter(),
-                  SizedBox(height: 24.h),
+                  DesignTokens.verticalSpaceLarge,
                 ],
               ),
             ),
@@ -114,14 +116,14 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
     );
   }
 
-  BoxDecoration _buildGradientBackground() {
-    return const BoxDecoration(
+  BoxDecoration _buildGradientBackground(ThemeData theme) {
+    return BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Color(0xFFF8F9FA),
-          Color(0xFFE9ECEF),
+          theme.colorScheme.surface,
+          theme.colorScheme.surfaceContainerLow,
         ],
       ),
     );
@@ -158,6 +160,8 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
   }
 
   Widget _buildAppName() {
+    final theme = Theme.of(context);
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -165,15 +169,15 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
           opacity: _fadeAnimation,
           child: Text(
             'Field Service Management',
-            style: TextStyle(
+            style: theme.textTheme.titleLarge?.copyWith(
               fontSize: ResponsiveHelper.getResponsiveValue(
                 context,
-                mobile: 18.sp,
-                tablet: 20.sp,
-                desktop: 22.sp,
+                mobile: DesignTokens.fontSize18.sp,
+                tablet: DesignTokens.fontSize20.sp,
+                desktop: DesignTokens.fontSize22.sp,
               ),
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF495057),
+              fontWeight: DesignTokens.fontWeightSemiBold,
+              color: theme.colorScheme.onSurface,
               letterSpacing: 0.5,
             ),
             textAlign: TextAlign.center,
@@ -184,6 +188,8 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
   }
 
   Widget _buildLoadingSection() {
+    final theme = Theme.of(context);
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -195,24 +201,24 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
                 style: LoadingStyle.dots,
                 size: ResponsiveHelper.getResponsiveValue(
                   context,
-                  mobile: 24.w,
-                  tablet: 28.w,
-                  desktop: 32.w,
+                  mobile: DesignTokens.iconMd.w,
+                  tablet: DesignTokens.iconLg.w,
+                  desktop: DesignTokens.iconXl.w,
                 ),
-                color: Theme.of(context).primaryColor,
+                color: theme.colorScheme.primary,
               ),
               if (widget.message != null) ...[
-                SizedBox(height: 16.h),
+                DesignTokens.verticalSpaceMedium,
                 Text(
                   widget.message!,
-                  style: TextStyle(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontSize: ResponsiveHelper.getResponsiveValue(
                       context,
-                      mobile: 14.sp,
-                      tablet: 15.sp,
-                      desktop: 16.sp,
+                      mobile: DesignTokens.fontSize14.sp,
+                      tablet: DesignTokens.fontSize15.sp,
+                      desktop: DesignTokens.fontSize16.sp,
                     ),
-                    color: const Color(0xFF6C757D),
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -225,6 +231,8 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
   }
 
   Widget _buildBrandingFooter() {
+    final theme = Theme.of(context);
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -234,17 +242,17 @@ class _OptimizedSplashScreenState extends State<OptimizedSplashScreen>
             children: [
               Text(
                 'Powered by',
-                style: TextStyle(
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: ResponsiveHelper.getResponsiveValue(
                     context,
-                    mobile: 12.sp,
-                    tablet: 13.sp,
-                    desktop: 14.sp,
+                    mobile: DesignTokens.fontSize12.sp,
+                    tablet: DesignTokens.fontSize13.sp,
+                    desktop: DesignTokens.fontSize14.sp,
                   ),
-                  color: const Color(0xFF868E96),
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              SizedBox(height: 8.h),
+              DesignTokens.verticalSpaceSmall,
               BrandLogo(
                 type: LogoType.csg,
                 width: ResponsiveHelper.getResponsiveValue(

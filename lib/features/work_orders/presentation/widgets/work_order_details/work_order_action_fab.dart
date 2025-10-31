@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 class WorkOrderActionFab extends StatelessWidget {
@@ -23,6 +23,9 @@ class WorkOrderActionFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    
     // Determine primary action based on work order state
     String label;
     IconData icon;
@@ -32,12 +35,12 @@ class WorkOrderActionFab extends StatelessWidget {
     if (workOrder.canBeStarted && onStart != null) {
       label = 'Start Job';
       icon = Icons.play_arrow;
-      backgroundColor = AppColors.success;
+      backgroundColor = fsmTheme.statusCompleted;
       onPressed = onStart;
     } else if (workOrder.canBeResumed && onResume != null) {
       label = 'Resume Job';
       icon = Icons.play_arrow;
-      backgroundColor = AppColors.success;
+      backgroundColor = fsmTheme.statusCompleted;
       onPressed = onResume;
     } else if (workOrder.canBePaused &&
         workOrder.canBeCompleted &&
@@ -45,23 +48,23 @@ class WorkOrderActionFab extends StatelessWidget {
       // For in-progress work orders, show actions menu to access both pause and complete
       label = 'Actions';
       icon = Icons.more_vert;
-      backgroundColor = AppColors.primary;
+      backgroundColor = theme.colorScheme.primary;
       onPressed = onShowActions;
     } else if (workOrder.canBePaused && onPause != null) {
       label = 'Pause Job';
       icon = Icons.pause;
-      backgroundColor = AppColors.warning;
+      backgroundColor = fsmTheme.statusPending;
       onPressed = onPause;
     } else if (workOrder.canBeCompleted && onComplete != null) {
       label = 'Complete Job';
       icon = Icons.check_circle;
-      backgroundColor = AppColors.primary;
+      backgroundColor = theme.colorScheme.primary;
       onPressed = onComplete;
     } else {
       // Show actions menu for other states
       label = 'Actions';
       icon = Icons.more_vert;
-      backgroundColor = AppColors.primary;
+      backgroundColor = theme.colorScheme.primary;
       onPressed = onShowActions;
     }
 
@@ -76,7 +79,7 @@ class WorkOrderActionFab extends StatelessWidget {
         ),
       ),
       backgroundColor: backgroundColor,
-      foregroundColor: Colors.white,
+      foregroundColor: theme.colorScheme.onPrimary,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28.r),

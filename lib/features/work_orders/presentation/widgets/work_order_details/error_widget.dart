@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/widgets.dart';
+import '../../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../../core/theme/design_tokens.dart';
 
 class WorkOrderErrorWidget extends StatelessWidget {
   final String message;
@@ -15,6 +18,9 @@ class WorkOrderErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,23 +28,30 @@ class WorkOrderErrorWidget extends StatelessWidget {
           Icon(
             isOffline ? Icons.wifi_off : Icons.error_outline,
             size: 64.sp,
-            color: Colors.red,
+            color: isOffline ? fsmTheme.syncOffline : fsmTheme.error,
           ),
-          SizedBox(height: 16.h),
+          DesignTokens.verticalSpaceMedium,
           Text(
             isOffline ? 'You are offline' : 'Error loading work order',
-            style: TextStyle(fontSize: 16.sp, color: Colors.red),
+            style: TextStyle(
+              fontSize: 16.sp, 
+              color: isOffline ? fsmTheme.syncOffline : fsmTheme.error,
+            ),
           ),
-          SizedBox(height: 8.h),
+          DesignTokens.verticalSpaceSmall,
           Text(
             message,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 14.sp, 
+              color: colorScheme.onSurface.withOpacity(0.6),
+            ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16.h),
-          ElevatedButton(
+          DesignTokens.verticalSpaceMedium,
+          FsmButton(
+            text: 'Retry',
             onPressed: onRetry,
-            child: const Text('Retry'),
+            variant: FsmButtonVariant.filled,
           ),
         ],
       ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_image_capture_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_thumbnail.dart';
@@ -17,21 +18,22 @@ class _TimelineEntry {
     required this.actionType,
   });
 
-  /// Get color for this action type
-  Color get color {
+  /// Get color for this action type using FSM theme extension
+  Color getColor(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
     switch (actionType.toLowerCase()) {
       case 'start':
-        return const Color(0xFF4CAF50); // Green
+        return fsmTheme.actionStart;
       case 'pause':
-        return const Color(0xFFFF9800); // Orange
+        return fsmTheme.actionPause;
       case 'resume':
-        return const Color(0xFF4CAF50); // Green
+        return fsmTheme.actionResume;
       case 'complete':
-        return const Color(0xFF2196F3); // Blue
+        return fsmTheme.actionComplete;
       case 'signature':
-        return const Color(0xFF9C27B0); // Purple
+        return Theme.of(context).colorScheme.tertiary;
       default:
-        return Colors.grey;
+        return Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
     }
   }
 
@@ -84,13 +86,13 @@ class WorkOrderImageGallerySection extends StatelessWidget {
         .toList();
 
     return Padding(
-      padding: EdgeInsets.only(top: 16.h),
+      padding: REdgeInsets.only(top: DesignTokens.space4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section header
           _buildHeader(context, entries.length),
-          SizedBox(height: 16.h),
+          DesignTokens.verticalSpaceMedium,
 
           // Timeline entries
           ...entries.asMap().entries.map((entry) {
@@ -112,15 +114,15 @@ class WorkOrderImageGallerySection extends StatelessWidget {
   /// Build section header with title and count
   Widget _buildHeader(BuildContext context, int entryCount) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       child: Row(
         children: [
           Icon(
             Icons.timeline,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             size: 24.sp,
           ),
-          SizedBox(width: 12.w),
+          DesignTokens.horizontalSpace(DesignTokens.space3),
           Expanded(
             child: Text(
               'Work Timeline',
@@ -131,11 +133,11 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 8.w),
+          DesignTokens.horizontalSpaceSmall,
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space1),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Text(
@@ -143,7 +145,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),
@@ -155,7 +157,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
   /// Build empty state when no timeline entries exist
   Widget _buildEmptyState(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 48.h, horizontal: 32.w),
+      padding: REdgeInsets.symmetric(vertical: DesignTokens.space12, horizontal: DesignTokens.space8),
       child: Center(
         child: Column(
           children: [
@@ -164,7 +166,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               size: 48.sp,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
             ),
-            SizedBox(height: 16.h),
+            DesignTokens.verticalSpaceMedium,
             Text(
               'No documentation yet',
               style: TextStyle(
@@ -173,7 +175,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
-            SizedBox(height: 8.h),
+            DesignTokens.verticalSpaceSmall,
             Text(
               'Images and documentation will appear here',
               style: TextStyle(
@@ -195,7 +197,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     bool isLast,
   ) {
     return Padding(
-      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 24.h),
+      padding: REdgeInsets.only(left: DesignTokens.space4, right: DesignTokens.space4, bottom: DesignTokens.space6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -203,7 +205,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
           Column(
             children: [
               // Marker circle with icon
-              _buildTimelineMarker(entry),
+              _buildTimelineMarker(context, entry),
 
               // Connecting line (if not last entry)
               if (!isLast)
@@ -218,7 +220,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             ],
           ),
 
-          SizedBox(width: 16.w),
+          DesignTokens.horizontalSpaceMedium,
 
           // Timeline content
           Expanded(
@@ -230,21 +232,22 @@ class WorkOrderImageGallerySection extends StatelessWidget {
   }
 
   /// Build timeline marker (colored circle with icon)
-  Widget _buildTimelineMarker(_TimelineEntry entry) {
+  Widget _buildTimelineMarker(BuildContext context, _TimelineEntry entry) {
+    final color = entry.getColor(context);
     return Container(
       width: 40.w,
       height: 40.w,
       decoration: BoxDecoration(
-        color: entry.color.withOpacity(0.15),
+        color: color.withOpacity(0.15),
         shape: BoxShape.circle,
         border: Border.all(
-          color: entry.color,
+          color: color,
           width: 2.w,
         ),
       ),
       child: Icon(
         entry.icon,
-        color: entry.color,
+        color: color,
         size: 20.sp,
       ),
     );
@@ -252,6 +255,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
 
   /// Build timeline entry content card
   Widget _buildTimelineContent(BuildContext context, _TimelineEntry entry) {
+    final color = entry.getColor(context);
+    
     // Determine display date
     String? displayDate;
     if (entry.capture.capturedAt != null) {
@@ -267,17 +272,17 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     }
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: entry.color.withOpacity(0.2),
+          color: color.withOpacity(0.2),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: context.fsmTheme.shadowCard,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -292,12 +297,12 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             children: [
               // Action badge
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space1),
                 decoration: BoxDecoration(
-                  color: entry.color.withOpacity(0.15),
+                  color: color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(
-                    color: entry.color.withOpacity(0.3),
+                    color: color.withOpacity(0.3),
                     width: 1,
                   ),
                 ),
@@ -307,15 +312,15 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                     Icon(
                       entry.icon,
                       size: 14.sp,
-                      color: entry.color,
+                      color: color,
                     ),
-                    SizedBox(width: 6.w),
+                    DesignTokens.horizontalSpace(DesignTokens.space1 + 2),
                     Text(
                       entry.displayName,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w700,
-                        color: entry.color,
+                        color: color,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -335,7 +340,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                           .onSurface
                           .withOpacity(0.5),
                     ),
-                    SizedBox(width: 4.w),
+                    DesignTokens.horizontalSpaceXs,
                     Text(
                       displayDate,
                       style: TextStyle(
@@ -352,7 +357,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 12.h),
+          DesignTokens.verticalSpaceMd,
 
           // Metadata section
           Column(
@@ -369,7 +374,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               // GPS coordinates
               if (entry.capture.latitude != null &&
                   entry.capture.longitude != null) ...[
-                if (entry.capture.capturedBy != null) SizedBox(height: 6.h),
+                if (entry.capture.capturedBy != null) DesignTokens.verticalSpaceXs,
                 _buildMetadataRow(
                   context,
                   Icons.location_on_outlined,
@@ -380,7 +385,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               // Reason (for pause actions)
               if (entry.capture.reason != null &&
                   entry.capture.reason!.isNotEmpty) ...[
-                SizedBox(height: 6.h),
+                DesignTokens.verticalSpaceXs,
                 _buildMetadataRow(
                   context,
                   Icons.info_outline,
@@ -392,7 +397,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               // Remarks
               if (entry.capture.remarks != null &&
                   entry.capture.remarks!.isNotEmpty) ...[
-                SizedBox(height: 6.h),
+                DesignTokens.verticalSpaceXs,
                 _buildMetadataRow(
                   context,
                   Icons.note_outlined,
@@ -405,7 +410,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
 
           // Images section (if images exist)
           if (entry.capture.imageUrls.isNotEmpty) ...[
-            SizedBox(height: 16.h),
+            DesignTokens.verticalSpaceMedium,
             _buildHorizontalImageScroll(context, entry),
           ],
         ],
@@ -428,7 +433,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
           size: 16.sp,
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
         ),
-        SizedBox(width: 8.w),
+        DesignTokens.horizontalSpaceSmall,
         Expanded(
           child: Text(
             text,
@@ -463,7 +468,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               size: 16.sp,
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
-            SizedBox(width: 6.w),
+            DesignTokens.horizontalSpace(DesignTokens.space1 + 2),
             Text(
               '${entry.capture.imageUrls.length} ${entry.capture.imageUrls.length == 1 ? 'image' : 'images'}',
               style: TextStyle(
@@ -475,15 +480,15 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 8.h),
+        DesignTokens.verticalSpaceSmall,
 
         // Horizontal scrollable image list
-        SizedBox(
+        RSizedBox(
           height: 80.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: entry.capture.imageUrls.length,
-            separatorBuilder: (_, __) => SizedBox(width: 8.w),
+            separatorBuilder: (_, __) => DesignTokens.horizontalSpaceSmall,
             itemBuilder: (context, index) {
               final imageUrl = entry.capture.imageUrls[index];
               return WorkOrderImageThumbnail(
@@ -493,7 +498,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                 onTap: () {
                   showDialog(
                     context: context,
-                    barrierColor: Colors.black87,
+                    barrierColor: context.fsmTheme.backgroundOverlay,
                     builder: (context) => WorkOrderImagePreviewDialog(
                       captures: [entry.capture],
                       initialIndex: index,

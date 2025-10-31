@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMErrorState - Consolidated error state display widget
 ///
@@ -48,7 +49,7 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.wifi_off_outlined,
-        iconColor = AppColors.offline,
+        iconColor = const Color(0xFFEF6C00), // Orange for offline - maps to warning
         showAnimation = true,
         padding = null;
 
@@ -60,7 +61,7 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.dns_outlined,
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true,
         padding = null;
 
@@ -72,7 +73,7 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel,
     this.onRetry,
   })  : icon = Icons.lock_outline,
-        iconColor = AppColors.warning,
+        iconColor = const Color(0xFFFFA726), // Amber for warning
         showAnimation = true,
         padding = null;
 
@@ -84,7 +85,7 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.timer_off_outlined,
-        iconColor = AppColors.warning,
+        iconColor = const Color(0xFFFFA726), // Amber for warning
         showAnimation = true,
         padding = null;
 
@@ -96,7 +97,7 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.error_outline,
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true,
         padding = null;
 
@@ -108,14 +109,15 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.cloud_off_outlined,
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true,
         padding = null;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectivePadding = padding ?? AppDimensions.paddingAllLarge;
+    final spacing = context.spacing;
+    final effectivePadding = padding ?? spacing.paddingLg;
 
     final content = Container(
       constraints: BoxConstraints(
@@ -132,7 +134,7 @@ class FSMErrorState extends StatelessWidget {
               // Animated icon with gradient background
               if (showAnimation)
                 TweenAnimationBuilder<double>(
-                  duration: const Duration(milliseconds: 800),
+                  duration: DesignTokens.durationSlow,
                   tween: Tween(begin: 0.0, end: 1.0),
                   builder: (context, value, child) {
                     return Transform.scale(
@@ -147,23 +149,21 @@ class FSMErrorState extends StatelessWidget {
               else
                 _buildIconContainer(),
 
-              SizedBox(height: AppDimensions.spaceLarge),
+              DesignTokens.verticalSpaceLarge,
 
               // Title
               Text(
                 title,
                 style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18.sp,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.3,
+                  fontWeight: DesignTokens.fontWeightBold,
+                  color: theme.colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
 
-              SizedBox(height: AppDimensions.spaceSmall),
+              DesignTokens.verticalSpaceSmall,
 
               // Message
               Container(
@@ -171,10 +171,7 @@ class FSMErrorState extends StatelessWidget {
                 child: Text(
                   message,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 13.sp,
-                    color: AppColors.textSecondary,
-                    height: 1.4,
-                    letterSpacing: 0.1,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 4,
@@ -184,32 +181,26 @@ class FSMErrorState extends StatelessWidget {
 
               // Retry Button
               if (onRetry != null && actionLabel != null) ...[
-                SizedBox(height: AppDimensions.spaceLarge),
+                DesignTokens.verticalSpaceLarge,
                 ElevatedButton.icon(
                   onPressed: onRetry,
-                  icon: Icon(Icons.refresh_rounded, size: 18.sp),
-                  label: Text(
-                    actionLabel!,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  icon: Icon(Icons.refresh_rounded, size: DesignTokens.iconSm.sp),
+                  label: Text(actionLabel!),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: iconColor,
-                    foregroundColor: AppColors.onPrimary,
-                    elevation: AppDimensions.elevationMedium,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    elevation: DesignTokens.elevationMd,
                     shadowColor: iconColor.withValues(alpha: 0.3),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppDimensions.paddingLarge,
-                      vertical: AppDimensions.paddingMedium,
+                    padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space6,
+                      vertical: DesignTokens.space3,
                     ),
                     minimumSize: Size(
-                      AppDimensions.buttonMinWidth * 0.8,
-                      AppDimensions.buttonHeight,
+                      DesignTokens.buttonHeightMd.w * 1.5,
+                      DesignTokens.buttonHeightMd.h,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                     ),
                   ),
                 ),
@@ -225,7 +216,7 @@ class FSMErrorState extends StatelessWidget {
 
   Widget _buildIconContainer() {
     return Container(
-      padding: EdgeInsets.all(20.w),
+      padding: REdgeInsets.all(DesignTokens.space5),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -238,19 +229,19 @@ class FSMErrorState extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(
           color: iconColor.withValues(alpha: 0.2),
-          width: 2,
+          width: DesignTokens.borderWidthMedium,
         ),
         boxShadow: [
           BoxShadow(
             color: iconColor.withValues(alpha: 0.1),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            blurRadius: DesignTokens.space4,
+            offset: Offset(0, DesignTokens.space2),
           ),
         ],
       ),
       child: Icon(
         icon,
-        size: 40.sp,
+        size: DesignTokens.iconXl.sp,
         color: iconColor,
       ),
     );
@@ -290,7 +281,7 @@ class FSMErrorStateSliver extends StatelessWidget {
   })  : icon = Icons.wifi_off_outlined,
         title = title ?? 'No Internet Connection',
         message = message ?? 'Please check your connection and try again.',
-        iconColor = AppColors.offline,
+        iconColor = const Color(0xFFEF6C00), // Orange for offline
         showAnimation = true;
 
   /// Server error variant
@@ -303,7 +294,7 @@ class FSMErrorStateSliver extends StatelessWidget {
   })  : icon = Icons.dns_outlined,
         title = title ?? 'Server Error',
         message = message ?? 'The server encountered an error. Please try again later.',
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true;
 
   /// Unknown error variant
@@ -316,7 +307,7 @@ class FSMErrorStateSliver extends StatelessWidget {
   })  : icon = Icons.error_outline,
         title = title ?? 'Something Went Wrong',
         message = message ?? 'An unexpected error occurred. Please try again.',
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true;
 
   @override

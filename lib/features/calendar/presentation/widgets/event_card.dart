@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/cards/fsm_card.dart';
 import 'package:fsm/features/calendar/domain/entities/calendar_event_entity.dart';
-import 'package:fsm/core/widgets/fsm_card.dart';
 import 'package:intl/intl.dart';
 
 class EventCard extends StatelessWidget {

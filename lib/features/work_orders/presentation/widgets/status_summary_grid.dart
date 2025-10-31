@@ -206,7 +206,7 @@ class _LoadingGrid extends StatelessWidget {
           4,
           (index) => Container(
             decoration: BoxDecoration(
-              color: AppColors.grey200,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
             ),
             child: Center(

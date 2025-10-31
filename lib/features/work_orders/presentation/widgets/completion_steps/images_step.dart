@@ -25,6 +25,16 @@ class ImagesStep extends StatefulWidget {
 class _ImagesStepState extends State<ImagesStep> {
   final ImagePicker _picker = ImagePicker();
 
+  void _handleCameraImage(BuildContext context) {
+    Navigator.pop(context);
+    _getImage(ImageSource.camera);
+  }
+
+  void _handleGalleryImage(BuildContext context) {
+    Navigator.pop(context);
+    _getImage(ImageSource.gallery);
+  }
+
   Future<void> _getImage(ImageSource source) async {
     try {
       final pickedFile = await _picker.pickImage(
@@ -63,7 +73,7 @@ class _ImagesStepState extends State<ImagesStep> {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
@@ -85,18 +95,12 @@ class _ImagesStepState extends State<ImagesStep> {
                       _buildImageSourceOption(
                         icon: Icons.camera_alt,
                         label: 'Camera',
-                        onTap: () {
-                          Navigator.pop(context);
-                          _getImage(ImageSource.camera);
-                        },
+                        onTap: () => _handleCameraImage(context),
                       ),
                       _buildImageSourceOption(
                         icon: Icons.photo_library,
                         label: 'Gallery',
-                        onTap: () {
-                          Navigator.pop(context);
-                          _getImage(ImageSource.gallery);
-                        },
+                        onTap: () => _handleGalleryImage(context),
                       ),
                     ],
                   ),
@@ -168,11 +172,11 @@ class _ImagesStepState extends State<ImagesStep> {
               width: 24.w,
               height: 24.w,
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: AppColors.error,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -180,7 +184,7 @@ class _ImagesStepState extends State<ImagesStep> {
               ),
               child: Icon(
                 Icons.close,
-                color: Colors.white,
+                color: AppColors.onError,
                 size: 16.sp,
               ),
             ),
@@ -256,7 +260,7 @@ class _ImagesStepState extends State<ImagesStep> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: AppColors.onPrimary,
                     ),
                   ),
                 ),

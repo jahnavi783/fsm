@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class CustomerSection extends StatelessWidget {
   final dynamic customer;
@@ -19,7 +20,7 @@ class CustomerSection extends StatelessWidget {
           value: customer.name ?? 'N/A',
           icon: Icons.person,
         ),
-        SizedBox(height: 8.h),
+        DesignTokens.verticalSpaceSmall,
         Row(
           children: [
             Expanded(
@@ -29,7 +30,7 @@ class CustomerSection extends StatelessWidget {
                 icon: Icons.location_on,
               ),
             ),
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpaceMd,
             Expanded(
               child: InfoItemCard(
                 label: 'Postal Code',

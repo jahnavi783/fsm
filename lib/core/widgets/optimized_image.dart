@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'enhanced_loading_indicator.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/widgets/states/fsm_loading_indicator.dart';
 
 /// Optimized image widget with caching, error handling, and responsive sizing
 class OptimizedImage extends StatelessWidget {
@@ -46,7 +46,7 @@ class OptimizedImage extends StatelessWidget {
         height: height,
         fit: fit,
         errorBuilder: (context, error, stackTrace) {
-          return _buildErrorWidget();
+          return _buildErrorWidget(context);
         },
       );
     } else if (imageUrl != null) {
@@ -58,15 +58,15 @@ class OptimizedImage extends StatelessWidget {
         fit: fit,
         memCacheWidth: width?.toInt(),
         memCacheHeight: height?.toInt(),
-        placeholder: (context, url) => _buildPlaceholder(),
-        errorWidget: (context, url, error) => _buildErrorWidget(),
-        fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 300),
+        placeholder: (context, url) => _buildPlaceholder(context),
+        errorWidget: (context, url, error) => _buildErrorWidget(context),
+        fadeInDuration: fadeInDuration ?? DesignTokens.durationNormal,
         useOldImageOnUrlChange: true,
         cacheManager:
             enableDiskCache ? null : null, // Use default cache manager
       );
     } else {
-      imageWidget = _buildErrorWidget();
+      imageWidget = _buildErrorWidget(context);
     }
 
     // Apply border radius if specified
@@ -80,42 +80,41 @@ class OptimizedImage extends StatelessWidget {
     return imageWidget;
   }
 
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(BuildContext context) {
     if (placeholder != null) return placeholder!;
 
+    final theme = Theme.of(context);
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[200],
+      color: theme.colorScheme.surfaceContainerHighest,
       child: const Center(
-        child: EnhancedLoadingIndicator(
-          style: LoadingStyle.circular,
-        ),
+        child: FSMLoadingIndicatorCompact(),
       ),
     );
   }
 
-  Widget _buildErrorWidget() {
+  Widget _buildErrorWidget(BuildContext context) {
     if (errorWidget != null) return errorWidget!;
 
+    final theme = Theme.of(context);
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[200],
+      color: theme.colorScheme.surfaceContainerHighest,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.broken_image_outlined,
-            size: 32.w,
-            color: Colors.grey[400],
+            size: DesignTokens.iconLg.sp,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
-          SizedBox(height: 4.h),
+          DesignTokens.verticalSpaceXs,
           Text(
             'Image not available',
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: Colors.grey[400],
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],
@@ -143,9 +142,11 @@ class OptimizedAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return CircleAvatar(
       radius: radius,
-      backgroundColor: Colors.grey[200],
+      backgroundColor: theme.colorScheme.surfaceContainerHighest,
       child: ClipOval(
         child: OptimizedImage(
           imageUrl: imageUrl,
@@ -157,13 +158,13 @@ class OptimizedAvatar extends StatelessWidget {
               Icon(
                 Icons.person,
                 size: radius,
-                color: Colors.grey[400],
+                color: theme.colorScheme.onSurfaceVariant,
               ),
           errorWidget: errorWidget ??
               Icon(
                 Icons.person,
                 size: radius,
-                color: Colors.grey[400],
+                color: theme.colorScheme.onSurfaceVariant,
               ),
         ),
       ),

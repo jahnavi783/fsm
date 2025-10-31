@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../blocs/sync/sync_bloc.dart';
-import '../blocs/sync/sync_state.dart';
-import '../blocs/sync/sync_event.dart';
-import '../theme/theme.dart';
+import 'package:fsm/core/blocs/sync/sync_bloc.dart';
+import 'package:fsm/core/blocs/sync/sync_state.dart';
+import 'package:fsm/core/blocs/sync/sync_event.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 class SyncIndicator extends StatelessWidget {
   final bool showWhenSynced;
@@ -25,14 +26,14 @@ class SyncIndicator extends StatelessWidget {
           duration: animationDuration,
           child: state.when(
             initial: () => const SizedBox.shrink(),
-            syncing: (totalItems, syncedItems, currentItem) => 
-                _buildSyncingIndicator(totalItems, syncedItems, currentItem),
-            synced: (lastSyncTime, syncedItems) => showWhenSynced 
-                ? _buildSyncedIndicator(lastSyncTime, syncedItems)
+            syncing: (totalItems, syncedItems, currentItem) =>
+                _buildSyncingIndicator(context, totalItems, syncedItems, currentItem),
+            synced: (lastSyncTime, syncedItems) => showWhenSynced
+                ? _buildSyncedIndicator(context, lastSyncTime, syncedItems)
                 : const SizedBox.shrink(),
-            syncFailed: (error, failedAt, pendingItems) => 
+            syncFailed: (error, failedAt, pendingItems) =>
                 _buildSyncFailedIndicator(context, error, pendingItems),
-            pendingSync: (pendingItems, lastSyncTime) => 
+            pendingSync: (pendingItems, lastSyncTime) =>
                 _buildPendingSyncIndicator(context, pendingItems),
           ),
         );
@@ -40,18 +41,18 @@ class SyncIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildSyncingIndicator(int totalItems, int syncedItems, String? currentItem) {
+  Widget _buildSyncingIndicator(BuildContext context, int totalItems, int syncedItems, String? currentItem) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
     final progress = totalItems > 0 ? syncedItems / totalItems : 0.0;
-    
+
     return Container(
       key: const ValueKey('syncing'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
+      padding: spacing.paddingMd,
       decoration: BoxDecoration(
-        color: AppColors.info.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: fsmTheme.syncSyncing.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(spacing.radiusSm.r),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -59,31 +60,31 @@ class SyncIndicator extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                width: 16.w,
-                height: 16.w,
+              RSizedBox(
+                width: DesignTokens.iconXs.w,
+                height: DesignTokens.iconXs.w,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2.w,
+                  strokeWidth: DesignTokens.borderWidthMedium.w,
                   value: progress,
-                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.white),
-                  backgroundColor: AppColors.white.withValues(alpha: 0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.onPrimary),
+                  backgroundColor: theme.colorScheme.onPrimary.withValues(alpha: 0.3),
                 ),
               ),
-              SizedBox(width: AppDimensions.paddingSmall),
+              DesignTokens.horizontalSpaceSmall,
               Text(
                 'Syncing... ($syncedItems/$totalItems)',
-                style: AppTextStyles.labelMedium.copyWith(
-                  color: AppColors.white,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ],
           ),
           if (currentItem != null) ...[
-            SizedBox(height: AppDimensions.paddingXSmall),
+            DesignTokens.verticalSpaceXs,
             Text(
               currentItem,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.white.withValues(alpha: 0.8),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
               ),
             ),
           ],
@@ -92,30 +93,31 @@ class SyncIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildSyncedIndicator(DateTime lastSyncTime, int syncedItems) {
+  Widget _buildSyncedIndicator(BuildContext context, DateTime lastSyncTime, int syncedItems) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+
     return Container(
       key: const ValueKey('synced'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
+      padding: spacing.paddingMd,
       decoration: BoxDecoration(
-        color: AppColors.success.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: fsmTheme.syncSynced.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(spacing.radiusSm.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.sync,
-            size: AppDimensions.iconSmall,
-            color: AppColors.white,
+            size: DesignTokens.iconSm.sp,
+            color: theme.colorScheme.onPrimary,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
+          DesignTokens.horizontalSpaceSmall,
           Text(
             'Synced ($syncedItems items)',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.white,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.onPrimary,
             ),
           ),
         ],
@@ -124,42 +126,43 @@ class SyncIndicator extends StatelessWidget {
   }
 
   Widget _buildSyncFailedIndicator(BuildContext context, String error, int pendingItems) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+
     return Container(
       key: const ValueKey('sync_failed'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
+      padding: spacing.paddingMd,
       decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: fsmTheme.syncFailed.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(spacing.radiusSm.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.sync_problem,
-            size: AppDimensions.iconSmall,
-            color: AppColors.white,
+            size: DesignTokens.iconSm.sp,
+            color: theme.colorScheme.onError,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
+          DesignTokens.horizontalSpaceSmall,
           Flexible(
             child: Text(
               'Sync failed ($pendingItems pending)',
-              style: AppTextStyles.labelMedium.copyWith(
-                color: AppColors.white,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onError,
               ),
             ),
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
+          DesignTokens.horizontalSpaceSmall,
           GestureDetector(
             onTap: () {
               context.read<SyncBloc>().add(const SyncEvent.syncRequested());
             },
             child: Icon(
               Icons.refresh,
-              size: AppDimensions.iconSmall,
-              color: AppColors.white,
+              size: DesignTokens.iconSm.sp,
+              color: theme.colorScheme.onError,
             ),
           ),
         ],
@@ -168,40 +171,41 @@ class SyncIndicator extends StatelessWidget {
   }
 
   Widget _buildPendingSyncIndicator(BuildContext context, int pendingItems) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+
     return Container(
       key: const ValueKey('pending_sync'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
+      padding: spacing.paddingMd,
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: fsmTheme.syncPending.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(spacing.radiusSm.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.sync_alt,
-            size: AppDimensions.iconSmall,
-            color: AppColors.white,
+            size: DesignTokens.iconSm.sp,
+            color: theme.colorScheme.onPrimary,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
+          DesignTokens.horizontalSpaceSmall,
           Text(
             '$pendingItems items to sync',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.white,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.onPrimary,
             ),
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
+          DesignTokens.horizontalSpaceSmall,
           GestureDetector(
             onTap: () {
               context.read<SyncBloc>().add(const SyncEvent.syncRequested());
             },
             child: Icon(
               Icons.sync,
-              size: AppDimensions.iconSmall,
-              color: AppColors.white,
+              size: DesignTokens.iconSm.sp,
+              color: theme.colorScheme.onPrimary,
             ),
           ),
         ],
@@ -215,19 +219,22 @@ class SyncFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return BlocBuilder<SyncBloc, SyncState>(
       builder: (context, state) {
         return state.when(
           initial: () => const SizedBox.shrink(),
           syncing: (_, __, ___) => FloatingActionButton(
             onPressed: null, // Disable during sync
-            child: SizedBox(
-              width: 24.w,
-              height: 24.w,
+            child: RSizedBox(
+              width: DesignTokens.iconMd.w,
+              height: DesignTokens.iconMd.w,
               child: CircularProgressIndicator(
-                strokeWidth: 2.w,
+                strokeWidth: DesignTokens.borderWidthMedium.w,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).colorScheme.onPrimary,
+                  theme.colorScheme.onPrimary,
                 ),
               ),
             ),
@@ -237,22 +244,22 @@ class SyncFloatingActionButton extends StatelessWidget {
             onPressed: () {
               context.read<SyncBloc>().add(const SyncEvent.syncRequested());
             },
-            backgroundColor: AppColors.error,
+            backgroundColor: fsmTheme.syncFailed,
             child: Icon(
               Icons.sync_problem,
-              color: AppColors.white,
+              color: theme.colorScheme.onError,
             ),
           ),
           pendingSync: (pendingItems, _) => FloatingActionButton(
             onPressed: () {
               context.read<SyncBloc>().add(const SyncEvent.syncRequested());
             },
-            backgroundColor: AppColors.warning,
+            backgroundColor: fsmTheme.syncPending,
             child: Badge(
               label: Text(pendingItems.toString()),
               child: Icon(
                 Icons.sync,
-                color: AppColors.white,
+                color: theme.colorScheme.onPrimary,
               ),
             ),
           ),

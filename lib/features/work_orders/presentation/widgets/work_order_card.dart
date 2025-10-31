@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/widgets/fsm_card.dart';
+import 'package:fsm/core/widgets/cards/fsm_card.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:intl/intl.dart';

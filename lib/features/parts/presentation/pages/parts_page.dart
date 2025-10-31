@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../../core/widgets/fsm_empty_state.dart';
+import '../../../../core/widgets/states/fsm_empty_state.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
 import '../blocs/parts/parts_state.dart';

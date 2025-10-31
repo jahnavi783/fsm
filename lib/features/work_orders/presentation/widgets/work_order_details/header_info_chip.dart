@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/theme/design_tokens.dart';
 
 class HeaderInfoChip extends StatelessWidget {
   final IconData icon;
@@ -15,13 +16,15 @@ class HeaderInfoChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space2),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: colorScheme.onPrimary.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: colorScheme.onPrimary.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -30,10 +33,10 @@ class HeaderInfoChip extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.white,
+            color: colorScheme.onPrimary,
             size: 14.sp,
           ),
-          SizedBox(width: 6.w),
+          RSizedBox(width: 6.w),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +45,7 @@ class HeaderInfoChip extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
+                    color: colorScheme.onPrimary.withOpacity(0.8),
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                   ),
@@ -52,7 +55,7 @@ class HeaderInfoChip extends StatelessWidget {
                 Text(
                   value,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                   ),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_dimensions.dart';
-import '../theme/app_text_styles.dart';
+import '../../theme/design_tokens.dart';
 
 /// Standardized action button for cards and quick actions
 ///
@@ -49,53 +47,60 @@ class QuickActionButton extends StatelessWidget {
 
   bool get _isDisabled => onPressed == null;
 
-  Color get _foregroundColor {
-    if (_isDisabled) return AppColors.disabled;
-    return color ?? AppColors.primary;
+  Color _foregroundColor(BuildContext context) {
+    if (_isDisabled) {
+      return Theme.of(context).colorScheme.onSurface.withValues(alpha: DesignTokens.opacityDisabled);
+    }
+    return color ?? Theme.of(context).colorScheme.primary;
   }
 
-  Color get _backgroundButtonColor {
-    if (_isDisabled) return AppColors.disabledBackground;
+  Color _backgroundButtonColor(BuildContext context) {
+    if (_isDisabled) {
+      return Theme.of(context).colorScheme.surface.withValues(alpha: DesignTokens.opacityDisabled);
+    }
     return backgroundColor ?? Colors.transparent;
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textStyle = isCompact ? theme.textTheme.labelSmall : theme.textTheme.labelMedium;
+
     return Material(
-      color: _backgroundButtonColor,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+      color: _backgroundButtonColor(context),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       child: InkWell(
         onTap: isLoading ? null : onPressed,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: isCompact ? AppDimensions.paddingSmall : AppDimensions.paddingMedium,
-            vertical: isCompact ? AppDimensions.paddingXSmall : AppDimensions.paddingSmall,
+          padding: REdgeInsets.symmetric(
+            horizontal: isCompact ? DesignTokens.space2 : DesignTokens.space4,
+            vertical: isCompact ? DesignTokens.space1 : DesignTokens.space2,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (isLoading)
                 SizedBox(
-                  width: AppDimensions.iconSmall,
-                  height: AppDimensions.iconSmall,
+                  width: DesignTokens.iconSm.w,
+                  height: DesignTokens.iconSm.h,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2.w,
-                    valueColor: AlwaysStoppedAnimation<Color>(_foregroundColor),
+                    strokeWidth: DesignTokens.borderWidthMedium.w,
+                    valueColor: AlwaysStoppedAnimation<Color>(_foregroundColor(context)),
                   ),
                 )
               else
                 Icon(
                   icon,
-                  size: AppDimensions.iconSmall,
-                  color: _foregroundColor,
+                  size: DesignTokens.iconSm.sp,
+                  color: _foregroundColor(context),
                 ),
-              SizedBox(width: 4.w),
+              DesignTokens.horizontalSpaceXs,
               Text(
                 label,
-                style: (isCompact ? AppTextStyles.labelSmall : AppTextStyles.labelMedium).copyWith(
-                  color: _foregroundColor,
-                  fontWeight: FontWeight.w600,
+                style: textStyle?.copyWith(
+                  color: _foregroundColor(context),
+                  fontWeight: DesignTokens.fontWeightSemiBold,
                 ),
               ),
             ],
@@ -116,14 +121,19 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return QuickActionButton(
-      icon: icon,
-      label: label,
-      onPressed: onPressed,
-      color: AppColors.white,
-      backgroundColor: AppColors.primary,
-      isLoading: isLoading,
-      isCompact: isCompact,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return QuickActionButton(
+          icon: icon,
+          label: label,
+          onPressed: onPressed,
+          color: theme.colorScheme.onPrimary,
+          backgroundColor: theme.colorScheme.primary,
+          isLoading: isLoading,
+          isCompact: isCompact,
+        );
+      },
     );
   }
 
@@ -135,23 +145,29 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: onPressed == null ? AppColors.disabled : AppColors.primary,
-          width: 1.w,
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-      ),
-      child: QuickActionButton(
-        icon: icon,
-        label: label,
-        onPressed: onPressed,
-        color: AppColors.primary,
-        backgroundColor: Colors.transparent,
-        isLoading: isLoading,
-        isCompact: isCompact,
-      ),
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final disabledColor = theme.colorScheme.onSurface.withValues(alpha: DesignTokens.opacityDisabled);
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: onPressed == null ? disabledColor : theme.colorScheme.primary,
+              width: DesignTokens.borderWidthThin.w,
+            ),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+          ),
+          child: QuickActionButton(
+            icon: icon,
+            label: label,
+            onPressed: onPressed,
+            color: theme.colorScheme.primary,
+            backgroundColor: Colors.transparent,
+            isLoading: isLoading,
+            isCompact: isCompact,
+          ),
+        );
+      },
     );
   }
 
@@ -163,14 +179,20 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return QuickActionButton(
-      icon: icon,
-      label: label,
-      onPressed: onPressed,
-      color: AppColors.white,
-      backgroundColor: AppColors.success,
-      isLoading: isLoading,
-      isCompact: isCompact,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final fsmTheme = context.fsmTheme;
+        return QuickActionButton(
+          icon: icon,
+          label: label,
+          onPressed: onPressed,
+          color: theme.colorScheme.onPrimary,
+          backgroundColor: fsmTheme.success,
+          isLoading: isLoading,
+          isCompact: isCompact,
+        );
+      },
     );
   }
 
@@ -182,14 +204,20 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return QuickActionButton(
-      icon: icon,
-      label: label,
-      onPressed: onPressed,
-      color: AppColors.white,
-      backgroundColor: AppColors.warning,
-      isLoading: isLoading,
-      isCompact: isCompact,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final fsmTheme = context.fsmTheme;
+        return QuickActionButton(
+          icon: icon,
+          label: label,
+          onPressed: onPressed,
+          color: theme.colorScheme.onPrimary,
+          backgroundColor: fsmTheme.warning,
+          isLoading: isLoading,
+          isCompact: isCompact,
+        );
+      },
     );
   }
 
@@ -201,14 +229,19 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return QuickActionButton(
-      icon: icon,
-      label: label,
-      onPressed: onPressed,
-      color: AppColors.white,
-      backgroundColor: AppColors.error,
-      isLoading: isLoading,
-      isCompact: isCompact,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return QuickActionButton(
+          icon: icon,
+          label: label,
+          onPressed: onPressed,
+          color: theme.colorScheme.onError,
+          backgroundColor: theme.colorScheme.error,
+          isLoading: isLoading,
+          isCompact: isCompact,
+        );
+      },
     );
   }
 
@@ -221,14 +254,19 @@ extension QuickActionButtonVariants on QuickActionButton {
     bool isLoading = false,
     bool isCompact = false,
   }) {
-    return QuickActionButton(
-      icon: icon,
-      label: label,
-      onPressed: onPressed,
-      color: color ?? AppColors.primary,
-      backgroundColor: Colors.transparent,
-      isLoading: isLoading,
-      isCompact: isCompact,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return QuickActionButton(
+          icon: icon,
+          label: label,
+          onPressed: onPressed,
+          color: color ?? theme.colorScheme.primary,
+          backgroundColor: Colors.transparent,
+          isLoading: isLoading,
+          isCompact: isCompact,
+        );
+      },
     );
   }
 }

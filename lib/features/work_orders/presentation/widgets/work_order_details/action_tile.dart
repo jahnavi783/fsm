@@ -46,7 +46,7 @@ class ActionTile extends StatelessWidget {
         subtitle,
         style: TextStyle(
           fontSize: 14.sp,
-          color: Colors.grey[600],
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
         ),
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
@@ -54,7 +54,7 @@ class ActionTile extends StatelessWidget {
       trailing: Icon(
         Icons.arrow_forward_ios,
         size: 16.sp,
-        color: Colors.grey[400],
+        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
       ),
       onTap: onTap,
     );

@@ -33,6 +33,11 @@ export 'buttons/fsm_action_button.dart';
 export 'buttons/fsm_quick_action_button.dart';
 
 // ───────────────────────────────────────────────────────────────────────────
+// Typography - Text Components
+// ───────────────────────────────────────────────────────────────────────────
+export 'typography/fsm_text.dart';
+
+// ───────────────────────────────────────────────────────────────────────────
 // Navigation - Navigation Components
 // ───────────────────────────────────────────────────────────────────────────
 export 'navigation/fsm_drawer.dart';

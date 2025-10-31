@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../theme/app_colors.dart';
-import '../theme/app_dimensions.dart';
-import '../theme/app_text_styles.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// Type of priority indicator display
 enum PriorityIndicatorType {
@@ -20,11 +19,11 @@ enum PriorityIndicatorType {
 /// Visual indicator for work order priority
 ///
 /// Supports three display types: badge, bar, and dot
-/// Uses color-coded system from redesign spec:
-/// - Low: Blue (#1976D2)
-/// - Medium: Orange (#F57C00)
-/// - High: Red (#D32F2F)
-/// - Urgent: Red (#D32F2F)
+/// Uses theme-based color system for priorities:
+/// - Low: Blue (from fsmTheme.workOrderLow)
+/// - Medium: Orange (from fsmTheme.workOrderMedium)
+/// - High: Red (from fsmTheme.workOrderHigh)
+/// - Urgent: Red (from fsmTheme.workOrderUrgent)
 class PriorityIndicator extends StatelessWidget {
   const PriorityIndicator({
     super.key,
@@ -46,7 +45,9 @@ class PriorityIndicator extends StatelessWidget {
   /// Custom size override (optional)
   final double? size;
 
-  Color get _priorityColor => AppColors.getPriorityColor(priority);
+  Color _getPriorityColor(FSMThemeExtension fsmTheme) {
+    return fsmTheme.getPriorityColor(priority.toLowerCase());
+  }
 
   String get _label {
     switch (priority.toLowerCase()) {
@@ -69,44 +70,49 @@ class PriorityIndicator extends StatelessWidget {
       case PriorityIndicatorType.badge:
         return _buildBadge(context);
       case PriorityIndicatorType.bar:
-        return _buildBar();
+        return _buildBar(context);
       case PriorityIndicatorType.dot:
-        return _buildDot();
+        return _buildDot(context);
     }
   }
 
   Widget _buildBadge(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+    final priorityColor = _getPriorityColor(fsmTheme);
+
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingSmall,
-        vertical: AppDimensions.paddingXSmall,
+      padding: REdgeInsets.symmetric(
+        horizontal: spacing.space2,
+        vertical: spacing.space1,
       ),
       decoration: BoxDecoration(
-        color: _priorityColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: priorityColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(spacing.radiusSm.r),
         border: Border.all(
-          color: _priorityColor,
-          width: 1.w,
+          color: priorityColor,
+          width: DesignTokens.borderWidthThin,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 6.w,
-            height: 6.w,
+            width: DesignTokens.space2.w,
+            height: DesignTokens.space2.w,
             decoration: BoxDecoration(
-              color: _priorityColor,
+              color: priorityColor,
               shape: BoxShape.circle,
             ),
           ),
           if (showLabel) ...[
-            SizedBox(width: 4.w),
+            DesignTokens.horizontalSpaceXs,
             Text(
               _label,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: _priorityColor,
-                fontWeight: FontWeight.w600,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: priorityColor,
+                fontWeight: DesignTokens.fontWeightSemiBold,
               ),
             ),
           ],
@@ -115,30 +121,37 @@ class PriorityIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildBar() {
-    final barSize = size ?? 3.w;
+  Widget _buildBar(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
+    final priorityColor = _getPriorityColor(fsmTheme);
+    final barSize = size ?? DesignTokens.space1.w;
+
     return Container(
       width: barSize,
       decoration: BoxDecoration(
-        color: _priorityColor,
+        color: priorityColor,
         borderRadius: BorderRadius.horizontal(
-          right: Radius.circular(AppDimensions.radiusXSmall),
+          right: Radius.circular(spacing.radiusXs.r),
         ),
       ),
     );
   }
 
-  Widget _buildDot() {
-    final dotSize = size ?? 8.w;
+  Widget _buildDot(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
+    final priorityColor = _getPriorityColor(fsmTheme);
+    final dotSize = size ?? DesignTokens.space2.w;
+
     return Container(
       width: dotSize,
       height: dotSize,
       decoration: BoxDecoration(
-        color: _priorityColor,
+        color: priorityColor,
         shape: BoxShape.circle,
         border: Border.all(
-          color: _priorityColor.withValues(alpha: 0.3),
-          width: 2.w,
+          color: priorityColor.withValues(alpha: 0.3),
+          width: DesignTokens.borderWidthMedium,
         ),
       ),
     );

@@ -1,7 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/app_dimensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/di/injection.dart';
@@ -63,7 +66,8 @@ class WorkOrderCompleteWizard extends StatefulWidget {
   }
 
   @override
-  State<WorkOrderCompleteWizard> createState() => _WorkOrderCompleteWizardState();
+  State<WorkOrderCompleteWizard> createState() =>
+      _WorkOrderCompleteWizardState();
 }
 
 class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
@@ -96,7 +100,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       if (cache.workLog != null) {
         _step1Form.control('workLog').value = cache.workLog;
       }
-      
+
       // Restore parts
       if (cache.partsUsed.isNotEmpty) {
         final partsArray = _step1Form.control('parts') as FormArray;
@@ -134,25 +138,28 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
   }
 
   Future<void> _saveCache() async {
-    final step1Data = WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-    
+    final step1Data =
+        WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
+
     // Convert parts to cached model
     final cachedParts = (step1Data['partsUsed'] as List<PartUsedEntity>?)
-        ?.map((part) => CachedPartUsedModel(
-              partNumber: part.partNumber,
-              quantity: part.quantityUsed,
-              partName: part.partName ?? '',
-              category: '',
-              quantityAvailable: 0,
-              unitPrice: 0.0,
-              status: 'used',
-            ))
-        .toList() ?? [];
+            ?.map((part) => CachedPartUsedModel(
+                  partNumber: part.partNumber,
+                  quantity: part.quantityUsed,
+                  partName: part.partName ?? '',
+                  category: '',
+                  quantityAvailable: 0,
+                  unitPrice: 0.0,
+                  status: 'used',
+                ))
+            .toList() ??
+        [];
 
     // Get image paths
     final imagePaths = (step1Data['files'] as List<File>?)
-        ?.map((file) => file.path)
-        .toList() ?? [];
+            ?.map((file) => file.path)
+            .toList() ??
+        [];
 
     final cache = WorkOrderCompletionCacheModel(
       workOrderId: widget.workOrder.id,
@@ -196,6 +203,23 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     }
   }
 
+  void _handleClose() {
+    _saveCache();
+    Navigator.of(context).pop();
+  }
+
+  void _handleAddPart(FormArray formArray) {
+    formArray.add(WorkOrderForms.createPartEntry(
+      partNumber: '',
+      partName: '',
+      quantity: 1,
+    ));
+  }
+
+  void _handleRemovePart(FormArray formArray, int index) {
+    formArray.removeAt(index);
+  }
+
   FormGroup _getCurrentForm() {
     switch (_currentStep) {
       case 0:
@@ -234,7 +258,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       return;
     }
 
-    final data = WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
+    final data =
+        WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
 
     widget.bloc.add(
       WorkOrderActionEvent.completeWorkOrder(
@@ -315,7 +340,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               ),
 
               // Navigation buttons
-              _buildNavigationButtons(isLoading, theme, colorScheme),
+              // _buildNavigationButtons(isLoading, theme, colorScheme),
             ],
           ),
         );
@@ -362,10 +387,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ),
           ),
           IconButton(
-            onPressed: () {
-              _saveCache();
-              Navigator.of(context).pop();
-            },
+            onPressed: _handleClose,
             icon: Icon(
               Icons.close,
               size: DesignTokens.iconMd.sp,
@@ -395,7 +417,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildStepIndicator(int step, String label, ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildStepIndicator(
+      int step, String label, ThemeData theme, ColorScheme colorScheme) {
     final isActive = step == _currentStep;
     final isCompleted = step < _currentStep;
 
@@ -412,7 +435,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ),
           child: Center(
             child: isCompleted
-                ? Icon(Icons.check, color: colorScheme.onPrimary, size: DesignTokens.iconSm.sp)
+                ? Icon(Icons.check,
+                    color: colorScheme.onPrimary, size: DesignTokens.iconSm.sp)
                 : Text(
                     '${step + 1}',
                     style: theme.textTheme.labelMedium?.copyWith(
@@ -426,7 +450,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         Text(
           label,
           style: theme.textTheme.labelSmall?.copyWith(
-            color: isActive ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
+            color:
+                isActive ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
             fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
@@ -440,7 +465,9 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     return Container(
       height: 2.h,
       margin: REdgeInsets.only(bottom: DesignTokens.space5),
-      color: isCompleted ? colorScheme.primary : colorScheme.surfaceContainerHighest,
+      color: isCompleted
+          ? colorScheme.primary
+          : colorScheme.surfaceContainerHighest,
     );
   }
 
@@ -485,7 +512,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ),
         ),
         DesignTokens.verticalSpaceLg,
-
         Text(
           'Work Log *',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -495,13 +521,12 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         RSizedBox(height: DesignTokens.space2),
         ReactiveMultilineInput(
           formControlName: 'workLog',
-          hint: 'Describe the work performed in detail (minimum 20 characters)...',
+          hint:
+              'Describe the work performed in detail (minimum 20 characters)...',
           minLines: 4,
           maxLines: 8,
         ),
-
         DesignTokens.verticalSpaceLg,
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -515,13 +540,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               formArrayName: 'parts',
               builder: (context, formArray, child) {
                 return TextButton.icon(
-                  onPressed: () {
-                    formArray.add(WorkOrderForms.createPartEntry(
-                      partNumber: '',
-                      partName: '',
-                      quantity: 1,
-                    ));
-                  },
+                  onPressed: () => _handleAddPart(formArray),
                   icon: Icon(Icons.add, size: DesignTokens.iconSm.sp),
                   label: Text('Add Part'),
                 );
@@ -529,9 +548,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ),
           ],
         ),
-
         RSizedBox(height: DesignTokens.space2),
-
         ReactiveFormArray(
           formArrayName: 'parts',
           builder: (context, formArray, child) {
@@ -541,7 +558,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 decoration: BoxDecoration(
                   color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-                  border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
+                  border: Border.all(
+                      color: colorScheme.outline.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
@@ -567,7 +585,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             return Column(
               children: List.generate(
                 formArray.controls.length,
-                (index) => _buildPartEntry(formArray, index, theme, colorScheme),
+                (index) =>
+                    _buildPartEntry(formArray, index, theme, colorScheme),
               ),
             );
           },
@@ -576,7 +595,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
+      ColorScheme colorScheme) {
     return ReactiveForm(
       formGroup: formArray.controls[index] as FormGroup,
       child: Container(
@@ -606,7 +626,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => formArray.removeAt(index),
+                  onPressed: () => _handleRemovePart(formArray, index),
                   icon: Icon(Icons.delete, size: DesignTokens.iconSm.sp),
                   color: colorScheme.error,
                   style: IconButton.styleFrom(
@@ -656,7 +676,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ),
         ),
         DesignTokens.verticalSpaceLg,
-
         Text(
           'Images (Optional)',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -690,7 +709,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ),
         ),
         DesignTokens.verticalSpaceLg,
-
         Text(
           'Customer Name *',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -702,9 +720,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           formControlName: 'customerName',
           hint: 'Enter customer name',
         ),
-
         DesignTokens.verticalSpaceLg,
-
         Text(
           'Customer Signature *',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -715,9 +731,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         ReactiveSignaturePad(
           formControlName: 'signature',
         ),
-
         DesignTokens.verticalSpaceLg,
-
         Text(
           'Completion Notes (Optional)',
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -753,7 +767,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size(double.infinity, 48.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                    borderRadius:
+                        BorderRadius.circular(AppDimensions.radiusMedium),
                   ),
                 ),
                 child: Text(
@@ -765,27 +780,32 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 ),
               ),
             ),
-          if (_currentStep > 0) SizedBox(width: 12.w),
+          if (_currentStep > 0) DesignTokens.horizontalSpaceMd,
           Expanded(
             flex: _currentStep == 0 ? 1 : 2,
             child: ElevatedButton(
               onPressed: isLoading ? null : _nextStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _currentStep == 2 ? AppColors.success : AppColors.primary,
-                foregroundColor: Colors.white,
+                backgroundColor: _currentStep == 2
+                    ? context.fsmTheme.success
+                    : Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 minimumSize: Size(double.infinity, 48.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                  borderRadius:
+                      BorderRadius.circular(AppDimensions.radiusMedium),
                 ),
-                disabledBackgroundColor: AppColors.disabled,
+                disabledBackgroundColor:
+                    Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
               ),
               child: isLoading
-                  ? SizedBox(
+                  ? RSizedBox(
                       width: 20.w,
                       height: 20.h,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : Text(

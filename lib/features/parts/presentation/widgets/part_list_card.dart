@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart' show DesignTokens;
 import '../../domain/entities/part_entity.dart';
 
 /// PartListCard - List card for parts display
@@ -54,9 +55,9 @@ class PartListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingXSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space1,
       ),
       child: Material(
         color: AppColors.surface,
@@ -66,7 +67,7 @@ class PartListCard extends StatelessWidget {
           onTap: onTap ?? onDetails,
           borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
           child: Padding(
-            padding: EdgeInsets.all(AppDimensions.paddingSmall),
+            padding: REdgeInsets.all(DesignTokens.space2),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -109,9 +110,9 @@ class PartListCard extends StatelessWidget {
           ),
           SizedBox(height: 4.h),
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 6.w,
-              vertical: 2.h,
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space1 + 2,
+              vertical: DesignTokens.space1 / 2,
             ),
             decoration: BoxDecoration(
               color: _getStockStatusColor().withValues(alpha: 0.2),
@@ -215,9 +216,12 @@ class PartListCard extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.onPrimary,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                    padding: REdgeInsets.symmetric(
+                        horizontal: DesignTokens.space3,
+                        vertical: DesignTokens.space1),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                      borderRadius:
+                          BorderRadius.circular(AppDimensions.radiusXSmall),
                     ),
                     elevation: 0,
                   ),

@@ -1,20 +1,27 @@
 {
   "mcpServers": {
     "fetch": {
-      "command": "uvx",
-      "args": ["mcp-server-fetch"],
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_fetch"
+      ],
+      "disabled": false
+    },
+    "Context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "ctx7sk-59d15878-aa2a-4e52-b162-02a8b803dcca"
+      ],
       "env": {},
       "disabled": false,
-      "autoApprove": []
-    },
-    "MCP_DOCKER": {
-      "command": "docker",
-      "args": [
-        "mcp",
-        "gateway",
-        "run"
-      ],
-      "type": "stdio"
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
     }
   }
 }

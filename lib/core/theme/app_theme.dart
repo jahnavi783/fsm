@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 import 'design_tokens.dart';
 import 'extensions/fsm_theme_extension.dart';
+import 'spacing_theme.dart';
 
 class AppTheme {
   AppTheme._();
@@ -139,6 +140,7 @@ class AppTheme {
     textTheme: _createTextTheme(),
     extensions: const <ThemeExtension<dynamic>>[
       FSMThemeExtension.light,
+      SpacingTheme.light,
     ],
     
     // App Bar Theme
@@ -238,6 +240,29 @@ class AppTheme {
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.primary,
         side: BorderSide(color: AppColors.primary, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+        ),
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space6,
+          vertical: DesignTokens.space4,
+        ),
+        textStyle: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: DesignTokens.fontSize14.sp,
+          fontWeight: DesignTokens.fontWeightSemiBold,
+        ),
+        minimumSize: Size(0, DesignTokens.buttonHeightMd.h),
+      ),
+    ),
+
+    // Filled Button Theme (Material 3)
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+        elevation: DesignTokens.elevationNone,
+        shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         ),
@@ -404,6 +429,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColors.backgroundDark,
     extensions: const <ThemeExtension<dynamic>>[
       FSMThemeExtension.dark,
+      SpacingTheme.dark,
     ],
     
     appBarTheme: lightTheme.appBarTheme.copyWith(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/widgets/fsm_bottom_sheet.dart';
+import 'package:fsm/core/widgets/navigation/fsm_bottom_sheet.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/theme/design_tokens.dart';
 
 class WorkOrderActionSheet extends StatelessWidget {
   final WorkOrderEntity workOrder;
@@ -51,7 +53,7 @@ class WorkOrderActionSheet extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          DesignTokens.verticalSpace(DesignTokens.space5),
 
           // Work Order Info
           Text(
@@ -62,7 +64,7 @@ class WorkOrderActionSheet extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 4.h),
+          RSizedBox(height: 4.h),
 
           Text(
             workOrder.summary,
@@ -74,7 +76,7 @@ class WorkOrderActionSheet extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
 
-          SizedBox(height: 24.h),
+          DesignTokens.verticalSpaceLarge,
 
           // Action Buttons
           Text(
@@ -85,18 +87,15 @@ class WorkOrderActionSheet extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 16.h),
+          DesignTokens.verticalSpaceMedium,
 
           // Start Work Order
           if (workOrder.canBeStarted && onStart != null)
             _ActionButton(
               icon: Icons.play_arrow,
               label: 'Start Work Order',
-              color: Colors.green,
-              onTap: () {
-                Navigator.pop(context);
-                onStart!();
-              },
+              color: context.fsmTheme.actionStart,
+              onTap: () => _handleStart(context, onStart!),
             ),
 
           // Pause Work Order
@@ -104,11 +103,8 @@ class WorkOrderActionSheet extends StatelessWidget {
             _ActionButton(
               icon: Icons.pause,
               label: 'Pause Work Order',
-              color: Colors.orange,
-              onTap: () {
-                Navigator.pop(context);
-                onPause!();
-              },
+              color: context.fsmTheme.actionPause,
+              onTap: () => _handlePause(context, onPause!),
             ),
 
           // Resume Work Order
@@ -116,11 +112,8 @@ class WorkOrderActionSheet extends StatelessWidget {
             _ActionButton(
               icon: Icons.play_arrow,
               label: 'Resume Work Order',
-              color: Colors.blue,
-              onTap: () {
-                Navigator.pop(context);
-                onResume!();
-              },
+              color: context.fsmTheme.actionResume,
+              onTap: () => _handleResume(context, onResume!),
             ),
 
           // Complete Work Order
@@ -128,11 +121,8 @@ class WorkOrderActionSheet extends StatelessWidget {
             _ActionButton(
               icon: Icons.check_circle,
               label: 'Complete Work Order',
-              color: Colors.green,
-              onTap: () {
-                Navigator.pop(context);
-                onComplete!();
-              },
+              color: context.fsmTheme.actionComplete,
+              onTap: () => _handleComplete(context, onComplete!),
             ),
 
           // Reject Work Order
@@ -140,11 +130,8 @@ class WorkOrderActionSheet extends StatelessWidget {
             _ActionButton(
               icon: Icons.cancel,
               label: 'Reject Work Order',
-              color: Colors.red,
-              onTap: () {
-                Navigator.pop(context);
-                onReject!();
-              },
+              color: context.fsmTheme.actionReject,
+              onTap: () => _handleReject(context, onReject!),
             ),
 
           // View Details (always available)
@@ -153,19 +140,16 @@ class WorkOrderActionSheet extends StatelessWidget {
               icon: Icons.info_outline,
               label: 'View Details',
               color: theme.primaryColor,
-              onTap: () {
-                Navigator.pop(context);
-                onViewDetails!();
-              },
+              onTap: () => _handleViewDetails(context, onViewDetails!),
             ),
 
-          SizedBox(height: 16.h),
+          DesignTokens.verticalSpaceMedium,
 
           // Cancel Button
           SizedBox(
             width: double.infinity,
             child: TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => _handleCancel(context),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
@@ -187,6 +171,40 @@ class WorkOrderActionSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _handleCancel(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  void _handleStart(BuildContext context, VoidCallback onStart) {
+    Navigator.pop(context);
+    onStart();
+  }
+
+  void _handlePause(BuildContext context, VoidCallback onPause) {
+    Navigator.pop(context);
+    onPause();
+  }
+
+  void _handleResume(BuildContext context, VoidCallback onResume) {
+    Navigator.pop(context);
+    onResume();
+  }
+
+  void _handleComplete(BuildContext context, VoidCallback onComplete) {
+    Navigator.pop(context);
+    onComplete();
+  }
+
+  void _handleReject(BuildContext context, VoidCallback onReject) {
+    Navigator.pop(context);
+    onReject();
+  }
+
+  void _handleViewDetails(BuildContext context, VoidCallback onViewDetails) {
+    Navigator.pop(context);
+    onViewDetails();
   }
 
   static Future<void> show(
@@ -262,7 +280,7 @@ class _ActionButton extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: 20.sp,
                 ),
               ),

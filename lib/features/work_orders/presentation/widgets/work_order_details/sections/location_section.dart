@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class LocationSection extends StatelessWidget {
   final WorkOrderEntity workOrder;
@@ -26,14 +27,14 @@ class LocationSection extends StatelessWidget {
           value: workOrder.location,
           icon: Icons.location_on,
         ),
-        SizedBox(height: 8.h),
+        DesignTokens.verticalSpaceSmall,
         if (currentLocation != null) ...[
           InfoItemCard(
             label: 'Current GPS',
             value: '${currentLocation!.latitude.toStringAsFixed(6)}, ${currentLocation!.longitude.toStringAsFixed(6)}',
             icon: Icons.gps_fixed,
           ),
-          SizedBox(height: 8.h),
+          DesignTokens.verticalSpaceSmall,
           InfoItemCard(
             label: 'Accuracy',
             value: '${currentLocation!.accuracy?.toStringAsFixed(1)}m',
@@ -47,15 +48,15 @@ class LocationSection extends StatelessWidget {
                 size: 16.sp,
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
-              SizedBox(width: 8.w),
+              DesignTokens.horizontalSpaceSmall,
               Text(
                 'Getting current location...',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
-              SizedBox(width: 8.w),
-              SizedBox(
+              DesignTokens.horizontalSpaceSmall,
+              RSizedBox(
                 width: 16.w,
                 height: 16.h,
                 child: const CircularProgressIndicator(strokeWidth: 2),

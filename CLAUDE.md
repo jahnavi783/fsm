@@ -889,3 +889,6 @@ Container(color: context.fsmTheme.statusPending)
 - Tasks tracking: `.kiro/specs/flutter-design-system-refactor/tasks.md`
 - Requirements: `.kiro/specs/flutter-design-system-refactor/requirements.md`
 - Design details: `.kiro/specs/flutter-design-system-refactor/design.md`
+- use fetch and context7 to fetch flutter offical docs on this
+- Don't hard code anything in UI and Use Theme.of(context) for colours, dimensions and typographt etc
+- Do't hardcode colours, fontsizes, spacing and dimensions, use ThemeData instead using BuildContext

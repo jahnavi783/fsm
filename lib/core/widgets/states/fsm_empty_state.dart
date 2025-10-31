@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMEmptyState - Empty/zero state display with illustration, message, and action
 ///
@@ -55,7 +55,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.inbox_outlined,
         illustration = null,
-        iconColor = AppColors.grey400,
+        iconColor = const Color(0xFF9E9E9E), // Grey 500
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -69,7 +69,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.search_off_outlined,
         illustration = null,
-        iconColor = AppColors.grey400,
+        iconColor = const Color(0xFF9E9E9E), // Grey 500
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -83,7 +83,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.wifi_off_outlined,
         illustration = null,
-        iconColor = AppColors.offline,
+        iconColor = const Color(0xFFEF6C00), // Orange for offline
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -97,7 +97,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.error_outline,
         illustration = null,
-        iconColor = AppColors.error,
+        iconColor = const Color(0xFFB00020), // Material error color
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -111,7 +111,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.lock_outline,
         illustration = null,
-        iconColor = AppColors.warning,
+        iconColor = const Color(0xFFFFA726), // Amber for warning
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -125,7 +125,7 @@ class FSMEmptyState extends StatelessWidget {
     this.onAction,
   })  : icon = Icons.construction_outlined,
         illustration = null,
-        iconColor = AppColors.info,
+        iconColor = const Color(0xFF2196F3), // Blue for info
         backgroundColor = null,
         iconSize = null,
         padding = null;
@@ -133,9 +133,10 @@ class FSMEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveIconSize = iconSize ?? 96.sp;
-    final effectiveIconColor = iconColor ?? AppColors.grey400;
-    final effectivePadding = padding ?? AppDimensions.paddingAllLarge;
+    final spacing = context.spacing;
+    final effectiveIconSize = iconSize ?? DesignTokens.iconXxl.sp;
+    final effectiveIconColor = iconColor ?? theme.colorScheme.onSurfaceVariant;
+    final effectivePadding = padding ?? spacing.paddingLg;
 
     return Container(
       color: backgroundColor,
@@ -156,61 +157,39 @@ class FSMEmptyState extends StatelessWidget {
                   color: effectiveIconColor,
                 ),
 
-              SizedBox(height: AppDimensions.spaceLarge),
+              DesignTokens.verticalSpaceLarge,
 
               // Title
               Text(
                 title,
                 style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20.sp,
-                  color: AppColors.textPrimary,
+                  fontWeight: DesignTokens.fontWeightSemiBold,
+                  color: theme.colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
               ),
 
               // Description
               if (description != null) ...[
-                SizedBox(height: AppDimensions.spaceSmall),
+                DesignTokens.verticalSpaceSmall,
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+                  padding: REdgeInsets.symmetric(horizontal: DesignTokens.space6),
                   child: Text(
                     description!,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColors.textSecondary,
-                      height: 1.5,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ],
 
-              // Action Button
+              // Action Button - uses theme button styling
               if (actionLabel != null && onAction != null) ...[
-                SizedBox(height: AppDimensions.spaceLarge),
+                DesignTokens.verticalSpaceLarge,
                 ElevatedButton(
                   onPressed: onAction,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppDimensions.paddingLarge,
-                      vertical: AppDimensions.paddingMedium,
-                    ),
-                    minimumSize: Size(AppDimensions.buttonMinWidth, AppDimensions.buttonHeight),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-                    ),
-                    elevation: AppDimensions.elevationSmall,
-                  ),
-                  child: Text(
-                    actionLabel!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: Text(actionLabel!),
                 ),
               ],
             ],
@@ -243,10 +222,11 @@ class FSMEmptyStateCompact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveIconColor = iconColor ?? AppColors.grey400;
+    final spacing = context.spacing;
+    final effectiveIconColor = iconColor ?? theme.colorScheme.onSurfaceVariant;
 
     return Padding(
-      padding: AppDimensions.paddingAllMedium,
+      padding: spacing.paddingMd,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -254,41 +234,27 @@ class FSMEmptyStateCompact extends StatelessWidget {
           // Icon
           Icon(
             icon,
-            size: 48.sp,
+            size: DesignTokens.iconXxl.sp,
             color: effectiveIconColor,
           ),
 
-          SizedBox(height: AppDimensions.spaceSmall),
+          DesignTokens.verticalSpaceSmall,
 
           // Message
           Text(
             message,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 13.sp,
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
           ),
 
-          // Action Button (compact)
+          // Action Button (compact) - uses theme button styling
           if (actionLabel != null && onAction != null) ...[
-            SizedBox(height: AppDimensions.spaceSmall),
+            DesignTokens.verticalSpaceSmall,
             TextButton(
               onPressed: onAction,
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.primary,
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppDimensions.paddingMedium,
-                  vertical: AppDimensions.paddingSmall,
-                ),
-              ),
-              child: Text(
-                actionLabel!,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: Text(actionLabel!),
             ),
           ],
         ],

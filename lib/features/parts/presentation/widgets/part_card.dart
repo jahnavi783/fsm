@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/widgets/fsm_card.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/widgets/cards/fsm_card.dart';
+
 import '../../domain/entities/part_entity.dart';
 import 'inventory_indicator.dart';
 
@@ -19,10 +21,11 @@ class PartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FSMCard(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: REdgeInsets.all(DesignTokens.space4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -76,7 +79,9 @@ class PartCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space2,
+                      vertical: DesignTokens.space1),
                   decoration: BoxDecoration(
                     color: Colors.blue[50],
                     borderRadius: BorderRadius.circular(6.r),
@@ -93,12 +98,15 @@ class PartCard extends StatelessWidget {
                 ),
                 SizedBox(width: 8.w),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space2,
+                      vertical: DesignTokens.space1),
                   decoration: BoxDecoration(
                     color: _getStatusColor(part.status).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6.r),
                     border: Border.all(
-                        color: _getStatusColor(part.status).withValues(alpha: 0.3)),
+                        color: _getStatusColor(part.status)
+                            .withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     _getStatusText(part.status),
@@ -124,7 +132,9 @@ class PartCard extends StatelessWidget {
               SizedBox(height: 12.h),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space3,
+                    vertical: DesignTokens.space2),
                 decoration: BoxDecoration(
                   color: part.isOutOfStock ? Colors.red[50] : Colors.orange[50],
                   borderRadius: BorderRadius.circular(8.r),
@@ -162,8 +172,9 @@ class PartCard extends StatelessWidget {
                       TextButton(
                         onPressed: onUpdateInventory,
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 4.h),
+                          padding: REdgeInsets.symmetric(
+                              horizontal: DesignTokens.space2,
+                              vertical: DesignTokens.space1),
                           minimumSize: Size.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),

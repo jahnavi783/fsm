@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class MachineDetailsSection extends StatelessWidget {
   final dynamic serviceRequest;
@@ -23,7 +24,7 @@ class MachineDetailsSection extends StatelessWidget {
                 icon: Icons.qr_code,
               ),
             ),
-            SizedBox(width: 12.w),
+            DesignTokens.horizontalSpace(DesignTokens.space3),
             Expanded(
               child: InfoItemCard(
                 label: 'Model',
@@ -33,7 +34,7 @@ class MachineDetailsSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        DesignTokens.verticalSpace(DesignTokens.space3),
         InfoItemCard(
           label: 'Machine on Warranty',
           value: serviceRequest.underWarranty ?? 'Warranty Exceeded',

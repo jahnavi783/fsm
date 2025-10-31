@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/part_item.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class PartsUsedSection extends StatelessWidget {
   final List<PartUsedEntity> partsUsed;
@@ -16,7 +17,7 @@ class PartsUsedSection extends StatelessWidget {
     return Column(
       children: partsUsed
           .map((part) => Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
+                padding: REdgeInsets.only(bottom: DesignTokens.space2),
                 child: PartItem(part: part),
               ))
           .toList(),

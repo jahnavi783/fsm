@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/blocs/bloc_build_conditions.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/widgets.dart' hide CustomTabBar, StatsGrid, StatsCardData; // Barrel import, hide duplicates
 import '../../../../core/widgets/custom_tab_bar.dart';
@@ -355,7 +357,10 @@ class _DashboardPageState extends State<DashboardPage>
           workOrders: filteredWorkOrders,
           isLoadingMore: isLoadingMore,
           itemBuilder: (workOrder) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space4,
+              vertical: DesignTokens.space3,
+            ),
             child: WorkOrderCard(
               workOrder: workOrder,
               onTap: () {
@@ -488,11 +493,16 @@ class _DashboardPageState extends State<DashboardPage>
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final workOrder = unassignedWorkOrders[index];
+              final theme = Theme.of(context);
+              final spacing = context.spacing;
+
               return SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space4,
+                    vertical: DesignTokens.space3,
+                  ),
                   child: Column(
                     children: [
                       WorkOrderCard(
@@ -502,21 +512,23 @@ class _DashboardPageState extends State<DashboardPage>
                               WorkOrderDetailsRoute(workOrderId: workOrder.id));
                         },
                       ),
-                      SizedBox(height: 8.h),
+                      DesignTokens.verticalSpaceSmall,
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                          icon: Icon(Icons.person_add, size: 18.sp),
+                          icon: Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
                           label: Text('Assign to Me',
-                              style: TextStyle(fontSize: 14.sp)),
+                              style: theme.textTheme.labelLarge),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16.w, vertical: 12.h),
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
+                            padding: REdgeInsets.symmetric(
+                              horizontal: DesignTokens.space4,
+                              vertical: DesignTokens.space3,
+                            ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
+                              borderRadius: BorderRadius.circular(spacing.radiusSm.r),
                             ),
                           ),
                         ),

@@ -23,7 +23,7 @@ class BlocListenerHelpers {
   /// Shows a snackbar when an error occurs in the state
   ///
   /// Expects the state to have `hasError` and `errorMessage` properties
-  static void showSnackBarOnError<S extends BlocState>(
+  static void showSnackBarOnError<S>(
     BuildContext context,
     S state,
   ) {
@@ -56,7 +56,7 @@ class BlocListenerHelpers {
   /// Shows a success snackbar when a success message is available
   ///
   /// Expects the state to have `successMessage` property
-  static void showSnackBarOnSuccess<S extends BlocState>(
+  static void showSnackBarOnSuccess<S>(
     BuildContext context,
     S state,
   ) {
@@ -81,7 +81,7 @@ class BlocListenerHelpers {
   /// Navigates to a route when the state indicates success
   ///
   /// Expects the state to have `isSuccess` property
-  static void navigateOnSuccess<S extends BlocState>(
+  static void navigateOnSuccess<S>(
     BuildContext context,
     S state,
     String route,
@@ -100,7 +100,7 @@ class BlocListenerHelpers {
   /// Navigates back when the state indicates completion
   ///
   /// Expects the state to have `isCompleted` property
-  static void navigateBackOnCompletion<S extends BlocState>(
+  static void navigateBackOnCompletion<S>(
     BuildContext context,
     S state,
   ) {
@@ -118,7 +118,7 @@ class BlocListenerHelpers {
   /// Shows a dialog when the state indicates a confirmation is needed
   ///
   /// Expects the state to have `showConfirmation` and `confirmationMessage` properties
-  static void showConfirmationDialog<S extends BlocState>(
+  static void showConfirmationDialog<S>(
     BuildContext context,
     S state, {
     required VoidCallback onConfirm,
@@ -163,7 +163,7 @@ class BlocListenerHelpers {
   /// Handles authentication state changes by navigating to login
   ///
   /// Expects the state to have `isAuthenticated` property
-  static void handleAuthenticationChange<S extends BlocState>(
+  static void handleAuthenticationChange<S>(
     BuildContext context,
     S state,
   ) {
@@ -171,7 +171,7 @@ class BlocListenerHelpers {
       final isAuthenticated = (state as dynamic).isAuthenticated as bool?;
 
       if (isAuthenticated == false) {
-        context.router.pushAndClearStack('/login');
+        context.router.pushNamed('/login');
       }
     } catch (e) {
       debugPrint('Error in handleAuthenticationChange: $e');
@@ -181,7 +181,7 @@ class BlocListenerHelpers {
   /// Shows a loading dialog when the state indicates a long-running operation
   ///
   /// Expects the state to have `showLoadingDialog` property
-  static void showLoadingDialog<S extends BlocState>(
+  static void showLoadingDialog<S>(
     BuildContext context,
     S state,
   ) {
@@ -217,7 +217,7 @@ class BlocListenerHelpers {
   /// Handles connectivity changes by showing appropriate messages
   ///
   /// Expects the state to have `isOnline` property
-  static void handleConnectivityChange<S extends BlocState>(
+  static void handleConnectivityChange<S>(
     BuildContext context,
     S state,
   ) {
@@ -244,7 +244,7 @@ class BlocListenerHelpers {
   /// Handles sync status changes by showing appropriate indicators
   ///
   /// Expects the state to have `syncStatus` property
-  static void handleSyncStatusChange<S extends BlocState>(
+  static void handleSyncStatusChange<S>(
     BuildContext context,
     S state,
   ) {

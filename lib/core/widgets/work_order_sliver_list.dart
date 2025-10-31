@@ -44,7 +44,7 @@ class WorkOrderSliverList extends StatelessWidget {
         (context, index) {
           // Show loading indicator at the end
           if (index >= workOrders.length) {
-            return SizedBox(
+            return RSizedBox(
               width: double.infinity,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -59,9 +59,9 @@ class WorkOrderSliverList extends StatelessWidget {
 
           final workOrder = workOrders[index];
 
-          // Wrap item with SizedBox to constrain width and prevent infinite width errors
+          // Wrap item with RSizedBox to constrain width and prevent infinite width errors
           // SliverList passes unconstrained width, so we need to expand to available space
-          return SizedBox(
+          return RSizedBox(
             width: double.infinity,
             child: itemBuilder(workOrder),
           );

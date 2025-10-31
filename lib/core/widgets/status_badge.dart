@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// StatusBadge - Consistent status/priority chip component for the FSM app
 ///
@@ -202,32 +202,33 @@ class StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
+    final spacing = context.spacing;
 
     // Get color based on type
-    final baseColor = _getColor(fsmTheme);
+    final baseColor = _getColor(theme, fsmTheme);
 
     // Apply variant styling
     final backgroundColor = _getBackgroundColor(baseColor);
     final textColor = _getTextColor(baseColor);
     final borderColor = _getBorderColor(baseColor);
 
-    final effectiveFontSize = fontSize ?? 12.sp;
+    final effectiveFontSize = fontSize ?? DesignTokens.fontSize12.sp;
     final effectivePadding = padding ??
-        EdgeInsets.symmetric(
-          horizontal: 8.w,
-          vertical: 4.h,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space2,
+          vertical: DesignTokens.space1,
         );
-    final effectiveBorderRadius =
-        borderRadius ?? AppDimensions.radiusXSmall;
+    final effectiveBorderRadius = borderRadius ?? spacing.radiusXs;
 
     Widget badge = Container(
       padding: effectivePadding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(effectiveBorderRadius),
+        borderRadius: BorderRadius.circular(effectiveBorderRadius.r),
         border: borderColor != null
-            ? Border.all(color: borderColor, width: 1)
+            ? Border.all(color: borderColor, width: DesignTokens.borderWidthThin)
             : null,
       ),
       child: Row(
@@ -239,13 +240,13 @@ class StatusBadge extends StatelessWidget {
               size: effectiveFontSize * 1.2,
               color: textColor,
             ),
-            SizedBox(width: 4.w),
+            DesignTokens.horizontalSpaceXs,
           ],
           Text(
             label,
             style: TextStyle(
               fontSize: effectiveFontSize,
-              fontWeight: FontWeight.w600,
+              fontWeight: DesignTokens.fontWeightSemiBold,
               color: textColor,
               height: 1.0,
             ),
@@ -257,7 +258,7 @@ class StatusBadge extends StatelessWidget {
     if (onTap != null) {
       badge = InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(effectiveBorderRadius),
+        borderRadius: BorderRadius.circular(effectiveBorderRadius.r),
         child: badge,
       );
     }
@@ -265,7 +266,7 @@ class StatusBadge extends StatelessWidget {
     return badge;
   }
 
-  Color _getColor(FSMThemeExtension fsmTheme) {
+  Color _getColor(ThemeData theme, FSMThemeExtension fsmTheme) {
     if (customColor != null) return customColor!;
 
     switch (type) {
@@ -278,7 +279,7 @@ class StatusBadge extends StatelessWidget {
       case StatusBadgeType.sync:
         return fsmTheme.getSyncStatusColor(label.toLowerCase());
       case StatusBadgeType.custom:
-        return AppColors.primary;
+        return theme.colorScheme.primary;
     }
   }
 
@@ -296,7 +297,7 @@ class StatusBadge extends StatelessWidget {
   Color _getTextColor(Color baseColor) {
     switch (variant) {
       case StatusBadgeVariant.filled:
-        return Colors.white;
+        return const Color(0xFFFFFFFF); // White for filled variant
       case StatusBadgeVariant.outlined:
       case StatusBadgeVariant.subtle:
         return baseColor;

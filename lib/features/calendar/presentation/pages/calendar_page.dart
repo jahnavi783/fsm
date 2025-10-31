@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/core/widgets/fsm_empty_state.dart';
+import 'package:fsm/core/widgets/states/fsm_empty_state.dart';
 
 /// CalendarPage - Coming Soon Placeholder (Redesign 2025)
 ///

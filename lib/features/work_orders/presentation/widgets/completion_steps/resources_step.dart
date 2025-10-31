@@ -47,6 +47,20 @@ class ResourcesStep extends StatefulWidget {
 class _ResourcesStepState extends State<ResourcesStep> {
   final ImagePicker _picker = ImagePicker();
 
+  void _handleRemovePart(int index) {
+    widget.onRemovePart(index);
+  }
+
+  void _handleCameraImage(BuildContext context) {
+    Navigator.pop(context);
+    _getImage(ImageSource.camera);
+  }
+
+  void _handleGalleryImage(BuildContext context) {
+    Navigator.pop(context);
+    _getImage(ImageSource.gallery);
+  }
+
   Future<void> _getImage(ImageSource source) async {
     try {
       final pickedFile = await _picker.pickImage(
@@ -85,7 +99,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2.r),
               ),
             ),
@@ -107,18 +121,12 @@ class _ResourcesStepState extends State<ResourcesStep> {
                       _buildImageSourceOption(
                         icon: Icons.camera_alt,
                         label: 'Camera',
-                        onTap: () {
-                          Navigator.pop(context);
-                          _getImage(ImageSource.camera);
-                        },
+                        onTap: () => _handleCameraImage(context),
                       ),
                       _buildImageSourceOption(
                         icon: Icons.photo_library,
                         label: 'Gallery',
-                        onTap: () {
-                          Navigator.pop(context);
-                          _getImage(ImageSource.gallery);
-                        },
+                        onTap: () => _handleGalleryImage(context),
                       ),
                     ],
                   ),
@@ -212,7 +220,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
           ),
           SizedBox(width: 8.w),
           IconButton(
-            onPressed: () => widget.onRemovePart(index),
+            onPressed: () => _handleRemovePart(index),
             icon: const Icon(Icons.delete, color: AppColors.error),
             style: IconButton.styleFrom(
               padding: EdgeInsets.all(8.w),
@@ -247,11 +255,11 @@ class _ResourcesStepState extends State<ResourcesStep> {
               width: 24.w,
               height: 24.w,
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: AppColors.error,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -259,7 +267,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
               ),
               child: Icon(
                 Icons.close,
-                color: Colors.white,
+                color: AppColors.onError,
                 size: 16.sp,
               ),
             ),
@@ -335,7 +343,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: AppColors.onPrimary,
                     ),
                   ),
                 ),

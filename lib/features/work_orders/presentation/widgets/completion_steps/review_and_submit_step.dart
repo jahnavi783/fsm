@@ -45,6 +45,12 @@ class ReviewAndSubmitStep extends StatefulWidget {
 class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
   bool _showReview = false;
 
+  void _handleToggleReview() {
+    setState(() {
+      _showReview = !_showReview;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -413,11 +419,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
 
           // Review Toggle Button
           OutlinedButton.icon(
-            onPressed: () {
-              setState(() {
-                _showReview = !_showReview;
-              });
-            },
+            onPressed: _handleToggleReview,
             icon: Icon(
               _showReview ? Icons.visibility_off : Icons.visibility,
               size: 18.sp,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 class ActionInProgressWidget extends StatelessWidget {
   final String actionType;
@@ -16,7 +17,7 @@ class ActionInProgressWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const CircularProgressIndicator(),
-          SizedBox(height: 16.h),
+          DesignTokens.verticalSpaceMedium,
           Text(
             '${actionType.toUpperCase()}ING work order...',
             style: TextStyle(fontSize: 16.sp),

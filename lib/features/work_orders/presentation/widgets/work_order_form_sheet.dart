@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/app_dimensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/form/location_status_widget.dart';
 import '../../../../core/widgets/form/reactive_image_picker.dart';
 import '../../../../core/widgets/form/reactive_multiline_input.dart';
+import '../../../../core/widgets/widgets.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_order_action/work_order_action_bloc.dart';
@@ -48,7 +51,7 @@ class WorkOrderFormSheet extends StatelessWidget {
     LocationEntity? location,
   }) async {
     final bloc = context.read<WorkOrderActionBloc>();
-    
+
     // Create the appropriate form group based on action type
     final formGroup = _createFormGroup(action);
 
@@ -112,16 +115,17 @@ class WorkOrderFormSheet extends StatelessWidget {
   }
 
   /// Get submit button color based on action type
-  Color get _submitButtonColor {
+  Color _getSubmitButtonColor(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
     switch (action) {
       case WorkOrderAction.start:
-        return AppColors.success;
+        return fsmTheme.actionStart;
       case WorkOrderAction.pause:
-        return AppColors.warning;
+        return fsmTheme.actionPause;
       case WorkOrderAction.resume:
-        return AppColors.success;
+        return fsmTheme.actionResume;
       case WorkOrderAction.reject:
-        return AppColors.error;
+        return fsmTheme.actionReject;
     }
   }
 
@@ -132,7 +136,7 @@ class WorkOrderFormSheet extends StatelessWidget {
         maxHeight: 0.8.sh,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppDimensions.radiusLarge),
         ),
@@ -142,18 +146,21 @@ class WorkOrderFormSheet extends StatelessWidget {
         children: [
           // Handle bar
           Container(
-            margin: EdgeInsets.only(top: 12.h),
+            margin: REdgeInsets.only(top: DesignTokens.space3),
             width: 40.w,
             height: 4.h,
             decoration: BoxDecoration(
-              color: AppColors.textSecondary.withValues(alpha: 0.3),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2.r),
             ),
           ),
-          
+
           // Header
           Padding(
-            padding: EdgeInsets.all(AppDimensions.paddingMedium),
+            padding: REdgeInsets.all(DesignTokens.space4),
             child: Row(
               children: [
                 Expanded(
@@ -162,51 +169,49 @@ class WorkOrderFormSheet extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(
-                    Icons.close,
-                    size: 24.sp,
-                    color: AppColors.textSecondary,
-                  ),
+                FsmIconButton(
+                  icon: Icons.close,
+                  onPressed: _handleClose,
+                  size: FsmIconButtonSize.medium,
+                  tooltip: 'Close',
                 ),
               ],
             ),
           ),
-          
-          Divider(height: 1.h, color: AppColors.outline),
-          
+
+          Divider(height: 1.h, color: Theme.of(context).colorScheme.outline),
+
           // Form content
           Flexible(
             child: ReactiveForm(
               formGroup: formGroup,
               child: ListView(
-                padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                padding: REdgeInsets.all(DesignTokens.space4),
                 shrinkWrap: true,
                 children: [
                   // Location status
                   LocationStatusWidget(location: location),
-                  
-                  SizedBox(height: AppDimensions.paddingMedium),
-                  
+
+                  DesignTokens.verticalSpaceMedium,
+
                   // Work Order Info
                   _buildWorkOrderInfo(),
-                  
-                  SizedBox(height: AppDimensions.paddingLarge),
-                  
+
+                  DesignTokens.verticalSpaceLarge,
+
                   // Dynamic form fields based on action type
                   ..._buildFormFields(),
-                  
-                  SizedBox(height: AppDimensions.paddingLarge),
-                  
+
+                  DesignTokens.verticalSpaceLarge,
+
                   // Submit button
                   _buildSubmitButton(context),
-                  
-                  SizedBox(height: AppDimensions.paddingMedium),
+
+                  DesignTokens.verticalSpaceMedium,
                 ],
               ),
             ),
@@ -219,11 +224,13 @@ class WorkOrderFormSheet extends StatelessWidget {
   /// Build work order info card
   Widget _buildWorkOrderInfo() {
     return Container(
-      padding: EdgeInsets.all(AppDimensions.paddingMedium),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        color: AppColors.brandPrimaryLight,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+        border: Border.all(
+            color:
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,19 +240,19 @@ class WorkOrderFormSheet extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          SizedBox(height: 4.h),
+          DesignTokens.verticalSpaceXs,
           Text(
             workOrder.summary,
             style: TextStyle(
               fontSize: 14.sp,
-              color: AppColors.textPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           if (workOrder.customer?.name != null) ...[
-            SizedBox(height: 4.h),
+            DesignTokens.verticalSpaceXs,
             Text(
               'Customer: ${workOrder.customer!.name}',
               style: TextStyle(
@@ -284,12 +291,12 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveMultilineInput(
         formControlName: 'notes',
         hint: 'Add any notes before starting...',
       ),
-      SizedBox(height: AppDimensions.paddingMedium),
+      DesignTokens.verticalSpaceMedium,
       Text(
         'Attachments (Optional)',
         style: TextStyle(
@@ -298,7 +305,7 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveImagePicker(
         formControlName: 'files',
         maxImages: 5,
@@ -317,12 +324,12 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveMultilineInput(
         formControlName: 'reason',
         hint: 'Why are you pausing this work order?',
       ),
-      SizedBox(height: AppDimensions.paddingMedium),
+      DesignTokens.verticalSpaceMedium,
       Text(
         'Attachments (Optional)',
         style: TextStyle(
@@ -331,7 +338,7 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveImagePicker(
         formControlName: 'files',
         maxImages: 5,
@@ -350,7 +357,7 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveMultilineInput(
         formControlName: 'notes',
         hint: 'Add any notes about resuming...',
@@ -369,12 +376,12 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveMultilineInput(
         formControlName: 'reason',
         hint: 'Why are you rejecting this work order?',
       ),
-      SizedBox(height: AppDimensions.paddingMedium),
+      DesignTokens.verticalSpaceMedium,
       Text(
         'Attachments (Optional)',
         style: TextStyle(
@@ -383,7 +390,7 @@ class WorkOrderFormSheet extends StatelessWidget {
           color: AppColors.textPrimary,
         ),
       ),
-      SizedBox(height: 8.h),
+      DesignTokens.verticalSpaceSmall,
       ReactiveImagePicker(
         formControlName: 'files',
         maxImages: 5,
@@ -429,23 +436,25 @@ class WorkOrderFormSheet extends StatelessWidget {
             return ElevatedButton(
               onPressed: (isLoading || !canSubmit || !form.valid)
                   ? null
-                  : () => _handleSubmit(context),
+                  : _handleSubmitWrapper,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _submitButtonColor,
-                foregroundColor: Colors.white,
+                backgroundColor: _getSubmitButtonColor(context),
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 minimumSize: Size(double.infinity, 48.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                  borderRadius:
+                      BorderRadius.circular(AppDimensions.radiusMedium),
                 ),
                 disabledBackgroundColor: AppColors.disabled,
               ),
               child: isLoading
-                  ? SizedBox(
+                  ? RSizedBox(
                       width: 20.w,
                       height: 20.h,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : Text(
@@ -462,12 +471,21 @@ class WorkOrderFormSheet extends StatelessWidget {
     );
   }
 
+  void _handleClose() {
+    Navigator.of(context).pop();
+  }
+
+  void _handleSubmitWrapper() {
+    _handleSubmit(context);
+  }
+
   /// Handle form submission
   void _handleSubmit(BuildContext context) {
     if (location == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Location is required to ${_submitButtonText.toLowerCase()} work order'),
+          content: Text(
+              'Location is required to ${_submitButtonText.toLowerCase()} work order'),
           backgroundColor: AppColors.error,
         ),
       );

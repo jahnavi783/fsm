@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMCard - Unified card component for the FSM app
 ///
@@ -112,15 +111,16 @@ class FSMCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final spacing = context.spacing;
 
-    final effectiveElevation = elevation ?? AppDimensions.elevationSmall;
-    final effectiveBorderRadius = borderRadius ?? AppDimensions.radiusMedium;
+    final effectiveElevation = elevation ?? spacing.elevationSm;
+    final effectiveBorderRadius = borderRadius ?? spacing.cardRadius;
     final effectiveBackgroundColor = backgroundColor ?? theme.cardColor;
-    final effectivePadding = padding ?? AppDimensions.paddingAllMedium;
+    final effectivePadding = padding ?? spacing.cardPaddingAll;
     final effectiveMargin = margin ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        REdgeInsets.symmetric(
+          horizontal: spacing.space4,
+          vertical: spacing.space2,
         );
 
     Widget cardContent = child;
@@ -132,11 +132,11 @@ class FSMCard extends StatelessWidget {
         children: [
           if (leading != null) ...[
             leading!,
-            SizedBox(width: AppDimensions.paddingMedium),
+            spacing.horizontalSpaceMedium,
           ],
           Expanded(child: cardContent),
           if (trailing != null) ...[
-            SizedBox(width: AppDimensions.paddingMedium),
+            spacing.horizontalSpaceMedium,
             trailing!,
           ],
         ],
@@ -148,16 +148,16 @@ class FSMCard extends StatelessWidget {
       color: effectiveBackgroundColor,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(effectiveBorderRadius),
+        borderRadius: BorderRadius.circular(effectiveBorderRadius.r),
         side: borderColor != null
             ? BorderSide(
                 color: borderColor!,
-                width: borderWidth ?? AppDimensions.cardBorderWidth,
+                width: borderWidth ?? 1.0,
               )
             : BorderSide.none,
       ),
       clipBehavior: clipBehavior,
-      shadowColor: showShadow ? AppColors.cardShadow : Colors.transparent,
+      shadowColor: showShadow ? theme.shadowColor : Colors.transparent,
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
@@ -212,14 +212,15 @@ class FSMCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final spacing = context.spacing;
 
     return Padding(
-      padding: padding ?? EdgeInsets.only(bottom: AppDimensions.paddingSmall),
+      padding: padding ?? REdgeInsets.only(bottom: spacing.space2),
       child: Row(
         children: [
           if (leading != null) ...[
             leading!,
-            SizedBox(width: AppDimensions.paddingSmall),
+            spacing.horizontalSpaceSmall,
           ],
           Expanded(
             child: Column(
@@ -229,16 +230,14 @@ class FSMCardHeader extends StatelessWidget {
                   title,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16.sp,
                   ),
                 ),
                 if (subtitle != null) ...[
-                  SizedBox(height: 2.h),
+                  RSizedBox(height: spacing.space1),
                   Text(
                     subtitle!,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontSize: 12.sp,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -246,7 +245,7 @@ class FSMCardHeader extends StatelessWidget {
             ),
           ),
           if (trailing != null) ...[
-            SizedBox(width: AppDimensions.paddingSmall),
+            spacing.horizontalSpaceSmall,
             trailing!,
           ],
         ],
@@ -270,13 +269,15 @@ class FSMCardFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacing = context.spacing;
+
     return Padding(
-      padding: padding ?? EdgeInsets.only(top: AppDimensions.paddingMedium),
+      padding: padding ?? REdgeInsets.only(top: spacing.space4),
       child: Row(
         mainAxisAlignment: alignment ?? MainAxisAlignment.end,
         children: actions
             .map((action) => Padding(
-                  padding: EdgeInsets.only(left: AppDimensions.paddingSmall),
+                  padding: REdgeInsets.only(left: spacing.space2),
                   child: action,
                 ))
             .toList(),

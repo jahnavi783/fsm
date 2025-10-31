@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
+import '../../../../../core/theme/design_tokens.dart';
 
 class InfoItemCard extends StatelessWidget {
   final String label;
@@ -18,7 +19,7 @@ class InfoItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
         borderRadius: BorderRadius.circular(8.r),
@@ -33,7 +34,7 @@ class InfoItemCard extends StatelessWidget {
             size: 16.sp,
             color: theme.colorScheme.primary,
           ),
-          SizedBox(width: 8.w),
+          DesignTokens.horizontalSpaceSmall,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +49,7 @@ class InfoItemCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
-                SizedBox(height: 2.h),
+                RSizedBox(height: 2.h),
                 Text(
                   value,
                   style: TextStyle(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../services/lazy_loading_service.dart';
-import 'enhanced_loading_indicator.dart';
-import 'error_boundary_widget.dart';
+import 'package:fsm/core/services/lazy_loading_service.dart';
+import '../enhanced_loading_indicator.dart';
+import '../error_boundary/error_boundary_widget.dart';
 
 /// Lazy loading list widget with automatic pagination
 class LazyLoadingList<T> extends StatefulWidget {

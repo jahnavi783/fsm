@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/blocs/connectivity/connectivity_bloc.dart';
+import 'core/blocs/connectivity/connectivity_event.dart';
+import 'core/blocs/sync/sync_bloc.dart';
+import 'core/blocs/sync/sync_event.dart';
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
 import 'core/network/dio_client.dart';
@@ -12,11 +16,7 @@ import 'core/router/app_router.dart';
 import 'core/router/observers/app_route_observer.dart';
 import 'core/services/error_boundary_service.dart';
 import 'core/theme/theme.dart';
-import 'core/widgets/error_boundary_widget.dart';
-import 'core/blocs/connectivity/connectivity_bloc.dart';
-import 'core/blocs/connectivity/connectivity_event.dart';
-import 'core/blocs/sync/sync_bloc.dart';
-import 'core/blocs/sync/sync_event.dart';
+import 'core/widgets/error_boundary/error_boundary_widget.dart';
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 
 GlobalKey<NavigatorState> GlobalNavigatorKey = GlobalKey<NavigatorState>();

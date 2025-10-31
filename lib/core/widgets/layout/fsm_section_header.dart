@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMSectionHeader - Section dividers with title and optional action
 ///
@@ -84,16 +83,15 @@ class FSMSectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectivePadding = padding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingMedium,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space4,
         );
 
     final effectiveTitleStyle = titleStyle ??
         theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
-          fontSize: 16.sp,
-          color: AppColors.textPrimary,
+          color: theme.colorScheme.onSurface,
         );
 
     // Build action widget
@@ -104,18 +102,17 @@ class FSMSectionHeader extends StatelessWidget {
       actionWidget = TextButton(
         onPressed: onActionPressed,
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.primary,
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingSmall,
-            vertical: AppDimensions.paddingXSmall,
+          foregroundColor: theme.colorScheme.primary,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space2,
+            vertical: DesignTokens.space1,
           ),
           minimumSize: Size.zero,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: Text(
           actionLabel!,
-          style: TextStyle(
-            fontSize: 13.sp,
+          style: theme.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -129,8 +126,8 @@ class FSMSectionHeader extends StatelessWidget {
         if (showTopDivider)
           Divider(
             height: 1.h,
-            thickness: AppDimensions.dividerThickness,
-            color: AppColors.divider,
+            thickness: 1,
+            color: theme.colorScheme.outlineVariant,
           ),
 
         // Header content
@@ -149,7 +146,7 @@ class FSMSectionHeader extends StatelessWidget {
 
               // Action
               if (actionWidget != null) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 actionWidget,
               ],
             ],
@@ -160,8 +157,8 @@ class FSMSectionHeader extends StatelessWidget {
         if (showBottomDivider)
           Divider(
             height: 1.h,
-            thickness: AppDimensions.dividerThickness,
-            color: AppColors.divider,
+            thickness: 1,
+            color: theme.colorScheme.outlineVariant,
           ),
       ],
     );
@@ -213,7 +210,7 @@ class _FSMCollapsibleSectionState extends State<FSMCollapsibleSection>
     _isExpanded = widget.initiallyExpanded;
 
     _controller = AnimationController(
-      duration: AppDimensions.animationMedium,
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
@@ -249,15 +246,15 @@ class _FSMCollapsibleSectionState extends State<FSMCollapsibleSection>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectivePadding = widget.padding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingMedium,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space4,
         );
 
     final effectiveContentPadding = widget.contentPadding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingMedium,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space4,
         );
 
     return Column(
@@ -278,8 +275,7 @@ class _FSMCollapsibleSectionState extends State<FSMCollapsibleSection>
                       widget.title,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        fontSize: 16.sp,
-                        color: AppColors.textPrimary,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                   ),
@@ -287,13 +283,13 @@ class _FSMCollapsibleSectionState extends State<FSMCollapsibleSection>
                   // Expand/Collapse Icon
                   AnimatedRotation(
                     turns: _isExpanded ? 0.5 : 0,
-                    duration: AppDimensions.animationMedium,
+                    duration: const Duration(milliseconds: 300),
                     child: Icon(
                       _isExpanded
                           ? (widget.collapseIcon ?? Icons.expand_less)
                           : (widget.expandIcon ?? Icons.expand_more),
-                      color: AppColors.grey600,
-                      size: AppDimensions.iconMedium,
+                      color: theme.colorScheme.onSurfaceVariant,
+                      size: DesignTokens.iconMd.sp,
                     ),
                   ),
                 ],
@@ -306,8 +302,8 @@ class _FSMCollapsibleSectionState extends State<FSMCollapsibleSection>
         if (widget.showDivider)
           Divider(
             height: 1.h,
-            thickness: AppDimensions.dividerThickness,
-            color: AppColors.divider,
+            thickness: 1,
+            color: theme.colorScheme.outlineVariant,
           ),
 
         // Collapsible Content
@@ -352,9 +348,9 @@ class FSMStickyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingMedium,
-              vertical: AppDimensions.paddingMedium,
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space4,
+              vertical: DesignTokens.space4,
             ),
             child: Row(
               children: [
@@ -364,15 +360,14 @@ class FSMStickyHeader extends StatelessWidget {
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      fontSize: 16.sp,
-                      color: AppColors.textPrimary,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
 
                 // Trailing
                 if (trailing != null) ...[
-                  SizedBox(width: AppDimensions.paddingSmall),
+                  RSizedBox(width: DesignTokens.space2),
                   trailing!,
                 ],
               ],
@@ -383,8 +378,8 @@ class FSMStickyHeader extends StatelessWidget {
           if (showDivider)
             Divider(
               height: 1.h,
-              thickness: AppDimensions.dividerThickness,
-              color: AppColors.divider,
+              thickness: 1,
+              color: theme.colorScheme.outlineVariant,
             ),
         ],
       ),
@@ -411,7 +406,7 @@ class FSMSectionHeaderGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children
           .map((child) => Padding(
-                padding: EdgeInsets.only(bottom: spacing.h),
+                padding: REdgeInsets.only(bottom: spacing),
                 child: child,
               ))
           .toList(),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMListItem - Standardized list item component for the FSM app
 ///
@@ -111,23 +110,23 @@ class FSMListItem extends StatelessWidget {
 
     final effectiveMinHeight = minHeight ??
         (dense
-            ? AppDimensions.listItemHeightCompact
+            ? DesignTokens.buttonHeightMd.h
             : tertiaryText != null
-                ? AppDimensions.listItemHeightComfortable
-                : AppDimensions.listItemHeight);
+                ? (DesignTokens.space12 + DesignTokens.space4).h
+                : (DesignTokens.space12 + DesignTokens.space2).h);
 
     final effectivePadding = padding ??
-        EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: dense ? AppDimensions.paddingSmall : 0,
+        REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: dense ? DesignTokens.space2 : 0,
         );
 
     final effectiveContentPadding = contentPadding ??
-        EdgeInsets.symmetric(
+        REdgeInsets.symmetric(
           horizontal: 0,
           vertical: dense
-              ? AppDimensions.paddingSmall
-              : AppDimensions.paddingMedium,
+              ? DesignTokens.space2
+              : DesignTokens.space4,
         );
 
     Widget listItem = InkWell(
@@ -142,7 +141,7 @@ class FSMListItem extends StatelessWidget {
             // Leading widget
             if (leading != null) ...[
               leading!,
-              SizedBox(width: AppDimensions.paddingMedium),
+              RSizedBox(width: DesignTokens.space4),
             ],
 
             // Content
@@ -156,8 +155,7 @@ class FSMListItem extends StatelessWidget {
                     title,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      fontSize: dense ? 14.sp : 16.sp,
-                      color: AppColors.textPrimary,
+                      color: theme.colorScheme.onSurface,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -165,12 +163,11 @@ class FSMListItem extends StatelessWidget {
 
                   // Subtitle
                   if (subtitle != null) ...[
-                    SizedBox(height: 4.h),
+                    RSizedBox(height: DesignTokens.space1),
                     Text(
                       subtitle!,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: dense ? 12.sp : 14.sp,
-                        color: AppColors.textSecondary,
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                       maxLines: tertiaryText != null ? 1 : 2,
                       overflow: TextOverflow.ellipsis,
@@ -179,12 +176,11 @@ class FSMListItem extends StatelessWidget {
 
                   // Tertiary text
                   if (tertiaryText != null) ...[
-                    SizedBox(height: 4.h),
+                    RSizedBox(height: DesignTokens.space1),
                     Text(
                       tertiaryText!,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textTertiary,
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -193,10 +189,10 @@ class FSMListItem extends StatelessWidget {
 
                   // Metadata badges
                   if (metadata != null && metadata!.isNotEmpty) ...[
-                    SizedBox(height: 8.h),
+                    RSizedBox(height: DesignTokens.space2),
                     Wrap(
-                      spacing: 8.w,
-                      runSpacing: 4.h,
+                      spacing: DesignTokens.space2.w,
+                      runSpacing: DesignTokens.space1.h,
                       children: metadata!,
                     ),
                   ],
@@ -206,7 +202,7 @@ class FSMListItem extends StatelessWidget {
 
             // Trailing widget
             if (trailing != null) ...[
-              SizedBox(width: AppDimensions.paddingMedium),
+              RSizedBox(width: DesignTokens.space4),
               trailing!,
             ],
           ],
@@ -221,10 +217,10 @@ class FSMListItem extends StatelessWidget {
           listItem,
           Divider(
             height: 1.h,
-            thickness: AppDimensions.dividerThickness,
-            indent: leading != null ? 72.w : AppDimensions.paddingMedium,
-            endIndent: AppDimensions.paddingMedium,
-            color: AppColors.divider,
+            thickness: 1,
+            indent: leading != null ? (DesignTokens.space12 + DesignTokens.space6).w : DesignTokens.space4.w,
+            endIndent: DesignTokens.space4.w,
+            color: theme.colorScheme.outlineVariant,
           ),
         ],
       );
@@ -243,42 +239,49 @@ class FSMListItemLeading {
 
   /// Icon leading widget
   static Widget icon({
+    required BuildContext context,
     required IconData icon,
     Color? color,
     Color? backgroundColor,
     double? size,
   }) {
+    final theme = Theme.of(context);
+    final effectiveSize = size ?? DesignTokens.buttonHeightMd.w;
+
     return Container(
-      width: size ?? 48.w,
-      height: size ?? 48.w,
+      width: effectiveSize,
+      height: effectiveSize,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.grey100,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: backgroundColor ?? theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Icon(
         icon,
-        color: color ?? AppColors.primary,
-        size: (size ?? 48.w) * 0.5,
+        color: color ?? theme.colorScheme.primary,
+        size: effectiveSize * 0.5,
       ),
     );
   }
 
   /// Avatar leading widget
   static Widget avatar({
+    required BuildContext context,
     String? imageUrl,
     String? name,
     double? size,
   }) {
-    final effectiveSize = size ?? 48.w;
+    final theme = Theme.of(context);
+    final effectiveSize = size ?? DesignTokens.buttonHeightMd.w;
+
     return CircleAvatar(
       radius: effectiveSize / 2,
       backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
-      backgroundColor: AppColors.primary,
+      backgroundColor: theme.colorScheme.primary,
       child: imageUrl == null && name != null
           ? Text(
               name.substring(0, 1).toUpperCase(),
               style: TextStyle(
-                color: AppColors.onPrimary,
+                color: theme.colorScheme.onPrimary,
                 fontSize: (effectiveSize * 0.4).sp,
                 fontWeight: FontWeight.w600,
               ),
@@ -303,13 +306,15 @@ class FSMListItemLeading {
 
   /// Image leading widget
   static Widget image({
+    required BuildContext context,
     required String imageUrl,
     double? size,
     BoxFit fit = BoxFit.cover,
   }) {
-    final effectiveSize = size ?? 48.w;
+    final theme = Theme.of(context);
+    final effectiveSize = size ?? DesignTokens.buttonHeightMd.w;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       child: Image.network(
         imageUrl,
         width: effectiveSize,
@@ -319,10 +324,10 @@ class FSMListItemLeading {
           return Container(
             width: effectiveSize,
             height: effectiveSize,
-            color: AppColors.grey200,
+            color: theme.colorScheme.surfaceContainerHighest,
             child: Icon(
               Icons.image_not_supported,
-              color: AppColors.grey500,
+              color: theme.colorScheme.onSurfaceVariant,
               size: effectiveSize * 0.5,
             ),
           );
@@ -338,14 +343,16 @@ class FSMListItemTrailing {
 
   /// Icon trailing widget
   static Widget icon({
+    required BuildContext context,
     required IconData icon,
     Color? color,
     VoidCallback? onTap,
   }) {
+    final theme = Theme.of(context);
     final iconWidget = Icon(
       icon,
-      color: color ?? AppColors.grey600,
-      size: 20.sp,
+      color: color ?? theme.colorScheme.onSurfaceVariant,
+      size: DesignTokens.iconSm.sp,
     );
 
     if (onTap != null) {
@@ -353,8 +360,8 @@ class FSMListItemTrailing {
         icon: iconWidget,
         onPressed: onTap,
         constraints: BoxConstraints(
-          minWidth: AppDimensions.touchTargetMin,
-          minHeight: AppDimensions.touchTargetMin,
+          minWidth: DesignTokens.buttonHeightMd,
+          minHeight: DesignTokens.buttonHeightMd,
         ),
         padding: EdgeInsets.zero,
       );
@@ -365,50 +372,56 @@ class FSMListItemTrailing {
 
   /// Text trailing widget (for metadata like dates, counts)
   static Widget text({
+    required BuildContext context,
     required String text,
     Color? color,
     TextStyle? style,
   }) {
+    final theme = Theme.of(context);
     return Text(
       text,
       style: style ??
-          TextStyle(
-            fontSize: 12.sp,
-            color: color ?? AppColors.textTertiary,
+          theme.textTheme.bodySmall?.copyWith(
+            color: color ?? theme.colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
     );
   }
 
   /// Arrow icon (commonly used for navigation)
-  static Widget arrow({Color? color}) {
+  static Widget arrow({
+    required BuildContext context,
+    Color? color,
+  }) {
+    final theme = Theme.of(context);
     return Icon(
       Icons.chevron_right,
-      color: color ?? AppColors.grey400,
-      size: 20.sp,
+      color: color ?? theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+      size: DesignTokens.iconSm.sp,
     );
   }
 
   /// Badge trailing widget
   static Widget badge({
+    required BuildContext context,
     required String text,
     Color? backgroundColor,
     Color? textColor,
   }) {
+    final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 8.w,
-        vertical: 4.h,
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space2,
+        vertical: DesignTokens.space1,
       ),
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.primary,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+        color: backgroundColor ?? theme.colorScheme.primary,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 11.sp,
-          color: textColor ?? AppColors.onPrimary,
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: textColor ?? theme.colorScheme.onPrimary,
           fontWeight: FontWeight.w600,
         ),
       ),

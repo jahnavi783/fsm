@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// FSMSearchBar - Unified search component for the FSM app
@@ -115,28 +114,29 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
     return Column(
       children: [
         Container(
           margin: widget.margin ??
-              EdgeInsets.symmetric(
-                horizontal: AppDimensions.paddingMedium,
-                vertical: AppDimensions.paddingSmall,
+              REdgeInsets.symmetric(
+                horizontal: DesignTokens.space4,
+                vertical: DesignTokens.space2,
               ),
           padding: widget.padding ??
-              EdgeInsets.symmetric(
-                horizontal: AppDimensions.paddingMedium,
-                vertical: AppDimensions.paddingSmall,
+              REdgeInsets.symmetric(
+                horizontal: DesignTokens.space4,
+                vertical: DesignTokens.space2,
               ),
           decoration: BoxDecoration(
             color: fsmTheme.searchBarBackground,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             border: Border.all(
               color: _focusNode.hasFocus
-                  ? AppColors.primary
-                  : AppColors.cardBorder,
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.outlineVariant,
               width: _focusNode.hasFocus ? 2 : 1,
             ),
           ),
@@ -145,10 +145,10 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
               // Search icon
               Icon(
                 Icons.search,
-                color: AppColors.grey600,
-                size: 24.sp,
+                color: theme.colorScheme.onSurfaceVariant,
+                size: DesignTokens.iconMd.sp,
               ),
-              SizedBox(width: AppDimensions.paddingSmall),
+              RSizedBox(width: DesignTokens.space2),
 
               // Text field
               Expanded(
@@ -157,14 +157,14 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                   focusNode: _focusNode,
                   autofocus: widget.autofocus,
                   style: TextStyle(
-                    fontSize: 16.sp,
-                    color: AppColors.textPrimary,
+                    fontSize: DesignTokens.fontSize16.sp,
+                    color: theme.colorScheme.onSurface,
                   ),
                   decoration: InputDecoration(
                     hintText: widget.hintText ?? 'Search...',
                     hintStyle: TextStyle(
-                      fontSize: 16.sp,
-                      color: AppColors.textTertiary,
+                      fontSize: DesignTokens.fontSize16.sp,
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                     border: InputBorder.none,
                     isDense: true,
@@ -177,14 +177,14 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
 
               // Loading indicator
               if (widget.isLoading) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 SizedBox(
-                  width: 20.w,
-                  height: 20.h,
+                  width: DesignTokens.iconSm.w,
+                  height: DesignTokens.iconSm.h,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.w,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.primary,
+                      theme.colorScheme.primary,
                     ),
                   ),
                 ),
@@ -192,17 +192,17 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
 
               // Clear button
               if (_hasText && !widget.isLoading) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 IconButton(
                   icon: Icon(
                     Icons.clear,
-                    color: AppColors.grey600,
-                    size: 20.sp,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: DesignTokens.iconSm.sp,
                   ),
                   onPressed: _clearSearch,
                   constraints: BoxConstraints(
-                    minWidth: 32.w,
-                    minHeight: 32.h,
+                    minWidth: DesignTokens.buttonHeightSm,
+                    minHeight: DesignTokens.buttonHeightSm,
                   ),
                   padding: EdgeInsets.zero,
                 ),
@@ -210,17 +210,17 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
 
               // Voice search button
               if (widget.showVoiceSearch) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 IconButton(
                   icon: Icon(
                     Icons.mic_none,
-                    color: AppColors.primary,
-                    size: 24.sp,
+                    color: theme.colorScheme.primary,
+                    size: DesignTokens.iconMd.sp,
                   ),
                   onPressed: widget.onVoiceSearch,
                   constraints: BoxConstraints(
-                    minWidth: AppDimensions.touchTargetMin,
-                    minHeight: AppDimensions.touchTargetMin,
+                    minWidth: DesignTokens.buttonHeightMd,
+                    minHeight: DesignTokens.buttonHeightMd,
                   ),
                   padding: EdgeInsets.zero,
                 ),
@@ -228,7 +228,7 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
 
               // Filter button with badge
               if (widget.showFilterButton) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -237,14 +237,14 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                         Icons.filter_list,
                         color: widget.activeFilterCount != null &&
                                 widget.activeFilterCount! > 0
-                            ? AppColors.primary
-                            : AppColors.grey600,
-                        size: 24.sp,
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurfaceVariant,
+                        size: DesignTokens.iconMd.sp,
                       ),
                       onPressed: widget.onFilterTap,
                       constraints: BoxConstraints(
-                        minWidth: AppDimensions.touchTargetMin,
-                        minHeight: AppDimensions.touchTargetMin,
+                        minWidth: DesignTokens.buttonHeightMd,
+                        minHeight: DesignTokens.buttonHeightMd,
                       ),
                       padding: EdgeInsets.zero,
                     ),
@@ -254,21 +254,21 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                         top: -2.h,
                         right: -2.w,
                         child: Container(
-                          padding: EdgeInsets.all(4.w),
+                          padding: REdgeInsets.all(DesignTokens.space1),
                           decoration: BoxDecoration(
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                             shape: BoxShape.circle,
                           ),
                           constraints: BoxConstraints(
-                            minWidth: 18.w,
-                            minHeight: 18.h,
+                            minWidth: (DesignTokens.space4 + DesignTokens.space1).w,
+                            minHeight: (DesignTokens.space4 + DesignTokens.space1).h,
                           ),
                           child: Center(
                             child: Text(
                               '${widget.activeFilterCount}',
                               style: TextStyle(
-                                color: AppColors.onPrimary,
-                                fontSize: 10.sp,
+                                color: theme.colorScheme.onPrimary,
+                                fontSize: DesignTokens.fontSize10.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -290,20 +290,22 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
   }
 
   Widget _buildRecentSearches() {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppDimensions.paddingMedium),
-      padding: EdgeInsets.symmetric(vertical: AppDimensions.paddingSmall),
+      margin: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+      padding: REdgeInsets.symmetric(vertical: DesignTokens.space2),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(AppDimensions.radiusMedium),
-          bottomRight: Radius.circular(AppDimensions.radiusMedium),
+          bottomLeft: Radius.circular(DesignTokens.radiusMd.r),
+          bottomRight: Radius.circular(DesignTokens.radiusMd.r),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.cardShadow,
-            blurRadius: AppDimensions.shadowBlurMedium,
-            offset: AppDimensions.shadowOffsetMedium,
+            color: theme.shadowColor.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -311,16 +313,16 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingMedium,
-              vertical: AppDimensions.paddingSmall,
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space4,
+              vertical: DesignTokens.space2,
             ),
             child: Text(
               'Recent Searches',
               style: TextStyle(
-                fontSize: 12.sp,
+                fontSize: DesignTokens.fontSize12.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textTertiary,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ),
@@ -332,31 +334,31 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                     _focusNode.unfocus();
                   },
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppDimensions.paddingMedium,
-                      vertical: AppDimensions.paddingSmall,
+                    padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space4,
+                      vertical: DesignTokens.space2,
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.history,
-                          size: 20.sp,
-                          color: AppColors.grey500,
+                          size: DesignTokens.iconSm.sp,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                        SizedBox(width: AppDimensions.paddingMedium),
+                        RSizedBox(width: DesignTokens.space4),
                         Expanded(
                           child: Text(
                             search,
                             style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.textPrimary,
+                              fontSize: DesignTokens.fontSize14.sp,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                         ),
                         Icon(
                           Icons.north_west,
-                          size: 16.sp,
-                          color: AppColors.grey400,
+                          size: DesignTokens.iconXs.sp,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ],
                     ),

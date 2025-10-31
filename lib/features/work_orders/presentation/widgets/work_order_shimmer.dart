@@ -2,22 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../core/theme/design_tokens.dart';
+
 class WorkOrderShimmer extends StatelessWidget {
   const WorkOrderShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // Use theme-based shimmer colors
+    final baseColor = colorScheme.surfaceContainerHighest;
+    final highlightColor = colorScheme.surface;
+    final placeholderColor = colorScheme.surface;
+
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: baseColor,
+      highlightColor: highlightColor,
       child: Card(
-        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        elevation: 2,
+        margin: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
+        ),
+        elevation: DesignTokens.elevationSm,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         ),
         child: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: REdgeInsets.all(DesignTokens.space4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -29,46 +42,46 @@ class WorkOrderShimmer extends StatelessWidget {
                     width: 120.w,
                     height: 20.h,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4.r),
+                      color: placeholderColor,
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                     ),
                   ),
                   Container(
                     width: 80.w,
                     height: 24.h,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
+                      color: placeholderColor,
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                     ),
                   ),
                 ],
               ),
-              
-              SizedBox(height: 8.h),
-              
+
+              DesignTokens.verticalSpaceSmall,
+
               // Summary lines
               Container(
                 width: double.infinity,
                 height: 16.h,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: placeholderColor,
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                 ),
               ),
-              
-              SizedBox(height: 4.h),
-              
+
+              DesignTokens.verticalSpace(DesignTokens.space1),
+
               Container(
                 width: 200.w,
                 height: 16.h,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: placeholderColor,
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                 ),
               ),
-              
-              SizedBox(height: 12.h),
-              
+
+              DesignTokens.verticalSpaceMd,
+
               // Priority and Date row
               Row(
                 children: [
@@ -76,44 +89,44 @@ class WorkOrderShimmer extends StatelessWidget {
                     width: 60.w,
                     height: 20.h,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6.r),
+                      color: placeholderColor,
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                     ),
                   ),
-                  
-                  SizedBox(width: 12.w),
-                  
+
+                  DesignTokens.horizontalSpaceMd,
+
                   Container(
                     width: 100.w,
                     height: 16.h,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(4.r),
+                      color: placeholderColor,
+                      borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                     ),
                   ),
                 ],
               ),
-              
-              SizedBox(height: 12.h),
-              
+
+              DesignTokens.verticalSpaceMd,
+
               // Customer and Location
               Container(
                 width: 150.w,
                 height: 14.h,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: placeholderColor,
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                 ),
               ),
-              
-              SizedBox(height: 4.h),
-              
+
+              DesignTokens.verticalSpace(DesignTokens.space1),
+
               Container(
                 width: 180.w,
                 height: 14.h,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: placeholderColor,
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                 ),
               ),
             ],

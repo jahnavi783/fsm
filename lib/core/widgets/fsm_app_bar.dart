@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMAppBar - Standardized app bar component with consistent theming
 ///
@@ -81,7 +80,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// App bar with gradient background
   /// Uses standardized theme colors and dimensions for consistency
-  const FSMAppBar.gradient({
+  FSMAppBar.gradient({
     super.key,
     this.title,
     this.titleWidget,
@@ -93,8 +92,9 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.systemOverlayStyle,
     this.bottom,
     this.toolbarHeight,
+    LinearGradient? customGradient,
   })  : backgroundColor = null,
-        gradient = AppColors.primaryGradient,
+        gradient = customGradient,
         elevation = 0;
 
   /// Simplified navigation app bar for redesign (2025)
@@ -148,9 +148,9 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveBackgroundColor = backgroundColor ?? AppColors.primary;
-    final effectiveElevation = elevation ?? AppDimensions.elevationSmall;
-    final effectiveToolbarHeight = toolbarHeight ?? AppDimensions.appBarHeight;
+    final effectiveBackgroundColor = backgroundColor ?? theme.colorScheme.primary;
+    final effectiveElevation = elevation ?? DesignTokens.elevationSm;
+    final effectiveToolbarHeight = toolbarHeight ?? DesignTokens.buttonHeightLg.h;
 
     // Build title widget
     Widget? titleContent;
@@ -168,17 +168,15 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
             Text(
               title!,
               style: theme.textTheme.titleLarge?.copyWith(
-                color: AppColors.onPrimary,
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
               ),
             ),
-            SizedBox(height: 2.h),
+            RSizedBox(height: DesignTokens.space1),
             Text(
               subtitle!,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.onPrimary.withValues(alpha: 0.8),
-                fontSize: 12.sp,
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
               ),
             ),
           ],
@@ -188,9 +186,8 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
         titleContent = Text(
           title!,
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.onPrimary,
+            color: theme.colorScheme.onPrimary,
             fontWeight: FontWeight.w600,
-            fontSize: 18.sp,
           ),
         );
       }
@@ -213,8 +210,8 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: bottom,
       toolbarHeight: effectiveToolbarHeight,
       iconTheme: IconThemeData(
-        color: AppColors.onPrimary,
-        size: AppDimensions.iconMedium,
+        color: theme.colorScheme.onPrimary,
+        size: DesignTokens.iconMd,
       ),
     );
 
@@ -233,7 +230,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        (toolbarHeight ?? AppDimensions.appBarHeight) +
+        (toolbarHeight ?? DesignTokens.buttonHeightLg.h) +
             (bottom?.preferredSize.height ?? 0),
       );
 }
@@ -288,7 +285,7 @@ class FSMSliverAppBar extends StatelessWidget {
 
   /// Scrollable app bar with gradient and flexible space
   /// Uses standardized 120.0 expanded height for consistency
-  const FSMSliverAppBar.gradient({
+  FSMSliverAppBar.gradient({
     super.key,
     this.title,
     this.titleWidget,
@@ -303,8 +300,9 @@ class FSMSliverAppBar extends StatelessWidget {
     this.snap = false,
     this.centerTitle = false,
     this.systemOverlayStyle,
+    LinearGradient? customGradient,
   })  : backgroundColor = null,
-        gradient = AppColors.primaryGradient,
+        gradient = customGradient,
         elevation = 0;
 
   /// Scrollable app bar that hides on scroll
@@ -330,8 +328,8 @@ class FSMSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveBackgroundColor = backgroundColor ?? AppColors.primary;
-    final effectiveElevation = elevation ?? AppDimensions.elevationSmall;
+    final effectiveBackgroundColor = backgroundColor ?? theme.colorScheme.primary;
+    final effectiveElevation = elevation ?? DesignTokens.elevationSm;
 
     // Build title widget
     Widget? titleContent;
@@ -348,17 +346,15 @@ class FSMSliverAppBar extends StatelessWidget {
             Text(
               title!,
               style: theme.textTheme.titleLarge?.copyWith(
-                color: AppColors.onPrimary,
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
               ),
             ),
-            SizedBox(height: 2.h),
+            RSizedBox(height: DesignTokens.space1),
             Text(
               subtitle!,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: AppColors.onPrimary.withValues(alpha: 0.8),
-                fontSize: 12.sp,
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.8),
               ),
             ),
           ],
@@ -367,9 +363,8 @@ class FSMSliverAppBar extends StatelessWidget {
         titleContent = Text(
           title!,
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.onPrimary,
+            color: theme.colorScheme.onPrimary,
             fontWeight: FontWeight.w600,
-            fontSize: 18.sp,
           ),
         );
       }
@@ -394,8 +389,8 @@ class FSMSliverAppBar extends StatelessWidget {
       snap: snap,
       flexibleSpace: flexibleSpace,
       iconTheme: IconThemeData(
-        color: AppColors.onPrimary,
-        size: AppDimensions.iconMedium,
+        color: theme.colorScheme.onPrimary,
+        size: DesignTokens.iconMd,
       ),
     );
 
@@ -418,8 +413,8 @@ class FSMSliverAppBar extends StatelessWidget {
         pinned: pinned,
         snap: snap,
         iconTheme: IconThemeData(
-          color: AppColors.onPrimary,
-          size: AppDimensions.iconMedium,
+          color: theme.colorScheme.onPrimary,
+          size: DesignTokens.iconMd,
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(gradient: gradient),
@@ -490,14 +485,15 @@ class FSMAppBarAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     Widget button = IconButton(
-      icon: Icon(icon, color: iconColor ?? AppColors.onPrimary),
+      icon: Icon(icon, color: iconColor ?? theme.colorScheme.onPrimary),
       onPressed: onPressed,
       tooltip: tooltip,
-      iconSize: AppDimensions.iconMedium,
+      iconSize: DesignTokens.iconMd,
       constraints: BoxConstraints(
-        minWidth: AppDimensions.touchTargetMin,
-        minHeight: AppDimensions.touchTargetMin,
+        minWidth: DesignTokens.buttonHeightMd,
+        minHeight: DesignTokens.buttonHeightMd,
       ),
     );
 
@@ -507,8 +503,8 @@ class FSMAppBarAction extends StatelessWidget {
         children: [
           button,
           Positioned(
-            top: 8.h,
-            right: 8.w,
+            top: DesignTokens.space2.h,
+            right: DesignTokens.space2.w,
             child: badge!,
           ),
         ],
@@ -527,27 +523,27 @@ class _NotificationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final displayCount = count > 99 ? '99+' : count.toString();
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: count > 9 ? 4.w : 6.w,
-        vertical: 2.h,
+      padding: REdgeInsets.symmetric(
+        horizontal: count > 9 ? DesignTokens.space1 : DesignTokens.space2,
+        vertical: DesignTokens.space1,
       ),
       decoration: BoxDecoration(
-        color: AppColors.error,
-        borderRadius: BorderRadius.circular(10.r),
+        color: theme.colorScheme.error,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       constraints: BoxConstraints(
-        minWidth: 16.w,
-        minHeight: 16.h,
+        minWidth: DesignTokens.space4.w,
+        minHeight: DesignTokens.space4.h,
       ),
       child: Center(
         child: Text(
           displayCount,
-          style: TextStyle(
-            color: AppColors.onError,
-            fontSize: 9.sp,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: theme.colorScheme.onError,
             fontWeight: FontWeight.w700,
           ),
         ),

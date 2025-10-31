@@ -7,7 +7,7 @@ import '../../../../core/blocs/bloc_build_conditions.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
-import '../../../../core/widgets/widgets.dart'; // Barrel import for all widgets
+import '../../../../core/widgets/widgets.dart' hide CustomTabBar, StatsGrid, StatsCardData; // Barrel import, hide duplicates
 import '../../../../core/widgets/custom_tab_bar.dart';
 import '../../../../core/widgets/dashboard_states.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
@@ -191,8 +191,8 @@ class _DashboardPageState extends State<DashboardPage>
         },
         icon: const Icon(Icons.smart_toy),
         label: const Text('AI Assistant'),
-        backgroundColor: AppColors.secondary,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
         elevation: 6,
         tooltip: 'Open AI Assistant',
       ),
@@ -268,7 +268,7 @@ class _DashboardPageState extends State<DashboardPage>
         title: 'Unassigned',
         count: _getUnassignedCount(state),
         icon: Icons.inbox_outlined,
-        color: AppColors.grey600,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
         onTap: () => _switchToTab(0),
       ),
       StatsCardData(
@@ -472,12 +472,12 @@ class _DashboardPageState extends State<DashboardPage>
           hasPendingSync) {
         if (unassignedWorkOrders.isEmpty) {
           // Use FSMEmptyStateList for unassigned empty state
-          return const FSMEmptyStateList(
+          return FSMEmptyStateList(
             icon: Icons.inbox_outlined,
             title: 'No Unassigned Work Orders',
             description:
                 'All work orders have been assigned to field engineers.',
-            iconColor: AppColors.grey400,
+            iconColor: Theme.of(context).colorScheme.onSurfaceVariant,
           );
         }
 
@@ -511,8 +511,8 @@ class _DashboardPageState extends State<DashboardPage>
                           label: Text('Assign to Me',
                               style: TextStyle(fontSize: 14.sp)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.onPrimary,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.w, vertical: 12.h),
                             shape: RoundedRectangleBorder(
@@ -575,8 +575,8 @@ class _DashboardPageState extends State<DashboardPage>
               _switchToTab(1);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.onPrimary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
             ),
             child: const Text('Assign'),
           ),

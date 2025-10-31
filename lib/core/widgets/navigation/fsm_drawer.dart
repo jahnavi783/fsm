@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:fsm/core/theme/app_text_styles.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// FSMDrawer - Redesigned navigation drawer for FSM app (2025)
 ///
@@ -118,8 +115,8 @@ class FSMDrawer extends StatelessWidget {
                   onTap: onCheckIn,
                 ),
 
-                SizedBox(height: AppDimensions.paddingSmall),
-                Divider(height: 1.h, thickness: 1.h),
+                RSizedBox(height: DesignTokens.space2),
+                const Divider(height: 1, thickness: 1),
 
                 // Navigation Section
                 _SectionHeader(title: 'Navigate'),
@@ -152,8 +149,8 @@ class FSMDrawer extends StatelessWidget {
                   onTap: () => onNavigate('/profile'),
                 ),
 
-                SizedBox(height: AppDimensions.paddingSmall),
-                Divider(height: 1.h, thickness: 1.h),
+                RSizedBox(height: DesignTokens.space2),
+                const Divider(height: 1, thickness: 1),
 
                 // Settings Section
                 _SectionHeader(title: 'Settings'),
@@ -178,13 +175,13 @@ class FSMDrawer extends StatelessWidget {
                   onTap: () => onNavigate('/settings/about'),
                 ),
 
-                SizedBox(height: AppDimensions.paddingLarge),
+                RSizedBox(height: DesignTokens.space6),
               ],
             ),
           ),
 
           // Logout Button (pinned to bottom)
-          Divider(height: 1.h, thickness: 1.h),
+          const Divider(height: 1, thickness: 1),
           _LogoutButton(onTap: onLogout),
         ],
       ),
@@ -208,17 +205,25 @@ class _DrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: AppColors.primaryGradient, // Teal to Green
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.colorScheme.primary,
+            theme.colorScheme.secondary,
+          ],
+        ),
       ),
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingMedium,
-            vertical: AppDimensions.paddingLarge,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space6,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,77 +231,76 @@ class _DrawerHeader extends StatelessWidget {
               // Profile Photo
               Center(
                 child: Container(
-                  width: 80.w,
-                  height: 80.w,
+                  width: (DesignTokens.space12 + DesignTokens.space8).w,
+                  height: (DesignTokens.space12 + DesignTokens.space8).w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.white,
+                      color: theme.colorScheme.onPrimary,
                       width: 3.w,
                     ),
                   ),
                   child: CircleAvatar(
-                    radius: 40.r,
-                    backgroundColor: AppColors.white,
+                    radius: DesignTokens.space8.r,
+                    backgroundColor: theme.colorScheme.surface,
                     backgroundImage: profileImageUrl != null
                         ? NetworkImage(profileImageUrl!)
                         : null,
                     child: profileImageUrl == null
                         ? Icon(
                             Icons.person,
-                            size: 40.sp,
-                            color: AppColors.primary,
+                            size: DesignTokens.space8.sp,
+                            color: theme.colorScheme.primary,
                           )
                         : null,
                   ),
                 ),
               ),
 
-              SizedBox(height: AppDimensions.paddingMedium),
+              RSizedBox(height: DesignTokens.space4),
 
               // Name
               Center(
                 child: Text(
                   profileName,
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    color: AppColors.white,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
 
-              SizedBox(height: AppDimensions.paddingXSmall),
+              RSizedBox(height: DesignTokens.space1),
 
               // Email
               Center(
                 child: Text(
                   profileEmail,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.white.withValues(alpha: 0.9),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
 
-              SizedBox(height: AppDimensions.paddingXSmall),
+              RSizedBox(height: DesignTokens.space1),
 
               // Employee ID
               Center(
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 4.h,
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space3,
+                    vertical: DesignTokens.space1,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.white.withValues(alpha: 0.2),
-                    borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusXSmall),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                   ),
                   child: Text(
                     employeeId,
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: AppColors.white,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -318,17 +322,18 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-        AppDimensions.paddingMedium,
-        AppDimensions.paddingMedium,
-        AppDimensions.paddingMedium,
-        AppDimensions.paddingSmall,
+      padding: REdgeInsets.fromLTRB(
+        DesignTokens.space4,
+        DesignTokens.space4,
+        DesignTokens.space4,
+        DesignTokens.space2,
       ),
       child: Text(
         title.toUpperCase(),
-        style: AppTextStyles.labelSmall.copyWith(
-          color: AppColors.textSecondary,
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),
@@ -351,31 +356,32 @@ class _QuickActionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       leading: Container(
-        width: 40.w,
-        height: 40.w,
+        width: DesignTokens.space8.w,
+        height: DesignTokens.space8.w,
         decoration: BoxDecoration(
-          color: AppColors.secondary.withValues(alpha: 0.1), // Green accent
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+          color: theme.colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         ),
         child: Icon(
           icon,
-          color: AppColors.secondary,
-          size: AppDimensions.iconSmall,
+          color: theme.colorScheme.secondary,
+          size: DesignTokens.iconSm.sp,
         ),
       ),
       title: Text(
         label,
-        style: AppTextStyles.bodyMedium.copyWith(
+        style: theme.textTheme.bodyMedium?.copyWith(
           fontWeight: FontWeight.w600,
         ),
       ),
       onTap: onTap,
       enabled: onTap != null,
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingXSmall,
+      contentPadding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space1,
       ),
     );
   }
@@ -406,37 +412,42 @@ class _NavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space2,
         vertical: 2.h,
       ),
       decoration: BoxDecoration(
         color: _isActive
-            ? AppColors.primary.withValues(alpha: 0.1)
+            ? theme.colorScheme.primaryContainer
             : Colors.transparent,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       child: ListTile(
         leading: Icon(
           icon,
-          color: _isActive ? AppColors.primary : AppColors.textSecondary,
-          size: AppDimensions.iconMedium,
+          color: _isActive
+              ? theme.colorScheme.primary
+              : theme.colorScheme.onSurfaceVariant,
+          size: DesignTokens.iconMd.sp,
         ),
         title: Text(
           label,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: _isActive ? AppColors.primary : AppColors.textPrimary,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: _isActive
+                ? theme.colorScheme.primary
+                : theme.colorScheme.onSurface,
             fontWeight: _isActive ? FontWeight.w700 : FontWeight.w500,
           ),
         ),
         onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingXSmall,
+        contentPadding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space1,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         ),
       ),
     );
@@ -457,25 +468,26 @@ class _SettingsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
         icon,
-        color: AppColors.textSecondary,
-        size: AppDimensions.iconMedium,
+        color: theme.colorScheme.onSurfaceVariant,
+        size: DesignTokens.iconMd.sp,
       ),
       title: Text(
         label,
-        style: AppTextStyles.bodyMedium,
+        style: theme.textTheme.bodyMedium,
       ),
       trailing: Icon(
         Icons.chevron_right,
-        color: AppColors.textSecondary,
-        size: AppDimensions.iconSmall,
+        color: theme.colorScheme.onSurfaceVariant,
+        size: DesignTokens.iconSm.sp,
       ),
       onTap: onTap,
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingXSmall,
+      contentPadding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space1,
       ),
     );
   }
@@ -489,25 +501,26 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       top: false,
       child: ListTile(
         leading: Icon(
           Icons.logout,
-          color: AppColors.error,
-          size: AppDimensions.iconMedium,
+          color: theme.colorScheme.error,
+          size: DesignTokens.iconMd.sp,
         ),
         title: Text(
           'Logout',
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.error,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.error,
             fontWeight: FontWeight.w600,
           ),
         ),
         onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingMedium,
-          vertical: AppDimensions.paddingSmall,
+        contentPadding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4,
+          vertical: DesignTokens.space2,
         ),
       ),
     );

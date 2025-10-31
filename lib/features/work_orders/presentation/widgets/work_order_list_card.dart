@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/theme/spacing_theme.dart';
-import '../../../../core/widgets/metadata_row.dart';
+import '../../../../core/widgets/layout/fsm_metadata_row.dart';
 import '../../../../core/widgets/priority_indicator.dart';
 import '../../../../core/widgets/quick_action_button.dart';
 import '../../domain/entities/work_order_entity.dart';

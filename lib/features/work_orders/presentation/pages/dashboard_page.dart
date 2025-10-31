@@ -2,26 +2,26 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/router/app_router.gr.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/utils/work_order_status_helper.dart';
-import 'package:fsm/core/widgets/custom_tab_bar.dart';
-import 'package:fsm/core/widgets/dashboard_states.dart';
-import 'package:fsm/core/widgets/fsm_action_button.dart';
-import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/core/widgets/fsm_empty_state.dart';
-import 'package:fsm/core/widgets/offline_banner.dart';
-import 'package:fsm/core/widgets/stats_card.dart';
-import 'package:fsm/core/widgets/work_order_sliver_list.dart';
-import 'package:fsm/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:fsm/features/auth/presentation/blocs/auth/auth_state.dart';
-import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_bloc.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_event.dart';
-import 'package:fsm/features/work_orders/presentation/blocs/work_orders_list/work_orders_list_state.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/current_work_order_card.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_action_sheet.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_card.dart';
+
+import '../../../../core/blocs/bloc_build_conditions.dart';
+import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/utils/work_order_status_helper.dart';
+import '../../../../core/widgets/widgets.dart'; // Barrel import for all widgets
+import '../../../../core/widgets/custom_tab_bar.dart';
+import '../../../../core/widgets/dashboard_states.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/stats_card.dart';
+import '../../../../core/widgets/work_order_sliver_list.dart';
+import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../../auth/presentation/blocs/auth/auth_state.dart';
+import '../../domain/entities/work_order_entity.dart';
+import '../blocs/work_orders_list/work_orders_list_bloc.dart';
+import '../blocs/work_orders_list/work_orders_list_event.dart';
+import '../blocs/work_orders_list/work_orders_list_state.dart';
+import '../widgets/current_work_order_card.dart';
+import '../widgets/work_order_action_sheet.dart';
+import '../widgets/work_order_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:fsm/core/theme/app_text_styles.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// Type of priority indicator display
 enum PriorityIndicatorType {
@@ -46,7 +44,10 @@ class PriorityIndicator extends StatelessWidget {
   /// Custom size override (optional)
   final double? size;
 
-  Color get _priorityColor => AppColors.getPriorityColor(priority);
+  Color _priorityColor(BuildContext context) {
+    final fsmTheme = context.fsmTheme;
+    return fsmTheme.getPriorityColor(priority);
+  }
 
   String get _label {
     switch (priority.toLowerCase()) {
@@ -69,43 +70,46 @@ class PriorityIndicator extends StatelessWidget {
       case PriorityIndicatorType.badge:
         return _buildBadge(context);
       case PriorityIndicatorType.bar:
-        return _buildBar();
+        return _buildBar(context);
       case PriorityIndicatorType.dot:
-        return _buildDot();
+        return _buildDot(context);
     }
   }
 
   Widget _buildBadge(BuildContext context) {
+    final theme = Theme.of(context);
+    final priorityColor = _priorityColor(context);
+
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingSmall,
-        vertical: AppDimensions.paddingXSmall,
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space2,
+        vertical: DesignTokens.space1,
       ),
       decoration: BoxDecoration(
-        color: _priorityColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: priorityColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         border: Border.all(
-          color: _priorityColor,
-          width: 1.w,
+          color: priorityColor,
+          width: 1,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 6.w,
-            height: 6.w,
+            width: DesignTokens.space2.w,
+            height: DesignTokens.space2.w,
             decoration: BoxDecoration(
-              color: _priorityColor,
+              color: priorityColor,
               shape: BoxShape.circle,
             ),
           ),
           if (showLabel) ...[
-            SizedBox(width: 4.w),
+            RSizedBox(width: DesignTokens.space1),
             Text(
               _label,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: _priorityColor,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: priorityColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -115,30 +119,32 @@ class PriorityIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildBar() {
-    final barSize = size ?? 3.w;
+  Widget _buildBar(BuildContext context) {
+    final priorityColor = _priorityColor(context);
+    final barSize = size ?? DesignTokens.space1.w;
     return Container(
       width: barSize,
       decoration: BoxDecoration(
-        color: _priorityColor,
+        color: priorityColor,
         borderRadius: BorderRadius.horizontal(
-          right: Radius.circular(AppDimensions.radiusXSmall),
+          right: Radius.circular(DesignTokens.radiusSm.r),
         ),
       ),
     );
   }
 
-  Widget _buildDot() {
-    final dotSize = size ?? 8.w;
+  Widget _buildDot(BuildContext context) {
+    final priorityColor = _priorityColor(context);
+    final dotSize = size ?? DesignTokens.space2.w;
     return Container(
       width: dotSize,
       height: dotSize,
       decoration: BoxDecoration(
-        color: _priorityColor,
+        color: priorityColor,
         shape: BoxShape.circle,
         border: Border.all(
-          color: _priorityColor.withValues(alpha: 0.3),
-          width: 2.w,
+          color: priorityColor.withValues(alpha: 0.3),
+          width: 2,
         ),
       ),
     );

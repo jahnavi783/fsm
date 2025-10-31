@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:fsm/core/theme/app_text_styles.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// A single metadata item with icon and text
 class MetadataItem {
@@ -69,9 +66,11 @@ class MetadataRow extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items.isEmpty) return const SizedBox.shrink();
 
+    final theme = Theme.of(context);
+
     return Wrap(
-      spacing: spacing ?? AppDimensions.paddingMedium,
-      runSpacing: runSpacing ?? AppDimensions.paddingXSmall,
+      spacing: spacing ?? DesignTokens.space4.w,
+      runSpacing: runSpacing ?? DesignTokens.space1.h,
       crossAxisAlignment: crossAxisAlignment,
       children: items.asMap().entries.map((entry) {
         final index = entry.key;
@@ -81,14 +80,14 @@ class MetadataRow extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildMetadataItem(item),
+            _buildMetadataItem(context, item),
             if (!isLast)
               Padding(
-                padding: EdgeInsets.only(left: 8.w),
+                padding: REdgeInsets.only(left: DesignTokens.space2),
                 child: Container(
                   width: 1.w,
-                  height: 12.h,
-                  color: AppColors.divider,
+                  height: DesignTokens.space3.h,
+                  color: theme.colorScheme.outlineVariant,
                 ),
               ),
           ],
@@ -97,9 +96,10 @@ class MetadataRow extends StatelessWidget {
     );
   }
 
-  Widget _buildMetadataItem(MetadataItem item) {
-    final color = item.color ?? AppColors.textSecondary;
-    final iconSize = item.iconSize ?? AppDimensions.iconSmall;
+  Widget _buildMetadataItem(BuildContext context, MetadataItem item) {
+    final theme = Theme.of(context);
+    final color = item.color ?? theme.colorScheme.onSurfaceVariant;
+    final iconSize = item.iconSize ?? DesignTokens.iconSm.sp;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -109,11 +109,11 @@ class MetadataRow extends StatelessWidget {
           size: iconSize,
           color: color,
         ),
-        SizedBox(width: 4.w),
+        RSizedBox(width: DesignTokens.space1),
         Flexible(
           child: Text(
             item.text,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: theme.textTheme.bodySmall?.copyWith(
               color: color,
             ),
             maxLines: maxLines,
@@ -153,7 +153,6 @@ extension MetadataRowVariants on MetadataRow {
       items.add(MetadataItem(
         icon: Icons.info_outline,
         text: status,
-        color: AppColors.getStatusColor(status),
       ));
     }
 

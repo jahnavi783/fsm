@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:fsm/core/blocs/connectivity/connectivity_bloc.dart';
 import 'package:fsm/core/blocs/connectivity/connectivity_state.dart';
-import 'package:fsm/core/theme/theme.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 class ConnectivityIndicator extends StatelessWidget {
   final bool showWhenConnected;
@@ -36,98 +37,120 @@ class ConnectivityIndicator extends StatelessWidget {
   }
 
   Widget _buildCheckingIndicator() {
-    return Container(
-      key: const ValueKey('checking'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 16.w,
-            height: 16.w,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.w,
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.white),
-            ),
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final fsmTheme = context.fsmTheme;
+
+        return Container(
+          key: const ValueKey('checking'),
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
-          Text(
-            'Checking connection...',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.white,
-            ),
+          decoration: BoxDecoration(
+            color: fsmTheme.warning.withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
           ),
-        ],
-      ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: DesignTokens.iconSm.w,
+                height: DesignTokens.iconSm.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: DesignTokens.borderWidthMedium.w,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+              RSizedBox(width: DesignTokens.space2),
+              Text(
+                'Checking connection...',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildConnectedIndicator() {
-    return Container(
-      key: const ValueKey('connected'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.success.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.wifi,
-            size: AppDimensions.iconSmall,
-            color: AppColors.white,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        final fsmTheme = context.fsmTheme;
+
+        return Container(
+          key: const ValueKey('connected'),
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
-          Text(
-            'Connected',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.white,
-            ),
+          decoration: BoxDecoration(
+            color: fsmTheme.success.withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
           ),
-        ],
-      ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.wifi,
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onPrimary,
+              ),
+              RSizedBox(width: DesignTokens.space2),
+              Text(
+                'Connected',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildDisconnectedIndicator() {
-    return Container(
-      key: const ValueKey('disconnected'),
-      padding: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.wifi_off,
-            size: AppDimensions.iconSmall,
-            color: AppColors.white,
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+
+        return Container(
+          key: const ValueKey('disconnected'),
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
           ),
-          SizedBox(width: AppDimensions.paddingSmall),
-          Text(
-            'No connection',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.white,
-            ),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.error.withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
           ),
-        ],
-      ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.wifi_off,
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onError,
+              ),
+              RSizedBox(width: DesignTokens.space2),
+              Text(
+                'No connection',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onError,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -142,22 +165,24 @@ class ConnectivityBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<ConnectivityBloc, ConnectivityState>(
       builder: (context, state) {
         return Column(
           children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: DesignTokens.durationNormal,
               height: state.whenOrNull(disconnected: () => 40.h) ?? 0,
               child: state.whenOrNull(disconnected: () => true) == true
                   ? Container(
                       width: double.infinity,
-                      color: AppColors.error,
+                      color: theme.colorScheme.error,
                       child: Center(
                         child: Text(
                           'No internet connection',
-                          style: AppTextStyles.labelMedium.copyWith(
-                            color: AppColors.white,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.onError,
                           ),
                         ),
                       ),

@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/widgets/form/reactive_signature_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -15,7 +16,7 @@ class ReactiveSignaturePad extends StatefulWidget {
   final bool required;
   final double height;
   final Color? backgroundColor;
-  final Color strokeColor;
+  final Color? strokeColor;
   final double strokeWidth;
 
   const ReactiveSignaturePad({
@@ -25,7 +26,7 @@ class ReactiveSignaturePad extends StatefulWidget {
     this.required = false,
     this.height = 200,
     this.backgroundColor,
-    this.strokeColor = Colors.black,
+    this.strokeColor,
     this.strokeWidth = 2.0,
   });
 
@@ -39,10 +40,14 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ReactiveFormField<File?, File?>(
       formControlName: widget.formControlName,
       builder: (ReactiveFormFieldState<File?, File?> field) {
         final hasError = field.errorText != null && field.control.touched;
+        final effectiveBackgroundColor = widget.backgroundColor ?? theme.colorScheme.surface;
+        final effectiveStrokeColor = widget.strokeColor ?? theme.colorScheme.onSurface;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,44 +58,43 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                 children: [
                   Text(
                     widget.label!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontSize: DesignTokens.fontSize14.sp,
+                      fontWeight: DesignTokens.fontWeightSemiBold,
                     ),
                   ),
                   if (widget.required) ...[
-                    SizedBox(width: 4.w),
+                    RSizedBox(width: DesignTokens.space1),
                     Text(
                       '*',
-                      style: TextStyle(
-                        color: AppColors.error,
-                        fontSize: 14.sp,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.error,
+                        fontSize: DesignTokens.fontSize14.sp,
                       ),
                     ),
                   ],
                 ],
               ),
-              SizedBox(height: 12.h),
+              RSizedBox(height: DesignTokens.space3),
             ],
 
             // Signature pad container
             Container(
               height: widget.height.h,
               decoration: BoxDecoration(
-                color: widget.backgroundColor ?? AppColors.surface,
-                borderRadius: BorderRadius.circular(8.r),
+                color: effectiveBackgroundColor,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 border: Border.all(
-                  color: hasError ? AppColors.error : AppColors.outline,
-                  width: hasError ? 2 : 1,
+                  color: hasError ? theme.colorScheme.error : theme.colorScheme.outline,
+                  width: hasError ? DesignTokens.borderWidthMedium : DesignTokens.borderWidthThin,
                 ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 child: SfSignaturePad(
                   key: _signaturePadKey,
-                  backgroundColor: widget.backgroundColor ?? AppColors.surface,
-                  strokeColor: widget.strokeColor,
+                  backgroundColor: effectiveBackgroundColor,
+                  strokeColor: effectiveStrokeColor,
                   minimumStrokeWidth: widget.strokeWidth,
                   maximumStrokeWidth: widget.strokeWidth + 1,
                   onDrawStart: () {
@@ -105,7 +109,7 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
               ),
             ),
 
-            SizedBox(height: 12.h),
+            RSizedBox(height: DesignTokens.space3),
 
             // Action buttons
             Row(
@@ -114,31 +118,22 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                 if (_hasSignature)
                   TextButton.icon(
                     onPressed: () => _clearSignature(field),
-                    icon: Icon(Icons.clear, size: 18.sp),
+                    icon: Icon(Icons.clear, size: DesignTokens.iconXs.sp),
                     label: Text(
                       'Clear',
-                      style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: DesignTokens.fontSize14.sp),
                     ),
                     style: TextButton.styleFrom(
-                      foregroundColor: AppColors.error,
+                      foregroundColor: theme.colorScheme.error,
                     ),
                   ),
-                if (_hasSignature) SizedBox(width: 8.w),
-                ElevatedButton.icon(
+                if (_hasSignature) RSizedBox(width: DesignTokens.space2),
+                FilledButton.icon(
                   onPressed: _hasSignature ? () => _saveSignature(field) : null,
-                  icon: Icon(Icons.check, size: 18.sp),
+                  icon: Icon(Icons.check, size: DesignTokens.iconXs.sp),
                   label: Text(
                     'Save Signature',
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.success,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.grey300,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
-                    ),
+                    style: TextStyle(fontSize: DesignTokens.fontSize14.sp),
                   ),
                 ),
               ],
@@ -146,31 +141,32 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
 
             // Signature preview or status
             if (field.value != null) ...[
-              SizedBox(height: 12.h),
+              RSizedBox(height: DesignTokens.space3),
               Container(
-                padding: EdgeInsets.all(12.w),
+                padding: REdgeInsets.all(DesignTokens.space3),
                 decoration: BoxDecoration(
-                  color: AppColors.success.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
+                  color: context.fsmTheme.success.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                   border: Border.all(
-                    color: AppColors.success.withValues(alpha: 0.3),
+                    color: context.fsmTheme.success.withValues(alpha: 0.3),
+                    width: DesignTokens.borderWidthThin,
                   ),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.check_circle,
-                      color: AppColors.success,
-                      size: 20.sp,
+                      color: context.fsmTheme.success,
+                      size: DesignTokens.iconSm.sp,
                     ),
-                    SizedBox(width: 8.w),
+                    RSizedBox(width: DesignTokens.space2),
                     Expanded(
                       child: Text(
                         'Signature captured',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.success,
-                          fontWeight: FontWeight.w500,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontSize: DesignTokens.fontSize14.sp,
+                          color: context.fsmTheme.success,
+                          fontWeight: DesignTokens.fontWeightMedium,
                         ),
                       ),
                     ),
@@ -178,7 +174,7 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                       onPressed: () => _clearSignature(field),
                       child: Text(
                         'Change',
-                        style: TextStyle(fontSize: 12.sp),
+                        style: TextStyle(fontSize: DesignTokens.fontSize12.sp),
                       ),
                     ),
                   ],
@@ -188,21 +184,21 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
 
             // Error message
             if (hasError) ...[
-              SizedBox(height: 8.h),
+              RSizedBox(height: DesignTokens.space2),
               Row(
                 children: [
                   Icon(
                     Icons.error_outline,
-                    size: 16.sp,
-                    color: AppColors.error,
+                    size: DesignTokens.iconSm.sp,
+                    color: theme.colorScheme.error,
                   ),
-                  SizedBox(width: 4.w),
+                  RSizedBox(width: DesignTokens.space1),
                   Expanded(
                     child: Text(
                       field.errorText!,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: AppColors.error,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: DesignTokens.fontSize12.sp,
+                        color: theme.colorScheme.error,
                       ),
                     ),
                   ),
@@ -234,7 +230,7 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Signature saved successfully'),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.fsmTheme.success,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -255,10 +251,11 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
 
   void _showError(String message) {
     if (mounted) {
+      final theme = Theme.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: AppColors.error,
+          backgroundColor: theme.colorScheme.error,
           duration: const Duration(seconds: 3),
         ),
       );

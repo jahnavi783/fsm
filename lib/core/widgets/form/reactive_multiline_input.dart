@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/widgets/form/work_order_validators.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -30,6 +30,8 @@ class ReactiveMultilineInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ReactiveTextField<String>(
       formControlName: formControlName,
       keyboardType: TextInputType.multiline,
@@ -37,53 +39,15 @@ class ReactiveMultilineInput extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       maxLength: maxLength,
-      style: TextStyle(
-        fontSize: 14.sp,
-        color: AppColors.textPrimary,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        fontSize: DesignTokens.fontSize14.sp,
         height: 1.5,
       ),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
         alignLabelWithHint: true,
-        filled: true,
-        fillColor: AppColors.surface,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.outline, width: 1),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.outline, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.primary, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.error, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(color: AppColors.error, width: 2),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 14.h,
-        ),
-        labelStyle: TextStyle(
-          fontSize: 14.sp,
-          color: AppColors.grey700,
-        ),
-        hintStyle: TextStyle(
-          fontSize: 14.sp,
-          color: AppColors.grey500,
-        ),
-        errorStyle: TextStyle(
-          fontSize: 12.sp,
-          color: AppColors.error,
-        ),
+        // All colors, borders, padding automatically inherited from theme.inputDecorationTheme
       ),
       validationMessages: validationMessages ?? _defaultValidationMessages,
       showErrors: (control) => showErrors && control.invalid && control.touched,

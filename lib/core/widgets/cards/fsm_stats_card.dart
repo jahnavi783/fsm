@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:fsm/core/theme/design_tokens.dart';
+
 class StatsCard extends StatelessWidget {
   final String title;
   final String count;
@@ -19,34 +21,39 @@ class StatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: DesignTokens.durationFast,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space3,
+              vertical: DesignTokens.space2,
+            ),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14.r),
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               boxShadow: [
                 BoxShadow(
                   color: color.withValues(alpha: 0.08),
-                  blurRadius: 12,
+                  blurRadius: DesignTokens.elevationMd,
                   offset: const Offset(0, 4),
                   spreadRadius: 0,
                 ),
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 6,
+                  color: theme.colorScheme.shadow.withValues(alpha: 0.03),
+                  blurRadius: DesignTokens.elevationSm,
                   offset: const Offset(0, 1),
                 ),
               ],
               border: Border.all(
                 color: color.withValues(alpha: 0.1),
-                width: 1,
+                width: DesignTokens.borderWidthThin,
               ),
             ),
             child: Row(
@@ -56,22 +63,22 @@ class StatsCard extends StatelessWidget {
               children: [
                 // Icon Container
                 Container(
-                  padding: EdgeInsets.all(8.w),
+                  padding: REdgeInsets.all(DesignTokens.space2),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                     border: Border.all(
                       color: color.withValues(alpha: 0.2),
-                      width: 1,
+                      width: DesignTokens.borderWidthThin,
                     ),
                   ),
                   child: Icon(
                     icon,
                     color: color,
-                    size: 16.sp,
+                    size: DesignTokens.iconXs.sp,
                   ),
                 ),
-                SizedBox(width: 10.w),
+                RSizedBox(width: DesignTokens.space2),
                 // Stats Column
                 Flexible(
                   child: Column(
@@ -80,22 +87,22 @@ class StatsCard extends StatelessWidget {
                     children: [
                       Text(
                         count,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1A1A1A),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontSize: DesignTokens.fontSize18.sp,
+                          fontWeight: DesignTokens.fontWeightBold,
+                          color: theme.colorScheme.onSurface,
                           height: 1.0,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 2.h),
+                      RSizedBox(height: DesignTokens.space1),
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[600],
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontSize: DesignTokens.fontSize10.sp,
+                          fontWeight: DesignTokens.fontWeightSemiBold,
+                          color: theme.colorScheme.onSurfaceVariant,
                           height: 1.2,
                         ),
                         maxLines: 1,
@@ -104,18 +111,18 @@ class StatsCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 8.w),
+                RSizedBox(width: DesignTokens.space2),
                 // Arrow
                 Container(
-                  padding: EdgeInsets.all(5.w),
+                  padding: REdgeInsets.all(DesignTokens.space1),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(6.r),
+                    color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
                   ),
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    size: 9.sp,
-                    color: Colors.grey[400],
+                    size: DesignTokens.iconXs.sp * 0.6, // Smaller arrow icon
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -138,12 +145,17 @@ class StatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 8.h),
+      padding: REdgeInsets.fromLTRB(
+        DesignTokens.space4,
+        DesignTokens.space1,
+        DesignTokens.space4,
+        DesignTokens.space2,
+      ),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 12.w,
-          mainAxisSpacing: 12.h,
+          crossAxisSpacing: DesignTokens.space3.w,
+          mainAxisSpacing: DesignTokens.space3.h,
           childAspectRatio: 2.2, // Wider and shorter cards for compact layout
         ),
         delegate: SliverChildBuilderDelegate(

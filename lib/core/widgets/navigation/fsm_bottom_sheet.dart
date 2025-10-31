@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// FSMBottomSheet - Consistent bottom sheet pattern for the FSM app
@@ -82,12 +81,13 @@ class FSMBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
     final mediaQuery = MediaQuery.of(context);
 
     final effectiveMaxHeight = maxHeight ??
-        mediaQuery.size.height - mediaQuery.padding.top - 40.h;
-    final effectiveMinHeight = minHeight ?? 200.h;
+        mediaQuery.size.height - mediaQuery.padding.top - DesignTokens.space8.h;
+    final effectiveMinHeight = minHeight ?? (DesignTokens.space12 * 4).h;
 
     return GestureDetector(
       onTap: isDismissible ? () => Navigator.of(context).pop() : null,
@@ -103,15 +103,15 @@ class FSMBottomSheet extends StatelessWidget {
             decoration: BoxDecoration(
               color: fsmTheme.bottomSheetBackground,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(AppDimensions.radiusLarge),
-                topRight: Radius.circular(AppDimensions.radiusLarge),
+                topLeft: Radius.circular(DesignTokens.radiusLg.r),
+                topRight: Radius.circular(DesignTokens.radiusLg.r),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.cardShadow,
-                  blurRadius: AppDimensions.shadowBlurLarge,
-                  spreadRadius: AppDimensions.shadowSpreadLarge,
-                  offset: Offset(0, -4.h),
+                  color: theme.shadowColor.withValues(alpha: 0.1),
+                  blurRadius: 16,
+                  spreadRadius: 2,
+                  offset: const Offset(0, -4),
                 ),
               ],
             ),
@@ -119,7 +119,7 @@ class FSMBottomSheet extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Drag handle
-                if (showDragHandle) _buildDragHandle(),
+                if (showDragHandle) _buildDragHandle(context),
 
                 // Header
                 if (title != null || showCloseButton)
@@ -128,7 +128,7 @@ class FSMBottomSheet extends StatelessWidget {
                 // Content
                 Flexible(
                   child: SingleChildScrollView(
-                    padding: contentPadding ?? AppDimensions.paddingAllMedium,
+                    padding: contentPadding ?? REdgeInsets.all(DesignTokens.space4),
                     child: content,
                   ),
                 ),
@@ -147,14 +147,15 @@ class FSMBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildDragHandle() {
+  Widget _buildDragHandle(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.only(top: 12.h, bottom: 8.h),
-      width: AppDimensions.bottomSheetHandleWidth,
-      height: AppDimensions.bottomSheetHandleHeight,
+      margin: REdgeInsets.only(top: DesignTokens.space3, bottom: DesignTokens.space2),
+      width: DesignTokens.space8.w,
+      height: DesignTokens.space1.h,
       decoration: BoxDecoration(
-        color: AppColors.grey300,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
     );
   }
@@ -168,12 +169,12 @@ class FSMBottomSheet extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      height: AppDimensions.bottomSheetHeaderHeight,
-      padding: EdgeInsets.symmetric(horizontal: AppDimensions.paddingMedium),
+      height: DesignTokens.buttonHeightLg.h,
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: AppColors.divider,
+            color: theme.colorScheme.outlineVariant,
             width: 1,
           ),
         ),
@@ -186,8 +187,7 @@ class FSMBottomSheet extends StatelessWidget {
                 title,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontSize: 18.sp,
-                  color: AppColors.textPrimary,
+                  fontSize: DesignTokens.fontSize18.sp,
                 ),
               ),
             ),
@@ -195,16 +195,16 @@ class FSMBottomSheet extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.close,
-                color: AppColors.grey600,
-                size: 24.sp,
+                color: theme.colorScheme.onSurfaceVariant,
+                size: DesignTokens.iconMd.sp,
               ),
               onPressed: () {
                 onClose?.call();
                 Navigator.of(context).pop();
               },
               constraints: BoxConstraints(
-                minWidth: AppDimensions.touchTargetMin,
-                minHeight: AppDimensions.touchTargetMin,
+                minWidth: DesignTokens.buttonHeightMd,
+                minHeight: DesignTokens.buttonHeightMd,
               ),
             ),
         ],
@@ -213,12 +213,13 @@ class FSMBottomSheet extends StatelessWidget {
   }
 
   Widget _buildFooter(BuildContext context, List<Widget> actions) {
+    final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.all(AppDimensions.paddingMedium),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: AppColors.divider,
+            color: theme.colorScheme.outlineVariant,
             width: 1,
           ),
         ),
@@ -228,7 +229,7 @@ class FSMBottomSheet extends StatelessWidget {
         children: actions
             .map(
               (action) => Padding(
-                padding: EdgeInsets.only(left: AppDimensions.paddingSmall),
+                padding: REdgeInsets.only(left: DesignTokens.space2),
                 child: action,
               ),
             )
@@ -261,24 +262,23 @@ class FSMBottomSheetSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showDivider && title.isNotEmpty) ...[
-          SizedBox(height: AppDimensions.paddingLarge),
+          RSizedBox(height: DesignTokens.space6),
           Divider(
-            height: 1.h,
+            height: 1,
             thickness: 1,
-            color: AppColors.divider,
+            color: theme.colorScheme.outlineVariant,
           ),
-          SizedBox(height: AppDimensions.paddingMedium),
+          RSizedBox(height: DesignTokens.space4),
         ],
         if (title.isNotEmpty) ...[
           Text(
             title,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              fontSize: 14.sp,
-              color: AppColors.textPrimary,
+              fontSize: DesignTokens.fontSize14.sp,
             ),
           ),
-          SizedBox(height: AppDimensions.paddingSmall),
+          RSizedBox(height: DesignTokens.space2),
         ],
         Padding(
           padding: padding ?? EdgeInsets.zero,
@@ -316,19 +316,20 @@ class FSMBottomSheetOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final effectiveIconColor = isDestructive
-        ? AppColors.error
-        : (iconColor ?? AppColors.primary);
-    final effectiveTextColor =
-        isDestructive ? AppColors.error : AppColors.textPrimary;
+        ? theme.colorScheme.error
+        : (iconColor ?? theme.colorScheme.primary);
+    final effectiveTextColor = isDestructive
+        ? theme.colorScheme.error
+        : theme.colorScheme.onSurface;
 
     return Material(
       color: backgroundColor ?? Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingMedium,
-            vertical: AppDimensions.paddingMedium,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space4,
           ),
           child: Row(
             children: [
@@ -336,9 +337,9 @@ class FSMBottomSheetOption extends StatelessWidget {
                 Icon(
                   icon,
                   color: effectiveIconColor,
-                  size: 24.sp,
+                  size: DesignTokens.iconMd.sp,
                 ),
-                SizedBox(width: AppDimensions.paddingMedium),
+                RSizedBox(width: DesignTokens.space4),
               ],
               Expanded(
                 child: Column(
@@ -348,17 +349,15 @@ class FSMBottomSheetOption extends StatelessWidget {
                       title,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
                         color: effectiveTextColor,
                       ),
                     ),
                     if (subtitle != null) ...[
-                      SizedBox(height: 2.h),
+                      RSizedBox(height: DesignTokens.space1),
                       Text(
                         subtitle!,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColors.textSecondary,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -366,7 +365,7 @@ class FSMBottomSheetOption extends StatelessWidget {
                 ),
               ),
               if (trailing != null) ...[
-                SizedBox(width: AppDimensions.paddingSmall),
+                RSizedBox(width: DesignTokens.space2),
                 trailing!,
               ],
             ],

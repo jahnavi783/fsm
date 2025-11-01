@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 
 /// Step 1: Basic Information
 /// Collects customer name and work log
@@ -27,48 +27,45 @@ class BasicInfoStep extends StatelessWidget {
         children: [
           // Step header
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12.r),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             child: Row(
               children: [
                 Container(
-                  width: 32.w,
-                  height: 32.w,
+                  width: DesignTokens.iconLg.w,
+                  height: DesignTokens.iconLg.w,
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: theme.colorScheme.primary,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       '1',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 12.w),
+                RSizedBox(width: DesignTokens.space3),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Basic Information',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         'Customer details and work summary',
-                        style: TextStyle(
-                          fontSize: 12.sp,
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
@@ -79,18 +76,17 @@ class BasicInfoStep extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 24.h),
+          RSizedBox(height: DesignTokens.space6),
 
           // Customer Name Field (Required)
           Text(
             'Customer Name *',
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
           TextFormField(
             controller: customerNameController,
             validator: (value) {
@@ -103,43 +99,42 @@ class BasicInfoStep extends StatelessWidget {
               hintText: 'Enter customer name...',
               prefixIcon: const Icon(Icons.person_outline),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withValues(alpha: 0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.primary,
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.error,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.error,
                 ),
               ),
-              contentPadding: EdgeInsets.all(16.w),
+              contentPadding: REdgeInsets.all(DesignTokens.space4),
             ),
           ),
 
-          SizedBox(height: 20.h),
+          RSizedBox(height: DesignTokens.space5),
 
           // Work Log Field (Required)
           Text(
             'Work Log *',
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
           TextFormField(
             controller: workLogController,
             maxLines: 4,
@@ -152,48 +147,47 @@ class BasicInfoStep extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'Describe the work performed, issues resolved, etc...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withValues(alpha: 0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.primary,
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.error,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.error,
                 ),
               ),
-              contentPadding: EdgeInsets.all(16.w),
+              contentPadding: REdgeInsets.all(DesignTokens.space4),
             ),
           ),
 
-          SizedBox(height: 16.h),
+          RSizedBox(height: DesignTokens.space4),
 
           // Helper text
           Row(
             children: [
               Icon(
                 Icons.info_outline,
-                size: 16.sp,
+                size: DesignTokens.iconSm.sp,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
-              SizedBox(width: 8.w),
+              RSizedBox(width: DesignTokens.space2),
               Expanded(
                 child: Text(
                   'Both fields are required to proceed to the next step',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontStyle: FontStyle.italic,
                   ),
                 ),

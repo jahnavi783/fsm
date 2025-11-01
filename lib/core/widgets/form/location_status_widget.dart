@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 
 /// Reusable widget to display location capture status
@@ -22,60 +23,60 @@ class LocationStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (location != null) {
-      return _buildLocationCaptured();
+      return _buildLocationCaptured(context);
     } else if (isLoading) {
-      return _buildLocationLoading();
+      return _buildLocationLoading(context);
     } else {
-      return _buildLocationUnavailable();
+      return _buildLocationUnavailable(context);
     }
   }
 
-  Widget _buildLocationCaptured() {
+  Widget _buildLocationCaptured(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12.w),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        color: AppColors.success.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8.r),
+        color: fsmTheme.success.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.success.withValues(alpha: 0.3),
+          color: fsmTheme.success.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
         children: [
           Icon(
             Icons.location_on,
-            color: AppColors.success,
-            size: 20.sp,
+            color: fsmTheme.success,
+            size: DesignTokens.iconSm.sp,
           ),
-          SizedBox(width: 12.w),
+          RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Location Captured',
-                  style: TextStyle(
-                    color: AppColors.success,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: fsmTheme.success,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14.sp,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                RSizedBox(height: DesignTokens.space1),
                 Text(
                   '${location!.latitude.toStringAsFixed(6)}, ${location!.longitude.toStringAsFixed(6)}',
-                  style: TextStyle(
-                    color: AppColors.success,
-                    fontSize: 12.sp,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: fsmTheme.success,
                   ),
                 ),
                 if (location!.accuracy != null) ...[
-                  SizedBox(height: 2.h),
+                  RSizedBox(height: DesignTokens.space1),
                   Text(
                     'Accuracy: ${location!.accuracy!.toStringAsFixed(1)}m',
-                    style: TextStyle(
-                      color: AppColors.success.withValues(alpha: 0.8),
-                      fontSize: 11.sp,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: fsmTheme.success.withValues(alpha: 0.8),
                     ),
                   ),
                 ],
@@ -84,54 +85,55 @@ class LocationStatusWidget extends StatelessWidget {
           ),
           Icon(
             Icons.check_circle,
-            color: AppColors.success,
-            size: 24.sp,
+            color: fsmTheme.success,
+            size: DesignTokens.iconMd.sp,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLocationLoading() {
+  Widget _buildLocationLoading(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12.w),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8.r),
+        color: fsmTheme.warning.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.warning.withValues(alpha: 0.3),
+          color: fsmTheme.warning.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
         children: [
           SizedBox(
-            width: 20.w,
-            height: 20.h,
+            width: DesignTokens.iconSm.w,
+            height: DesignTokens.iconSm.h,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.warning),
+              valueColor: AlwaysStoppedAnimation<Color>(fsmTheme.warning),
             ),
           ),
-          SizedBox(width: 12.w),
+          RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Capturing Location...',
-                  style: TextStyle(
-                    color: AppColors.warning,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: fsmTheme.warning,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14.sp,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                RSizedBox(height: DesignTokens.space1),
                 Text(
                   'Please wait while we get your GPS coordinates',
-                  style: TextStyle(
-                    color: AppColors.warning.withValues(alpha: 0.8),
-                    fontSize: 12.sp,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: fsmTheme.warning.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -142,43 +144,43 @@ class LocationStatusWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildLocationUnavailable() {
+  Widget _buildLocationUnavailable(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12.w),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        color: AppColors.error.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8.r),
+        color: theme.colorScheme.error.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.error.withValues(alpha: 0.3),
+          color: theme.colorScheme.error.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
         children: [
           Icon(
             Icons.location_off,
-            color: AppColors.error,
-            size: 20.sp,
+            color: theme.colorScheme.error,
+            size: DesignTokens.iconSm.sp,
           ),
-          SizedBox(width: 12.w),
+          RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Location Not Available',
-                  style: TextStyle(
-                    color: AppColors.error,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.error,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14.sp,
                   ),
                 ),
-                SizedBox(height: 4.h),
+                RSizedBox(height: DesignTokens.space1),
                 Text(
                   'Unable to capture GPS coordinates',
-                  style: TextStyle(
-                    color: AppColors.error.withValues(alpha: 0.8),
-                    fontSize: 12.sp,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.error.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -189,8 +191,8 @@ class LocationStatusWidget extends StatelessWidget {
               onPressed: onRetry,
               icon: Icon(
                 Icons.refresh,
-                color: AppColors.error,
-                size: 20.sp,
+                color: theme.colorScheme.error,
+                size: DesignTokens.iconSm.sp,
               ),
               tooltip: 'Retry',
             ),

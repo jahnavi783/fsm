@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 /// Step 3: Verification
 /// Collects customer signature and completion notes
@@ -30,55 +31,53 @@ class _VerificationStepState extends State<VerificationStep> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Step header
         Container(
-          padding: EdgeInsets.all(16.w),
+          padding: REdgeInsets.all(DesignTokens.space4),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12.r),
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
           ),
           child: Row(
             children: [
               Container(
-                width: 32.w,
-                height: 32.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                width: DesignTokens.iconLg.w,
+                height: DesignTokens.iconLg.w,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     '3',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 12.w),
+              RSizedBox(width: DesignTokens.space3),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Verification',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
                     Text(
                       'Customer signature and final notes',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -88,21 +87,20 @@ class _VerificationStepState extends State<VerificationStep> {
           ),
         ),
 
-        SizedBox(height: 24.h),
+        RSizedBox(height: DesignTokens.space6),
 
         // Customer Signature Section (Required)
         Row(
           children: [
             Icon(
               Icons.draw_outlined,
-              size: 20.sp,
+              size: DesignTokens.iconSm.sp,
               color: theme.colorScheme.onSurface,
             ),
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
             Text(
               'Customer Signature *',
-              style: TextStyle(
-                fontSize: 16.sp,
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface,
               ),
@@ -110,21 +108,21 @@ class _VerificationStepState extends State<VerificationStep> {
           ],
         ),
 
-        SizedBox(height: 8.h),
+        RSizedBox(height: DesignTokens.space2),
 
         // Signature Pad Container
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          padding: EdgeInsets.all(16.w),
+          padding: REdgeInsets.all(DesignTokens.space4),
           decoration: BoxDecoration(
             color: widget.hasSignature
-                ? AppColors.success.withValues(alpha: 0.05)
+                ? fsmTheme.success.withValues(alpha: 0.05)
                 : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             border: Border.all(
               color: widget.hasSignature
-                  ? AppColors.success
-                  : AppColors.outline.withValues(alpha: 0.3),
+                  ? fsmTheme.success
+                  : theme.colorScheme.outline.withValues(alpha: 0.3),
               width: widget.hasSignature ? 2 : 1,
             ),
           ),
@@ -135,13 +133,13 @@ class _VerificationStepState extends State<VerificationStep> {
                 height: 180.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.r),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                   border: Border.all(
-                    color: AppColors.outline.withValues(alpha: 0.2),
+                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                   child: SfSignaturePad(
                     key: widget.signaturePadKey,
                     backgroundColor: Colors.white,
@@ -158,7 +156,7 @@ class _VerificationStepState extends State<VerificationStep> {
                 ),
               ),
 
-              SizedBox(height: 12.h),
+              RSizedBox(height: DesignTokens.space3),
 
               // Status and Clear Button
               Row(
@@ -170,16 +168,15 @@ class _VerificationStepState extends State<VerificationStep> {
                       children: [
                         Icon(
                           Icons.check_circle,
-                          size: 18.sp,
-                          color: AppColors.success,
+                          size: DesignTokens.iconSm.sp,
+                          color: fsmTheme.success,
                         ),
-                        SizedBox(width: 8.w),
+                        RSizedBox(width: DesignTokens.space2),
                         Text(
                           'Customer signature captured successfully',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: theme.textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: AppColors.success,
+                            color: fsmTheme.success,
                           ),
                         ),
                       ],
@@ -189,14 +186,13 @@ class _VerificationStepState extends State<VerificationStep> {
                       children: [
                         Icon(
                           Icons.info_outline,
-                          size: 18.sp,
+                          size: DesignTokens.iconSm.sp,
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
-                        SizedBox(width: 8.w),
+                        RSizedBox(width: DesignTokens.space2),
                         Text(
                           'Draw signature above',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
@@ -207,10 +203,10 @@ class _VerificationStepState extends State<VerificationStep> {
                   if (widget.hasSignature)
                     TextButton.icon(
                       onPressed: widget.onClearSignature,
-                      icon: Icon(Icons.refresh, size: 18.sp),
+                      icon: Icon(Icons.refresh, size: DesignTokens.iconSm.sp),
                       label: const Text('Redo'),
                       style: TextButton.styleFrom(
-                        foregroundColor: AppColors.primary,
+                        foregroundColor: theme.colorScheme.primary,
                       ),
                     ),
                 ],
@@ -219,19 +215,18 @@ class _VerificationStepState extends State<VerificationStep> {
           ),
         ),
 
-        SizedBox(height: 24.h),
+        RSizedBox(height: DesignTokens.space6),
 
         // Completion Notes Section (Optional)
         Text(
           'Completion Notes (Optional)',
-          style: TextStyle(
-            fontSize: 16.sp,
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
           ),
         ),
 
-        SizedBox(height: 8.h),
+        RSizedBox(height: DesignTokens.space2),
 
         TextFormField(
           controller: widget.completionNotesController,
@@ -239,41 +234,40 @@ class _VerificationStepState extends State<VerificationStep> {
           decoration: InputDecoration(
             hintText: 'Add any additional notes...',
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               borderSide: BorderSide(
-                color: AppColors.outline.withValues(alpha: 0.3),
+                color: theme.colorScheme.outline.withValues(alpha: 0.3),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.primary,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
                 width: 2,
               ),
             ),
-            contentPadding: EdgeInsets.all(16.w),
+            contentPadding: REdgeInsets.all(DesignTokens.space4),
           ),
         ),
 
-        SizedBox(height: 16.h),
+        RSizedBox(height: DesignTokens.space4),
 
         // Helper text
         Row(
           children: [
             Icon(
               Icons.info_outline,
-              size: 16.sp,
+              size: DesignTokens.iconSm.sp,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
             Expanded(
               child: Text(
                 'Customer signature is required to complete the work order',
-                style: TextStyle(
-                  fontSize: 12.sp,
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   fontStyle: FontStyle.italic,
                 ),

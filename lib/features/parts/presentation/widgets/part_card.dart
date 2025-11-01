@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/widgets/cards/fsm_card.dart';
 
 import '../../domain/entities/part_entity.dart';
@@ -20,6 +21,9 @@ class PartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return FSMCard(
       margin: REdgeInsets.symmetric(
           horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
@@ -37,27 +41,25 @@ class PartCard extends StatelessWidget {
                     children: [
                       Text(
                         part.partName,
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: theme.colorScheme.onSurface,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 4.h),
+                      RSizedBox(height: DesignTokens.space1),
                       Text(
                         'Part #: ${part.partNumber}',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey[600],
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(width: 12.w),
+                RSizedBox(width: DesignTokens.space3),
                 InventoryIndicator(
                   quantity: part.quantityAvailable,
                   minQuantity: 10, // Default minimum threshold
@@ -65,17 +67,16 @@ class PartCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            RSizedBox(height: DesignTokens.space3),
             Text(
               'Part Number: ${part.partNumber}',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey[600],
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 12.h),
+            RSizedBox(height: DesignTokens.space3),
             Row(
               children: [
                 Container(
@@ -83,36 +84,36 @@ class PartCard extends StatelessWidget {
                       horizontal: DesignTokens.space2,
                       vertical: DesignTokens.space1),
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(6.r),
-                    border: Border.all(color: Colors.blue[200]!),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+                    border: Border.all(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Text(
                     part.category,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.blue[700],
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                SizedBox(width: 8.w),
+                RSizedBox(width: DesignTokens.space2),
                 Container(
                   padding: REdgeInsets.symmetric(
                       horizontal: DesignTokens.space2,
                       vertical: DesignTokens.space1),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(part.status).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6.r),
+                    color: _getStatusColor(context, part.status).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                     border: Border.all(
-                        color: _getStatusColor(part.status)
+                        color: _getStatusColor(context, part.status)
                             .withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     _getStatusText(part.status),
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: _getStatusColor(part.status),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: _getStatusColor(context, part.status),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -120,50 +121,50 @@ class PartCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   '\$${part.unitPrice.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Colors.green[700],
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ],
             ),
             if (part.isLowStock) ...[
-              SizedBox(height: 12.h),
+              RSizedBox(height: DesignTokens.space3),
               Container(
                 width: double.infinity,
                 padding: REdgeInsets.symmetric(
                     horizontal: DesignTokens.space3,
                     vertical: DesignTokens.space2),
                 decoration: BoxDecoration(
-                  color: part.isOutOfStock ? Colors.red[50] : Colors.orange[50],
-                  borderRadius: BorderRadius.circular(8.r),
+                  color: part.isOutOfStock
+                      ? theme.colorScheme.errorContainer.withValues(alpha: 0.3)
+                      : fsmTheme.warning.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                   border: Border.all(
                     color: part.isOutOfStock
-                        ? Colors.red[200]!
-                        : Colors.orange[200]!,
+                        ? theme.colorScheme.error.withValues(alpha: 0.3)
+                        : fsmTheme.warning.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       part.isOutOfStock ? Icons.error : Icons.warning,
-                      size: 16.sp,
+                      size: DesignTokens.iconSm.sp,
                       color: part.isOutOfStock
-                          ? Colors.red[700]
-                          : Colors.orange[700],
+                          ? theme.colorScheme.error
+                          : fsmTheme.warning,
                     ),
-                    SizedBox(width: 8.w),
+                    RSizedBox(width: DesignTokens.space2),
                     Expanded(
                       child: Text(
                         part.isOutOfStock
                             ? 'Out of stock - Reorder needed'
                             : 'Low stock - Consider reordering',
-                        style: TextStyle(
-                          fontSize: 12.sp,
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: part.isOutOfStock
-                              ? Colors.red[700]
-                              : Colors.orange[700],
+                              ? theme.colorScheme.error
+                              : fsmTheme.warning,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -180,8 +181,7 @@ class PartCard extends StatelessWidget {
                         ),
                         child: Text(
                           'Update',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: theme.textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -196,16 +196,19 @@ class PartCard extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(PartStatus status) {
+  Color _getStatusColor(BuildContext context, PartStatus status) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     switch (status) {
       case PartStatus.active:
-        return Colors.green;
+        return fsmTheme.success;
       case PartStatus.inactive:
-        return Colors.grey;
+        return theme.colorScheme.surfaceContainerHighest;
       case PartStatus.discontinued:
-        return Colors.red;
+        return theme.colorScheme.error;
       case PartStatus.backordered:
-        return Colors.orange;
+        return fsmTheme.warning;
     }
   }
 

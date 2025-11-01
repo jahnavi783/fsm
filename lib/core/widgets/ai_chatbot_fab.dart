@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_dimensions.dart';
+import '../theme/design_tokens.dart';
 
 /// AIChatbotFAB - Floating Action Button for AI Chatbot (2025 Redesign)
 ///
@@ -98,25 +97,26 @@ class _AIChatbotFABState extends State<AIChatbotFAB> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final effectiveLabel = widget.label ?? 'AI Assistant';
     final effectiveIcon = widget.icon ?? Icons.smart_toy; // Robot icon
 
     return AnimatedContainer(
-      duration: AppDimensions.animationMedium,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       child: FloatingActionButton.extended(
         onPressed: widget.onTap,
-        backgroundColor: AppColors.secondary, // Green accent
-        foregroundColor: AppColors.white,
-        elevation: AppDimensions.elevationMedium,
-        highlightElevation: AppDimensions.elevationLarge,
+        backgroundColor: theme.colorScheme.secondary,
+        foregroundColor: theme.colorScheme.onSecondary,
+        elevation: DesignTokens.elevationMd,
+        highlightElevation: DesignTokens.elevationLg,
         isExtended: _effectiveIsExtended,
         icon: Icon(
           effectiveIcon,
-          size: AppDimensions.iconMedium,
+          size: DesignTokens.iconMd,
         ),
         label: AnimatedSwitcher(
-          duration: AppDimensions.animationFast,
+          duration: const Duration(milliseconds: 150),
           transitionBuilder: (child, animation) {
             return FadeTransition(
               opacity: animation,
@@ -131,8 +131,7 @@ class _AIChatbotFABState extends State<AIChatbotFAB> {
               ? Text(
                   effectiveLabel,
                   key: const ValueKey('extended'),
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: theme.textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
                   ),
@@ -162,19 +161,20 @@ class CompactAIChatbotFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final effectiveIcon = icon ?? Icons.smart_toy;
     final effectiveTooltip = tooltip ?? 'AI Assistant';
 
     return FloatingActionButton(
       onPressed: onTap,
-      backgroundColor: AppColors.secondary, // Green accent
-      foregroundColor: AppColors.white,
-      elevation: AppDimensions.elevationMedium,
-      highlightElevation: AppDimensions.elevationLarge,
+      backgroundColor: theme.colorScheme.secondary,
+      foregroundColor: theme.colorScheme.onSecondary,
+      elevation: DesignTokens.elevationMd,
+      highlightElevation: DesignTokens.elevationLg,
       tooltip: effectiveTooltip,
       child: Icon(
         effectiveIcon,
-        size: AppDimensions.iconMedium,
+        size: DesignTokens.iconMd,
       ),
     );
   }
@@ -197,6 +197,8 @@ class AIChatbotFABWithBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -210,28 +212,27 @@ class AIChatbotFABWithBadge extends StatelessWidget {
             top: 0,
             right: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: unreadCount > 9 ? 6.w : 8.w,
-                vertical: 4.h,
+              padding: REdgeInsets.symmetric(
+                horizontal: unreadCount > 9 ? DesignTokens.space2 : DesignTokens.space2,
+                vertical: DesignTokens.space1,
               ),
               decoration: BoxDecoration(
-                color: AppColors.error,
-                borderRadius: BorderRadius.circular(12.r),
+                color: theme.colorScheme.error,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 border: Border.all(
-                  color: AppColors.white,
+                  color: theme.colorScheme.surface,
                   width: 2.w,
                 ),
               ),
               constraints: BoxConstraints(
-                minWidth: 20.w,
-                minHeight: 20.h,
+                minWidth: DesignTokens.iconSm.w,
+                minHeight: DesignTokens.iconSm.h,
               ),
               child: Center(
                 child: Text(
                   unreadCount > 99 ? '99+' : unreadCount.toString(),
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 10.sp,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onError,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -54,6 +55,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
 
     return Form(
       key: widget.formKey,
@@ -62,49 +64,46 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
         children: [
           // Step header
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
-              color: AppColors.success.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12.r),
+              color: fsmTheme.success.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             child: Row(
               children: [
                 Container(
-                  width: 32.w,
-                  height: 32.w,
-                  decoration: const BoxDecoration(
-                    color: AppColors.success,
+                  width: DesignTokens.iconLg.w,
+                  height: DesignTokens.iconLg.w,
+                  decoration: BoxDecoration(
+                    color: fsmTheme.success,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       '3',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 12.w),
+                RSizedBox(width: DesignTokens.space3),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Final Details',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         'Location, customer, and signature',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -114,29 +113,28 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          RSizedBox(height: DesignTokens.space5),
 
           // Location Status (Read-only)
           Text(
             'Location *',
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
               color: widget.currentLocation != null
-                  ? AppColors.success.withOpacity(0.1)
-                  : AppColors.warning.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12.r),
+                  ? fsmTheme.success.withValues(alpha: 0.1)
+                  : fsmTheme.warning.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
                 color: widget.currentLocation != null
-                    ? AppColors.success.withOpacity(0.3)
-                    : AppColors.warning.withOpacity(0.3),
+                    ? fsmTheme.success.withValues(alpha: 0.3)
+                    : fsmTheme.warning.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -145,12 +143,12 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   widget.currentLocation != null
                       ? Icons.location_on
                       : Icons.location_searching,
-                  size: 24.sp,
+                  size: DesignTokens.iconMd.sp,
                   color: widget.currentLocation != null
-                      ? AppColors.success
-                      : AppColors.warning,
+                      ? fsmTheme.success
+                      : fsmTheme.warning,
                 ),
-                SizedBox(width: 12.w),
+                RSizedBox(width: DesignTokens.space3),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,20 +157,18 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                         widget.currentLocation != null
                             ? 'Location Captured'
                             : 'Capturing Location...',
-                        style: TextStyle(
-                          fontSize: 14.sp,
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: widget.currentLocation != null
-                              ? AppColors.success
-                              : AppColors.warning,
+                              ? fsmTheme.success
+                              : fsmTheme.warning,
                         ),
                       ),
                       if (widget.currentLocation != null)
                         Text(
                           '${widget.currentLocation!.latitude.toStringAsFixed(6)}, ${widget.currentLocation!.longitude.toStringAsFixed(6)}',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                         ),
                     ],
@@ -180,12 +176,12 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                 ),
                 if (widget.currentLocation == null)
                   SizedBox(
-                    width: 16.w,
-                    height: 16.h,
-                    child: const CircularProgressIndicator(
+                    width: DesignTokens.iconSm.w,
+                    height: DesignTokens.iconSm.h,
+                    child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.warning,
+                        fsmTheme.warning,
                       ),
                     ),
                   ),
@@ -193,18 +189,17 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          RSizedBox(height: DesignTokens.space5),
 
           // Customer Name Field (Required)
           Text(
             'Customer Name *',
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
             ),
           ),
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
           TextFormField(
             controller: widget.customerNameController,
             validator: (value) {
@@ -217,46 +212,45 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
               hintText: 'Enter customer name...',
               prefixIcon: const Icon(Icons.person_outline),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withOpacity(0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.error,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.error,
                 ),
               ),
-              contentPadding: EdgeInsets.all(16.w),
+              contentPadding: REdgeInsets.all(DesignTokens.space4),
             ),
           ),
 
-          SizedBox(height: 20.h),
+          RSizedBox(height: DesignTokens.space5),
 
           // Customer Signature Section (Required)
           Row(
             children: [
               Icon(
                 Icons.draw_outlined,
-                size: 20.sp,
+                size: DesignTokens.iconSm.sp,
                 color: theme.colorScheme.onSurface,
               ),
-              SizedBox(width: 8.w),
+              RSizedBox(width: DesignTokens.space2),
               Text(
                 'Customer Signature *',
-                style: TextStyle(
-                  fontSize: 16.sp,
+                style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.onSurface,
                 ),
@@ -264,22 +258,22 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             ],
           ),
 
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
 
           // Signature Pad Container
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
               color: widget.hasSignature
-                  ? AppColors.success.withValues(alpha: 0.05)
+                  ? fsmTheme.success.withValues(alpha: 0.05)
                   : theme.colorScheme.surfaceContainerHighest
                       .withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
                 color: widget.hasSignature
-                    ? AppColors.success
-                    : AppColors.outline.withValues(alpha: 0.3),
+                    ? fsmTheme.success
+                    : theme.colorScheme.outline.withValues(alpha: 0.3),
                 width: widget.hasSignature ? 2 : 1,
               ),
             ),
@@ -290,13 +284,13 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   height: 180.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                     border: Border.all(
-                      color: AppColors.outline.withValues(alpha: 0.2),
+                      color: theme.colorScheme.outline.withValues(alpha: 0.2),
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                     child: SfSignaturePad(
                       key: widget.signaturePadKey,
                       backgroundColor: Colors.white,
@@ -313,7 +307,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   ),
                 ),
 
-                SizedBox(height: 12.h),
+                RSizedBox(height: DesignTokens.space3),
 
                 // Status and Clear Button
                 Row(
@@ -325,16 +319,15 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                         children: [
                           Icon(
                             Icons.check_circle,
-                            size: 18.sp,
-                            color: AppColors.success,
+                            size: DesignTokens.iconSm.sp,
+                            color: fsmTheme.success,
                           ),
-                          SizedBox(width: 8.w),
+                          RSizedBox(width: DesignTokens.space2),
                           Text(
                             'Signature captured',
-                            style: TextStyle(
-                              fontSize: 12.sp,
+                            style: theme.textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: AppColors.success,
+                              color: fsmTheme.success,
                             ),
                           ),
                         ],
@@ -344,15 +337,14 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                         children: [
                           Icon(
                             Icons.info_outline,
-                            size: 18.sp,
+                            size: DesignTokens.iconSm.sp,
                             color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.5),
                           ),
-                          SizedBox(width: 8.w),
+                          RSizedBox(width: DesignTokens.space2),
                           Text(
                             'Draw signature above',
-                            style: TextStyle(
-                              fontSize: 12.sp,
+                            style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurface
                                   .withValues(alpha: 0.5),
                             ),
@@ -364,10 +356,10 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     if (widget.hasSignature)
                       TextButton.icon(
                         onPressed: widget.onClearSignature,
-                        icon: Icon(Icons.refresh, size: 18.sp),
+                        icon: Icon(Icons.refresh, size: DesignTokens.iconSm.sp),
                         label: const Text('Redo'),
                         style: TextButton.styleFrom(
-                          foregroundColor: AppColors.primary,
+                          foregroundColor: theme.colorScheme.primary,
                         ),
                       ),
                   ],
@@ -376,19 +368,18 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          RSizedBox(height: DesignTokens.space5),
 
           // Completion Notes Section (Optional)
           Text(
             'Additional Notes (Optional)',
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
             ),
           ),
 
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
 
           TextFormField(
             controller: widget.completionNotesController,
@@ -396,58 +387,60 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             decoration: InputDecoration(
               hintText: 'Add any additional notes...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withValues(alpha: 0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
-              contentPadding: EdgeInsets.all(16.w),
+              contentPadding: REdgeInsets.all(DesignTokens.space4),
             ),
           ),
 
-          SizedBox(height: 24.h),
+          RSizedBox(height: DesignTokens.space6),
 
           // Review Toggle Button
           OutlinedButton.icon(
             onPressed: _handleToggleReview,
             icon: Icon(
               _showReview ? Icons.visibility_off : Icons.visibility,
-              size: 18.sp,
+              size: DesignTokens.iconSm.sp,
             ),
             label: Text(
               _showReview ? 'Hide Summary' : 'Review Summary',
-              style: TextStyle(fontSize: 14.sp),
             ),
             style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+              padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space5,
+                vertical: DesignTokens.space3,
               ),
-              side: BorderSide(color: AppColors.primary),
-              foregroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+              ),
+              side: BorderSide(color: theme.colorScheme.primary),
+              foregroundColor: theme.colorScheme.primary,
             ),
           ),
 
           // Review Summary
           if (_showReview) ...[
-            SizedBox(height: 16.h),
+            RSizedBox(height: DesignTokens.space4),
             Container(
-              padding: EdgeInsets.all(16.w),
+              padding: REdgeInsets.all(DesignTokens.space4),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(12.r),
+                color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                 border: Border.all(
-                  color: AppColors.primary.withValues(alpha: 0.2),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -457,24 +450,24 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     children: [
                       Icon(
                         Icons.summarize,
-                        color: AppColors.primary,
-                        size: 20.sp,
+                        color: theme.colorScheme.primary,
+                        size: DesignTokens.iconSm.sp,
                       ),
-                      SizedBox(width: 8.w),
+                      RSizedBox(width: DesignTokens.space2),
                       Text(
                         'Completion Summary',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  RSizedBox(height: DesignTokens.space4),
 
                   // Work Log
                   _buildReviewItem(
+                    context,
                     'Work Log',
                     widget.workLogController.text.trim().isEmpty
                         ? 'Not provided'
@@ -482,10 +475,11 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     widget.workLogController.text.trim().isNotEmpty,
                   ),
 
-                  SizedBox(height: 12.h),
+                  RSizedBox(height: DesignTokens.space3),
 
                   // Parts Used
                   _buildReviewItem(
+                    context,
                     'Parts Used',
                     widget.partsUsed.isEmpty
                         ? 'No parts added'
@@ -494,13 +488,15 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   ),
 
                   if (widget.partsUsed.isNotEmpty) ...[
-                    SizedBox(height: 8.h),
+                    RSizedBox(height: DesignTokens.space2),
                     ...widget.partsUsed.map((part) => Padding(
-                          padding: EdgeInsets.only(left: 16.w, bottom: 4.h),
+                          padding: REdgeInsets.only(
+                            left: DesignTokens.space4,
+                            bottom: DesignTokens.space1,
+                          ),
                           child: Text(
                             '• ${part.part.partName} (Qty: ${part.quantityController.text})',
-                            style: TextStyle(
-                              fontSize: 12.sp,
+                            style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurface
                                   .withValues(alpha: 0.7),
                             ),
@@ -508,10 +504,11 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                         )),
                   ],
 
-                  SizedBox(height: 12.h),
+                  RSizedBox(height: DesignTokens.space3),
 
                   // Images
                   _buildReviewItem(
+                    context,
                     'Images',
                     widget.imageFiles.isEmpty
                         ? 'No images added'
@@ -519,10 +516,11 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     widget.imageFiles.isNotEmpty,
                   ),
 
-                  SizedBox(height: 12.h),
+                  RSizedBox(height: DesignTokens.space3),
 
                   // Customer Name
                   _buildReviewItem(
+                    context,
                     'Customer Name',
                     widget.customerNameController.text.trim().isEmpty
                         ? 'Not provided'
@@ -530,10 +528,11 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     widget.customerNameController.text.trim().isNotEmpty,
                   ),
 
-                  SizedBox(height: 12.h),
+                  RSizedBox(height: DesignTokens.space3),
 
                   // Signature
                   _buildReviewItem(
+                    context,
                     'Signature',
                     widget.hasSignature ? 'Captured' : 'Not captured',
                     widget.hasSignature,
@@ -542,8 +541,9 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                   if (widget.completionNotesController.text
                       .trim()
                       .isNotEmpty) ...[
-                    SizedBox(height: 12.h),
+                    RSizedBox(height: DesignTokens.space3),
                     _buildReviewItem(
+                      context,
                       'Additional Notes',
                       widget.completionNotesController.text.trim(),
                       true,
@@ -554,22 +554,21 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
             ),
           ],
 
-          SizedBox(height: 16.h),
+          RSizedBox(height: DesignTokens.space4),
 
           // Helper text
           Row(
             children: [
               Icon(
                 Icons.info_outline,
-                size: 16.sp,
+                size: DesignTokens.iconSm.sp,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
-              SizedBox(width: 8.w),
+              RSizedBox(width: DesignTokens.space2),
               Expanded(
                 child: Text(
                   'Location, customer name, and signature are required to submit',
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontStyle: FontStyle.italic,
                   ),
@@ -582,32 +581,40 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
     );
   }
 
-  Widget _buildReviewItem(String label, String value, bool isProvided) {
+  Widget _buildReviewItem(
+    BuildContext context,
+    String label,
+    String value,
+    bool isProvided,
+  ) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           isProvided ? Icons.check_circle : Icons.radio_button_unchecked,
-          size: 16.sp,
-          color: isProvided ? AppColors.success : Colors.grey,
+          size: DesignTokens.iconSm.sp,
+          color: isProvided
+              ? fsmTheme.success
+              : theme.colorScheme.onSurface.withValues(alpha: 0.4),
         ),
-        SizedBox(width: 8.w),
+        RSizedBox(width: DesignTokens.space2),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 13.sp,
+                style: theme.textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Text(
                 value,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.grey[700],
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,

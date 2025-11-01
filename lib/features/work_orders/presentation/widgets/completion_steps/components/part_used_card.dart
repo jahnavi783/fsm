@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import '../models/part_used_input.dart';
 
 /// Card widget displaying a part used in work order completion
@@ -18,14 +19,18 @@ class PartUsedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
     final part = partInput.part;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(12.w),
+      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.outline.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+        ),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,35 +38,33 @@ class PartUsedCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 40.w,
-                height: 40.w,
+                width: DesignTokens.buttonHeightMd.w,
+                height: DesignTokens.buttonHeightMd.w,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8.r),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
                 child: Icon(
                   Icons.inventory_2,
-                  color: AppColors.primary,
-                  size: 20.sp,
+                  color: theme.colorScheme.primary,
+                  size: DesignTokens.iconSm.sp,
                 ),
               ),
-              SizedBox(width: 12.w),
+              RSizedBox(width: DesignTokens.space3),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       part.partName,
-                      style: TextStyle(
-                        fontSize: 14.sp,
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       'Part #: ${part.partNumber}',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -69,15 +72,15 @@ class PartUsedCard extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onRemove,
-                icon: const Icon(Icons.delete, color: AppColors.error),
+                icon: Icon(Icons.delete, color: theme.colorScheme.error),
                 style: IconButton.styleFrom(
-                  padding: EdgeInsets.all(8.w),
-                  minimumSize: Size(32.w, 32.h),
+                  padding: REdgeInsets.all(DesignTokens.space2),
+                  minimumSize: Size(DesignTokens.iconLg.w, DesignTokens.iconLg.h),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          RSizedBox(height: DesignTokens.space3),
           Row(
             children: [
               Expanded(
@@ -86,12 +89,11 @@ class PartUsedCard extends StatelessWidget {
                   children: [
                     Text(
                       'Quantity Used',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    RSizedBox(height: DesignTokens.space1),
                     TextFormField(
                       controller: partInput.quantityController,
                       keyboardType: TextInputType.number,
@@ -111,35 +113,33 @@ class PartUsedCard extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Enter quantity',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 12.h,
+                        contentPadding: REdgeInsets.symmetric(
+                          horizontal: DesignTokens.space3,
+                          vertical: DesignTokens.space3,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 16.w),
+              RSizedBox(width: DesignTokens.space4),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Available',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey[600],
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  RSizedBox(height: DesignTokens.space1),
                   Text(
                     '${part.quantityAvailable}',
-                    style: TextStyle(
-                      fontSize: 20.sp,
+                    style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: part.isInStock ? AppColors.success : AppColors.error,
+                      color: part.isInStock ? fsmTheme.success : theme.colorScheme.error,
                     ),
                   ),
                 ],

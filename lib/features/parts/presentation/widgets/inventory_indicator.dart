@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 class InventoryIndicator extends StatelessWidget {
   final int quantity;
@@ -19,11 +21,12 @@ class InventoryIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final stockLevel = quantity / maxQuantity;
     final isLowStock = quantity <= minQuantity;
     final isOutOfStock = quantity == 0;
-    
-    final indicatorSize = size ?? 60.w;
+
+    final indicatorSize = size ?? DesignTokens.buttonHeightLg.w;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,7 +37,7 @@ class InventoryIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: _getStockColor(isOutOfStock, isLowStock),
+              color: _getStockColor(context, isOutOfStock, isLowStock),
               width: 3.w,
             ),
           ),
@@ -46,7 +49,7 @@ class InventoryIndicator extends StatelessWidget {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[100],
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 ),
               ),
               // Progress indicator
@@ -57,7 +60,7 @@ class InventoryIndicator extends StatelessWidget {
                     strokeWidth: 4.w,
                     backgroundColor: Colors.transparent,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      _getStockColor(isOutOfStock, isLowStock),
+                      _getStockColor(context, isOutOfStock, isLowStock),
                     ),
                   ),
                 ),
@@ -68,18 +71,16 @@ class InventoryIndicator extends StatelessWidget {
                   children: [
                     Text(
                       quantity.toString(),
-                      style: TextStyle(
-                        fontSize: (indicatorSize * 0.25).sp,
+                      style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: _getStockColor(isOutOfStock, isLowStock),
+                        color: _getStockColor(context, isOutOfStock, isLowStock),
                       ),
                     ),
-                    if (indicatorSize >= 60.w)
+                    if (indicatorSize >= DesignTokens.buttonHeightLg.w)
                       Text(
                         'qty',
-                        style: TextStyle(
-                          fontSize: (indicatorSize * 0.15).sp,
-                          color: Colors.grey[600],
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -90,12 +91,11 @@ class InventoryIndicator extends StatelessWidget {
           ),
         ),
         if (showLabel) ...[
-          SizedBox(height: 4.h),
+          RSizedBox(height: DesignTokens.space1),
           Text(
             _getStockStatusText(isOutOfStock, isLowStock),
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: _getStockColor(isOutOfStock, isLowStock),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: _getStockColor(context, isOutOfStock, isLowStock),
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
@@ -105,10 +105,13 @@ class InventoryIndicator extends StatelessWidget {
     );
   }
 
-  Color _getStockColor(bool isOutOfStock, bool isLowStock) {
-    if (isOutOfStock) return Colors.red;
-    if (isLowStock) return Colors.orange;
-    return Colors.green;
+  Color _getStockColor(BuildContext context, bool isOutOfStock, bool isLowStock) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
+    if (isOutOfStock) return theme.colorScheme.error;
+    if (isLowStock) return fsmTheme.warning;
+    return fsmTheme.success;
   }
 
   String _getStockStatusText(bool isOutOfStock, bool isLowStock) {
@@ -136,6 +139,8 @@ class InventoryLevelBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
     final stockLevel = quantity / maxQuantity;
     final isLowStock = quantity <= minQuantity;
     final isOutOfStock = quantity == 0;
@@ -150,30 +155,28 @@ class InventoryLevelBar extends StatelessWidget {
             children: [
               Text(
                 'Stock Level',
-                style: TextStyle(
-                  fontSize: 12.sp,
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w500,
-                  color: Colors.grey[700],
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
               ),
               Text(
                 '$quantity / $maxQuantity',
-                style: TextStyle(
-                  fontSize: 12.sp,
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: _getStockColor(isOutOfStock, isLowStock),
+                  color: _getStockColor(context, isOutOfStock, isLowStock),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 4.h),
+          RSizedBox(height: DesignTokens.space1),
         ],
         Container(
           height: height.h,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(height.r / 2),
-            color: Colors.grey[200],
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           ),
           child: Stack(
             children: [
@@ -183,7 +186,7 @@ class InventoryLevelBar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(height.r / 2),
-                    color: _getStockColor(isOutOfStock, isLowStock),
+                    color: _getStockColor(context, isOutOfStock, isLowStock),
                   ),
                 ),
               ),
@@ -195,30 +198,28 @@ class InventoryLevelBar extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     width: 2.w,
-                    color: Colors.orange[700],
+                    color: fsmTheme.warning.withValues(alpha: 0.7),
                   ),
                 ),
             ],
           ),
         ),
         if (showLabels) ...[
-          SizedBox(height: 4.h),
+          RSizedBox(height: DesignTokens.space1),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Min: $minQuantity',
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  color: Colors.grey[600],
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               Text(
                 _getStockStatusText(isOutOfStock, isLowStock),
-                style: TextStyle(
-                  fontSize: 10.sp,
+                style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: _getStockColor(isOutOfStock, isLowStock),
+                  color: _getStockColor(context, isOutOfStock, isLowStock),
                 ),
               ),
             ],
@@ -228,10 +229,13 @@ class InventoryLevelBar extends StatelessWidget {
     );
   }
 
-  Color _getStockColor(bool isOutOfStock, bool isLowStock) {
-    if (isOutOfStock) return Colors.red;
-    if (isLowStock) return Colors.orange;
-    return Colors.green;
+  Color _getStockColor(BuildContext context, bool isOutOfStock, bool isLowStock) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
+    if (isOutOfStock) return theme.colorScheme.error;
+    if (isLowStock) return fsmTheme.warning;
+    return fsmTheme.success;
   }
 
   String _getStockStatusText(bool isOutOfStock, bool isLowStock) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/widgets/cards/fsm_card.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
@@ -53,14 +53,13 @@ class WorkOrderCard extends StatelessWidget {
           Text(
             workOrder.summary,
             style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: 14.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.8),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           //
-          SizedBox(height: 12.h),
+          RSizedBox(height: DesignTokens.space3),
           //
           // // Priority and Visit Date Row
           Row(
@@ -72,20 +71,19 @@ class WorkOrderCard extends StatelessWidget {
                 showIcon: false,
               ),
 
-              SizedBox(width: 12.w),
+              RSizedBox(width: DesignTokens.space3),
 
               // Visit Date
               Icon(
                 Icons.schedule,
-                size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
-              SizedBox(width: 4.w),
+              RSizedBox(width: DesignTokens.space1),
               Text(
                 DateFormat('MMM dd, yyyy').format(workOrder.visitDate),
                 style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 12.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
             ],
@@ -102,15 +100,14 @@ class WorkOrderCard extends StatelessWidget {
           //         Icon(
           //           Icons.person_outline,
           //           size: 16.sp,
-          //           color: theme.colorScheme.onSurface.withOpacity(0.6),
+          //           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           //         ),
           //         SizedBox(width: 4.w),
           //         Expanded(
           //           child: Text(
           //             workOrder.customer!.name,
           //             style: theme.textTheme.bodySmall?.copyWith(
-          //               fontSize: 12.sp,
-          //               color: theme.colorScheme.onSurface.withOpacity(0.6),
+          //               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           //             ),
           //             overflow: TextOverflow.ellipsis,
           //           ),
@@ -121,22 +118,21 @@ class WorkOrderCard extends StatelessWidget {
           //   SizedBox(height: 4.h),
           // ],
           //
-            SizedBox(height: 4.h),
+            RSizedBox(height: DesignTokens.space1),
           // // Location Info
           Row(
             children: [
               Icon(
                 Icons.location_on_outlined,
-                size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
-              SizedBox(width: 4.w),
+              RSizedBox(width: DesignTokens.space1),
               Expanded(
                 child: Text(
                   workOrder.location,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -165,7 +161,6 @@ class WorkOrderCard extends StatelessWidget {
           //           child: Text(
           //             _getActionButtonText(),
           //             style: TextStyle(
-          //               fontSize: 14.sp,
           //               fontWeight: FontWeight.w600,
           //             ),
           //           ),
@@ -177,11 +172,11 @@ class WorkOrderCard extends StatelessWidget {
 
           // Overdue indicator
           if (workOrder.isOverdue) ...[
-            SizedBox(height: 8.h),
+            RSizedBox(height: DesignTokens.space2),
             StatusBadge(
               label: 'Overdue',
               variant: StatusBadgeVariant.outlined,
-              customColor: AppColors.error,
+              customColor: theme.colorScheme.error,
               icon: Icons.warning_outlined,
               showIcon: true,
             ),
@@ -191,23 +186,27 @@ class WorkOrderCard extends StatelessWidget {
     );
   }
 
-  bool _shouldShowActionButton() {
-    return workOrder.canBeStarted ||
-        workOrder.canBePaused ||
-        workOrder.canBeResumed;
-  }
+  // Commented out unused methods - can be restored when action button feature is re-enabled
+  // bool _shouldShowActionButton() {
+  //   return workOrder.canBeStarted ||
+  //       workOrder.canBePaused ||
+  //       workOrder.canBeResumed;
+  // }
 
-  String _getActionButtonText() {
-    if (workOrder.canBeStarted) return 'Start Work';
-    if (workOrder.canBePaused) return 'Pause Work';
-    if (workOrder.canBeResumed) return 'Resume Work';
-    return 'View Details';
-  }
+  // String _getActionButtonText() {
+  //   if (workOrder.canBeStarted) return 'Start Work';
+  //   if (workOrder.canBePaused) return 'Pause Work';
+  //   if (workOrder.canBeResumed) return 'Resume Work';
+  //   return 'View Details';
+  // }
 
-  Color _getActionButtonColor() {
-    if (workOrder.canBeStarted) return AppColors.actionStart;
-    if (workOrder.canBePaused) return AppColors.actionPause;
-    if (workOrder.canBeResumed) return AppColors.actionResume;
-    return AppColors.primary;
-  }
+  // Color _getActionButtonColor(BuildContext context) {
+  //   final theme = Theme.of(context);
+  //   final fsmTheme = context.fsmTheme;
+  //
+  //   if (workOrder.canBeStarted) return fsmTheme.actionStart;
+  //   if (workOrder.canBePaused) return fsmTheme.actionPause;
+  //   if (workOrder.canBeResumed) return fsmTheme.actionResume;
+  //   return theme.colorScheme.primary;
+  // }
 }

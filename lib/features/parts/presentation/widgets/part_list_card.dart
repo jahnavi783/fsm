@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/theme/design_tokens.dart' show DesignTokens;
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/part_entity.dart';
 
 /// PartListCard - List card for parts display
@@ -54,31 +52,33 @@ class PartListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: REdgeInsets.symmetric(
         horizontal: DesignTokens.space4,
         vertical: DesignTokens.space1,
       ),
       child: Material(
-        color: AppColors.surface,
-        elevation: AppDimensions.elevationXSmall,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: theme.colorScheme.surface,
+        elevation: 2,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         child: InkWell(
           onTap: onTap ?? onDetails,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
           child: Padding(
             padding: REdgeInsets.all(DesignTokens.space2),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Thumbnail (80x80dp)
-                _buildThumbnail(),
+                _buildThumbnail(context),
 
-                SizedBox(width: AppDimensions.paddingMedium),
+                RSizedBox(width: DesignTokens.space4),
 
                 // Part Info
                 Expanded(
-                  child: _buildPartInfo(),
+                  child: _buildPartInfo(context),
                 ),
               ],
             ),
@@ -88,15 +88,18 @@ class PartListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildThumbnail() {
+  Widget _buildThumbnail(BuildContext context) {
+    final theme = Theme.of(context);
+    final stockColor = _getStockStatusColor(context);
+
     return Container(
       width: 80.w,
       height: 80.w,
       decoration: BoxDecoration(
-        color: _getStockStatusColor().withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: stockColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: _getStockStatusColor().withValues(alpha: 0.3),
+          color: stockColor.withValues(alpha: 0.3),
           width: 1.w,
         ),
       ),
@@ -105,25 +108,24 @@ class PartListCard extends StatelessWidget {
         children: [
           Icon(
             _getCategoryIcon(),
-            size: 32.sp,
-            color: _getStockStatusColor(),
+            size: DesignTokens.iconLg.sp,
+            color: stockColor,
           ),
-          SizedBox(height: 4.h),
+          RSizedBox(height: DesignTokens.space1),
           Container(
             padding: REdgeInsets.symmetric(
-              horizontal: DesignTokens.space1 + 2,
+              horizontal: DesignTokens.space2,
               vertical: DesignTokens.space1 / 2,
             ),
             decoration: BoxDecoration(
-              color: _getStockStatusColor().withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+              color: stockColor.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
             ),
             child: Text(
               part.quantityAvailable.toString(),
-              style: AppTextStyles.labelSmall.copyWith(
-                color: _getStockStatusColor(),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: stockColor,
                 fontWeight: FontWeight.w700,
-                fontSize: 11.sp,
               ),
             ),
           ),
@@ -132,34 +134,35 @@ class PartListCard extends StatelessWidget {
     );
   }
 
-  Widget _buildPartInfo() {
+  Widget _buildPartInfo(BuildContext context) {
+    final theme = Theme.of(context);
+    final stockColor = _getStockStatusColor(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Part Number
         Text(
           part.partNumber,
-          style: AppTextStyles.titleSmall.copyWith(
+          style: theme.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-            fontSize: 16.sp,
+            color: theme.colorScheme.onSurface,
           ),
         ),
 
-        SizedBox(height: 4.h),
+        RSizedBox(height: DesignTokens.space1),
 
         // Part Name/Description
         Text(
           part.partName,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimary,
-            fontSize: 14.sp,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface,
           ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
 
-        SizedBox(height: 8.h),
+        RSizedBox(height: DesignTokens.space2),
 
         // Stock Status + Location
         Row(
@@ -167,31 +170,31 @@ class PartListCard extends StatelessWidget {
             // Stock Status
             Icon(
               _getStockStatusIcon(),
-              size: 16.sp,
-              color: _getStockStatusColor(),
+              size: DesignTokens.iconSm.sp,
+              color: stockColor,
             ),
-            SizedBox(width: 4.w),
+            RSizedBox(width: DesignTokens.space1),
             Text(
               part.stockStatusText,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: _getStockStatusColor(),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: stockColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
 
             if (location != null) ...[
-              SizedBox(width: 12.w),
+              RSizedBox(width: DesignTokens.space3),
               Icon(
                 Icons.location_on_outlined,
-                size: 14.sp,
-                color: AppColors.textSecondary,
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
-              SizedBox(width: 2.w),
+              RSizedBox(width: DesignTokens.space1 / 2),
               Expanded(
                 child: Text(
                   location!,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -201,7 +204,7 @@ class PartListCard extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: 8.h),
+        RSizedBox(height: DesignTokens.space2),
 
         // Action Buttons
         Row(
@@ -210,30 +213,29 @@ class PartListCard extends StatelessWidget {
             // Details Button
             if (onDetails != null)
               SizedBox(
-                height: 32.h,
+                height: DesignTokens.buttonHeightSm.h,
                 child: ElevatedButton(
                   onPressed: onDetails,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
                     padding: REdgeInsets.symmetric(
                         horizontal: DesignTokens.space3,
                         vertical: DesignTokens.space1),
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(AppDimensions.radiusXSmall),
+                          BorderRadius.circular(DesignTokens.radiusSm.r),
                     ),
                     elevation: 0,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.info_outline, size: 16.sp),
-                      SizedBox(width: 4.w),
+                      Icon(Icons.info_outline, size: DesignTokens.iconSm.sp),
+                      RSizedBox(width: DesignTokens.space1),
                       Text(
                         'Details',
-                        style: TextStyle(
-                          fontSize: 12.sp,
+                        style: theme.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -257,13 +259,16 @@ class PartListCard extends StatelessWidget {
     }
   }
 
-  Color _getStockStatusColor() {
+  Color _getStockStatusColor(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     if (part.isOutOfStock) {
-      return AppColors.error;
+      return theme.colorScheme.error;
     } else if (part.isLowStock) {
-      return AppColors.warning;
+      return fsmTheme.warning;
     } else {
-      return AppColors.success;
+      return fsmTheme.success;
     }
   }
 
@@ -296,6 +301,8 @@ class EmptyPartsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -303,24 +310,24 @@ class EmptyPartsList extends StatelessWidget {
           Icon(
             Icons.inventory_2_outlined,
             size: 64.sp,
-            color: AppColors.textSecondary.withValues(alpha: 0.5),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
           ),
-          SizedBox(height: AppDimensions.paddingMedium),
+          RSizedBox(height: DesignTokens.space4),
           Text(
             message,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             textAlign: TextAlign.center,
           ),
           if (onRefresh != null) ...[
-            SizedBox(height: AppDimensions.paddingMedium),
+            RSizedBox(height: DesignTokens.space4),
             TextButton.icon(
               onPressed: onRefresh,
               icon: const Icon(Icons.refresh),
               label: const Text('Refresh'),
               style: TextButton.styleFrom(
-                foregroundColor: AppColors.primary,
+                foregroundColor: theme.colorScheme.primary,
               ),
             ),
           ],

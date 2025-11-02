@@ -52,16 +52,20 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: REdgeInsets.symmetric(
           horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey[300]!),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -75,14 +79,13 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
         onSubmitted: widget.onSubmitted,
         decoration: InputDecoration(
           hintText: widget.hintText,
-          hintStyle: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.grey[500],
+          hintStyle: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           prefixIcon: Icon(
             Icons.search,
-            size: 20.sp,
-            color: Colors.grey[600],
+            size: DesignTokens.iconSm.sp,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
           suffixIcon: _controller.text.isNotEmpty
               ? IconButton(
@@ -92,8 +95,8 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
                   },
                   icon: Icon(
                     Icons.clear,
-                    size: 20.sp,
-                    color: Colors.grey[600],
+                    size: DesignTokens.iconSm.sp,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 )
               : null,
@@ -103,9 +106,8 @@ class _PartsSearchBarState extends State<PartsSearchBar> {
             vertical: DesignTokens.space3,
           ),
         ),
-        style: TextStyle(
-          fontSize: 14.sp,
-          color: Colors.black87,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.onSurface,
         ),
       ),
     );

@@ -8,7 +8,7 @@ import '../../../../core/router/app_router.gr.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
 import '../blocs/auth/auth_state.dart';
-import '../widgets/gradient_elevated_button.dart';
+import '../../../../core/theme/components/gradient_elevated_button.dart';
 import '../widgets/login_form.dart';
 
 @RoutePage()

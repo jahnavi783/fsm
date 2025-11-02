@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/navigation/fsm_drawer.dart';
 
 import '../../../../core/di/injection.dart';
@@ -53,7 +52,6 @@ class _MainNavigationView extends StatelessWidget {
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
-        final theme = Theme.of(context);
 
         return BlocListener<NavigationBloc, NavigationState>(
           listener: (context, state) {
@@ -97,7 +95,8 @@ class _MainNavigationView extends StatelessWidget {
                   employeeId: 'EMP-001',
                   profileImageUrl: null,
                   onNavigate: (route) {
-                    // Handle navigation
+                    // Handle navigation to different sections
+                    _handleNavigation(context, route, tabsRouter);
                     context.router.pop();
                   },
                   onLogout: () {
@@ -107,87 +106,6 @@ class _MainNavigationView extends StatelessWidget {
                   },
                 ),
                 body: child,
-                bottomNavigationBar: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
-                  ),
-                  child: BottomNavigationBar(
-                    currentIndex: tabsRouter.activeIndex,
-                    onTap: (index) {
-                      tabsRouter.setActiveIndex(index);
-                      context.read<NavigationBloc>().add(
-                            NavigationEvent.tabChanged(index),
-                          );
-                    },
-                    type: BottomNavigationBarType.fixed,
-                    selectedItemColor: theme.colorScheme.primary,
-                    unselectedItemColor:
-                        theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                    selectedLabelStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    unselectedLabelStyle: TextStyle(
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    backgroundColor: theme.colorScheme.surface,
-                    elevation: 0,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: _buildNavIcon(
-                          Icons.assignment_outlined,
-                          Icons.assignment,
-                          0,
-                          tabsRouter.activeIndex,
-                        ),
-                        label: 'Work Orders',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildNavIcon(
-                          Icons.calendar_today_outlined,
-                          Icons.calendar_today,
-                          1,
-                          tabsRouter.activeIndex,
-                        ),
-                        label: 'Calendar',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildNavIcon(
-                          Icons.folder_outlined,
-                          Icons.folder,
-                          2,
-                          tabsRouter.activeIndex,
-                        ),
-                        label: 'Documents',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildNavIcon(
-                          Icons.inventory_2_outlined,
-                          Icons.inventory_2,
-                          3,
-                          tabsRouter.activeIndex,
-                        ),
-                        label: 'Parts',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildNavIcon(
-                          Icons.person_outline,
-                          Icons.person,
-                          4,
-                          tabsRouter.activeIndex,
-                        ),
-                        label: 'Profile',
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ),
           ),
@@ -199,7 +117,7 @@ class _MainNavigationView extends StatelessWidget {
   String _getCurrentRoute(int index) {
     switch (index) {
       case 0:
-        return '/work-orders';
+        return '/dashboard';
       case 1:
         return '/calendar';
       case 2:
@@ -209,24 +127,35 @@ class _MainNavigationView extends StatelessWidget {
       case 4:
         return '/profile';
       default:
-        return '/work-orders';
+        return '/dashboard';
     }
   }
 
-  Widget _buildNavIcon(
-    IconData outlinedIcon,
-    IconData filledIcon,
-    int index,
-    int activeIndex,
-  ) {
-    final isActive = index == activeIndex;
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 200),
-      child: Icon(
-        isActive ? filledIcon : outlinedIcon,
-        size: 24.sp,
-        key: ValueKey(isActive),
-      ),
-    );
+  void _handleNavigation(BuildContext context, String route, TabsRouter tabsRouter) {
+    switch (route) {
+      case '/dashboard':
+        tabsRouter.setActiveIndex(0);
+        context.read<NavigationBloc>().add(const NavigationEvent.tabChanged(0));
+        break;
+      case '/calendar':
+        tabsRouter.setActiveIndex(1);
+        context.read<NavigationBloc>().add(const NavigationEvent.tabChanged(1));
+        break;
+      case '/documents':
+        tabsRouter.setActiveIndex(2);
+        context.read<NavigationBloc>().add(const NavigationEvent.tabChanged(2));
+        break;
+      case '/parts':
+        tabsRouter.setActiveIndex(3);
+        context.read<NavigationBloc>().add(const NavigationEvent.tabChanged(3));
+        break;
+      case '/profile':
+        tabsRouter.setActiveIndex(4);
+        context.read<NavigationBloc>().add(const NavigationEvent.tabChanged(4));
+        break;
+      default:
+        // Handle other routes like settings pages
+        break;
+    }
   }
 }

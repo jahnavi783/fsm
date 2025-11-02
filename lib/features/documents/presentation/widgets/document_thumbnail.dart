@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../domain/entities/document_entity.dart';
 import '../utils/document_file_type_helper.dart';
 
@@ -21,9 +22,9 @@ class DocumentThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveWidth = width ?? 56.w;
-    final effectiveHeight = height ?? 56.h;
-    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(8.r);
+    final effectiveWidth = width ?? DesignTokens.space12.w;
+    final effectiveHeight = height ?? DesignTokens.space12.h;
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(DesignTokens.radiusMd.r);
 
     return Container(
       width: effectiveWidth,
@@ -45,25 +46,25 @@ class DocumentThumbnail extends StatelessWidget {
 
   Widget _buildImageThumbnail(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Image.network(
       document.fileUrl,
-      width: width ?? 56.w,
-      height: height ?? 56.h,
+      width: width ?? DesignTokens.space12.w,
+      height: height ?? DesignTokens.space12.h,
       fit: BoxFit.cover,
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return Container(
-          width: width ?? 56.w,
-          height: height ?? 56.h,
+          width: width ?? DesignTokens.space12.w,
+          height: height ?? DesignTokens.space12.h,
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.withValues(alpha: 0.1),
-            borderRadius: borderRadius ?? BorderRadius.circular(8.r),
+            borderRadius: borderRadius ?? BorderRadius.circular(DesignTokens.radiusMd.r),
           ),
           child: Center(
             child: SizedBox(
-              width: 20.w,
-              height: 20.h,
+              width: DesignTokens.iconSm.w,
+              height: DesignTokens.iconSm.w,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 value: loadingProgress.expectedTotalBytes != null
@@ -86,16 +87,16 @@ class DocumentThumbnail extends StatelessWidget {
     final extension = document.fileExtension;
 
     return Container(
-      width: width ?? 56.w,
-      height: height ?? 56.h,
+      width: width ?? DesignTokens.space12.w,
+      height: height ?? DesignTokens.space12.h,
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withOpacity(0.1),
-        borderRadius: borderRadius ?? BorderRadius.circular(8.r),
+        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        borderRadius: borderRadius ?? BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Icon(
         _getFileIcon(extension),
         color: theme.colorScheme.primary,
-        size: 28.sp,
+        size: DesignTokens.iconMd.sp,
       ),
     );
   }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 /// StatusSummaryGrid - 2x2 grid showing work order counts by status
@@ -67,48 +65,48 @@ class StatusSummaryGrid extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
       child: GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: AppDimensions.paddingMedium,
-        crossAxisSpacing: AppDimensions.paddingMedium,
+        mainAxisSpacing: DesignTokens.space4.h,
+        crossAxisSpacing: DesignTokens.space4.w,
         childAspectRatio: 1.0, // 1:1 aspect ratio for equal height
         children: [
           _StatusCard(
             icon: Icons.assignment_outlined,
             count: unassignedCount,
             label: 'Unassigned',
-            backgroundColor: fsmTheme.statusColors['unassigned']!,
-            textColor: fsmTheme.statusTextColors['unassigned']!,
+            backgroundColor: fsmTheme.statusUnassigned,
+            textColor: fsmTheme.statusTextUnassigned,
             onTap: () => onStatusTap?.call('unassigned'),
           ),
           _StatusCard(
             icon: Icons.assignment_ind_outlined,
             count: assignedCount,
             label: 'Assigned',
-            backgroundColor: fsmTheme.statusColors['assigned']!,
-            textColor: fsmTheme.statusTextColors['assigned']!,
+            backgroundColor: fsmTheme.statusAssigned,
+            textColor: fsmTheme.statusTextAssigned,
             onTap: () => onStatusTap?.call('assigned'),
           ),
           _StatusCard(
             icon: Icons.pause_circle_outline,
             count: pausedCount,
             label: 'Paused',
-            backgroundColor: fsmTheme.statusColors['paused']!,
-            textColor: fsmTheme.statusTextColors['paused']!,
+            backgroundColor: fsmTheme.statusPaused,
+            textColor: fsmTheme.statusTextPaused,
             onTap: () => onStatusTap?.call('paused'),
           ),
           _StatusCard(
             icon: Icons.check_circle_outline,
             count: completedCount,
             label: 'Completed',
-            backgroundColor: fsmTheme.statusColors['completed']!,
-            textColor: fsmTheme.statusTextColors['completed']!,
+            backgroundColor: fsmTheme.statusCompleted,
+            textColor: fsmTheme.statusTextCompleted,
             onTap: () => onStatusTap?.call('completed'),
           ),
         ],
@@ -137,15 +135,17 @@ class _StatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Material(
       color: backgroundColor,
-      elevation: AppDimensions.elevationSmall,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+      elevation: 2,
+      borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         child: Container(
-          padding: EdgeInsets.all(AppDimensions.paddingMedium),
+          padding: REdgeInsets.all(DesignTokens.space4),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -156,23 +156,23 @@ class _StatusCard extends StatelessWidget {
                 color: textColor,
               ),
 
-              SizedBox(height: AppDimensions.paddingSmall),
+              RSizedBox(height: DesignTokens.space2),
 
               // Count
               Text(
                 count.toString(),
-                style: AppTextStyles.headlineMedium.copyWith(
+                style: theme.textTheme.headlineMedium?.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w700,
                 ),
               ),
 
-              SizedBox(height: AppDimensions.paddingXSmall),
+              RSizedBox(height: DesignTokens.space1),
 
               // Label
               Text(
                 label,
-                style: AppTextStyles.labelMedium.copyWith(
+                style: theme.textTheme.labelMedium?.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w600,
                 ),
@@ -190,30 +190,32 @@ class _StatusCard extends StatelessWidget {
 class _LoadingGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
       child: GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: AppDimensions.paddingMedium,
-        crossAxisSpacing: AppDimensions.paddingMedium,
+        mainAxisSpacing: DesignTokens.space4.h,
+        crossAxisSpacing: DesignTokens.space4.w,
         childAspectRatio: 1.0,
         children: List.generate(
           4,
           (index) => Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             child: Center(
               child: CircularProgressIndicator(
                 strokeWidth: 2.w,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  AppColors.primary.withValues(alpha: 0.5),
+                  theme.colorScheme.primary.withValues(alpha: 0.5),
                 ),
               ),
             ),
@@ -248,40 +250,40 @@ class StatusSummaryChips extends StatelessWidget {
     final fsmTheme = context.fsmTheme;
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
       child: Wrap(
-        spacing: AppDimensions.paddingSmall,
-        runSpacing: AppDimensions.paddingSmall,
+        spacing: DesignTokens.space2.w,
+        runSpacing: DesignTokens.space2.h,
         children: [
           _StatusChip(
             label: 'Unassigned',
             count: unassignedCount,
-            backgroundColor: fsmTheme.statusColors['unassigned']!,
-            textColor: fsmTheme.statusTextColors['unassigned']!,
+            backgroundColor: fsmTheme.statusUnassigned,
+            textColor: fsmTheme.statusTextUnassigned,
             onTap: () => onStatusTap?.call('unassigned'),
           ),
           _StatusChip(
             label: 'Assigned',
             count: assignedCount,
-            backgroundColor: fsmTheme.statusColors['assigned']!,
-            textColor: fsmTheme.statusTextColors['assigned']!,
+            backgroundColor: fsmTheme.statusAssigned,
+            textColor: fsmTheme.statusTextAssigned,
             onTap: () => onStatusTap?.call('assigned'),
           ),
           _StatusChip(
             label: 'Paused',
             count: pausedCount,
-            backgroundColor: fsmTheme.statusColors['paused']!,
-            textColor: fsmTheme.statusTextColors['paused']!,
+            backgroundColor: fsmTheme.statusPaused,
+            textColor: fsmTheme.statusTextPaused,
             onTap: () => onStatusTap?.call('paused'),
           ),
           _StatusChip(
             label: 'Completed',
             count: completedCount,
-            backgroundColor: fsmTheme.statusColors['completed']!,
-            textColor: fsmTheme.statusTextColors['completed']!,
+            backgroundColor: fsmTheme.statusCompleted,
+            textColor: fsmTheme.statusTextCompleted,
             onTap: () => onStatusTap?.call('completed'),
           ),
         ],
@@ -307,40 +309,42 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Material(
       color: backgroundColor,
-      borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+      borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimensions.paddingMedium,
-            vertical: AppDimensions.paddingSmall,
+          padding: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 label,
-                style: AppTextStyles.labelMedium.copyWith(
+                style: theme.textTheme.labelMedium?.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(width: AppDimensions.paddingXSmall),
+              RSizedBox(width: DesignTokens.space1),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
+                padding: REdgeInsets.symmetric(
+                  horizontal: DesignTokens.space2,
                   vertical: 2.h,
                 ),
                 decoration: BoxDecoration(
                   color: textColor,
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
                 child: Text(
                   count.toString(),
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: theme.textTheme.labelSmall?.copyWith(
                     color: backgroundColor,
                     fontWeight: FontWeight.w700,
                   ),

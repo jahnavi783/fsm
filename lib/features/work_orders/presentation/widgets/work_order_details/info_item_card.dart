@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+
 import '../../../../../core/theme/design_tokens.dart';
 
 class InfoItemCard extends StatelessWidget {
@@ -21,17 +21,17 @@ class InfoItemCard extends StatelessWidget {
     return Container(
       padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(8.r),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.outline.withOpacity(0.2),
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
         children: [
           Icon(
             icon,
-            size: 16.sp,
+            size: DesignTokens.iconSm.sp,
             color: theme.colorScheme.primary,
           ),
           DesignTokens.horizontalSpaceSmall,
@@ -41,10 +41,9 @@ class InfoItemCard extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
-                    fontSize: 12.sp,
+                  style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -52,8 +51,7 @@ class InfoItemCard extends StatelessWidget {
                 RSizedBox(height: 2.h),
                 Text(
                   value,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.onSurface,
                   ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import '../../../../core/theme/design_tokens.dart';
 
 class DocumentSearchBar extends StatefulWidget {
   final String? initialQuery;
@@ -54,35 +53,30 @@ class _DocumentSearchBarState extends State<DocumentSearchBar> {
     final theme = Theme.of(context);
 
     return Container(
-      margin: AppDimensions.marginHorizontalMedium +
-          AppDimensions.marginVerticalSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.surface,
-            AppColors.surfaceVariant.withValues(alpha: 0.3),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         border: Border.all(
           color: _focusNode.hasFocus
-              ? AppColors.primary.withValues(alpha: 0.5)
-              : AppColors.outline.withValues(alpha: 0.2),
+              ? theme.colorScheme.primary.withValues(alpha: 0.5)
+              : theme.colorScheme.outline.withValues(alpha: 0.2),
           width: _focusNode.hasFocus ? 2.w : 1.w,
         ),
         boxShadow: [
           BoxShadow(
             color: _focusNode.hasFocus
-                ? AppColors.primary.withValues(alpha: 0.1)
-                : AppColors.shadow.withValues(alpha: 0.08),
+                ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                : theme.colorScheme.shadow.withValues(alpha: 0.08),
             blurRadius: _focusNode.hasFocus ? 12 : 6,
             offset: const Offset(0, 2),
           ),
           if (_focusNode.hasFocus)
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.05),
+              color: theme.colorScheme.primary.withValues(alpha: 0.05),
               blurRadius: 24,
               offset: const Offset(0, 4),
             ),
@@ -96,79 +90,69 @@ class _DocumentSearchBarState extends State<DocumentSearchBar> {
         decoration: InputDecoration(
           hintText: 'Search documents...',
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textTertiary,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           prefixIcon: Container(
-            margin: EdgeInsets.all(AppDimensions.marginSmall),
+            margin: REdgeInsets.all(DesignTokens.space2),
             child: widget.isLoading
-                ? Container(
-                    width: AppDimensions.iconSmall,
-                    height: AppDimensions.iconSmall,
-                    padding: EdgeInsets.all(AppDimensions.paddingXSmall),
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradientWithOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5.w,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
+                ? SizedBox(
+                    width: DesignTokens.iconSm.w,
+                    height: DesignTokens.iconSm.w,
+                    child: Padding(
+                      padding: REdgeInsets.all(DesignTokens.space1),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.w,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                   )
                 : Container(
-                    padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                    padding: REdgeInsets.all(DesignTokens.space1),
                     decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradientWithOpacity(
-                        _focusNode.hasFocus ? 0.15 : 0.05,
-                      ),
+                      color: _focusNode.hasFocus
+                          ? theme.colorScheme.primary.withValues(alpha: 0.15)
+                          : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.search_rounded,
                       color: _focusNode.hasFocus
-                          ? AppColors.primary
-                          : AppColors.textTertiary,
-                      size: AppDimensions.iconSmall,
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                      size: DesignTokens.iconSm.sp,
                     ),
                   ),
           ),
           suffixIcon: _controller.text.isNotEmpty
               ? Container(
-                  margin: EdgeInsets.all(AppDimensions.marginSmall),
+                  margin: REdgeInsets.all(DesignTokens.space2),
                   child: IconButton(
                     onPressed: () {
                       _controller.clear();
                       widget.onClearSearch?.call();
                     },
                     icon: Container(
-                      padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                      padding: REdgeInsets.all(DesignTokens.space1),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.error.withValues(alpha: 0.1),
-                            AppColors.error.withValues(alpha: 0.05),
-                          ],
-                        ),
+                        color: theme.colorScheme.error.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.clear_rounded,
-                        color: AppColors.error.withValues(alpha: 0.8),
-                        size: AppDimensions.iconSmall,
+                        color: theme.colorScheme.error.withValues(alpha: 0.8),
+                        size: DesignTokens.iconSm.sp,
                       ),
                     ),
                   ),
                 )
               : null,
           border: InputBorder.none,
-          contentPadding: AppDimensions.paddingAllMedium,
+          contentPadding: REdgeInsets.all(DesignTokens.space4),
         ),
         style: theme.textTheme.bodyMedium?.copyWith(
-          fontSize: 16.sp,
-          color: AppColors.textPrimary,
+          color: theme.colorScheme.onSurface,
           fontWeight: FontWeight.w500,
         ),
       ),

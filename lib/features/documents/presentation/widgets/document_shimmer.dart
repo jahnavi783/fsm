@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../../core/theme/design_tokens.dart';
 
 class DocumentShimmer extends StatelessWidget {
   final int itemCount;
@@ -17,18 +16,20 @@ class DocumentShimmer extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ListView.builder(
-      padding: AppDimensions.paddingVerticalSmall,
+      padding: REdgeInsets.symmetric(vertical: DesignTokens.space2),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         return Container(
-          margin: AppDimensions.marginHorizontalMedium +
-              AppDimensions.marginVerticalSmall,
+          margin: REdgeInsets.symmetric(
+            horizontal: DesignTokens.space4,
+            vertical: DesignTokens.space2,
+          ),
           decoration: BoxDecoration(
-            gradient: AppColors.primaryGradientWithOpacity(0.02),
-            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow.withValues(alpha: 0.05),
+                color: theme.colorScheme.shadow.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 1),
               ),
@@ -39,17 +40,17 @@ class DocumentShimmer extends StatelessWidget {
             elevation: 0,
             color: theme.colorScheme.surface.withValues(alpha: 0.8),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               side: BorderSide(
-                color: AppColors.outline.withValues(alpha: 0.1),
+                color: theme.colorScheme.outline.withValues(alpha: 0.1),
                 width: 1.w,
               ),
             ),
             child: Padding(
-              padding: AppDimensions.paddingAllMedium,
+              padding: REdgeInsets.all(DesignTokens.space4),
               child: Shimmer.fromColors(
-                baseColor: AppColors.surfaceVariant.withValues(alpha: 0.4),
-                highlightColor: AppColors.surface.withValues(alpha: 0.8),
+                baseColor: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                highlightColor: theme.colorScheme.surface.withValues(alpha: 0.8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,20 +59,20 @@ class DocumentShimmer extends StatelessWidget {
                       children: [
                         // Document type icon placeholder
                         Container(
-                          width: AppDimensions.iconXLarge,
-                          height: AppDimensions.iconXLarge,
+                          width: DesignTokens.iconLg.w,
+                          height: DesignTokens.iconLg.w,
                           decoration: BoxDecoration(
-                            color:
-                                AppColors.surfaceVariant.withValues(alpha: 0.6),
+                            color: theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.6),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.outline.withValues(alpha: 0.2),
+                              color: theme.colorScheme.outline.withValues(alpha: 0.2),
                               width: 1.w,
                             ),
                           ),
                         ),
-                        SizedBox(width: AppDimensions.spaceMedium.w),
+                        RSizedBox(width: DesignTokens.space4),
 
                         // Document info placeholder
                         Expanded(
@@ -83,37 +84,37 @@ class DocumentShimmer extends StatelessWidget {
                                 width: double.infinity,
                                 height: 18.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.surfaceVariant
+                                  color: theme.colorScheme.surfaceContainerHighest
                                       .withValues(alpha: 0.8),
                                   borderRadius: BorderRadius.circular(
-                                      AppDimensions.radiusXSmall),
+                                      DesignTokens.radiusSm.r),
                                 ),
                               ),
-                              SizedBox(height: AppDimensions.spaceSmall),
+                              RSizedBox(height: DesignTokens.space2),
 
                               // Description placeholder
                               Container(
                                 width: double.infinity * 0.9,
                                 height: 14.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.surfaceVariant
+                                  color: theme.colorScheme.surfaceContainerHighest
                                       .withValues(alpha: 0.6),
                                   borderRadius: BorderRadius.circular(
-                                      AppDimensions.radiusXSmall),
+                                      DesignTokens.radiusSm.r),
                                 ),
                               ),
-                              SizedBox(height: AppDimensions.spaceXSmall),
+                              RSizedBox(height: DesignTokens.space1),
                               Container(
                                 width: double.infinity * 0.7,
                                 height: 14.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.surfaceVariant
+                                  color: theme.colorScheme.surfaceContainerHighest
                                       .withValues(alpha: 0.6),
                                   borderRadius: BorderRadius.circular(
-                                      AppDimensions.radiusXSmall),
+                                      DesignTokens.radiusSm.r),
                                 ),
                               ),
-                              SizedBox(height: AppDimensions.spaceMedium),
+                              RSizedBox(height: DesignTokens.space4),
 
                               // Metadata placeholder
                               Row(
@@ -122,26 +123,26 @@ class DocumentShimmer extends StatelessWidget {
                                     width: 70.w,
                                     height: 24.h,
                                     decoration: BoxDecoration(
-                                      color: AppColors.primary
+                                      color: theme.colorScheme.primary
                                           .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(
-                                          AppDimensions.radiusXSmall),
+                                          DesignTokens.radiusSm.r),
                                       border: Border.all(
-                                        color: AppColors.primary
+                                        color: theme.colorScheme.primary
                                             .withValues(alpha: 0.1),
                                         width: 0.5.w,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: AppDimensions.spaceSmall.w),
+                                  RSizedBox(width: DesignTokens.space2),
                                   Container(
                                     width: 50.w,
                                     height: 18.h,
                                     decoration: BoxDecoration(
-                                      color: AppColors.surfaceVariant
+                                      color: theme.colorScheme.surfaceContainerHighest
                                           .withValues(alpha: 0.5),
                                       borderRadius: BorderRadius.circular(
-                                          AppDimensions.radiusXSmall),
+                                          DesignTokens.radiusSm.r),
                                     ),
                                   ),
                                 ],
@@ -155,11 +156,11 @@ class DocumentShimmer extends StatelessWidget {
                           width: 36.w,
                           height: 36.h,
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.1),
+                            color: theme.colorScheme.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.primary.withValues(alpha: 0.2),
+                              color: theme.colorScheme.primary.withValues(alpha: 0.2),
                               width: 1.w,
                             ),
                           ),
@@ -167,7 +168,7 @@ class DocumentShimmer extends StatelessWidget {
                       ],
                     ),
 
-                    SizedBox(height: AppDimensions.spaceMedium),
+                    RSizedBox(height: DesignTokens.space4),
 
                     // Categories placeholder
                     Row(
@@ -176,42 +177,42 @@ class DocumentShimmer extends StatelessWidget {
                           width: 60.w,
                           height: 20.h,
                           decoration: BoxDecoration(
-                            color:
-                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            color: theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusXSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.outline.withValues(alpha: 0.1),
+                              color: theme.colorScheme.outline.withValues(alpha: 0.1),
                               width: 0.5.w,
                             ),
                           ),
                         ),
-                        SizedBox(width: AppDimensions.spaceXSmall.w),
+                        RSizedBox(width: DesignTokens.space1),
                         Container(
                           width: 45.w,
                           height: 20.h,
                           decoration: BoxDecoration(
-                            color:
-                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            color: theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusXSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.outline.withValues(alpha: 0.1),
+                              color: theme.colorScheme.outline.withValues(alpha: 0.1),
                               width: 0.5.w,
                             ),
                           ),
                         ),
-                        SizedBox(width: AppDimensions.spaceXSmall.w),
+                        RSizedBox(width: DesignTokens.space1),
                         Container(
                           width: 40.w,
                           height: 20.h,
                           decoration: BoxDecoration(
-                            color:
-                                AppColors.surfaceVariant.withValues(alpha: 0.4),
+                            color: theme.colorScheme.surfaceContainerHighest
+                                .withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusXSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.outline.withValues(alpha: 0.1),
+                              color: theme.colorScheme.outline.withValues(alpha: 0.1),
                               width: 0.5.w,
                             ),
                           ),

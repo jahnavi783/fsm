@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:fsm/core/theme/app_text_styles.dart';
 
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/work_order_entity.dart';
 import 'work_order_list_card.dart';
 
@@ -80,21 +77,21 @@ class WorkOrderListTabs extends StatelessWidget {
               isScrollable: true,
               labelColor: Theme.of(context).colorScheme.primary,
               unselectedLabelColor:
-                  Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              labelStyle: AppTextStyles.labelMedium.copyWith(
+                  Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
-              unselectedLabelStyle: AppTextStyles.labelMedium.copyWith(
+              unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
               indicatorColor: Theme.of(context).colorScheme.primary,
               indicatorWeight: 3.h,
               tabs: [
-                _buildTab('Unassigned', _getCountForStatus('unassigned')),
-                _buildTab('Assigned', _getCountForStatus('assigned')),
-                _buildTab('In Progress', _getCountForStatus('in_progress')),
-                _buildTab('Paused', _getCountForStatus('paused')),
-                _buildTab('Completed', _getCountForStatus('completed')),
+                _buildTab(context, 'Unassigned', _getCountForStatus('unassigned')),
+                _buildTab(context, 'Assigned', _getCountForStatus('assigned')),
+                _buildTab(context, 'In Progress', _getCountForStatus('in_progress')),
+                _buildTab(context, 'Paused', _getCountForStatus('paused')),
+                _buildTab(context, 'Completed', _getCountForStatus('completed')),
               ],
             ),
           ),
@@ -103,11 +100,11 @@ class WorkOrderListTabs extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                _buildTabContent('unassigned'),
-                _buildTabContent('assigned'),
-                _buildTabContent('in_progress'),
-                _buildTabContent('paused'),
-                _buildTabContent('completed'),
+                _buildTabContent(context, 'unassigned'),
+                _buildTabContent(context, 'assigned'),
+                _buildTabContent(context, 'in_progress'),
+                _buildTabContent(context, 'paused'),
+                _buildTabContent(context, 'completed'),
               ],
             ),
           ),
@@ -116,7 +113,7 @@ class WorkOrderListTabs extends StatelessWidget {
     );
   }
 
-  Widget _buildTab(String label, int count) {
+  Widget _buildTab(BuildContext context, String label, int count) {
     return Tab(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -134,7 +131,7 @@ class WorkOrderListTabs extends StatelessWidget {
                     .colorScheme
                     .primary
                     .withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               ),
               child: Text(
                 count.toString(),
@@ -151,7 +148,7 @@ class WorkOrderListTabs extends StatelessWidget {
     );
   }
 
-  Widget _buildTabContent(String status) {
+  Widget _buildTabContent(BuildContext context, String status) {
     final filteredWorkOrders = _filterByStatus(status);
 
     if (isLoading) {
@@ -164,7 +161,7 @@ class WorkOrderListTabs extends StatelessWidget {
     }
 
     if (filteredWorkOrders.isEmpty) {
-      return _buildEmptyState(status);
+      return _buildEmptyState(context, status);
     }
 
     Widget listView = ListView.builder(
@@ -198,7 +195,7 @@ class WorkOrderListTabs extends StatelessWidget {
     return listView;
   }
 
-  Widget _buildEmptyState(String status) {
+  Widget _buildEmptyState(BuildContext context, String status) {
     String message;
     IconData icon;
 
@@ -241,8 +238,8 @@ class WorkOrderListTabs extends StatelessWidget {
           DesignTokens.verticalSpaceMedium,
           Text(
             message,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -323,8 +320,8 @@ class WorkOrderListForStatus extends StatelessWidget {
             DesignTokens.verticalSpaceMedium,
             Text(
               'No work orders',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
           ],

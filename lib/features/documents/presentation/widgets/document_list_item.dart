@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:fsm/core/widgets/lists/fsm_list_item.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/widgets/lists/fsm_list_item.dart';
 
 import '../../domain/entities/document_entity.dart';
 
@@ -39,18 +39,11 @@ class DocumentListItem extends StatelessWidget {
 
   Widget _buildLeadingIcon() {
     return Container(
-      width: AppDimensions.iconXLarge,
-      height: AppDimensions.iconXLarge,
+      width: DesignTokens.iconLg.w,
+      height: DesignTokens.iconLg.w,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            _getTypeColor(document.type).withValues(alpha: 0.15),
-            _getTypeColor(document.type).withValues(alpha: 0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+        color: _getTypeColor(document.type).withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
         border: Border.all(
           color: _getTypeColor(document.type).withValues(alpha: 0.2),
           width: 1.w,
@@ -66,33 +59,31 @@ class DocumentListItem extends StatelessWidget {
       child: Icon(
         _getTypeIcon(document.type),
         color: _getTypeColor(document.type),
-        size: AppDimensions.iconMedium,
+        size: DesignTokens.iconMd.sp,
       ),
     );
   }
 
   Widget _buildTrailingActions(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         if (document.isAvailableOffline)
           Container(
-            padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+            padding: REdgeInsets.all(DesignTokens.space1),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.success.withValues(alpha: 0.15),
-                  AppColors.success.withValues(alpha: 0.05),
-                ],
-              ),
+              color: fsmTheme.success.withValues(alpha: 0.15),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.success.withValues(alpha: 0.3),
+                color: fsmTheme.success.withValues(alpha: 0.3),
                 width: 1.w,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.success.withValues(alpha: 0.2),
+                  color: fsmTheme.success.withValues(alpha: 0.2),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -100,33 +91,33 @@ class DocumentListItem extends StatelessWidget {
             ),
             child: Icon(
               Icons.download_done_rounded,
-              color: AppColors.success,
-              size: AppDimensions.iconSmall,
+              color: fsmTheme.success,
+              size: DesignTokens.iconSm.sp,
             ),
           )
         else if (isDownloading)
           Container(
             width: 32.w,
             height: 32.h,
-            padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+            padding: REdgeInsets.all(DesignTokens.space1),
             decoration: BoxDecoration(
-              gradient: AppColors.primaryGradientWithOpacity(0.1),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: CircularProgressIndicator(
-              strokeWidth: 2.5.w,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                AppColors.primary,
+              strokeWidth: 2.w,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
               ),
             ),
           )
         else
           Container(
             decoration: BoxDecoration(
-              gradient: AppColors.primaryGradientWithOpacity(0.1),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.2),
+                color: theme.colorScheme.primary.withValues(alpha: 0.2),
                 width: 1.w,
               ),
             ),
@@ -134,10 +125,10 @@ class DocumentListItem extends StatelessWidget {
               onPressed: onDownload,
               icon: Icon(
                 Icons.download_rounded,
-                color: AppColors.primary,
-                size: AppDimensions.iconSmall,
+                color: theme.colorScheme.primary,
+                size: DesignTokens.iconSm.sp,
               ),
-              padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+              padding: REdgeInsets.all(DesignTokens.space1),
               constraints: BoxConstraints(
                 minWidth: 32.w,
                 minHeight: 32.h,
@@ -145,18 +136,13 @@ class DocumentListItem extends StatelessWidget {
             ),
           ),
         if (document.isAvailableOffline && onDelete != null) ...[
-          SizedBox(height: AppDimensions.spaceXSmall.h),
+          RSizedBox(height: DesignTokens.space1),
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.error.withValues(alpha: 0.1),
-                  AppColors.error.withValues(alpha: 0.05),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              color: theme.colorScheme.error.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               border: Border.all(
-                color: AppColors.error.withValues(alpha: 0.2),
+                color: theme.colorScheme.error.withValues(alpha: 0.2),
                 width: 1.w,
               ),
             ),
@@ -164,10 +150,10 @@ class DocumentListItem extends StatelessWidget {
               onPressed: onDelete,
               icon: Icon(
                 Icons.delete_outline_rounded,
-                color: AppColors.error,
-                size: AppDimensions.iconSmall,
+                color: theme.colorScheme.error,
+                size: DesignTokens.iconSm.sp,
               ),
-              padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+              padding: REdgeInsets.all(DesignTokens.space1),
               constraints: BoxConstraints(
                 minWidth: 32.w,
                 minHeight: 32.h,
@@ -188,28 +174,22 @@ class DocumentListItem extends StatelessWidget {
 
     return document.categories.take(3).map((category) {
       return Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingXSmall,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space1,
           vertical: 2.h,
         ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.surfaceVariant.withValues(alpha: 0.8),
-              AppColors.surfaceVariant.withValues(alpha: 0.4),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+          color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
           border: Border.all(
-            color: AppColors.outline.withValues(alpha: 0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 0.5.w,
           ),
         ),
         child: Text(
           category,
           style: theme.textTheme.labelSmall?.copyWith(
-            fontSize: 10.sp,
-            color: AppColors.textTertiary,
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -243,27 +223,28 @@ class DocumentListItem extends StatelessWidget {
   }
 
   Color _getTypeColor(DocumentType type) {
+    // Keep these as const colors for semantic document type identification
     switch (type) {
       case DocumentType.manual:
-        return AppColors.primary;
+        return const Color(0xFF2E7D32); // Green
       case DocumentType.procedure:
-        return AppColors.secondary;
+        return const Color(0xFF1565C0); // Dark Blue
       case DocumentType.schematic:
-        return AppColors.tertiary;
+        return const Color(0xFF1976D2); // Blue
       case DocumentType.specification:
-        return AppColors.warning;
+        return const Color(0xFFED6C02); // Orange
       case DocumentType.safety:
-        return AppColors.error;
+        return const Color(0xFFD32F2F); // Red
       case DocumentType.training:
-        return AppColors.info;
+        return const Color(0xFF7B1FA2); // Purple
       case DocumentType.report:
-        return const Color(0xFF009688); // Teal
+        return const Color(0xFF9C27B0); // Purple
       case DocumentType.certificate:
-        return const Color(0xFFFF8F00); // Amber
+        return const Color(0xFFAF9500); // Yellow/Gold
       case DocumentType.warranty:
-        return const Color(0xFF00ACC1); // Cyan
+        return const Color(0xFF388E3C); // Green
       case DocumentType.other:
-        return AppColors.grey;
+        return const Color(0xFF616161); // Gray
     }
   }
 }

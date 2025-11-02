@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 
 import '../../domain/entities/part_entity.dart';
 
@@ -24,10 +25,11 @@ class PartsFilterChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final hasFilters = selectedCategory != null || selectedStatus != null;
 
     return Container(
-      height: 50.h,
+      height: DesignTokens.buttonHeightLg.h,
       padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       child: Row(
         children: [
@@ -44,7 +46,7 @@ class PartsFilterChips extends StatelessWidget {
                       isSelected: selectedCategory == null,
                       onTap: () => onCategoryChanged?.call(null),
                     ),
-                    SizedBox(width: 8.w),
+                    RSizedBox(width: DesignTokens.space2),
                     ...categories.map((category) => Padding(
                           padding: REdgeInsets.only(right: DesignTokens.space2),
                           child: _buildFilterChip(
@@ -59,9 +61,9 @@ class PartsFilterChips extends StatelessWidget {
                   // Divider
                   if (categories.isNotEmpty) ...[
                     Container(
-                      height: 30.h,
+                      height: DesignTokens.space8.h,
                       width: 1.w,
-                      color: Colors.grey[300],
+                      color: theme.colorScheme.outline.withValues(alpha: 0.3),
                       margin: REdgeInsets.symmetric(
                           horizontal: DesignTokens.space2),
                     ),
@@ -74,15 +76,15 @@ class PartsFilterChips extends StatelessWidget {
                     isSelected: selectedStatus == null,
                     onTap: () => onStatusChanged?.call(null),
                   ),
-                  SizedBox(width: 8.w),
+                  RSizedBox(width: DesignTokens.space2),
                   ...PartStatus.values.map((status) => Padding(
-                        padding: EdgeInsets.only(right: 8.w),
+                        padding: REdgeInsets.only(right: DesignTokens.space2),
                         child: _buildFilterChip(
                           context: context,
                           label: _getStatusLabel(status),
                           isSelected: selectedStatus == status,
                           onTap: () => onStatusChanged?.call(status),
-                          color: _getStatusColor(status),
+                          color: _getStatusColor(context, status),
                         ),
                       )),
                 ],
@@ -92,13 +94,13 @@ class PartsFilterChips extends StatelessWidget {
 
           // Clear filters button
           if (hasFilters) ...[
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
             IconButton(
               onPressed: onClearFilters,
               icon: Icon(
                 Icons.clear_all,
-                size: 20.sp,
-                color: Colors.grey[600],
+                size: DesignTokens.iconSm.sp,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               tooltip: 'Clear all filters',
             ),
@@ -115,27 +117,33 @@ class PartsFilterChips extends StatelessWidget {
     required VoidCallback onTap,
     Color? color,
   }) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space3,
+          vertical: DesignTokens.space1 + 2,
+        ),
         decoration: BoxDecoration(
           color: isSelected
-              ? (color ?? Theme.of(context).primaryColor)
-              : Colors.grey[100],
-          borderRadius: BorderRadius.circular(20.r),
+              ? (color ?? theme.colorScheme.primary)
+              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusFull.r),
           border: Border.all(
             color: isSelected
-                ? (color ?? Theme.of(context).primaryColor)
-                : Colors.grey[300]!,
+                ? (color ?? theme.colorScheme.primary)
+                : theme.colorScheme.outline.withValues(alpha: 0.3),
           ),
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
+          style: theme.textTheme.labelSmall?.copyWith(
             fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.grey[700],
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
       ),
@@ -155,16 +163,19 @@ class PartsFilterChips extends StatelessWidget {
     }
   }
 
-  Color _getStatusColor(PartStatus status) {
+  Color _getStatusColor(BuildContext context, PartStatus status) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     switch (status) {
       case PartStatus.active:
-        return Colors.green;
+        return fsmTheme.success;
       case PartStatus.inactive:
-        return Colors.grey;
+        return theme.colorScheme.surfaceContainerHighest;
       case PartStatus.discontinued:
-        return Colors.red;
+        return theme.colorScheme.error;
       case PartStatus.backordered:
-        return Colors.orange;
+        return fsmTheme.warning;
     }
   }
 }

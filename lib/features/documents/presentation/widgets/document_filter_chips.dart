@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/document_entity.dart';
 
@@ -34,8 +32,8 @@ class DocumentFilterChips extends StatelessWidget {
     final fsmTheme = context.fsmTheme;
 
     return Container(
-      height: 44.h,
-      padding: EdgeInsets.symmetric(horizontal: AppDimensions.paddingMedium),
+      height: DesignTokens.buttonHeightMd.h,
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
@@ -47,11 +45,11 @@ class DocumentFilterChips extends StatelessWidget {
             label: 'All',
             count: _getTotalCount(),
             isSelected: selectedType == null,
-            color: AppColors.primary,
+            color: theme.colorScheme.primary,
             onTap: () => onTypeSelected?.call(null),
           ),
 
-          SizedBox(width: AppDimensions.spaceSmall.w),
+          RSizedBox(width: DesignTokens.space2),
 
           // Document type filter chips
           ...DocumentType.values.map((type) {
@@ -59,7 +57,7 @@ class DocumentFilterChips extends StatelessWidget {
             if (count == 0 && !showCounts) return const SizedBox.shrink();
 
             return Padding(
-              padding: EdgeInsets.only(right: AppDimensions.spaceSmall.w),
+              padding: REdgeInsets.only(right: DesignTokens.space2),
               child: _buildFilterChip(
                 context: context,
                 theme: theme,
@@ -88,39 +86,37 @@ class DocumentFilterChips extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return AnimatedContainer(
-      duration: AppDimensions.animationFast,
+      duration: const Duration(milliseconds: 200),
       child: FilterChip(
         label: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               label,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: isSelected ? Colors.white : color,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: isSelected ? theme.colorScheme.onPrimary : color,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                fontSize: 12.sp,
               ),
             ),
             if (showCounts && count > 0) ...[
-              SizedBox(width: AppDimensions.spaceXSmall.w),
+              RSizedBox(width: DesignTokens.space1),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 6.w,
-                  vertical: 2.h,
+                padding: REdgeInsets.symmetric(
+                  horizontal: DesignTokens.space1 + 2,
+                  vertical: DesignTokens.space1 / 2,
                 ),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.white.withValues(alpha: 0.3)
+                      ? theme.colorScheme.onPrimary.withValues(alpha: 0.3)
                       : color.withValues(alpha: 0.15),
                   borderRadius:
-                      BorderRadius.circular(AppDimensions.radiusXSmall),
+                      BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
                 child: Text(
                   count.toString(),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: isSelected ? Colors.white : color,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: isSelected ? theme.colorScheme.onPrimary : color,
                     fontWeight: FontWeight.w700,
-                    fontSize: 10.sp,
                   ),
                 ),
               ),
@@ -137,13 +133,13 @@ class DocumentFilterChips extends StatelessWidget {
           width: 1.w,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         ),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         visualDensity: VisualDensity.compact,
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimensions.paddingSmall,
-          vertical: 4.h,
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space2,
+          vertical: DesignTokens.space1,
         ),
       ),
     );

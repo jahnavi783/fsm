@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/document_entity.dart';
 
@@ -42,30 +40,23 @@ class DocumentGridCard extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 3 / 4, // Card height is 4/3 of width
       child: Card(
-        elevation: AppDimensions.elevationXSmall,
-        shadowColor: fsmTheme.shadowColors['card'],
+        elevation: 2,
+        shadowColor: theme.colorScheme.shadow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
           side: BorderSide(
-            color: fsmTheme.workOrderCardBorder.withValues(alpha: 0.2),
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
             width: 1.w,
           ),
         ),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
           child: Container(
-            padding: AppDimensions.paddingAllMedium,
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  fsmTheme.workOrderCardBackground,
-                  fsmTheme.workOrderCardBackground.withValues(alpha: 0.8),
-                ],
-              ),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
+              color: theme.colorScheme.surface,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,16 +67,16 @@ class DocumentGridCard extends StatelessWidget {
                   children: [
                     // Document type icon
                     Container(
-                      padding: EdgeInsets.all(AppDimensions.paddingSmall),
+                      padding: REdgeInsets.all(DesignTokens.space2),
                       decoration: BoxDecoration(
                         color: _getDocumentTypeColor().withValues(alpha: 0.15),
                         borderRadius:
-                            BorderRadius.circular(AppDimensions.radiusSmall),
+                            BorderRadius.circular(DesignTokens.radiusMd.r),
                       ),
                       child: Icon(
                         _getDocumentTypeIcon(),
                         color: _getDocumentTypeColor(),
-                        size: AppDimensions.iconMedium,
+                        size: DesignTokens.iconMd.sp,
                       ),
                     ),
 
@@ -94,35 +85,35 @@ class DocumentGridCard extends StatelessWidget {
                     // Download/Status indicator
                     if (isDownloading)
                       Container(
-                        padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                        padding: REdgeInsets.all(DesignTokens.space1),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.15),
+                          color: theme.colorScheme.primary.withValues(alpha: 0.15),
                           borderRadius:
-                              BorderRadius.circular(AppDimensions.radiusXSmall),
+                              BorderRadius.circular(DesignTokens.radiusSm.r),
                         ),
                         child: SizedBox(
-                          width: 12.w,
-                          height: 12.w,
+                          width: DesignTokens.space3.w,
+                          height: DesignTokens.space3.w,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.w,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.primary),
+                                theme.colorScheme.primary),
                             value: downloadProgress,
                           ),
                         ),
                       )
                     else if (isDownloaded)
                       Container(
-                        padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                        padding: REdgeInsets.all(DesignTokens.space1),
                         decoration: BoxDecoration(
-                          color: AppColors.success.withValues(alpha: 0.15),
+                          color: fsmTheme.success.withValues(alpha: 0.15),
                           borderRadius:
-                              BorderRadius.circular(AppDimensions.radiusXSmall),
+                              BorderRadius.circular(DesignTokens.radiusSm.r),
                         ),
                         child: Icon(
                           Icons.download_done_rounded,
-                          color: AppColors.success,
-                          size: 12.sp,
+                          color: fsmTheme.success,
+                          size: DesignTokens.space3.sp,
                         ),
                       )
                     else
@@ -132,11 +123,11 @@ class DocumentGridCard extends StatelessWidget {
                           Icons.more_vert,
                           color: theme.colorScheme.onSurface
                               .withValues(alpha: 0.6),
-                          size: 16.sp,
+                          size: DesignTokens.iconSm.sp,
                         ),
-                        iconSize: 16.sp,
+                        iconSize: DesignTokens.iconSm.sp,
                         padding: EdgeInsets.zero,
-                        splashRadius: 16.r,
+                        splashRadius: DesignTokens.iconSm.r,
                         itemBuilder: (context) => [
                           PopupMenuItem(
                             value: 'download',
@@ -145,10 +136,10 @@ class DocumentGridCard extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.download_rounded,
-                                  size: 18.sp,
-                                  color: AppColors.primary,
+                                  size: DesignTokens.iconSm.sp,
+                                  color: theme.colorScheme.primary,
                                 ),
-                                SizedBox(width: AppDimensions.spaceSmall.w),
+                                RSizedBox(width: DesignTokens.space2),
                                 const Text('Download'),
                               ],
                             ),
@@ -161,10 +152,10 @@ class DocumentGridCard extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.delete_outline_rounded,
-                                    size: 18.sp,
-                                    color: AppColors.error,
+                                    size: DesignTokens.iconSm.sp,
+                                    color: theme.colorScheme.error,
                                   ),
-                                  SizedBox(width: AppDimensions.spaceSmall.w),
+                                  RSizedBox(width: DesignTokens.space2),
                                   const Text('Delete'),
                                 ],
                               ),
@@ -184,7 +175,7 @@ class DocumentGridCard extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: AppDimensions.spaceMedium.h),
+                RSizedBox(height: DesignTokens.space4),
 
                 // Document title
                 Expanded(
@@ -193,8 +184,8 @@ class DocumentGridCard extends StatelessWidget {
                     children: [
                       Text(
                         document.title,
-                        style: AppTextStyles.titleSmall.copyWith(
-                          color: AppColors.textPrimary,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                           height: 1.3,
                         ),
@@ -202,16 +193,15 @@ class DocumentGridCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
 
-                      SizedBox(height: AppDimensions.spaceXSmall.h),
+                      RSizedBox(height: DesignTokens.space1),
 
                       // Document description (if available)
                       if (document.description.isNotEmpty)
                         Expanded(
                           child: Text(
                             document.description,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textSecondary,
-                              fontSize: 11.sp,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                               height: 1.4,
                             ),
                             maxLines: 3,
@@ -222,28 +212,27 @@ class DocumentGridCard extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: AppDimensions.spaceSmall.h),
+                RSizedBox(height: DesignTokens.space2),
 
                 // Footer with file size and date
                 Row(
                   children: [
                     // File size
                     Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppDimensions.paddingXSmall,
-                        vertical: 2.h,
+                      padding: REdgeInsets.symmetric(
+                        horizontal: DesignTokens.space1,
+                        vertical: DesignTokens.space1 / 2,
                       ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surfaceContainerHighest
                             .withValues(alpha: 0.7),
                         borderRadius:
-                            BorderRadius.circular(AppDimensions.radiusXSmall),
+                            BorderRadius.circular(DesignTokens.radiusSm.r),
                       ),
                       child: Text(
                         _formatFileSize(document.fileSize),
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
-                          fontSize: 10.sp,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -253,20 +242,19 @@ class DocumentGridCard extends StatelessWidget {
 
                     // Document type chip
                     Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppDimensions.paddingXSmall,
-                        vertical: 2.h,
+                      padding: REdgeInsets.symmetric(
+                        horizontal: DesignTokens.space1,
+                        vertical: DesignTokens.space1 / 2,
                       ),
                       decoration: BoxDecoration(
                         color: _getDocumentTypeColor().withValues(alpha: 0.15),
                         borderRadius:
-                            BorderRadius.circular(AppDimensions.radiusXSmall),
+                            BorderRadius.circular(DesignTokens.radiusSm.r),
                       ),
                       child: Text(
                         _getDocumentTypeLabel(),
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: theme.textTheme.labelSmall?.copyWith(
                           color: _getDocumentTypeColor(),
-                          fontSize: 10.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

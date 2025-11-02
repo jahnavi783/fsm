@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+
+import '../../../../../core/theme/design_tokens.dart';
 
 /// Model for part used input
 class PartUsedInput {
@@ -77,7 +78,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error capturing image: $e'),
-            backgroundColor: AppColors.error,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -95,26 +96,25 @@ class _ResourcesStepState extends State<ResourcesStep> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 12.h),
+              margin: REdgeInsets.only(top: DesignTokens.space3),
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20.w),
+              padding: REdgeInsets.all(DesignTokens.space5),
               child: Column(
                 children: [
                   Text(
                     'Add Image',
-                    style: TextStyle(
-                      fontSize: 18.sp,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  RSizedBox(height: DesignTokens.space5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -153,13 +153,13 @@ class _ResourcesStepState extends State<ResourcesStep> {
             width: 60.w,
             height: 60.w,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16.r),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             child: Icon(
               icon,
-              size: 28.sp,
-              color: AppColors.primary,
+              size: DesignTokens.iconMd.sp,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           SizedBox(height: 8.h),
@@ -177,11 +177,11 @@ class _ResourcesStepState extends State<ResourcesStep> {
 
   Widget _buildPartUsedInput(PartUsedInput part, int index) {
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(12.w),
+      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+      padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.outline.withOpacity(0.3)),
-        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Row(
         children: [
@@ -221,9 +221,9 @@ class _ResourcesStepState extends State<ResourcesStep> {
           SizedBox(width: 8.w),
           IconButton(
             onPressed: () => _handleRemovePart(index),
-            icon: const Icon(Icons.delete, color: AppColors.error),
+            icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
             style: IconButton.styleFrom(
-              padding: EdgeInsets.all(8.w),
+              padding: REdgeInsets.all(DesignTokens.space2),
               minimumSize: Size(32.w, 32.h),
             ),
           ),
@@ -251,24 +251,26 @@ class _ResourcesStepState extends State<ResourcesStep> {
           right: 4.w,
           child: GestureDetector(
             onTap: () => widget.onRemoveImage(index),
-            child: Container(
-              width: 24.w,
-              height: 24.w,
-              decoration: BoxDecoration(
-                color: AppColors.error,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.close,
-                color: AppColors.onError,
-                size: 16.sp,
+            child: Builder(
+              builder: (context) => Container(
+                width: 24.w,
+                height: 24.w,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
+                      blurRadius: DesignTokens.elevationSm,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Theme.of(context).colorScheme.onError,
+                  size: DesignTokens.iconSm.sp,
+                ),
               ),
             ),
           ),
@@ -284,11 +286,11 @@ class _ResourcesStepState extends State<ResourcesStep> {
         width: 100.w,
         height: 100.w,
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12.r),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
           border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
-            width: 2,
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+            width: DesignTokens.borderWidthMedium,
           ),
         ),
         child: Column(
@@ -296,16 +298,15 @@ class _ResourcesStepState extends State<ResourcesStep> {
           children: [
             Icon(
               Icons.add_a_photo_outlined,
-              color: AppColors.primary,
-              size: 28.sp,
+              color: Theme.of(context).colorScheme.primary,
+              size: DesignTokens.iconMd.sp,
             ),
-            SizedBox(height: 4.h),
+            RSizedBox(height: DesignTokens.space1),
             Text(
               'Add Image',
-              style: TextStyle(
-                fontSize: 10.sp,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ],
@@ -323,27 +324,26 @@ class _ResourcesStepState extends State<ResourcesStep> {
       children: [
         // Step header
         Container(
-          padding: EdgeInsets.all(16.w),
+          padding: REdgeInsets.all(DesignTokens.space4),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12.r),
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
           ),
           child: Row(
             children: [
               Container(
                 width: 32.w,
                 height: 32.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     '2',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.onPrimary,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -363,9 +363,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
                     ),
                     Text(
                       'Parts used and images (optional)',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -375,7 +374,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
           ),
         ),
 
-        SizedBox(height: 24.h),
+        RSizedBox(height: DesignTokens.space6),
 
         // Parts Used Section
         Row(
@@ -407,30 +406,29 @@ class _ResourcesStepState extends State<ResourcesStep> {
         ],
 
         if (widget.partsUsed.isEmpty) ...[
-          SizedBox(height: 8.h),
+          RSizedBox(height: DesignTokens.space2),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(12.r),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
-                color: AppColors.outline.withOpacity(0.2),
+                color: theme.colorScheme.outline.withValues(alpha: 0.2),
               ),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.info_outline,
-                  size: 20.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  size: DesignTokens.iconMd.sp,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
-                SizedBox(width: 12.w),
+                RSizedBox(width: DesignTokens.space3),
                 Expanded(
                   child: Text(
                     'No parts added yet. Tap "Add Part" to include parts used.',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -439,7 +437,7 @@ class _ResourcesStepState extends State<ResourcesStep> {
           ),
         ],
 
-        SizedBox(height: 24.h),
+        RSizedBox(height: DesignTokens.space6),
 
         // Images Section
         Row(
@@ -455,20 +453,19 @@ class _ResourcesStepState extends State<ResourcesStep> {
             ),
             Text(
               '${widget.imageFiles.length} image${widget.imageFiles.length != 1 ? 's' : ''}',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
           ],
         ),
 
-        SizedBox(height: 12.h),
+        RSizedBox(height: DesignTokens.space3),
 
         // Image Grid
         Wrap(
-          spacing: 12.w,
-          runSpacing: 12.h,
+          spacing: DesignTokens.space3.w,
+          runSpacing: DesignTokens.space3.h,
           children: [
             // Display captured images
             ...widget.imageFiles.asMap().entries.map((entry) {
@@ -481,23 +478,22 @@ class _ResourcesStepState extends State<ResourcesStep> {
           ],
         ),
 
-        SizedBox(height: 16.h),
+        RSizedBox(height: DesignTokens.space4),
 
         // Helper text
         Row(
           children: [
             Icon(
               Icons.info_outline,
-              size: 16.sp,
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              size: DesignTokens.iconSm.sp,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
-            SizedBox(width: 8.w),
+            RSizedBox(width: DesignTokens.space2),
             Expanded(
               child: Text(
                 'All fields in this step are optional. You can skip to the next step.',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   fontStyle: FontStyle.italic,
                 ),
               ),

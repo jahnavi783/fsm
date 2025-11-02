@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/design_tokens.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 /// ProfileStatsRow - Performance statistics row for profile screen (Redesign 2025)
 ///
@@ -51,24 +49,27 @@ class ProfileStatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     if (isLoading) {
       return _LoadingStatsRow();
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
-      padding: EdgeInsets.symmetric(
-        vertical: AppDimensions.paddingMedium,
+      padding: REdgeInsets.symmetric(
+        vertical: DesignTokens.space4,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -83,7 +84,7 @@ class ProfileStatsRow extends StatelessWidget {
                 icon: Icons.check_circle_outline,
                 value: completed.toString(),
                 label: 'Completed',
-                color: AppColors.success,
+                color: fsmTheme.success,
               ),
             ),
 
@@ -91,7 +92,7 @@ class ProfileStatsRow extends StatelessWidget {
             VerticalDivider(
               width: 1.w,
               thickness: 1.w,
-              color: AppColors.divider,
+              color: theme.colorScheme.outlineVariant,
             ),
 
             // Active
@@ -100,7 +101,7 @@ class ProfileStatsRow extends StatelessWidget {
                 icon: Icons.pending_actions_outlined,
                 value: active.toString(),
                 label: 'Active',
-                color: AppColors.info,
+                color: theme.colorScheme.primary,
               ),
             ),
 
@@ -108,7 +109,7 @@ class ProfileStatsRow extends StatelessWidget {
             VerticalDivider(
               width: 1.w,
               thickness: 1.w,
-              color: AppColors.divider,
+              color: theme.colorScheme.outlineVariant,
             ),
 
             // On-Time %
@@ -117,7 +118,7 @@ class ProfileStatsRow extends StatelessWidget {
                 icon: Icons.schedule_outlined,
                 value: '${onTimePercentage.toStringAsFixed(0)}%',
                 label: 'On-Time',
-                color: _getOnTimeColor(onTimePercentage),
+                color: _getOnTimeColor(context, onTimePercentage),
               ),
             ),
           ],
@@ -126,13 +127,15 @@ class ProfileStatsRow extends StatelessWidget {
     );
   }
 
-  Color _getOnTimeColor(double percentage) {
+  Color _getOnTimeColor(BuildContext context, double percentage) {
+    final fsmTheme = context.fsmTheme;
+
     if (percentage >= 90) {
-      return AppColors.success;
+      return fsmTheme.success;
     } else if (percentage >= 75) {
-      return AppColors.warning;
+      return fsmTheme.warning;
     } else {
-      return AppColors.error;
+      return Theme.of(context).colorScheme.error;
     }
   }
 }
@@ -153,9 +156,11 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: AppDimensions.paddingSmall,
+      padding: REdgeInsets.symmetric(
+        vertical: DesignTokens.space2,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -172,8 +177,8 @@ class _StatCard extends StatelessWidget {
           // Value
           Text(
             value,
-            style: AppTextStyles.headlineSmall.copyWith(
-              color: AppColors.textPrimary,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -183,8 +188,8 @@ class _StatCard extends StatelessWidget {
           // Label
           Text(
             label,
-            style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -198,18 +203,20 @@ class _StatCard extends StatelessWidget {
 class _LoadingStatsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium,
-        vertical: AppDimensions.paddingSmall,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
-      padding: EdgeInsets.all(AppDimensions.paddingMedium),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -226,7 +233,7 @@ class _LoadingStatsRow extends StatelessWidget {
                 width: 28.w,
                 height: 28.w,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -235,8 +242,8 @@ class _LoadingStatsRow extends StatelessWidget {
                 width: 40.w,
                 height: 20.h,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
               ),
               DesignTokens.verticalSpaceXs,
@@ -244,8 +251,8 @@ class _LoadingStatsRow extends StatelessWidget {
                 width: 50.w,
                 height: 12.h,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
               ),
             ],

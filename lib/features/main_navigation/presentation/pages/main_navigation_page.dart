@@ -131,7 +131,8 @@ class _MainNavigationView extends StatelessWidget {
     }
   }
 
-  void _handleNavigation(BuildContext context, String route, TabsRouter tabsRouter) {
+  void _handleNavigation(
+      BuildContext context, String route, TabsRouter tabsRouter) {
     switch (route) {
       case '/dashboard':
         tabsRouter.setActiveIndex(0);

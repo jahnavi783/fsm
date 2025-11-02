@@ -20,7 +20,8 @@
       "mcp__MCP_DOCKER__get-library-docs",
       "Bash(nul)",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

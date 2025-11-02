@@ -892,3 +892,4 @@ Container(color: context.fsmTheme.statusPending)
 - use fetch and context7 to fetch flutter offical docs on this
 - Don't hard code anything in UI and Use Theme.of(context) for colours, dimensions and typographt etc
 - Do't hardcode colours, fontsizes, spacing and dimensions, use ThemeData instead using BuildContext
+- Always use Widegts from @lib/core/widgets/ in Presentation layer Widgets, and Make Sure Widgets are Resuable and are Class Widgets moslty. use context 7 to fetch best practices for doingo this

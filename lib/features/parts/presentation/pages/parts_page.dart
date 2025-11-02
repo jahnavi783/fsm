@@ -94,8 +94,9 @@ class _PartsPageViewState extends State<_PartsPageView>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.colorScheme.surface,
       appBar: FSMAppBar.gradient(
         leading: IconButton(
           icon: const Icon(Icons.menu),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
+
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
@@ -166,26 +166,25 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
             width: double.infinity,
             padding: REdgeInsets.all(DesignTokens.space3),
             decoration: BoxDecoration(
-              color: AppColors.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8.r),
+              color: context.fsmTheme.warning.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
-                color: AppColors.warning.withValues(alpha: 0.3),
+                color: context.fsmTheme.warning.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.location_off,
-                  color: AppColors.warning,
-                  size: 16.sp,
+                  color: context.fsmTheme.warning,
+                  size: DesignTokens.iconSm.sp,
                 ),
                 DesignTokens.horizontalSpaceSmall,
                 Expanded(
                   child: Text(
                     'Waiting for location...',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColors.warning,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: context.fsmTheme.warning,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -228,7 +227,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                   .withValues(alpha: 0.5),
               padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               ),
             ),
           ),
@@ -259,26 +258,25 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
             width: double.infinity,
             padding: REdgeInsets.all(DesignTokens.space3),
             decoration: BoxDecoration(
-              color: AppColors.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8.r),
+              color: context.fsmTheme.warning.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
-                color: AppColors.warning.withValues(alpha: 0.3),
+                color: context.fsmTheme.warning.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.location_off,
-                  color: AppColors.warning,
-                  size: 16.sp,
+                  color: context.fsmTheme.warning,
+                  size: DesignTokens.iconSm.sp,
                 ),
                 DesignTokens.horizontalSpaceSmall,
                 Expanded(
                   child: Text(
                     'Waiting for location...',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColors.warning,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: context.fsmTheme.warning,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

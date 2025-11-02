@@ -100,7 +100,10 @@ class _ResourcesStepState extends State<ResourcesStep> {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                color: Theme.of(context)
+                    .colorScheme
+                    .outline
+                    .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
               ),
             ),
@@ -111,8 +114,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
                   Text(
                     'Add Image',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   RSizedBox(height: DesignTokens.space5),
                   Row(
@@ -153,7 +156,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
             width: 60.w,
             height: 60.w,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
             ),
             child: Icon(
@@ -180,7 +184,9 @@ class _ResourcesStepState extends State<ResourcesStep> {
       margin: REdgeInsets.only(bottom: DesignTokens.space3),
       padding: REdgeInsets.all(DesignTokens.space3),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
+        border: Border.all(
+            color:
+                Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
       ),
       child: Row(
@@ -221,7 +227,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
           SizedBox(width: 8.w),
           IconButton(
             onPressed: () => _handleRemovePart(index),
-            icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
+            icon:
+                Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
             style: IconButton.styleFrom(
               padding: REdgeInsets.all(DesignTokens.space2),
               minimumSize: Size(32.w, 32.h),
@@ -260,7 +267,10 @@ class _ResourcesStepState extends State<ResourcesStep> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .shadow
+                          .withValues(alpha: 0.2),
                       blurRadius: DesignTokens.elevationSm,
                       offset: const Offset(0, 2),
                     ),
@@ -305,9 +315,9 @@ class _ResourcesStepState extends State<ResourcesStep> {
             Text(
               'Add Image',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
           ],
         ),
@@ -364,7 +374,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
                     Text(
                       'Parts used and images (optional)',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -410,7 +421,8 @@ class _ResourcesStepState extends State<ResourcesStep> {
           Container(
             padding: REdgeInsets.all(DesignTokens.space4),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+              color: theme.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.2),

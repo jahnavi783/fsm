@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/navigation/fsm_bottom_sheet.dart'
     show FSMBottomSheet;
+import '../../../../core/theme/design_tokens.dart';
 
 import '../../domain/entities/document_entity.dart';
 import 'document_list_item.dart';
@@ -141,10 +142,13 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
 
           // Type filter chips
           SizedBox(
-            height: 50.h,
+            height: DesignTokens.buttonHeightMd.h,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space4,
+                vertical: DesignTokens.space2,
+              ),
               children: [
                 _buildFilterChip(
                   context,
@@ -172,13 +176,13 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
                     ? _buildEmptyState(context)
                     : ListView.builder(
                         controller: _scrollController,
-                        padding: EdgeInsets.only(bottom: 16.h),
+                        padding: REdgeInsets.only(bottom: DesignTokens.space4),
                         itemCount: widget.documents.length +
                             (widget.isLoading ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index >= widget.documents.length) {
                             return Padding(
-                              padding: EdgeInsets.all(16.w),
+                              padding: REdgeInsets.all(DesignTokens.space4),
                               child: const Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -208,7 +212,7 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(right: 8.w),
+      padding: REdgeInsets.only(right: DesignTokens.space2),
       child: FilterChip(
         label: Text(
           label,
@@ -216,7 +220,6 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
             color: isSelected
                 ? theme.colorScheme.onPrimary
                 : theme.colorScheme.onSurface,
-            fontSize: 12.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -230,7 +233,10 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
               ? theme.colorScheme.primary
               : theme.colorScheme.outline.withValues(alpha: 0.3),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+        padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space2,
+          vertical: DesignTokens.space1,
+        ),
       ),
     );
   }
@@ -240,29 +246,27 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(32.w),
+        padding: REdgeInsets.all(DesignTokens.space8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.search_off,
-              size: 64.sp,
+              size: DesignTokens.iconLg.sp * 2,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
             ),
-            SizedBox(height: 16.h),
+            RSizedBox(height: DesignTokens.space4),
             Text(
               'No documents found',
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                fontSize: 16.sp,
               ),
             ),
-            SizedBox(height: 8.h),
+            RSizedBox(height: DesignTokens.space2),
             Text(
               'Try adjusting your search or filters',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
             ),

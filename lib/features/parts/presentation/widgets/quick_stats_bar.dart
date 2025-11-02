@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/theme/design_tokens.dart' show DesignTokens;
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 /// QuickStatsBar - Horizontal stat chips for parts overview
 ///
@@ -61,6 +59,9 @@ class QuickStatsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
+
     if (isLoading) {
       return _LoadingStatsBar();
     }
@@ -74,11 +75,11 @@ class QuickStatsBar extends StatelessWidget {
         vertical: DesignTokens.space2,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -93,7 +94,7 @@ class QuickStatsBar extends StatelessWidget {
                 icon: Icons.inventory_2_outlined,
                 value: totalParts,
                 label: 'Total',
-                color: AppColors.primary,
+                color: theme.colorScheme.primary,
                 onTap: onTotalTap,
               ),
             ),
@@ -102,7 +103,7 @@ class QuickStatsBar extends StatelessWidget {
             VerticalDivider(
               width: 1.w,
               thickness: 1.w,
-              color: AppColors.divider,
+              color: theme.colorScheme.outline.withValues(alpha: 0.3),
             ),
 
             // In Stock
@@ -111,7 +112,7 @@ class QuickStatsBar extends StatelessWidget {
                 icon: Icons.check_circle_outline,
                 value: inStock,
                 label: 'In Stock',
-                color: AppColors.success,
+                color: fsmTheme.success,
                 onTap: onInStockTap,
               ),
             ),
@@ -120,7 +121,7 @@ class QuickStatsBar extends StatelessWidget {
             VerticalDivider(
               width: 1.w,
               thickness: 1.w,
-              color: AppColors.divider,
+              color: theme.colorScheme.outline.withValues(alpha: 0.3),
             ),
 
             // Low Stock
@@ -129,7 +130,7 @@ class QuickStatsBar extends StatelessWidget {
                 icon: Icons.warning_amber_outlined,
                 value: lowStock,
                 label: 'Low Stock',
-                color: AppColors.warning,
+                color: fsmTheme.warning,
                 onTap: onLowStockTap,
               ),
             ),
@@ -158,11 +159,13 @@ class _StatChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         child: Padding(
           padding: REdgeInsets.symmetric(
             vertical: DesignTokens.space2,
@@ -173,28 +176,28 @@ class _StatChip extends StatelessWidget {
               // Icon
               Icon(
                 icon,
-                size: 28.sp,
+                size: DesignTokens.iconLg.sp,
                 color: color,
               ),
 
-              SizedBox(height: 6.h),
+              RSizedBox(height: DesignTokens.space1 + 2),
 
               // Value
               Text(
                 value.toString(),
-                style: AppTextStyles.headlineSmall.copyWith(
-                  color: AppColors.textPrimary,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.w700,
                 ),
               ),
 
-              SizedBox(height: 2.h),
+              RSizedBox(height: DesignTokens.space1 / 2),
 
               // Label
               Text(
                 label,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textSecondary,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -210,6 +213,8 @@ class _StatChip extends StatelessWidget {
 class _LoadingStatsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: REdgeInsets.symmetric(
         horizontal: DesignTokens.space4,
@@ -217,11 +222,11 @@ class _LoadingStatsBar extends StatelessWidget {
       ),
       padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -235,29 +240,29 @@ class _LoadingStatsBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 28.w,
-                height: 28.w,
+                width: DesignTokens.iconLg.w,
+                height: DesignTokens.iconLg.w,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                 ),
               ),
-              SizedBox(height: 8.h),
+              RSizedBox(height: DesignTokens.space2),
               Container(
                 width: 40.w,
-                height: 20.h,
+                height: DesignTokens.space4.h + 4,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
               ),
-              SizedBox(height: 4.h),
+              RSizedBox(height: DesignTokens.space1),
               Container(
                 width: 50.w,
-                height: 12.h,
+                height: DesignTokens.space3.h,
                 decoration: BoxDecoration(
-                  color: AppColors.grey200,
-                  borderRadius: BorderRadius.circular(4.r),
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 ),
               ),
             ],

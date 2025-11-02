@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 class DownloadProgressIndicator extends StatelessWidget {
   final String fileName;
@@ -20,32 +20,26 @@ class DownloadProgressIndicator extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      margin: AppDimensions.marginHorizontalMedium +
-          AppDimensions.marginVerticalSmall,
-      padding: AppDimensions.paddingAllMedium,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary.withValues(alpha: 0.05),
-            AppColors.surface,
-            AppColors.primary.withValues(alpha: 0.02),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.3),
+          color: theme.colorScheme.primary.withValues(alpha: 0.3),
           width: 1.5.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.1),
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
           BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.05),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -58,14 +52,14 @@ class DownloadProgressIndicator extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                padding: REdgeInsets.all(DesignTokens.space1),
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  color: theme.colorScheme.primary,
                   borderRadius:
-                      BorderRadius.circular(AppDimensions.radiusSmall),
+                      BorderRadius.circular(DesignTokens.radiusSm.r),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -73,11 +67,11 @@ class DownloadProgressIndicator extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.download_rounded,
-                  color: AppColors.onPrimary,
-                  size: AppDimensions.iconSmall,
+                  color: theme.colorScheme.onPrimary,
+                  size: DesignTokens.iconSm.sp,
                 ),
               ),
-              SizedBox(width: AppDimensions.spaceSmall.w),
+              RSizedBox(width: DesignTokens.space2),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,8 +79,7 @@ class DownloadProgressIndicator extends StatelessWidget {
                     Text(
                       'Downloading',
                       style: theme.textTheme.labelMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 12.sp,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -94,8 +87,7 @@ class DownloadProgressIndicator extends StatelessWidget {
                       fileName,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
-                        fontSize: 14.sp,
-                        color: AppColors.textPrimary,
+                        color: theme.colorScheme.onSurface,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -106,16 +98,11 @@ class DownloadProgressIndicator extends StatelessWidget {
               if (onCancel != null)
                 Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.error.withValues(alpha: 0.1),
-                        AppColors.error.withValues(alpha: 0.05),
-                      ],
-                    ),
+                    color: theme.colorScheme.errorContainer.withValues(alpha: 0.5),
                     borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusSmall),
+                        BorderRadius.circular(DesignTokens.radiusSm.r),
                     border: Border.all(
-                      color: AppColors.error.withValues(alpha: 0.2),
+                      color: theme.colorScheme.error.withValues(alpha: 0.2),
                       width: 1.w,
                     ),
                   ),
@@ -123,10 +110,10 @@ class DownloadProgressIndicator extends StatelessWidget {
                     onPressed: onCancel,
                     icon: Icon(
                       Icons.close_rounded,
-                      color: AppColors.error.withValues(alpha: 0.8),
-                      size: AppDimensions.iconSmall,
+                      color: theme.colorScheme.error.withValues(alpha: 0.8),
+                      size: DesignTokens.iconSm.sp,
                     ),
-                    padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                    padding: REdgeInsets.all(DesignTokens.space1),
                     constraints: BoxConstraints(
                       minWidth: 32.w,
                       minHeight: 32.h,
@@ -136,46 +123,45 @@ class DownloadProgressIndicator extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: AppDimensions.spaceMedium),
+          RSizedBox(height: DesignTokens.space4),
 
           // Progress bar
           if (progress != null) ...[
             Container(
               height: 6.h,
               decoration: BoxDecoration(
-                color: AppColors.surfaceVariant.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 child: LinearProgressIndicator(
                   value: progress,
                   backgroundColor: Colors.transparent,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.primary,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: AppDimensions.spaceSmall),
+            RSizedBox(height: DesignTokens.space2),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppDimensions.paddingXSmall,
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space1,
                     vertical: 2.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
                     borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusXSmall),
+                        BorderRadius.circular(DesignTokens.radiusSm.r),
                   ),
                   child: Text(
                     '${(progress! * 100).toInt()}%',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 12.sp,
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -184,9 +170,8 @@ class DownloadProgressIndicator extends StatelessWidget {
                   progress! < 1.0 ? 'Downloading...' : 'Complete ✓',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: progress! < 1.0
-                        ? AppColors.textTertiary
-                        : AppColors.success,
-                    fontSize: 12.sp,
+                        ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                        : context.fsmTheme.success,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -197,36 +182,35 @@ class DownloadProgressIndicator extends StatelessWidget {
             Container(
               height: 6.h,
               decoration: BoxDecoration(
-                color: AppColors.surfaceVariant.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXSmall),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 child: LinearProgressIndicator(
                   backgroundColor: Colors.transparent,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.primary,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: AppDimensions.spaceSmall),
+            RSizedBox(height: DesignTokens.space2),
             Row(
               children: [
                 Container(
                   width: 8.w,
                   height: 8.h,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
                     shape: BoxShape.circle,
                   ),
                 ),
-                SizedBox(width: AppDimensions.spaceSmall.w),
+                RSizedBox(width: DesignTokens.space2),
                 Text(
                   'Preparing download...',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
-                    fontSize: 12.sp,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -254,29 +238,24 @@ class DownloadSuccessIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final fsmTheme = context.fsmTheme;
 
     return Container(
-      margin: AppDimensions.marginHorizontalMedium +
-          AppDimensions.marginVerticalSmall,
-      padding: AppDimensions.paddingAllMedium,
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
+      padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.success.withValues(alpha: 0.1),
-            AppColors.success.withValues(alpha: 0.05),
-            AppColors.surface,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        color: fsmTheme.success.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: AppColors.success.withValues(alpha: 0.3),
+          color: fsmTheme.success.withValues(alpha: 0.3),
           width: 1.5.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.success.withValues(alpha: 0.2),
+            color: fsmTheme.success.withValues(alpha: 0.2),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -285,18 +264,13 @@ class DownloadSuccessIndicator extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+            padding: REdgeInsets.all(DesignTokens.space1),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.success,
-                  AppColors.success.withValues(alpha: 0.8),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+              color: fsmTheme.success,
+              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.success.withValues(alpha: 0.3),
+                  color: fsmTheme.success.withValues(alpha: 0.3),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -304,11 +278,11 @@ class DownloadSuccessIndicator extends StatelessWidget {
             ),
             child: Icon(
               Icons.check_circle_rounded,
-              color: AppColors.onPrimary,
-              size: AppDimensions.iconSmall,
+              color: theme.colorScheme.onPrimary,
+              size: DesignTokens.iconSm.sp,
             ),
           ),
-          SizedBox(width: AppDimensions.spaceMedium.w),
+          RSizedBox(width: DesignTokens.space4),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,17 +291,15 @@ class DownloadSuccessIndicator extends StatelessWidget {
                 Text(
                   'Download Complete ✓',
                   style: theme.textTheme.titleSmall?.copyWith(
-                    color: AppColors.success,
+                    color: fsmTheme.success,
                     fontWeight: FontWeight.w700,
-                    fontSize: 15.sp,
                   ),
                 ),
-                SizedBox(height: 2.h),
+                RSizedBox(height: 2.h),
                 Text(
                   fileName,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontSize: 12.sp,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w500,
                   ),
                   maxLines: 1,
@@ -339,31 +311,25 @@ class DownloadSuccessIndicator extends StatelessWidget {
           if (onOpen != null)
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.success.withValues(alpha: 0.15),
-                    AppColors.success.withValues(alpha: 0.05),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+                color: fsmTheme.success.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 border: Border.all(
-                  color: AppColors.success.withValues(alpha: 0.3),
+                  color: fsmTheme.success.withValues(alpha: 0.3),
                   width: 1.w,
                 ),
               ),
               child: TextButton(
                 onPressed: onOpen,
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppDimensions.paddingMedium,
-                    vertical: AppDimensions.paddingSmall,
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space4,
+                    vertical: DesignTokens.space2,
                   ),
                 ),
                 child: Text(
                   'Open',
-                  style: TextStyle(
-                    color: AppColors.success,
-                    fontSize: 13.sp,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: fsmTheme.success,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -372,10 +338,10 @@ class DownloadSuccessIndicator extends StatelessWidget {
           if (onDismiss != null)
             Container(
               decoration: BoxDecoration(
-                color: AppColors.surfaceVariant.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 border: Border.all(
-                  color: AppColors.outline.withValues(alpha: 0.2),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
                   width: 1.w,
                 ),
               ),
@@ -383,10 +349,10 @@ class DownloadSuccessIndicator extends StatelessWidget {
                 onPressed: onDismiss,
                 icon: Icon(
                   Icons.close_rounded,
-                  color: AppColors.textTertiary,
-                  size: AppDimensions.iconSmall,
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                  size: DesignTokens.iconSm.sp,
                 ),
-                padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                padding: REdgeInsets.all(DesignTokens.space1),
                 constraints: BoxConstraints(
                   minWidth: 32.w,
                   minHeight: 32.h,

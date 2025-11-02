@@ -9,7 +9,11 @@ import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
-import '../../../../core/widgets/widgets.dart' hide CustomTabBar, StatsGrid, StatsCardData; // Barrel import, hide duplicates
+import '../../../../core/widgets/widgets.dart'
+    hide
+        CustomTabBar,
+        StatsGrid,
+        StatsCardData; // Barrel import, hide duplicates
 import '../../../../core/widgets/custom_tab_bar.dart';
 import '../../../../core/widgets/dashboard_states.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
@@ -519,7 +523,8 @@ class _DashboardPageState extends State<DashboardPage>
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                          icon: Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
+                          icon: Icon(Icons.person_add,
+                              size: DesignTokens.iconSm.sp),
                           label: Text('Assign to Me',
                               style: theme.textTheme.labelLarge),
                           style: ElevatedButton.styleFrom(
@@ -530,7 +535,8 @@ class _DashboardPageState extends State<DashboardPage>
                               vertical: DesignTokens.space3,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(spacing.radiusSm.r),
+                              borderRadius:
+                                  BorderRadius.circular(spacing.radiusSm.r),
                             ),
                           ),
                         ),

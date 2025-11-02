@@ -4,16 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
-import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
-import '../widgets/document_category_filter.dart';
 import '../widgets/document_list_item.dart';
-import '../widgets/document_search_bar.dart';
 import '../widgets/document_shimmer.dart';
 import '../widgets/download_progress_indicator.dart';
 
@@ -216,11 +215,11 @@ class _DocumentsViewState extends State<DocumentsView> {
               child: Column(
                 children: [
                   // Search bar
-                  DocumentSearchBar(
-                    initialQuery: state.searchQuery,
+                  FSMSearchBar(
+                    hintText: 'Search documents...',
+                    initialValue: state.searchQuery,
                     isLoading: state.isSearching,
-                    onSearchChanged: (query) {
-                      // Trigger search immediately - debouncing is handled by BLoC
+                    onChanged: (query) {
                       if (query.isNotEmpty) {
                         context.read<DocumentsBloc>().add(
                               SearchDocuments(
@@ -230,32 +229,29 @@ class _DocumentsViewState extends State<DocumentsView> {
                               ),
                             );
                       } else {
-                        // Clear search if query is empty
                         context.read<DocumentsBloc>().add(const ClearSearch());
                       }
                     },
-                    onSearchSubmitted: () {
-                      // Search is already triggered on change, no need for additional action
-                    },
-                    onClearSearch: () {
-                      context.read<DocumentsBloc>().add(const ClearSearch());
-                    },
+                    showFilterButton: true,
+                    activeFilterCount: _getActiveFilterCount(state),
                   ),
 
-                  // Filters
-                  DocumentCategoryFilter(
-                    categories: state.categories,
-                    selectedType: state.selectedType,
-                    selectedCategory: state.selectedCategory,
-                    onTypeChanged: (type) {
-                      context.read<DocumentsBloc>().add(FilterByType(type));
-                    },
-                    onCategoryChanged: (category) {
-                      context
-                          .read<DocumentsBloc>()
-                          .add(FilterByCategory(category));
-                    },
-                  ),
+                  // Category Filters
+                  if (state.categories.isNotEmpty)
+                    FSMFilterChipGroup<String>(
+                      options: ['All', ...state.categories].map((category) => FilterChipData(
+                        value: category,
+                        label: category,
+                        leadingIcon: _getCategoryIcon(category),
+                      )).toList(),
+                      selectedValues: state.selectedCategory != null ? [state.selectedCategory!] : ['All'],
+                      onSelectionChanged: (selected) {
+                        final category = selected.isNotEmpty && selected.first != 'All' ? selected.first : null;
+                        context.read<DocumentsBloc>().add(FilterByCategory(category));
+                      },
+                      multiSelect: false,
+                      showClearAll: false,
+                    ),
 
                   // Download progress indicator
                   if (state.isDownloading &&
@@ -440,6 +436,33 @@ class _DocumentsViewState extends State<DocumentsView> {
         ],
       ),
     );
+  }
+
+  int _getActiveFilterCount(DocumentsState state) {
+    int count = 0;
+    if (state.selectedCategory != null) count++;
+    if (state.selectedType != null) count++;
+    if (state.searchQuery?.isNotEmpty == true) count++;
+    return count;
+  }
+
+  IconData _getCategoryIcon(String category) {
+    switch (category.toLowerCase()) {
+      case 'all':
+        return Icons.folder_outlined;
+      case 'manuals':
+        return Icons.book_outlined;
+      case 'specifications':
+        return Icons.description_outlined;
+      case 'procedures':
+        return Icons.list_alt_outlined;
+      case 'diagrams':
+        return Icons.schema_outlined;
+      case 'certificates':
+        return Icons.verified_outlined;
+      default:
+        return Icons.insert_drive_file_outlined;
+    }
   }
 
   String _getDownloadingFileName(DocumentsState state) {

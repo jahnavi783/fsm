@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
 import '../../domain/entities/document_entity.dart';
 
 class DocumentCategoryFilter extends StatelessWidget {
@@ -25,12 +24,12 @@ class DocumentCategoryFilter extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: AppDimensions.paddingVerticalMedium,
+      padding: REdgeInsets.symmetric(vertical: DesignTokens.space4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.08),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.08),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -42,37 +41,36 @@ class DocumentCategoryFilter extends StatelessWidget {
         children: [
           // Document Type Filter Header
           Padding(
-            padding: AppDimensions.paddingHorizontalMedium,
+            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
             child: Row(
               children: [
                 Container(
-                  width: 3.w,
-                  height: 18.h,
+                  width: DesignTokens.space1 - 1,
+                  height: DesignTokens.space4 + 2,
                   decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
-                    borderRadius: BorderRadius.circular(2.r),
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r / 2),
                   ),
                 ),
-                SizedBox(width: AppDimensions.spaceSmall.w),
+                RSizedBox(width: DesignTokens.space2),
                 Text(
                   'Document Types',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    fontSize: 15.sp,
-                    color: AppColors.textPrimary,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: AppDimensions.spaceMedium),
+          RSizedBox(height: DesignTokens.space4),
 
           // Document Type Filter Chips
           SizedBox(
-            height: 44.h,
+            height: DesignTokens.buttonHeightMd.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: AppDimensions.paddingHorizontalMedium,
+              padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
               itemCount: DocumentType.values.length + 1, // +1 for "All" option
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -112,45 +110,40 @@ class DocumentCategoryFilter extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(right: AppDimensions.spaceSmall.w),
+      padding: REdgeInsets.only(right: DesignTokens.space2),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+          borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
           child: AnimatedContainer(
-            duration: AppDimensions.animationFast,
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingMedium,
-              vertical: AppDimensions.paddingSmall,
+            duration: const Duration(milliseconds: 200),
+            padding: REdgeInsets.symmetric(
+              horizontal: DesignTokens.space4,
+              vertical: DesignTokens.space2,
             ),
             decoration: BoxDecoration(
-              gradient: isSelected
-                  ? AppColors.primaryGradient
-                  : LinearGradient(
-                      colors: [
-                        AppColors.surface,
-                        AppColors.surfaceVariant.withValues(alpha: 0.5),
-                      ],
-                    ),
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLg.r),
               border: Border.all(
                 color: isSelected
                     ? Colors.transparent
-                    : AppColors.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(alpha: 0.3),
                 width: 1.w,
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.3),
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color: AppColors.shadow.withValues(alpha: 0.1),
+                        color: theme.colorScheme.shadow.withValues(alpha: 0.1),
                         blurRadius: 2,
                         offset: const Offset(0, 1),
                       ),
@@ -161,19 +154,18 @@ class DocumentCategoryFilter extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  size: 16.sp,
+                  size: DesignTokens.iconSm.sp,
                   color: isSelected
-                      ? AppColors.onPrimary
-                      : AppColors.textSecondary,
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
-                SizedBox(width: AppDimensions.spaceXSmall.w),
+                RSizedBox(width: DesignTokens.space1),
                 Text(
                   label,
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: isSelected
-                        ? AppColors.onPrimary
-                        : AppColors.textPrimary,
-                    fontSize: 13.sp,
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

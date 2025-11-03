@@ -140,22 +140,6 @@ class ProfileView extends StatelessWidget {
             ],
           ),
 
-          // ═══════════════════════════════════════════════════════════
-          // DRAWER - FSM Navigation Drawer
-          // ═══════════════════════════════════════════════════════════
-          drawer: FSMDrawer(
-            currentRoute: '/app/profile',
-            profileName: user?.fullName ?? 'FSM Technician',
-            profileEmail: user?.email ?? 'technician@fsm.app',
-            employeeId: user?.id.toString() ?? 'EMP-001',
-            profileImageUrl: null,
-            onNavigate: (section) => _navigateToSection(context, section),
-            onSync: () => _handleSync(context),
-            onScanQR: () => _handleScanQR(context),
-            onCheckIn: () => _handleCheckIn(context),
-            onLogout: () => _handleLogout(context),
-          ),
-
           body: BlocConsumer<ProfileBloc, ProfileState>(
             listener: (context, state) {
               state.whenOrNull(

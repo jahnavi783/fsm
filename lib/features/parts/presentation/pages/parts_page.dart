@@ -108,15 +108,7 @@ class _PartsPageViewState extends State<_PartsPageView>
         return Scaffold(
           backgroundColor: theme.colorScheme.surface,
           appBar: FSMAppBar.gradient(
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: 'Menu',
-              ),
-            ),
             title: 'Parts',
-            automaticallyImplyLeading: false,
             actions: [
               FSMAppBarAction.search(
                 onPressed: () {
@@ -134,22 +126,6 @@ class _PartsPageViewState extends State<_PartsPageView>
               isScrollable: true,
               tabs: _categories.map((category) => Tab(text: category)).toList(),
             ),
-          ),
-
-          // ═══════════════════════════════════════════════════════════
-          // DRAWER - FSM Navigation Drawer
-          // ═══════════════════════════════════════════════════════════
-          drawer: FSMDrawer(
-            currentRoute: '/app/parts',
-            profileName: user?.fullName ?? 'FSM Technician',
-            profileEmail: user?.email ?? 'technician@fsm.app',
-            employeeId: user?.id.toString() ?? 'EMP-001',
-            profileImageUrl: null,
-            onNavigate: (section) => _navigateToSection(context, section),
-            onSync: () => _handleSync(context),
-            onScanQR: () => _handleScanQR(context),
-            onCheckIn: () => _handleCheckIn(context),
-            onLogout: () => _handleLogout(context),
           ),
 
           body: BlocConsumer<PartsBloc, PartsState>(

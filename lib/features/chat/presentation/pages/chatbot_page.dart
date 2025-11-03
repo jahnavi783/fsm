@@ -45,22 +45,6 @@ class ChatbotPage extends StatelessWidget {
             title: 'AI Assistant',
           ),
 
-          // ═══════════════════════════════════════════════════════════
-          // DRAWER - FSM Navigation Drawer
-          // ═══════════════════════════════════════════════════════════
-          drawer: FSMDrawer(
-            currentRoute: '/app/chat',
-            profileName: user?.fullName ?? 'FSM Technician',
-            profileEmail: user?.email ?? 'technician@fsm.app',
-            employeeId: user?.id.toString() ?? 'EMP-001',
-            profileImageUrl: null,
-            onNavigate: (section) => _navigateToSection(context, section),
-            onSync: () => _handleSync(context),
-            onScanQR: () => _handleScanQR(context),
-            onCheckIn: () => _handleCheckIn(context),
-            onLogout: () => _handleLogout(context),
-          ),
-
           body: SingleChildScrollView(
             padding: EdgeInsets.all(AppDimensions.paddingLarge),
             child: Column(

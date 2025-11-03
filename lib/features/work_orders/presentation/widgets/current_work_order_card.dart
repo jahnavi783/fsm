@@ -55,7 +55,7 @@ class CurrentWorkOrderCard extends StatelessWidget {
         vertical: DesignTokens.space2,
       ),
       child: Material(
-        color: theme.colorScheme.surface,
+        color: theme.colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(spacing.radiusMd.r),
         elevation: DesignTokens.elevationSmall,
         shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.26),
@@ -67,7 +67,7 @@ class CurrentWorkOrderCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(spacing.radiusMd.r),
               border: Border(
                 left: BorderSide(
-                  color: fsmTheme.warning,
+                  color: theme.colorScheme.primary,
                   width: DesignTokens.borderWidthMedium.w,
                 ),
               ),
@@ -136,44 +136,44 @@ class CurrentWorkOrderCard extends StatelessWidget {
                   DesignTokens.verticalSpaceMedium,
 
                   // Quick Actions Row
-                  Wrap(
-                    spacing: DesignTokens.space2.w,
-                    runSpacing: DesignTokens.space2.h,
-                    children: [
-                      if (onPause != null)
-                        QuickActionButton(
-                          icon: Icons.pause,
-                          label: 'Pause',
-                          onPressed: onPause!,
-                          backgroundColor: fsmTheme.warning,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                      if (onParts != null)
-                        QuickActionButton(
-                          icon: Icons.inventory_2_outlined,
-                          label: 'Parts',
-                          onPressed: onParts!,
-                          backgroundColor: fsmTheme.info,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                      if (onDocs != null)
-                        QuickActionButton(
-                          icon: Icons.description_outlined,
-                          label: 'Docs',
-                          onPressed: onDocs!,
-                          backgroundColor: theme.colorScheme.secondary,
-                          color: theme.colorScheme.onSecondary,
-                        ),
-                      if (onComplete != null)
-                        QuickActionButton(
-                          icon: Icons.check_circle_outline,
-                          label: 'Complete',
-                          onPressed: onComplete!,
-                          backgroundColor: fsmTheme.success,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                    ],
-                  ),
+                  // Wrap(
+                  //   spacing: DesignTokens.space2.w,
+                  //   runSpacing: DesignTokens.space2.h,
+                  //   children: [
+                  //     if (onPause != null)
+                  //       QuickActionButton(
+                  //         icon: Icons.pause,
+                  //         label: 'Pause',
+                  //         onPressed: onPause!,
+                  //         backgroundColor: fsmTheme.warning,
+                  //         color: theme.colorScheme.onPrimary,
+                  //       ),
+                  //     if (onParts != null)
+                  //       QuickActionButton(
+                  //         icon: Icons.inventory_2_outlined,
+                  //         label: 'Parts',
+                  //         onPressed: onParts!,
+                  //         backgroundColor: fsmTheme.info,
+                  //         color: theme.colorScheme.onPrimary,
+                  //       ),
+                  //     if (onDocs != null)
+                  //       QuickActionButton(
+                  //         icon: Icons.description_outlined,
+                  //         label: 'Docs',
+                  //         onPressed: onDocs!,
+                  //         backgroundColor: theme.colorScheme.secondary,
+                  //         color: theme.colorScheme.onSecondary,
+                  //       ),
+                  //     if (onComplete != null)
+                  //       QuickActionButton(
+                  //         icon: Icons.check_circle_outline,
+                  //         label: 'Complete',
+                  //         onPressed: onComplete!,
+                  //         backgroundColor: fsmTheme.success,
+                  //         color: theme.colorScheme.onPrimary,
+                  //       ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

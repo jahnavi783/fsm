@@ -37,7 +37,7 @@ class StatsCard extends StatelessWidget {
               vertical: DesignTokens.space3,
             ),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(spacing.radiusLg.r),
               boxShadow: [
                 BoxShadow(

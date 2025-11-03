@@ -157,7 +157,7 @@ class FSMShimmerListCard extends StatelessWidget {
           vertical: spacing.space2,
         ),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: theme.colorScheme.surfaceContainer,
           borderRadius: spacing.radiusMdBr,
         ),
         child: Row(
@@ -174,9 +174,11 @@ class FSMShimmerListCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FSMShimmerTextLine(width: 150.w, height: DesignTokens.fontSize16.h),
+                  FSMShimmerTextLine(
+                      width: 150.w, height: DesignTokens.fontSize16.h),
                   spacing.verticalSpaceSmall,
-                  FSMShimmerTextLine(width: 100.w, height: DesignTokens.fontSize12.h),
+                  FSMShimmerTextLine(
+                      width: 100.w, height: DesignTokens.fontSize12.h),
                 ],
               ),
             ),
@@ -215,7 +217,7 @@ class FSMShimmerWorkOrderCard extends StatelessWidget {
         ),
         padding: spacing.paddingMd,
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: theme.colorScheme.surfaceContainer,
           borderRadius: spacing.radiusMdBr,
           border: Border.all(
             color: theme.colorScheme.outlineVariant,
@@ -235,7 +237,8 @@ class FSMShimmerWorkOrderCard extends StatelessWidget {
             spacing.verticalSpaceMedium,
 
             // Title
-            FSMShimmerTextLine(width: double.infinity, height: DesignTokens.fontSize18.h),
+            FSMShimmerTextLine(
+                width: double.infinity, height: DesignTokens.fontSize18.h),
             spacing.verticalSpaceSmall,
 
             // Description
@@ -245,17 +248,23 @@ class FSMShimmerWorkOrderCard extends StatelessWidget {
             // Metadata rows
             Row(
               children: [
-                FSMShimmerBox(width: DesignTokens.iconXs.w, height: DesignTokens.iconXs.w),
+                FSMShimmerBox(
+                    width: DesignTokens.iconXs.w,
+                    height: DesignTokens.iconXs.w),
                 spacing.horizontalSpaceSmall,
-                FSMShimmerTextLine(width: 120.w, height: DesignTokens.fontSize12.h),
+                FSMShimmerTextLine(
+                    width: 120.w, height: DesignTokens.fontSize12.h),
               ],
             ),
             spacing.verticalSpaceSmall,
             Row(
               children: [
-                FSMShimmerBox(width: DesignTokens.iconXs.w, height: DesignTokens.iconXs.w),
+                FSMShimmerBox(
+                    width: DesignTokens.iconXs.w,
+                    height: DesignTokens.iconXs.w),
                 spacing.horizontalSpaceSmall,
-                FSMShimmerTextLine(width: 100.w, height: DesignTokens.fontSize12.h),
+                FSMShimmerTextLine(
+                    width: 100.w, height: DesignTokens.fontSize12.h),
               ],
             ),
           ],
@@ -282,8 +291,8 @@ class FSMShimmerList extends StatelessWidget {
       itemCount: itemCount,
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: itemBuilder ??
-          (context, index) => const FSMShimmerListCard(),
+      itemBuilder:
+          itemBuilder ?? (context, index) => const FSMShimmerListCard(),
     );
   }
 }

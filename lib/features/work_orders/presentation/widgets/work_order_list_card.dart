@@ -81,7 +81,7 @@ class WorkOrderListCard extends StatelessWidget {
         vertical: DesignTokens.space2,
       ),
       child: Material(
-        color: theme.colorScheme.surface,
+        color: theme.colorScheme.surfaceContainer,
         elevation: DesignTokens.elevationXSmall,
         borderRadius: BorderRadius.circular(spacing.radiusSm.r),
         child: InkWell(

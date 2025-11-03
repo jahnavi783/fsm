@@ -115,7 +115,8 @@ class FSMCard extends StatelessWidget {
 
     final effectiveElevation = elevation ?? spacing.elevationSm;
     final effectiveBorderRadius = borderRadius ?? spacing.cardRadius;
-    final effectiveBackgroundColor = backgroundColor ?? theme.cardColor;
+    final effectiveBackgroundColor =
+        backgroundColor ?? theme.colorScheme.surfaceContainer;
     final effectivePadding = padding ?? spacing.cardPaddingAll;
     final effectiveMargin = margin ??
         REdgeInsets.symmetric(

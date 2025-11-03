@@ -7,9 +7,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
-import '../../../../core/widgets/form/location_status_widget.dart';
-import '../../../../core/widgets/form/reactive_image_picker.dart';
-import '../../../../core/widgets/form/reactive_multiline_input.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/work_order_entity.dart';

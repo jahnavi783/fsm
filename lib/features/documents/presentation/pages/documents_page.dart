@@ -7,9 +7,7 @@ import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
-import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/widgets.dart';
-import '../../../../core/widgets/navigation/fsm_drawer.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
@@ -18,7 +16,6 @@ import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
 import '../widgets/document_card_tile.dart';
-import '../widgets/document_list_item.dart';
 import '../widgets/document_shimmer.dart';
 import '../widgets/download_progress_indicator.dart';
 
@@ -78,8 +75,6 @@ class _DocumentsViewState extends State<DocumentsView> {
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        final user = authState is AuthAuthenticated ? authState.user : null;
-
         return Scaffold(
           appBar: FSMAppBar.gradient(
             titleWidget: Row(
@@ -115,8 +110,7 @@ class _DocumentsViewState extends State<DocumentsView> {
                 builder: (context, state) {
                   if (state.downloadedDocumentsCount > 0) {
                     return Padding(
-                      padding:
-                          REdgeInsets.only(right: DesignTokens.space4),
+                      padding: REdgeInsets.only(right: DesignTokens.space4),
                       child: Center(
                         child: Container(
                           padding: REdgeInsets.symmetric(
@@ -130,15 +124,17 @@ class _DocumentsViewState extends State<DocumentsView> {
                                 context.fsmTheme.success.withValues(alpha: 0.7),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(
-                                DesignTokens.radiusLg.r),
+                            borderRadius:
+                                BorderRadius.circular(DesignTokens.radiusLg.r),
                             border: Border.all(
-                              color: theme.colorScheme.onPrimary.withValues(alpha: 0.3),
+                              color: theme.colorScheme.onPrimary
+                                  .withValues(alpha: 0.3),
                               width: DesignTokens.borderWidthThin.w,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: context.fsmTheme.success.withValues(alpha: 0.3),
+                                color: context.fsmTheme.success
+                                    .withValues(alpha: 0.3),
                                 blurRadius: 4,
                                 offset: const Offset(0, 2),
                               ),
@@ -172,7 +168,6 @@ class _DocumentsViewState extends State<DocumentsView> {
               ),
             ],
           ),
-
           body: BlocConsumer<DocumentsBloc, DocumentsState>(
             listener: (context, state) {
               if (state.hasError) {
@@ -288,25 +283,27 @@ class _DocumentsViewState extends State<DocumentsView> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                context.fsmTheme.warning.withValues(alpha: 0.15),
-                                context.fsmTheme.warning.withValues(alpha: 0.05),
+                                context.fsmTheme.warning
+                                    .withValues(alpha: 0.15),
+                                context.fsmTheme.warning
+                                    .withValues(alpha: 0.05),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(
-                                DesignTokens.radiusSm.r),
+                            borderRadius:
+                                BorderRadius.circular(DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: context.fsmTheme.warning.withValues(alpha: 0.3),
+                              color: context.fsmTheme.warning
+                                  .withValues(alpha: 0.3),
                               width: DesignTokens.borderWidthThin.w,
                             ),
                           ),
                           child: Row(
                             children: [
                               Container(
-                                padding:
-                                    REdgeInsets.all(DesignTokens.space1),
+                                padding: REdgeInsets.all(DesignTokens.space1),
                                 decoration: BoxDecoration(
-                                  color:
-                                      context.fsmTheme.warning.withValues(alpha: 0.2),
+                                  color: context.fsmTheme.warning
+                                      .withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(
                                       DesignTokens.radiusXs.r),
                                 ),

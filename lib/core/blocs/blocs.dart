@@ -10,6 +10,7 @@
 ///   // Use mixin methods and helper utilities
 /// }
 /// ```
+library;
 
 export 'bloc_build_conditions.dart';
 export 'bloc_listener_helpers.dart';

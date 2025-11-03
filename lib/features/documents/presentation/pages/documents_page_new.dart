@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
-import '../../../../core/widgets/widgets.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';

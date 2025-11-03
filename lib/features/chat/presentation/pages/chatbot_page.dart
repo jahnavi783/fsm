@@ -7,7 +7,6 @@ import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/theme/app_dimensions.dart';
 import 'package:fsm/core/theme/app_text_styles.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/core/widgets/navigation/fsm_drawer.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
@@ -38,13 +37,10 @@ class ChatbotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        final user = authState is AuthAuthenticated ? authState.user : null;
-
         return Scaffold(
           appBar: FSMAppBar.gradient(
             title: 'AI Assistant',
           ),
-
           body: SingleChildScrollView(
             padding: EdgeInsets.all(AppDimensions.paddingLarge),
             child: Column(

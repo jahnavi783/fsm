@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../../core/widgets/navigation/fsm_drawer.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
@@ -121,8 +120,6 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        final user = authState is AuthAuthenticated ? authState.user : null;
-
         return Scaffold(
           backgroundColor: Colors.grey[50],
           appBar: FSMAppBar.gradient(
@@ -139,7 +136,6 @@ class ProfileView extends StatelessWidget {
               ),
             ],
           ),
-
           body: BlocConsumer<ProfileBloc, ProfileState>(
             listener: (context, state) {
               state.whenOrNull(

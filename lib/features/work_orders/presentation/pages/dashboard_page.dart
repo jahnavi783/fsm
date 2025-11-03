@@ -12,9 +12,9 @@ import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/widgets.dart'
     hide
         StatsGrid,
+        StatsCard,
         StatsCardData; // Barrel import, hide duplicates
-import '../../../../core/widgets/dashboard_states.dart';
-import '../../../../core/widgets/stats_card.dart';
+import '../../../../core/widgets/stats_card.dart' as stats;
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
@@ -23,7 +23,6 @@ import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
 import '../blocs/work_orders_list/work_orders_list_state.dart';
 import '../widgets/current_work_order_card.dart';
-import '../widgets/work_order_action_sheet.dart';
 import '../widgets/work_order_list_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
@@ -148,23 +147,17 @@ class _DashboardPageState extends State<DashboardPage> {
                               const WorkOrdersListEvent.refreshWorkOrders(),
                             );
                       },
-                      child: CustomScrollView(
+                      child: ListView(
                         controller: _scrollController,
-                        slivers: [
-                          // Stats Cards (kept as existing - already well-designed)
+                        children: [
+                          // Stats Cards
                           _buildStatsGrid(state),
 
                           // Current Work Order Card (for in-progress WO)
                           _buildCurrentWorkOrderCard(state),
 
-                          // Filter Chips - 4 status filters (pinned header)
-                          SliverPersistentHeader(
-                            pinned: true,
-                            delegate: _FilterChipHeaderDelegate(
-                              selectedFilter: _selectedFilter,
-                              onFilterChanged: _onFilterChanged,
-                            ),
-                          ),
+                          // Filter Chips - 4 status filters
+                          _buildFilterChips(),
 
                           // Current tab content
                           _buildCurrentTabContent(state),
@@ -194,10 +187,40 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  // Build stats grid for sliver layout
+  // Build stats grid as regular widget
   Widget _buildStatsGrid(WorkOrdersListState state) {
     final statsData = _getStatsData(state);
-    return StatsGrid(statsData: statsData);
+    final spacing = context.spacing;
+    
+    return Padding(
+      padding: REdgeInsets.fromLTRB(
+        spacing.space4,
+        spacing.space1,
+        spacing.space4,
+        spacing.space2,
+      ),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: spacing.space3.w,
+          mainAxisSpacing: spacing.space3.h,
+          childAspectRatio: 2.2,
+        ),
+        itemCount: statsData.length,
+        itemBuilder: (context, index) {
+          final data = statsData[index];
+          return stats.StatsCard(
+            title: data.title,
+            count: data.count,
+            icon: data.icon,
+            color: data.color,
+            onTap: data.onTap,
+          );
+        },
+      ),
+    );
   }
 
   // Build Current Work Order Card (for in-progress work order)
@@ -222,65 +245,104 @@ class _DashboardPageState extends State<DashboardPage> {
         // Only show if there's exactly 1 in-progress work order
         if (inProgressWorkOrders.length == 1) {
           final workOrder = inProgressWorkOrders.first;
-          return SliverToBoxAdapter(
-            child: CurrentWorkOrderCard(
-              workOrder: workOrder,
-              onPause: workOrder.canBePaused
-                  ? () => _handleWorkOrderAction(context, workOrder, 'pause')
-                  : null,
-              onParts: () {
-                // TODO: Navigate to parts screen filtered for this WO
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
-              onDocs: () {
-                // TODO: Navigate to documents screen filtered for this WO
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
-              onComplete: workOrder.canBeCompleted
-                  ? () => _handleWorkOrderAction(context, workOrder, 'complete')
-                  : null,
-              onTap: () {
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
-            ),
+          return CurrentWorkOrderCard(
+            workOrder: workOrder,
+            onPause: workOrder.canBePaused
+                ? () => _handleWorkOrderAction(context, workOrder, 'pause')
+                : null,
+            onParts: () {
+              // TODO: Navigate to parts screen filtered for this WO
+              context.router
+                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+            },
+            onDocs: () {
+              // TODO: Navigate to documents screen filtered for this WO
+              context.router
+                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+            },
+            onComplete: workOrder.canBeCompleted
+                ? () => _handleWorkOrderAction(context, workOrder, 'complete')
+                : null,
+            onTap: () {
+              context.router
+                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+            },
           );
         }
 
         // Hide card if no in-progress work order or multiple (edge case)
-        return const SliverToBoxAdapter(child: SizedBox.shrink());
+        return const SizedBox.shrink();
       },
-      orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+
+  // Build filter chips section
+  Widget _buildFilterChips() {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
+      child: FSMFilterChipGroup<String>(
+        options: [
+          FilterChipData(
+            value: 'unassigned',
+            label: 'Unassigned',
+            leadingIcon: Icons.inbox_outlined,
+          ),
+          FilterChipData(
+            value: 'assigned',
+            label: 'Assigned',
+            leadingIcon: Icons.assignment_outlined,
+          ),
+          FilterChipData(
+            value: 'paused',
+            label: 'Paused',
+            leadingIcon: Icons.pause_circle_outline,
+          ),
+          FilterChipData(
+            value: 'completed',
+            label: 'Completed',
+            leadingIcon: Icons.check_circle_outline,
+          ),
+        ],
+        selectedValues: [_selectedFilter],
+        onSelectionChanged: _onFilterChanged,
+        multiSelect: false,
+        showClearAll: false,
+        showFilterCount: false,
+        padding: EdgeInsets.zero,
+      ),
     );
   }
 
   // Get stats data for each status - 2x2 grid (4 cards only)
-  List<StatsCardData> _getStatsData(WorkOrdersListState state) {
+  List<stats.StatsCardData> _getStatsData(WorkOrdersListState state) {
     return [
-      StatsCardData(
+      stats.StatsCardData(
         title: 'Unassigned',
         count: _getUnassignedCount(state),
         icon: Icons.inbox_outlined,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
         onTap: () => _switchToFilter('unassigned'),
       ),
-      StatsCardData(
+      stats.StatsCardData(
         title: 'Assigned',
         count: _getCountForStatus(state, WorkOrderStatus.assigned),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.assigned),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.assigned),
         onTap: () => _switchToFilter('assigned'),
       ),
-      StatsCardData(
+      stats.StatsCardData(
         title: 'Paused',
         count: _getCountForStatus(state, WorkOrderStatus.paused),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.paused),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.paused),
         onTap: () => _switchToFilter('paused'),
       ),
-      StatsCardData(
+      stats.StatsCardData(
         title: 'Completed',
         count: _getCountForStatus(state, WorkOrderStatus.completed),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.completed),
@@ -295,15 +357,15 @@ class _DashboardPageState extends State<DashboardPage> {
     // Map filter values to their respective build functions
     switch (_selectedFilter) {
       case 'unassigned':
-        return _buildUnassignedWorkOrdersSliver(state);
+        return _buildUnassignedWorkOrders(state);
       case 'assigned':
-        return _buildWorkOrdersSliver(WorkOrderStatus.assigned, state);
+        return _buildWorkOrders(WorkOrderStatus.assigned, state);
       case 'paused':
-        return _buildWorkOrdersSliver(WorkOrderStatus.paused, state);
+        return _buildWorkOrders(WorkOrderStatus.paused, state);
       case 'completed':
-        return _buildWorkOrdersSliver(WorkOrderStatus.completed, state);
+        return _buildWorkOrders(WorkOrderStatus.completed, state);
       default:
-        return _buildWorkOrdersSliver(WorkOrderStatus.assigned, state);
+        return _buildWorkOrders(WorkOrderStatus.assigned, state);
     }
   }
 
@@ -314,11 +376,11 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget _buildWorkOrdersSliver(
+  Widget _buildWorkOrders(
       WorkOrderStatus status, WorkOrdersListState state) {
     return state.when(
-      initial: () => const LoadingState(),
-      loading: () => const LoadingState(),
+      initial: () => _buildLoadingState(),
+      loading: () => _buildLoadingState(),
       loaded: (workOrders,
           unassignedWorkOrders,
           unassignedCount,
@@ -335,93 +397,147 @@ class _DashboardPageState extends State<DashboardPage> {
             workOrders.where((wo) => wo.status == status).toList();
 
         if (filteredWorkOrders.isEmpty) {
-          return _buildEmptyStateSliver(status);
+          return _buildEmptyState(status);
         }
 
-        // Use WorkOrderSliverList with proper width constraints.
-        // Do NOT wrap in SliverPadding - the items handle their own width via SizedBox.
-        // Apply horizontal padding at the item level in the itemBuilder to avoid
-        // infinite width constraint errors that occur with SliverPadding + SliverList.
-        return WorkOrderSliverList(
-          workOrders: filteredWorkOrders,
-          isLoadingMore: isLoadingMore,
-          itemBuilder: (workOrder) => WorkOrderListCard(
-            workOrder: workOrder,
-            onTap: () {
-              context.router
-                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-            },
-            onStart: () => _handleWorkOrderAction(context, workOrder, 'start'),
-            onPause: () => _handleWorkOrderAction(context, workOrder, 'pause'),
-            onResume: () => _handleWorkOrderAction(context, workOrder, 'resume'),
-            onComplete: () =>
-                _handleWorkOrderAction(context, workOrder, 'complete'),
-          ),
+        return Column(
+          children: [
+            ...filteredWorkOrders.map((workOrder) => WorkOrderListCard(
+              workOrder: workOrder,
+              onTap: () {
+                context.router
+                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+              },
+              onStart: () => _handleWorkOrderAction(context, workOrder, 'start'),
+              onPause: () => _handleWorkOrderAction(context, workOrder, 'pause'),
+              onResume: () => _handleWorkOrderAction(context, workOrder, 'resume'),
+              onComplete: () =>
+                  _handleWorkOrderAction(context, workOrder, 'complete'),
+            )),
+            if (isLoadingMore)
+              Padding(
+                padding: REdgeInsets.symmetric(vertical: 16),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF116587),
+                  ),
+                ),
+              ),
+          ],
         );
       },
-      error: (failure, workOrders, isOffline) => ErrorState(
+      error: (failure, workOrders, isOffline) => _buildErrorState(
         message: failure.message,
         isOffline: isOffline,
-        onRetry: () {
+      ),
+      syncing: (workOrders) => _buildLoadingState(isSync: true),
+    );
+  }
+
+  // Build empty state for work orders
+  Widget _buildEmptyState(WorkOrderStatus status) {
+    final emptyStateInfo = WorkOrderStatusHelper.getEmptyStateInfo(status);
+
+    return Container(
+      constraints: BoxConstraints(minHeight: 300.h),
+      child: FSMEmptyState(
+        icon: emptyStateInfo['icon'],
+        title: emptyStateInfo['title'],
+        description: emptyStateInfo['subtitle'],
+        iconColor: emptyStateInfo['color'],
+        actionLabel: 'Refresh',
+        onAction: () {
           context.read<WorkOrdersListBloc>().add(
                 const WorkOrdersListEvent.refreshWorkOrders(),
               );
         },
       ),
-      syncing: (workOrders) => const SyncingState(),
     );
   }
 
-  // Refactored: Use FSMEmptyStateList for empty states
-  Widget _buildEmptyStateSliver(WorkOrderStatus status) {
-    final emptyStateInfo = WorkOrderStatusHelper.getEmptyStateInfo(status);
-
-    return FSMEmptyStateList(
-      icon: emptyStateInfo['icon'],
-      title: emptyStateInfo['title'],
-      description: emptyStateInfo['subtitle'],
-      iconColor: emptyStateInfo['color'],
-      actionLabel: 'Refresh',
-      onAction: () {
-        context.read<WorkOrdersListBloc>().add(
-              const WorkOrdersListEvent.refreshWorkOrders(),
-            );
-      },
+  // Build loading state
+  Widget _buildLoadingState({bool isSync = false}) {
+    return Container(
+      constraints: BoxConstraints(minHeight: 300.h, maxHeight: 400.h),
+      child: Center(
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: REdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFF116587).withValues(alpha: 0.08),
+                      const Color(0xFF116587).withValues(alpha: 0.15),
+                    ],
+                  ),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: const Color(0xFF116587).withValues(alpha: 0.2),
+                    width: 2,
+                  ),
+                ),
+                child: SizedBox(
+                  width: 32.w,
+                  height: 32.w,
+                  child: const CircularProgressIndicator(
+                    color: Color(0xFF116587),
+                    strokeWidth: 3,
+                  ),
+                ),
+              ),
+              RSizedBox(height: 20),
+              Text(
+                isSync ? 'Syncing Work Orders' : 'Loading Work Orders',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF1A1A1A),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              RSizedBox(height: 8),
+              Text(
+                isSync
+                    ? 'Please wait while we sync your latest work orders...'
+                    : 'Please wait while we fetch your work orders...',
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  void _showWorkOrderActions(WorkOrderEntity workOrder) {
-    WorkOrderActionSheet.show(
-      context,
-      workOrder: workOrder,
-      onStart: workOrder.canBeStarted
-          ? () {
-              _handleWorkOrderAction(context, workOrder, 'start');
-            }
-          : null,
-      onPause: workOrder.canBePaused
-          ? () {
-              _handleWorkOrderAction(context, workOrder, 'pause');
-            }
-          : null,
-      onResume: workOrder.canBeResumed
-          ? () {
-              _handleWorkOrderAction(context, workOrder, 'resume');
-            }
-          : null,
-      onComplete: workOrder.canBeCompleted
-          ? () {
-              _handleWorkOrderAction(context, workOrder, 'complete');
-            }
-          : null,
-      onReject: workOrder.canBeRejected
-          ? () {
-              _handleWorkOrderAction(context, workOrder, 'reject');
-            }
-          : null,
-      onViewDetails: () {
-        context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-      },
+  // Build error state
+  Widget _buildErrorState({required String message, required bool isOffline}) {
+    return Container(
+      constraints: BoxConstraints(minHeight: 300.h),
+      child: FSMEmptyState(
+        icon: isOffline ? Icons.wifi_off : Icons.error_outline,
+        title: isOffline ? 'You\'re Offline' : 'Something Went Wrong',
+        description: message,
+        iconColor: isOffline
+            ? Theme.of(context).colorScheme.onSurfaceVariant
+            : Theme.of(context).colorScheme.error,
+        actionLabel: 'Retry',
+        onAction: () {
+          context.read<WorkOrdersListBloc>().add(
+                const WorkOrdersListEvent.refreshWorkOrders(),
+              );
+        },
+      ),
     );
   }
 
@@ -445,10 +561,10 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildUnassignedWorkOrdersSliver(WorkOrdersListState state) {
+  Widget _buildUnassignedWorkOrders(WorkOrdersListState state) {
     return state.when(
-      initial: () => const LoadingState(),
-      loading: () => const LoadingState(),
+      initial: () => _buildLoadingState(),
+      loading: () => _buildLoadingState(),
       loaded: (workOrders,
           unassignedWorkOrders,
           unassignedCount,
@@ -461,88 +577,71 @@ class _DashboardPageState extends State<DashboardPage> {
           isOffline,
           hasPendingSync) {
         if (unassignedWorkOrders.isEmpty) {
-          // Use FSMEmptyStateList for unassigned empty state
-          return FSMEmptyStateList(
-            icon: Icons.inbox_outlined,
-            title: 'No Unassigned Work Orders',
-            description:
-                'All work orders have been assigned to field engineers.',
-            iconColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          return Container(
+            constraints: BoxConstraints(minHeight: 300.h),
+            child: FSMEmptyState(
+              icon: Icons.inbox_outlined,
+              title: 'No Unassigned Work Orders',
+              description:
+                  'All work orders have been assigned to field engineers.',
+              iconColor: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           );
         }
 
-        // Optimized SliverList with proper width constraints to avoid
-        // infinite width errors. Do NOT wrap in SliverPadding - let SizedBox
-        // handle width constraints at the item level instead.
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final workOrder = unassignedWorkOrders[index];
-              final theme = Theme.of(context);
-              final spacing = context.spacing;
+        return Column(
+          children: unassignedWorkOrders.map((workOrder) {
+            final theme = Theme.of(context);
+            final spacing = context.spacing;
 
-              return SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: REdgeInsets.symmetric(
-                    horizontal: DesignTokens.space4,
-                    vertical: DesignTokens.space3,
+            return Padding(
+              padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space4,
+                vertical: DesignTokens.space3,
+              ),
+              child: Column(
+                children: [
+                  CompactWorkOrderListCard(
+                    workOrder: workOrder,
+                    onTap: () {
+                      context.router.push(
+                          WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                    },
                   ),
-                  child: Column(
-                    children: [
-                      CompactWorkOrderListCard(
-                        workOrder: workOrder,
-                        onTap: () {
-                          context.router.push(
-                              WorkOrderDetailsRoute(workOrderId: workOrder.id));
-                        },
-                      ),
-                      DesignTokens.verticalSpaceSmall,
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                          icon: Icon(Icons.person_add,
-                              size: DesignTokens.iconSm.sp),
-                          label: Text('Assign to Me',
-                              style: theme.textTheme.labelLarge),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: theme.colorScheme.onPrimary,
-                            padding: REdgeInsets.symmetric(
-                              horizontal: DesignTokens.space4,
-                              vertical: DesignTokens.space3,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(spacing.radiusSm.r),
-                            ),
-                          ),
+                  DesignTokens.verticalSpaceSmall,
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _assignWorkOrderToSelf(workOrder.id),
+                      icon: Icon(Icons.person_add,
+                          size: DesignTokens.iconSm.sp),
+                      label: Text('Assign to Me',
+                          style: theme.textTheme.labelLarge),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                        padding: REdgeInsets.symmetric(
+                          horizontal: DesignTokens.space4,
+                          vertical: DesignTokens.space3,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(spacing.radiusSm.r),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
-            childCount: unassignedWorkOrders.length,
-            // Optimize performance and avoid infinite constraint errors
-            addAutomaticKeepAlives: false,
-            addRepaintBoundaries: false,
-            addSemanticIndexes: false,
-          ),
+                ],
+              ),
+            );
+          }).toList(),
         );
       },
-      error: (failure, workOrders, isOffline) => ErrorState(
+      error: (failure, workOrders, isOffline) => _buildErrorState(
         message: failure.message,
         isOffline: isOffline,
-        onRetry: () {
-          context.read<WorkOrdersListBloc>().add(
-                const WorkOrdersListEvent.refreshWorkOrders(),
-              );
-        },
       ),
-      syncing: (workOrders) => const LoadingState(),
+      syncing: (workOrders) => _buildLoadingState(isSync: true),
     );
   }
 
@@ -712,74 +811,5 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-// FILTER CHIP PERSISTENT HEADER DELEGATE
-// ═══════════════════════════════════════════════════════════
-
-class _FilterChipHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final String selectedFilter;
-  final ValueChanged<List<String>> onFilterChanged;
-
-  _FilterChipHeaderDelegate({
-    required this.selectedFilter,
-    required this.onFilterChanged,
-  });
-
-  @override
-  double get minExtent => 70.h;
-
-  @override
-  double get maxExtent => 70.h;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: REdgeInsets.only(
-        left: DesignTokens.space4,
-        right: DesignTokens.space4,
-        top: DesignTokens.space2,
-        bottom: DesignTokens.space2,
-      ),
-      child: FSMFilterChipGroup<String>(
-        options: [
-          FilterChipData(
-            value: 'unassigned',
-            label: 'Unassigned',
-            leadingIcon: Icons.inbox_outlined,
-          ),
-          FilterChipData(
-            value: 'assigned',
-            label: 'Assigned',
-            leadingIcon: Icons.assignment_outlined,
-          ),
-          FilterChipData(
-            value: 'paused',
-            label: 'Paused',
-            leadingIcon: Icons.pause_circle_outline,
-          ),
-          FilterChipData(
-            value: 'completed',
-            label: 'Completed',
-            leadingIcon: Icons.check_circle_outline,
-          ),
-        ],
-        selectedValues: [selectedFilter],
-        onSelectionChanged: onFilterChanged,
-        multiSelect: false, // Single-select mode (like tabs)
-        showClearAll: false, // Don't show clear all for status filters
-        showFilterCount: false, // Don't show count badge
-        height: 50.h,
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(_FilterChipHeaderDelegate oldDelegate) {
-    return oldDelegate.selectedFilter != selectedFilter;
   }
 }

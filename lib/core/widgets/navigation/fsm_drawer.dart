@@ -368,8 +368,7 @@ class _QuickActionItem extends StatelessWidget {
 
   const _QuickActionItem({
     required this.icon,
-    required this.label,
-    this.onTap,
+    required this.label, this.onTap,
   });
 
   @override

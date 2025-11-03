@@ -6,7 +6,6 @@ import 'package:fsm/core/theme/spacing_theme.dart';
 import 'package:fsm/core/widgets/status_badge.dart';
 import 'package:fsm/core/widgets/priority_indicator.dart';
 import 'package:fsm/core/widgets/layout/fsm_metadata_row.dart';
-import 'package:fsm/core/widgets/quick_action_button.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:intl/intl.dart';
 

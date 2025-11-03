@@ -63,16 +63,16 @@ class DocumentCardTile extends StatelessWidget {
                   width: DesignTokens.cardIconContainerSize.w,
                   height: DesignTokens.cardIconContainerSize.h,
                   decoration: BoxDecoration(
-                    color: _getTypeColor(document.type).withValues(alpha: 0.15),
+                    color: _getTypeColor(context,document.type).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
                     border: Border.all(
-                      color: _getTypeColor(document.type).withValues(alpha: 0.3),
+                      color: _getTypeColor(context, document.type).withValues(alpha: 0.3),
                       width: DesignTokens.borderWidthThin,
                     ),
                   ),
                   child: Icon(
                     _getTypeIcon(document.type),
-                    color: _getTypeColor(document.type),
+                    color: _getTypeColor(context,document.type),
                     size: DesignTokens.iconMd.sp,
                   ),
                 ),
@@ -218,7 +218,7 @@ class DocumentCardTile extends StatelessWidget {
     }
   }
 
-  Color _getTypeColor(DocumentType type) {
+  Color _getTypeColor(BuildContext context, DocumentType type) {
     // Get colors from FSMThemeExtension for theme consistency
     final fsmTheme = context.fsmTheme;
 

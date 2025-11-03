@@ -334,6 +334,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     stockMedium: Color(0xFFFFB74D),
     stockLow: Color(0xFFEF5350),
     stockOut: Color(0xFF9E9E9E),
+    // Document types
+    documentManual: Color(0xFF64B5F6),
+    documentProcedure: Color(0xFF81C784),
+    documentSchematic: Color(0xFFBA68C8),
+    documentSpecification: Color(0xFFFFB74D),
+    documentSafety: Color(0xFFEF5350),
+    documentTraining: Color(0xFF4DD0E1),
+    documentReport: Color(0xFF90A4AE),
+    documentCertificate: Color(0xFFFFD54F),
+    documentWarranty: Color(0xFFAED581),
+    documentOther: Color(0xFF9E9E9E),
     // Component-specific
     workOrderCardBackground: AppColors.surfaceDark,
     workOrderCardBorder: AppColors.outlineDark,
@@ -473,7 +484,8 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       documentManual: documentManual ?? this.documentManual,
       documentProcedure: documentProcedure ?? this.documentProcedure,
       documentSchematic: documentSchematic ?? this.documentSchematic,
-      documentSpecification: documentSpecification ?? this.documentSpecification,
+      documentSpecification:
+          documentSpecification ?? this.documentSpecification,
       documentSafety: documentSafety ?? this.documentSafety,
       documentTraining: documentTraining ?? this.documentTraining,
       documentReport: documentReport ?? this.documentReport,
@@ -560,14 +572,20 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       stockLow: Color.lerp(stockLow, other.stockLow, t)!,
       stockOut: Color.lerp(stockOut, other.stockOut, t)!,
       documentManual: Color.lerp(documentManual, other.documentManual, t)!,
-      documentProcedure: Color.lerp(documentProcedure, other.documentProcedure, t)!,
-      documentSchematic: Color.lerp(documentSchematic, other.documentSchematic, t)!,
-      documentSpecification: Color.lerp(documentSpecification, other.documentSpecification, t)!,
+      documentProcedure:
+          Color.lerp(documentProcedure, other.documentProcedure, t)!,
+      documentSchematic:
+          Color.lerp(documentSchematic, other.documentSchematic, t)!,
+      documentSpecification:
+          Color.lerp(documentSpecification, other.documentSpecification, t)!,
       documentSafety: Color.lerp(documentSafety, other.documentSafety, t)!,
-      documentTraining: Color.lerp(documentTraining, other.documentTraining, t)!,
+      documentTraining:
+          Color.lerp(documentTraining, other.documentTraining, t)!,
       documentReport: Color.lerp(documentReport, other.documentReport, t)!,
-      documentCertificate: Color.lerp(documentCertificate, other.documentCertificate, t)!,
-      documentWarranty: Color.lerp(documentWarranty, other.documentWarranty, t)!,
+      documentCertificate:
+          Color.lerp(documentCertificate, other.documentCertificate, t)!,
+      documentWarranty:
+          Color.lerp(documentWarranty, other.documentWarranty, t)!,
       documentOther: Color.lerp(documentOther, other.documentOther, t)!,
       workOrderCardBackground: Color.lerp(
           workOrderCardBackground, other.workOrderCardBackground, t)!,

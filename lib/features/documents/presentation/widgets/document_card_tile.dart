@@ -5,13 +5,21 @@ import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/cards/fsm_card.dart';
 import '../../domain/entities/document_entity.dart';
 
-/// DocumentCardTile - Card-based tile for grid display of documents
+/// DocumentCardTile - List card tile matching WorkOrderListCard template
+///
+/// **HORIZONTAL LAYOUT** (following standard list card pattern):
+/// - Left: Document type icon (40x40 container)
+/// - Right: Title, file size, category badge, offline indicator
+/// - Uses DesignTokens for all dimensions
+/// - Follows card padding standard (space4 horizontal, space2 vertical)
 ///
 /// Displays document with:
 /// - Type icon with colored background
 /// - Document title (max 2 lines)
 /// - File size
+/// - Category badge
 /// - Offline availability indicator
+/// - Download progress indicator
 /// - Tap handler to open document
 class DocumentCardTile extends StatelessWidget {
   final DocumentEntity document;
@@ -34,112 +42,141 @@ class DocumentCardTile extends StatelessWidget {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
-    return FSMCard(
-      onTap: onTap,
-      padding: REdgeInsets.all(DesignTokens.space3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Top section: Icon + Offline indicator
-          Row(
-            children: [
-              // Document Type Icon
-              Container(
-                width: DesignTokens.iconXl.w,
-                height: DesignTokens.iconXl.h,
-                decoration: BoxDecoration(
-                  color: _getTypeColor(document.type).withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-                  border: Border.all(
-                    color: _getTypeColor(document.type).withValues(alpha: 0.3),
-                    width: DesignTokens.borderWidthThin,
-                  ),
-                ),
-                child: Icon(
-                  _getTypeIcon(document.type),
-                  color: _getTypeColor(document.type),
-                  size: DesignTokens.iconMd.sp,
-                ),
-              ),
-              const Spacer(),
-              // Offline indicator
-              if (document.isAvailableOffline)
+    return Container(
+      margin: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
+      ),
+      child: Material(
+        color: theme.colorScheme.surfaceContainer,
+        elevation: DesignTokens.elevationXSmall,
+        borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+          child: Padding(
+            padding: REdgeInsets.all(DesignTokens.space3),
+            child: Row(
+              children: [
+                // Left: Document Type Icon Container (40x40)
                 Container(
-                  padding: REdgeInsets.all(DesignTokens.space1),
+                  width: DesignTokens.cardIconContainerSize.w,
+                  height: DesignTokens.cardIconContainerSize.h,
                   decoration: BoxDecoration(
-                    color: fsmTheme.success.withValues(alpha: 0.15),
-                    shape: BoxShape.circle,
+                    color: _getTypeColor(document.type).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                    border: Border.all(
+                      color: _getTypeColor(document.type).withValues(alpha: 0.3),
+                      width: DesignTokens.borderWidthThin,
+                    ),
                   ),
                   child: Icon(
-                    Icons.offline_pin,
-                    color: fsmTheme.success,
-                    size: DesignTokens.iconSm.sp,
+                    _getTypeIcon(document.type),
+                    color: _getTypeColor(document.type),
+                    size: DesignTokens.iconMd.sp,
                   ),
                 ),
-            ],
+
+                DesignTokens.horizontalSpace(DesignTokens.space3),
+
+                // Right: Content Column
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Header Row: Title + Offline indicator
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              document.title,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: DesignTokens.fontWeightSemiBold,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // Offline indicator badge
+                          if (document.isAvailableOffline) ...[
+                            DesignTokens.horizontalSpace(DesignTokens.space2),
+                            Container(
+                              padding: REdgeInsets.all(DesignTokens.space1),
+                              decoration: BoxDecoration(
+                                color: fsmTheme.success.withValues(alpha: 0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.offline_pin,
+                                color: fsmTheme.success,
+                                size: DesignTokens.iconSm.sp,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+
+                      DesignTokens.verticalSpace(DesignTokens.space1),
+
+                      // File Size
+                      Text(
+                        _formatFileSize(document.fileSize),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+
+                      DesignTokens.verticalSpace(DesignTokens.space1),
+
+                      // Category Badge + Download Progress Row
+                      Row(
+                        children: [
+                          // Category Badge
+                          Container(
+                            padding: REdgeInsets.symmetric(
+                              horizontal: DesignTokens.space2,
+                              vertical: DesignTokens.space1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
+                            ),
+                            child: Text(
+                              document.categories.isNotEmpty
+                                  ? document.categories.first
+                                  : document.type.displayName,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: theme.colorScheme.onPrimaryContainer,
+                                fontWeight: DesignTokens.fontWeightMedium,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
+                          // Download indicator (if downloading)
+                          if (isDownloading) ...[
+                            DesignTokens.horizontalSpace(DesignTokens.space2),
+                            SizedBox(
+                              width: DesignTokens.iconSm.w,
+                              height: DesignTokens.iconSm.h,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.w,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-
-          DesignTokens.verticalSpaceMedium,
-
-          // Document Title (max 2 lines)
-          Text(
-            document.title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: DesignTokens.fontWeightSemiBold,
-              color: theme.colorScheme.onSurface,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-
-          DesignTokens.verticalSpaceSmall,
-
-          // File Size
-          Text(
-            _formatFileSize(document.fileSize),
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-
-          DesignTokens.verticalSpaceSmall,
-
-          // Category Badge (use document type if no categories)
-          Container(
-            padding: REdgeInsets.symmetric(
-              horizontal: DesignTokens.space2,
-              vertical: DesignTokens.space1,
-            ),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
-            ),
-            child: Text(
-              document.categories.isNotEmpty
-                  ? document.categories.first
-                  : document.type.displayName,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onPrimaryContainer,
-                fontWeight: DesignTokens.fontWeightMedium,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-
-          // Loading indicator overlay
-          if (isDownloading) ...[
-            DesignTokens.verticalSpaceSmall,
-            LinearProgressIndicator(
-              minHeight: 2.h,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
-            ),
-          ],
-        ],
+        ),
       ),
     );
   }
@@ -182,27 +219,30 @@ class DocumentCardTile extends StatelessWidget {
   }
 
   Color _getTypeColor(DocumentType type) {
+    // Get colors from FSMThemeExtension for theme consistency
+    final fsmTheme = context.fsmTheme;
+
     switch (type) {
       case DocumentType.manual:
-        return const Color(0xFF1E88E5); // Blue
+        return fsmTheme.documentManual;
       case DocumentType.procedure:
-        return const Color(0xFF5E35B1); // Purple
+        return fsmTheme.documentProcedure;
       case DocumentType.schematic:
-        return const Color(0xFF00897B); // Teal
+        return fsmTheme.documentSchematic;
       case DocumentType.specification:
-        return const Color(0xFF43A047); // Green
+        return fsmTheme.documentSpecification;
       case DocumentType.safety:
-        return const Color(0xFFE53935); // Red
+        return fsmTheme.documentSafety;
       case DocumentType.training:
-        return const Color(0xFFFB8C00); // Orange
+        return fsmTheme.documentTraining;
       case DocumentType.report:
-        return const Color(0xFF3949AB); // Indigo
+        return fsmTheme.documentReport;
       case DocumentType.certificate:
-        return const Color(0xFF8E24AA); // Purple
+        return fsmTheme.documentCertificate;
       case DocumentType.warranty:
-        return const Color(0xFF00ACC1); // Cyan
+        return fsmTheme.documentWarranty;
       case DocumentType.other:
-        return const Color(0xFF757575); // Gray
+        return fsmTheme.documentOther;
     }
   }
 }

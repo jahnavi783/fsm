@@ -62,6 +62,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     required this.stockMedium,
     required this.stockLow,
     required this.stockOut,
+    // Document type colors
+    required this.documentManual,
+    required this.documentProcedure,
+    required this.documentSchematic,
+    required this.documentSpecification,
+    required this.documentSafety,
+    required this.documentTraining,
+    required this.documentReport,
+    required this.documentCertificate,
+    required this.documentWarranty,
+    required this.documentOther,
     // Component-specific colors
     required this.workOrderCardBackground,
     required this.workOrderCardBorder,
@@ -153,6 +164,20 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
   final Color stockOut;
 
   // ============================================
+  // DOCUMENT TYPE COLORS
+  // ============================================
+  final Color documentManual;
+  final Color documentProcedure;
+  final Color documentSchematic;
+  final Color documentSpecification;
+  final Color documentSafety;
+  final Color documentTraining;
+  final Color documentReport;
+  final Color documentCertificate;
+  final Color documentWarranty;
+  final Color documentOther;
+
+  // ============================================
   // COMPONENT-SPECIFIC COLORS
   // ============================================
   final Color workOrderCardBackground;
@@ -226,6 +251,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     stockMedium: AppColors.stockMedium,
     stockLow: AppColors.stockLow,
     stockOut: AppColors.stockOut,
+    // Document types
+    documentManual: Color(0xFF1E88E5), // Blue
+    documentProcedure: Color(0xFF5E35B1), // Purple
+    documentSchematic: Color(0xFF00897B), // Teal
+    documentSpecification: Color(0xFF43A047), // Green
+    documentSafety: Color(0xFFE53935), // Red
+    documentTraining: Color(0xFFFB8C00), // Orange
+    documentReport: Color(0xFF3949AB), // Indigo
+    documentCertificate: Color(0xFF8E24AA), // Purple
+    documentWarranty: Color(0xFF00ACC1), // Cyan
+    documentOther: Color(0xFF757575), // Gray
     // Component-specific
     workOrderCardBackground: AppColors.surface,
     workOrderCardBorder: AppColors.cardBorder,
@@ -365,6 +401,17 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     Color? stockMedium,
     Color? stockLow,
     Color? stockOut,
+    // Document types
+    Color? documentManual,
+    Color? documentProcedure,
+    Color? documentSchematic,
+    Color? documentSpecification,
+    Color? documentSafety,
+    Color? documentTraining,
+    Color? documentReport,
+    Color? documentCertificate,
+    Color? documentWarranty,
+    Color? documentOther,
     // Components
     Color? workOrderCardBackground,
     Color? workOrderCardBorder,
@@ -423,6 +470,16 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       stockMedium: stockMedium ?? this.stockMedium,
       stockLow: stockLow ?? this.stockLow,
       stockOut: stockOut ?? this.stockOut,
+      documentManual: documentManual ?? this.documentManual,
+      documentProcedure: documentProcedure ?? this.documentProcedure,
+      documentSchematic: documentSchematic ?? this.documentSchematic,
+      documentSpecification: documentSpecification ?? this.documentSpecification,
+      documentSafety: documentSafety ?? this.documentSafety,
+      documentTraining: documentTraining ?? this.documentTraining,
+      documentReport: documentReport ?? this.documentReport,
+      documentCertificate: documentCertificate ?? this.documentCertificate,
+      documentWarranty: documentWarranty ?? this.documentWarranty,
+      documentOther: documentOther ?? this.documentOther,
       workOrderCardBackground:
           workOrderCardBackground ?? this.workOrderCardBackground,
       workOrderCardBorder: workOrderCardBorder ?? this.workOrderCardBorder,
@@ -502,6 +559,16 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       stockMedium: Color.lerp(stockMedium, other.stockMedium, t)!,
       stockLow: Color.lerp(stockLow, other.stockLow, t)!,
       stockOut: Color.lerp(stockOut, other.stockOut, t)!,
+      documentManual: Color.lerp(documentManual, other.documentManual, t)!,
+      documentProcedure: Color.lerp(documentProcedure, other.documentProcedure, t)!,
+      documentSchematic: Color.lerp(documentSchematic, other.documentSchematic, t)!,
+      documentSpecification: Color.lerp(documentSpecification, other.documentSpecification, t)!,
+      documentSafety: Color.lerp(documentSafety, other.documentSafety, t)!,
+      documentTraining: Color.lerp(documentTraining, other.documentTraining, t)!,
+      documentReport: Color.lerp(documentReport, other.documentReport, t)!,
+      documentCertificate: Color.lerp(documentCertificate, other.documentCertificate, t)!,
+      documentWarranty: Color.lerp(documentWarranty, other.documentWarranty, t)!,
+      documentOther: Color.lerp(documentOther, other.documentOther, t)!,
       workOrderCardBackground: Color.lerp(
           workOrderCardBackground, other.workOrderCardBackground, t)!,
       workOrderCardBorder:

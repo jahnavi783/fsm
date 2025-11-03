@@ -5,9 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../../../core/widgets/navigation/fsm_drawer.dart';
@@ -87,19 +86,19 @@ class _DocumentsViewState extends State<DocumentsView> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: EdgeInsets.all(AppDimensions.paddingXSmall),
+                  padding: REdgeInsets.all(DesignTokens.space1),
                   decoration: BoxDecoration(
-                    color: AppColors.onPrimary.withValues(alpha: 0.2),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
                     borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusSmall),
+                        BorderRadius.circular(DesignTokens.radiusSm.r),
                   ),
                   child: Icon(
                     Icons.folder_rounded,
-                    color: AppColors.onPrimary,
-                    size: AppDimensions.iconSmall,
+                    color: theme.colorScheme.onPrimary,
+                    size: DesignTokens.iconSm.sp,
                   ),
                 ),
-                SizedBox(width: AppDimensions.spaceSmall.w),
+                DesignTokens.horizontalSpace(DesignTokens.space2),
                 const Text('Documents'),
               ],
             ),

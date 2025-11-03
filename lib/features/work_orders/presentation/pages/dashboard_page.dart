@@ -132,9 +132,6 @@ class _DashboardPageState extends State<DashboardPage>
             employeeId: user?.id.toString() ?? 'EMP-001',
             profileImageUrl: null,
             onNavigate: (section) => _navigateToSection(context, section),
-            onSync: () => _handleSync(context),
-            onScanQR: () => _handleScanQR(context),
-            onCheckIn: () => _handleCheckIn(context),
             onLogout: () => _handleLogout(context),
           ),
 
@@ -702,34 +699,6 @@ class _DashboardPageState extends State<DashboardPage>
       default:
         return null;
     }
-  }
-
-  /// Handle sync action
-  void _handleSync(BuildContext context) {
-    // Trigger work orders refresh
-    context.read<WorkOrdersListBloc>().add(
-          const WorkOrdersListEvent.refreshWorkOrders(),
-        );
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Syncing data...')),
-    );
-  }
-
-  /// Handle QR code scanning
-  void _handleScanQR(BuildContext context) {
-    // TODO: Implement QR scanning functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('QR Scanner feature coming soon!')),
-    );
-  }
-
-  /// Handle location check-in
-  void _handleCheckIn(BuildContext context) {
-    // TODO: Implement location check-in functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Check-in feature coming soon!')),
-    );
   }
 
   /// Handle user logout

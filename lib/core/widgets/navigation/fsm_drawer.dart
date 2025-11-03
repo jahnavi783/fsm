@@ -8,7 +8,6 @@ import 'package:fsm/core/theme/design_tokens.dart';
 /// - Material 3 design with adaptive theming
 /// - Auto Route integration for type-safe navigation
 /// - Gradient header with user profile information
-/// - Quick actions section (Sync, Scan QR, Check In)
 /// - Smart navigation section highlighting based on current route
 /// - Settings section with nested navigation
 /// - Logout functionality with confirmation
@@ -33,9 +32,6 @@ import 'package:fsm/core/theme/design_tokens.dart';
 ///     employeeId: 'FSM-001',
 ///     profileImageUrl: 'https://example.com/avatar.jpg',
 ///     onNavigate: (section) => navigationBloc.add(NavigateToSection(section)),
-///     onSync: () => syncService.performSync(),
-///     onScanQR: () => qrScanner.launch(),
-///     onCheckIn: () => locationService.checkIn(),
 ///     onLogout: () => authBloc.add(LogoutRequested()),
 ///   ),
 /// )
@@ -61,15 +57,6 @@ class FSMDrawer extends StatelessWidget {
   /// Parameter is the section identifier (dashboard, work_orders, etc.)
   final Function(String section) onNavigate;
 
-  /// Callback for Sync Now quick action
-  final VoidCallback? onSync;
-
-  /// Callback for Scan QR Code quick action
-  final VoidCallback? onScanQR;
-
-  /// Callback for location Check In quick action
-  final VoidCallback? onCheckIn;
-
   /// Callback for user logout action
   final VoidCallback onLogout;
 
@@ -81,9 +68,6 @@ class FSMDrawer extends StatelessWidget {
     required this.employeeId,
     this.profileImageUrl,
     required this.onNavigate,
-    this.onSync,
-    this.onScanQR,
-    this.onCheckIn,
     required this.onLogout,
   });
 
@@ -122,27 +106,6 @@ class FSMDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                // Quick Actions Section
-                _SectionHeader(title: 'Quick Actions'),
-                _QuickActionItem(
-                  icon: Icons.sync,
-                  label: 'Sync Now',
-                  onTap: onSync,
-                ),
-                _QuickActionItem(
-                  icon: Icons.qr_code_scanner,
-                  label: 'Scan QR Code',
-                  onTap: onScanQR,
-                ),
-                _QuickActionItem(
-                  icon: Icons.location_on_outlined,
-                  label: 'Check In',
-                  onTap: onCheckIn,
-                ),
-
-                RSizedBox(height: DesignTokens.space2),
-                const Divider(height: 1, thickness: 1),
-
                 // Navigation Section - Main FSM Features
                 _SectionHeader(title: 'Navigate'),
                 _NavigationItem(

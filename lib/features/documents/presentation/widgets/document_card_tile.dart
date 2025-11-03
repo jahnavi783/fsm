@@ -105,7 +105,7 @@ class DocumentCardTile extends StatelessWidget {
 
           DesignTokens.verticalSpaceSmall,
 
-          // Category Badge
+          // Category Badge (use document type if no categories)
           Container(
             padding: REdgeInsets.symmetric(
               horizontal: DesignTokens.space2,
@@ -116,7 +116,9 @@ class DocumentCardTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(DesignTokens.radiusXs.r),
             ),
             child: Text(
-              document.category,
+              document.categories.isNotEmpty
+                  ? document.categories.first
+                  : document.type.displayName,
               style: theme.textTheme.labelSmall?.copyWith(
                 color: theme.colorScheme.onPrimaryContainer,
                 fontWeight: DesignTokens.fontWeightMedium,
@@ -154,44 +156,52 @@ class DocumentCardTile extends StatelessWidget {
     }
   }
 
-  IconData _getTypeIcon(String type) {
-    switch (type.toLowerCase()) {
-      case 'pdf':
-        return Icons.picture_as_pdf;
-      case 'image':
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-        return Icons.image;
-      case 'video':
-      case 'mp4':
-      case 'mov':
-        return Icons.video_file;
-      case 'doc':
-      case 'docx':
+  IconData _getTypeIcon(DocumentType type) {
+    switch (type) {
+      case DocumentType.manual:
+        return Icons.menu_book;
+      case DocumentType.procedure:
+        return Icons.list_alt;
+      case DocumentType.schematic:
+        return Icons.engineering;
+      case DocumentType.specification:
         return Icons.description;
-      default:
+      case DocumentType.safety:
+        return Icons.shield;
+      case DocumentType.training:
+        return Icons.school;
+      case DocumentType.report:
+        return Icons.assignment;
+      case DocumentType.certificate:
+        return Icons.verified;
+      case DocumentType.warranty:
+        return Icons.security;
+      case DocumentType.other:
         return Icons.insert_drive_file;
     }
   }
 
-  Color _getTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'pdf':
-        return const Color(0xFFE53935); // Red
-      case 'image':
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-        return const Color(0xFF7CB342); // Green
-      case 'video':
-      case 'mp4':
-      case 'mov':
-        return const Color(0xFF5E35B1); // Purple
-      case 'doc':
-      case 'docx':
+  Color _getTypeColor(DocumentType type) {
+    switch (type) {
+      case DocumentType.manual:
         return const Color(0xFF1E88E5); // Blue
-      default:
+      case DocumentType.procedure:
+        return const Color(0xFF5E35B1); // Purple
+      case DocumentType.schematic:
+        return const Color(0xFF00897B); // Teal
+      case DocumentType.specification:
+        return const Color(0xFF43A047); // Green
+      case DocumentType.safety:
+        return const Color(0xFFE53935); // Red
+      case DocumentType.training:
+        return const Color(0xFFFB8C00); // Orange
+      case DocumentType.report:
+        return const Color(0xFF3949AB); // Indigo
+      case DocumentType.certificate:
+        return const Color(0xFF8E24AA); // Purple
+      case DocumentType.warranty:
+        return const Color(0xFF00ACC1); // Cyan
+      case DocumentType.other:
         return const Color(0xFF757575); // Gray
     }
   }

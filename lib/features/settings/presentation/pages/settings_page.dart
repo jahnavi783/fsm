@@ -33,9 +33,6 @@ class SettingsPage extends StatelessWidget {
             employeeId: user?.id.toString() ?? 'EMP-001',
             profileImageUrl: null,
             onNavigate: (section) => _navigateToSection(context, section),
-            onSync: () => _handleSync(context),
-            onScanQR: () => _handleScanQR(context),
-            onCheckIn: () => _handleCheckIn(context),
             onLogout: () => _handleLogout(context),
           ),
           backgroundColor: Colors.grey[50],
@@ -208,30 +205,6 @@ class SettingsPage extends StatelessWidget {
       default:
         return null;
     }
-  }
-
-  /// Handle sync action
-  void _handleSync(BuildContext context) {
-    // TODO: Implement settings sync functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Syncing settings...')),
-    );
-  }
-
-  /// Handle QR code scanning
-  void _handleScanQR(BuildContext context) {
-    // TODO: Implement QR scanning functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('QR Scanner feature coming soon!')),
-    );
-  }
-
-  /// Handle location check-in
-  void _handleCheckIn(BuildContext context) {
-    // TODO: Implement location check-in functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Check-in feature coming soon!')),
-    );
   }
 
   /// Handle user logout

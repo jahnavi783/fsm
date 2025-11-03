@@ -34,7 +34,7 @@ class LocationErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final fsmTheme = context.fsmTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return AlertDialog(
       title: Row(
         children: [
@@ -54,15 +54,21 @@ class LocationErrorDialog extends StatelessWidget {
           DesignTokens.verticalSpaceMd,
           Text(
             '• Location services are enabled',
-            style: TextStyle(fontSize: 13.sp, color: colorScheme.onSurface.withOpacity(0.6)),
+            style: TextStyle(
+                fontSize: 13.sp,
+                color: colorScheme.onSurface.withValues(alpha: 0.6)),
           ),
           Text(
             '• App has location permissions',
-            style: TextStyle(fontSize: 13.sp, color: colorScheme.onSurface.withOpacity(0.6)),
+            style: TextStyle(
+                fontSize: 13.sp,
+                color: colorScheme.onSurface.withValues(alpha: 0.6)),
           ),
           Text(
             '• GPS signal is available',
-            style: TextStyle(fontSize: 13.sp, color: colorScheme.onSurface.withOpacity(0.6)),
+            style: TextStyle(
+                fontSize: 13.sp,
+                color: colorScheme.onSurface.withValues(alpha: 0.6)),
           ),
         ],
       ),

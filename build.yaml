@@ -4,6 +4,32 @@
 targets:
   $default:
     builders:
+      # Auto Route configuration for type-safe navigation
+      auto_route_generator:
+        enabled: true
+        # generate_for:
+        #   - lib/core/router/app_router.dart
+        options:
+          # Generate route names as constants
+          generate_route_names: true
+          # Enable route parameter validation
+          generate_route_helper: true
+          # Optimize route generation for better performance
+          replace_in_router_name: true
+          # Generate path helper methods
+          generate_path_helpers: true
+
+      # Injectable configuration for dependency injection
+      injectable_generator:
+        enabled: true
+        generate_for:
+          - lib/**/*.dart
+        options:
+          # Auto register discovered dependencies
+          auto_register: true
+          # Generate module imports
+          generate_for_dir: lib
+
       # Freezed configuration for immutable data classes
       freezed:
         options:
@@ -13,6 +39,18 @@ targets:
           map: true
           # Generate copyWith methods
           copyWith: true
+
+      # JSON Annotation for API models
+      json_annotation:
+        enabled: true
+        generate_for:
+          - lib/features/*/data/models/*_model.dart
+          - lib/core/network/models/*_model.dart
+        options:
+          # Generate nullable-aware code
+          nullable: true
+          # Use explicit to/from JSON methods
+          explicit_to_json: true
 
       # Flutter Gen - DISABLED due to version conflicts
       # Uncomment when version compatibility is resolved
@@ -30,3 +68,14 @@ targets:
         options:
           # Ensure type adapters are generated with proper naming
           type_adapter_suffix: Adapter
+
+# Global build configuration optimized for Auto Route
+global_options:
+  # Build runner optimization settings
+  build_runner:
+    # Performance optimizations for development builds
+    options:
+      # Delete conflicting outputs automatically
+      delete_conflicting_outputs: true
+      # Skip expensive file system watching optimizations
+      skip_build_script: false

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 

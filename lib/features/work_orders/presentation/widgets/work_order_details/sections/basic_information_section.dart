@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:intl/intl.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/info_item_card.dart';
@@ -69,7 +69,8 @@ class BasicInformationSection extends StatelessWidget {
             Expanded(
               child: InfoItemCard(
                 label: 'Created',
-                value: DateFormat('MMM dd, yyyy HH:mm').format(workOrder.createdAt),
+                value: DateFormat('MMM dd, yyyy HH:mm')
+                    .format(workOrder.createdAt),
                 icon: Icons.schedule,
               ),
             ),
@@ -77,7 +78,8 @@ class BasicInformationSection extends StatelessWidget {
             Expanded(
               child: InfoItemCard(
                 label: 'Duration',
-                value: '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
+                value:
+                    '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
                 icon: Icons.timelapse,
               ),
             ),

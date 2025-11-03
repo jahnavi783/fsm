@@ -10,6 +10,5 @@ export 'pages/login_page.dart';
 export 'pages/splash_page.dart';
 
 // Widgets
-export 'widgets/gradient_elevated_button.dart';
 export 'widgets/loading_circles.dart';
 export 'widgets/login_form.dart';

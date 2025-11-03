@@ -38,7 +38,7 @@ class TimelineContent extends StatelessWidget {
               log.notes!,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ],

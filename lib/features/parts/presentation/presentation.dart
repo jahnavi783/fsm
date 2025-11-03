@@ -13,6 +13,4 @@ export 'pages/parts_page.dart';
 export 'widgets/inventory_indicator.dart';
 export 'widgets/part_card.dart';
 export 'widgets/part_list_card.dart';
-export 'widgets/parts_filter_chips.dart';
-export 'widgets/parts_search_bar.dart';
 export 'widgets/quick_stats_bar.dart';

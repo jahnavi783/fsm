@@ -24,7 +24,7 @@ class ActionTile extends StatelessWidget {
         width: 48.w,
         height: 48.w,
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Icon(
@@ -46,7 +46,7 @@ class ActionTile extends StatelessWidget {
         subtitle,
         style: TextStyle(
           fontSize: 14.sp,
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
         ),
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
@@ -54,7 +54,7 @@ class ActionTile extends StatelessWidget {
       trailing: Icon(
         Icons.arrow_forward_ios,
         size: 16.sp,
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
       ),
       onTap: onTap,
     );

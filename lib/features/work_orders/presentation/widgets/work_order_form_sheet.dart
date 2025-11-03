@@ -175,7 +175,7 @@ class WorkOrderFormSheet extends StatelessWidget {
                 ),
                 FsmIconButton(
                   icon: Icons.close,
-                  onPressed: _handleClose,
+                  onPressed: () => Navigator.of(context).pop(),
                   size: FsmIconButtonSize.medium,
                   tooltip: 'Close',
                 ),
@@ -199,7 +199,7 @@ class WorkOrderFormSheet extends StatelessWidget {
                   DesignTokens.verticalSpaceMedium,
 
                   // Work Order Info
-                  _buildWorkOrderInfo(),
+                  _buildWorkOrderInfo(context),
 
                   DesignTokens.verticalSpaceLarge,
 
@@ -222,7 +222,7 @@ class WorkOrderFormSheet extends StatelessWidget {
   }
 
   /// Build work order info card
-  Widget _buildWorkOrderInfo() {
+  Widget _buildWorkOrderInfo(BuildContext context) {
     return Container(
       padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
@@ -436,7 +436,7 @@ class WorkOrderFormSheet extends StatelessWidget {
             return ElevatedButton(
               onPressed: (isLoading || !canSubmit || !form.valid)
                   ? null
-                  : _handleSubmitWrapper,
+                  : () => _handleSubmit(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _getSubmitButtonColor(context),
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -469,14 +469,6 @@ class WorkOrderFormSheet extends StatelessWidget {
         );
       },
     );
-  }
-
-  void _handleClose() {
-    Navigator.of(context).pop();
-  }
-
-  void _handleSubmitWrapper() {
-    _handleSubmit(context);
   }
 
   /// Handle form submission

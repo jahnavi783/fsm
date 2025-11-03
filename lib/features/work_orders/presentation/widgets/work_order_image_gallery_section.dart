@@ -33,7 +33,7 @@ class _TimelineEntry {
       case 'signature':
         return Theme.of(context).colorScheme.tertiary;
       default:
-        return Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
+        return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6);
     }
   }
 
@@ -135,9 +135,11 @@ class WorkOrderImageGallerySection extends StatelessWidget {
           ),
           DesignTokens.horizontalSpaceSmall,
           Container(
-            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space1),
+            padding: REdgeInsets.symmetric(
+                horizontal: DesignTokens.space3, vertical: DesignTokens.space1),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Text(
@@ -157,14 +159,18 @@ class WorkOrderImageGallerySection extends StatelessWidget {
   /// Build empty state when no timeline entries exist
   Widget _buildEmptyState(BuildContext context) {
     return Padding(
-      padding: REdgeInsets.symmetric(vertical: DesignTokens.space12, horizontal: DesignTokens.space8),
+      padding: REdgeInsets.symmetric(
+          vertical: DesignTokens.space12, horizontal: DesignTokens.space8),
       child: Center(
         child: Column(
           children: [
             Icon(
               Icons.photo_library_outlined,
               size: 48.sp,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.3),
             ),
             DesignTokens.verticalSpaceMedium,
             Text(
@@ -172,7 +178,10 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
             ),
             DesignTokens.verticalSpaceSmall,
@@ -180,7 +189,10 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               'Images and documentation will appear here',
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.4),
               ),
               textAlign: TextAlign.center,
             ),
@@ -197,7 +209,10 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     bool isLast,
   ) {
     return Padding(
-      padding: REdgeInsets.only(left: DesignTokens.space4, right: DesignTokens.space4, bottom: DesignTokens.space6),
+      padding: REdgeInsets.only(
+          left: DesignTokens.space4,
+          right: DesignTokens.space4,
+          bottom: DesignTokens.space6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -215,7 +230,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .onSurface
-                      .withOpacity(0.12),
+                      .withValues(alpha: 0.12),
                 ),
             ],
           ),
@@ -256,7 +271,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
   /// Build timeline entry content card
   Widget _buildTimelineContent(BuildContext context, _TimelineEntry entry) {
     final color = entry.getColor(context);
-    
+
     // Determine display date
     String? displayDate;
     if (entry.capture.capturedAt != null) {
@@ -297,7 +312,9 @@ class WorkOrderImageGallerySection extends StatelessWidget {
             children: [
               // Action badge
               Container(
-                padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space1),
+                padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space3,
+                    vertical: DesignTokens.space1),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(20.r),
@@ -374,7 +391,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               // GPS coordinates
               if (entry.capture.latitude != null &&
                   entry.capture.longitude != null) ...[
-                if (entry.capture.capturedBy != null) DesignTokens.verticalSpaceXs,
+                if (entry.capture.capturedBy != null)
+                  DesignTokens.verticalSpaceXs,
                 _buildMetadataRow(
                   context,
                   Icons.location_on_outlined,
@@ -474,8 +492,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color:
-                    Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
           ],

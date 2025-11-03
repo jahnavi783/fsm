@@ -21,7 +21,7 @@ class ExpandableSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final fsmTheme = context.fsmTheme;
-    
+
     return Card(
       margin: REdgeInsets.only(bottom: DesignTokens.space4),
       elevation: 2,
@@ -39,7 +39,7 @@ class ExpandableSection extends StatelessWidget {
             width: 40.w,
             height: 40.w,
             decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(

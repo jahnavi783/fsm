@@ -17,7 +17,7 @@ class HeaderActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final fsmTheme = context.fsmTheme;
-    
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -26,10 +26,10 @@ class HeaderActionButton extends StatelessWidget {
         child: Container(
           padding: REdgeInsets.all(DesignTokens.space2 + 2),
           decoration: BoxDecoration(
-            color: colorScheme.onPrimary.withOpacity(0.15),
+            color: colorScheme.onPrimary.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
-              color: colorScheme.onPrimary.withOpacity(0.2),
+              color: colorScheme.onPrimary.withValues(alpha: 0.2),
               width: 1,
             ),
             boxShadow: [

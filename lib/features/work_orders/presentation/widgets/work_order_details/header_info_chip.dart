@@ -17,14 +17,15 @@ class HeaderInfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
-      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space3, vertical: DesignTokens.space2),
+      padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space3, vertical: DesignTokens.space2),
       decoration: BoxDecoration(
-        color: colorScheme.onPrimary.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(12.r),
+        color: colorScheme.onPrimary.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: colorScheme.onPrimary.withOpacity(0.2),
+          color: colorScheme.onPrimary.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -45,7 +46,7 @@ class HeaderInfoChip extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: colorScheme.onPrimary.withOpacity(0.8),
+                    color: colorScheme.onPrimary.withValues(alpha: 0.8),
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
                   ),

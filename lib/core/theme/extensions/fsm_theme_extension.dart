@@ -27,6 +27,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     required this.statusAssigned,
     required this.statusInProgress,
     required this.statusPaused,
+    required this.statusPending,
     required this.statusCompleted,
     required this.statusCancelled,
     required this.statusRejected,
@@ -100,6 +101,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
   final Color statusAssigned;
   final Color statusInProgress;
   final Color statusPaused;
+  final Color statusPending;
   final Color statusCompleted;
   final Color statusCancelled;
   final Color statusRejected;
@@ -189,6 +191,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     statusAssigned: AppColors.statusAssigned,
     statusInProgress: AppColors.statusInProgress,
     statusPaused: AppColors.statusPaused,
+    statusPending: Color(0xFFFF9800), // Orange for pending
     statusCompleted: AppColors.statusCompleted,
     statusCancelled: AppColors.statusCancelled,
     statusRejected: AppColors.statusRejected,
@@ -259,6 +262,8 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     statusAssigned: Color(0xFF64B5F6),
     statusInProgress: Color(0xFFFFB74D),
     statusPaused: Color(0xFFBA68C8),
+    statusPending:
+        Color(0xFFFFB74D), // Orange for pending (same as in-progress in dark)
     statusCompleted: Color(0xFF81C784),
     statusCancelled: Color(0xFFEF5350),
     statusRejected: Color(0xFFA1887F),
@@ -325,6 +330,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
     Color? statusAssigned,
     Color? statusInProgress,
     Color? statusPaused,
+    Color? statusPending,
     Color? statusCompleted,
     Color? statusCancelled,
     Color? statusRejected,
@@ -387,6 +393,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       statusAssigned: statusAssigned ?? this.statusAssigned,
       statusInProgress: statusInProgress ?? this.statusInProgress,
       statusPaused: statusPaused ?? this.statusPaused,
+      statusPending: statusPending ?? this.statusPending,
       statusCompleted: statusCompleted ?? this.statusCompleted,
       statusCancelled: statusCancelled ?? this.statusCancelled,
       statusRejected: statusRejected ?? this.statusRejected,
@@ -458,6 +465,7 @@ class FSMThemeExtension extends ThemeExtension<FSMThemeExtension> {
       statusInProgress:
           Color.lerp(statusInProgress, other.statusInProgress, t)!,
       statusPaused: Color.lerp(statusPaused, other.statusPaused, t)!,
+      statusPending: Color.lerp(statusPending, other.statusPending, t)!,
       statusCompleted: Color.lerp(statusCompleted, other.statusCompleted, t)!,
       statusCancelled: Color.lerp(statusCancelled, other.statusCancelled, t)!,
       statusRejected: Color.lerp(statusRejected, other.statusRejected, t)!,

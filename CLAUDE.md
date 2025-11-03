@@ -12,6 +12,26 @@ FSM (Field Service Management) is a Flutter mobile application built with Clean 
 **Flutter**: 3.35.6
 **Dart**: 3.9.2
 
+## 📚 Important: Context Files and Custom Agents
+
+This project has comprehensive context files and specialized agents to help you work effectively:
+
+### Context Files (READ THESE FIRST!)
+- **`.github/FSM_ARCHITECTURE.md`** - Complete architecture guide
+- **`.github/FSM_CODING_STANDARDS.md`** - Coding conventions and standards
+- **`.github/FSM_FEATURE_GUIDE.md`** - Step-by-step feature implementation
+- **`.github/FSM_CONTEXT_SUMMARY.md`** - Overview of all context and agents
+- **`lib/core/theme/README.md`** - Theme system documentation
+
+### Custom Agents (USE THESE FOR SPECIALIZED TASKS!)
+- **Clean Architecture Expert** - Feature implementation, architecture patterns
+- **UI/Theme Expert** - UI components, Material Design 3, FSM theme system
+- **BLoC Expert** - State management, BLoC pattern
+- **API Integration Expert** - Network layer, Retrofit, Dio
+- **Testing Expert** - Unit, widget, BLoC, and integration tests
+
+**👉 Before starting any task, read the relevant context file and consider delegating to the appropriate agent!**
+
 ## Core Architecture
 
 ### Clean Architecture Layers

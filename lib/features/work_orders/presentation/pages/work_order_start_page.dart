@@ -181,7 +181,10 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               'Current Status: ${workOrder.status.displayName}',
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
             ),
             SizedBox(height: 24.h),
@@ -283,7 +286,8 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                       Text(
                         'Accuracy: ${currentLocation.accuracy!.toStringAsFixed(1)}m',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -327,7 +331,8 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle, color: context.fsmTheme.success, size: 20.sp),
+                  Icon(Icons.check_circle,
+                      color: context.fsmTheme.success, size: 20.sp),
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
@@ -468,8 +473,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
   }
 
   void _handleViewDetails() {
-    context.router.push(
-        WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
+    context.router.push(WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
   }
 
   void _handleRetryLocation() {

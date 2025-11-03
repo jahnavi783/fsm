@@ -169,6 +169,7 @@ import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../router/app_router.dart' as _i81;
 import '../router/guards/auth_guard.dart' as _i530;
+import '../router/observers/app_route_observer.dart' as _i185;
 import '../services/error_boundary_service.dart' as _i600;
 import '../services/lazy_loading_service.dart' as _i870;
 import '../services/location_service.dart' as _i669;
@@ -202,10 +203,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i465.NavigationBloc>(() => _i465.NavigationBloc());
     gh.factory<_i544.PermissionRemoteDataSource>(
         () => _i544.PermissionRemoteDataSource());
-    await gh.singletonAsync<_i459.HiveService>(
-      () => _i459.HiveService.create(),
-      preResolve: true,
-    );
     gh.singleton<_i600.ErrorBoundaryService>(
         () => _i600.ErrorBoundaryService());
     gh.singleton<_i870.LazyLoadingService>(() => _i870.LazyLoadingService());
@@ -213,6 +210,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1066.MemoryManagementService());
     gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
     gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
+    gh.factory<_i185.AppRouteObserver>(
+        () => _i185.AppRouteObserver(gh<_i520.LoggingService>()));
     gh.singleton<_i188.ErrorBloc>(
         () => _i188.ErrorBloc(gh<_i520.LoggingService>()));
     gh.factory<_i1046.ProfileLocalDataSource>(
@@ -221,6 +220,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i494.CalendarLocalDataSourceImpl());
     gh.factory<_i506.DocumentLocalDataSource>(
         () => _i506.DocumentLocalDataSourceImpl());
+    await gh.singletonAsync<_i459.HiveService>(
+      () => _i459.HiveService.create(gh<_i520.LoggingService>()),
+      preResolve: true,
+    );
     gh.factory<_i701.WorkOrderLocalDataSource>(
         () => _i701.WorkOrderLocalDataSourceImpl(gh<_i459.HiveService>()));
     gh.factory<_i1038.CacheManager>(
@@ -247,8 +250,6 @@ extension GetItInjectableX on _i174.GetIt {
         _i428.CheckPermissionStatusUseCase(gh<_i165.IPermissionRepository>()));
     gh.factory<_i641.PartsLocalDataSource>(
         () => _i641.PartsLocalDataSourceImpl(gh<_i459.HiveService>()));
-    gh.factory<_i530.AuthGuard>(
-        () => _i530.AuthGuard(gh<_i992.AuthLocalDataSource>()));
     gh.singleton<_i256.ConnectivityBloc>(() => _i256.ConnectivityBloc(
           gh<_i932.NetworkInfo>(),
           gh<_i895.Connectivity>(),
@@ -267,10 +268,6 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i669.LocationService>(
         () => _i669.LocationService(gh<_i165.IPermissionRepository>()));
-    await gh.singletonAsync<_i81.AppRouter>(
-      () => _i81.AppRouter.create(gh<_i530.AuthGuard>()),
-      preResolve: true,
-    );
     gh.singleton<_i361.Dio>(() => networkModule.provideDio(
           gh<_i908.AuthInterceptor>(),
           gh<_i520.LoggingService>(),
@@ -355,6 +352,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i342.ICalendarRepository>(),
           gh<_i932.NetworkInfo>(),
         ));
+    gh.factory<_i530.AuthGuard>(() => _i530.AuthGuard(
+          gh<_i992.AuthLocalDataSource>(),
+          gh<_i331.AuthBloc>(),
+        ));
     gh.factory<_i879.IProfileRepository>(() => _i334.ProfileRepositoryImpl(
           gh<_i327.ProfileRemoteDataSource>(),
           gh<_i1046.ProfileLocalDataSource>(),
@@ -388,6 +389,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i1054.GetLowStockPartsUseCase>(),
           gh<_i490.IPartsRepository>(),
         ));
+    await gh.singletonAsync<_i81.AppRouter>(
+      () => _i81.AppRouter.create(gh<_i530.AuthGuard>()),
+      preResolve: true,
+    );
     gh.factory<_i1041.GetDocumentCategoriesUseCase>(() =>
         _i1041.GetDocumentCategoriesUseCase(gh<_i121.IDocumentRepository>()));
     gh.factory<_i633.SearchDocumentsUseCase>(

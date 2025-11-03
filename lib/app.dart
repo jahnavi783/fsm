@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
                 // Navigation observers for tracking and debugging
                 // Always return fresh instances per Auto Route best practices
                 navigatorObservers: () => [
-                  AppRouteObserver(),
+                  getIt<AppRouteObserver>(),
                 ],
               ),
               theme: AppTheme.lightTheme,

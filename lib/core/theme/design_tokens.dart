@@ -55,6 +55,9 @@ class DesignTokens {
   /// 48px - 3XL spacing (6x base)
   static const double space12 = 48;
 
+  /// 56px - Large spacing (7x base)
+  static const double space14 = 56;
+
   /// 64px - 4XL spacing (8x base)
   static const double space16 = 64;
 
@@ -134,6 +137,12 @@ class DesignTokens {
   static const double listItemHeight = 64;
 
   // ============================================
+  // TOUCH TARGETS
+  // ============================================
+  /// 44px - Minimum touch target size (accessibility)
+  static const double touchTargetMin = 44;
+
+  // ============================================
   // TYPOGRAPHY SCALE
   // ============================================
   /// 10px font size
@@ -145,8 +154,14 @@ class DesignTokens {
   /// 12px font size
   static const double fontSize12 = 12;
 
+  /// 13px font size
+  static const double fontSize13 = 13;
+
   /// 14px font size (body default)
   static const double fontSize14 = 14;
+
+  /// 15px font size
+  static const double fontSize15 = 15;
 
   /// 16px font size
   static const double fontSize16 = 16;
@@ -156,6 +171,9 @@ class DesignTokens {
 
   /// 20px font size
   static const double fontSize20 = 20;
+
+  /// 22px font size
+  static const double fontSize22 = 22;
 
   /// 24px font size
   static const double fontSize24 = 24;
@@ -214,8 +232,14 @@ class DesignTokens {
   /// No elevation
   static const double elevationNone = 0;
 
+  /// 1dp elevation - Extra small
+  static const double elevationXSmall = 1;
+
   /// 2dp elevation
   static const double elevationSm = 2;
+
+  /// 2dp elevation (alias)
+  static const double elevationSmall = 2;
 
   /// 4dp elevation
   static const double elevationMd = 4;
@@ -303,6 +327,9 @@ class DesignTokens {
 
   /// Vertical spacing: 24px
   static const Widget verticalSpaceLarge = RSizedBox(height: space6);
+
+  /// Vertical spacing: 24px (alias)
+  static const Widget verticalSpaceLg = RSizedBox(height: space6);
 
   /// Vertical spacing: 32px
   static const Widget verticalSpaceXl = RSizedBox(height: space8);

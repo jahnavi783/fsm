@@ -1,15 +1,72 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+/// Navigation Events for FSM App Drawer-based Navigation
+///
+/// Handles all navigation-related events in the drawer-based navigation system.
+/// Integrates with Auto Route for type-safe navigation and state management.
+abstract class NavigationEvent {
+  const NavigationEvent();
+}
 
-part 'navigation_event.freezed.dart';
+/// Navigate to a specific drawer section
+class NavigateToSection extends NavigationEvent {
+  final String section;
 
-@freezed
-class NavigationEvent with _$NavigationEvent {
-  const factory NavigationEvent.tabChanged(int index) = _TabChanged;
-  const factory NavigationEvent.navigateToTab(int index) = _NavigateToTab;
-  const factory NavigationEvent.navigateToWorkOrder(int workOrderId) = _NavigateToWorkOrder;
-  const factory NavigationEvent.navigateToDocument(int documentId) = _NavigateToDocument;
-  const factory NavigationEvent.navigateToPart(int partId) = _NavigateToPart;
-  const factory NavigationEvent.toggleDrawer() = _ToggleDrawer;
-  const factory NavigationEvent.openDrawer() = _OpenDrawer;
-  const factory NavigationEvent.closeDrawer() = _CloseDrawer;
+  const NavigateToSection(this.section);
+}
+
+/// Update current route information for drawer highlighting
+class UpdateCurrentRoute extends NavigationEvent {
+  final String routeName;
+  final String routePath;
+
+  const UpdateCurrentRoute(this.routeName, this.routePath);
+}
+
+/// Handle drawer open/close state
+class ToggleDrawer extends NavigationEvent {
+  const ToggleDrawer();
+}
+
+/// Set drawer state explicitly
+class SetDrawerState extends NavigationEvent {
+  final bool isOpen;
+
+  const SetDrawerState(this.isOpen);
+}
+
+/// Handle deep link navigation
+class HandleDeepLink extends NavigationEvent {
+  final String path;
+  final Map<String, dynamic>? parameters;
+
+  const HandleDeepLink(this.path, {this.parameters});
+}
+
+/// Navigate back in the stack
+class NavigateBack extends NavigationEvent {
+  const NavigateBack();
+}
+
+/// Reset navigation to initial state (dashboard)
+class ResetToInitial extends NavigationEvent {
+  const ResetToInitial();
+}
+
+/// Handle external navigation (from notifications, etc.)
+class NavigateExternal extends NavigationEvent {
+  final String route;
+  final Map<String, dynamic>? arguments;
+  final bool clearStack;
+
+  const NavigateExternal({
+    required this.route,
+    this.arguments,
+    this.clearStack = false,
+  });
+}
+
+/// Update navigation breadcrumb
+class UpdateBreadcrumb extends NavigationEvent {
+  final List<String> breadcrumb;
+
+  const UpdateBreadcrumb(this.breadcrumb);
 }

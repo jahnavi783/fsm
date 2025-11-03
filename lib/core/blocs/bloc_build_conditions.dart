@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 /// Mixin providing reusable buildWhen patterns for BLoC optimization.
 ///
 /// This mixin implements property-based comparison patterns instead of

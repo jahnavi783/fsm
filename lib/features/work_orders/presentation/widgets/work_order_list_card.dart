@@ -72,7 +72,8 @@ class WorkOrderListCard extends StatelessWidget {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
     final spacing = context.spacing;
-    final priorityColor = fsmTheme.getPriorityColor(workOrder.priority.toString());
+    final priorityColor =
+        fsmTheme.getPriorityColor(workOrder.priority.toString());
 
     return Container(
       margin: REdgeInsets.symmetric(
@@ -127,7 +128,7 @@ class WorkOrderListCard extends StatelessWidget {
 
                   // Description (max 2 lines)
                   Text(
-                    workOrder.issue,
+                    workOrder.problemDescription,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface,
                       height: 1.3,
@@ -209,7 +210,8 @@ class WorkOrderListCard extends StatelessWidget {
 
   bool get _hasActions {
     final status = workOrder.status.toString();
-    return (status == 'unassigned' || status == 'assigned') && onStart != null ||
+    return (status == 'unassigned' || status == 'assigned') &&
+            onStart != null ||
         (status == 'in_progress' || status == 'inprogress') &&
             (onPause != null || onComplete != null) ||
         status == 'paused' && onResume != null;
@@ -228,26 +230,6 @@ class WorkOrderListCard extends StatelessWidget {
     } else {
       return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
     }
-  }
-
-  void _handleStart(BuildContext context, VoidCallback onStart) {
-    Navigator.pop(context);
-    onStart();
-  }
-
-  void _handlePause(BuildContext context, VoidCallback onPause) {
-    Navigator.pop(context);
-    onPause();
-  }
-
-  void _handleComplete(BuildContext context, VoidCallback onComplete) {
-    Navigator.pop(context);
-    onComplete();
-  }
-
-  void _handleDelete(BuildContext context, VoidCallback onDelete) {
-    Navigator.pop(context);
-    onDelete();
   }
 }
 
@@ -298,7 +280,7 @@ class SwipeableWorkOrderListCard extends StatelessWidget {
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) async {
         // Show action menu in a bottom sheet
-        final action = await showModalBottomSheet<String>(
+        await showModalBottomSheet<String>(
           context: context,
           builder: (context) => _QuickActionsBottomSheet(
             workOrder: workOrder,
@@ -409,12 +391,33 @@ class _QuickActionsBottomSheet extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: Icon(Icons.delete, color: theme.colorScheme.error),
-              title: Text('Delete', style: TextStyle(color: theme.colorScheme.error)),
+              title: Text('Delete',
+                  style: TextStyle(color: theme.colorScheme.error)),
               onTap: () => _handleDelete(context, onDelete!),
             ),
           ],
         ],
       ),
     );
+  }
+
+  void _handleStart(BuildContext context, VoidCallback callback) {
+    Navigator.pop(context);
+    callback();
+  }
+
+  void _handlePause(BuildContext context, VoidCallback callback) {
+    Navigator.pop(context);
+    callback();
+  }
+
+  void _handleComplete(BuildContext context, VoidCallback callback) {
+    Navigator.pop(context);
+    callback();
+  }
+
+  void _handleDelete(BuildContext context, VoidCallback callback) {
+    Navigator.pop(context);
+    callback();
   }
 }

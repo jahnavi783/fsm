@@ -124,15 +124,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Future<void> _onDeleteAccount(Emitter<ProfileState> emit) async {
-    emit(const ProfileState.updating());
-
-    // Note: Delete account use case would need to be implemented
-    // For now, we'll just emit an error
-    emit(const ProfileState.error(
-        'Delete account functionality not implemented'));
-  }
-
   // Getters for current state
   ProfileEntity? get currentProfile => _currentProfile;
   ProfilePreferences? get currentPreferences => _currentPreferences;

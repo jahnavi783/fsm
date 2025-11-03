@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme/design_tokens.dart';
+import '../../theme/extensions/fsm_theme_extension.dart';
 
 /// Standardized action button for cards and quick actions
 ///
@@ -49,14 +50,20 @@ class QuickActionButton extends StatelessWidget {
 
   Color _foregroundColor(BuildContext context) {
     if (_isDisabled) {
-      return Theme.of(context).colorScheme.onSurface.withValues(alpha: DesignTokens.opacityDisabled);
+      return Theme.of(context)
+          .colorScheme
+          .onSurface
+          .withValues(alpha: DesignTokens.opacityDisabled);
     }
     return color ?? Theme.of(context).colorScheme.primary;
   }
 
   Color _backgroundButtonColor(BuildContext context) {
     if (_isDisabled) {
-      return Theme.of(context).colorScheme.surface.withValues(alpha: DesignTokens.opacityDisabled);
+      return Theme.of(context)
+          .colorScheme
+          .surface
+          .withValues(alpha: DesignTokens.opacityDisabled);
     }
     return backgroundColor ?? Colors.transparent;
   }
@@ -64,7 +71,8 @@ class QuickActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textStyle = isCompact ? theme.textTheme.labelSmall : theme.textTheme.labelMedium;
+    final textStyle =
+        isCompact ? theme.textTheme.labelSmall : theme.textTheme.labelMedium;
 
     return Material(
       color: _backgroundButtonColor(context),
@@ -86,7 +94,8 @@ class QuickActionButton extends StatelessWidget {
                   height: DesignTokens.iconSm.h,
                   child: CircularProgressIndicator(
                     strokeWidth: DesignTokens.borderWidthMedium.w,
-                    valueColor: AlwaysStoppedAnimation<Color>(_foregroundColor(context)),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        _foregroundColor(context)),
                   ),
                 )
               else
@@ -148,11 +157,13 @@ extension QuickActionButtonVariants on QuickActionButton {
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
-        final disabledColor = theme.colorScheme.onSurface.withValues(alpha: DesignTokens.opacityDisabled);
+        final disabledColor = theme.colorScheme.onSurface
+            .withValues(alpha: DesignTokens.opacityDisabled);
         return Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: onPressed == null ? disabledColor : theme.colorScheme.primary,
+              color:
+                  onPressed == null ? disabledColor : theme.colorScheme.primary,
               width: DesignTokens.borderWidthThin.w,
             ),
             borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
@@ -182,7 +193,7 @@ extension QuickActionButtonVariants on QuickActionButton {
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
-        final fsmTheme = context.fsmTheme;
+        final fsmTheme = theme.extension<FSMThemeExtension>()!;
         return QuickActionButton(
           icon: icon,
           label: label,
@@ -207,7 +218,7 @@ extension QuickActionButtonVariants on QuickActionButton {
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
-        final fsmTheme = context.fsmTheme;
+        final fsmTheme = theme.extension<FSMThemeExtension>()!;
         return QuickActionButton(
           icon: icon,
           label: label,

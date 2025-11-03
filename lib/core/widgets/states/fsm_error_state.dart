@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
-import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+
 import 'package:fsm/core/theme/spacing_theme.dart';
 
 /// FSMErrorState - Consolidated error state display widget
@@ -49,7 +49,8 @@ class FSMErrorState extends StatelessWidget {
     this.actionLabel = 'Retry',
     this.onRetry,
   })  : icon = Icons.wifi_off_outlined,
-        iconColor = const Color(0xFFEF6C00), // Orange for offline - maps to warning
+        iconColor =
+            const Color(0xFFEF6C00), // Orange for offline - maps to warning
         showAnimation = true,
         padding = null;
 
@@ -184,7 +185,8 @@ class FSMErrorState extends StatelessWidget {
                 DesignTokens.verticalSpaceLarge,
                 ElevatedButton.icon(
                   onPressed: onRetry,
-                  icon: Icon(Icons.refresh_rounded, size: DesignTokens.iconSm.sp),
+                  icon:
+                      Icon(Icons.refresh_rounded, size: DesignTokens.iconSm.sp),
                   label: Text(actionLabel!),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: iconColor,
@@ -200,7 +202,8 @@ class FSMErrorState extends StatelessWidget {
                       DesignTokens.buttonHeightMd.h,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+                      borderRadius:
+                          BorderRadius.circular(DesignTokens.radiusMd.r),
                     ),
                   ),
                 ),
@@ -293,7 +296,8 @@ class FSMErrorStateSliver extends StatelessWidget {
     this.onRetry,
   })  : icon = Icons.dns_outlined,
         title = title ?? 'Server Error',
-        message = message ?? 'The server encountered an error. Please try again later.',
+        message = message ??
+            'The server encountered an error. Please try again later.',
         iconColor = const Color(0xFFB00020), // Material error color
         showAnimation = true;
 

@@ -19,20 +19,21 @@ class WorkTimelineSection extends StatelessWidget {
     return FixedTimeline.tileBuilder(
       theme: TimelineThemeData(
         nodePosition: 0.0,
-        color: theme.primaryColor.withOpacity(0.3),
+        color: theme.primaryColor.withValues(alpha: 0.3),
         indicatorTheme: IndicatorThemeData(
           color: theme.primaryColor,
           size: 16.w,
         ),
         connectorTheme: ConnectorThemeData(
-          color: theme.primaryColor.withOpacity(0.3),
+          color: theme.primaryColor.withValues(alpha: 0.3),
           thickness: 2.w,
         ),
       ),
       builder: TimelineTileBuilder.connectedFromStyle(
         itemCount: workLogs.length,
         contentsAlign: ContentsAlign.basic,
-        contentsBuilder: (context, index) => TimelineContent(log: workLogs[index]),
+        contentsBuilder: (context, index) =>
+            TimelineContent(log: workLogs[index]),
         connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
         indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
         indicatorPositionBuilder: (context, index) => 0.0,

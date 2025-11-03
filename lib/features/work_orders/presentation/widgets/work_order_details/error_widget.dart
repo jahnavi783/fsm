@@ -20,7 +20,7 @@ class WorkOrderErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final fsmTheme = context.fsmTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +34,7 @@ class WorkOrderErrorWidget extends StatelessWidget {
           Text(
             isOffline ? 'You are offline' : 'Error loading work order',
             style: TextStyle(
-              fontSize: 16.sp, 
+              fontSize: 16.sp,
               color: isOffline ? fsmTheme.syncOffline : fsmTheme.error,
             ),
           ),
@@ -42,8 +42,8 @@ class WorkOrderErrorWidget extends StatelessWidget {
           Text(
             message,
             style: TextStyle(
-              fontSize: 14.sp, 
-              color: colorScheme.onSurface.withOpacity(0.6),
+              fontSize: 14.sp,
+              color: colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             textAlign: TextAlign.center,
           ),

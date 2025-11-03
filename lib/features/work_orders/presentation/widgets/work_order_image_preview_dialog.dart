@@ -29,7 +29,7 @@ class _WorkOrderImagePreviewDialogState
     extends State<WorkOrderImagePreviewDialog> {
   late PageController _pageController;
   late int _currentIndex;
-  late int _currentImageIndexInCapture;
+
   late List<String> _allImages;
   late Map<int, WorkOrderImageCaptureEntity> _imageIndexToCapture;
 
@@ -56,7 +56,6 @@ class _WorkOrderImagePreviewDialogState
         imageIndex++;
       }
     }
-    _currentImageIndexInCapture = 0;
   }
 
   @override
@@ -76,7 +75,7 @@ class _WorkOrderImagePreviewDialogState
 
     return Dialog(
       backgroundColor: theme.colorScheme.surface,
-      insetPadding: REdgeInsets.zero,
+      insetPadding: EdgeInsets.zero,
       child: Stack(
         children: [
           // Image gallery
@@ -217,7 +216,7 @@ class _WorkOrderImagePreviewDialogState
               child: SafeArea(
                 child: Padding(
                   padding: REdgeInsets.all(DesignTokens.space4),
-                  child: _buildImageMetadata(_currentIndex),
+                  child: _buildImageMetadata(context, _currentIndex),
                 ),
               ),
             ),
@@ -227,7 +226,10 @@ class _WorkOrderImagePreviewDialogState
     );
   }
 
-  Widget _buildImageMetadata(int index) {
+  Widget _buildImageMetadata(BuildContext context, int index) {
+    final theme = Theme.of(context);
+    final fsmTheme = theme.extension<FSMThemeExtension>()!;
+
     final capture = _imageIndexToCapture[index];
     if (capture == null) return const SizedBox.shrink();
 

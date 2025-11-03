@@ -80,7 +80,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// App bar with gradient background
   /// Uses standardized theme colors and dimensions for consistency
-  FSMAppBar.gradient({
+  const FSMAppBar.gradient({
     super.key,
     this.title,
     this.titleWidget,
@@ -148,9 +148,11 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveBackgroundColor = backgroundColor ?? theme.colorScheme.primary;
+    final effectiveBackgroundColor =
+        backgroundColor ?? theme.colorScheme.primary;
     final effectiveElevation = elevation ?? DesignTokens.elevationSm;
-    final effectiveToolbarHeight = toolbarHeight ?? DesignTokens.buttonHeightLg.h;
+    final effectiveToolbarHeight =
+        toolbarHeight ?? DesignTokens.buttonHeightLg.h;
 
     // Build title widget
     Widget? titleContent;
@@ -285,7 +287,7 @@ class FSMSliverAppBar extends StatelessWidget {
 
   /// Scrollable app bar with gradient and flexible space
   /// Uses standardized 120.0 expanded height for consistency
-  FSMSliverAppBar.gradient({
+  const FSMSliverAppBar.gradient({
     super.key,
     this.title,
     this.titleWidget,
@@ -328,7 +330,8 @@ class FSMSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveBackgroundColor = backgroundColor ?? theme.colorScheme.primary;
+    final effectiveBackgroundColor =
+        backgroundColor ?? theme.colorScheme.primary;
     final effectiveElevation = elevation ?? DesignTokens.elevationSm;
 
     // Build title widget

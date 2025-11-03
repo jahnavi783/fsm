@@ -287,5 +287,3 @@ class PartListCard extends StatelessWidget {
     }
   }
 }
-
-

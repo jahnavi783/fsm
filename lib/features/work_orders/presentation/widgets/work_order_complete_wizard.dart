@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
-import 'package:fsm/core/theme/app_dimensions.dart';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/di/injection.dart';
@@ -19,7 +18,7 @@ import '../../data/services/work_order_completion_cache_service.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_order_action/work_order_action_bloc.dart';
-import '../blocs/work_order_action/work_order_action_event.dart';
+
 import '../blocs/work_order_action/work_order_action_state.dart';
 import '../forms/work_order_forms.dart';
 
@@ -176,33 +175,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     await widget.cacheService.saveCache(cache);
   }
 
-  void _nextStep() {
-    // Validate current step
-    final currentForm = _getCurrentForm();
-    if (!currentForm.valid) {
-      currentForm.markAllAsTouched();
-      return;
-    }
-
-    if (_currentStep < 2) {
-      setState(() {
-        _currentStep++;
-      });
-      _saveCache();
-    } else {
-      _submitCompletion();
-    }
-  }
-
-  void _previousStep() {
-    if (_currentStep > 0) {
-      setState(() {
-        _currentStep--;
-      });
-      _saveCache();
-    }
-  }
-
   void _handleClose() {
     _saveCache();
     Navigator.of(context).pop();
@@ -231,49 +203,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       default:
         return _step1Form;
     }
-  }
-
-  Future<void> _submitCompletion() async {
-    // Validate all forms
-    if (!_step1Form.valid || !_step2Form.valid || !_step3Form.valid) {
-      _step1Form.markAllAsTouched();
-      _step2Form.markAllAsTouched();
-      _step3Form.markAllAsTouched();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please complete all required fields'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-      return;
-    }
-
-    if (widget.location == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Location is required to complete work order'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-      return;
-    }
-
-    final data =
-        WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-
-    widget.bloc.add(
-      WorkOrderActionEvent.completeWorkOrder(
-        workOrderId: widget.workOrder.id,
-        workLog: data['workLog']!,
-        customerName: data['customerName']!,
-        signature: data['signature']!,
-        partsUsed: data['partsUsed'] ?? [],
-        files: data['files'] ?? [],
-        latitude: widget.location!.latitude,
-        longitude: widget.location!.longitude,
-        completionNotes: data['completionNotes'],
-      ),
-    );
   }
 
   @override
@@ -308,7 +237,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         );
       },
       builder: (context, state) {
-        final isLoading = state.maybeWhen(
+        state.maybeWhen(
           actionInProgress: (_, __, ___) => true,
           orElse: () => false,
         );
@@ -746,79 +675,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           maxLines: 5,
         ),
       ],
-    );
-  }
-
-  Widget _buildNavigationButtons(bool isLoading) {
-    return Container(
-      padding: EdgeInsets.all(AppDimensions.paddingMedium),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(
-          top: BorderSide(color: AppColors.outline, width: 1),
-        ),
-      ),
-      child: Row(
-        children: [
-          if (_currentStep > 0)
-            Expanded(
-              child: OutlinedButton(
-                onPressed: isLoading ? null : _previousStep,
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 48.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(AppDimensions.radiusMedium),
-                  ),
-                ),
-                child: Text(
-                  'Back',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          if (_currentStep > 0) DesignTokens.horizontalSpaceMd,
-          Expanded(
-            flex: _currentStep == 0 ? 1 : 2,
-            child: ElevatedButton(
-              onPressed: isLoading ? null : _nextStep,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _currentStep == 2
-                    ? context.fsmTheme.success
-                    : Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                minimumSize: Size(double.infinity, 48.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(AppDimensions.radiusMedium),
-                ),
-                disabledBackgroundColor:
-                    Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-              ),
-              child: isLoading
-                  ? RSizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    )
-                  : Text(
-                      _currentStep == 2 ? 'Complete Work Order' : 'Next',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 

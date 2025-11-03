@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/navigation/fsm_drawer.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
+import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../blocs/profile/profile_bloc.dart';
 import '../blocs/profile/profile_event.dart';
 import '../blocs/profile/profile_state.dart';
@@ -21,8 +24,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<ProfileBloc>()
-        ..add(const ProfileEvent.loadProfile()),
+      create: (context) =>
+          getIt<ProfileBloc>()..add(const ProfileEvent.loadProfile()),
       child: const ProfileView(),
     );
   }
@@ -32,8 +35,7 @@ class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   Future<void> _handleLogout(BuildContext context) async {
-    final shouldLogout =
-        await LogoutConfirmationDialog.show(context);
+    final shouldLogout = await LogoutConfirmationDialog.show(context);
     if (shouldLogout == true && context.mounted) {
       // Use AuthBloc for logout instead of ProfileBloc
       // This ensures proper cleanup of auth state and navigation
@@ -41,117 +43,217 @@ class ProfileView extends StatelessWidget {
     }
   }
 
+  /// Navigate to drawer section using Auto Route extensions
+  void _navigateToSection(BuildContext context, String section) {
+    final router = context.router;
+    final drawerSection = _mapStringToDrawerSection(section);
+
+    if (drawerSection != null) {
+      router.navigateToDrawerSection(drawerSection);
+    }
+  }
+
+  /// Map section string to DrawerSection enum
+  DrawerSection? _mapStringToDrawerSection(String section) {
+    switch (section.toLowerCase()) {
+      case 'dashboard':
+        return DrawerSection.dashboard;
+      case 'work_orders':
+      case 'workorders':
+        return DrawerSection.workOrders;
+      case 'calendar':
+        return DrawerSection.calendar;
+      case 'documents':
+        return DrawerSection.documents;
+      case 'parts':
+        return DrawerSection.parts;
+      case 'profile':
+        return DrawerSection.profile;
+      case 'settings':
+        return DrawerSection.settings;
+      case 'chat':
+        return DrawerSection.chat;
+      default:
+        return null;
+    }
+  }
+
+  /// Handle sync action
+  void _handleSync(BuildContext context) {
+    // Trigger profile refresh
+    context.read<ProfileBloc>().add(const ProfileEvent.loadProfile());
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Syncing profile data...')),
+    );
+  }
+
+  /// Handle QR code scanning
+  void _handleScanQR(BuildContext context) {
+    // TODO: Implement QR scanning functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('QR Scanner feature coming soon!')),
+    );
+  }
+
+  /// Handle location check-in
+  void _handleCheckIn(BuildContext context) {
+    // TODO: Implement location check-in functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Check-in feature coming soon!')),
+    );
+  }
+
+  String _getLanguageDisplayName(String languageCode) {
+    switch (languageCode) {
+      case 'en':
+        return 'English';
+      case 'es':
+        return 'Spanish';
+      case 'fr':
+        return 'French';
+      default:
+        return 'English';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: FSMAppBar.gradient(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-          tooltip: 'Menu',
-        ),
-        title: 'Profile',
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          FSMAppBarAction.search(
-            onPressed: () {
-              // TODO: Implement search navigation when SearchRoute is available
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Search coming soon')),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        final user = authState is AuthAuthenticated ? authState.user : null;
+
+        return Scaffold(
+          backgroundColor: Colors.grey[50],
+          appBar: FSMAppBar.gradient(
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                tooltip: 'Menu',
+              ),
+            ),
+            title: 'Profile',
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            actions: [
+              FSMAppBarAction.search(
+                onPressed: () {
+                  // TODO: Implement search navigation when SearchRoute is available
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Search coming soon')),
+                  );
+                },
+              ),
+            ],
+          ),
+
+          // ═══════════════════════════════════════════════════════════
+          // DRAWER - FSM Navigation Drawer
+          // ═══════════════════════════════════════════════════════════
+          drawer: FSMDrawer(
+            currentRoute: '/app/profile',
+            profileName: user?.fullName ?? 'FSM Technician',
+            profileEmail: user?.email ?? 'technician@fsm.app',
+            employeeId: user?.id.toString() ?? 'EMP-001',
+            profileImageUrl: null,
+            onNavigate: (section) => _navigateToSection(context, section),
+            onSync: () => _handleSync(context),
+            onScanQR: () => _handleScanQR(context),
+            onCheckIn: () => _handleCheckIn(context),
+            onLogout: () => _handleLogout(context),
+          ),
+
+          body: BlocConsumer<ProfileBloc, ProfileState>(
+            listener: (context, state) {
+              state.whenOrNull(
+                error: (message) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                },
+                updated: (profile, preferences) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Profile updated successfully'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                preferencesUpdated: (profile, preferences) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Preferences updated successfully'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+              );
+            },
+            builder: (context, state) {
+              return state.when(
+                initial: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                loaded: (profile, preferences) =>
+                    _buildLoadedContent(context, profile, preferences),
+                updating: () =>
+                    const Center(child: CircularProgressIndicator()),
+                updated: (profile, preferences) =>
+                    _buildLoadedContent(context, profile, preferences),
+                preferencesUpdated: (profile, preferences) =>
+                    _buildLoadedContent(context, profile, preferences),
+                accountDeleted: () => const Center(
+                  child: Text('Account deleted. Redirecting...'),
+                ),
+                loggedOut: () => const Center(
+                  child: Text('Logged out. Redirecting...'),
+                ),
+                error: (message) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 64.sp,
+                        color: Colors.red,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'Error',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      ElevatedButton(
+                        onPressed: () {
+                          context
+                              .read<ProfileBloc>()
+                              .add(const ProfileEvent.loadProfile());
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
           ),
-        ],
-      ),
-      body: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            error: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            },
-            updated: (profile, preferences) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Profile updated successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
-            preferencesUpdated: (profile, preferences) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Preferences updated successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
-          );
-        },
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (profile, preferences) =>
-                _buildLoadedContent(context, profile, preferences),
-            updating: () => const Center(child: CircularProgressIndicator()),
-            updated: (profile, preferences) =>
-                _buildLoadedContent(context, profile, preferences),
-            preferencesUpdated: (profile, preferences) =>
-                _buildLoadedContent(context, profile, preferences),
-            accountDeleted: () => const Center(
-              child: Text('Account deleted. Redirecting...'),
-            ),
-            loggedOut: () => const Center(
-              child: Text('Logged out. Redirecting...'),
-            ),
-            error: (message) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64.sp,
-                    color: Colors.red,
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Error',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    message,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<ProfileBloc>()
-                          .add(const ProfileEvent.loadProfile());
-                    },
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+        );
+      },
     );
   }
 
@@ -376,18 +478,5 @@ class ProfileView extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getLanguageDisplayName(String languageCode) {
-    switch (languageCode) {
-      case 'en':
-        return 'English';
-      case 'es':
-        return 'Spanish';
-      case 'fr':
-        return 'French';
-      default:
-        return 'English';
-    }
   }
 }

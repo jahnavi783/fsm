@@ -90,7 +90,7 @@ class BlocListenerHelpers {
       final isSuccess = (state as dynamic).isSuccess as bool?;
 
       if (isSuccess == true) {
-        context.router.pushNamed(route);
+        context.router.pushPath(route);
       }
     } catch (e) {
       debugPrint('Error in navigateOnSuccess: $e');
@@ -171,7 +171,7 @@ class BlocListenerHelpers {
       final isAuthenticated = (state as dynamic).isAuthenticated as bool?;
 
       if (isAuthenticated == false) {
-        context.router.pushNamed('/login');
+        context.router.pushPath('/login');
       }
     } catch (e) {
       debugPrint('Error in handleAuthenticationChange: $e');

@@ -9,4 +9,6 @@ abstract class IProfileRepository {
   Future<Either<Failure, ProfilePreferences>> getPreferences();
   Future<Either<Failure, ProfilePreferences>> updatePreferences(
       ProfilePreferences preferences);
+  Future<Either<Failure, void>> logout();
+  Future<Either<Failure, void>> deleteAccount();
 }

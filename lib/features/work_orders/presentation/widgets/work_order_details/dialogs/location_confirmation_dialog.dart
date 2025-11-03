@@ -58,7 +58,7 @@ class LocationConfirmationDialog extends StatelessWidget {
         message,
         style: TextStyle(
           fontSize: 14.sp,
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
         ),
       ),
       actions: [
@@ -77,7 +77,7 @@ class LocationConfirmationDialog extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .outline
-                          .withOpacity(0.5),
+                          .withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -89,7 +89,7 @@ class LocationConfirmationDialog extends StatelessWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.8),
+                        .withValues(alpha: 0.8),
                   ),
                 ),
               ),

@@ -2,52 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 
-/// FSMDrawer - Redesigned navigation drawer for FSM app (2025)
+/// FSMDrawer - Enhanced Material 3 navigation drawer for FSM app
 ///
 /// Features:
-/// - Gradient header with profile information
+/// - Material 3 design with adaptive theming
+/// - Auto Route integration for type-safe navigation
+/// - Gradient header with user profile information
 /// - Quick actions section (Sync, Scan QR, Check In)
-/// - Navigation section (Dashboard, Documents, Parts, Profile)
-/// - Settings section
-/// - Logout button
-/// - Highlights current screen
-/// - Smooth slide-in animation (handled by Drawer widget)
+/// - Smart navigation section highlighting based on current route
+/// - Settings section with nested navigation
+/// - Logout functionality with confirmation
+/// - Responsive drawer sizing and smooth animations
+/// - Route-aware highlighting for active navigation sections
+/// - Support for deep linking and external navigation
+///
+/// Auto Route Integration:
+/// - Automatically highlights current route section
+/// - Handles nested route navigation (work orders, documents)
+/// - Provides type-safe navigation callbacks
+/// - Supports both drawer section navigation and direct route navigation
+/// - Integrates with NavigationBloc for state management
 ///
 /// Usage:
 /// ```dart
 /// Scaffold(
 ///   drawer: FSMDrawer(
-///     currentRoute: '/dashboard',
-///     profileName: 'John Doe',
-///     profileEmail: 'john.doe@example.com',
-///     employeeId: 'EMP-12345',
-///     profileImageUrl: 'https://...',
-///     onNavigate: (route) => context.router.replaceNamed(route),
-///     onSync: () => syncBloc.add(SyncRequested()),
-///     onScanQR: () => qrScanner.scan(),
-///     onCheckIn: () => checkInService.checkIn(),
+///     currentRoute: '/app/dashboard',
+///     profileName: 'John Technician',
+///     profileEmail: 'john.tech@fsm.app',
+///     employeeId: 'FSM-001',
+///     profileImageUrl: 'https://example.com/avatar.jpg',
+///     onNavigate: (section) => navigationBloc.add(NavigateToSection(section)),
+///     onSync: () => syncService.performSync(),
+///     onScanQR: () => qrScanner.launch(),
+///     onCheckIn: () => locationService.checkIn(),
 ///     onLogout: () => authBloc.add(LogoutRequested()),
 ///   ),
 /// )
 /// ```
 class FSMDrawer extends StatelessWidget {
-  /// Current active route (used to highlight current screen)
+  /// Current active route path (used for intelligent highlighting)
+  /// Example: '/app/work-orders', '/app/documents/123'
   final String currentRoute;
 
-  /// User's full name
+  /// User's full display name
   final String profileName;
 
-  /// User's email address
+  /// User's email address for identification
   final String profileEmail;
 
-  /// User's employee ID
+  /// User's unique employee identifier
   final String employeeId;
 
-  /// Optional profile image URL (uses placeholder if null)
+  /// Optional profile image URL (uses default avatar if null)
   final String? profileImageUrl;
 
-  /// Callback when navigation item is tapped
-  final Function(String route) onNavigate;
+  /// Callback when drawer navigation section is selected
+  /// Parameter is the section identifier (dashboard, work_orders, etc.)
+  final Function(String section) onNavigate;
 
   /// Callback for Sync Now quick action
   final VoidCallback? onSync;
@@ -55,10 +67,10 @@ class FSMDrawer extends StatelessWidget {
   /// Callback for Scan QR Code quick action
   final VoidCallback? onScanQR;
 
-  /// Callback for Check In quick action
+  /// Callback for location Check In quick action
   final VoidCallback? onCheckIn;
 
-  /// Callback for logout
+  /// Callback for user logout action
   final VoidCallback onLogout;
 
   const FSMDrawer({
@@ -74,6 +86,19 @@ class FSMDrawer extends StatelessWidget {
     this.onCheckIn,
     required this.onLogout,
   });
+
+  /// Gets the work orders badge count from BLoC state
+  /// Returns null if no badge should be shown
+  int? _getWorkOrdersBadgeCount() {
+    // TODO: Implement badge count logic using WorkOrdersBloc
+    // Example implementation:
+    // final workOrdersBloc = context.read<WorkOrdersBloc>();
+    // final state = workOrdersBloc.state;
+    // if (state is WorkOrdersLoaded) {
+    //   return state.urgentCount + state.overdueCount;
+    // }
+    return null; // Placeholder - will be implemented when BLoC is integrated
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,35 +143,64 @@ class FSMDrawer extends StatelessWidget {
                 RSizedBox(height: DesignTokens.space2),
                 const Divider(height: 1, thickness: 1),
 
-                // Navigation Section
+                // Navigation Section - Main FSM Features
                 _SectionHeader(title: 'Navigate'),
                 _NavigationItem(
                   icon: Icons.dashboard_outlined,
+                  selectedIcon: Icons.dashboard,
                   label: 'Dashboard',
-                  route: '/dashboard',
+                  section: 'dashboard',
                   currentRoute: currentRoute,
-                  onTap: () => onNavigate('/dashboard'),
+                  onTap: () => onNavigate('dashboard'),
+                ),
+                _NavigationItem(
+                  icon: Icons.work_outline,
+                  selectedIcon: Icons.work,
+                  label: 'Work Orders',
+                  section: 'work_orders',
+                  currentRoute: currentRoute,
+                  onTap: () => onNavigate('work_orders'),
+                  badge: _getWorkOrdersBadgeCount(),
+                ),
+                _NavigationItem(
+                  icon: Icons.calendar_today_outlined,
+                  selectedIcon: Icons.calendar_today,
+                  label: 'Calendar',
+                  section: 'calendar',
+                  currentRoute: currentRoute,
+                  onTap: () => onNavigate('calendar'),
                 ),
                 _NavigationItem(
                   icon: Icons.description_outlined,
+                  selectedIcon: Icons.description,
                   label: 'Documents',
-                  route: '/documents',
+                  section: 'documents',
                   currentRoute: currentRoute,
-                  onTap: () => onNavigate('/documents'),
+                  onTap: () => onNavigate('documents'),
                 ),
                 _NavigationItem(
                   icon: Icons.inventory_2_outlined,
-                  label: 'Parts',
-                  route: '/parts',
+                  selectedIcon: Icons.inventory_2,
+                  label: 'Parts Inventory',
+                  section: 'parts',
                   currentRoute: currentRoute,
-                  onTap: () => onNavigate('/parts'),
+                  onTap: () => onNavigate('parts'),
+                ),
+                _NavigationItem(
+                  icon: Icons.smart_toy_outlined,
+                  selectedIcon: Icons.smart_toy,
+                  label: 'AI Assistant',
+                  section: 'chat',
+                  currentRoute: currentRoute,
+                  onTap: () => onNavigate('chat'),
                 ),
                 _NavigationItem(
                   icon: Icons.person_outline,
+                  selectedIcon: Icons.person,
                   label: 'Profile',
-                  route: '/profile',
+                  section: 'profile',
                   currentRoute: currentRoute,
-                  onTap: () => onNavigate('/profile'),
+                  onTap: () => onNavigate('profile'),
                 ),
 
                 RSizedBox(height: DesignTokens.space2),
@@ -295,7 +349,8 @@ class _DrawerHeader extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusSm.r),
                   ),
                   child: Text(
                     employeeId,
@@ -390,25 +445,40 @@ class _QuickActionItem extends StatelessWidget {
 /// Navigation item with highlight for current screen
 class _NavigationItem extends StatelessWidget {
   final IconData icon;
+  final IconData? selectedIcon;
   final String label;
-  final String route;
+  final String? section; // Section-based navigation for Auto Route
   final String currentRoute;
   final VoidCallback onTap;
+  final int? badge;
 
   const _NavigationItem({
     required this.icon,
+    this.selectedIcon,
     required this.label,
-    required this.route,
+    this.section,
     required this.currentRoute,
     required this.onTap,
+    this.badge,
   });
 
   bool get _isActive {
-    // Match exact route or base route
-    return currentRoute == route ||
-        currentRoute.startsWith('$route/') ||
-        (route == '/dashboard' && currentRoute == '/');
+    // Section-based matching for Auto Route drawer sections
+    if (section != null) {
+      return currentRoute.contains('/$section') ||
+          currentRoute.contains(section!) ||
+          (section == 'dashboard' &&
+              (currentRoute == '/' ||
+                  currentRoute == '/dashboard' ||
+                  currentRoute == '/app' ||
+                  currentRoute == '/app/dashboard'));
+    }
+
+    return false;
   }
+
+  IconData get _effectiveIcon =>
+      _isActive && selectedIcon != null ? selectedIcon! : icon;
 
   @override
   Widget build(BuildContext context) {
@@ -419,14 +489,13 @@ class _NavigationItem extends StatelessWidget {
         vertical: 2.h,
       ),
       decoration: BoxDecoration(
-        color: _isActive
-            ? theme.colorScheme.primaryContainer
-            : Colors.transparent,
+        color:
+            _isActive ? theme.colorScheme.primaryContainer : Colors.transparent,
         borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
       ),
       child: ListTile(
         leading: Icon(
-          icon,
+          _effectiveIcon,
           color: _isActive
               ? theme.colorScheme.primary
               : theme.colorScheme.onSurfaceVariant,
@@ -441,6 +510,31 @@ class _NavigationItem extends StatelessWidget {
             fontWeight: _isActive ? FontWeight.w700 : FontWeight.w500,
           ),
         ),
+        trailing: badge != null && badge! > 0
+            ? Container(
+                padding: REdgeInsets.symmetric(
+                  horizontal: 8.w,
+                  vertical: 4.h,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.error,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 20.w,
+                  minHeight: 20.h,
+                ),
+                child: Text(
+                  badge! > 99 ? '99+' : badge.toString(),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onError,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : null,
         onTap: onTap,
         contentPadding: REdgeInsets.symmetric(
           horizontal: DesignTokens.space4,

@@ -75,7 +75,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
       },
       (parts) {
         setState(() {
-          _availableParts = parts.where((p) => p.status == PartStatus.active).toList();
+          _availableParts =
+              parts.where((p) => p.status == PartStatus.active).toList();
           _isLoadingParts = false;
         });
       },
@@ -85,7 +86,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
   void _showPartsSelectionDialog() {
     // Reset selected parts at the start
     _selectedPartNumbers.clear();
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -108,7 +109,10 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .outline
+                      .withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
@@ -122,13 +126,16 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.enableMultiSelect ? 'Select Parts' : 'Select Part',
+                          widget.enableMultiSelect
+                              ? 'Select Parts'
+                              : 'Select Part',
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        if (widget.enableMultiSelect && _selectedPartNumbers.isNotEmpty)
+                        if (widget.enableMultiSelect &&
+                            _selectedPartNumbers.isNotEmpty)
                           Text(
                             '${_selectedPartNumbers.length} selected',
                             style: TextStyle(
@@ -181,14 +188,20 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                 Icon(
                                   Icons.inventory_2_outlined,
                                   size: 64.sp,
-                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(alpha: 0.4),
                                 ),
                                 SizedBox(height: 16.h),
                                 Text(
                                   'No parts available',
                                   style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.6),
                                   ),
                                 ),
                               ],
@@ -200,9 +213,10 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                             itemCount: _availableParts.length,
                             itemBuilder: (context, index) {
                               final part = _availableParts[index];
-                              final isAlreadyAdded = widget.partsUsed
-                                  .any((p) => p.part.partNumber == part.partNumber);
-                              final isSelected = _selectedPartNumbers.contains(part.partNumber);
+                              final isAlreadyAdded = widget.partsUsed.any(
+                                  (p) => p.part.partNumber == part.partNumber);
+                              final isSelected = _selectedPartNumbers
+                                  .contains(part.partNumber);
 
                               return Card(
                                 margin: EdgeInsets.only(bottom: 12.h),
@@ -213,8 +227,10 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                     height: 48.w,
                                     decoration: BoxDecoration(
                                       color: part.isInStock
-                                          ? AppColors.success.withValues(alpha: 0.1)
-                                          : AppColors.error.withValues(alpha: 0.1),
+                                          ? AppColors.success
+                                              .withValues(alpha: 0.1)
+                                          : AppColors.error
+                                              .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: Icon(
@@ -232,7 +248,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                     ),
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 4.h),
                                       Text(
@@ -263,9 +280,11 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                               onChanged: (value) {
                                                 setModalState(() {
                                                   if (value == true) {
-                                                    _selectedPartNumbers.add(part.partNumber);
+                                                    _selectedPartNumbers
+                                                        .add(part.partNumber);
                                                   } else {
-                                                    _selectedPartNumbers.remove(part.partNumber);
+                                                    _selectedPartNumbers.remove(
+                                                        part.partNumber);
                                                   }
                                                 });
                                               },
@@ -281,16 +300,19 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                           if (widget.enableMultiSelect) {
                                             setModalState(() {
                                               if (isSelected) {
-                                                _selectedPartNumbers.remove(part.partNumber);
+                                                _selectedPartNumbers
+                                                    .remove(part.partNumber);
                                               } else {
-                                                _selectedPartNumbers.add(part.partNumber);
+                                                _selectedPartNumbers
+                                                    .add(part.partNumber);
                                               }
                                             });
                                           } else {
                                             widget.onAddPart(PartUsedInput(
                                               part: part,
                                               quantityController:
-                                                  TextEditingController(text: '1'),
+                                                  TextEditingController(
+                                                      text: '1'),
                                             ));
                                             Navigator.pop(context);
                                           }
@@ -309,7 +331,10 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.05),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: Offset(0, -2.h),
                       ),
@@ -364,14 +389,13 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
               quantityController: TextEditingController(text: '1'),
             ))
         .toList();
-    
+
     if (widget.onAddMultipleParts != null) {
       widget.onAddMultipleParts!(selectedParts);
     }
-    
+
     Navigator.pop(context);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -386,8 +410,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12.r),
+              color: AppColors.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             child: Row(
               children: [
@@ -426,7 +450,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                         'Work log and parts used',
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                     ],
@@ -525,7 +550,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
             Container(
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                color: theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
                   color: AppColors.outline.withValues(alpha: 0.2),
@@ -536,7 +562,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                   Icon(
                     Icons.info_outline,
                     size: 20.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
@@ -544,7 +570,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                       'No parts added yet. Tap "Add Part" to select from inventory.',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ),

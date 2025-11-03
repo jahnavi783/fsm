@@ -5,7 +5,6 @@ import 'dart:io';
 
 import '../constants/app_constants.dart';
 import '../services/logging_service.dart';
-import '../di/injection.dart';
 import '../constants/hive_boxes.dart';
 import '../../features/work_orders/data/models/work_order_hive_model.dart';
 import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
@@ -22,8 +21,8 @@ class HiveService {
   final LoggingService _loggingService;
 
   @FactoryMethod()
-  static Future<HiveService> create() async {
-    final service = HiveService._(getIt<LoggingService>());
+  static Future<HiveService> create(LoggingService loggingService) async {
+    final service = HiveService._(loggingService);
     await service._init();
     return service;
   }

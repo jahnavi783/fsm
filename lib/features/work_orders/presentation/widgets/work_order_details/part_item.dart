@@ -38,7 +38,7 @@ class PartItem extends StatelessWidget {
                     part.description!,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ],

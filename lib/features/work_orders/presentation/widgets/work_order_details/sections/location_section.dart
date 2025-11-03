@@ -31,7 +31,8 @@ class LocationSection extends StatelessWidget {
         if (currentLocation != null) ...[
           InfoItemCard(
             label: 'Current GPS',
-            value: '${currentLocation!.latitude.toStringAsFixed(6)}, ${currentLocation!.longitude.toStringAsFixed(6)}',
+            value:
+                '${currentLocation!.latitude.toStringAsFixed(6)}, ${currentLocation!.longitude.toStringAsFixed(6)}',
             icon: Icons.gps_fixed,
           ),
           DesignTokens.verticalSpaceSmall,
@@ -46,13 +47,13 @@ class LocationSection extends StatelessWidget {
               Icon(
                 Icons.gps_fixed,
                 size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               DesignTokens.horizontalSpaceSmall,
               Text(
                 'Getting current location...',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               DesignTokens.horizontalSpaceSmall,

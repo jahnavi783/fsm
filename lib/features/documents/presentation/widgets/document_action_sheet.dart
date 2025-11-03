@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/navigation/fsm_bottom_sheet.dart'
     show FSMBottomSheet;
+import 'package:fsm/core/widgets/inputs/fsm_search_bar.dart';
 import '../../../../core/theme/design_tokens.dart';
 
 import '../../domain/entities/document_entity.dart';
 import 'document_list_item.dart';
-import 'document_search_bar.dart';
 import 'document_shimmer.dart';
 
 /// Reusable bottom sheet for document selection
@@ -130,14 +130,10 @@ class _DocumentActionSheetState extends State<DocumentActionSheet> {
       child: Column(
         children: [
           // Search bar
-          DocumentSearchBar(
-            initialQuery: widget.initialSearchQuery,
-            isLoading: widget.isLoading,
-            onSearchChanged: _onSearchChanged,
-            onClearSearch: () {
-              _searchController.clear();
-              _onSearchChanged('');
-            },
+          FSMSearchBar(
+            hintText: 'Search documents...',
+            onChanged: _onSearchChanged,
+            controller: _searchController,
           ),
 
           // Type filter chips

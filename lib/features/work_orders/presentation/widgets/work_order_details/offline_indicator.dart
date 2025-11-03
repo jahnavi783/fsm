@@ -10,14 +10,14 @@ class OfflineIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
-    
+
     return Container(
       padding: REdgeInsets.all(DesignTokens.space4),
       decoration: BoxDecoration(
-        color: fsmTheme.syncOffline.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12.r),
+        color: fsmTheme.syncOffline.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border.all(
-          color: fsmTheme.syncOffline.withOpacity(0.3),
+          color: fsmTheme.syncOffline.withValues(alpha: 0.3),
           width: 1,
         ),
       ),

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/blocs/bloc_build_conditions.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+
 import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/widgets.dart'
@@ -21,6 +21,7 @@ import '../../../../core/widgets/stats_card.dart';
 import '../../../../core/widgets/work_order_sliver_list.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
+import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
@@ -55,6 +56,7 @@ class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -97,113 +99,108 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      body: Column(
-        children: [
-          // Offline/Sync Banner at top
-          const OfflineBanner(),
 
-          // Main content
-          Expanded(
-            child: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
-              builder: (context, state) {
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    context.read<WorkOrdersListBloc>().add(
-                          const WorkOrdersListEvent.refreshWorkOrders(),
-                        );
-                  },
-                  child: CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      // App Bar with navigation (hamburger menu + search) and welcome message
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, authState) {
-                          // Get user name from auth state
-                          final userName = authState.maybeWhen(
-                            authenticated: (user) => user.firstName,
-                            orElse: () => 'User',
-                          );
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        // Get user name from auth state
+        final userName = authState.maybeWhen(
+          authenticated: (user) => user.firstName,
+          orElse: () => 'User',
+        );
+        final user = authState is AuthAuthenticated ? authState.user : null;
 
-                          return FSMSliverAppBar.gradient(
-                            leading: IconButton(
-                              icon: const Icon(Icons.menu),
-                              onPressed: () =>
-                                  Scaffold.of(context).openDrawer(),
-                              tooltip: 'Menu',
-                            ),
-                            title: 'Welcome $userName',
-                            subtitle: 'Manage your work orders',
-                            automaticallyImplyLeading: false,
-                            pinned: true,
-                            actions: [
-                              FSMAppBarAction.search(
-                                onPressed: () => _showSearchDialog(context),
-                              ),
-                              FSMAppBarAction.notification(
-                                onPressed: () {
-                                  // TODO: Navigate to notifications page when implemented
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Notifications coming soon!'),
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                },
-                                count: 0, // TODO: Get from state/BLoC
-                              ),
+        return Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: theme.colorScheme.surface,
+
+          // ═══════════════════════════════════════════════════════════
+          // APP BAR - Navigation style with hamburger menu
+          // ═══════════════════════════════════════════════════════════
+          appBar: FSMAppBar.navigation(
+            title: 'Welcome $userName',
+            onMenuTap: () => _scaffoldKey.currentState?.openDrawer(),
+            onSearchTap: () => _showSearchDialog(context),
+          ),
+
+          // ═══════════════════════════════════════════════════════════
+          // DRAWER - FSM Navigation Drawer
+          // ═══════════════════════════════════════════════════════════
+          drawer: FSMDrawer(
+            currentRoute: '/app/dashboard',
+            profileName: user?.fullName ?? 'FSM Technician',
+            profileEmail: user?.email ?? 'technician@fsm.app',
+            employeeId: user?.id.toString() ?? 'EMP-001',
+            profileImageUrl: null,
+            onNavigate: (section) => _navigateToSection(context, section),
+            onSync: () => _handleSync(context),
+            onScanQR: () => _handleScanQR(context),
+            onCheckIn: () => _handleCheckIn(context),
+            onLogout: () => _handleLogout(context),
+          ),
+
+          // ═══════════════════════════════════════════════════════════
+          // BODY - Main dashboard content
+          // ═══════════════════════════════════════════════════════════
+          body: Column(
+            children: [
+              // Offline/Sync Banner at top
+              const OfflineBanner(),
+
+              // Main content
+              Expanded(
+                child: BlocBuilder<WorkOrdersListBloc, WorkOrdersListState>(
+                  builder: (context, state) {
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<WorkOrdersListBloc>().add(
+                              const WorkOrdersListEvent.refreshWorkOrders(),
+                            );
+                      },
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          // Stats Cards (kept as existing - already well-designed)
+                          _buildStatsGrid(state),
+
+                          // Current Work Order Card (for in-progress WO)
+                          _buildCurrentWorkOrderCard(state),
+
+                          // Tab Bar - 4 tabs (Unassigned, Assigned, Paused, Completed)
+                          CustomTabBar(
+                            controller: _tabController,
+                            tabs: const [
+                              'Unassigned',
+                              'Assigned',
+                              'Paused',
+                              'Completed'
                             ],
-                          );
-                        },
-                      ),
+                          ),
 
-                      // Stats Cards (kept as existing - already well-designed)
-                      _buildStatsGrid(state),
-
-                      // Current Work Order Card (for in-progress WO)
-                      _buildCurrentWorkOrderCard(state),
-
-                      // Tab Bar - 4 tabs (Unassigned, Assigned, Paused, Completed)
-                      CustomTabBar(
-                        controller: _tabController,
-                        tabs: const [
-                          'Unassigned',
-                          'Assigned',
-                          'Paused',
-                          'Completed'
+                          // Current tab content
+                          _buildCurrentTabContent(state),
                         ],
                       ),
-
-                      // Current tab content
-                      _buildCurrentTabContent(state),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      // Simple AI Chatbot FAB (bottom-right)
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO: Navigate to chatbot page when implemented
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('AI Assistant coming soon!'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-        },
-        icon: const Icon(Icons.smart_toy),
-        label: const Text('AI Assistant'),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
-        elevation: 6,
-        tooltip: 'Open AI Assistant',
-      ),
+
+          // ═══════════════════════════════════════════════════════════
+          // FLOATING ACTION BUTTON - AI Assistant
+          // ═══════════════════════════════════════════════════════════
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => _navigateToSection(context, 'chat'),
+            icon: const Icon(Icons.smart_toy),
+            label: const Text('AI Assistant'),
+            backgroundColor: theme.colorScheme.secondary,
+            foregroundColor: theme.colorScheme.onSecondary,
+            elevation: 6,
+            tooltip: 'Open AI Assistant',
+          ),
+        );
+      },
     );
   }
 
@@ -664,6 +661,101 @@ class _DashboardPageState extends State<DashboardPage>
         content:
             Text('Navigate to work order details to $action the work order'),
         duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // NAVIGATION & DRAWER ACTION HELPERS
+  // ═══════════════════════════════════════════════════════════════════════
+
+  /// Navigate to drawer section using Auto Route extensions
+  void _navigateToSection(BuildContext context, String section) {
+    final router = context.router;
+    final drawerSection = _mapStringToDrawerSection(section);
+
+    if (drawerSection != null) {
+      router.navigateToDrawerSection(drawerSection);
+    }
+  }
+
+  /// Map section string to DrawerSection enum
+  DrawerSection? _mapStringToDrawerSection(String section) {
+    switch (section.toLowerCase()) {
+      case 'dashboard':
+        return DrawerSection.dashboard;
+      case 'work_orders':
+      case 'workorders':
+        return DrawerSection.workOrders;
+      case 'calendar':
+        return DrawerSection.calendar;
+      case 'documents':
+        return DrawerSection.documents;
+      case 'parts':
+        return DrawerSection.parts;
+      case 'profile':
+        return DrawerSection.profile;
+      case 'settings':
+        return DrawerSection.settings;
+      case 'chat':
+        return DrawerSection.chat;
+      default:
+        return null;
+    }
+  }
+
+  /// Handle sync action
+  void _handleSync(BuildContext context) {
+    // Trigger work orders refresh
+    context.read<WorkOrdersListBloc>().add(
+          const WorkOrdersListEvent.refreshWorkOrders(),
+        );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Syncing data...')),
+    );
+  }
+
+  /// Handle QR code scanning
+  void _handleScanQR(BuildContext context) {
+    // TODO: Implement QR scanning functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('QR Scanner feature coming soon!')),
+    );
+  }
+
+  /// Handle location check-in
+  void _handleCheckIn(BuildContext context) {
+    // TODO: Implement location check-in functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Check-in feature coming soon!')),
+    );
+  }
+
+  /// Handle user logout
+  void _handleLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              context.read<AuthBloc>().add(const AuthEvent.logout());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            child: const Text('Logout'),
+          ),
+        ],
       ),
     );
   }

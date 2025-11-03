@@ -81,13 +81,6 @@ class _DocumentsViewState extends State<DocumentsView> {
 
         return Scaffold(
           appBar: FSMAppBar.gradient(
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: 'Menu',
-              ),
-            ),
             titleWidget: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -108,7 +101,6 @@ class _DocumentsViewState extends State<DocumentsView> {
                 const Text('Documents'),
               ],
             ),
-            automaticallyImplyLeading: false,
             actions: [
               FSMAppBarAction.search(
                 onPressed: () {

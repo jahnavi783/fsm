@@ -42,15 +42,7 @@ class ChatbotPage extends StatelessWidget {
 
         return Scaffold(
           appBar: FSMAppBar.gradient(
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: 'Menu',
-              ),
-            ),
             title: 'AI Assistant',
-            automaticallyImplyLeading: false,
           ),
 
           // ═══════════════════════════════════════════════════════════

@@ -31,15 +31,7 @@ class CalendarPage extends StatelessWidget {
 
         return Scaffold(
           appBar: FSMAppBar.gradient(
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: 'Menu',
-              ),
-            ),
             title: 'Calendar',
-            automaticallyImplyLeading: false,
             actions: [
               FSMAppBarAction.search(
                 onPressed: () {

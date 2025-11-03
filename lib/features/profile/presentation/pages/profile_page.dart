@@ -126,16 +126,8 @@ class ProfileView extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.grey[50],
           appBar: FSMAppBar.gradient(
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                tooltip: 'Menu',
-              ),
-            ),
             title: 'Profile',
             centerTitle: true,
-            automaticallyImplyLeading: false,
             actions: [
               FSMAppBarAction.search(
                 onPressed: () {

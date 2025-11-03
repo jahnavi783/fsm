@@ -88,9 +88,14 @@ class _MainNavigationView extends StatelessWidget {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           // Handle authentication state changes
-          if (state is AuthUnauthenticated) {
+          if (state is AuthUnauthenticated && context.mounted) {
             // User logged out: clear navigation stack and return to login
-            context.router.replaceAll([LoginRoute()]);
+            try {
+              context.router.replaceAll([LoginRoute()]);
+            } catch (e) {
+              // Log error but don't crash - user will see login screen on app restart
+              debugPrint('Error navigating to login after logout: $e');
+            }
           }
         },
         child: PopScope(

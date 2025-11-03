@@ -268,7 +268,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                             RSizedBox(width: DesignTokens.space3),
                             _buildHeaderInfoChip(
                               icon: Icons.schedule,
-                              label: 'Duration',
+                              label: 'Estimation Time',
                               value: workOrder.durationDays > 0
                                   ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
                                   : '0 days',

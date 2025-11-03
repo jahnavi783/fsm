@@ -49,6 +49,10 @@ class CurrentWorkOrderCard extends StatelessWidget {
         ? 'Started: ${DateFormat('h:mm a').format(startTime)}'
         : 'Not started';
 
+    final estimationText = workOrder.durationDays > 0
+        ? 'Est. Time: ${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
+        : 'Est. Time: Not set';
+
     return Padding(
       padding: REdgeInsets.symmetric(
         horizontal: DesignTokens.space4,
@@ -119,7 +123,7 @@ class CurrentWorkOrderCard extends StatelessWidget {
 
                   DesignTokens.verticalSpace(DesignTokens.space3),
 
-                  // Metadata: Location + Time
+                  // Metadata: Location + Estimation Time
                   MetadataRow(
                     items: [
                       MetadataItem(
@@ -127,8 +131,8 @@ class CurrentWorkOrderCard extends StatelessWidget {
                         text: workOrder.location,
                       ),
                       MetadataItem(
-                        icon: Icons.access_time,
-                        text: timeText,
+                        icon: Icons.schedule,
+                        text: estimationText,
                       ),
                     ],
                   ),

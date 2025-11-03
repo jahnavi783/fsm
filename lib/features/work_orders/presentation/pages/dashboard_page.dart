@@ -117,7 +117,7 @@ class _DashboardPageState extends State<DashboardPage>
           // APP BAR - Navigation style with hamburger menu
           // ═══════════════════════════════════════════════════════════
           appBar: FSMAppBar.navigation(
-            title: 'Welcome $userName',
+            title: 'Welcome, $userName',
             onMenuTap: () => _scaffoldKey.currentState?.openDrawer(),
             onSearchTap: () => _showSearchDialog(context),
           ),

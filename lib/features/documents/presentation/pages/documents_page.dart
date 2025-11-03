@@ -7,6 +7,7 @@ import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../../../core/widgets/navigation/fsm_drawer.dart';
@@ -17,6 +18,7 @@ import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
+import '../widgets/document_card_tile.dart';
 import '../widgets/document_list_item.dart';
 import '../widgets/document_shimmer.dart';
 import '../widgets/download_progress_indicator.dart';
@@ -369,15 +371,22 @@ class _DocumentsViewState extends State<DocumentsView> {
       return _buildEmptyState(context, state);
     }
 
-    return ListView.builder(
+    return GridView.builder(
       controller: _scrollController,
-      padding: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.all(DesignTokens.space4.w),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: DesignTokens.isMobile ? 2 : 3,
+        crossAxisSpacing: DesignTokens.space3.w,
+        mainAxisSpacing: DesignTokens.space3.h,
+        childAspectRatio: 0.75,
+      ),
       itemCount: state.documents.length + (state.isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= state.documents.length) {
-          return Padding(
-            padding: EdgeInsets.all(16.w),
-            child: const Center(child: CircularProgressIndicator()),
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2.w,
+            ),
           );
         }
 
@@ -385,7 +394,7 @@ class _DocumentsViewState extends State<DocumentsView> {
         final isDownloading = state.isDownloading &&
             state.downloadingDocumentId == document.id.toString();
 
-        return DocumentListItem(
+        return DocumentCardTile(
           document: document,
           isDownloading: isDownloading,
           onTap: () => _openDocument(context, document),

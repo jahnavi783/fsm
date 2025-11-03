@@ -31,7 +31,6 @@ export 'widgets/completion_steps/work_and_parts_step.dart';
 // Widgets - Cards & Lists
 export 'widgets/current_work_order_card.dart';
 export 'widgets/status_summary_grid.dart';
-export 'widgets/work_order_card.dart';
 export 'widgets/work_order_list_card.dart';
 export 'widgets/work_order_list_tabs.dart';
 export 'widgets/work_order_shimmer.dart';

@@ -9,10 +9,46 @@ import '../../../../core/widgets/priority_indicator.dart';
 import '../../../../core/widgets/quick_action_button.dart';
 import '../../domain/entities/work_order_entity.dart';
 
-/// WorkOrderListCard - Compact card for work order lists
+/// WorkOrderListCard - Standard list card component (TEMPLATE FOR ALL FEATURES)
+///
+/// **DESIGN PATTERN FOR CONSISTENT CARDS ACROSS APP**
+/// This card serves as the reference implementation for all list card components
+/// (Documents, Parts, etc.). All cards should follow these dimension standards:
+///
+/// **DIMENSIONS (using DesignTokens):**
+/// - Horizontal padding: `DesignTokens.cardPaddingHorizontal` (16px/space4)
+/// - Vertical padding: `DesignTokens.cardPaddingVertical` (8px/space2)
+/// - Internal padding: `DesignTokens.space3` (12px)
+/// - Border radius: `spacing.radiusSm` (8px, theme-based)
+/// - Elevation: `DesignTokens.elevationXSmall` (1dp)
+/// - Accent border: `DesignTokens.borderWidthMedium` (2px)
+/// - Spacing between elements: `DesignTokens.space1-2` (4-8px)
+///
+/// **STRUCTURE PATTERN:**
+/// 1. Container with margin (space4 horizontal, space2 vertical)
+/// 2. Material wrapper (surface color, elevation, border radius)
+/// 3. InkWell for tap feedback
+/// 4. Left accent border (optional, use for priority/status indication)
+/// 5. Content padding (space3 all sides)
+/// 6. Column layout:
+///    - Header row (title + badge)
+///    - space1 vertical gap
+///    - Description (2 lines max)
+///    - space2 vertical gap
+///    - Metadata row (use FSMMetadataRow)
+///    - space2 vertical gap
+///    - Action buttons (optional, context-aware)
+///
+/// **THEME USAGE:**
+/// - Background: `theme.colorScheme.surfaceContainer`
+/// - Text: `theme.textTheme.*` (titleSmall, bodySmall, etc.)
+/// - Accent: `fsmTheme.getPriorityColor()` or domain-specific colors
+///
+/// **EXCEPTION:** Work Order cards can have additional height for action buttons,
+/// but base dimensions (padding, spacing, radius) must remain consistent.
 ///
 /// Features (Redesign 2025):
-/// - Left accent bar (3dp, priority color)
+/// - Left accent bar (2dp, priority color)
 /// - WO number + priority badge
 /// - Description (max 2 lines)
 /// - Metadata row (location + time + status)

@@ -355,21 +355,21 @@ class _DocumentsViewState extends State<DocumentsView> {
       return _buildEmptyState(context, state);
     }
 
-    return GridView.builder(
+    return ListView.builder(
       controller: _scrollController,
-      padding: EdgeInsets.all(DesignTokens.space4.w),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: DesignTokens.isMobile ? 2 : 3,
-        crossAxisSpacing: DesignTokens.space3.w,
-        mainAxisSpacing: DesignTokens.space3.h,
-        childAspectRatio: 0.75,
+      padding: REdgeInsets.symmetric(
+        horizontal: DesignTokens.space4,
+        vertical: DesignTokens.space2,
       ),
       itemCount: state.documents.length + (state.isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= state.documents.length) {
           return Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2.w,
+            child: Padding(
+              padding: REdgeInsets.all(DesignTokens.space4),
+              child: CircularProgressIndicator(
+                strokeWidth: 2.w,
+              ),
             ),
           );
         }

@@ -11,14 +11,10 @@ import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/widgets.dart'
     hide
-        CustomTabBar,
         StatsGrid,
         StatsCardData; // Barrel import, hide duplicates
-import '../../../../core/widgets/custom_tab_bar.dart';
 import '../../../../core/widgets/dashboard_states.dart';
-import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/stats_card.dart';
-import '../../../../core/widgets/work_order_sliver_list.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
@@ -28,7 +24,7 @@ import '../blocs/work_orders_list/work_orders_list_event.dart';
 import '../blocs/work_orders_list/work_orders_list_state.dart';
 import '../widgets/current_work_order_card.dart';
 import '../widgets/work_order_action_sheet.dart';
-import '../widgets/work_order_card.dart';
+import '../widgets/work_order_list_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -52,17 +48,16 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _DashboardPageState extends State<DashboardPage> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // Filter state - using String to match FilterChipData value type
+  String _selectedFilter = 'assigned'; // Default to 'assigned' (previously tab index 1)
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this, initialIndex: 1);
-    _tabController.addListener(_onTabChanged);
     _scrollController.addListener(_onScroll);
 
     // Load all work orders initially without status filter
@@ -75,15 +70,15 @@ class _DashboardPageState extends State<DashboardPage>
 
   @override
   void dispose() {
-    _tabController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  void _onTabChanged() {
-    // Trigger a rebuild when tab changes to show filtered content
-    if (mounted) {
-      setState(() {});
+  void _onFilterChanged(List<String> selectedFilters) {
+    if (selectedFilters.isNotEmpty && selectedFilters.first != _selectedFilter) {
+      setState(() {
+        _selectedFilter = selectedFilters.first;
+      });
     }
   }
 
@@ -162,15 +157,13 @@ class _DashboardPageState extends State<DashboardPage>
                           // Current Work Order Card (for in-progress WO)
                           _buildCurrentWorkOrderCard(state),
 
-                          // Tab Bar - 4 tabs (Unassigned, Assigned, Paused, Completed)
-                          CustomTabBar(
-                            controller: _tabController,
-                            tabs: const [
-                              'Unassigned',
-                              'Assigned',
-                              'Paused',
-                              'Completed'
-                            ],
+                          // Filter Chips - 4 status filters (pinned header)
+                          SliverPersistentHeader(
+                            pinned: true,
+                            delegate: _FilterChipHeaderDelegate(
+                              selectedFilter: _selectedFilter,
+                              onFilterChanged: _onFilterChanged,
+                            ),
                           ),
 
                           // Current tab content
@@ -271,58 +264,54 @@ class _DashboardPageState extends State<DashboardPage>
         count: _getUnassignedCount(state),
         icon: Icons.inbox_outlined,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
-        onTap: () => _switchToTab(0),
+        onTap: () => _switchToFilter('unassigned'),
       ),
       StatsCardData(
         title: 'Assigned',
         count: _getCountForStatus(state, WorkOrderStatus.assigned),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.assigned),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.assigned),
-        onTap: () => _switchToTab(1),
+        onTap: () => _switchToFilter('assigned'),
       ),
       StatsCardData(
         title: 'Paused',
         count: _getCountForStatus(state, WorkOrderStatus.paused),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.paused),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.paused),
-        onTap: () => _switchToTab(2),
+        onTap: () => _switchToFilter('paused'),
       ),
       StatsCardData(
         title: 'Completed',
         count: _getCountForStatus(state, WorkOrderStatus.completed),
         icon: WorkOrderStatusHelper.getStatusIcon(WorkOrderStatus.completed),
         color: WorkOrderStatusHelper.getStatusColor(WorkOrderStatus.completed),
-        onTap: () => _switchToTab(3),
+        onTap: () => _switchToFilter('completed'),
       ),
     ];
   }
 
-  // Build current tab content based on selected tab (4 tabs)
+  // Build current filter content based on selected filter
   Widget _buildCurrentTabContent(WorkOrdersListState state) {
-    final currentIndex = _tabController.index;
-
-    // Map tab indices to their respective build functions
-    switch (currentIndex) {
-      case 0:
-        // Unassigned tab
+    // Map filter values to their respective build functions
+    switch (_selectedFilter) {
+      case 'unassigned':
         return _buildUnassignedWorkOrdersSliver(state);
-      case 1:
-        // Assigned tab
+      case 'assigned':
         return _buildWorkOrdersSliver(WorkOrderStatus.assigned, state);
-      case 2:
-        // Paused tab
+      case 'paused':
         return _buildWorkOrdersSliver(WorkOrderStatus.paused, state);
-      case 3:
-        // Completed tab
+      case 'completed':
         return _buildWorkOrdersSliver(WorkOrderStatus.completed, state);
       default:
-        return _buildUnassignedWorkOrdersSliver(state);
+        return _buildWorkOrdersSliver(WorkOrderStatus.assigned, state);
     }
   }
 
-  // Switch to specific tab (frontend filtering only)
-  void _switchToTab(int index) {
-    _tabController.animateTo(index);
+  // Switch to specific filter (frontend filtering only)
+  void _switchToFilter(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+    });
   }
 
   Widget _buildWorkOrdersSliver(
@@ -356,21 +345,17 @@ class _DashboardPageState extends State<DashboardPage>
         return WorkOrderSliverList(
           workOrders: filteredWorkOrders,
           isLoadingMore: isLoadingMore,
-          itemBuilder: (workOrder) => Padding(
-            padding: REdgeInsets.symmetric(
-              horizontal: DesignTokens.space4,
-              vertical: DesignTokens.space3,
-            ),
-            child: WorkOrderCard(
-              workOrder: workOrder,
-              onTap: () {
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
-              onActionTap: () {
-                _showWorkOrderActions(workOrder);
-              },
-            ),
+          itemBuilder: (workOrder) => WorkOrderListCard(
+            workOrder: workOrder,
+            onTap: () {
+              context.router
+                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+            },
+            onStart: () => _handleWorkOrderAction(context, workOrder, 'start'),
+            onPause: () => _handleWorkOrderAction(context, workOrder, 'pause'),
+            onResume: () => _handleWorkOrderAction(context, workOrder, 'resume'),
+            onComplete: () =>
+                _handleWorkOrderAction(context, workOrder, 'complete'),
           ),
         );
       },
@@ -505,7 +490,7 @@ class _DashboardPageState extends State<DashboardPage>
                   ),
                   child: Column(
                     children: [
-                      WorkOrderCard(
+                      CompactWorkOrderListCard(
                         workOrder: workOrder,
                         onTap: () {
                           context.router.push(
@@ -585,8 +570,8 @@ class _DashboardPageState extends State<DashboardPage>
                       workOrderId: workOrderId,
                     ),
                   );
-              // Switch to Assigned tab after assignment
-              _switchToTab(1);
+              // Switch to Assigned filter after assignment
+              _switchToFilter('assigned');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -727,5 +712,74 @@ class _DashboardPageState extends State<DashboardPage>
         ],
       ),
     );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// FILTER CHIP PERSISTENT HEADER DELEGATE
+// ═══════════════════════════════════════════════════════════
+
+class _FilterChipHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final String selectedFilter;
+  final ValueChanged<List<String>> onFilterChanged;
+
+  _FilterChipHeaderDelegate({
+    required this.selectedFilter,
+    required this.onFilterChanged,
+  });
+
+  @override
+  double get minExtent => 70.h;
+
+  @override
+  double get maxExtent => 70.h;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: REdgeInsets.only(
+        left: DesignTokens.space4,
+        right: DesignTokens.space4,
+        top: DesignTokens.space2,
+        bottom: DesignTokens.space2,
+      ),
+      child: FSMFilterChipGroup<String>(
+        options: [
+          FilterChipData(
+            value: 'unassigned',
+            label: 'Unassigned',
+            leadingIcon: Icons.inbox_outlined,
+          ),
+          FilterChipData(
+            value: 'assigned',
+            label: 'Assigned',
+            leadingIcon: Icons.assignment_outlined,
+          ),
+          FilterChipData(
+            value: 'paused',
+            label: 'Paused',
+            leadingIcon: Icons.pause_circle_outline,
+          ),
+          FilterChipData(
+            value: 'completed',
+            label: 'Completed',
+            leadingIcon: Icons.check_circle_outline,
+          ),
+        ],
+        selectedValues: [selectedFilter],
+        onSelectionChanged: onFilterChanged,
+        multiSelect: false, // Single-select mode (like tabs)
+        showClearAll: false, // Don't show clear all for status filters
+        showFilterCount: false, // Don't show count badge
+        height: 50.h,
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(_FilterChipHeaderDelegate oldDelegate) {
+    return oldDelegate.selectedFilter != selectedFilter;
   }
 }

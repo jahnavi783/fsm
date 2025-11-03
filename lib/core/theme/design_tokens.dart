@@ -265,6 +265,39 @@ class DesignTokens {
   static const double borderWidthThick = 4.0;
 
   // ============================================
+  // CARD COMPONENTS
+  // ============================================
+  /// Standard list card horizontal padding
+  static const double cardPaddingHorizontal = space4;
+
+  /// Standard list card vertical padding
+  static const double cardPaddingVertical = space2;
+
+  /// Card thumbnail/icon container size (square)
+  static const double cardThumbnailSize = 80;
+
+  /// Card icon container size for smaller icons (square)
+  static const double cardIconContainerSize = iconXl;
+
+  /// Card metadata row height
+  static const double cardMetadataRowHeight = 20;
+
+  /// Card accent border width (left side)
+  static const double cardAccentBorderWidth = borderWidthThick;
+
+  /// Card minimum height (for list cards)
+  static const double cardMinHeight = 100;
+
+  /// Card spacing between elements (internal)
+  static const double cardInternalSpacing = space2;
+
+  /// Card badge size (status, priority)
+  static const double cardBadgeHeight = 24;
+
+  /// Standard card elevation
+  static const double cardElevation = elevationSm;
+
+  // ============================================
   // RESPONSIVE HELPERS
   // ============================================
 
@@ -280,6 +313,12 @@ class DesignTokens {
   /// Pre-built responsive padding: 16px horizontal, 8px vertical
   static REdgeInsets get paddingSymmetricDefault =>
       REdgeInsets.symmetric(horizontal: space4, vertical: space2);
+
+  /// Standard card padding (16px horizontal, 8px vertical)
+  static REdgeInsets get cardPadding => REdgeInsets.symmetric(
+        horizontal: cardPaddingHorizontal,
+        vertical: cardPaddingVertical,
+      );
 
   /// Creates responsive padding with custom horizontal and vertical values
   static REdgeInsets paddingSymmetricR({

@@ -66,7 +66,7 @@ class WorkOrderCard extends StatelessWidget {
             children: [
               // Priority Badge
               StatusBadge.priority(
-                priority: workOrder.priority.toString(),
+                priority: workOrder.priority.name,
                 variant: StatusBadgeVariant.outlined,
                 showIcon: false,
               ),

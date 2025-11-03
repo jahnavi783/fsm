@@ -73,7 +73,7 @@ class WorkOrderListCard extends StatelessWidget {
     final fsmTheme = context.fsmTheme;
     final spacing = context.spacing;
     final priorityColor =
-        fsmTheme.getPriorityColor(workOrder.priority.toString());
+        fsmTheme.getPriorityColor(workOrder.priority.name);
 
     return Container(
       margin: REdgeInsets.symmetric(
@@ -118,7 +118,7 @@ class WorkOrderListCard extends StatelessWidget {
 
                       // Priority Badge
                       PriorityIndicator(
-                        priority: workOrder.priority.toString(),
+                        priority: workOrder.priority.name,
                         type: PriorityIndicatorType.badge,
                       ),
                     ],

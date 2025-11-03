@@ -90,7 +90,7 @@ class CurrentWorkOrderCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       PriorityIndicator(
-                        priority: workOrder.priority.toString(),
+                        priority: workOrder.priority.name,
                         type: PriorityIndicatorType.badge,
                         showLabel: true,
                       ),

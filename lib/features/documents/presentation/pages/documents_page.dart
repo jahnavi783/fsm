@@ -116,29 +116,29 @@ class _DocumentsViewState extends State<DocumentsView> {
                   if (state.downloadedDocumentsCount > 0) {
                     return Padding(
                       padding:
-                          EdgeInsets.only(right: AppDimensions.paddingMedium.w),
+                          REdgeInsets.only(right: DesignTokens.space4),
                       child: Center(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppDimensions.paddingSmall,
-                            vertical: AppDimensions.paddingXSmall,
+                          padding: REdgeInsets.symmetric(
+                            horizontal: DesignTokens.space2,
+                            vertical: DesignTokens.space1,
                           ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                AppColors.success.withValues(alpha: 0.9),
-                                AppColors.success.withValues(alpha: 0.7),
+                                context.fsmTheme.success.withValues(alpha: 0.9),
+                                context.fsmTheme.success.withValues(alpha: 0.7),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusLarge),
+                                DesignTokens.radiusLg.r),
                             border: Border.all(
-                              color: AppColors.onPrimary.withValues(alpha: 0.3),
-                              width: 1.w,
+                              color: theme.colorScheme.onPrimary.withValues(alpha: 0.3),
+                              width: DesignTokens.borderWidthThin.w,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.success.withValues(alpha: 0.3),
+                                color: context.fsmTheme.success.withValues(alpha: 0.3),
                                 blurRadius: 4,
                                 offset: const Offset(0, 2),
                               ),
@@ -149,16 +149,16 @@ class _DocumentsViewState extends State<DocumentsView> {
                             children: [
                               Icon(
                                 Icons.download_done_rounded,
-                                color: AppColors.onPrimary,
-                                size: 14.sp,
+                                color: theme.colorScheme.onPrimary,
+                                size: DesignTokens.fontSize14.sp,
                               ),
-                              SizedBox(width: AppDimensions.spaceXSmall.w),
+                              DesignTokens.horizontalSpace(DesignTokens.space1),
                               Text(
                                 '${state.downloadedDocumentsCount}',
                                 style: theme.textTheme.labelSmall?.copyWith(
-                                  color: AppColors.onPrimary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12.sp,
+                                  color: theme.colorScheme.onPrimary,
+                                  fontWeight: DesignTokens.fontWeightBold,
+                                  fontSize: DesignTokens.fontSize12.sp,
                                 ),
                               ),
                             ],
@@ -202,8 +202,8 @@ class _DocumentsViewState extends State<DocumentsView> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppColors.primary.withValues(alpha: 0.02),
-                      AppColors.surface,
+                      theme.colorScheme.primary.withValues(alpha: 0.02),
+                      theme.colorScheme.surface,
                     ],
                   ),
                 ),
@@ -281,48 +281,50 @@ class _DocumentsViewState extends State<DocumentsView> {
                       if (state.isOffline)
                         Container(
                           width: double.infinity,
-                          margin: AppDimensions.marginHorizontalMedium,
-                          padding: AppDimensions.paddingAllSmall,
+                          margin: REdgeInsets.symmetric(
+                            horizontal: DesignTokens.space4,
+                          ),
+                          padding: REdgeInsets.all(DesignTokens.space2),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                AppColors.warning.withValues(alpha: 0.15),
-                                AppColors.warning.withValues(alpha: 0.05),
+                                context.fsmTheme.warning.withValues(alpha: 0.15),
+                                context.fsmTheme.warning.withValues(alpha: 0.05),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(
-                                AppDimensions.radiusSmall),
+                                DesignTokens.radiusSm.r),
                             border: Border.all(
-                              color: AppColors.warning.withValues(alpha: 0.3),
-                              width: 1.w,
+                              color: context.fsmTheme.warning.withValues(alpha: 0.3),
+                              width: DesignTokens.borderWidthThin.w,
                             ),
                           ),
                           child: Row(
                             children: [
                               Container(
                                 padding:
-                                    EdgeInsets.all(AppDimensions.paddingXSmall),
+                                    REdgeInsets.all(DesignTokens.space1),
                                 decoration: BoxDecoration(
                                   color:
-                                      AppColors.warning.withValues(alpha: 0.2),
+                                      context.fsmTheme.warning.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(
-                                      AppDimensions.radiusXSmall),
+                                      DesignTokens.radiusXs.r),
                                 ),
                                 child: Icon(
                                   Icons.cloud_off_rounded,
-                                  color: AppColors.warning,
-                                  size: AppDimensions.iconSmall,
+                                  color: context.fsmTheme.warning,
+                                  size: DesignTokens.iconSm.sp,
                                 ),
                               ),
-                              SizedBox(width: AppDimensions.spaceSmall.w),
+                              DesignTokens.horizontalSpace(DesignTokens.space2),
                               Expanded(
                                 child: Text(
                                   'Offline - Showing cached documents',
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.warning
+                                    color: context.fsmTheme.warning
                                         .withValues(alpha: 0.9),
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: DesignTokens.fontSize13.sp,
+                                    fontWeight: DesignTokens.fontWeightSemiBold,
                                   ),
                                 ),
                               ),

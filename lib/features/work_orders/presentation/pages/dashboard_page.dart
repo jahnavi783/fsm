@@ -3,21 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
-
 import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
-import '../../../../core/widgets/widgets.dart'
-    hide
-        StatsGrid,
-        StatsCard,
-        StatsCardData; // Barrel import, hide duplicates
 import '../../../../core/widgets/stats_card.dart' as stats;
+import '../../../../core/widgets/widgets.dart'
+    hide StatsGrid, StatsCard, StatsCardData; // Barrel import, hide duplicates
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
+import '../../../auth/presentation/blocs/auth/auth_state.dart';
+import '../../../chat/presentation/pages/chatbot_page.dart';
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
@@ -52,7 +49,8 @@ class _DashboardPageState extends State<DashboardPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Filter state - using String to match FilterChipData value type
-  String _selectedFilter = 'assigned'; // Default to 'assigned' (previously tab index 1)
+  String _selectedFilter =
+      'assigned'; // Default to 'assigned' (previously tab index 1)
 
   @override
   void initState() {
@@ -74,7 +72,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _onFilterChanged(List<String> selectedFilters) {
-    if (selectedFilters.isNotEmpty && selectedFilters.first != _selectedFilter) {
+    if (selectedFilters.isNotEmpty &&
+        selectedFilters.first != _selectedFilter) {
       setState(() {
         _selectedFilter = selectedFilters.first;
       });
@@ -174,13 +173,16 @@ class _DashboardPageState extends State<DashboardPage> {
           // FLOATING ACTION BUTTON - AI Assistant
           // ═══════════════════════════════════════════════════════════
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: () => _navigateToSection(context, 'chat'),
-            icon: const Icon(Icons.smart_toy),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChatbotPage(),
+                ),
+              );
+            },
             label: const Text('AI Assistant'),
-            backgroundColor: theme.colorScheme.secondary,
-            foregroundColor: theme.colorScheme.onSecondary,
-            elevation: 6,
-            tooltip: 'Open AI Assistant',
+            icon: const Icon(Icons.smart_toy_outlined),
           ),
         );
       },
@@ -191,7 +193,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildStatsGrid(WorkOrdersListState state) {
     final statsData = _getStatsData(state);
     final spacing = context.spacing;
-    
+
     return Padding(
       padding: REdgeInsets.fromLTRB(
         spacing.space4,
@@ -376,8 +378,7 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget _buildWorkOrders(
-      WorkOrderStatus status, WorkOrdersListState state) {
+  Widget _buildWorkOrders(WorkOrderStatus status, WorkOrdersListState state) {
     return state.when(
       initial: () => _buildLoadingState(),
       loading: () => _buildLoadingState(),
@@ -403,17 +404,20 @@ class _DashboardPageState extends State<DashboardPage> {
         return Column(
           children: [
             ...filteredWorkOrders.map((workOrder) => WorkOrderListCard(
-              workOrder: workOrder,
-              onTap: () {
-                context.router
-                    .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-              },
-              onStart: () => _handleWorkOrderAction(context, workOrder, 'start'),
-              onPause: () => _handleWorkOrderAction(context, workOrder, 'pause'),
-              onResume: () => _handleWorkOrderAction(context, workOrder, 'resume'),
-              onComplete: () =>
-                  _handleWorkOrderAction(context, workOrder, 'complete'),
-            )),
+                  workOrder: workOrder,
+                  onTap: () {
+                    context.router
+                        .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                  },
+                  onStart: () =>
+                      _handleWorkOrderAction(context, workOrder, 'start'),
+                  onPause: () =>
+                      _handleWorkOrderAction(context, workOrder, 'pause'),
+                  onResume: () =>
+                      _handleWorkOrderAction(context, workOrder, 'resume'),
+                  onComplete: () =>
+                      _handleWorkOrderAction(context, workOrder, 'complete'),
+                )),
             if (isLoadingMore)
               Padding(
                 padding: REdgeInsets.symmetric(vertical: 16),
@@ -613,8 +617,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                      icon: Icon(Icons.person_add,
-                          size: DesignTokens.iconSm.sp),
+                      icon:
+                          Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
                       label: Text('Assign to Me',
                           style: theme.textTheme.labelLarge),
                       style: ElevatedButton.styleFrom(

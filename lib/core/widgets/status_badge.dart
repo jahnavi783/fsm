@@ -210,9 +210,22 @@ class StatusBadge extends StatelessWidget {
     final baseColor = _getColor(theme, fsmTheme);
 
     // Apply variant styling
-    final backgroundColor = _getBackgroundColor(baseColor);
-    final textColor = _getTextColor(baseColor);
-    final borderColor = _getBorderColor(baseColor);
+    // final backgroundColor = _getBackgroundColor(baseColor);
+    final backgroundColor = (label.toLowerCase() == 'Medium' ||
+            label.toLowerCase() == 'High' ||
+            label.toLowerCase() == 'low')
+        ? Theme.of(context).colorScheme.primary
+        : _getBackgroundColor(baseColor);
+    final textColor = (label.toLowerCase() == 'Medium' ||
+            label.toLowerCase() == 'High' ||
+            label.toLowerCase() == 'low')
+        ? Colors.white
+        : _getTextColor(baseColor);
+    final borderColor = (label.toLowerCase() == 'Medium' ||
+            label.toLowerCase() == 'High' ||
+            label.toLowerCase() == 'low')
+        ? Colors.white
+        : _getBorderColor(baseColor);
 
     final effectiveFontSize = fontSize ?? DesignTokens.fontSize12.sp;
     final effectivePadding = padding ??
@@ -228,7 +241,8 @@ class StatusBadge extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(effectiveBorderRadius.r),
         border: borderColor != null
-            ? Border.all(color: borderColor, width: DesignTokens.borderWidthThin)
+            ? Border.all(
+                color: borderColor, width: DesignTokens.borderWidthThin)
             : null,
       ),
       child: Row(
@@ -332,7 +346,8 @@ class StatusBadge extends StatelessWidget {
   static IconData _getStatusIcon(String status) {
     switch (status.toLowerCase()) {
       case 'unassigned':
-        return Icons.assignment_outlined; // Outlined assignment icon for unassigned
+        return Icons
+            .assignment_outlined; // Outlined assignment icon for unassigned
       case 'assigned':
         return Icons.assignment_ind_outlined; // Assigned to person
       case 'in_progress':

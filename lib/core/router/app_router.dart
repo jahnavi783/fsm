@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fsm/app.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../features/work_orders/domain/entities/location_entity.dart';
+import '../../features/work_orders/domain/entities/work_order_entity.dart';
 import 'app_router.gr.dart';
 import 'guards/auth_guard.dart' as guard;
-import '../../features/work_orders/domain/entities/work_order_entity.dart';
-import '../../features/work_orders/domain/entities/location_entity.dart';
 
 /// FSM App Router Configuration - Robust Routing Architecture
 ///
@@ -265,7 +265,7 @@ extension AppRouterExtension on StackRouter {
             children: [DashboardRoute()],
           )
         ]);
-      case DrawerSection.workOrders:
+        // case DrawerSection.workOrders:
         return replaceAll([
           const MainNavigationRoute(
             children: [DashboardRoute()],
@@ -321,9 +321,10 @@ extension AppRouterExtension on StackRouter {
 
     switch (section) {
       case DrawerSection.dashboard:
-      case DrawerSection.workOrders:
+        // case DrawerSection.workOrders:
         // Both dashboard and workOrders use the dashboard page
-        return currentPath.contains('/dashboard') || currentPath.contains('/work-order');
+        return currentPath.contains('/dashboard') ||
+            currentPath.contains('/work-order');
       case DrawerSection.calendar:
         return currentPath.contains('/calendar');
       case DrawerSection.documents:
@@ -343,7 +344,7 @@ extension AppRouterExtension on StackRouter {
 /// Enum for drawer navigation sections
 enum DrawerSection {
   dashboard,
-  workOrders,
+  // workOrders,
   calendar,
   documents,
   parts,
@@ -356,7 +357,7 @@ enum DrawerSection {
 extension RouteNameToSection on String {
   DrawerSection? get drawerSection {
     if (contains('dashboard')) return DrawerSection.dashboard;
-    if (contains('work')) return DrawerSection.workOrders;
+    // if (contains('work')) return DrawerSection.workOrders;
     if (contains('calendar')) return DrawerSection.calendar;
     if (contains('document')) return DrawerSection.documents;
     if (contains('part')) return DrawerSection.parts;

@@ -116,15 +116,15 @@ class FSMDrawer extends StatelessWidget {
                   currentRoute: currentRoute,
                   onTap: () => onNavigate('dashboard'),
                 ),
-                _NavigationItem(
-                  icon: Icons.work_outline,
-                  selectedIcon: Icons.work,
-                  label: 'Work Orders',
-                  section: 'work_orders',
-                  currentRoute: currentRoute,
-                  onTap: () => onNavigate('work_orders'),
-                  badge: _getWorkOrdersBadgeCount(),
-                ),
+                // _NavigationItem(
+                //   icon: Icons.work_outline,
+                //   selectedIcon: Icons.work,
+                //   label: 'Work Orders',
+                //   section: 'work_orders',
+                //   currentRoute: currentRoute,
+                //   onTap: () => onNavigate('work_orders'),
+                //   badge: _getWorkOrdersBadgeCount(),
+                // ),
                 _NavigationItem(
                   icon: Icons.calendar_today_outlined,
                   selectedIcon: Icons.calendar_today,
@@ -368,7 +368,8 @@ class _QuickActionItem extends StatelessWidget {
 
   const _QuickActionItem({
     required this.icon,
-    required this.label, this.onTap,
+    required this.label,
+    this.onTap,
   });
 
   @override

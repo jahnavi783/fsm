@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
@@ -57,9 +58,9 @@ class ProfileView extends StatelessWidget {
     switch (section.toLowerCase()) {
       case 'dashboard':
         return DrawerSection.dashboard;
-      case 'work_orders':
-      case 'workorders':
-        return DrawerSection.workOrders;
+      // case 'work_orders':
+      // case 'workOrders':
+      //   return DrawerSection.workOrders;
       case 'calendar':
         return DrawerSection.calendar;
       case 'documents':

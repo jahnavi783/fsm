@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fsm/core/error/failures.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../domain/usecases/check_auth_usecase.dart';
 import '../../../domain/usecases/login_usecase.dart';
 import '../../../domain/usecases/logout_usecase.dart';
@@ -70,12 +71,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthState.loading());
 
-    final result = await _logoutUseCase();
-
-    result.fold(
-      (failure) => emit(AuthState.error(message: failure.userFriendlyMessage)),
-      (_) => emit(const AuthState.unauthenticated()),
-    );
+    emit(AuthState.error(message: 'Logging out...'));
+    emit(const AuthState.unauthenticated());
   }
 
   Future<void> _onRefreshToken(

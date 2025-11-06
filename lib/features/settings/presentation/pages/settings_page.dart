@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/navigation/fsm_drawer.dart';
-import '../../../../core/theme/design_tokens.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
+import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../profile/presentation/widgets/settings_section.dart';
 
 @RoutePage()
@@ -188,8 +188,8 @@ class SettingsPage extends StatelessWidget {
       case 'dashboard':
         return DrawerSection.dashboard;
       case 'work_orders':
-      case 'workorders':
-        return DrawerSection.workOrders;
+      // case 'workorders':
+      //   return DrawerSection.workOrders;
       case 'calendar':
         return DrawerSection.calendar;
       case 'documents':

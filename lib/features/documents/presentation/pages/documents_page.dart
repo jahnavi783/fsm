@@ -2,15 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../core/di/injection.dart';
-import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
+import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
@@ -449,8 +450,8 @@ class _DocumentsViewState extends State<DocumentsView> {
       case 'dashboard':
         return DrawerSection.dashboard;
       case 'work_orders':
-      case 'workorders':
-        return DrawerSection.workOrders;
+      // case 'workorders':
+      //   return DrawerSection.workOrders;
       case 'calendar':
         return DrawerSection.calendar;
       case 'documents':

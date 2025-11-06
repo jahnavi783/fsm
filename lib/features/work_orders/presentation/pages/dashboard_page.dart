@@ -769,9 +769,9 @@ class _DashboardPageState extends State<DashboardPage> {
     switch (section.toLowerCase()) {
       case 'dashboard':
         return DrawerSection.dashboard;
-      case 'work_orders':
-      case 'workorders':
-        return DrawerSection.workOrders;
+      // case 'work_orders':
+      // case 'workOrders':
+      //   return DrawerSection.workOrders;
       case 'calendar':
         return DrawerSection.calendar;
       case 'documents':
@@ -794,19 +794,34 @@ class _DashboardPageState extends State<DashboardPage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: Text('Logout',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium),
+        content: Text('Are you sure you want to logout?',
+            style: Theme.of(context).textTheme.bodyMedium),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            ),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          //changed the button from elevated to textbutton
+          TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
               context.read<AuthBloc>().add(const AuthEvent.logout());
             },
             style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
               backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Theme.of(context).colorScheme.onError,
             ),

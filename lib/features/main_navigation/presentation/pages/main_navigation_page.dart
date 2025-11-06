@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/router/app_router.gr.dart';
-
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../work_orders/presentation/blocs/work_order_action/work_order_action_bloc.dart';
@@ -145,8 +144,8 @@ class _MainNavigationView extends StatelessWidget {
       case 'dashboard':
         return DrawerSection.dashboard;
       case 'work_orders':
-      case 'workorders':
-        return DrawerSection.workOrders;
+      // case 'workorders':
+      //   return DrawerSection.workOrders;
       case 'calendar':
         return DrawerSection.calendar;
       case 'documents':

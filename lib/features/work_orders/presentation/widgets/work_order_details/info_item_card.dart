@@ -24,8 +24,8 @@ class InfoItemCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
+            // color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            color: theme.colorScheme.primaryContainer),
       ),
       child: Row(
         children: [

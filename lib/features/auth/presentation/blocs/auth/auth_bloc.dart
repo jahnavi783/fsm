@@ -71,7 +71,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthState.loading());
 
-    emit(AuthState.error(message: 'Logging out...'));
+    // emit(AuthState.error(message: 'Logging out...'));
+    // emit(AuthState.error(message: ''));
     emit(const AuthState.unauthenticated());
   }
 

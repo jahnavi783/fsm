@@ -211,18 +211,18 @@ class StatusBadge extends StatelessWidget {
 
     // Apply variant styling
     // final backgroundColor = _getBackgroundColor(baseColor);
-    final backgroundColor = (label.toLowerCase() == 'Medium' ||
-            label.toLowerCase() == 'High' ||
+    final backgroundColor = (label.toLowerCase() == 'medium' ||
+            label.toLowerCase() == 'high' ||
             label.toLowerCase() == 'low')
         ? Theme.of(context).colorScheme.primary
         : _getBackgroundColor(baseColor);
-    final textColor = (label.toLowerCase() == 'Medium' ||
-            label.toLowerCase() == 'High' ||
+    final textColor = (label.toLowerCase() == 'medium' ||
+            label.toLowerCase() == 'high' ||
             label.toLowerCase() == 'low')
         ? Colors.white
         : _getTextColor(baseColor);
-    final borderColor = (label.toLowerCase() == 'Medium' ||
-            label.toLowerCase() == 'High' ||
+    final borderColor = (label.toLowerCase() == 'medium' ||
+            label.toLowerCase() == 'high' ||
             label.toLowerCase() == 'low')
         ? Colors.white
         : _getBorderColor(baseColor);

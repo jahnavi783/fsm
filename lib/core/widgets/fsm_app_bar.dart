@@ -122,6 +122,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
     required VoidCallback onSearchTap,
     VoidCallback? onRefreshTap,
     bool showRefresh = false,
+    List<Widget>? actions,
   }) {
     return FSMAppBar(
       key: key,
@@ -140,6 +141,7 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
         FSMAppBarAction.search(
           onPressed: onSearchTap,
         ),
+        ...?actions,
       ],
       automaticallyImplyLeading: false,
     );

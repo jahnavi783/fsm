@@ -113,6 +113,8 @@ class _DashboardPageState extends State<DashboardPage> {
             title: 'Welcome, $userName',
             onMenuTap: () => _scaffoldKey.currentState?.openDrawer(),
             onSearchTap: () => _showSearchDialog(context),
+            onRefreshTap: _handleRefresh,
+            showRefresh: true,
           ),
 
           // ═══════════════════════════════════════════════════════════
@@ -830,5 +832,12 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
+  }
+
+  void _handleRefresh() {
+    // Trigger a refresh on the dashboard
+    context.read<WorkOrdersListBloc>().add(
+          const WorkOrdersListEvent.refreshWorkOrders(),
+        );
   }
 }

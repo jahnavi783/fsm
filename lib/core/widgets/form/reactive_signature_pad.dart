@@ -46,8 +46,10 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
       formControlName: widget.formControlName,
       builder: (ReactiveFormFieldState<File?, File?> field) {
         final hasError = field.errorText != null && field.control.touched;
-        final effectiveBackgroundColor = widget.backgroundColor ?? theme.colorScheme.surface;
-        final effectiveStrokeColor = widget.strokeColor ?? theme.colorScheme.onSurface;
+        final effectiveBackgroundColor =
+            widget.backgroundColor ?? theme.colorScheme.surface;
+        final effectiveStrokeColor =
+            widget.strokeColor ?? theme.colorScheme.onSurface;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,8 +87,12 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                 color: effectiveBackgroundColor,
                 borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
                 border: Border.all(
-                  color: hasError ? theme.colorScheme.error : theme.colorScheme.outline,
-                  width: hasError ? DesignTokens.borderWidthMedium : DesignTokens.borderWidthThin,
+                  color: hasError
+                      ? theme.colorScheme.error
+                      : theme.colorScheme.outline,
+                  width: hasError
+                      ? DesignTokens.borderWidthMedium
+                      : DesignTokens.borderWidthThin,
                 ),
               ),
               child: ClipRRect(

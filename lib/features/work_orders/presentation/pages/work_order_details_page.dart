@@ -1064,6 +1064,28 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         onReject: () => _rejectWorkOrder(context, workOrder),
         onAssignToMe: () => _assignToMe(context, workOrder),
       ),
+
+      // bottomNavigationBar: AnimatedSlide(
+      //   offset: _showBottomButtons ? Offset.zero : const Offset(0, 1),
+      //   duration: const Duration(milliseconds: 300),
+      //   curve: Curves.easeInOut,
+      //   child: AnimatedOpacity(
+      //     opacity: _showBottomButtons ? 1.0 : 0.0,
+      //     duration: const Duration(milliseconds: 300),
+      //     child: StatusAdaptiveActionsWidget(
+      //       workOrder: workOrder,
+      //       currentLocation: currentLocation,
+      //       isLocationLoading: isLocationLoading,
+      //       isActionInProgress: isActionInProgress,
+      //       onStart: () => _startWorkOrder(context, workOrder),
+      //       onPause: () => _pauseWorkOrder(context, workOrder),
+      //       onResume: () => _resumeWorkOrder(context, workOrder),
+      //       onComplete: () => _completeWorkOrder(context, workOrder),
+      //       onReject: () => _rejectWorkOrder(context, workOrder),
+      //       onAssignToMe: () => _assignToMe(context, workOrder),
+      //     ),
+      //   ),
+      // ),
     );
   }
 

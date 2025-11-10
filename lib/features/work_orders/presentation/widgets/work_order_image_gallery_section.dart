@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_grouped_images_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_image_capture_entity.dart';
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_thumbnail.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_preview_dialog.dart';
+import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_thumbnail.dart';
+import 'package:intl/intl.dart';
 
 /// Timeline entry model to hold capture data with action type context
 class _TimelineEntry {
@@ -361,7 +361,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                     Text(
                       displayDate,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface

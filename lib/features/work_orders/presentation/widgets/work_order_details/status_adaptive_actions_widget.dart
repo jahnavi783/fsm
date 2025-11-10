@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
@@ -100,7 +99,8 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
           context,
           primaryLabel: 'Start Job',
           primaryIcon: Icons.play_arrow,
-          primaryColor: fsmTheme.statusCompleted,
+          // primaryColor: fsmTheme.statusCompleted,
+          primaryColor: theme.colorScheme.primary,
           primaryOnPressed: !isLoading ? onStart : null,
           secondaryLabel: 'Reject',
           secondaryIcon: Icons.close,
@@ -184,9 +184,9 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                   child: Text(
                     'Waiting for location...',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: context.fsmTheme.warning,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          color: context.fsmTheme.warning,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
               ],
@@ -276,9 +276,9 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
                   child: Text(
                     'Waiting for location...',
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: context.fsmTheme.warning,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          color: context.fsmTheme.warning,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
               ],
@@ -292,6 +292,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: isLoading ? null : primaryOnPressed,
+                // onPressed: isLoading ? primaryOnPressed : primaryOnPressed,
                 icon: isLoading
                     ? RSizedBox(
                         width: 18.w,

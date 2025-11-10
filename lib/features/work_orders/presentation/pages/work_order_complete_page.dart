@@ -514,6 +514,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
           );
 
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             appBar: FSMAppBar.gradient(
               title: 'Complete Work Order',
               subtitle: widget.workOrder?.woNumber,

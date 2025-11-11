@@ -1,1840 +1,1881 @@
 {
-	"info": {
-		"_postman_id": "fsm-backend-collection-v1",
-		"name": "FSM Backend API",
-		"description": "Complete API collection for Field Service Management Backend with JWT authentication, role-based access control, and file upload support.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{accessToken}}",
-				"type": "string"
-			}
-		]
-	},
-	"item": [
-		{
-			"name": "🔐 Auth",
-			"item": [
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Extract tokens from response and save to environment",
-									"if (pm.response.code === 200) {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    // Save access token",
-									"    if (jsonData.accessToken) {",
-									"        pm.environment.set('accessToken', jsonData.accessToken);",
-									"        console.log('✅ Access token saved to environment');",
-									"    }",
-									"    ",
-									"    // Save refresh token",
-									"    if (jsonData.refreshToken) {",
-									"        pm.environment.set('refreshToken', jsonData.refreshToken);",
-									"        console.log('✅ Refresh token saved to environment');",
-									"    }",
-									"    ",
-									"    pm.test('Login successful', function () {",
-									"        pm.response.to.have.status(200);",
-									"    });",
-									"} else {",
-									"    pm.test('Login failed', function () {",
-									"        pm.response.to.have.status(401);",
-									"    });",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"123456\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"login"
-							]
-						},
-						"description": "Login with email and password. Returns access token and refresh token."
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Update access token from refresh response",
-									"if (pm.response.code === 200) {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    if (jsonData.accessToken) {",
-									"        pm.environment.set('accessToken', jsonData.accessToken);",
-									"        console.log('✅ Access token refreshed and saved');",
-									"    }",
-									"    ",
-									"    pm.test('Token refresh successful', function () {",
-									"        pm.response.to.have.status(200);",
-									"    });",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/refresh-token",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"refresh-token"
-							]
-						},
-						"description": "Refresh the access token using the refresh token."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "👥 Users",
-			"item": [
-				{
-					"name": "Create User",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"9876543210\",\n  \"gender\": \"male\",\n  \"city\": \"Bangalore\",\n  \"dob\": \"1990-05-15\",\n  \"role_id\": 4,\n  \"status\": \"active\",\n  \"service_territory\": \"South Zone\",\n  \"postal_code\": \"560001\",\n  \"specialization\": [\"forklifts\", \"hydraulics\"],\n  \"experience_years\": 5,\n  \"service_radius_km\": 20,\n  \"max_active_workorders\": 5\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users"
-							]
-						},
-						"description": "Create a new user. For FSEs (role_id: 4), include service_territory, postal_code, and optional FSE fields."
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users"
-							]
-						},
-						"description": "Get all users (except role_id 1). Manager only."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Current User Profile",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"me"
-							]
-						},
-						"description": "Get logged-in user's profile details."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Technicians with Workload",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/technicians?visit_date=2025-10-25&wo_id=1",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"technicians"
-							],
-							"query": [
-								{
-									"key": "visit_date",
-									"value": "2025-10-25",
-									"description": "Required: Visit date to check availability"
-								},
-								{
-									"key": "wo_id",
-									"value": "1",
-									"description": "Required: Work Order ID to exclude rejected FSEs"
-								}
-							]
-						},
-						"description": "Get all technicians with workload, rejection info, and auto-assignment score."
-					},
-					"response": []
-				},
-				{
-					"name": "Update User Status",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"blocked\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/users/:id/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								":id",
-								"status"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Update user status (active/blocked). Manager only."
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"phone\": \"9876543211\",\n  \"city\": \"Mumbai\",\n  \"experience_years\": 6,\n  \"is_available\": true\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "User ID"
-								}
-							]
-						},
-						"description": "Update user details. For FSEs, can update specialization, service territory, etc."
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"user@example.com\",\n  \"old_password\": \"123456\",\n  \"new_password\": \"newpassword123\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/users/reset-password",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"reset-password"
-							]
-						},
-						"description": "Reset user password using old password verification."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "📋 Service Requests",
-			"item": [
-				{
-					"name": "Create Service Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_type\": \"repair\",\n  \"summary\": \"Forklift not starting\",\n  \"issue_description\": \"Engine not responding to ignition\",\n  \"priority\": \"high\",\n  \"machine_serial\": \"FL-12345\",\n  \"model\": \"Atlas-2000\",\n  \"customer_name\": \"ABC Industries\",\n  \"customer_email\": \"contact@abc.com\",\n  \"customer_phone\": \"9876543210\",\n  \"location\": \"Warehouse A, Bangalore\",\n  \"postal_code\": \"560001\",\n  \"service_territory\": \"South Zone\",\n  \"machine_type\": \"Forklift\",\n  \"year_of_manufacture\": \"2020\",\n  \"under_warranty\": \"yes\",\n  \"purchase_date\": \"2020-05-15\",\n  \"commission_date\": \"2020-06-01\",\n  \"visit_date\": \"2025-10-26\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests"
-							]
-						},
-						"description": "Create a new service request. Customer asset tracking is handled automatically."
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Service Requests",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests?page=1&limit=10&keyword=&sr_prefix=SR",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Records per page"
-								},
-								{
-									"key": "keyword",
-									"value": "",
-									"description": "Search keyword"
-								},
-								{
-									"key": "sr_prefix",
-									"value": "SR",
-									"description": "Filter by SR prefix (SR, GE, PE)"
-								}
-							]
-						},
-						"description": "Get all service requests with pagination and filters."
-					},
-					"response": []
-				},
-				{
-					"name": "Update Service Request",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"summary\": \"Updated forklift issue\",\n  \"issue_description\": \"Engine problem persists\",\n  \"priority\": \"medium\",\n  \"visit_date\": \"2025-10-27\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Update editable fields of a service request."
-					},
-					"response": []
-				},
-				{
-					"name": "Request Review",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/:id/request-review",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								":id",
-								"request-review"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Request customer review for a service request."
-					},
-					"response": []
-				},
-				{
-					"name": "Close Service Request",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/:id/close",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								":id",
-								"close"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Close a service request after validation."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Status Count",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/status-count",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								"status-count"
-							]
-						},
-						"description": "Get count of service requests grouped by status."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Dashboard Stats",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/dashboard-stats?from=2025-01-01&to=2025-12-31",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								"dashboard-stats"
-							],
-							"query": [
-								{
-									"key": "from",
-									"value": "2025-01-01",
-									"description": "Start date (YYYY-MM-DD)"
-								},
-								{
-									"key": "to",
-									"value": "2025-12-31",
-									"description": "End date (YYYY-MM-DD)"
-								}
-							]
-						},
-						"description": "Get full dashboard stats (status, priority, warranty, reviews)."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🔧 Work Orders",
-			"item": [
-				{
-					"name": "Create Work Order",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_id\": 1,\n  \"summary\": \"Repair forklift engine\",\n  \"problem_description\": \"Engine overheating and not starting\",\n  \"priority\": \"high\",\n  \"location\": \"Warehouse A, Bangalore\",\n  \"visit_date\": \"2025-10-26\",\n  \"duration_hours\": 4.5\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders"
-							]
-						},
-						"description": "Create a work order under an existing service request."
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Work Orders",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders?page=1&limit=10&status=&priority=&city=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Records per page"
-								},
-								{
-									"key": "status",
-									"value": "",
-									"description": "Filter by status"
-								},
-								{
-									"key": "priority",
-									"value": "",
-									"description": "Filter by priority"
-								},
-								{
-									"key": "city",
-									"value": "",
-									"description": "Filter by city"
-								}
-							]
-						},
-						"description": "Get all work orders with role-based access and filters."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Unassigned Work Orders",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/unassigned?page=1&limit=10&priority=&city=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								"unassigned"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "10"
-								},
-								{
-									"key": "priority",
-									"value": ""
-								},
-								{
-									"key": "city",
-									"value": ""
-								}
-							]
-						},
-						"description": "Get all unassigned work orders (for FSE self-assignment)."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Work Order by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Get full details of a specific work order including SR and user details."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Work Orders by Service Request",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/service-request/:sr_id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								"service-request",
-								":sr_id"
-							],
-							"variable": [
-								{
-									"key": "sr_id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Get all work orders linked to a specific service request."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Grouped Images by Work Order",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/images-grouped",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"images-grouped"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Get grouped image logs for a Work Order by action type (start, pause, resume, complete, signature)."
-					},
-					"response": []
-				},
-				{
-					"name": "Update Work Order Meta",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"summary\": \"Updated work order summary\",\n  \"problem_description\": \"Updated problem description\",\n  \"priority\": \"medium\",\n  \"visit_date\": \"2025-10-27\",\n  \"duration_hours\": 5\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/edit",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"edit"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Update work order meta fields (manager/helpdesk only)."
-					},
-					"response": []
-				},
-				{
-					"name": "Assign Technician",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"assigned_to\": 4\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/assign",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"assign"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Assign a technician to the work order (or self-assign for FSEs)."
-					},
-					"response": []
-				},
-				{
-					"name": "Reject Work Order",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"reason\": \"Not available this week due to medical emergency\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/reject",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"reject"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Technician rejects a work order."
-					},
-					"response": []
-				},
-				{
-					"name": "Start Work Order",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "gps_coordinates",
-									"value": "[77.5946, 12.9716]",
-									"description": "GPS coordinates as JSON string",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "Upload start images (optional)"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/start",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"start"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Start a work order (FSE only). Can upload images."
-					},
-					"response": []
-				},
-				{
-					"name": "Pause Work Order",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "reason",
-									"value": "Awaiting spare part",
-									"description": "Required: Reason for pause",
-									"type": "text"
-								},
-								{
-									"key": "gps_coordinates",
-									"value": "[77.5946, 12.9716]",
-									"description": "GPS coordinates as JSON string",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "Upload pause images (optional)"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/pause",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"pause"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Pause a work order (FSE only). Requires reason."
-					},
-					"response": []
-				},
-				{
-					"name": "Resume Work Order",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "gps_coordinates",
-									"value": "[77.5946, 12.9716]",
-									"description": "GPS coordinates as JSON string",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "Upload resume images (optional)"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/resume",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"resume"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Resume a paused work order (FSE only)."
-					},
-					"response": []
-				},
-				{
-					"name": "Complete Work Order",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "work_log",
-									"value": "Replaced faulty motor and tested the machine",
-									"description": "Required: Work summary",
-									"type": "text"
-								},
-								{
-									"key": "gps_coordinates",
-									"value": "[77.5946, 12.9716]",
-									"description": "GPS coordinates as JSON string",
-									"type": "text"
-								},
-								{
-									"key": "customer_name",
-									"value": "John Smith",
-									"description": "Customer name for signature",
-									"type": "text"
-								},
-								{
-									"key": "signature",
-									"type": "file",
-									"src": [],
-									"description": "Required: Customer signature image"
-								},
-								{
-									"key": "parts_used",
-									"value": "[{\"part_number\": \"ENG001\", \"quantity_used\": 2}]",
-									"description": "JSON array of parts used",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "Upload completion images (optional)"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/:id/complete",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								":id",
-								"complete"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Work Order ID"
-								}
-							]
-						},
-						"description": "Mark a work order as completed (FSE only). Requires work log and signature."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "⭐ Reviews",
-			"item": [
-				{
-					"name": "Submit Customer Review",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_id\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Very professional.\",\n  \"submitted_by\": \"John Doe\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/reviews",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"reviews"
-							]
-						},
-						"description": "Submit a customer review for a service request (no auth required)."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Review by SR ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/reviews/:sr_id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"reviews",
-								":sr_id"
-							],
-							"variable": [
-								{
-									"key": "sr_id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Get review by Service Request ID."
-					},
-					"response": []
-				},
-				{
-					"name": "Submit Review by Helpdesk",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_id\": 1,\n  \"rating\": 4,\n  \"comment\": \"Good service, customer satisfied.\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/reviews/helpdesk-submit",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"reviews",
-								"helpdesk-submit"
-							]
-						},
-						"description": "Helpdesk submits customer review manually."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "📦 Inventory",
-			"item": [
-				{
-					"name": "Get All Parts",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/inventory",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"inventory"
-							]
-						},
-						"description": "Get list of all inventory parts."
-					},
-					"response": []
-				},
-				{
-					"name": "Check Part Availability",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/inventory/check?query=ENG001",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"inventory",
-								"check"
-							],
-							"query": [
-								{
-									"key": "query",
-									"value": "ENG001",
-									"description": "Part number or name to search"
-								}
-							]
-						},
-						"description": "Check part availability using part number or name."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "📸 Work Order Images",
-			"item": [
-				{
-					"name": "Get All Work Order Images",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-order-images?page=1&limit=10&sr_id=&work_order_id=&action_type=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-order-images"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "10"
-								},
-								{
-									"key": "sr_id",
-									"value": "",
-									"description": "Filter by Service Request ID"
-								},
-								{
-									"key": "work_order_id",
-									"value": "",
-									"description": "Filter by Work Order ID"
-								},
-								{
-									"key": "action_type",
-									"value": "",
-									"description": "Filter by action type (start, pause, resume, complete)"
-								}
-							]
-						},
-						"description": "Get all work order image logs with filters and pagination."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Work Order Image by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-order-images/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-order-images",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "Image log ID"
-								}
-							]
-						},
-						"description": "Get a specific work order image log by ID."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "📄 Documents",
-			"item": [
-				{
-					"name": "Upload Documents",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "Battery Calibration SOPs",
-									"description": "Required: Document title",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "Standard operating procedures for battery calibration",
-									"description": "Document description",
-									"type": "text"
-								},
-								{
-									"key": "category",
-									"value": "sop",
-									"description": "Required: Category (manual, sop, repair_guide, other)",
-									"type": "text"
-								},
-								{
-									"key": "related_model",
-									"value": "WIG-LF5000",
-									"description": "Related model or part name",
-									"type": "text"
-								},
-								{
-									"key": "keywords",
-									"value": "battery,calibration,error",
-									"description": "Comma-separated keywords",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "Required: Upload document files (PDF, videos)"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/documents",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"documents"
-							]
-						},
-						"description": "Upload support documents (PDF, videos) for FSEs."
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Documents",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/documents?upload_id=&model=&category=&keyword=&page=1&limit=10",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"documents"
-							],
-							"query": [
-								{
-									"key": "upload_id",
-									"value": "",
-									"description": "Filter by upload ID"
-								},
-								{
-									"key": "model",
-									"value": "",
-									"description": "Filter by related model"
-								},
-								{
-									"key": "category",
-									"value": "",
-									"description": "Filter by category"
-								},
-								{
-									"key": "keyword",
-									"value": "",
-									"description": "Keyword filter"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "10"
-								}
-							]
-						},
-						"description": "Get all uploaded documents with optional filters."
-					},
-					"response": []
-				},
-				{
-					"name": "Update Document",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "Updated document title",
-									"description": "Document title",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "Updated description",
-									"description": "Document description",
-									"type": "text"
-								},
-								{
-									"key": "category",
-									"value": "manual",
-									"description": "Category",
-									"type": "text"
-								},
-								{
-									"key": "filesToDelete",
-									"value": "1,2",
-									"description": "Comma-separated file IDs to delete",
-									"type": "text"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": [],
-									"description": "New files to upload"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/documents/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"documents",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here",
-									"description": "Document upload ID"
-								}
-							]
-						},
-						"description": "Update document upload details and files by ID."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Document",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/documents/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"documents",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "uuid-here",
-									"description": "Document upload ID"
-								}
-							]
-						},
-						"description": "Delete a document upload and all its files by ID."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "📊 Audit Logs",
-			"item": [
-				{
-					"name": "Get Audit Logs",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/audit-logs?sr_id=&sr_number=&wo_id=&wo_number=&action_type=&performed_by=&role_id=&start_date=&end_date=&page=1&limit=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"audit-logs"
-							],
-							"query": [
-								{
-									"key": "sr_id",
-									"value": "",
-									"description": "Filter by service request ID"
-								},
-								{
-									"key": "sr_number",
-									"value": "",
-									"description": "Filter by SR number"
-								},
-								{
-									"key": "wo_id",
-									"value": "",
-									"description": "Filter by work order ID"
-								},
-								{
-									"key": "wo_number",
-									"value": "",
-									"description": "Filter by WO number"
-								},
-								{
-									"key": "action_type",
-									"value": "",
-									"description": "Filter by action type"
-								},
-								{
-									"key": "performed_by",
-									"value": "",
-									"description": "Filter by user ID"
-								},
-								{
-									"key": "role_id",
-									"value": "",
-									"description": "Filter by role ID"
-								},
-								{
-									"key": "start_date",
-									"value": "",
-									"description": "Start date (YYYY-MM-DD)"
-								},
-								{
-									"key": "end_date",
-									"value": "",
-									"description": "End date (YYYY-MM-DD)"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "",
-									"description": "Leave empty to fetch all"
-								}
-							]
-						},
-						"description": "Get audit logs for service requests and work orders with filters."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🏢 Customer Assets",
-			"item": [
-				{
-					"name": "Search Customer Assets",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/customer-assets/search?email=&phone=&serial=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"customer-assets",
-								"search"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "",
-									"description": "Customer email (partial or full)"
-								},
-								{
-									"key": "phone",
-									"value": "",
-									"description": "Customer phone (partial or full)"
-								},
-								{
-									"key": "serial",
-									"value": "",
-									"description": "Machine serial number (partial or full)"
-								}
-							]
-						},
-						"description": "Search customer assets by email, phone, or machine serial."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "⏱️ Session",
-			"item": [
-				{
-					"name": "Check Session",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/session/check",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"session",
-								"check"
-							]
-						},
-						"description": "Check if user session is still active."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🔌 Integrations",
-			"item": [
-				{
-					"name": "Create SR from Integration",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{apiKey}}",
-								"description": "API Key for external integration"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_type\": \"repair\",\n  \"summary\": \"Engine overheating alert from Telematics\",\n  \"issue_description\": \"Vehicle ID 12345 reported an engine temperature of 110°C.\",\n  \"priority\": \"high\",\n  \"machine_serial\": \"VIN-XYZ-789123\",\n  \"model\": \"Truck Model T-800\",\n  \"customer_name\": \"Logistics Corp\",\n  \"customer_email\": \"ops@logisticscorp.com\",\n  \"customer_phone\": \"555-0102\",\n  \"location\": \"Warehouse B, Bengaluru\",\n  \"postal_code\": \"560034\",\n  \"service_territory\": \"South Zone\"\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/integrations/service-requests",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"integrations",
-								"service-requests"
-							]
-						},
-						"description": "Create a new service request from external integration (requires API Key)."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Bulk SR Status",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{apiKey}}",
-								"description": "API Key for external integration"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"sr_numbers\": [\n    \"SR-20250805-0001\",\n    \"SR-20250805-0004\"\n  ]\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/integrations/service-requests/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"integrations",
-								"service-requests",
-								"status"
-							]
-						},
-						"description": "Get the status of multiple service requests in bulk (requires API Key)."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "👷 Technicians",
-			"item": [
-				{
-					"name": "Get Available FSEs for SR",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/service-requests/:sr_id/available-fses?include_history=false&history_limit=5&only_available=false&visit_date=",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"service-requests",
-								":sr_id",
-								"available-fses"
-							],
-							"query": [
-								{
-									"key": "include_history",
-									"value": "false",
-									"description": "Include work history (true/false)"
-								},
-								{
-									"key": "history_limit",
-									"value": "5",
-									"description": "Number of recent work orders"
-								},
-								{
-									"key": "only_available",
-									"value": "false",
-									"description": "Filter only available FSEs (true/false)"
-								},
-								{
-									"key": "visit_date",
-									"value": "",
-									"description": "Check availability for visit date (YYYY-MM-DD HH:MM:SS)"
-								}
-							],
-							"variable": [
-								{
-									"key": "sr_id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Get available FSEs for a specific service request."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🧪 Test Endpoints",
-			"item": [
-				{
-					"name": "Test Review Email",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/work-orders/test-email/:sr_id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"work-orders",
-								"test-email",
-								":sr_id"
-							],
-							"variable": [
-								{
-									"key": "sr_id",
-									"value": "1",
-									"description": "Service Request ID"
-								}
-							]
-						},
-						"description": "Manual test email trigger (TEMP endpoint)."
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:3033",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "fsm-backend-collection-v1",
+    "name": "FSM Backend API",
+    "description": "Complete API collection for Field Service Management Backend with JWT authentication, role-based access control, and file upload support.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Extract tokens from response and save to environment",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    // Save access token",
+                  "    if (jsonData.accessToken) {",
+                  "        pm.environment.set('accessToken', jsonData.accessToken);",
+                  "        console.log('✅ Access token saved to environment');",
+                  "    }",
+                  "    ",
+                  "    // Save refresh token",
+                  "    if (jsonData.refreshToken) {",
+                  "        pm.environment.set('refreshToken', jsonData.refreshToken);",
+                  "        console.log('✅ Refresh token saved to environment');",
+                  "    }",
+                  "    ",
+                  "    pm.test('Login successful', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Login failed', function () {",
+                  "        pm.response.to.have.status(401);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login with email and password. Returns access token and refresh token."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Update access token from refresh response",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    if (jsonData.accessToken) {",
+                  "        pm.environment.set('accessToken', jsonData.accessToken);",
+                  "        console.log('✅ Access token refreshed and saved');",
+                  "    }",
+                  "    ",
+                  "    pm.test('Token refresh successful', function () {",
+                  "        pm.response.to.have.status(200);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "refresh-token"]
+            },
+            "description": "Refresh the access token using the refresh token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👥 Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"9876543210\",\n  \"gender\": \"male\",\n  \"city\": \"Bangalore\",\n  \"dob\": \"1990-05-15\",\n  \"role_id\": 4,\n  \"status\": \"active\",\n  \"service_territory\": \"South Zone\",\n  \"postal_code\": \"560001\",\n  \"specialization\": [\"forklifts\", \"hydraulics\"],\n  \"experience_years\": 5,\n  \"service_radius_km\": 20,\n  \"max_active_workorders\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            },
+            "description": "Create a new user. For FSEs (role_id: 4), include service_territory, postal_code, and optional FSE fields."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            },
+            "description": "Get all users (except role_id 1). Manager only."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me"]
+            },
+            "description": "Get logged-in user's profile details."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Technicians with Workload",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/technicians?visit_date=2025-10-25&wo_id=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "technicians"],
+              "query": [
+                {
+                  "key": "visit_date",
+                  "value": "2025-10-25",
+                  "description": "Required: Visit date to check availability"
+                },
+                {
+                  "key": "wo_id",
+                  "value": "1",
+                  "description": "Required: Work Order ID to exclude rejected FSEs"
+                }
+              ]
+            },
+            "description": "Get all technicians with workload, rejection info, and auto-assignment score."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"blocked\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Update user status (active/blocked). Manager only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"phone\": \"9876543211\",\n  \"city\": \"Mumbai\",\n  \"experience_years\": 6,\n  \"is_available\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Update user details. For FSEs, can update specialization, service territory, etc."
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"old_password\": \"123456\",\n  \"new_password\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "reset-password"]
+            },
+            "description": "Reset user password using old password verification."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📋 Service Requests",
+      "item": [
+        {
+          "name": "Create Service Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_type\": \"repair\",\n  \"summary\": \"Forklift not starting\",\n  \"issue_description\": \"Engine not responding to ignition\",\n  \"priority\": \"high\",\n  \"machine_serial\": \"FL-12345\",\n  \"model\": \"Atlas-2000\",\n  \"customer_name\": \"ABC Industries\",\n  \"customer_email\": \"contact@abc.com\",\n  \"customer_phone\": \"9876543210\",\n  \"location\": \"Warehouse A, Bangalore\",\n  \"postal_code\": \"560001\",\n  \"service_territory\": \"South Zone\",\n  \"machine_type\": \"Forklift\",\n  \"year_of_manufacture\": \"2020\",\n  \"under_warranty\": \"yes\",\n  \"purchase_date\": \"2020-05-15\",\n  \"commission_date\": \"2020-06-01\",\n  \"visit_date\": \"2025-10-26\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests"]
+            },
+            "description": "Create a new service request. Customer asset tracking is handled automatically."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests?page=1&limit=10&keyword=&sr_prefix=SR",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Records per page"
+                },
+                {
+                  "key": "keyword",
+                  "value": "",
+                  "description": "Search keyword"
+                },
+                {
+                  "key": "sr_prefix",
+                  "value": "SR",
+                  "description": "Filter by SR prefix (SR, GE, PE)"
+                }
+              ]
+            },
+            "description": "Get all service requests with pagination and filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Updated forklift issue\",\n  \"issue_description\": \"Engine problem persists\",\n  \"priority\": \"medium\",\n  \"visit_date\": \"2025-10-27\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Update editable fields of a service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Request Review",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/:id/request-review",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", ":id", "request-review"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Request customer review for a service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Close Service Request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/:id/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", ":id", "close"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Close a service request after validation."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Status Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/status-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", "status-count"]
+            },
+            "description": "Get count of service requests grouped by status."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/dashboard-stats?from=2025-01-01&to=2025-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", "dashboard-stats"],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2025-01-01",
+                  "description": "Start date (YYYY-MM-DD)"
+                },
+                {
+                  "key": "to",
+                  "value": "2025-12-31",
+                  "description": "End date (YYYY-MM-DD)"
+                }
+              ]
+            },
+            "description": "Get full dashboard stats (status, priority, warranty, reviews)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔧 Work Orders",
+      "item": [
+        {
+          "name": "Create Work Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_id\": 1,\n  \"summary\": \"Repair forklift engine\",\n  \"problem_description\": \"Engine overheating and not starting\",\n  \"priority\": \"high\",\n  \"location\": \"Warehouse A, Bangalore\",\n  \"visit_date\": \"2025-10-26\",\n  \"duration_hours\": 4.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders"]
+            },
+            "description": "Create a work order under an existing service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Work Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders?page=1&limit=10&status=&priority=&city=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Records per page"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by status"
+                },
+                {
+                  "key": "priority",
+                  "value": "",
+                  "description": "Filter by priority"
+                },
+                {
+                  "key": "city",
+                  "value": "",
+                  "description": "Filter by city"
+                }
+              ]
+            },
+            "description": "Get all work orders with role-based access and filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Unassigned Work Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/unassigned?page=1&limit=10&priority=&city=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", "unassigned"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "priority",
+                  "value": ""
+                },
+                {
+                  "key": "city",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get all unassigned work orders (for FSE self-assignment)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Work Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Get full details of a specific work order including SR and user details."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Work Orders by Service Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/service-request/:sr_id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", "service-request", ":sr_id"],
+              "variable": [
+                {
+                  "key": "sr_id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Get all work orders linked to a specific service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Grouped Images by Work Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/images-grouped",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "images-grouped"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Get grouped image logs for a Work Order by action type (start, pause, resume, complete, signature)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Work Order Meta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Updated work order summary\",\n  \"problem_description\": \"Updated problem description\",\n  \"priority\": \"medium\",\n  \"visit_date\": \"2025-10-27\",\n  \"duration_hours\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/edit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "edit"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Update work order meta fields (manager/helpdesk only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Technician",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assigned_to\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/assign",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "assign"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Assign a technician to the work order (or self-assign for FSEs)."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Work Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Not available this week due to medical emergency\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "reject"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Technician rejects a work order."
+          },
+          "response": []
+        },
+        {
+          "name": "Start Work Order",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "gps_coordinates",
+                  "value": "[77.5946, 12.9716]",
+                  "description": "GPS coordinates as JSON string",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload start images (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "start"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Start a work order (FSE only). Can upload images."
+          },
+          "response": []
+        },
+        {
+          "name": "Pause Work Order",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reason",
+                  "value": "Awaiting spare part",
+                  "description": "Required: Reason for pause",
+                  "type": "text"
+                },
+                {
+                  "key": "gps_coordinates",
+                  "value": "[77.5946, 12.9716]",
+                  "description": "GPS coordinates as JSON string",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload pause images (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/pause",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "pause"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Pause a work order (FSE only). Requires reason."
+          },
+          "response": []
+        },
+        {
+          "name": "Resume Work Order",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "gps_coordinates",
+                  "value": "[77.5946, 12.9716]",
+                  "description": "GPS coordinates as JSON string",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload resume images (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/resume",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "resume"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Resume a paused work order (FSE only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Work Order",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "work_log",
+                  "value": "Replaced faulty motor and tested the machine",
+                  "description": "Required: Work summary",
+                  "type": "text"
+                },
+                {
+                  "key": "gps_coordinates",
+                  "value": "[77.5946, 12.9716]",
+                  "description": "GPS coordinates as JSON string",
+                  "type": "text"
+                },
+                {
+                  "key": "customer_name",
+                  "value": "John Smith",
+                  "description": "Customer name for signature",
+                  "type": "text"
+                },
+                {
+                  "key": "signature",
+                  "type": "file",
+                  "src": [],
+                  "description": "Required: Customer signature image"
+                },
+                {
+                  "key": "parts_used",
+                  "value": "[{\"part_number\": \"ENG001\", \"quantity_used\": 2}]",
+                  "description": "JSON array of parts used",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload completion images (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/:id/complete",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", ":id", "complete"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Work Order ID"
+                }
+              ]
+            },
+            "description": "Mark a work order as completed (FSE only). Requires work log and signature."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "⭐ Reviews",
+      "item": [
+        {
+          "name": "Submit Customer Review",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_id\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Very professional.\",\n  \"submitted_by\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews"]
+            },
+            "description": "Submit a customer review for a service request (no auth required)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Review by SR ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews/:sr_id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews", ":sr_id"],
+              "variable": [
+                {
+                  "key": "sr_id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Get review by Service Request ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Review by Helpdesk",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_id\": 1,\n  \"rating\": 4,\n  \"comment\": \"Good service, customer satisfied.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews/helpdesk-submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reviews", "helpdesk-submit"]
+            },
+            "description": "Helpdesk submits customer review manually."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 Inventory",
+      "item": [
+        {
+          "name": "Get All Parts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventory",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventory"]
+            },
+            "description": "Get list of all inventory parts."
+          },
+          "response": []
+        },
+        {
+          "name": "Check Part Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventory/check?query=ENG001",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventory", "check"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "ENG001",
+                  "description": "Part number or name to search"
+                }
+              ]
+            },
+            "description": "Check part availability using part number or name."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📸 Work Order Images",
+      "item": [
+        {
+          "name": "Get All Work Order Images",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-order-images?page=1&limit=10&sr_id=&work_order_id=&action_type=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-order-images"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sr_id",
+                  "value": "",
+                  "description": "Filter by Service Request ID"
+                },
+                {
+                  "key": "work_order_id",
+                  "value": "",
+                  "description": "Filter by Work Order ID"
+                },
+                {
+                  "key": "action_type",
+                  "value": "",
+                  "description": "Filter by action type (start, pause, resume, complete)"
+                }
+              ]
+            },
+            "description": "Get all work order image logs with filters and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Work Order Image by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-order-images/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-order-images", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Image log ID"
+                }
+              ]
+            },
+            "description": "Get a specific work order image log by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📄 Documents",
+      "item": [
+        {
+          "name": "Upload Documents",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Battery Calibration SOPs",
+                  "description": "Required: Document title",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Standard operating procedures for battery calibration",
+                  "description": "Document description",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "sop",
+                  "description": "Required: Category (manual, sop, repair_guide, other)",
+                  "type": "text"
+                },
+                {
+                  "key": "related_model",
+                  "value": "WIG-LF5000",
+                  "description": "Related model or part name",
+                  "type": "text"
+                },
+                {
+                  "key": "keywords",
+                  "value": "battery,calibration,error",
+                  "description": "Comma-separated keywords",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Required: Upload document files (PDF, videos)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents"]
+            },
+            "description": "Upload support documents (PDF, videos) for FSEs."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Documents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents?upload_id=&model=&category=&keyword=&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents"],
+              "query": [
+                {
+                  "key": "upload_id",
+                  "value": "",
+                  "description": "Filter by upload ID"
+                },
+                {
+                  "key": "model",
+                  "value": "",
+                  "description": "Filter by related model"
+                },
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Filter by category"
+                },
+                {
+                  "key": "keyword",
+                  "value": "",
+                  "description": "Keyword filter"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all uploaded documents with optional filters."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Document",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated document title",
+                  "description": "Document title",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated description",
+                  "description": "Document description",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "manual",
+                  "description": "Category",
+                  "type": "text"
+                },
+                {
+                  "key": "filesToDelete",
+                  "value": "1,2",
+                  "description": "Comma-separated file IDs to delete",
+                  "type": "text"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "New files to upload"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "uuid-here",
+                  "description": "Document upload ID"
+                }
+              ]
+            },
+            "description": "Update document upload details and files by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "uuid-here",
+                  "description": "Document upload ID"
+                }
+              ]
+            },
+            "description": "Delete a document upload and all its files by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 Audit Logs",
+      "item": [
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/audit-logs?sr_id=&sr_number=&wo_id=&wo_number=&action_type=&performed_by=&role_id=&start_date=&end_date=&page=1&limit=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "audit-logs"],
+              "query": [
+                {
+                  "key": "sr_id",
+                  "value": "",
+                  "description": "Filter by service request ID"
+                },
+                {
+                  "key": "sr_number",
+                  "value": "",
+                  "description": "Filter by SR number"
+                },
+                {
+                  "key": "wo_id",
+                  "value": "",
+                  "description": "Filter by work order ID"
+                },
+                {
+                  "key": "wo_number",
+                  "value": "",
+                  "description": "Filter by WO number"
+                },
+                {
+                  "key": "action_type",
+                  "value": "",
+                  "description": "Filter by action type"
+                },
+                {
+                  "key": "performed_by",
+                  "value": "",
+                  "description": "Filter by user ID"
+                },
+                {
+                  "key": "role_id",
+                  "value": "",
+                  "description": "Filter by role ID"
+                },
+                {
+                  "key": "start_date",
+                  "value": "",
+                  "description": "Start date (YYYY-MM-DD)"
+                },
+                {
+                  "key": "end_date",
+                  "value": "",
+                  "description": "End date (YYYY-MM-DD)"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Leave empty to fetch all"
+                }
+              ]
+            },
+            "description": "Get audit logs for service requests and work orders with filters."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🏢 Customer Assets",
+      "item": [
+        {
+          "name": "Search Customer Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customer-assets/search?email=&phone=&serial=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customer-assets", "search"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "",
+                  "description": "Customer email (partial or full)"
+                },
+                {
+                  "key": "phone",
+                  "value": "",
+                  "description": "Customer phone (partial or full)"
+                },
+                {
+                  "key": "serial",
+                  "value": "",
+                  "description": "Machine serial number (partial or full)"
+                }
+              ]
+            },
+            "description": "Search customer assets by email, phone, or machine serial."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "⏱️ Session",
+      "item": [
+        {
+          "name": "Check Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/session/check",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "session", "check"]
+            },
+            "description": "Check if user session is still active."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔌 Integrations",
+      "item": [
+        {
+          "name": "Create SR from Integration",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "description": "API Key for external integration"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_type\": \"repair\",\n  \"summary\": \"Engine overheating alert from Telematics\",\n  \"issue_description\": \"Vehicle ID 12345 reported an engine temperature of 110°C.\",\n  \"priority\": \"high\",\n  \"machine_serial\": \"VIN-XYZ-789123\",\n  \"model\": \"Truck Model T-800\",\n  \"customer_name\": \"Logistics Corp\",\n  \"customer_email\": \"ops@logisticscorp.com\",\n  \"customer_phone\": \"555-0102\",\n  \"location\": \"Warehouse B, Bengaluru\",\n  \"postal_code\": \"560034\",\n  \"service_territory\": \"South Zone\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/integrations/service-requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "integrations", "service-requests"]
+            },
+            "description": "Create a new service request from external integration (requires API Key)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Bulk SR Status",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{apiKey}}",
+                "description": "API Key for external integration"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sr_numbers\": [\n    \"SR-20250805-0001\",\n    \"SR-20250805-0004\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/integrations/service-requests/status",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api",
+                "v1",
+                "integrations",
+                "service-requests",
+                "status"
+              ]
+            },
+            "description": "Get the status of multiple service requests in bulk (requires API Key)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👷 Technicians",
+      "item": [
+        {
+          "name": "Get Available FSEs for SR",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/service-requests/:sr_id/available-fses?include_history=false&history_limit=5&only_available=false&visit_date=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "service-requests", ":sr_id", "available-fses"],
+              "query": [
+                {
+                  "key": "include_history",
+                  "value": "false",
+                  "description": "Include work history (true/false)"
+                },
+                {
+                  "key": "history_limit",
+                  "value": "5",
+                  "description": "Number of recent work orders"
+                },
+                {
+                  "key": "only_available",
+                  "value": "false",
+                  "description": "Filter only available FSEs (true/false)"
+                },
+                {
+                  "key": "visit_date",
+                  "value": "",
+                  "description": "Check availability for visit date (YYYY-MM-DD HH:MM:SS)"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "sr_id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Get available FSEs for a specific service request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💬 Mobile Chatbot",
+      "item": [
+        {
+          "name": "Chat Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"How do I fix the engine overheating issue?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mobile/chat/query",
+              "host": ["{{baseUrl}}"],
+              "path": ["mobile", "chat", "query"]
+            },
+            "description": "Handle mobile chatbot query for FSE.\n- If no document is attached → cross-document RAG\n- If document attached → restricted to that document"
+          },
+          "response": []
+        },
+        {
+          "name": "Select Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document_id\": \"doc-12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mobile/chat/select_document",
+              "host": ["{{baseUrl}}"],
+              "path": ["mobile", "chat", "select_document"]
+            },
+            "description": "Attach a document for further questioning."
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mobile/chat/clear_document",
+              "host": ["{{baseUrl}}"],
+              "path": ["mobile", "chat", "clear_document"]
+            },
+            "description": "Detach current document for fresh cross-document queries."
+          },
+          "response": []
+        },
+        {
+          "name": "Session Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mobile/chat/session_info",
+              "host": ["{{baseUrl}}"],
+              "path": ["mobile", "chat", "session_info"]
+            },
+            "description": "Get current chatbot session info for the user."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🤖 Unified Chatbot",
+      "item": [
+        {
+          "name": "Unified Chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Help me with ticket tracking and parts availability\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chat",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat"]
+            },
+            "description": "Unified chatbot entrypoint. Uses the user's JWT context automatically."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📄 Document Intelligence",
+      "item": [
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [],
+                  "description": "Required: PDF document or file to upload"
+                },
+                {
+                  "key": "title",
+                  "value": "Equipment Manual",
+                  "description": "Document title",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Technical specifications and usage guidelines",
+                  "description": "Document description",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "manual",
+                  "description": "Category: manual, sop, repair_guide, other",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "upload"]
+            },
+            "description": "Upload and process a PDF document. Requires authentication. All roles can upload documents."
+          },
+          "response": []
+        },
+        {
+          "name": "Query Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document_id\": \"doc-12345\",\n  \"question\": \"What is the maximum operating temperature?\",\n  \"top_k\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/query",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "query"]
+            },
+            "description": "Query a processed document. Requires authentication. All roles can query documents."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Document Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/document/info/:document_id",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "info", ":document_id"],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "doc-12345",
+                  "description": "Document ID"
+                }
+              ]
+            },
+            "description": "Fetch document processing info. Requires authentication. All roles can view document info."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/document/:document_id",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", ":document_id"],
+              "variable": [
+                {
+                  "key": "document_id",
+                  "value": "doc-12345",
+                  "description": "Document ID"
+                }
+              ]
+            },
+            "description": "Delete a document and its embeddings. Requires authentication."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔍 Parts Availability",
+      "item": [
+        {
+          "name": "Query Parts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Do you have engine parts ENG001 in stock?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/parts/query",
+              "host": ["{{baseUrl}}"],
+              "path": ["parts", "query"]
+            },
+            "description": "Query inventory availability, price, or details.\n\nAccess Control:\n- FSE: Can query parts for their work\n- Manager: Can query parts and see pricing\n- Parts Manager: Full inventory access\n- Admin: Full access\n- Helpdesk: No access (not in allowed roles)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🎫 Ticket Tracker",
+      "item": [
+        {
+          "name": "Track Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"What's the status of work order WO-12345?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ticket/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["ticket", "track"]
+            },
+            "description": "Track, update, or search tickets based on message.\n\nAccess Control:\n- FSE: Can only update their own work orders\n- Manager: Can view/modify all SRs and WOs\n- Helpdesk: Can view/modify all SRs (no WO access)\n- Admin: Can do everything\n\nUser context automatically extracted from JWT token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 Ticket Analytics",
+      "item": [
+        {
+          "name": "Query Analytics",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Show me analytics for work orders from last week\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/query",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "query"]
+            },
+            "description": "Analyze a natural language query related to tickets.\n\nAccess Control:\n- FSE: Can query their own work order stats\n- Manager: Can query all work orders and service requests\n- Helpdesk: Can query all service requests (WO queries blocked)\n- Admin: Can query everything\n\nThe ticket_analytics module handles role-based filtering internally."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧪 Test Endpoints",
+      "item": [
+        {
+          "name": "Test Review Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/work-orders/test-email/:sr_id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "work-orders", "test-email", ":sr_id"],
+              "variable": [
+                {
+                  "key": "sr_id",
+                  "value": "1",
+                  "description": "Service Request ID"
+                }
+              ]
+            },
+            "description": "Manual test email trigger (TEMP endpoint)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string",
+      "description": "Bearer token for API authentication"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string",
+      "description": "Token used to refresh the access token"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "string",
+      "description": "API Key for external integrations"
+    }
+  ]
 }

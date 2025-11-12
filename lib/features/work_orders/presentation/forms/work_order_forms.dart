@@ -166,7 +166,7 @@ class WorkOrderForms {
         validators: [
           Validators.required,
           Validators.number(allowNegatives: false),
-          _minQuantityValidator,
+          // _minQuantityValidator,
         ],
       ),
     });

@@ -825,8 +825,8 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
       required this.workLog,
       required this.customerName,
       required this.signature,
-      required final List<PartUsedEntity> partsUsed,
-      required final List<File> files,
+      final List<PartUsedEntity> partsUsed = const [],
+      final List<File> files = const [],
       required this.latitude,
       required this.longitude,
       this.completionNotes})
@@ -838,6 +838,7 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
   final String customerName;
   final File signature;
   final List<PartUsedEntity> _partsUsed;
+  @JsonKey()
   List<PartUsedEntity> get partsUsed {
     if (_partsUsed is EqualUnmodifiableListView) return _partsUsed;
     // ignore: implicit_dynamic_type
@@ -845,6 +846,7 @@ class _CompleteWorkOrder implements WorkOrderActionEvent {
   }
 
   final List<File> _files;
+  @JsonKey()
   List<File> get files {
     if (_files is EqualUnmodifiableListView) return _files;
     // ignore: implicit_dynamic_type

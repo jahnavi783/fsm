@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
@@ -298,9 +297,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                       minimumStrokeWidth: 1.5,
                       maximumStrokeWidth: 3.5,
                       onDrawStart: () {
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          widget.onSignatureDrawn();
-                        });
+                        widget.onSignatureDrawn();
                         return false; // Allow drawing to start
                       },
                     ),

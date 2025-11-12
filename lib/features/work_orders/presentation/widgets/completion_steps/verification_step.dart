@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
@@ -147,9 +146,7 @@ class _VerificationStepState extends State<VerificationStep> {
                     minimumStrokeWidth: 1.5,
                     maximumStrokeWidth: 3.5,
                     onDrawStart: () {
-                      SchedulerBinding.instance.addPostFrameCallback((_) {
-                        widget.onSignatureDrawn();
-                      });
+                      widget.onSignatureDrawn();
                       return false; // Allow drawing to start
                     },
                   ),

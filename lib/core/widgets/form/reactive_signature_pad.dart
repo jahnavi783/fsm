@@ -1052,19 +1052,7 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                 // Save button - enabled when drawn and not already saved
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
-                    backgroundColor: isSaved
-                        ? context.fsmTheme.success.withValues(alpha: 0.1)
-                        : Theme.of(context).colorScheme.primary,
-                    // disabledBackgroundColor: isSaved
-                    //     ? context.fsmTheme.success.withValues(alpha: 0.1)
-                    //     : Theme.of(context).colorScheme.primary,
-                    side: isSaved
-                        ? BorderSide(
-                            color:
-                                context.fsmTheme.success.withValues(alpha: 0.3),
-                            width: DesignTokens.borderWidthThin,
-                          )
-                        : BorderSide.none,
+                    side: isSaved ? BorderSide.none : BorderSide.none,
                     foregroundColor:
                         isSaved ? context.fsmTheme.success : Colors.white,
                     elevation: 0,
@@ -1091,22 +1079,15 @@ class _ReactiveSignaturePadState extends State<ReactiveSignaturePad> {
                         )
                       : Icon(
                           Icons.check_circle,
-                          color:
-                              isSaved ? context.fsmTheme.success : Colors.white,
+                          color: Colors.white,
                           size: DesignTokens.iconSm.sp,
                         ),
                   label: Text(
                     _isSaving
                         ? 'Saving...'
                         : isSaved
-                            ? 'Successfully saved'
+                            ? 'Save Signature'
                             : 'Save Signature',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: DesignTokens.fontSize14.sp,
-                          color:
-                              isSaved ? context.fsmTheme.success : Colors.white,
-                          fontWeight: DesignTokens.fontWeightMedium,
-                        ),
                   ),
                 )
               ],

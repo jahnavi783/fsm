@@ -15,10 +15,11 @@ class WorkOrderForms {
         value: '',
         validators: [],
       ),
-      'files': ReactiveFileControl(
-        value: [],
-        validators: [],
-      ),
+      // 'files': ReactiveFileControl(
+      //   value: [],
+      //   validators: [],
+      // ),
+      'files': FormControl<List<File>>(value: []),
     });
   }
 
@@ -33,10 +34,11 @@ class WorkOrderForms {
           Validators.minLength(10),
         ],
       ),
-      'files': ReactiveFileControl(
-        value: [],
-        validators: [],
-      ),
+      // 'files': ReactiveFileControl(
+      //   value: [],
+      //   validators: [],
+      // ),
+      'files': FormControl<List<File>>(value: []),
     });
   }
 
@@ -48,10 +50,11 @@ class WorkOrderForms {
         value: '',
         validators: [],
       ),
-      'files': ReactiveFileControl(
-        value: [],
-        validators: [],
-      ),
+      // 'files': ReactiveFileControl(
+      //   value: [],
+      //   validators: [],
+      // ),
+      'files': FormControl<List<File>>(value: []),
     });
   }
 
@@ -66,6 +69,7 @@ class WorkOrderForms {
           Validators.minLength(20),
         ],
       ),
+      'files': FormControl<List<File>>(value: []),
     });
   }
 

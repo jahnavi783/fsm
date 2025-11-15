@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../../../core/services/enums.dart';
 
 part 'user_entity.freezed.dart';
@@ -18,6 +19,8 @@ abstract class UserEntity with _$UserEntity {
     DateTime? dob,
     UserRole? roleId,
     String? role,
+    required String accessToken,
+    String? refreshToken,
   }) = _UserEntity;
 
   String get fullName => '$firstName $lastName';

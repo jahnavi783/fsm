@@ -82,9 +82,10 @@ class _PartsPageState extends State<PartsPage> {
     });
 
     // Map filter value to category (handle 'all' case)
-    final category = selectedFilters.isNotEmpty && selectedFilters.first != 'all'
-        ? selectedFilters.first
-        : null;
+    final category =
+        selectedFilters.isNotEmpty && selectedFilters.first != 'all'
+            ? selectedFilters.first
+            : null;
 
     if (_searchQuery.isNotEmpty) {
       _partsBloc.add(
@@ -210,7 +211,8 @@ class _PartsPageState extends State<PartsPage> {
           padding: REdgeInsets.only(bottom: DesignTokens.space3),
           child: PartListCard(
             part: part,
-            location: 'Warehouse A', // TODO: Add actual location from part entity
+            location:
+                'Warehouse A', // TODO: Add actual location from part entity
             onTap: () => _openPartDetails(context, part),
             onDetails: () => _openPartDetails(context, part),
           ),

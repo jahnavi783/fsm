@@ -22,7 +22,8 @@
       "mcp__context7__resolve-library-id",
       "mcp__context7__get-library-docs",
       "Bash(git add:*)",
-      "Bash(flutter run:*)"
+      "Bash(flutter run:*)",
+      "mcp__MCP_DOCKER__fetch"
     ],
     "deny": [],
     "ask": []

@@ -22,6 +22,7 @@ class DocumentsPage extends StatefulWidget {
 
 class _DocumentsPageState extends State<DocumentsPage> {
   final ScrollController _scrollController = ScrollController();
+  late final DocumentsBloc _documentsBloc;
   String _searchQuery = '';
   List<String> _selectedCategories = [];
 
@@ -30,24 +31,25 @@ class _DocumentsPageState extends State<DocumentsPage> {
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    // Load documents initially
-    context.read<DocumentsBloc>().add(
-          const DocumentsEvent.loadDocuments(page: 1),
-        );
+    // Initialize DocumentsBloc and load documents initially
+    _documentsBloc = getIt<DocumentsBloc>()
+      ..add(const DocumentsEvent.loadDocuments(page: 1))
+      ..add(const DocumentsEvent.loadCategories());
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _documentsBloc.close();
     super.dispose();
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      context.read<DocumentsBloc>().add(
-            const DocumentsEvent.loadMoreDocuments(),
-          );
+      _documentsBloc.add(
+        const DocumentsEvent.loadMoreDocuments(),
+      );
     }
   }
 
@@ -57,22 +59,22 @@ class _DocumentsPageState extends State<DocumentsPage> {
     });
 
     if (query.isNotEmpty) {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.searchDocuments(
-              query: query,
-              category: _selectedCategories.isNotEmpty
-                  ? _selectedCategories.first
-                  : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(
+          query: query,
+          category: _selectedCategories.isNotEmpty
+              ? _selectedCategories.first
+              : null,
+        ),
+      );
     } else {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.loadDocuments(
-              category: _selectedCategories.isNotEmpty
-                  ? _selectedCategories.first
-                  : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category: _selectedCategories.isNotEmpty
+              ? _selectedCategories.first
+              : null,
+        ),
+      );
     }
   }
 
@@ -82,27 +84,27 @@ class _DocumentsPageState extends State<DocumentsPage> {
     });
 
     if (_searchQuery.isNotEmpty) {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.searchDocuments(
-              query: _searchQuery,
-              category:
-                  selectedFilters.isNotEmpty ? selectedFilters.first : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(
+          query: _searchQuery,
+          category:
+              selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
     } else {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.loadDocuments(
-              category:
-                  selectedFilters.isNotEmpty ? selectedFilters.first : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category:
+              selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<DocumentsBloc>(),
+    return BlocProvider.value(
+      value: _documentsBloc,
       child: BlocBuilder<DocumentsBloc, DocumentsState>(
         builder: (context, state) {
           return FSMDocumentsPageTemplate(
@@ -118,22 +120,22 @@ class _DocumentsPageState extends State<DocumentsPage> {
             isEmpty: state.filteredDocuments.isEmpty && !state.isLoading,
             hasError: state.hasError,
             errorMessage: state.errorMessage,
-            onRetry: () => context.read<DocumentsBloc>().add(
+            onRetry: () => _documentsBloc.add(
                   const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
                 ),
             // Actions
             onRefresh: () async {
-              context.read<DocumentsBloc>().add(
-                    DocumentsEvent.loadDocuments(
-                      page: 1,
-                      isRefresh: true,
-                      searchQuery:
-                          _searchQuery.isNotEmpty ? _searchQuery : null,
-                      category: _selectedCategories.isNotEmpty
-                          ? _selectedCategories.first
-                          : null,
-                    ),
-                  );
+              _documentsBloc.add(
+                DocumentsEvent.loadDocuments(
+                  page: 1,
+                  isRefresh: true,
+                  searchQuery:
+                      _searchQuery.isNotEmpty ? _searchQuery : null,
+                  category: _selectedCategories.isNotEmpty
+                      ? _selectedCategories.first
+                      : null,
+                ),
+              );
             },
             appBarActions: [
               if (state.isDownloading)
@@ -205,9 +207,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {
-    context
-        .read<DocumentsBloc>()
-        .add(DocumentsEvent.downloadDocument(document));
+    _documentsBloc.add(DocumentsEvent.downloadDocument(document));
   }
 
   void _deleteDocument(BuildContext context, DocumentEntity document) {

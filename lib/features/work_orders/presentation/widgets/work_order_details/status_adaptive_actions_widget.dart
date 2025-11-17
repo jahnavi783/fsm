@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
-import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 /// StatusAdaptiveActionsWidget
@@ -19,8 +18,6 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
 /// - Completed → (hidden)
 class StatusAdaptiveActionsWidget extends StatelessWidget {
   final WorkOrderEntity workOrder;
-  final LocationEntity? currentLocation;
-  final bool isLocationLoading;
   final bool isActionInProgress;
   final VoidCallback? onStart;
   final VoidCallback? onPause;
@@ -32,8 +29,6 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
   const StatusAdaptiveActionsWidget({
     super.key,
     required this.workOrder,
-    required this.currentLocation,
-    required this.isLocationLoading,
     required this.isActionInProgress,
     this.onStart,
     this.onPause,
@@ -111,34 +106,29 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
 
       case WorkOrderStatus.inProgress:
         // InProgress → "Pause" + "Complete" (side-by-side)
-        final locationAvailable = currentLocation != null;
         return _buildDualButtons(
           context,
           primaryLabel: 'Pause Job',
           primaryIcon: Icons.pause,
           primaryColor: fsmTheme.statusPending,
-          primaryOnPressed: !isLoading && locationAvailable ? onPause : null,
+          primaryOnPressed: !isLoading ? onPause : null,
           secondaryLabel: 'Complete Job',
           secondaryIcon: Icons.check_circle,
           secondaryColor: theme.colorScheme.primary,
-          secondaryOnPressed:
-              !isLoading && locationAvailable ? onComplete : null,
+          secondaryOnPressed: !isLoading ? onComplete : null,
           isLoading: isLoading,
-          showLocationWarning: !locationAvailable && !isLocationLoading,
         );
 
       case WorkOrderStatus.paused:
         // Paused → "Resume"
-        final locationAvailable = currentLocation != null;
         return _buildSingleButton(
           context,
           label: 'Resume Job',
           icon: Icons.play_arrow,
           // color: fsmTheme.statusCompleted,
           color: theme.colorScheme.primary,
-          onPressed: !isLoading && locationAvailable ? onResume : null,
+          onPressed: !isLoading ? onResume : null,
           isLoading: isLoading,
-          showLocationWarning: !locationAvailable && !isLocationLoading,
         );
 
       case WorkOrderStatus.completed:
@@ -157,47 +147,10 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     required Color color,
     required VoidCallback? onPressed,
     required bool isLoading,
-    bool showLocationWarning = false,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showLocationWarning) ...[
-          Container(
-            width: double.infinity,
-            padding: REdgeInsets.all(DesignTokens.space3),
-            decoration: BoxDecoration(
-              color: context.fsmTheme.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-              border: Border.all(
-                color: context.fsmTheme.warning.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.location_off,
-                  color: context.fsmTheme.warning,
-                  size: DesignTokens.iconSm.sp,
-                ),
-                DesignTokens.horizontalSpaceSmall,
-                Expanded(
-                  child: Text(
-                    'Waiting for location...',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: context.fsmTheme.warning,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          DesignTokens.verticalSpace(DesignTokens.space3),
-        ],
-        RSizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
+    return RSizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
             onPressed: isLoading ? null : onPressed,
             icon: isLoading
                 ? RSizedBox(
@@ -232,8 +185,6 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ],
     );
   }
 
@@ -249,45 +200,8 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     required Color secondaryColor,
     required VoidCallback? secondaryOnPressed,
     required bool isLoading,
-    bool showLocationWarning = false,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showLocationWarning) ...[
-          Container(
-            width: double.infinity,
-            padding: REdgeInsets.all(DesignTokens.space3),
-            decoration: BoxDecoration(
-              color: context.fsmTheme.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-              border: Border.all(
-                color: context.fsmTheme.warning.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.location_off,
-                  color: context.fsmTheme.warning,
-                  size: DesignTokens.iconSm.sp,
-                ),
-                DesignTokens.horizontalSpaceSmall,
-                Expanded(
-                  child: Text(
-                    'Waiting for location...',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: context.fsmTheme.warning,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          DesignTokens.verticalSpace(DesignTokens.space3),
-        ],
-        Row(
+    return Row(
           children: [
             // Primary button (left, 50% width)
             Expanded(
@@ -362,8 +276,6 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ],
     );
   }
 }

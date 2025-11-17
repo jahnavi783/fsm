@@ -2619,6 +2619,8 @@ import '../../../../core/widgets/form/reactive_image_picker.dart';
 import '../../../../core/widgets/form/reactive_multiline_input.dart';
 import '../../../../core/widgets/form/reactive_signature_pad.dart';
 import '../../../../core/widgets/form/reactive_text_input.dart';
+import '../../../parts/domain/entities/part_entity.dart';
+import '../../../parts/domain/usecases/get_parts_usecase.dart';
 import '../../data/models/work_order_completion_cache_model.dart';
 import '../../data/services/work_order_completion_cache_service.dart';
 import '../../domain/entities/location_entity.dart';
@@ -2679,17 +2681,54 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
   late FormGroup _step2Form;
   late FormGroup _step3Form;
 
+  // Parts management
+  final _getPartsUseCase = getIt<GetPartsUseCase>();
+  List<PartEntity> _availableParts = [];
+  bool _isLoadingParts = false;
+
   @override
   void initState() {
     super.initState();
     _initializeForms();
     _loadCachedData();
+    _loadAvailableParts();
   }
 
   void _initializeForms() {
     _step1Form = WorkOrderForms.buildCompleteFormStep1();
     _step2Form = WorkOrderForms.buildCompleteFormStep2();
     _step3Form = WorkOrderForms.buildCompleteFormStep3();
+  }
+
+  Future<void> _loadAvailableParts() async {
+    setState(() {
+      _isLoadingParts = true;
+    });
+
+    final result = await _getPartsUseCase(status: PartStatus.active);
+    result.fold(
+      (failure) {
+        if (mounted) {
+          setState(() {
+            _isLoadingParts = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to load parts: ${failure.message}'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      },
+      (parts) {
+        if (mounted) {
+          setState(() {
+            _availableParts = parts;
+            _isLoadingParts = false;
+          });
+        }
+      },
+    );
   }
 
   Future<void> _loadCachedData() async {
@@ -2777,11 +2816,104 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
   }
 
   void _handleAddPart(FormArray formArray) {
-    formArray.add(WorkOrderForms.createPartEntry(
-      partNumber: '',
-      partName: '',
-      quantity: 1,
-    ));
+    if (_availableParts.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_isLoadingParts
+              ? 'Loading parts, please wait...'
+              : 'No parts available in inventory'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            Padding(
+              padding: REdgeInsets.all(DesignTokens.space4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select Part',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+            Divider(height: 1.h),
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                padding: REdgeInsets.all(DesignTokens.space4),
+                itemCount: _availableParts.length,
+                itemBuilder: (context, index) {
+                  final part = _availableParts[index];
+                  return Card(
+                    margin: REdgeInsets.only(bottom: DesignTokens.space3),
+                    child: ListTile(
+                      title: Text(
+                        part.partName,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RSizedBox(height: DesignTokens.space1),
+                          Text('Part #: ${part.partNumber}'),
+                          Text('Category: ${part.category}'),
+                          Text('Available: ${part.quantityAvailable}'),
+                        ],
+                      ),
+                      trailing: Icon(
+                        part.isInStock
+                            ? Icons.check_circle
+                            : part.isLowStock
+                                ? Icons.warning
+                                : Icons.cancel,
+                        color: part.isInStock
+                            ? Colors.green
+                            : part.isLowStock
+                                ? Colors.orange
+                                : Colors.red,
+                      ),
+                      onTap: () {
+                        formArray.add(WorkOrderForms.createPartEntry(
+                          partNumber: part.partNumber,
+                          partName: part.partName,
+                          quantity: 1,
+                        ));
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _handleRemovePart(FormArray formArray, int index) {
@@ -3089,8 +3221,25 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
 
   Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
       ColorScheme colorScheme) {
+    final partGroup = formArray.controls[index] as FormGroup;
+    final partNumber = partGroup.control('partNumber').value as String? ?? '';
+    final partName = partGroup.control('partName').value as String? ?? '';
+
+    // Find the part details from available parts for additional info
+    final partDetails = _availableParts.firstWhere(
+      (p) => p.partNumber == partNumber,
+      orElse: () => PartEntity(
+        partNumber: partNumber,
+        partName: partName,
+        category: '',
+        quantityAvailable: 0,
+        unitPrice: 0.0,
+        status: PartStatus.active,
+      ),
+    );
+
     return ReactiveForm(
-      formGroup: formArray.controls[index] as FormGroup,
+      formGroup: partGroup,
       child: Container(
         margin: REdgeInsets.only(bottom: DesignTokens.space3),
         padding: REdgeInsets.all(DesignTokens.space4),
@@ -3100,15 +3249,52 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Expanded(
-                  child: Text('Part ${index + 1}',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurfaceVariant,
-                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        partName.isNotEmpty ? partName : 'Part ${index + 1}',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (partNumber.isNotEmpty) ...[
+                        RSizedBox(height: DesignTokens.space1),
+                        Text(
+                          'Part #: $partNumber',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                      if (partDetails.category.isNotEmpty) ...[
+                        Text(
+                          'Category: ${partDetails.category}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                      if (partDetails.quantityAvailable > 0) ...[
+                        Text(
+                          'Available: ${partDetails.quantityAvailable}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: partDetails.isInStock
+                                ? Colors.green
+                                : partDetails.isLowStock
+                                    ? Colors.orange
+                                    : Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
                 IconButton(
                   onPressed: () => _handleRemovePart(formArray, index),
@@ -3117,15 +3303,10 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 ),
               ],
             ),
-            RSizedBox(height: DesignTokens.space2),
-            ReactiveTextInput(
-                formControlName: 'partNumber', label: 'Part Number'),
-            RSizedBox(height: DesignTokens.space2),
-            ReactiveTextInput(formControlName: 'partName', label: 'Part Name'),
-            RSizedBox(height: DesignTokens.space2),
+            RSizedBox(height: DesignTokens.space3),
             ReactiveTextInput(
               formControlName: 'quantity',
-              label: 'Quantity',
+              label: 'Quantity Used',
               keyboardType: TextInputType.number,
             ),
           ],

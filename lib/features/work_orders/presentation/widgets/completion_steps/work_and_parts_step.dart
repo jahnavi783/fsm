@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/theme/design_tokens.dart';
+import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/di/injection.dart';
+import 'package:fsm/core/widgets/inputs/fsm_search_bar.dart';
+import 'package:fsm/core/widgets/inputs/fsm_filter_chip_group.dart';
+import 'package:fsm/core/widgets/inputs/quantity_selector.dart';
+import 'package:fsm/core/widgets/buttons/fsm_button.dart';
 import 'package:fsm/features/parts/domain/entities/part_entity.dart';
 import 'package:fsm/features/parts/domain/usecases/get_parts_usecase.dart';
 import 'models/part_used_input.dart';
@@ -39,6 +46,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
   final Set<String> _selectedPartNumbers = {};
+  String? _selectedCategory;
+  final Map<String, int> _partQuantities = {}; // Part number -> quantity
 
   @override
   void initState() {
@@ -64,7 +73,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to load parts: ${failure.message}'),
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: AppColors.error,
             ),
           );
         }
@@ -82,9 +91,52 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
     );
   }
 
+  List<PartEntity> _getFilteredParts() {
+    return _availableParts.where((part) {
+      // Search filter
+      final matchesSearch = _searchQuery.isEmpty ||
+          part.partName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          part.partNumber.toLowerCase().contains(_searchQuery.toLowerCase());
+
+      // Category filter
+      final matchesCategory = _selectedCategory == null ||
+          _selectedCategory == 'All' ||
+          part.category == _selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    }).toList();
+  }
+
+  List<String> _getUniqueCategories() {
+    final categories = _availableParts
+        .map((p) => p.category)
+        .where((cat) => cat.isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
+    return ['All', ...categories];
+  }
+
+  double _calculateTotalCost() {
+    double total = 0.0;
+    for (final partNumber in _selectedPartNumbers) {
+      final part = _availableParts.firstWhere(
+        (p) => p.partNumber == partNumber,
+        orElse: () => _availableParts.first,
+      );
+      final quantity = _partQuantities[partNumber] ?? 1;
+      total += part.unitPrice * quantity;
+    }
+    return total;
+  }
+
   void _showPartsSelectionDialog() {
-    // Reset selected parts at the start
+    // Reset state at the start
     _selectedPartNumbers.clear();
+    _partQuantities.clear();
+    _selectedCategory = null;
+    _searchQuery = '';
+    _searchController.clear();
 
     showModalBottomSheet(
       context: context,
@@ -92,310 +144,447 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
       isDismissible: !widget.enableMultiSelect,
       enableDrag: !widget.enableMultiSelect,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(DesignTokens.radiusLg.r),
+        ),
       ),
       builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) => DraggableScrollableSheet(
-          initialChildSize: 0.9,
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (context, scrollController) => Column(
-            children: [
-              // Handle bar
-              Container(
-                margin: EdgeInsets.only(top: 12.h),
-                width: 40.w,
-                height: 4.h,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .outline
-                      .withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2.r),
+        builder: (context, setModalState) {
+          final fsmTheme = context.fsmTheme;
+          final filteredParts = _getFilteredParts();
+          final categories = _getUniqueCategories();
+
+          return DraggableScrollableSheet(
+            initialChildSize: 0.9,
+            minChildSize: 0.5,
+            maxChildSize: 0.95,
+            expand: false,
+            builder: (context, scrollController) => Column(
+              children: [
+                // Handle bar
+                Container(
+                  margin: REdgeInsets.only(top: DesignTokens.space3),
+                  width: 40.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outline
+                        .withValues(alpha: 0.3),
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusXs.r),
+                  ),
                 ),
-              ),
 
-              // Header
-              Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.enableMultiSelect
-                              ? 'Select Parts'
-                              : 'Select Part',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        if (widget.enableMultiSelect &&
-                            _selectedPartNumbers.isNotEmpty)
-                          Text(
-                            '${_selectedPartNumbers.length} selected',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-
-                    // Search bar with real-time filtering
-                    TextField(
-                      controller: _searchController,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        hintText: 'Search by part name or number...',
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: _searchController.text.isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(Icons.clear),
-                                onPressed: _handleClearSearch,
-                              )
-                            : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        contentPadding: EdgeInsets.all(16.w),
+                // Header with close button
+                Padding(
+                  padding: REdgeInsets.all(DesignTokens.space4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.enableMultiSelect
+                            ? 'Add Parts'
+                            : 'Add Part',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
-                      onChanged: (value) {
-                        // Real-time filtering without keyboard submission
-                        setState(() {
-                          _searchQuery = value.toLowerCase();
+                      if (widget.enableMultiSelect &&
+                          _selectedPartNumbers.isNotEmpty)
+                        Container(
+                          padding: REdgeInsets.symmetric(
+                            horizontal: DesignTokens.space3,
+                            vertical: DesignTokens.space1,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer,
+                            borderRadius: BorderRadius.circular(
+                                DesignTokens.radiusFull.r),
+                          ),
+                          child: Text(
+                            '${_selectedPartNumbers.length} selected',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                // Search bar
+                Padding(
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space4,
+                  ),
+                  child: FSMSearchBar(
+                    hintText: 'Search parts by name or number...',
+                    onChanged: (value) {
+                      setModalState(() {
+                        _searchQuery = value;
+                      });
+                    },
+                  ),
+                ),
+
+                // Category filters
+                if (categories.length > 1) ...[
+                  DesignTokens.verticalSpaceMedium,
+                  Padding(
+                    padding: REdgeInsets.symmetric(
+                      horizontal: DesignTokens.space4,
+                    ),
+                    child: FSMFilterChipGroup<String>(
+                      options: categories
+                          .map((cat) => FilterChipData(
+                                value: cat,
+                                label: cat,
+                                leadingIcon:
+                                    cat == 'All' ? Icons.grid_view : null,
+                              ))
+                          .toList(),
+                      selectedValues: _selectedCategory != null
+                          ? [_selectedCategory!]
+                          : ['All'],
+                      onSelectionChanged: (selected) {
+                        setModalState(() {
+                          _selectedCategory =
+                              selected.isEmpty || selected.first == 'All'
+                                  ? null
+                                  : selected.first;
                         });
                       },
+                      multiSelect: false,
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                ],
 
-              // Parts list with real-time filtering
-              Expanded(
-                child: _isLoadingParts
-                    ? const Center(child: CircularProgressIndicator())
-                    : Builder(
-                        builder: (context) {
-                          // Filter parts locally based on search query
-                          final filteredParts = _searchQuery.isEmpty
-                              ? _availableParts
-                              : _availableParts.where((part) {
-                                  final query = _searchQuery.toLowerCase();
-                                  return part.partName.toLowerCase().contains(query) ||
-                                      part.partNumber.toLowerCase().contains(query);
-                                }).toList();
+                DesignTokens.verticalSpaceMedium,
 
-                          if (filteredParts.isEmpty) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    _searchQuery.isEmpty
-                                        ? Icons.inventory_2_outlined
-                                        : Icons.search_off,
-                                    size: 64.sp,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withValues(alpha: 0.4),
-                                  ),
-                                  SizedBox(height: 16.h),
-                                  Text(
-                                    _searchQuery.isEmpty
-                                        ? 'No parts available'
-                                        : 'No parts found for "$_searchQuery"',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withValues(alpha: 0.6),
-                                    ),
-                                  ),
-                                  if (_searchQuery.isNotEmpty) ...[
-                                    SizedBox(height: 8.h),
-                                    TextButton(
-                                      onPressed: _handleClearSearch,
-                                      child: const Text('Clear search'),
-                                    ),
-                                  ],
-                                ],
+                // Parts list
+                Expanded(
+                  child: _isLoadingParts
+                      ? const Center(child: CircularProgressIndicator())
+                      : filteredParts.isEmpty
+                          ? _buildEmptyState(context)
+                          : ListView.builder(
+                              controller: scrollController,
+                              padding: REdgeInsets.symmetric(
+                                horizontal: DesignTokens.space4,
                               ),
-                            );
-                          }
+                              itemCount: filteredParts.length,
+                              itemBuilder: (context, index) {
+                                final part = filteredParts[index];
+                                final isAlreadyAdded = widget.partsUsed
+                                    .any((p) =>
+                                        p.part.partNumber == part.partNumber);
+                                final isSelected = _selectedPartNumbers
+                                    .contains(part.partNumber);
+                                final quantity =
+                                    _partQuantities[part.partNumber] ?? 1;
 
-                          return ListView.builder(
-                            controller: scrollController,
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            itemCount: filteredParts.length,
-                            itemBuilder: (context, index) {
-                              final part = filteredParts[index];
-                              final isAlreadyAdded = widget.partsUsed.any(
-                                  (p) => p.part.partNumber == part.partNumber);
-                              final isSelected = _selectedPartNumbers
-                                  .contains(part.partNumber);
+                                return _buildPartCard(
+                                  context,
+                                  part,
+                                  isAlreadyAdded,
+                                  isSelected,
+                                  quantity,
+                                  fsmTheme,
+                                  setModalState,
+                                );
+                              },
+                            ),
+                ),
 
-                              return Card(
-                                margin: EdgeInsets.only(bottom: 12.h),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.all(12.w),
-                                  leading: Container(
-                                    width: 48.w,
-                                    height: 48.w,
-                                    decoration: BoxDecoration(
-                                      color: part.isInStock
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .withValues(alpha: 0.1)
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .error
-                                              .withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(8.r),
-                                    ),
-                                    child: Icon(
-                                      Icons.inventory_2,
-                                      color: part.isInStock
-                                          ? Theme.of(context).colorScheme.primary
-                                          : Theme.of(context).colorScheme.error,
-                                    ),
-                                  ),
-                                  title: Text(
-                                    part.partName,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        'Part #: ${part.partNumber}',
-                                        style: TextStyle(fontSize: 12.sp),
+                // Bottom summary and action button
+                if (widget.enableMultiSelect) ...[
+                  Container(
+                    padding: REdgeInsets.all(DesignTokens.space4),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .shadow
+                              .withValues(alpha: 0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, -2.h),
+                        ),
+                      ],
+                    ),
+                    child: SafeArea(
+                      top: false,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_selectedPartNumbers.isNotEmpty) ...[
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${_selectedPartNumbers.length} part${_selectedPartNumbers.length == 1 ? '' : 's'} selected',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      Text(
-                                        'Available: ${part.quantityAvailable}',
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: part.isInStock
-                                              ? Theme.of(context).colorScheme.primary
-                                              : Theme.of(context).colorScheme.error,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: isAlreadyAdded
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Theme.of(context).colorScheme.primary,
-                                          size: 24.sp,
-                                        )
-                                      : widget.enableMultiSelect
-                                          ? Checkbox(
-                                              value: isSelected,
-                                              onChanged: (value) {
-                                                setModalState(() {
-                                                  if (value == true) {
-                                                    _selectedPartNumbers
-                                                        .add(part.partNumber);
-                                                  } else {
-                                                    _selectedPartNumbers.remove(
-                                                        part.partNumber);
-                                                  }
-                                                });
-                                              },
-                                            )
-                                          : Icon(
-                                              Icons.add_circle_outline,
-                                              color: Theme.of(context).colorScheme.primary,
-                                              size: 24.sp,
-                                            ),
-                                  onTap: isAlreadyAdded
-                                      ? null
-                                      : () {
-                                          if (widget.enableMultiSelect) {
-                                            setModalState(() {
-                                              if (isSelected) {
-                                                _selectedPartNumbers
-                                                    .remove(part.partNumber);
-                                              } else {
-                                                _selectedPartNumbers
-                                                    .add(part.partNumber);
-                                              }
-                                            });
-                                          } else {
-                                            widget.onAddPart(PartUsedInput(
-                                              part: part,
-                                              quantityController:
-                                                  TextEditingController(
-                                                      text: '1'),
-                                            ));
-                                            Navigator.pop(context);
-                                          }
-                                        },
                                 ),
-                              );
-                            },
-                          );
-                        },
+                                Text(
+                                  'Total: \$${_calculateTotalCost().toStringAsFixed(2)}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            DesignTokens.verticalSpaceMedium,
+                          ],
+                          FsmButton.primary(
+                            text: _selectedPartNumbers.isEmpty
+                                ? 'Select Parts'
+                                : 'Add ${_selectedPartNumbers.length} Part${_selectedPartNumbers.length == 1 ? '' : 's'}',
+                            onPressed: _selectedPartNumbers.isEmpty
+                                ? null
+                                : _handleAddSelectedParts,
+                          ),
+                        ],
                       ),
-              ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 
-              // Add selected button (only for multi-select mode)
-              if (widget.enableMultiSelect) ...[
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inventory_2_outlined,
+            size: DesignTokens.iconXxl.sp,
+            color: Theme.of(context)
+                .colorScheme
+                .onSurface
+                .withValues(alpha: 0.4),
+          ),
+          DesignTokens.verticalSpaceMedium,
+          Text(
+            _searchQuery.isNotEmpty || _selectedCategory != null
+                ? 'No parts found'
+                : 'No parts available',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+          ),
+          if (_searchQuery.isNotEmpty || _selectedCategory != null) ...[
+            DesignTokens.verticalSpaceSmall,
+            Text(
+              'Try adjusting your search or filters',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.5),
+                  ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPartCard(
+    BuildContext context,
+    PartEntity part,
+    bool isAlreadyAdded,
+    bool isSelected,
+    int quantity,
+    FSMThemeExtension fsmTheme,
+    StateSetter setModalState,
+  ) {
+    final stockColor = fsmTheme.getStockColorByQuantity(
+      part.quantityAvailable,
+      10, // minQuantity
+      50, // maxQuantity
+    );
+
+    return Card(
+      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+      child: Padding(
+        padding: REdgeInsets.all(DesignTokens.space4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                // Part icon with stock indicator
                 Container(
-                  padding: EdgeInsets.all(20.w),
+                  width: 48.w,
+                  height: 48.w,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .shadow
-                            .withValues(alpha: 0.05),
-                        blurRadius: 10,
-                        offset: Offset(0, -2.h),
+                    color: stockColor.withValues(alpha: 0.1),
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusMd.r),
+                  ),
+                  child: Icon(
+                    Icons.inventory_2,
+                    color: stockColor,
+                    size: DesignTokens.iconMd.sp,
+                  ),
+                ),
+                RSizedBox(width: DesignTokens.space3),
+
+                // Part info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        part.partName,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      RSizedBox(height: DesignTokens.space1),
+                      Text(
+                        '#${part.partNumber}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.6),
+                            ),
                       ),
                     ],
                   ),
-                  child: SafeArea(
-                    top: false,
-                    child: ElevatedButton(
-                      onPressed: _selectedPartNumbers.isEmpty
-                          ? null
-                          : _handleAddSelectedParts,
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        minimumSize: Size(double.infinity, 48.h),
-                      ),
-                      child: Text(
-                        'Add ${_selectedPartNumbers.length} Part${_selectedPartNumbers.length == 1 ? '' : 's'}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                ),
+
+                // Selection checkbox or checkmark
+                if (isAlreadyAdded)
+                  Icon(
+                    Icons.check_circle,
+                    color: fsmTheme.success,
+                    size: DesignTokens.iconMd.sp,
+                  )
+                else if (widget.enableMultiSelect)
+                  Checkbox(
+                    value: isSelected,
+                    onChanged: (value) {
+                      setModalState(() {
+                        if (value == true) {
+                          _selectedPartNumbers.add(part.partNumber);
+                          _partQuantities[part.partNumber] = 1;
+                        } else {
+                          _selectedPartNumbers.remove(part.partNumber);
+                          _partQuantities.remove(part.partNumber);
+                        }
+                      });
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: DesignTokens.iconMd.sp,
                     ),
+                    onPressed: () {
+                      widget.onAddPart(PartUsedInput(
+                        part: part,
+                        quantityController: TextEditingController(text: '1'),
+                      ));
+                      Navigator.pop(context);
+                    },
                   ),
+              ],
+            ),
+
+            DesignTokens.verticalSpaceMedium,
+
+            // Stock info and price
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Stock: ${part.quantityAvailable}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: stockColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    RSizedBox(width: DesignTokens.space3),
+                    Text(
+                      '\$${part.unitPrice.toStringAsFixed(2)}/unit',
+                      style:
+                          Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withValues(alpha: 0.8),
+                              ),
+                    ),
+                  ],
                 ),
               ],
+            ),
+
+            // Quantity selector (only if selected in multi-select mode)
+            if (widget.enableMultiSelect && isSelected && !isAlreadyAdded) ...[
+              DesignTokens.verticalSpaceMedium,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  QuantitySelector(
+                    initialQuantity: quantity,
+                    availableStock: part.quantityAvailable,
+                    onQuantityChanged: (newQuantity) {
+                      setModalState(() {
+                        _partQuantities[part.partNumber] = newQuantity;
+                      });
+                    },
+                  ),
+                  Text(
+                    'Total: \$${(part.unitPrice * quantity).toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );
@@ -406,15 +595,19 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
     setState(() {
       _searchQuery = '';
     });
+    _loadParts();
   }
 
   void _handleAddSelectedParts() {
     final selectedParts = _availableParts
         .where((p) => _selectedPartNumbers.contains(p.partNumber))
-        .map((part) => PartUsedInput(
-              part: part,
-              quantityController: TextEditingController(text: '1'),
-            ))
+        .map((part) {
+          final quantity = _partQuantities[part.partNumber] ?? 1;
+          return PartUsedInput(
+            part: part,
+            quantityController: TextEditingController(text: quantity.toString()),
+          );
+        })
         .toList();
 
     if (widget.onAddMultipleParts != null) {
@@ -437,7 +630,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Row(
@@ -445,8 +638,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                 Container(
                   width: 32.w,
                   height: 32.w,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -455,7 +648,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onPrimary,
+                        color: AppColors.onPrimary,
                       ),
                     ),
                   ),
@@ -517,20 +710,20 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
                 borderSide: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                  color: AppColors.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary,
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                borderSide: BorderSide(
-                  color: theme.colorScheme.error,
+                borderSide: const BorderSide(
+                  color: AppColors.error,
                 ),
               ),
               contentPadding: EdgeInsets.all(16.w),
@@ -581,7 +774,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                  color: AppColors.outline.withValues(alpha: 0.2),
                 ),
               ),
               child: Row(
@@ -615,7 +808,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
               Icon(
                 Icons.info_outline,
                 size: 16.sp,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                color: theme.colorScheme.onSurface.withOpacity(0.5),
               ),
               SizedBox(width: 8.w),
               Expanded(
@@ -623,7 +816,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                   'Work log is required. Parts are optional but recommended.',
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
                     fontStyle: FontStyle.italic,
                   ),
                 ),

@@ -90,8 +90,8 @@ class WorkOrderActionBloc
           isLoadingImages: false,
         ));
 
-        // Automatically capture location when work order is loaded
-        add(const WorkOrderActionEvent.captureLocation());
+        // Location capture removed - no longer automatically fetching location on load
+        // Location will be captured when user initiates an action that requires it
       },
     );
   }
@@ -393,7 +393,8 @@ class WorkOrderActionBloc
       );
 
       emit(currentState.maybeWhen(
-        loaded: (workOrder, _, __, isOffline, groupedImages, ___) => WorkOrderActionState.loaded(
+        loaded: (workOrder, _, __, isOffline, groupedImages, ___) =>
+            WorkOrderActionState.loaded(
           workOrder: workOrder,
           currentLocation: location,
           isLocationLoading: false,

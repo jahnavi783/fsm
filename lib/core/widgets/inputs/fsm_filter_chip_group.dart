@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+import 'filter_chip_data.dart';
 
 /// FSMFilterChipGroup - Multi-select/single-select filter chips component
 ///
@@ -288,26 +289,4 @@ class _FilterChip extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Data class for filter chip options
-class FilterChipData<T> {
-  /// The value associated with this chip
-  final T value;
-
-  /// Display label for the chip
-  final String label;
-
-  /// Optional leading icon
-  final IconData? leadingIcon;
-
-  /// Whether this chip is disabled
-  final bool isDisabled;
-
-  const FilterChipData({
-    required this.value,
-    required this.label,
-    this.leadingIcon,
-    this.isDisabled = false,
-  });
 }

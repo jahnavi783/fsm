@@ -689,7 +689,6 @@ import 'package:fsm/features/work_orders/presentation/widgets/work_order_complet
 // Import widget components that may be needed for action in progress and error
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/action_in_progress_widget.dart';
 // Dialog components
-import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/dialogs/location_error_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/error_widget.dart';
 // Import section components
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_details/sections/basic_information_section.dart';
@@ -1054,8 +1053,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       ),
       bottomNavigationBar: StatusAdaptiveActionsWidget(
         workOrder: workOrder,
-        currentLocation: currentLocation,
-        isLocationLoading: isLocationLoading,
         isActionInProgress: isActionInProgress,
         onStart: () => _startWorkOrder(context, workOrder),
         onPause: () => _pauseWorkOrder(context, workOrder),
@@ -1183,145 +1180,58 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   // Action methods (unchanged - preserve all business logic)
   void _startWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
-      final state = _workOrderActionBloc?.state;
-      state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___, ____, _____) {
-          _showStartWorkOrderBottomSheet(context, workOrder, currentLocation);
-        },
-        actionSuccess: (workOrderEntity, actionType, message, _) {
-          _showStartWorkOrderBottomSheet(context, workOrder, null);
-        },
-        orElse: () => _showLocationErrorDialog(context),
+      WorkOrderFormSheet.show(
+        context: context,
+        action: WorkOrderAction.start,
+        workOrder: workOrder,
+        location: null,
       );
     });
   }
 
   void _pauseWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
-      final state = _workOrderActionBloc?.state;
-      state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___, ____, _____) {
-          _showPauseWorkOrderBottomSheet(context, workOrder, currentLocation);
-        },
-        actionSuccess: (workOrderEntity, actionType, message, _) {
-          _showPauseWorkOrderBottomSheet(context, workOrder, null);
-        },
-        orElse: () => _showLocationErrorDialog(context),
+      WorkOrderFormSheet.show(
+        context: context,
+        action: WorkOrderAction.pause,
+        workOrder: workOrder,
+        location: null,
       );
     });
   }
 
   void _resumeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
-      final state = _workOrderActionBloc?.state;
-      state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___, ____, _____) {
-          WorkOrderFormSheet.show(
-            context: context,
-            action: WorkOrderAction.resume,
-            workOrder: workOrder,
-            location: currentLocation,
-          );
-        },
-        actionSuccess: (workOrderEntity, actionType, message, _) {
-          WorkOrderFormSheet.show(
-            context: context,
-            action: WorkOrderAction.resume,
-            workOrder: workOrder,
-            location: null,
-          );
-        },
-        orElse: () => _showLocationErrorDialog(context),
+      WorkOrderFormSheet.show(
+        context: context,
+        action: WorkOrderAction.resume,
+        workOrder: workOrder,
+        location: null,
       );
     });
   }
 
   void _completeWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
-      final state = _workOrderActionBloc?.state;
-      state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___, ____, _____) {
-          WorkOrderCompleteWizard.show(
-            context: context,
-            workOrder: workOrder,
-            location: currentLocation,
-          );
-        },
-        actionSuccess: (workOrderEntity, actionType, message, _) {
-          WorkOrderCompleteWizard.show(
-            context: context,
-            workOrder: workOrder,
-            location: null,
-          );
-        },
-        orElse: () => _showLocationErrorDialog(context),
+      WorkOrderCompleteWizard.show(
+        context: context,
+        workOrder: workOrder,
+        location: null,
       );
     });
   }
 
   void _rejectWorkOrder(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
-      final state = _workOrderActionBloc?.state;
-      state?.maybeWhen(
-        loaded: (_, currentLocation, __, ___, ____, _____) {
-          WorkOrderFormSheet.show(
-            context: context,
-            action: WorkOrderAction.reject,
-            workOrder: workOrder,
-            location: currentLocation,
-          );
-        },
-        actionSuccess: (workOrderEntity, actionType, message, _) {
-          WorkOrderFormSheet.show(
-            context: context,
-            action: WorkOrderAction.reject,
-            workOrder: workOrder,
-            location: null,
-          );
-        },
-        orElse: () => _showLocationErrorDialog(context),
+      WorkOrderFormSheet.show(
+        context: context,
+        action: WorkOrderAction.reject,
+        workOrder: workOrder,
+        location: null,
       );
     });
   }
 
-  void _showStartWorkOrderBottomSheet(
-    BuildContext context,
-    WorkOrderEntity workOrder,
-    LocationEntity? currentLocation,
-  ) {
-    WorkOrderFormSheet.show(
-      context: context,
-      action: WorkOrderAction.start,
-      workOrder: workOrder,
-      location: currentLocation,
-    );
-  }
-
-  void _showPauseWorkOrderBottomSheet(
-    BuildContext context,
-    WorkOrderEntity workOrder,
-    LocationEntity? currentLocation,
-  ) {
-    WorkOrderFormSheet.show(
-      context: context,
-      action: WorkOrderAction.pause,
-      workOrder: workOrder,
-      location: currentLocation,
-    );
-  }
-
-  void _showLocationErrorDialog(BuildContext context) {
-    LocationErrorDialog.show(
-      context,
-      () {
-        _executeIfMounted(() {
-          _workOrderActionBloc?.add(
-            WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-          );
-        });
-      },
-    );
-  }
 
   void _assignToMe(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {

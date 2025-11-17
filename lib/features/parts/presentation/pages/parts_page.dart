@@ -2,18 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-import '../../../auth/presentation/blocs/auth/auth_state.dart';
-import '../../../../core/widgets/states/fsm_empty_state.dart';
+import '../../../../core/widgets/inputs/fsm_filter_chip_group.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
 import '../blocs/parts/parts_state.dart';
 import '../widgets/part_list_card.dart';
-import '../widgets/quick_stats_bar.dart';
 
 @RoutePage()
 class PartsPage extends StatefulWidget {
@@ -24,222 +23,207 @@ class PartsPage extends StatefulWidget {
 }
 
 class _PartsPageState extends State<PartsPage> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<PartsBloc>()
-        ..add(const PartsEvent.loadParts())
-        ..add(const PartsEvent.loadPartCategories())
-        ..add(const PartsEvent.loadLowStockParts()),
-      child: const _PartsPageView(),
-    );
-  }
-}
-
-class _PartsPageView extends StatefulWidget {
-  const _PartsPageView();
-
-  @override
-  State<_PartsPageView> createState() => _PartsPageViewState();
-}
-
-class _PartsPageViewState extends State<_PartsPageView>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
   final ScrollController _scrollController = ScrollController();
-
-  // Category tabs
-  final List<String> _categories = [
-    'All',
-    'Electrical',
-    'Hydraulic',
-    'Mechanical',
-    'Tools'
-  ];
+  late final PartsBloc _partsBloc;
+  String _searchQuery = '';
+  List<String> _selectedCategories = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _categories.length, vsync: this);
     _scrollController.addListener(_onScroll);
 
-    // Listen to tab changes
-    _tabController.addListener(() {
-      if (!_tabController.indexIsChanging) {
-        final category = _tabController.index == 0
-            ? null
-            : _categories[_tabController.index];
-        context.read<PartsBloc>().add(PartsEvent.filterByCategory(category));
-      }
-    });
+    // Initialize PartsBloc and load data
+    _partsBloc = getIt<PartsBloc>()
+      ..add(const PartsEvent.loadParts())
+      ..add(const PartsEvent.loadPartCategories());
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     _scrollController.dispose();
+    _partsBloc.close();
     super.dispose();
   }
 
   void _onScroll() {
-    if (_isBottom) {
-      context.read<PartsBloc>().add(const PartsEvent.loadMoreParts());
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      _partsBloc.add(const PartsEvent.loadMoreParts());
     }
   }
 
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query;
+    });
+
+    if (query.isNotEmpty) {
+      _partsBloc.add(
+        PartsEvent.searchParts(
+          query: query,
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        ),
+      );
+    } else {
+      _partsBloc.add(
+        PartsEvent.loadParts(
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        ),
+      );
+    }
+  }
+
+  void _onFilterChanged(List<String> selectedFilters) {
+    setState(() {
+      _selectedCategories = selectedFilters;
+    });
+
+    // Map filter value to category (handle 'all' case)
+    final category =
+        selectedFilters.isNotEmpty && selectedFilters.first != 'all'
+            ? selectedFilters.first
+            : null;
+
+    if (_searchQuery.isNotEmpty) {
+      _partsBloc.add(
+        PartsEvent.searchParts(
+          query: _searchQuery,
+          category: category,
+        ),
+      );
+    } else {
+      _partsBloc.add(
+        PartsEvent.loadParts(
+          category: category,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, authState) {
-        return Scaffold(
-          backgroundColor: theme.colorScheme.surface,
-          appBar: FSMAppBar.gradient(
-            title: 'Parts',
-            actions: [
-              FSMAppBarAction.search(
-                onPressed: () {
-                  // TODO: Implement search navigation when SearchRoute is available
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Search coming soon')),
-                  );
-                },
+    return BlocProvider.value(
+      value: _partsBloc,
+      child: BlocBuilder<PartsBloc, PartsState>(
+        builder: (context, state) {
+          return FSMListPageTemplate<String>(
+            // Custom gradient app bar
+            appBar: FSMAppBar.gradient(
+              title: 'Parts',
+            ),
+            // Search and filters
+            showSearch: true,
+            searchHint: 'Search parts...',
+            searchValue: _searchQuery,
+            onSearchChanged: _onSearchChanged,
+            onSearchSubmitted: (query) => _onSearchChanged(query),
+            showVoiceSearch: false,
+            showFilters: true,
+            filterOptions: [
+              const FilterChipData<String>(
+                value: 'all',
+                label: 'All',
+                leadingIcon: Icons.inventory_2,
+              ),
+              const FilterChipData<String>(
+                value: 'electrical',
+                label: 'Electrical',
+                leadingIcon: Icons.electrical_services,
+              ),
+              const FilterChipData<String>(
+                value: 'hydraulic',
+                label: 'Hydraulic',
+                leadingIcon: Icons.water_drop,
+              ),
+              const FilterChipData<String>(
+                value: 'mechanical',
+                label: 'Mechanical',
+                leadingIcon: Icons.settings,
+              ),
+              const FilterChipData<String>(
+                value: 'tools',
+                label: 'Tools',
+                leadingIcon: Icons.construction,
               ),
             ],
-            bottom: TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              controller: _tabController,
-              isScrollable: true,
-              tabs: _categories.map((category) => Tab(text: category)).toList(),
+            selectedFilters: _selectedCategories,
+            onFilterChanged: _onFilterChanged,
+            multiSelectFilters: false,
+            // Content
+            listContent: _buildListContent(state),
+            isLoading: state.isLoading && state.parts.isEmpty,
+            isEmpty: state.filteredParts.isEmpty && !state.isLoading,
+            hasError: state.isFailure,
+            errorMessage: state.errorMessage,
+            onRetry: () => _partsBloc.add(
+              const PartsEvent.loadParts(page: 1),
             ),
-          ),
-          body: BlocConsumer<PartsBloc, PartsState>(
-            listener: (context, state) {
-              if (state.isFailure && state.errorMessage != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage!),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              return Column(
-                children: [
-                  // Quick Stats Bar
-                  QuickStatsBar(
-                    totalParts: state.parts.length,
-                    inStock: state.parts.where((p) => p.isInStock).length,
-                    lowStock: state.lowStockCount,
-                    isLoading: state.isLoading && state.parts.isEmpty,
-                    onTotalTap: () {
-                      _tabController.animateTo(0);
-                      context
-                          .read<PartsBloc>()
-                          .add(const PartsEvent.loadParts());
-                    },
-                    onInStockTap: () {
-                      _tabController.animateTo(0);
-                      context
-                          .read<PartsBloc>()
-                          .add(const PartsEvent.loadParts());
-                    },
-                    onLowStockTap: () {
-                      _tabController.animateTo(0);
-                      context
-                          .read<PartsBloc>()
-                          .add(const PartsEvent.loadLowStockParts());
-                    },
-                  ),
-
-                  // Content
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: _categories
-                          .map((category) =>
-                              _buildPartsTabInline(state, category))
-                          .toList(),
-                    ),
-                  ),
-                ],
+            emptyTitle: 'No Parts Found',
+            emptyDescription: 'Try adjusting your search or filter criteria.',
+            emptyActionLabel: state.hasFilters ? 'Clear Filters' : null,
+            onEmptyAction: state.hasFilters
+                ? () {
+                    setState(() {
+                      _searchQuery = '';
+                      _selectedCategories = [];
+                    });
+                    _partsBloc
+                      ..add(const PartsEvent.clearSearch())
+                      ..add(const PartsEvent.filterByCategory(null));
+                  }
+                : null,
+            // Actions
+            onRefresh: () async {
+              _partsBloc.add(
+                PartsEvent.loadParts(
+                  searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
+                  category: _selectedCategories.isNotEmpty &&
+                          _selectedCategories.first != 'all'
+                      ? _selectedCategories.first
+                      : null,
+                ),
               );
             },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildListContent(PartsState state) {
+    return ListView.builder(
+      controller: _scrollController,
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+      itemCount: state.filteredParts.length + (state.isLoadingMore ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index >= state.filteredParts.length) {
+          return Padding(
+            padding: REdgeInsets.all(DesignTokens.space4),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final part = state.filteredParts[index];
+        return Padding(
+          padding: REdgeInsets.only(bottom: DesignTokens.space3),
+          child: PartListCard(
+            part: part,
+            location:
+                'Warehouse A', // TODO: Add actual location from part entity
+            onTap: () => _openPartDetails(context, part),
+            onDetails: () => _openPartDetails(context, part),
           ),
         );
       },
     );
   }
 
-  Widget _buildPartsTabInline(PartsState state, String category) {
-    if (state.isLoading && state.parts.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (state.parts.isEmpty) {
-      return FSMEmptyState.noData(
-        title: 'No Parts Found',
-        description: category == 'All'
-            ? 'No parts available in the inventory.'
-            : 'No $category parts found in the inventory.',
-        actionLabel: state.hasFilters ? 'Clear Filters' : null,
-        onAction: state.hasFilters
-            ? () {
-                context.read<PartsBloc>()
-                  ..add(const PartsEvent.clearSearch())
-                  ..add(const PartsEvent.filterByCategory(null))
-                  ..add(const PartsEvent.filterByStatus(null));
-              }
-            : null,
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<PartsBloc>().add(const PartsEvent.refreshParts());
-      },
-      child: ListView.builder(
-        controller: _scrollController,
-        padding: EdgeInsets.symmetric(vertical: 8.h),
-        itemCount: state.parts.length + (state.isLoadingMore ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index >= state.parts.length) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-
-          final part = state.parts[index];
-          return PartListCard(
-            part: part,
-            location:
-                'Warehouse A', // TODO: Add actual location from part entity
-            onTap: () {
-              // Navigate to part details
-              context.router.push(
-                  PartDetailsRoute(partNumber: part.partNumber, part: part));
-            },
-            onDetails: () {
-              // Navigate to part details
-              context.router.push(
-                  PartDetailsRoute(partNumber: part.partNumber, part: part));
-            },
-          );
-        },
-      ),
+  void _openPartDetails(BuildContext context, part) {
+    context.router.push(
+      PartDetailsRoute(partNumber: part.partNumber, part: part),
     );
   }
 }

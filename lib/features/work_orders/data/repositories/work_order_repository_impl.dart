@@ -718,7 +718,18 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         return NetworkFailure(message: 'No internet connection');
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
-        final message = e.response?.data?['message'] ?? 'Server error';
+        final responseData = e.response?.data;
+
+        // Handle different response data types
+        String message;
+        if (responseData is Map<String, dynamic>) {
+          message = responseData['message'] as String? ?? 'Server error';
+        } else if (responseData is String) {
+          message = responseData;
+        } else {
+          message = 'Server error';
+        }
+
         return ServerFailure(message: message, statusCode: statusCode);
       default:
         return ServerFailure(message: 'Unknown error occurred');

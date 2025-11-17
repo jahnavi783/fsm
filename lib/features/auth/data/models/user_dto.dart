@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../../../core/services/enums.dart';
 import '../../domain/entities/user_entity.dart';
 
@@ -27,7 +28,10 @@ abstract class UserDto with _$UserDto {
 }
 
 extension UserDtoX on UserDto {
-  UserEntity toEntity() {
+  UserEntity toEntity({
+    required String accessToken,
+    String? refreshToken,
+  }) {
     return UserEntity(
       id: id,
       firstName: firstName,
@@ -39,6 +43,8 @@ extension UserDtoX on UserDto {
       dob: dob,
       roleId: roleId,
       role: role,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     );
   }
 }

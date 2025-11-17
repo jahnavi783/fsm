@@ -7,6 +7,26 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Form group builders for work order actions
 /// Provides centralized form structure with validation
 class WorkOrderForms {
+  /// Custom validator for minimum quantity (validates string representation of numbers)
+  static Map<String, dynamic>? _minQuantityValidator(
+      AbstractControl<dynamic> control) {
+    final value = control.value;
+    if (value == null || value.toString().isEmpty) {
+      return null; // Let required validator handle empty values
+    }
+
+    final intValue = int.tryParse(value.toString());
+    if (intValue == null) {
+      return null; // Let number validator handle invalid numbers
+    }
+
+    if (intValue < 1) {
+      return {'minQuantity': 'Quantity must be at least 1'};
+    }
+
+    return null;
+  }
+
   /// Build form for starting a work order
   /// Fields: notes (optional), files (optional)
   static FormGroup buildStartForm() {
@@ -145,8 +165,8 @@ class WorkOrderForms {
         value: quantity.toString(),
         validators: [
           Validators.required,
-          Validators.number(),
-          Validators.min(1),
+          Validators.number(allowNegatives: false),
+          // _minQuantityValidator,
         ],
       ),
     });

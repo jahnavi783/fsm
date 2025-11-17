@@ -24,6 +24,8 @@ mixin _$UserEntity {
   DateTime? get dob;
   UserRole? get roleId;
   String? get role;
+  String get accessToken;
+  String? get refreshToken;
 
   /// Create a copy of UserEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -48,16 +50,20 @@ mixin _$UserEntity {
             (identical(other.city, city) || other.city == city) &&
             (identical(other.dob, dob) || other.dob == dob) &&
             (identical(other.roleId, roleId) || other.roleId == roleId) &&
-            (identical(other.role, role) || other.role == role));
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email,
-      phone, gender, city, dob, roleId, role);
+      phone, gender, city, dob, roleId, role, accessToken, refreshToken);
 
   @override
   String toString() {
-    return 'UserEntity(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, gender: $gender, city: $city, dob: $dob, roleId: $roleId, role: $role)';
+    return 'UserEntity(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, gender: $gender, city: $city, dob: $dob, roleId: $roleId, role: $role, accessToken: $accessToken, refreshToken: $refreshToken)';
   }
 }
 
@@ -77,7 +83,9 @@ abstract mixin class $UserEntityCopyWith<$Res> {
       String? city,
       DateTime? dob,
       UserRole? roleId,
-      String? role});
+      String? role,
+      String accessToken,
+      String? refreshToken});
 }
 
 /// @nodoc
@@ -102,6 +110,8 @@ class _$UserEntityCopyWithImpl<$Res> implements $UserEntityCopyWith<$Res> {
     Object? dob = freezed,
     Object? roleId = freezed,
     Object? role = freezed,
+    Object? accessToken = null,
+    Object? refreshToken = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -143,6 +153,14 @@ class _$UserEntityCopyWithImpl<$Res> implements $UserEntityCopyWith<$Res> {
       role: freezed == role
           ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accessToken: null == accessToken
+          ? _self.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: freezed == refreshToken
+          ? _self.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -251,7 +269,9 @@ extension UserEntityPatterns on UserEntity {
             String? city,
             DateTime? dob,
             UserRole? roleId,
-            String? role)?
+            String? role,
+            String accessToken,
+            String? refreshToken)?
         $default, {
     required TResult orElse(),
   }) {
@@ -268,7 +288,9 @@ extension UserEntityPatterns on UserEntity {
             _that.city,
             _that.dob,
             _that.roleId,
-            _that.role);
+            _that.role,
+            _that.accessToken,
+            _that.refreshToken);
       case _:
         return orElse();
     }
@@ -299,7 +321,9 @@ extension UserEntityPatterns on UserEntity {
             String? city,
             DateTime? dob,
             UserRole? roleId,
-            String? role)
+            String? role,
+            String accessToken,
+            String? refreshToken)
         $default,
   ) {
     final _that = this;
@@ -315,7 +339,9 @@ extension UserEntityPatterns on UserEntity {
             _that.city,
             _that.dob,
             _that.roleId,
-            _that.role);
+            _that.role,
+            _that.accessToken,
+            _that.refreshToken);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -345,7 +371,9 @@ extension UserEntityPatterns on UserEntity {
             String? city,
             DateTime? dob,
             UserRole? roleId,
-            String? role)?
+            String? role,
+            String accessToken,
+            String? refreshToken)?
         $default,
   ) {
     final _that = this;
@@ -361,7 +389,9 @@ extension UserEntityPatterns on UserEntity {
             _that.city,
             _that.dob,
             _that.roleId,
-            _that.role);
+            _that.role,
+            _that.accessToken,
+            _that.refreshToken);
       case _:
         return null;
     }
@@ -381,7 +411,9 @@ class _UserEntity extends UserEntity {
       this.city,
       this.dob,
       this.roleId,
-      this.role})
+      this.role,
+      required this.accessToken,
+      this.refreshToken})
       : super._();
 
   @override
@@ -404,6 +436,10 @@ class _UserEntity extends UserEntity {
   final UserRole? roleId;
   @override
   final String? role;
+  @override
+  final String accessToken;
+  @override
+  final String? refreshToken;
 
   /// Create a copy of UserEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -429,16 +465,20 @@ class _UserEntity extends UserEntity {
             (identical(other.city, city) || other.city == city) &&
             (identical(other.dob, dob) || other.dob == dob) &&
             (identical(other.roleId, roleId) || other.roleId == roleId) &&
-            (identical(other.role, role) || other.role == role));
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, firstName, lastName, email,
-      phone, gender, city, dob, roleId, role);
+      phone, gender, city, dob, roleId, role, accessToken, refreshToken);
 
   @override
   String toString() {
-    return 'UserEntity(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, gender: $gender, city: $city, dob: $dob, roleId: $roleId, role: $role)';
+    return 'UserEntity(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, gender: $gender, city: $city, dob: $dob, roleId: $roleId, role: $role, accessToken: $accessToken, refreshToken: $refreshToken)';
   }
 }
 
@@ -460,7 +500,9 @@ abstract mixin class _$UserEntityCopyWith<$Res>
       String? city,
       DateTime? dob,
       UserRole? roleId,
-      String? role});
+      String? role,
+      String accessToken,
+      String? refreshToken});
 }
 
 /// @nodoc
@@ -485,6 +527,8 @@ class __$UserEntityCopyWithImpl<$Res> implements _$UserEntityCopyWith<$Res> {
     Object? dob = freezed,
     Object? roleId = freezed,
     Object? role = freezed,
+    Object? accessToken = null,
+    Object? refreshToken = freezed,
   }) {
     return _then(_UserEntity(
       id: null == id
@@ -526,6 +570,14 @@ class __$UserEntityCopyWithImpl<$Res> implements _$UserEntityCopyWith<$Res> {
       role: freezed == role
           ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accessToken: null == accessToken
+          ? _self.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: freezed == refreshToken
+          ? _self.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

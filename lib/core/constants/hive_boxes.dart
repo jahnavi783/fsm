@@ -11,6 +11,8 @@ abstract class HiveBoxes {
   static const String profilePreferences = 'profile_preferences_box';
   static const String settingsBox = 'settings_box';
   static const String workOrderCompletionCache = 'work_order_completion_cache_box';
+  static const String chatMessages = 'chat_messages_box';
+  static const String chatSessions = 'chat_sessions_box';
 
   // Type IDs for Hive adapters
   static const int userEntityTypeId = 0;
@@ -28,4 +30,6 @@ abstract class HiveBoxes {
   static const int workOrderPartEntityTypeId = 12;
   static const int workOrderCompletionCacheTypeId = 13;
   static const int cachedPartUsedTypeId = 14;
+  static const int chatMessageHiveModelTypeId = 15;
+  static const int chatSessionHiveModelTypeId = 16;
 }

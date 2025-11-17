@@ -13,6 +13,7 @@ import 'package:connectivity_plus/connectivity_plus.dart' as _i895;
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:uuid/uuid.dart' as _i706;
 
 import '../../features/auth/data/api/auth_api_client.dart' as _i541;
 import '../../features/auth/data/datasources/auth_local_datasource.dart'
@@ -48,6 +49,23 @@ import '../../features/calendar/domain/usecases/optimize_route_usecase.dart'
     as _i316;
 import '../../features/calendar/presentation/blocs/calendar/calendar_bloc.dart'
     as _i139;
+import '../../features/chat/data/api/chat_api_client.dart' as _i6;
+import '../../features/chat/data/datasources/chat_local_datasource.dart'
+    as _i230;
+import '../../features/chat/data/datasources/chat_remote_datasource.dart'
+    as _i159;
+import '../../features/chat/data/di/chat_module.dart' as _i394;
+import '../../features/chat/data/repositories/chat_repository.dart' as _i796;
+import '../../features/chat/domain/repositories/i_chat_repository.dart' as _i81;
+import '../../features/chat/domain/usecases/end_session_usecase.dart' as _i279;
+import '../../features/chat/domain/usecases/get_chat_history_usecase.dart'
+    as _i467;
+import '../../features/chat/domain/usecases/restore_session_usecase.dart'
+    as _i179;
+import '../../features/chat/domain/usecases/send_message_usecase.dart' as _i795;
+import '../../features/chat/domain/usecases/start_session_usecase.dart'
+    as _i613;
+import '../../features/chat/presentation/blocs/chat/chat_bloc.dart' as _i863;
 import '../../features/documents/data/api/document_api_client.dart' as _i936;
 import '../../features/documents/data/datasources/document_local_datasource.dart'
     as _i506;
@@ -191,6 +209,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final connectivityModule = _$ConnectivityModule();
+    final chatModule = _$ChatModule();
     final permissionModule = _$PermissionModule();
     final networkModule = _$NetworkModule();
     final calendarApiModule = _$CalendarApiModule();
@@ -210,6 +229,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1066.MemoryManagementService());
     gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
     gh.singleton<_i520.LoggingService>(() => _i520.LoggingService());
+    gh.lazySingleton<_i706.Uuid>(() => chatModule.uuid());
     gh.factory<_i185.AppRouteObserver>(
         () => _i185.AppRouteObserver(gh<_i520.LoggingService>()));
     gh.singleton<_i188.ErrorBloc>(
@@ -224,6 +244,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i459.HiveService.create(gh<_i520.LoggingService>()),
       preResolve: true,
     );
+    gh.factory<_i230.ChatLocalDataSource>(
+        () => _i230.ChatLocalDataSourceImpl(gh<_i459.HiveService>()));
     gh.factory<_i701.WorkOrderLocalDataSource>(
         () => _i701.WorkOrderLocalDataSourceImpl(gh<_i459.HiveService>()));
     gh.factory<_i1038.CacheManager>(
@@ -276,6 +298,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i538.SyncBloc(gh<_i256.ConnectivityBloc>()));
     gh.lazySingleton<_i584.CalendarApiClient>(
         () => calendarApiModule.calendarApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i6.ChatApiClient>(
+        () => chatModule.chatApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i541.AuthApiClient>(
         () => authModule.authApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i751.ProfileApiClient>(
@@ -323,6 +347,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i932.NetworkInfo>(),
           gh<_i520.LoggingService>(),
         ));
+    gh.factory<_i159.ChatRemoteDataSource>(
+        () => _i159.ChatRemoteDataSourceImpl(gh<_i6.ChatApiClient>()));
     gh.singleton<_i331.AuthBloc>(() => _i331.AuthBloc(
           gh<_i188.LoginUseCase>(),
           gh<_i48.LogoutUseCase>(),
@@ -351,6 +377,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i316.OptimizeRouteUseCase>(),
           gh<_i342.ICalendarRepository>(),
           gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i81.IChatRepository>(() => _i796.ChatRepository(
+          gh<_i159.ChatRemoteDataSource>(),
+          gh<_i230.ChatLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+          gh<_i520.LoggingService>(),
         ));
     gh.factory<_i530.AuthGuard>(() => _i530.AuthGuard(
           gh<_i992.AuthLocalDataSource>(),
@@ -403,6 +435,18 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i911.GetDocumentsUseCase(gh<_i121.IDocumentRepository>()));
     gh.factory<_i750.DownloadDocumentUseCase>(
         () => _i750.DownloadDocumentUseCase(gh<_i121.IDocumentRepository>()));
+    gh.factory<_i613.StartSessionUseCase>(
+        () => _i613.StartSessionUseCase(gh<_i81.IChatRepository>()));
+    gh.factory<_i467.GetChatHistoryUseCase>(
+        () => _i467.GetChatHistoryUseCase(gh<_i81.IChatRepository>()));
+    gh.factory<_i279.EndSessionUseCase>(
+        () => _i279.EndSessionUseCase(gh<_i81.IChatRepository>()));
+    gh.factory<_i179.RestoreSessionUseCase>(
+        () => _i179.RestoreSessionUseCase(gh<_i81.IChatRepository>()));
+    gh.factory<_i795.SendMessageUseCase>(() => _i795.SendMessageUseCase(
+          gh<_i81.IChatRepository>(),
+          gh<_i706.Uuid>(),
+        ));
     gh.factory<_i332.WorkOrdersListBloc>(() => _i332.WorkOrdersListBloc(
           gh<_i874.GetWorkOrdersUseCase>(),
           gh<_i556.IWorkOrderRepository>(),
@@ -446,11 +490,22 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i154.GetPreferencesUseCase>(),
           gh<_i90.UpdatePreferencesUseCase>(),
         ));
+    gh.singleton<_i863.ChatBloc>(() => _i863.ChatBloc(
+          gh<_i613.StartSessionUseCase>(),
+          gh<_i795.SendMessageUseCase>(),
+          gh<_i467.GetChatHistoryUseCase>(),
+          gh<_i279.EndSessionUseCase>(),
+          gh<_i179.RestoreSessionUseCase>(),
+          gh<_i932.NetworkInfo>(),
+          gh<_i706.Uuid>(),
+        ));
     return this;
   }
 }
 
 class _$ConnectivityModule extends _i932.ConnectivityModule {}
+
+class _$ChatModule extends _i394.ChatModule {}
 
 class _$PermissionModule extends _i469.PermissionModule {}
 

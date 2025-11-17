@@ -8,6 +8,7 @@ import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/widgets.dart';
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';

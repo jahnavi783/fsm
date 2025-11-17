@@ -6,6 +6,7 @@ import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/core/widgets/inputs/fsm_search_bar.dart';
 import 'package:fsm/core/widgets/inputs/fsm_filter_chip_group.dart';
+import 'package:fsm/core/widgets/inputs/filter_chip_data.dart';
 import 'package:fsm/core/widgets/inputs/quantity_selector.dart';
 import 'package:fsm/core/widgets/buttons/fsm_button.dart';
 import 'package:fsm/features/parts/domain/entities/part_entity.dart';
@@ -183,9 +184,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.enableMultiSelect
-                            ? 'Add Parts'
-                            : 'Add Part',
+                        widget.enableMultiSelect ? 'Add Parts' : 'Add Part',
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge
@@ -199,9 +198,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                             vertical: DesignTokens.space1,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primaryContainer,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(
                                 DesignTokens.radiusFull.r),
                           ),
@@ -285,8 +283,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                               itemCount: filteredParts.length,
                               itemBuilder: (context, index) {
                                 final part = filteredParts[index];
-                                final isAlreadyAdded = widget.partsUsed
-                                    .any((p) =>
+                                final isAlreadyAdded = widget.partsUsed.any(
+                                    (p) =>
                                         p.part.partNumber == part.partNumber);
                                 final isSelected = _selectedPartNumbers
                                     .contains(part.partNumber);
@@ -330,8 +328,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                         children: [
                           if (_selectedPartNumbers.isNotEmpty) ...[
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '${_selectedPartNumbers.length} part${_selectedPartNumbers.length == 1 ? '' : 's'} selected',
@@ -387,10 +384,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           Icon(
             Icons.inventory_2_outlined,
             size: DesignTokens.iconXxl.sp,
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface
-                .withValues(alpha: 0.4),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
           DesignTokens.verticalSpaceMedium,
           Text(
@@ -546,13 +541,12 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     RSizedBox(width: DesignTokens.space3),
                     Text(
                       '\$${part.unitPrice.toStringAsFixed(2)}/unit',
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.8),
-                              ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.8),
+                          ),
                     ),
                   ],
                 ),
@@ -602,13 +596,12 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
     final selectedParts = _availableParts
         .where((p) => _selectedPartNumbers.contains(p.partNumber))
         .map((part) {
-          final quantity = _partQuantities[part.partNumber] ?? 1;
-          return PartUsedInput(
-            part: part,
-            quantityController: TextEditingController(text: quantity.toString()),
-          );
-        })
-        .toList();
+      final quantity = _partQuantities[part.partNumber] ?? 1;
+      return PartUsedInput(
+        part: part,
+        quantityController: TextEditingController(text: quantity.toString()),
+      );
+    }).toList();
 
     if (widget.onAddMultipleParts != null) {
       widget.onAddMultipleParts!(selectedParts);

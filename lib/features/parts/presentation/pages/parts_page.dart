@@ -8,7 +8,7 @@ import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/widgets/fsm_app_bar.dart';
-import '../../../../core/widgets/inputs/fsm_filter_chip_group.dart';
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../blocs/parts/parts_bloc.dart';
 import '../blocs/parts/parts_event.dart';
 import '../blocs/parts/parts_state.dart';

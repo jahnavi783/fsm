@@ -6,36 +6,28 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--dart-define=FLUTTER_FLAVOR=dev"
-      ]
+      "args": ["--dart-define=FLUTTER_FLAVOR=dev", "--flavor", "dev"]
     },
     {
       "name": "FSM Staging",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--dart-define=FLUTTER_FLAVOR=staging"
-      ]
+      "args": ["--dart-define=FLUTTER_FLAVOR=staging"]
     },
     {
       "name": "FSM Production",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": [
-        "--dart-define=FLUTTER_FLAVOR=prod"
-      ]
+      "args": ["--dart-define=FLUTTER_FLAVOR=prod"]
     },
     {
       "name": "FSM Production Release",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": [
-        "--dart-define=FLUTTER_FLAVOR=prod"
-      ]
+      "args": ["--dart-define=FLUTTER_FLAVOR=prod"]
     }
   ]
 }

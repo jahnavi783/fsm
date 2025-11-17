@@ -854,6 +854,7 @@ import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/stats_card.dart' as stats;
 import '../../../../core/widgets/widgets.dart'
     hide StatsGrid, StatsCard, StatsCardData; // Barrel import, hide duplicates
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/di/injection.dart';
 import 'package:fsm/features/parts/domain/entities/part_entity.dart';
 import 'package:fsm/features/parts/domain/usecases/get_parts_usecase.dart';
@@ -65,7 +64,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to load parts: ${failure.message}'),
-              backgroundColor: AppColors.error,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -140,7 +139,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                             '${_selectedPartNumbers.length} selected',
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: AppColors.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -148,11 +147,12 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     ),
                     SizedBox(height: 16.h),
 
-                    // Search bar
+                    // Search bar with real-time filtering
                     TextField(
                       controller: _searchController,
+                      autofocus: true,
                       decoration: InputDecoration(
-                        hintText: 'Search parts...',
+                        hintText: 'Search by part name or number...',
                         prefixIcon: const Icon(Icons.search),
                         suffixIcon: _searchController.text.isNotEmpty
                             ? IconButton(
@@ -165,54 +165,78 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                         ),
                         contentPadding: EdgeInsets.all(16.w),
                       ),
-                      onSubmitted: (value) {
+                      onChanged: (value) {
+                        // Real-time filtering without keyboard submission
                         setState(() {
-                          _searchQuery = value;
+                          _searchQuery = value.toLowerCase();
                         });
-                        _loadParts();
                       },
                     ),
                   ],
                 ),
               ),
 
-              // Parts list
+              // Parts list with real-time filtering
               Expanded(
                 child: _isLoadingParts
                     ? const Center(child: CircularProgressIndicator())
-                    : _availableParts.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.inventory_2_outlined,
-                                  size: 64.sp,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withValues(alpha: 0.4),
-                                ),
-                                SizedBox(height: 16.h),
-                                Text(
-                                  'No parts available',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
+                    : Builder(
+                        builder: (context) {
+                          // Filter parts locally based on search query
+                          final filteredParts = _searchQuery.isEmpty
+                              ? _availableParts
+                              : _availableParts.where((part) {
+                                  final query = _searchQuery.toLowerCase();
+                                  return part.partName.toLowerCase().contains(query) ||
+                                      part.partNumber.toLowerCase().contains(query);
+                                }).toList();
+
+                          if (filteredParts.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    _searchQuery.isEmpty
+                                        ? Icons.inventory_2_outlined
+                                        : Icons.search_off,
+                                    size: 64.sp,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withValues(alpha: 0.6),
+                                        .withValues(alpha: 0.4),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
+                                  SizedBox(height: 16.h),
+                                  Text(
+                                    _searchQuery.isEmpty
+                                        ? 'No parts available'
+                                        : 'No parts found for "$_searchQuery"',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.6),
+                                    ),
+                                  ),
+                                  if (_searchQuery.isNotEmpty) ...[
+                                    SizedBox(height: 8.h),
+                                    TextButton(
+                                      onPressed: _handleClearSearch,
+                                      child: const Text('Clear search'),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            );
+                          }
+
+                          return ListView.builder(
                             controller: scrollController,
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            itemCount: _availableParts.length,
+                            itemCount: filteredParts.length,
                             itemBuilder: (context, index) {
-                              final part = _availableParts[index];
+                              final part = filteredParts[index];
                               final isAlreadyAdded = widget.partsUsed.any(
                                   (p) => p.part.partNumber == part.partNumber);
                               final isSelected = _selectedPartNumbers
@@ -227,17 +251,21 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                     height: 48.w,
                                     decoration: BoxDecoration(
                                       color: part.isInStock
-                                          ? AppColors.success
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
                                               .withValues(alpha: 0.1)
-                                          : AppColors.error
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .error
                                               .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: Icon(
                                       Icons.inventory_2,
                                       color: part.isInStock
-                                          ? AppColors.success
-                                          : AppColors.error,
+                                          ? Theme.of(context).colorScheme.primary
+                                          : Theme.of(context).colorScheme.error,
                                     ),
                                   ),
                                   title: Text(
@@ -261,8 +289,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           color: part.isInStock
-                                              ? AppColors.success
-                                              : AppColors.error,
+                                              ? Theme.of(context).colorScheme.primary
+                                              : Theme.of(context).colorScheme.error,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -271,7 +299,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                   trailing: isAlreadyAdded
                                       ? Icon(
                                           Icons.check_circle,
-                                          color: AppColors.success,
+                                          color: Theme.of(context).colorScheme.primary,
                                           size: 24.sp,
                                         )
                                       : widget.enableMultiSelect
@@ -291,7 +319,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                             )
                                           : Icon(
                                               Icons.add_circle_outline,
-                                              color: AppColors.primary,
+                                              color: Theme.of(context).colorScheme.primary,
                                               size: 24.sp,
                                             ),
                                   onTap: isAlreadyAdded
@@ -320,7 +348,9 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                                 ),
                               );
                             },
-                          ),
+                          );
+                        },
+                      ),
               ),
 
               // Add selected button (only for multi-select mode)
@@ -347,8 +377,6 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                           ? null
                           : _handleAddSelectedParts,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: AppColors.onPrimary,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
@@ -378,7 +406,6 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
     setState(() {
       _searchQuery = '';
     });
-    _loadParts();
   }
 
   void _handleAddSelectedParts() {
@@ -410,7 +437,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Row(
@@ -418,8 +445,8 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                 Container(
                   width: 32.w,
                   height: 32.w,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -428,7 +455,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.onPrimary,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -490,20 +517,20 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
                 borderSide: BorderSide(
-                  color: AppColors.outline.withValues(alpha: 0.3),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
-                borderSide: const BorderSide(
-                  color: AppColors.error,
+                borderSide: BorderSide(
+                  color: theme.colorScheme.error,
                 ),
               ),
               contentPadding: EdgeInsets.all(16.w),
@@ -554,7 +581,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                     .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
-                  color: AppColors.outline.withValues(alpha: 0.2),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
                 ),
               ),
               child: Row(
@@ -588,7 +615,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
               Icon(
                 Icons.info_outline,
                 size: 16.sp,
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               SizedBox(width: 8.w),
               Expanded(
@@ -596,7 +623,7 @@ class _WorkAndPartsStepState extends State<WorkAndPartsStep> {
                   'Work log is required. Parts are optional but recommended.',
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontStyle: FontStyle.italic,
                   ),
                 ),

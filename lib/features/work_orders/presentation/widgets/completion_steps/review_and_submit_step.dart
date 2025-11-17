@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
-import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 import 'models/part_used_input.dart';
 
 /// Step 3: Review and Submit
-/// Collects location, customer name, signature and shows review of all data
+/// Collects customer name, signature and shows review of all data
 class ReviewAndSubmitStep extends StatefulWidget {
   final TextEditingController customerNameController;
   final TextEditingController workLogController;
@@ -18,7 +17,6 @@ class ReviewAndSubmitStep extends StatefulWidget {
   final bool hasSignature;
   final VoidCallback onSignatureDrawn;
   final VoidCallback onClearSignature;
-  final LocationEntity? currentLocation;
   final List<PartUsedInput> partsUsed;
   final List<XFile> imageFiles;
   final GlobalKey<FormState> formKey;
@@ -32,7 +30,6 @@ class ReviewAndSubmitStep extends StatefulWidget {
     required this.hasSignature,
     required this.onSignatureDrawn,
     required this.onClearSignature,
-    required this.currentLocation,
     required this.partsUsed,
     required this.imageFiles,
     required this.formKey,
@@ -93,14 +90,14 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Final Details',
+                        'Review & Submit',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
                         ),
                       ),
                       Text(
-                        'Location, customer, and signature',
+                        'Customer details and signature',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
@@ -108,82 +105,6 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          RSizedBox(height: DesignTokens.space5),
-
-          // Location Status (Read-only)
-          Text(
-            'Location *',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-          RSizedBox(height: DesignTokens.space2),
-          Container(
-            padding: REdgeInsets.all(DesignTokens.space4),
-            decoration: BoxDecoration(
-              color: widget.currentLocation != null
-                  ? fsmTheme.success.withValues(alpha: 0.1)
-                  : fsmTheme.warning.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-              border: Border.all(
-                color: widget.currentLocation != null
-                    ? fsmTheme.success.withValues(alpha: 0.3)
-                    : fsmTheme.warning.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  widget.currentLocation != null
-                      ? Icons.location_on
-                      : Icons.location_searching,
-                  size: DesignTokens.iconMd.sp,
-                  color: widget.currentLocation != null
-                      ? fsmTheme.success
-                      : fsmTheme.warning,
-                ),
-                RSizedBox(width: DesignTokens.space3),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.currentLocation != null
-                            ? 'Location Captured'
-                            : 'Capturing Location...',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: widget.currentLocation != null
-                              ? fsmTheme.success
-                              : fsmTheme.warning,
-                        ),
-                      ),
-                      if (widget.currentLocation != null)
-                        Text(
-                          '${widget.currentLocation!.latitude.toStringAsFixed(6)}, ${widget.currentLocation!.longitude.toStringAsFixed(6)}',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                if (widget.currentLocation == null)
-                  SizedBox(
-                    width: DesignTokens.iconSm.w,
-                    height: DesignTokens.iconSm.h,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        fsmTheme.warning,
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),
@@ -564,7 +485,7 @@ class _ReviewAndSubmitStepState extends State<ReviewAndSubmitStep> {
               RSizedBox(width: DesignTokens.space2),
               Expanded(
                 child: Text(
-                  'Location, customer name, and signature are required to submit',
+                  'Customer name and signature are required to submit',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontStyle: FontStyle.italic,

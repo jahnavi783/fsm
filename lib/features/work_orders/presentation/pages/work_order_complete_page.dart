@@ -24,6 +24,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 import '../widgets/completion_steps/images_step.dart';
+import '../widgets/completion_steps/location_capture_step.dart';
 import '../widgets/completion_steps/models/part_used_input.dart';
 import '../widgets/completion_steps/review_and_submit_step.dart';
 import '../widgets/completion_steps/work_and_parts_step.dart';
@@ -31,7 +32,8 @@ import '../widgets/completion_steps/work_and_parts_step.dart';
 /// Dedicated page for multi-step work order completion
 /// Step 1: Work Log + Parts Used (with multi-select)
 /// Step 2: Images (Optional)
-/// Step 3: Location + Customer Name + Signature + Review
+/// Step 3: Customer Name + Signature + Review
+/// Step 4: Location Capture
 @RoutePage()
 class WorkOrderCompletePage extends StatelessWidget {
   final int workOrderId;
@@ -268,7 +270,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
     // Save cache before moving to next step
     await _saveCache();
 
-    if (_activeStep < 2) {
+    if (_activeStep < 3) {
       setState(() {
         _activeStep++;
       });
@@ -533,7 +535,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
 
                       // Calculate line length based on available width
                       final lineLength =
-                          (constraints.maxWidth - (3 * 48.w) - 40.w) / 2;
+                          (constraints.maxWidth - (4 * 48.w) - 40.w) / 3;
 
                       return EasyStepper(
                         activeStep: _activeStep,
@@ -586,6 +588,14 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                             title: 'Review',
                             topTitle: true,
                           ),
+                          EasyStep(
+                            icon: Icon(
+                              Icons.location_on,
+                              size: isSmallScreen ? 18.sp : 20.sp,
+                            ),
+                            title: 'Location',
+                            topTitle: true,
+                          ),
                         ],
                         onStepReached: (index) {
                           setState(() {
@@ -605,8 +615,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                     padding: EdgeInsets.all(20.w),
                     child: Column(
                       children: [
-                        // Time info (only show on step 3)
-                        if (_activeStep == 2) ...[
+                        // Time info (only show on step 4)
+                        if (_activeStep == 3) ...[
                           _buildInfoCards(theme),
                           SizedBox(height: 20.h),
                         ],
@@ -638,10 +648,13 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                             hasSignature: _hasSignature,
                             onSignatureDrawn: _onSignatureDrawn,
                             onClearSignature: _clearSignature,
-                            currentLocation: widget.currentLocation,
                             partsUsed: _partsUsed,
                             imageFiles: _imageFiles,
                             formKey: _reviewFormKey,
+                          ),
+                        if (_activeStep == 3)
+                          LocationCaptureStep(
+                            currentLocation: widget.currentLocation,
                           ),
 
                         SizedBox(height: 24.h),
@@ -752,12 +765,12 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
           child: ElevatedButton(
             onPressed: isLoading
                 ? null
-                : _activeStep < 2
+                : _activeStep < 3
                     ? () => _nextStep()
                     : () => _completeWorkOrder(),
             style: ElevatedButton.styleFrom(
               backgroundColor:
-                  _activeStep < 2 ? AppColors.primary : AppColors.success,
+                  _activeStep < 3 ? AppColors.primary : AppColors.success,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(
@@ -775,7 +788,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
                     ),
                   )
                 : Text(
-                    _activeStep < 2 ? 'Next' : 'Complete Work Order',
+                    _activeStep < 3 ? 'Next' : 'Complete Work Order',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

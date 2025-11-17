@@ -1,16 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
 import '../widgets/document_card_tile.dart';
-import '../widgets/download_progress_indicator.dart';
 
 @RoutePage()
 class DocumentsPage extends StatefulWidget {
@@ -139,53 +141,62 @@ class _DocumentsPageState extends State<DocumentsPage> {
             },
             appBarActions: [
               if (state.isDownloading)
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                Padding(
+                  padding: REdgeInsets.all(DesignTokens.space4),
+                  child: RSizedBox(
+                    width: DesignTokens.iconSm,
+                    height: DesignTokens.iconSm,
+                    child: CircularProgressIndicator(strokeWidth: 2.w),
                   ),
                 ),
             ],
+            // FAB for document upload
+            floatingActionButton: FloatingActionButton(
+              onPressed: _onUploadDocument,
+              backgroundColor: context.fsmTheme.fabBackground,
+              child: Icon(
+                Icons.upload_file_rounded,
+                size: DesignTokens.iconMd.sp,
+              ),
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildListContent(DocumentsState state) {
-    return Column(
-      children: [
-        // Download progress indicator
-        if (state.isDownloading && state.downloadingDocumentId != null)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DownloadProgressIndicator(
-              fileName: _getDownloadingFileName(state),
-              progress:
-                  0.5, // This should come from the actual download progress
-            ),
-          ),
+  void _onUploadDocument() {
+    // TODO: Implement document upload functionality
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Document upload coming soon',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+    );
+  }
 
-        // Documents List
-        Expanded(
-          child: ListView.builder(
+  Widget _buildListContent(DocumentsState state) {
+    return ListView.builder(
             controller: _scrollController,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
             itemCount:
                 state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
             itemBuilder: (context, index) {
               if (index >= state.filteredDocuments.length) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(child: CircularProgressIndicator()),
+                return Padding(
+                  padding: REdgeInsets.all(DesignTokens.space4),
+                  child: const Center(child: CircularProgressIndicator()),
                 );
               }
 
               final document = state.filteredDocuments[index];
               return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
+                padding: REdgeInsets.only(bottom: DesignTokens.space3),
                 child: DocumentCardTile(
                   document: document,
                   onTap: () => _openDocument(context, document),
@@ -196,10 +207,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 ),
               );
             },
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   void _openDocument(BuildContext context, DocumentEntity document) {
@@ -232,28 +240,5 @@ class _DocumentsPageState extends State<DocumentsPage> {
         ],
       ),
     );
-  }
-
-  String _getDownloadingFileName(DocumentsState state) {
-    if (state.downloadingDocumentId == null) return '';
-
-    final document = state.documents.firstWhere(
-      (doc) => doc.id == state.downloadingDocumentId,
-      orElse: () => DocumentEntity(
-        id: '',
-        title: 'Unknown Document',
-        description: '',
-        type: DocumentType.manual,
-        fileUrl: '',
-        fileName: '',
-        fileSize: 0,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        tags: const [],
-        categories: const [],
-      ),
-    );
-
-    return document.fileName;
   }
 }

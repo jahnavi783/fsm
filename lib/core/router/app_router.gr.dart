@@ -20,7 +20,7 @@ import 'package:fsm/features/debug/presentation/pages/developer_options_page.dar
     as _i5;
 import 'package:fsm/features/documents/presentation/pages/document_viewer_page.dart'
     as _i6;
-import 'package:fsm/features/documents/presentation/pages/documents_page_new.dart'
+import 'package:fsm/features/documents/presentation/pages/documents_page.dart'
     as _i7;
 import 'package:fsm/features/main_navigation/presentation/pages/main_navigation_page.dart'
     as _i10;

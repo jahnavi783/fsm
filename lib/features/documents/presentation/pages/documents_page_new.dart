@@ -7,7 +7,8 @@ import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/theme/extensions/fsm_theme_extension.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/inputs/fsm_filter_chip_group.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
@@ -64,17 +65,15 @@ class _DocumentsPageState extends State<DocumentsPage> {
       _documentsBloc.add(
         DocumentsEvent.searchDocuments(
           query: query,
-          category: _selectedCategories.isNotEmpty
-              ? _selectedCategories.first
-              : null,
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
         ),
       );
     } else {
       _documentsBloc.add(
         DocumentsEvent.loadDocuments(
-          category: _selectedCategories.isNotEmpty
-              ? _selectedCategories.first
-              : null,
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
         ),
       );
     }
@@ -89,15 +88,13 @@ class _DocumentsPageState extends State<DocumentsPage> {
       _documentsBloc.add(
         DocumentsEvent.searchDocuments(
           query: _searchQuery,
-          category:
-              selectedFilters.isNotEmpty ? selectedFilters.first : null,
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
         ),
       );
     } else {
       _documentsBloc.add(
         DocumentsEvent.loadDocuments(
-          category:
-              selectedFilters.isNotEmpty ? selectedFilters.first : null,
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
         ),
       );
     }
@@ -109,13 +106,46 @@ class _DocumentsPageState extends State<DocumentsPage> {
       value: _documentsBloc,
       child: BlocBuilder<DocumentsBloc, DocumentsState>(
         builder: (context, state) {
-          return FSMDocumentsPageTemplate(
+          return FSMListPageTemplate<String>(
+            // Custom gradient app bar
+            appBar: FSMAppBar.gradient(
+              title: 'Documents',
+              actions: [
+                if (state.isDownloading)
+                  Padding(
+                    padding: REdgeInsets.all(DesignTokens.space4),
+                    child: RSizedBox(
+                      width: DesignTokens.iconSm,
+                      height: DesignTokens.iconSm,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.w,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
             // Search and filters
+            showSearch: true,
+            searchHint: 'Search documents...',
             searchValue: _searchQuery,
             onSearchChanged: _onSearchChanged,
             onSearchSubmitted: (query) => _onSearchChanged(query),
+            showVoiceSearch: true,
+            showFilters: state.categories.isNotEmpty,
+            filterOptions: state.categories.isNotEmpty
+                ? state.categories
+                    .map((category) => FilterChipData<String>(
+                          value: category,
+                          label: category,
+                        ))
+                    .toList()
+                : null,
             selectedFilters: _selectedCategories,
             onFilterChanged: _onFilterChanged,
+            multiSelectFilters: true,
             // Content
             listContent: _buildListContent(state),
             isLoading: state.isLoading,
@@ -123,91 +153,56 @@ class _DocumentsPageState extends State<DocumentsPage> {
             hasError: state.hasError,
             errorMessage: state.errorMessage,
             onRetry: () => _documentsBloc.add(
-                  const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
-                ),
+              const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
+            ),
+            emptyTitle: 'No Documents Found',
+            emptyDescription: 'Try adjusting your search or filter criteria.',
             // Actions
             onRefresh: () async {
               _documentsBloc.add(
                 DocumentsEvent.loadDocuments(
                   page: 1,
                   isRefresh: true,
-                  searchQuery:
-                      _searchQuery.isNotEmpty ? _searchQuery : null,
+                  searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
                   category: _selectedCategories.isNotEmpty
                       ? _selectedCategories.first
                       : null,
                 ),
               );
             },
-            appBarActions: [
-              if (state.isDownloading)
-                Padding(
-                  padding: REdgeInsets.all(DesignTokens.space4),
-                  child: RSizedBox(
-                    width: DesignTokens.iconSm,
-                    height: DesignTokens.iconSm,
-                    child: CircularProgressIndicator(strokeWidth: 2.w),
-                  ),
-                ),
-            ],
-            // FAB for document upload
-            floatingActionButton: FloatingActionButton(
-              onPressed: _onUploadDocument,
-              backgroundColor: context.fsmTheme.fabBackground,
-              child: Icon(
-                Icons.upload_file_rounded,
-                size: DesignTokens.iconMd.sp,
-              ),
-            ),
           );
         },
       ),
     );
   }
 
-  void _onUploadDocument() {
-    // TODO: Implement document upload functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Document upload coming soon',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-    );
-  }
-
   Widget _buildListContent(DocumentsState state) {
     return ListView.builder(
-            controller: _scrollController,
-            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
-            itemCount:
-                state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index >= state.filteredDocuments.length) {
-                return Padding(
-                  padding: REdgeInsets.all(DesignTokens.space4),
-                  child: const Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final document = state.filteredDocuments[index];
-              return Padding(
-                padding: REdgeInsets.only(bottom: DesignTokens.space3),
-                child: DocumentCardTile(
-                  document: document,
-                  onTap: () => _openDocument(context, document),
-                  onDownload: () => _downloadDocument(context, document),
-                  onDelete: () => _deleteDocument(context, document),
-                  isDownloading: state.isDownloading &&
-                      state.downloadingDocumentId == document.id,
-                ),
-              );
-            },
+      controller: _scrollController,
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+      itemCount: state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index >= state.filteredDocuments.length) {
+          return Padding(
+            padding: REdgeInsets.all(DesignTokens.space4),
+            child: const Center(child: CircularProgressIndicator()),
           );
+        }
+
+        final document = state.filteredDocuments[index];
+        return Padding(
+          padding: REdgeInsets.only(bottom: DesignTokens.space3),
+          child: DocumentCardTile(
+            document: document,
+            onTap: () => _openDocument(context, document),
+            onDownload: () => _downloadDocument(context, document),
+            onDelete: () => _deleteDocument(context, document),
+            isDownloading: state.isDownloading &&
+                state.downloadingDocumentId == document.id,
+          ),
+        );
+      },
+    );
   }
 
   void _openDocument(BuildContext context, DocumentEntity document) {

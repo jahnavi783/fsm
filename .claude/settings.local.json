@@ -21,7 +21,8 @@
       "Bash(nul)",
       "mcp__context7__resolve-library-id",
       "mcp__context7__get-library-docs",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(flutter run:*)"
     ],
     "deny": [],
     "ask": []

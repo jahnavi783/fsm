@@ -609,7 +609,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
         id: const Uuid().v4(),
         author: _bot,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        text: "❌ Error: $e",
+        text: "Error: $e",
       );
 
       setState(() => _messages.insert(0, errMsg));

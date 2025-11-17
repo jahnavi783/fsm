@@ -347,7 +347,7 @@ class AuthRepositoryImpl implements IAuthRepository {
           final userDto = await _remoteDataSource.getCurrentUser();
           await _localDataSource.saveUser(userDto);
 
-          // ✅ FIXED: Get tokens from local storage
+          //  FIXED: Get tokens from local storage
           final accessToken = await _localDataSource.getAccessToken();
           final refreshToken = await _localDataSource.getRefreshToken();
 
@@ -363,7 +363,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       // Get cached user data
       final cachedUser = await _localDataSource.getUser();
       if (cachedUser != null) {
-        // ✅ FIXED: Get tokens from local storage
+        //  FIXED: Get tokens from local storage
         final accessToken = await _localDataSource.getAccessToken();
         final refreshToken = await _localDataSource.getRefreshToken();
 
@@ -393,8 +393,18 @@ class AuthRepositoryImpl implements IAuthRepository {
         return const NetworkFailure(message: 'No internet connection');
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
-        final message = e.response?.data?['message'] ?? 'Server error';
-
+        // final message = e.response?.data?['message'] ?? 'Server error';
+        String message = 'Server error';
+        try {
+          final data = e.response?.data;
+          if (data is Map<String, dynamic>) {
+            message = data['message'] ?? 'Server error';
+          } else if (data is String) {
+            message = data;
+          }
+        } catch (_) {
+          message = 'Server error';
+        }
         if (statusCode == 401) {
           return const AuthenticationFailure(
             message: 'Invalid credentials or session expired',

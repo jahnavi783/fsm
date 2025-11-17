@@ -9,7 +9,7 @@ part 'chat_state.freezed.dart';
 ///
 /// Represents all possible UI states for the chat feature.
 @freezed
-class ChatState with _$ChatState {
+abstract class ChatState with _$ChatState {
   const factory ChatState({
     /// Current session (null if no active session)
     ChatSessionEntity? session,

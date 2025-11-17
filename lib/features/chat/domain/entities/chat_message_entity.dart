@@ -7,7 +7,7 @@ part 'chat_message_entity.freezed.dart';
 /// This is a pure business model with no external dependencies.
 /// It represents the core concept of a chat message in the domain.
 @freezed
-class ChatMessageEntity with _$ChatMessageEntity {
+abstract class ChatMessageEntity with _$ChatMessageEntity {
   const factory ChatMessageEntity({
     /// Unique identifier for the message
     required String id,

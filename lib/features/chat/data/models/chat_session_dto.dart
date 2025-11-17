@@ -10,7 +10,7 @@ part 'chat_session_dto.g.dart';
 /// Handles JSON serialization/deserialization for session data
 /// from the chatbot API endpoints.
 @freezed
-class ChatSessionDto with _$ChatSessionDto {
+abstract class ChatSessionDto with _$ChatSessionDto {
   const factory ChatSessionDto({
     required String sessionId,
     required UserInfoDto user,
@@ -41,7 +41,7 @@ class ChatSessionDto with _$ChatSessionDto {
 
 /// DTO for user information in session response
 @freezed
-class UserInfoDto with _$UserInfoDto {
+abstract class UserInfoDto with _$UserInfoDto {
   const factory UserInfoDto({
     int? id,
     required String email,
@@ -58,7 +58,7 @@ class UserInfoDto with _$UserInfoDto {
 
 /// DTO for session API response wrapper
 @freezed
-class ChatSessionResponseDto with _$ChatSessionResponseDto {
+abstract class ChatSessionResponseDto with _$ChatSessionResponseDto {
   const factory ChatSessionResponseDto({
     required bool success,
     required String sessionId,

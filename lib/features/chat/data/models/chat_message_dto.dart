@@ -10,7 +10,7 @@ part 'chat_message_dto.g.dart';
 ///
 /// Handles JSON serialization for messages from the chatbot API.
 @freezed
-class ChatMessageDto with _$ChatMessageDto {
+abstract class ChatMessageDto with _$ChatMessageDto {
   const factory ChatMessageDto({
     required String sessionId,
     required String role,
@@ -52,7 +52,7 @@ class ChatMessageDto with _$ChatMessageDto {
 
 /// DTO for message API response
 @freezed
-class ChatMessageResponseDto with _$ChatMessageResponseDto {
+abstract class ChatMessageResponseDto with _$ChatMessageResponseDto {
   const factory ChatMessageResponseDto({
     required bool success,
     required String message,
@@ -81,7 +81,7 @@ class ChatMessageResponseDto with _$ChatMessageResponseDto {
 
 /// DTO for chat history response
 @freezed
-class ChatHistoryResponseDto with _$ChatHistoryResponseDto {
+abstract class ChatHistoryResponseDto with _$ChatHistoryResponseDto {
   const factory ChatHistoryResponseDto({
     required bool success,
     required List<ChatHistoryMessageDto> history,
@@ -94,15 +94,13 @@ class ChatHistoryResponseDto with _$ChatHistoryResponseDto {
 
   /// Convert history to list of entities
   List<ChatMessageEntity> toEntities(String sessionId) {
-    return history
-        .map((msg) => msg.toEntity(sessionId))
-        .toList();
+    return history.map((msg) => msg.toEntity(sessionId)).toList();
   }
 }
 
 /// DTO for individual message in history
 @freezed
-class ChatHistoryMessageDto with _$ChatHistoryMessageDto {
+abstract class ChatHistoryMessageDto with _$ChatHistoryMessageDto {
   const factory ChatHistoryMessageDto({
     required String role,
     required String content,
@@ -130,7 +128,7 @@ class ChatHistoryMessageDto with _$ChatHistoryMessageDto {
 
 /// DTO for message request
 @freezed
-class ChatMessageRequestDto with _$ChatMessageRequestDto {
+abstract class ChatMessageRequestDto with _$ChatMessageRequestDto {
   const factory ChatMessageRequestDto({
     required String sessionId,
     required String message,

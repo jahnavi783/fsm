@@ -7,7 +7,7 @@ part 'chat_session_entity.freezed.dart';
 /// A session represents a conversation context between the user
 /// and the AI assistant. Messages are grouped by session.
 @freezed
-class ChatSessionEntity with _$ChatSessionEntity {
+abstract class ChatSessionEntity with _$ChatSessionEntity {
   const factory ChatSessionEntity({
     /// Unique session identifier from server
     required String sessionId,

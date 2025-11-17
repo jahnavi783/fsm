@@ -64,8 +64,8 @@ class ChatRepository implements IChatRepository {
       _logger.error('Dio error starting session', tag: 'CHAT_REPO', error: e);
       return Left(_handleDioError(e));
     } catch (e) {
-      _logger.error('Unexpected error starting session', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Unexpected error starting session',
+          tag: 'CHAT_REPO', error: e);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -113,8 +113,8 @@ class ChatRepository implements IChatRepository {
       _logger.error('Dio error sending message', tag: 'CHAT_REPO', error: e);
       return Left(_handleDioError(e));
     } catch (e) {
-      _logger.error('Unexpected error sending message', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Unexpected error sending message',
+          tag: 'CHAT_REPO', error: e);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -123,8 +123,8 @@ class ChatRepository implements IChatRepository {
   Future<Either<Failure, List<ChatMessageEntity>>> getChatHistory({
     required String sessionId,
   }) async {
-    _logger.info('Getting chat history', tag: 'CHAT_REPO',
-        data: {'sessionId': sessionId});
+    _logger.info('Getting chat history',
+        tag: 'CHAT_REPO', data: {'sessionId': sessionId});
 
     try {
       // Always try cache first for instant loading
@@ -180,8 +180,8 @@ class ChatRepository implements IChatRepository {
 
       return Left(_handleDioError(e));
     } catch (e) {
-      _logger.error('Unexpected error getting history', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Unexpected error getting history',
+          tag: 'CHAT_REPO', error: e);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -190,8 +190,8 @@ class ChatRepository implements IChatRepository {
   Future<Either<Failure, void>> endSession({
     required String sessionId,
   }) async {
-    _logger.info('Ending session', tag: 'CHAT_REPO',
-        data: {'sessionId': sessionId});
+    _logger.info('Ending session',
+        tag: 'CHAT_REPO', data: {'sessionId': sessionId});
 
     try {
       if (await _networkInfo.isConnected) {
@@ -217,8 +217,8 @@ class ChatRepository implements IChatRepository {
       _logger.error('Dio error ending session', tag: 'CHAT_REPO', error: e);
       return Left(_handleDioError(e));
     } catch (e) {
-      _logger.error('Unexpected error ending session', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Unexpected error ending session',
+          tag: 'CHAT_REPO', error: e);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -242,8 +242,7 @@ class ChatRepository implements IChatRepository {
 
       return Right(sessionEntity);
     } catch (e) {
-      _logger.error('Error getting active session', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Error getting active session', tag: 'CHAT_REPO', error: e);
       return Left(CacheFailure(message: e.toString()));
     }
   }
@@ -285,8 +284,8 @@ class ChatRepository implements IChatRepository {
       final entities = messages.map((model) => model.toEntity()).toList();
       return Right(entities);
     } catch (e) {
-      _logger.error('Error getting cached messages', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Error getting cached messages',
+          tag: 'CHAT_REPO', error: e);
       return Left(CacheFailure(message: e.toString()));
     }
   }
@@ -357,8 +356,8 @@ class ChatRepository implements IChatRepository {
       _logger.info('Synced $syncedCount pending messages', tag: 'CHAT_REPO');
       return Right(syncedCount);
     } catch (e) {
-      _logger.error('Error syncing pending messages', tag: 'CHAT_REPO',
-          error: e);
+      _logger.error('Error syncing pending messages',
+          tag: 'CHAT_REPO', error: e);
       return Left(ServerFailure(message: e.toString()));
     }
   }
@@ -384,9 +383,10 @@ class ChatRepository implements IChatRepository {
 
         switch (statusCode) {
           case 401:
-            return const AuthFailure(message: 'Session expired. Please login again.');
+            return const AuthenticationFailure(
+                message: 'Session expired. Please login again.');
           case 403:
-            return const AuthFailure(
+            return const AuthenticationFailure(
               message: 'Only technicians can use the chatbot.',
             );
           case 404:

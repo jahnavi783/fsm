@@ -2614,7 +2614,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/widgets/form/location_status_widget.dart';
 import '../../../../core/widgets/form/reactive_image_picker.dart';
 import '../../../../core/widgets/form/reactive_multiline_input.dart';
 import '../../../../core/widgets/form/reactive_signature_pad.dart';
@@ -3128,8 +3127,6 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           bottom: DesignTokens.space4 + viewInsets.bottom,
         ),
         children: [
-          LocationStatusWidget(location: widget.location),
-          DesignTokens.verticalSpaceMd,
           if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
           if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
           if (_currentStep == 2) _buildStep3Content(theme, colorScheme),

@@ -1,16 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/design_tokens.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
+import '../../../../core/widgets/inputs/fsm_filter_chip_group.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
 import '../widgets/document_card_tile.dart';
-import '../widgets/download_progress_indicator.dart';
 
 @RoutePage()
 class DocumentsPage extends StatefulWidget {
@@ -22,6 +25,7 @@ class DocumentsPage extends StatefulWidget {
 
 class _DocumentsPageState extends State<DocumentsPage> {
   final ScrollController _scrollController = ScrollController();
+  late final DocumentsBloc _documentsBloc;
   String _searchQuery = '';
   List<String> _selectedCategories = [];
 
@@ -30,24 +34,25 @@ class _DocumentsPageState extends State<DocumentsPage> {
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    // Load documents initially
-    context.read<DocumentsBloc>().add(
-          const DocumentsEvent.loadDocuments(page: 1),
-        );
+    // Initialize DocumentsBloc and load documents initially
+    _documentsBloc = getIt<DocumentsBloc>()
+      ..add(const DocumentsEvent.loadDocuments(page: 1))
+      ..add(const DocumentsEvent.loadCategories());
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _documentsBloc.close();
     super.dispose();
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      context.read<DocumentsBloc>().add(
-            const DocumentsEvent.loadMoreDocuments(),
-          );
+      _documentsBloc.add(
+        const DocumentsEvent.loadMoreDocuments(),
+      );
     }
   }
 
@@ -57,22 +62,20 @@ class _DocumentsPageState extends State<DocumentsPage> {
     });
 
     if (query.isNotEmpty) {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.searchDocuments(
-              query: query,
-              category: _selectedCategories.isNotEmpty
-                  ? _selectedCategories.first
-                  : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(
+          query: query,
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        ),
+      );
     } else {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.loadDocuments(
-              category: _selectedCategories.isNotEmpty
-                  ? _selectedCategories.first
-                  : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        ),
+      );
     }
   }
 
@@ -82,70 +85,91 @@ class _DocumentsPageState extends State<DocumentsPage> {
     });
 
     if (_searchQuery.isNotEmpty) {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.searchDocuments(
-              query: _searchQuery,
-              category:
-                  selectedFilters.isNotEmpty ? selectedFilters.first : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(
+          query: _searchQuery,
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
     } else {
-      context.read<DocumentsBloc>().add(
-            DocumentsEvent.loadDocuments(
-              category:
-                  selectedFilters.isNotEmpty ? selectedFilters.first : null,
-            ),
-          );
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<DocumentsBloc>(),
+    return BlocProvider.value(
+      value: _documentsBloc,
       child: BlocBuilder<DocumentsBloc, DocumentsState>(
         builder: (context, state) {
-          return FSMDocumentsPageTemplate(
+          return FSMListPageTemplate<String>(
+            // Custom gradient app bar
+            appBar: FSMAppBar.gradient(
+              title: 'Documents',
+              actions: [
+                if (state.isDownloading)
+                  Padding(
+                    padding: REdgeInsets.all(DesignTokens.space4),
+                    child: RSizedBox(
+                      width: DesignTokens.iconSm,
+                      height: DesignTokens.iconSm,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.w,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
             // Search and filters
+            showSearch: true,
+            searchHint: 'Search documents...',
             searchValue: _searchQuery,
             onSearchChanged: _onSearchChanged,
             onSearchSubmitted: (query) => _onSearchChanged(query),
+            showVoiceSearch: true,
+            showFilters: state.categories.isNotEmpty,
+            filterOptions: state.categories.isNotEmpty
+                ? state.categories
+                    .map((category) => FilterChipData<String>(
+                          value: category,
+                          label: category,
+                        ))
+                    .toList()
+                : null,
             selectedFilters: _selectedCategories,
             onFilterChanged: _onFilterChanged,
+            multiSelectFilters: true,
             // Content
             listContent: _buildListContent(state),
             isLoading: state.isLoading,
             isEmpty: state.filteredDocuments.isEmpty && !state.isLoading,
             hasError: state.hasError,
             errorMessage: state.errorMessage,
-            onRetry: () => context.read<DocumentsBloc>().add(
-                  const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
-                ),
+            onRetry: () => _documentsBloc.add(
+              const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
+            ),
+            emptyTitle: 'No Documents Found',
+            emptyDescription: 'Try adjusting your search or filter criteria.',
             // Actions
             onRefresh: () async {
-              context.read<DocumentsBloc>().add(
-                    DocumentsEvent.loadDocuments(
-                      page: 1,
-                      isRefresh: true,
-                      searchQuery:
-                          _searchQuery.isNotEmpty ? _searchQuery : null,
-                      category: _selectedCategories.isNotEmpty
-                          ? _selectedCategories.first
-                          : null,
-                    ),
-                  );
-            },
-            appBarActions: [
-              if (state.isDownloading)
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
+              _documentsBloc.add(
+                DocumentsEvent.loadDocuments(
+                  page: 1,
+                  isRefresh: true,
+                  searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
+                  category: _selectedCategories.isNotEmpty
+                      ? _selectedCategories.first
+                      : null,
                 ),
-            ],
+              );
+            },
           );
         },
       ),
@@ -153,50 +177,31 @@ class _DocumentsPageState extends State<DocumentsPage> {
   }
 
   Widget _buildListContent(DocumentsState state) {
-    return Column(
-      children: [
-        // Download progress indicator
-        if (state.isDownloading && state.downloadingDocumentId != null)
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DownloadProgressIndicator(
-              fileName: _getDownloadingFileName(state),
-              progress:
-                  0.5, // This should come from the actual download progress
-            ),
-          ),
+    return ListView.builder(
+      controller: _scrollController,
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+      itemCount: state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index >= state.filteredDocuments.length) {
+          return Padding(
+            padding: REdgeInsets.all(DesignTokens.space4),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
 
-        // Documents List
-        Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            itemCount:
-                state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index >= state.filteredDocuments.length) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final document = state.filteredDocuments[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: DocumentCardTile(
-                  document: document,
-                  onTap: () => _openDocument(context, document),
-                  onDownload: () => _downloadDocument(context, document),
-                  onDelete: () => _deleteDocument(context, document),
-                  isDownloading: state.isDownloading &&
-                      state.downloadingDocumentId == document.id,
-                ),
-              );
-            },
+        final document = state.filteredDocuments[index];
+        return Padding(
+          padding: REdgeInsets.only(bottom: DesignTokens.space3),
+          child: DocumentCardTile(
+            document: document,
+            onTap: () => _openDocument(context, document),
+            onDownload: () => _downloadDocument(context, document),
+            onDelete: () => _deleteDocument(context, document),
+            isDownloading: state.isDownloading &&
+                state.downloadingDocumentId == document.id,
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -205,9 +210,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {
-    context
-        .read<DocumentsBloc>()
-        .add(DocumentsEvent.downloadDocument(document));
+    _documentsBloc.add(DocumentsEvent.downloadDocument(document));
   }
 
   void _deleteDocument(BuildContext context, DocumentEntity document) {
@@ -232,28 +235,5 @@ class _DocumentsPageState extends State<DocumentsPage> {
         ],
       ),
     );
-  }
-
-  String _getDownloadingFileName(DocumentsState state) {
-    if (state.downloadingDocumentId == null) return '';
-
-    final document = state.documents.firstWhere(
-      (doc) => doc.id == state.downloadingDocumentId,
-      orElse: () => DocumentEntity(
-        id: '',
-        title: 'Unknown Document',
-        description: '',
-        type: DocumentType.manual,
-        fileUrl: '',
-        fileName: '',
-        fileSize: 0,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        tags: const [],
-        categories: const [],
-      ),
-    );
-
-    return document.fileName;
   }
 }

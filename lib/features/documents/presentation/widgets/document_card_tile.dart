@@ -42,12 +42,7 @@ class DocumentCardTile extends StatelessWidget {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
-    return Container(
-      margin: REdgeInsets.symmetric(
-        horizontal: DesignTokens.space4,
-        vertical: DesignTokens.space2,
-      ),
-      child: Material(
+    return Material(
         color: theme.colorScheme.surfaceContainer,
         elevation: DesignTokens.elevationXSmall,
         borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
@@ -177,7 +172,6 @@ class DocumentCardTile extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 

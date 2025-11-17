@@ -17,15 +17,34 @@ import '../widgets/document_shimmer.dart';
 import '../widgets/download_progress_indicator.dart';
 
 @RoutePage()
-class DocumentsPage extends StatelessWidget {
+class DocumentsPage extends StatefulWidget {
   const DocumentsPage({super.key});
 
   @override
+  State<DocumentsPage> createState() => _DocumentsPageState();
+}
+
+class _DocumentsPageState extends State<DocumentsPage> {
+  late final DocumentsBloc _documentsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _documentsBloc = getIt<DocumentsBloc>()
+      ..add(const LoadDocuments())
+      ..add(const LoadCategories());
+  }
+
+  @override
+  void dispose() {
+    _documentsBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<DocumentsBloc>()
-        ..add(const LoadDocuments())
-        ..add(const LoadCategories()),
+    return BlocProvider.value(
+      value: _documentsBloc,
       child: const DocumentsView(),
     );
   }

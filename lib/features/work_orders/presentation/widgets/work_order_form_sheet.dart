@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/theme/app_dimensions.dart';
-import 'package:location/location.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../../core/di/injection.dart';
 import '../../../../core/services/location_service.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
@@ -29,6 +29,7 @@ class WorkOrderFormSheet extends StatefulWidget {
   final WorkOrderEntity workOrder;
   final WorkOrderActionBloc bloc;
   final FormGroup formGroup;
+  final LocationService locationService;
 
   const WorkOrderFormSheet({
     super.key,
@@ -36,6 +37,7 @@ class WorkOrderFormSheet extends StatefulWidget {
     required this.workOrder,
     required this.bloc,
     required this.formGroup,
+    required this.locationService,
   });
 
   /// Shows the WorkOrderFormSheet as a modal bottom sheet
@@ -46,6 +48,7 @@ class WorkOrderFormSheet extends StatefulWidget {
     required WorkOrderEntity workOrder,
   }) async {
     final bloc = context.read<WorkOrderActionBloc>();
+    final locationService = getIt<LocationService>();
     final formGroup = _createFormGroup(action);
 
     await showModalBottomSheet(
@@ -66,6 +69,7 @@ class WorkOrderFormSheet extends StatefulWidget {
               workOrder: workOrder,
               bloc: bloc,
               formGroup: formGroup,
+              locationService: locationService,
             ),
           ),
         );
@@ -93,7 +97,6 @@ class WorkOrderFormSheet extends StatefulWidget {
 class _WorkOrderFormSheetState extends State<WorkOrderFormSheet> {
   LocationEntity? _location;
   bool _isLocationLoading = false;
-  LocationService? _locationService;
 
   @override
   void initState() {
@@ -111,47 +114,58 @@ class _WorkOrderFormSheetState extends State<WorkOrderFormSheet> {
 
     setState(() {
       _isLocationLoading = true;
+      _location = null;
     });
 
     try {
-      // Get location service from context
-      _locationService = context.read<LocationService>();
-
-      final LocationData position =
-          await _locationService!.getCurrentLocation();
+      // Use the enhanced method for better error handling
+      final result = await widget.locationService.getCurrentLocationEnhanced();
 
       if (!mounted) return;
 
-      setState(() {
-        _location = LocationEntity(
-          latitude: position.latitude!,
-          longitude: position.longitude!,
-          accuracy: position.accuracy,
-          capturedAt: DateTime.now(),
-        );
-        _isLocationLoading = false;
-      });
+      if (result.isSuccess && result.location != null) {
+        setState(() {
+          _location = LocationEntity(
+            latitude: result.location!.latitude,
+            longitude: result.location!.longitude,
+            accuracy: result.location!.accuracy,
+            capturedAt: DateTime.now(),
+          );
+          _isLocationLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLocationLoading = false;
+        });
+
+        // Show error with retry option
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text(result.error?.message ?? 'Failed to capture location'),
+              backgroundColor: AppColors.errorRed,
+              action: SnackBarAction(
+                label: 'Retry',
+                textColor: Colors.white,
+                onPressed: _captureLocation,
+              ),
+            ),
+          );
+        }
+      }
     } catch (e) {
       if (!mounted) return;
 
-      String errorMessage = 'Failed to capture location';
-      if (e.toString().contains('location service')) {
-        errorMessage =
-            'Location services are disabled. Please enable them in device settings.';
-      } else if (e.toString().contains('permission')) {
-        errorMessage =
-            'Location permission denied. Please grant location access in app settings.';
-      }
-
       setState(() {
         _isLocationLoading = false;
       });
 
-      // Show snackbar for error
+      // Show generic error
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage),
+            content: Text('Unexpected error: ${e.toString()}'),
             backgroundColor: AppColors.errorRed,
             action: SnackBarAction(
               label: 'Retry',

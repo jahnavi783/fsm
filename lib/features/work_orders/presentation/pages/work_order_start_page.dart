@@ -468,7 +468,6 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
       context: context,
       action: WorkOrderAction.start,
       workOrder: workOrder,
-      location: currentLocation,
     );
   }
 

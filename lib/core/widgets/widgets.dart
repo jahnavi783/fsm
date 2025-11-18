@@ -64,6 +64,11 @@ export 'feedback/fsm_status_badge.dart';
 export 'feedback/fsm_priority_indicator.dart';
 
 // ───────────────────────────────────────────────────────────────────────────
+// Indicators - Visual Indicators and Progress Components
+// ───────────────────────────────────────────────────────────────────────────
+export 'indicators/carousel_page_indicator.dart';
+
+// ───────────────────────────────────────────────────────────────────────────
 // Connectivity - Network Status Components
 // ───────────────────────────────────────────────────────────────────────────
 export 'connectivity/fsm_offline_banner.dart';

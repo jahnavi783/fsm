@@ -854,6 +854,7 @@ import '../../../../core/utils/work_order_status_helper.dart';
 import '../../../../core/widgets/stats_card.dart' as stats;
 import '../../../../core/widgets/widgets.dart'
     hide StatsGrid, StatsCard, StatsCardData; // Barrel import, hide duplicates
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
@@ -862,8 +863,8 @@ import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
 import '../blocs/work_orders_list/work_orders_list_state.dart';
-import '../widgets/current_work_order_card.dart';
 import '../widgets/work_order_list_card.dart';
+import '../widgets/carousels/in_progress_work_order_carousel.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -994,11 +995,11 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: ListView(
                         controller: _scrollController,
                         children: [
+                          // In-Progress Work Orders Carousel (above everything)
+                          _buildInProgressCarousel(state),
+
                           // Stats Cards
                           _buildStatsGrid(state),
-
-                          // Current Work Order Card (for in-progress WO)
-                          _buildCurrentWorkOrderCard(state),
 
                           // Filter Chips - 4 status filters
                           _buildFilterChips(),
@@ -1070,8 +1071,8 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  // Build Current Work Order Card (for in-progress work order)
-  Widget _buildCurrentWorkOrderCard(WorkOrdersListState state) {
+  // Build In-Progress Work Orders Carousel
+  Widget _buildInProgressCarousel(WorkOrdersListState state) {
     return state.maybeWhen(
       loaded: (workOrders,
           unassignedWorkOrders,
@@ -1084,41 +1085,15 @@ class _DashboardPageState extends State<DashboardPage> {
           searchQuery,
           isOffline,
           hasPendingSync) {
-        // Find the current in-progress work order
+        // Find all in-progress work orders
         final inProgressWorkOrders = workOrders
             .where((wo) => wo.status == WorkOrderStatus.inProgress)
             .toList();
 
-        // Only show if there's exactly 1 in-progress work order
-        if (inProgressWorkOrders.length == 1) {
-          final workOrder = inProgressWorkOrders.first;
-          return CurrentWorkOrderCard(
-            workOrder: workOrder,
-            onPause: workOrder.canBePaused
-                ? () => _handleWorkOrderAction(context, workOrder, 'pause')
-                : null,
-            onParts: () {
-              // TODO: Navigate to parts screen filtered for this WO
-              context.router
-                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-            },
-            onDocs: () {
-              // TODO: Navigate to documents screen filtered for this WO
-              context.router
-                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-            },
-            onComplete: workOrder.canBeCompleted
-                ? () => _handleWorkOrderAction(context, workOrder, 'complete')
-                : null,
-            onTap: () {
-              context.router
-                  .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-            },
-          );
-        }
-
-        // Hide card if no in-progress work order or multiple (edge case)
-        return const SizedBox.shrink();
+        // Return carousel with all in-progress work orders
+        return InProgressWorkOrderCarousel(
+          workOrders: inProgressWorkOrders,
+        );
       },
       orElse: () => const SizedBox.shrink(),
     );

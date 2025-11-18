@@ -14,7 +14,7 @@ abstract class WorkOrderCompletionCacheModel with _$WorkOrderCompletionCacheMode
     /// Work order ID this cache is for
     @HiveField(0) required int workOrderId,
 
-    /// Current step in the multi-step form (0-2)
+    /// Current step in the multi-step form (0-3)
     @HiveField(1) @Default(0) int currentStep,
 
     /// Step 1: Basic Info - Customer name

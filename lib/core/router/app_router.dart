@@ -265,12 +265,6 @@ extension AppRouterExtension on StackRouter {
             children: [DashboardRoute()],
           )
         ]);
-        // case DrawerSection.workOrders:
-        return replaceAll([
-          const MainNavigationRoute(
-            children: [DashboardRoute()],
-          )
-        ]);
       case DrawerSection.calendar:
         return replaceAll([
           const MainNavigationRoute(
@@ -321,7 +315,6 @@ extension AppRouterExtension on StackRouter {
 
     switch (section) {
       case DrawerSection.dashboard:
-        // case DrawerSection.workOrders:
         // Both dashboard and workOrders use the dashboard page
         return currentPath.contains('/dashboard') ||
             currentPath.contains('/work-order');
@@ -344,7 +337,6 @@ extension AppRouterExtension on StackRouter {
 /// Enum for drawer navigation sections
 enum DrawerSection {
   dashboard,
-  // workOrders,
   calendar,
   documents,
   parts,
@@ -357,7 +349,6 @@ enum DrawerSection {
 extension RouteNameToSection on String {
   DrawerSection? get drawerSection {
     if (contains('dashboard')) return DrawerSection.dashboard;
-    // if (contains('work')) return DrawerSection.workOrders;
     if (contains('calendar')) return DrawerSection.calendar;
     if (contains('document')) return DrawerSection.documents;
     if (contains('part')) return DrawerSection.parts;

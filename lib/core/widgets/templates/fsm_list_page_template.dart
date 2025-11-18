@@ -3,7 +3,7 @@ import '../cards/fsm_stats_card.dart';
 import '../states/fsm_empty_state.dart';
 import '../states/fsm_error_state.dart';
 import '../states/fsm_loading_indicator.dart';
-import '../inputs/fsm_filter_chip_group.dart';
+import '../inputs/filter_chip_data.dart';
 import '../sections/fsm_stats_section.dart';
 import '../sections/fsm_search_filter_header.dart';
 

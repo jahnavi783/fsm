@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import '../inputs/fsm_search_bar.dart';
 import '../inputs/fsm_filter_chip_group.dart';
+import '../inputs/filter_chip_data.dart';
 
 /// FSMSearchFilterHeader - Standardized search + filter component
 ///

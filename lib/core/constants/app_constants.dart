@@ -14,9 +14,7 @@ abstract class AppConstants {
   
   // Cache Configuration
   static const Duration cacheMaxAge = Duration(hours: 24);
-  static const int maxCacheSize = 100 * 1024 * 1024; // 100MB
   
   // Location Configuration
   static const double locationAccuracyThreshold = 50.0; // meters
-  static const Duration locationTimeout = Duration(seconds: 30);
 }

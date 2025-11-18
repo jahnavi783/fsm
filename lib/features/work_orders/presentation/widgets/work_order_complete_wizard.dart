@@ -1,2610 +1,3 @@
-// // import 'dart:io';
-// //
-// // import 'package:flutter/material.dart';
-// // import 'package:flutter_bloc/flutter_bloc.dart';
-// // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// //
-// // import 'package:reactive_forms/reactive_forms.dart';
-// //
-// // import '../../../../core/di/injection.dart';
-// // import '../../../../core/theme/design_tokens.dart';
-// // import '../../../../core/widgets/form/location_status_widget.dart';
-// // import '../../../../core/widgets/form/reactive_image_picker.dart';
-// // import '../../../../core/widgets/form/reactive_multiline_input.dart';
-// // import '../../../../core/widgets/form/reactive_signature_pad.dart';
-// // import '../../../../core/widgets/form/reactive_text_input.dart';
-// // import '../../data/models/work_order_completion_cache_model.dart';
-// // import '../../data/services/work_order_completion_cache_service.dart';
-// // import '../../domain/entities/location_entity.dart';
-// // import '../../domain/entities/work_order_entity.dart';
-// // import '../blocs/work_order_action/work_order_action_bloc.dart';
-// //
-// // import '../blocs/work_order_action/work_order_action_state.dart';
-// // import '../forms/work_order_forms.dart';
-// //
-// // /// Wizard-style completion flow with three sequential sheets
-// // class WorkOrderCompleteWizard extends StatefulWidget {
-// //   final WorkOrderEntity workOrder;
-// //   final LocationEntity? location;
-// //   final WorkOrderActionBloc bloc;
-// //   final WorkOrderCompletionCacheService cacheService;
-// //
-// //   const WorkOrderCompleteWizard({
-// //     super.key,
-// //     required this.workOrder,
-// //     required this.location,
-// //     required this.bloc,
-// //     required this.cacheService,
-// //   });
-// //
-// //   /// Factory method to show the wizard
-// //   static Future<void> show({
-// //     required BuildContext context,
-// //     required WorkOrderEntity workOrder,
-// //     LocationEntity? location,
-// //   }) async {
-// //     final bloc = context.read<WorkOrderActionBloc>();
-// //     final cacheService = getIt<WorkOrderCompletionCacheService>();
-// //
-// //     await showModalBottomSheet(
-// //       context: context,
-// //       isScrollControlled: true,
-// //       backgroundColor: Colors.transparent,
-// //       isDismissible: false,
-// //       enableDrag: false,
-// //       builder: (bottomSheetContext) => BlocProvider.value(
-// //         value: bloc,
-// //         child: WorkOrderCompleteWizard(
-// //           workOrder: workOrder,
-// //           location: location,
-// //           bloc: bloc,
-// //           cacheService: cacheService,
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   State<WorkOrderCompleteWizard> createState() =>
-// //       _WorkOrderCompleteWizardState();
-// // }
-// //
-// // class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
-// //   int _currentStep = 0;
-// //   late FormGroup _step1Form;
-// //   late FormGroup _step2Form;
-// //   late FormGroup _step3Form;
-// //
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     _initializeForms();
-// //     _loadCachedData();
-// //   }
-// //
-// //   void _initializeForms() {
-// //     _step1Form = WorkOrderForms.buildCompleteFormStep1();
-// //     _step2Form = WorkOrderForms.buildCompleteFormStep2();
-// //     _step3Form = WorkOrderForms.buildCompleteFormStep3();
-// //   }
-// //
-// //   Future<void> _loadCachedData() async {
-// //     final cache = await widget.cacheService.loadCache(widget.workOrder.id);
-// //     if (cache != null && mounted) {
-// //       setState(() {
-// //         _currentStep = cache.currentStep;
-// //       });
-// //
-// //       // Restore Step 1 data
-// //       if (cache.workLog != null) {
-// //         _step1Form.control('workLog').value = cache.workLog;
-// //       }
-// //
-// //       // Restore parts
-// //       if (cache.partsUsed.isNotEmpty) {
-// //         final partsArray = _step1Form.control('parts') as FormArray;
-// //         partsArray.clear();
-// //         for (final cachedPart in cache.partsUsed) {
-// //           final partGroup = WorkOrderForms.createPartEntry(
-// //             partNumber: cachedPart.partNumber,
-// //             partName: cachedPart.partName,
-// //             quantity: cachedPart.quantity,
-// //           );
-// //           partsArray.add(partGroup);
-// //         }
-// //       }
-// //
-// //       // Restore Step 2 data (images)
-// //       if (cache.images.isNotEmpty) {
-// //         final imageFiles = cache.images.map((path) => File(path)).toList();
-// //         _step2Form.control('files').value = imageFiles;
-// //       }
-// //
-// //       // Restore Step 3 data
-// //       if (cache.customerName != null) {
-// //         _step3Form.control('customerName').value = cache.customerName;
-// //       }
-// //       if (cache.completionNotes != null) {
-// //         _step3Form.control('completionNotes').value = cache.completionNotes;
-// //       }
-// //       if (cache.signaturePath != null) {
-// //         final signatureFile = File(cache.signaturePath!);
-// //         if (await signatureFile.exists()) {
-// //           _step3Form.control('signature').value = signatureFile;
-// //         }
-// //       }
-// //     }
-// //   }
-// //
-// //   Future<void> _saveCache() async {
-// //     final step1Data =
-// //         WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-// //
-// //     // Convert parts to cached model
-// //     final cachedParts = (step1Data['partsUsed'] as List<PartUsedEntity>?)
-// //             ?.map((part) => CachedPartUsedModel(
-// //                   partNumber: part.partNumber,
-// //                   quantity: part.quantityUsed,
-// //                   partName: part.partName ?? '',
-// //                   category: '',
-// //                   quantityAvailable: 0,
-// //                   unitPrice: 0.0,
-// //                   status: 'used',
-// //                 ))
-// //             .toList() ??
-// //         [];
-// //
-// //     // Get image paths
-// //     final imagePaths = (step1Data['files'] as List<File>?)
-// //             ?.map((file) => file.path)
-// //             .toList() ??
-// //         [];
-// //
-// //     final cache = WorkOrderCompletionCacheModel(
-// //       workOrderId: widget.workOrder.id,
-// //       currentStep: _currentStep,
-// //       workLog: step1Data['workLog'],
-// //       partsUsed: cachedParts,
-// //       images: imagePaths,
-// //       customerName: step1Data['customerName'],
-// //       signaturePath: step1Data['signature']?.path,
-// //       completionNotes: step1Data['completionNotes'],
-// //       lastUpdated: DateTime.now(),
-// //     );
-// //
-// //     await widget.cacheService.saveCache(cache);
-// //   }
-// //
-// //   void _handleClose() {
-// //     _saveCache();
-// //     Navigator.of(context).pop();
-// //   }
-// //
-// //   void _handleAddPart(FormArray formArray) {
-// //     formArray.add(WorkOrderForms.createPartEntry(
-// //       partNumber: '',
-// //       partName: '',
-// //       quantity: 1,
-// //     ));
-// //   }
-// //
-// //   void _handleRemovePart(FormArray formArray, int index) {
-// //     formArray.removeAt(index);
-// //   }
-// //
-// //   FormGroup _getCurrentForm() {
-// //     switch (_currentStep) {
-// //       case 0:
-// //         return _step1Form;
-// //       case 1:
-// //         return _step2Form;
-// //       case 2:
-// //         return _step3Form;
-// //       default:
-// //         return _step1Form;
-// //     }
-// //   }
-// //
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //
-// //     return BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-// //       bloc: widget.bloc,
-// //       listener: (context, state) {
-// //         state.maybeWhen(
-// //           actionSuccess: (workOrder, actionType, message, groupedImages) {
-// //             // Clear cache on success
-// //             widget.cacheService.clearCache(widget.workOrder.id);
-// //             Navigator.of(context).pop();
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(message),
-// //                 backgroundColor: colorScheme.primary,
-// //               ),
-// //             );
-// //           },
-// //           error: (failure, workOrder, isOffline) {
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(failure.message),
-// //                 backgroundColor: colorScheme.error,
-// //               ),
-// //             );
-// //           },
-// //           orElse: () {},
-// //         );
-// //       },
-// //       builder: (context, state) {
-// //         state.maybeWhen(
-// //           actionInProgress: (_, __, ___) => true,
-// //           orElse: () => false,
-// //         );
-// //
-// //         return Container(
-// //           constraints: BoxConstraints(
-// //             maxHeight: 0.9.sh,
-// //           ),
-// //           decoration: BoxDecoration(
-// //             color: colorScheme.surface,
-// //             borderRadius: BorderRadius.vertical(
-// //               top: Radius.circular(DesignTokens.radiusLg.r),
-// //             ),
-// //           ),
-// //           child: Column(
-// //             mainAxisSize: MainAxisSize.min,
-// //             children: [
-// //               // Header
-// //               _buildHeader(theme, colorScheme),
-// //
-// //               Divider(height: 1.h, color: colorScheme.outline),
-// //
-// //               // Progress indicator
-// //               _buildProgressIndicator(theme, colorScheme),
-// //
-// //               // Content
-// //               Flexible(
-// //                 child: _buildStepContent(),
-// //               ),
-// //
-// //               // Navigation buttons
-// //               // _buildNavigationButtons(isLoading, theme, colorScheme),
-// //             ],
-// //           ),
-// //         );
-// //       },
-// //     );
-// //   }
-// //
-// //   Widget _buildHeader(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding: REdgeInsets.all(DesignTokens.space4),
-// //       child: Row(
-// //         children: [
-// //           Container(
-// //             width: 40.w,
-// //             height: 40.h,
-// //             decoration: BoxDecoration(
-// //               color: colorScheme.primary.withValues(alpha: 0.1),
-// //               borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //             ),
-// //             child: Icon(
-// //               Icons.check_circle,
-// //               color: colorScheme.primary,
-// //               size: DesignTokens.iconMd.sp,
-// //             ),
-// //           ),
-// //           RSizedBox(width: DesignTokens.space3),
-// //           Expanded(
-// //             child: Column(
-// //               crossAxisAlignment: CrossAxisAlignment.start,
-// //               children: [
-// //                 Text(
-// //                   'Complete Work Order',
-// //                   style: theme.textTheme.titleMedium?.copyWith(
-// //                     fontWeight: FontWeight.w600,
-// //                   ),
-// //                 ),
-// //                 Text(
-// //                   'Work Order #${widget.workOrder.id}',
-// //                   style: theme.textTheme.bodyMedium?.copyWith(
-// //                     color: colorScheme.onSurfaceVariant,
-// //                   ),
-// //                 ),
-// //               ],
-// //             ),
-// //           ),
-// //           IconButton(
-// //             onPressed: _handleClose,
-// //             icon: Icon(
-// //               Icons.close,
-// //               size: DesignTokens.iconMd.sp,
-// //               color: colorScheme.onSurfaceVariant,
-// //             ),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding: REdgeInsets.symmetric(
-// //         horizontal: DesignTokens.space4,
-// //         vertical: DesignTokens.space2,
-// //       ),
-// //       child: Row(
-// //         children: [
-// //           _buildStepIndicator(0, 'Work Log', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(0, colorScheme)),
-// //           _buildStepIndicator(1, 'Images', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(1, colorScheme)),
-// //           _buildStepIndicator(2, 'Signature', theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStepIndicator(
-// //       int step, String label, ThemeData theme, ColorScheme colorScheme) {
-// //     final isActive = step == _currentStep;
-// //     final isCompleted = step < _currentStep;
-// //
-// //     return Column(
-// //       children: [
-// //         Container(
-// //           width: 32.w,
-// //           height: 32.h,
-// //           decoration: BoxDecoration(
-// //             color: isCompleted || isActive
-// //                 ? colorScheme.primary
-// //                 : colorScheme.surfaceContainerHighest,
-// //             shape: BoxShape.circle,
-// //           ),
-// //           child: Center(
-// //             child: isCompleted
-// //                 ? Icon(Icons.check,
-// //                     color: colorScheme.onPrimary, size: DesignTokens.iconSm.sp)
-// //                 : Text(
-// //                     '${step + 1}',
-// //                     style: theme.textTheme.labelMedium?.copyWith(
-// //                       color: colorScheme.onPrimary,
-// //                       fontWeight: FontWeight.w600,
-// //                     ),
-// //                   ),
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space1),
-// //         Text(
-// //           label,
-// //           style: theme.textTheme.labelSmall?.copyWith(
-// //             color:
-// //                 isActive ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
-// //             fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-// //           ),
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStepConnector(int step, ColorScheme colorScheme) {
-// //     final isCompleted = step < _currentStep;
-// //
-// //     return Container(
-// //       height: 2.h,
-// //       margin: REdgeInsets.only(bottom: DesignTokens.space5),
-// //       color: isCompleted
-// //           ? colorScheme.primary
-// //           : colorScheme.surfaceContainerHighest,
-// //     );
-// //   }
-// //
-// //   Widget _buildStepContent() {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //
-// //     return ReactiveForm(
-// //       formGroup: _getCurrentForm(),
-// //       child: ListView(
-// //         padding: REdgeInsets.all(DesignTokens.space4),
-// //         children: [
-// //           // Location status
-// //           LocationStatusWidget(location: widget.location),
-// //
-// //           DesignTokens.verticalSpaceMd,
-// //
-// //           // Step-specific content
-// //           if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
-// //           if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
-// //           if (_currentStep == 2) _buildStep3Content(theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep1Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text(
-// //           'Step 1: Work Details',
-// //           style: theme.textTheme.titleMedium?.copyWith(
-// //             fontWeight: FontWeight.w600,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text(
-// //           'Provide details about the work performed and parts used',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             color: colorScheme.onSurfaceVariant,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Text(
-// //           'Work Log *',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             fontWeight: FontWeight.w500,
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveMultilineInput(
-// //           formControlName: 'workLog',
-// //           hint:
-// //               'Describe the work performed in detail (minimum 20 characters)...',
-// //           minLines: 4,
-// //           maxLines: 8,
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Row(
-// //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// //           children: [
-// //             Text(
-// //               'Parts Used (Optional)',
-// //               style: theme.textTheme.bodyMedium?.copyWith(
-// //                 fontWeight: FontWeight.w500,
-// //               ),
-// //             ),
-// //             ReactiveFormArray(
-// //               formArrayName: 'parts',
-// //               builder: (context, formArray, child) {
-// //                 return TextButton.icon(
-// //                   onPressed: () => _handleAddPart(formArray),
-// //                   icon: Icon(Icons.add, size: DesignTokens.iconSm.sp),
-// //                   label: Text('Add Part'),
-// //                 );
-// //               },
-// //             ),
-// //           ],
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveFormArray(
-// //           formArrayName: 'parts',
-// //           builder: (context, formArray, child) {
-// //             if (formArray.value == null || (formArray.value as List).isEmpty) {
-// //               return Container(
-// //                 padding: REdgeInsets.all(DesignTokens.space4),
-// //                 decoration: BoxDecoration(
-// //                   color: colorScheme.surfaceContainerHighest,
-// //                   borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //                   border: Border.all(
-// //                       color: colorScheme.outline.withValues(alpha: 0.3)),
-// //                 ),
-// //                 child: Row(
-// //                   children: [
-// //                     Icon(
-// //                       Icons.info_outline,
-// //                       size: DesignTokens.iconSm.sp,
-// //                       color: colorScheme.onSurfaceVariant,
-// //                     ),
-// //                     RSizedBox(width: DesignTokens.space3),
-// //                     Expanded(
-// //                       child: Text(
-// //                         'No parts added yet. Tap "Add Part" to record parts used.',
-// //                         style: theme.textTheme.bodySmall?.copyWith(
-// //                           color: colorScheme.onSurfaceVariant,
-// //                         ),
-// //                       ),
-// //                     ),
-// //                   ],
-// //                 ),
-// //               );
-// //             }
-// //
-// //             return Column(
-// //               children: List.generate(
-// //                 formArray.controls.length,
-// //                 (index) =>
-// //                     _buildPartEntry(formArray, index, theme, colorScheme),
-// //               ),
-// //             );
-// //           },
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
-// //       ColorScheme colorScheme) {
-// //     return ReactiveForm(
-// //       formGroup: formArray.controls[index] as FormGroup,
-// //       child: Container(
-// //         margin: REdgeInsets.only(bottom: DesignTokens.space3),
-// //         padding: REdgeInsets.all(DesignTokens.space4),
-// //         decoration: BoxDecoration(
-// //           color: colorScheme.surface,
-// //           borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //           border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
-// //         ),
-// //         child: Column(
-// //           children: [
-// //             Row(
-// //               children: [
-// //                 Expanded(
-// //                   child: Column(
-// //                     crossAxisAlignment: CrossAxisAlignment.start,
-// //                     children: [
-// //                       Text(
-// //                         'Part ${index + 1}',
-// //                         style: theme.textTheme.labelMedium?.copyWith(
-// //                           fontWeight: FontWeight.w600,
-// //                           color: colorScheme.onSurfaceVariant,
-// //                         ),
-// //                       ),
-// //                     ],
-// //                   ),
-// //                 ),
-// //                 IconButton(
-// //                   onPressed: () => _handleRemovePart(formArray, index),
-// //                   icon: Icon(Icons.delete, size: DesignTokens.iconSm.sp),
-// //                   color: colorScheme.error,
-// //                   style: IconButton.styleFrom(
-// //                     padding: REdgeInsets.all(DesignTokens.space2),
-// //                     minimumSize: Size(32.w, 32.h),
-// //                   ),
-// //                 ),
-// //               ],
-// //             ),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //               formControlName: 'partNumber',
-// //               label: 'Part Number',
-// //             ),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //               formControlName: 'partName',
-// //               label: 'Part Name',
-// //             ),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //               formControlName: 'quantity',
-// //               label: 'Quantity',
-// //               keyboardType: TextInputType.number,
-// //             ),
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep2Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text(
-// //           'Step 2: Capture Images',
-// //           style: theme.textTheme.titleMedium?.copyWith(
-// //             fontWeight: FontWeight.w600,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text(
-// //           'Take photos of the completed work (optional but recommended)',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             color: colorScheme.onSurfaceVariant,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Text(
-// //           'Images (Optional)',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             fontWeight: FontWeight.w500,
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveImagePicker(
-// //           formControlName: 'files',
-// //           maxImages: 10,
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStep3Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text(
-// //           'Step 3: Customer Signature',
-// //           style: theme.textTheme.titleMedium?.copyWith(
-// //             fontWeight: FontWeight.w600,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text(
-// //           'Get customer confirmation and signature',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             color: colorScheme.onSurfaceVariant,
-// //           ),
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Text(
-// //           'Customer Name *',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             fontWeight: FontWeight.w500,
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveTextInput(
-// //           formControlName: 'customerName',
-// //           hint: 'Enter customer name',
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Text(
-// //           'Customer Signature *',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             fontWeight: FontWeight.w500,
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveSignaturePad(
-// //           formControlName: 'signature',
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Text(
-// //           'Completion Notes (Optional)',
-// //           style: theme.textTheme.bodyMedium?.copyWith(
-// //             fontWeight: FontWeight.w500,
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveMultilineInput(
-// //           formControlName: 'completionNotes',
-// //           hint: 'Add any additional notes...',
-// //           minLines: 3,
-// //           maxLines: 5,
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   @override
-// //   void dispose() {
-// //     _step1Form.dispose();
-// //     _step2Form.dispose();
-// //     _step3Form.dispose();
-// //     super.dispose();
-// //   }
-// // }
-// // import 'dart:io';
-// //
-// // import 'package:flutter/material.dart';
-// // import 'package:flutter_bloc/flutter_bloc.dart';
-// // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// // import 'package:reactive_forms/reactive_forms.dart';
-// //
-// // import '../../../../core/di/injection.dart';
-// // import '../../../../core/theme/design_tokens.dart';
-// // import '../../../../core/widgets/form/location_status_widget.dart';
-// // import '../../../../core/widgets/form/reactive_image_picker.dart';
-// // import '../../../../core/widgets/form/reactive_multiline_input.dart';
-// // import '../../../../core/widgets/form/reactive_signature_pad.dart';
-// // import '../../../../core/widgets/form/reactive_text_input.dart';
-// // import '../../data/models/work_order_completion_cache_model.dart';
-// // import '../../data/services/work_order_completion_cache_service.dart';
-// // import '../../domain/entities/location_entity.dart';
-// // import '../../domain/entities/work_order_entity.dart';
-// // import '../blocs/work_order_action/work_order_action_bloc.dart';
-// // import '../blocs/work_order_action/work_order_action_event.dart';
-// // import '../blocs/work_order_action/work_order_action_state.dart';
-// // import '../forms/work_order_forms.dart';
-// //
-// // class WorkOrderCompleteWizard extends StatefulWidget {
-// //   final WorkOrderEntity workOrder;
-// //   final LocationEntity? location;
-// //   final WorkOrderActionBloc bloc;
-// //   final WorkOrderCompletionCacheService cacheService;
-// //
-// //   const WorkOrderCompleteWizard({
-// //     super.key,
-// //     required this.workOrder,
-// //     required this.location,
-// //     required this.bloc,
-// //     required this.cacheService,
-// //   });
-// //
-// //   static Future<void> show({
-// //     required BuildContext context,
-// //     required WorkOrderEntity workOrder,
-// //     LocationEntity? location,
-// //   }) async {
-// //     final bloc = context.read<WorkOrderActionBloc>();
-// //     final cacheService = getIt<WorkOrderCompletionCacheService>();
-// //
-// //     await showModalBottomSheet(
-// //       context: context,
-// //       isScrollControlled: true,
-// //       backgroundColor: Colors.transparent,
-// //       isDismissible: false,
-// //       enableDrag: false,
-// //       builder: (bottomSheetContext) => BlocProvider.value(
-// //         value: bloc,
-// //         child: WorkOrderCompleteWizard(
-// //           workOrder: workOrder,
-// //           location: location,
-// //           bloc: bloc,
-// //           cacheService: cacheService,
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   State<WorkOrderCompleteWizard> createState() =>
-// //       _WorkOrderCompleteWizardState();
-// // }
-// //
-// // class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
-// //   int _currentStep = 0;
-// //   late FormGroup _step1Form;
-// //   late FormGroup _step2Form;
-// //   late FormGroup _step3Form;
-// //
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     _initializeForms();
-// //     _loadCachedData();
-// //   }
-// //
-// //   void _initializeForms() {
-// //     _step1Form = WorkOrderForms.buildCompleteFormStep1();
-// //     _step2Form = WorkOrderForms.buildCompleteFormStep2();
-// //     _step3Form = WorkOrderForms.buildCompleteFormStep3();
-// //   }
-// //
-// //   Future<void> _loadCachedData() async {
-// //     final cache = await widget.cacheService.loadCache(widget.workOrder.id);
-// //     if (cache != null && mounted) {
-// //       setState(() {
-// //         _currentStep = cache.currentStep;
-// //       });
-// //
-// //       if (cache.workLog != null) {
-// //         _step1Form.control('workLog').value = cache.workLog;
-// //       }
-// //
-// //       if (cache.partsUsed.isNotEmpty) {
-// //         final partsArray = _step1Form.control('parts') as FormArray;
-// //         partsArray.clear();
-// //         for (final cachedPart in cache.partsUsed) {
-// //           final partGroup = WorkOrderForms.createPartEntry(
-// //             partNumber: cachedPart.partNumber,
-// //             partName: cachedPart.partName,
-// //             quantity: cachedPart.quantity,
-// //           );
-// //           partsArray.add(partGroup);
-// //         }
-// //       }
-// //
-// //       if (cache.images.isNotEmpty) {
-// //         final imageFiles = cache.images.map((path) => File(path)).toList();
-// //         _step2Form.control('files').value = imageFiles;
-// //       }
-// //
-// //       if (cache.customerName != null) {
-// //         _step3Form.control('customerName').value = cache.customerName;
-// //       }
-// //       if (cache.completionNotes != null) {
-// //         _step3Form.control('completionNotes').value = cache.completionNotes;
-// //       }
-// //       if (cache.signaturePath != null) {
-// //         final signatureFile = File(cache.signaturePath!);
-// //         if (await signatureFile.exists()) {
-// //           _step3Form.control('signature').value = signatureFile;
-// //         }
-// //       }
-// //     }
-// //   }
-// //
-// //   Future<void> _saveCache() async {
-// //     final step1Data =
-// //         WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-// //
-// //     final cachedParts = (step1Data['partsUsed'] as List? ?? [])
-// //         .map((part) => CachedPartUsedModel(
-// //               partNumber: part.partNumber,
-// //               quantity: part.quantityUsed,
-// //               partName: part.partName ?? '',
-// //               category: '',
-// //               quantityAvailable: 0,
-// //               unitPrice: 0.0,
-// //               status: 'used',
-// //             ))
-// //         .toList();
-// //
-// //     final imagePaths = (step1Data['files'] as List<File>? ?? [])
-// //         .map((file) => file.path)
-// //         .toList();
-// //
-// //     final cache = WorkOrderCompletionCacheModel(
-// //       workOrderId: widget.workOrder.id,
-// //       currentStep: _currentStep,
-// //       workLog: step1Data['workLog'],
-// //       partsUsed: cachedParts,
-// //       images: imagePaths,
-// //       customerName: step1Data['customerName'],
-// //       signaturePath: step1Data['signature']?.path,
-// //       completionNotes: step1Data['completionNotes'],
-// //       lastUpdated: DateTime.now(),
-// //     );
-// //
-// //     await widget.cacheService.saveCache(cache);
-// //   }
-// //
-// //   void _handleClose() {
-// //     _saveCache();
-// //     Navigator.of(context).pop();
-// //   }
-// //
-// //   void _handleAddPart(FormArray formArray) {
-// //     formArray.add(WorkOrderForms.createPartEntry(
-// //       partNumber: '',
-// //       partName: '',
-// //       quantity: 1,
-// //     ));
-// //   }
-// //
-// //   void _handleRemovePart(FormArray formArray, int index) {
-// //     formArray.removeAt(index);
-// //   }
-// //
-// //   FormGroup _getCurrentForm() {
-// //     switch (_currentStep) {
-// //       case 0:
-// //         return _step1Form;
-// //       case 1:
-// //         return _step2Form;
-// //       case 2:
-// //         return _step3Form;
-// //       default:
-// //         return _step1Form;
-// //     }
-// //   }
-// //
-// //   void _handleSubmit() {
-// //     final data = WorkOrderForms.getCompleteFormData(
-// //       _step1Form,
-// //       _step2Form,
-// //       _step3Form,
-// //     );
-// //
-// //     final workLog = data['workLog'] as String;
-// //     final customerName = data['customerName'] as String;
-// //     final signature = data['signature'] as File;
-// //     // final partsUsed = data['partsUsed'] as List<PartUsedEntity> ?? [];
-// //     final partsUsed = (data['partsUsed'] as List<PartUsedEntity>?) ?? [];
-// //     final files = (data['files'] as List<File>?) ?? [];
-// //     final completionNotes = data['completionNotes'] as String?;
-// //     final latitude = widget.location?.latitude ?? 0.0;
-// //     final longitude = widget.location?.longitude ?? 0.0;
-// //
-// //     widget.bloc.add(
-// //       WorkOrderActionEvent.completeWorkOrder(
-// //         workOrderId: widget.workOrder.id,
-// //         workLog: workLog,
-// //         customerName: customerName,
-// //         signature: signature,
-// //         partsUsed: partsUsed,
-// //         files: files,
-// //         latitude: latitude,
-// //         longitude: longitude,
-// //         completionNotes: completionNotes,
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //
-// //     return BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-// //       bloc: widget.bloc,
-// //       listener: (context, state) {
-// //         state.maybeWhen(
-// //           actionSuccess: (workOrder, actionType, message, groupedImages) {
-// //             widget.cacheService.clearCache(widget.workOrder.id);
-// //             Navigator.of(context).pop();
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(message),
-// //                 backgroundColor: colorScheme.primary,
-// //               ),
-// //             );
-// //           },
-// //           error: (failure, workOrder, isOffline) {
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(failure.message),
-// //                 backgroundColor: colorScheme.error,
-// //               ),
-// //             );
-// //           },
-// //           orElse: () {},
-// //         );
-// //       },
-// //       builder: (context, state) {
-// //         return Container(
-// //           constraints: BoxConstraints(maxHeight: 0.9.sh),
-// //           decoration: BoxDecoration(
-// //             color: colorScheme.surface,
-// //             borderRadius: BorderRadius.vertical(
-// //               top: Radius.circular(DesignTokens.radiusLg.r),
-// //             ),
-// //           ),
-// //           child: Column(
-// //             mainAxisSize: MainAxisSize.min,
-// //             children: [
-// //               _buildHeader(theme, colorScheme),
-// //               Divider(height: 1.h, color: colorScheme.outline),
-// //               _buildProgressIndicator(theme, colorScheme),
-// //               Flexible(child: _buildStepContent()),
-// //               _buildNavigationButtons(theme, colorScheme),
-// //             ],
-// //           ),
-// //         );
-// //       },
-// //     );
-// //   }
-// //
-// //   Widget _buildHeader(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding: REdgeInsets.all(DesignTokens.space4),
-// //       child: Row(
-// //         children: [
-// //           Icon(Icons.check_circle, color: colorScheme.primary, size: 28.sp),
-// //           RSizedBox(width: DesignTokens.space3),
-// //           Expanded(
-// //             child: Column(
-// //               crossAxisAlignment: CrossAxisAlignment.start,
-// //               children: [
-// //                 Text('Complete Work Order',
-// //                     style: theme.textTheme.titleMedium
-// //                         ?.copyWith(fontWeight: FontWeight.w600)),
-// //                 Text('Work Order #${widget.workOrder.id}',
-// //                     style: theme.textTheme.bodyMedium
-// //                         ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //               ],
-// //             ),
-// //           ),
-// //           IconButton(
-// //             onPressed: _handleClose,
-// //             icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding:
-// //           REdgeInsets.symmetric(horizontal: DesignTokens.space4, vertical: 8),
-// //       child: Row(
-// //         children: [
-// //           _buildStepIndicator(0, 'Work Log', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(0, colorScheme)),
-// //           _buildStepIndicator(1, 'Images', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(1, colorScheme)),
-// //           _buildStepIndicator(2, 'Signature', theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStepIndicator(
-// //       int step, String label, ThemeData theme, ColorScheme colorScheme) {
-// //     final isActive = step == _currentStep;
-// //     final isCompleted = step < _currentStep;
-// //
-// //     return Column(
-// //       children: [
-// //         Container(
-// //           width: 32.w,
-// //           height: 32.h,
-// //           decoration: BoxDecoration(
-// //             color: isCompleted || isActive
-// //                 ? colorScheme.primary
-// //                 : colorScheme.surfaceContainerHighest,
-// //             shape: BoxShape.circle,
-// //           ),
-// //           child: Center(
-// //             child: isCompleted
-// //                 ? Icon(Icons.check, color: colorScheme.onPrimary, size: 16.sp)
-// //                 : Text('${step + 1}',
-// //                     style: theme.textTheme.labelMedium?.copyWith(
-// //                         color: colorScheme.onPrimary,
-// //                         fontWeight: FontWeight.w600)),
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space1),
-// //         Text(label,
-// //             style: theme.textTheme.labelSmall?.copyWith(
-// //               color: isActive
-// //                   ? colorScheme.onSurface
-// //                   : colorScheme.onSurfaceVariant,
-// //               fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-// //             )),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStepConnector(int step, ColorScheme colorScheme) {
-// //     final isCompleted = step < _currentStep;
-// //     return Container(
-// //       height: 2.h,
-// //       margin: REdgeInsets.only(bottom: 20.h),
-// //       color: isCompleted
-// //           ? colorScheme.primary
-// //           : colorScheme.surfaceContainerHighest,
-// //     );
-// //   }
-// //
-// //   Widget _buildStepContent() {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //
-// //     return ReactiveForm(
-// //       formGroup: _getCurrentForm(),
-// //       child: ListView(
-// //         padding: REdgeInsets.all(DesignTokens.space4),
-// //         children: [
-// //           LocationStatusWidget(location: widget.location),
-// //           DesignTokens.verticalSpaceMd,
-// //           if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
-// //           if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
-// //           if (_currentStep == 2) _buildStep3Content(theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep1Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 1: Work Details',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Provide details about the work performed and parts used',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveMultilineInput(
-// //           formControlName: 'workLog',
-// //           hint: 'Describe the work performed...',
-// //           minLines: 4,
-// //           maxLines: 8,
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Row(
-// //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// //           children: [
-// //             Text('Parts Used (Optional)',
-// //                 style: theme.textTheme.bodyMedium
-// //                     ?.copyWith(fontWeight: FontWeight.w500)),
-// //             ReactiveFormArray(
-// //               formArrayName: 'parts',
-// //               builder: (context, formArray, child) {
-// //                 return TextButton.icon(
-// //                   onPressed: () => _handleAddPart(formArray),
-// //                   icon: const Icon(Icons.add),
-// //                   label: const Text('Add Part'),
-// //                 );
-// //               },
-// //             ),
-// //           ],
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveFormArray(
-// //           formArrayName: 'parts',
-// //           builder: (context, formArray, child) {
-// //             if (formArray.value == null || (formArray.value as List).isEmpty) {
-// //               return Container(
-// //                 padding: REdgeInsets.all(DesignTokens.space4),
-// //                 decoration: BoxDecoration(
-// //                   color: colorScheme.surfaceContainerHighest,
-// //                   borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //                   border: Border.all(
-// //                       color: colorScheme.outline.withValues(alpha: 0.3)),
-// //                 ),
-// //                 child: Row(
-// //                   children: [
-// //                     Icon(Icons.info_outline,
-// //                         color: colorScheme.onSurfaceVariant),
-// //                     RSizedBox(width: DesignTokens.space3),
-// //                     Expanded(
-// //                       child: Text(
-// //                         'No parts added yet. Tap "Add Part" to record parts used.',
-// //                         style: theme.textTheme.bodySmall?.copyWith(
-// //                           color: colorScheme.onSurfaceVariant,
-// //                         ),
-// //                       ),
-// //                     ),
-// //                   ],
-// //                 ),
-// //               );
-// //             }
-// //
-// //             return Column(
-// //               children: List.generate(
-// //                 formArray.controls.length,
-// //                 (index) =>
-// //                     _buildPartEntry(formArray, index, theme, colorScheme),
-// //               ),
-// //             );
-// //           },
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
-// //       ColorScheme colorScheme) {
-// //     return ReactiveForm(
-// //       formGroup: formArray.controls[index] as FormGroup,
-// //       child: Container(
-// //         margin: REdgeInsets.only(bottom: DesignTokens.space3),
-// //         padding: REdgeInsets.all(DesignTokens.space4),
-// //         decoration: BoxDecoration(
-// //           color: colorScheme.surface,
-// //           borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //           border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
-// //         ),
-// //         child: Column(
-// //           children: [
-// //             Row(
-// //               children: [
-// //                 Expanded(
-// //                   child: Text('Part ${index + 1}',
-// //                       style: theme.textTheme.labelMedium?.copyWith(
-// //                         fontWeight: FontWeight.w600,
-// //                         color: colorScheme.onSurfaceVariant,
-// //                       )),
-// //                 ),
-// //                 IconButton(
-// //                   onPressed: () => _handleRemovePart(formArray, index),
-// //                   icon: const Icon(Icons.delete),
-// //                   color: colorScheme.error,
-// //                 ),
-// //               ],
-// //             ),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //                 formControlName: 'partNumber', label: 'Part Number'),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(formControlName: 'partName', label: 'Part Name'),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //               formControlName: 'quantity',
-// //               label: 'Quantity',
-// //               keyboardType: TextInputType.number,
-// //             ),
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep2Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 2: Capture Images',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Take photos of the completed work (optional)',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveImagePicker(formControlName: 'files', maxImages: 10),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStep3Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 3: Customer Signature',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Get customer confirmation and signature',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveTextInput(formControlName: 'customerName', hint: 'Enter name'),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveSignaturePad(formControlName: 'signature'),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveMultilineInput(
-// //           formControlName: 'completionNotes',
-// //           hint: 'Add any additional notes...',
-// //           minLines: 3,
-// //           maxLines: 5,
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildNavigationButtons(ThemeData theme, ColorScheme colorScheme) {
-// //     final isLastStep = _currentStep == 2;
-// //
-// //     return Padding(
-// //       padding: REdgeInsets.all(DesignTokens.space4),
-// //       child: Row(
-// //         children: [
-// //           if (_currentStep > 0)
-// //             Expanded(
-// //               child: OutlinedButton(
-// //                 onPressed: () {
-// //                   setState(() {
-// //                     _currentStep--;
-// //                   });
-// //                 },
-// //                 child: const Text('Back'),
-// //               ),
-// //             ),
-// //           if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
-// //           Expanded(
-// //             child: FilledButton(
-// //               onPressed: () async {
-// //                 final currentForm = _getCurrentForm();
-// //                 currentForm.markAllAsTouched();
-// //
-// //                 if (currentForm.valid) {
-// //                   await _saveCache();
-// //
-// //                   if (isLastStep) {
-// //                     _handleSubmit();
-// //                   } else {
-// //                     setState(() {
-// //                       _currentStep++;
-// //                     });
-// //                   }
-// //                 }
-// //               },
-// //               child: Text(isLastStep ? 'Submit' : 'Next'),
-// //             ),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   void dispose() {
-// //     _step1Form.dispose();
-// //     _step2Form.dispose();
-// //     _step3Form.dispose();
-// //     super.dispose();
-// //   }
-// // }
-// // import 'dart:io';
-// //
-// // import 'package:flutter/material.dart';
-// // import 'package:flutter_bloc/flutter_bloc.dart';
-// // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// // import 'package:reactive_forms/reactive_forms.dart';
-// //
-// // import '../../../../core/di/injection.dart';
-// // import '../../../../core/theme/design_tokens.dart';
-// // import '../../../../core/widgets/form/location_status_widget.dart';
-// // import '../../../../core/widgets/form/reactive_image_picker.dart';
-// // import '../../../../core/widgets/form/reactive_multiline_input.dart';
-// // import '../../../../core/widgets/form/reactive_signature_pad.dart';
-// // import '../../../../core/widgets/form/reactive_text_input.dart';
-// // import '../../data/models/work_order_completion_cache_model.dart';
-// // import '../../data/services/work_order_completion_cache_service.dart';
-// // import '../../domain/entities/location_entity.dart';
-// // import '../../domain/entities/work_order_entity.dart';
-// // import '../blocs/work_order_action/work_order_action_bloc.dart';
-// // import '../blocs/work_order_action/work_order_action_event.dart';
-// // import '../blocs/work_order_action/work_order_action_state.dart';
-// // import '../forms/work_order_forms.dart';
-// //
-// // class WorkOrderCompleteWizard extends StatefulWidget {
-// //   final WorkOrderEntity workOrder;
-// //   final LocationEntity? location;
-// //   final WorkOrderActionBloc bloc;
-// //   final WorkOrderCompletionCacheService cacheService;
-// //
-// //   const WorkOrderCompleteWizard({
-// //     super.key,
-// //     required this.workOrder,
-// //     required this.location,
-// //     required this.bloc,
-// //     required this.cacheService,
-// //   });
-// //
-// //   static Future<void> show({
-// //     required BuildContext context,
-// //     required WorkOrderEntity workOrder,
-// //     LocationEntity? location,
-// //   }) async {
-// //     final bloc = context.read<WorkOrderActionBloc>();
-// //     final cacheService = getIt<WorkOrderCompletionCacheService>();
-// //
-// //     await showModalBottomSheet(
-// //       context: context,
-// //       isScrollControlled: true,
-// //       backgroundColor: Colors.transparent,
-// //       isDismissible: false,
-// //       enableDrag: false,
-// //       builder: (bottomSheetContext) => BlocProvider.value(
-// //         value: bloc,
-// //         child: WorkOrderCompleteWizard(
-// //           workOrder: workOrder,
-// //           location: location,
-// //           bloc: bloc,
-// //           cacheService: cacheService,
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   State<WorkOrderCompleteWizard> createState() =>
-// //       _WorkOrderCompleteWizardState();
-// // }
-// //
-// // class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
-// //   int _currentStep = 0;
-// //   late FormGroup _step1Form;
-// //   late FormGroup _step2Form;
-// //   late FormGroup _step3Form;
-// //
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     _initializeForms();
-// //     _loadCachedData();
-// //   }
-// //
-// //   void _initializeForms() {
-// //     _step1Form = WorkOrderForms.buildCompleteFormStep1();
-// //     _step2Form = WorkOrderForms.buildCompleteFormStep2();
-// //     _step3Form = WorkOrderForms.buildCompleteFormStep3();
-// //   }
-// //
-// //   Future<void> _loadCachedData() async {
-// //     final cache = await widget.cacheService.loadCache(widget.workOrder.id);
-// //     if (cache != null && mounted) {
-// //       setState(() {
-// //         _currentStep = cache.currentStep;
-// //       });
-// //
-// //       if (cache.workLog != null) {
-// //         _step1Form.control('workLog').value = cache.workLog;
-// //       }
-// //
-// //       if (cache.partsUsed.isNotEmpty) {
-// //         final partsArray = _step1Form.control('parts') as FormArray;
-// //         partsArray.clear();
-// //         for (final cachedPart in cache.partsUsed) {
-// //           final partGroup = WorkOrderForms.createPartEntry(
-// //             partNumber: cachedPart.partNumber,
-// //             partName: cachedPart.partName,
-// //             quantity: cachedPart.quantity,
-// //           );
-// //           partsArray.add(partGroup);
-// //         }
-// //       }
-// //
-// //       if (cache.images.isNotEmpty) {
-// //         final imageFiles = cache.images.map((path) => File(path)).toList();
-// //         _step2Form.control('files').value = imageFiles;
-// //       }
-// //
-// //       if (cache.customerName != null) {
-// //         _step3Form.control('customerName').value = cache.customerName;
-// //       }
-// //       if (cache.completionNotes != null) {
-// //         _step3Form.control('completionNotes').value = cache.completionNotes;
-// //       }
-// //       if (cache.signaturePath != null) {
-// //         final signatureFile = File(cache.signaturePath!);
-// //         if (await signatureFile.exists()) {
-// //           _step3Form.control('signature').value = signatureFile;
-// //         }
-// //       }
-// //     }
-// //   }
-// //
-// //   Future<void> _saveCache() async {
-// //     final step1Data =
-// //         WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-// //
-// //     final cachedParts = (step1Data['partsUsed'] as List? ?? [])
-// //         .map((part) => CachedPartUsedModel(
-// //               partNumber: part.partNumber,
-// //               quantity: part.quantityUsed,
-// //               partName: part.partName ?? '',
-// //               category: '',
-// //               quantityAvailable: 0,
-// //               unitPrice: 0.0,
-// //               status: 'used',
-// //             ))
-// //         .toList();
-// //
-// //     final imagePaths = (step1Data['files'] as List<File>? ?? [])
-// //         .map((file) => file.path)
-// //         .toList();
-// //
-// //     final cache = WorkOrderCompletionCacheModel(
-// //       workOrderId: widget.workOrder.id,
-// //       currentStep: _currentStep,
-// //       workLog: step1Data['workLog'],
-// //       partsUsed: cachedParts,
-// //       images: imagePaths,
-// //       customerName: step1Data['customerName'],
-// //       signaturePath: step1Data['signature']?.path,
-// //       completionNotes: step1Data['completionNotes'],
-// //       lastUpdated: DateTime.now(),
-// //     );
-// //
-// //     await widget.cacheService.saveCache(cache);
-// //   }
-// //
-// //   void _handleClose() {
-// //     _saveCache();
-// //     Navigator.of(context).pop();
-// //   }
-// //
-// //   void _handleAddPart(FormArray formArray) {
-// //     formArray.add(WorkOrderForms.createPartEntry(
-// //       partNumber: '',
-// //       partName: '',
-// //       quantity: 1,
-// //     ));
-// //   }
-// //
-// //   void _handleRemovePart(FormArray formArray, int index) {
-// //     formArray.removeAt(index);
-// //   }
-// //
-// //   FormGroup _getCurrentForm() {
-// //     switch (_currentStep) {
-// //       case 0:
-// //         return _step1Form;
-// //       case 1:
-// //         return _step2Form;
-// //       case 2:
-// //         return _step3Form;
-// //       default:
-// //         return _step1Form;
-// //     }
-// //   }
-// //
-// //   void _handleSubmit() {
-// //     final data = WorkOrderForms.getCompleteFormData(
-// //       _step1Form,
-// //       _step2Form,
-// //       _step3Form,
-// //     );
-// //
-// //     final workLog = data['workLog'] as String;
-// //     final customerName = data['customerName'] as String;
-// //     final signature = data['signature'] as File;
-// //     final partsUsed = (data['partsUsed'] as List<PartUsedEntity>?) ?? [];
-// //     final files = (data['files'] as List<File>?) ?? [];
-// //     final completionNotes = data['completionNotes'] as String?;
-// //     final latitude = widget.location?.latitude ?? 0.0;
-// //     final longitude = widget.location?.longitude ?? 0.0;
-// //
-// //     widget.bloc.add(
-// //       WorkOrderActionEvent.completeWorkOrder(
-// //         workOrderId: widget.workOrder.id,
-// //         workLog: workLog,
-// //         customerName: customerName,
-// //         signature: signature,
-// //         partsUsed: partsUsed,
-// //         files: files,
-// //         latitude: latitude,
-// //         longitude: longitude,
-// //         completionNotes: completionNotes,
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-// //
-// //     return BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-// //       bloc: widget.bloc,
-// //       listener: (context, state) {
-// //         state.maybeWhen(
-// //           actionSuccess: (workOrder, actionType, message, groupedImages) {
-// //             widget.cacheService.clearCache(widget.workOrder.id);
-// //             Navigator.of(context).pop();
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(message),
-// //                 backgroundColor: colorScheme.primary,
-// //               ),
-// //             );
-// //           },
-// //           error: (failure, workOrder, isOffline) {
-// //             ScaffoldMessenger.of(context).showSnackBar(
-// //               SnackBar(
-// //                 content: Text(failure.message),
-// //                 backgroundColor: colorScheme.error,
-// //               ),
-// //             );
-// //           },
-// //           orElse: () {},
-// //         );
-// //       },
-// //       builder: (context, state) {
-// //         return GestureDetector(
-// //           onTap: () => FocusScope.of(context).unfocus(),
-// //           child: Container(
-// //             height: MediaQuery.of(context).size.height * 0.9,
-// //             decoration: BoxDecoration(
-// //               color: colorScheme.surface,
-// //               borderRadius: BorderRadius.vertical(
-// //                 top: Radius.circular(DesignTokens.radiusLg.r),
-// //               ),
-// //             ),
-// //             child: Column(
-// //               mainAxisSize: MainAxisSize.max,
-// //               children: [
-// //                 // Fixed Header
-// //                 _buildHeader(theme, colorScheme),
-// //                 Divider(height: 1.h, color: colorScheme.outline),
-// //
-// //                 // Fixed Progress Indicator
-// //                 _buildProgressIndicator(theme, colorScheme),
-// //
-// //                 // Scrollable Content
-// //                 Expanded(
-// //                   child: SingleChildScrollView(
-// //                     padding: EdgeInsets.only(
-// //                       left: DesignTokens.space4.w,
-// //                       right: DesignTokens.space4.w,
-// //                       top: DesignTokens.space4.h,
-// //                       bottom: keyboardHeight +
-// //                           100.h, // Space for keyboard + buttons
-// //                     ),
-// //                     keyboardDismissBehavior:
-// //                         ScrollViewKeyboardDismissBehavior.onDrag,
-// //                     child: _buildStepContent(),
-// //                   ),
-// //                 ),
-// //
-// //                 // Fixed Navigation Buttons (Outside scroll, always visible)
-// //                 _buildNavigationButtons(theme, colorScheme),
-// //               ],
-// //             ),
-// //           ),
-// //         );
-// //       },
-// //     );
-// //   }
-// //
-// //   Widget _buildHeader(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding: REdgeInsets.all(DesignTokens.space4),
-// //       child: Row(
-// //         children: [
-// //           Icon(Icons.check_circle, color: colorScheme.primary, size: 28.sp),
-// //           RSizedBox(width: DesignTokens.space3),
-// //           Expanded(
-// //             child: Column(
-// //               crossAxisAlignment: CrossAxisAlignment.start,
-// //               children: [
-// //                 Text('Complete Work Order',
-// //                     style: theme.textTheme.titleMedium
-// //                         ?.copyWith(fontWeight: FontWeight.w600)),
-// //                 Text('Work Order #${widget.workOrder.id}',
-// //                     style: theme.textTheme.bodyMedium
-// //                         ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //               ],
-// //             ),
-// //           ),
-// //           IconButton(
-// //             onPressed: _handleClose,
-// //             icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
-// //     return Padding(
-// //       padding:
-// //           REdgeInsets.symmetric(horizontal: DesignTokens.space4, vertical: 8),
-// //       child: Row(
-// //         children: [
-// //           _buildStepIndicator(0, 'Work Log', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(0, colorScheme)),
-// //           _buildStepIndicator(1, 'Images', theme, colorScheme),
-// //           Expanded(child: _buildStepConnector(1, colorScheme)),
-// //           _buildStepIndicator(2, 'Signature', theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStepIndicator(
-// //       int step, String label, ThemeData theme, ColorScheme colorScheme) {
-// //     final isActive = step == _currentStep;
-// //     final isCompleted = step < _currentStep;
-// //
-// //     return Column(
-// //       children: [
-// //         Container(
-// //           width: 32.w,
-// //           height: 32.h,
-// //           decoration: BoxDecoration(
-// //             color: isCompleted || isActive
-// //                 ? colorScheme.primary
-// //                 : colorScheme.surfaceContainerHighest,
-// //             shape: BoxShape.circle,
-// //           ),
-// //           child: Center(
-// //             child: isCompleted
-// //                 ? Icon(Icons.check, color: colorScheme.onPrimary, size: 16.sp)
-// //                 : Text('${step + 1}',
-// //                     style: theme.textTheme.labelMedium?.copyWith(
-// //                         color: colorScheme.onPrimary,
-// //                         fontWeight: FontWeight.w600)),
-// //           ),
-// //         ),
-// //         RSizedBox(height: DesignTokens.space1),
-// //         Text(label,
-// //             style: theme.textTheme.labelSmall?.copyWith(
-// //               color: isActive
-// //                   ? colorScheme.onSurface
-// //                   : colorScheme.onSurfaceVariant,
-// //               fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-// //             )),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStepConnector(int step, ColorScheme colorScheme) {
-// //     final isCompleted = step < _currentStep;
-// //     return Container(
-// //       height: 2.h,
-// //       margin: REdgeInsets.only(bottom: 20.h),
-// //       color: isCompleted
-// //           ? colorScheme.primary
-// //           : colorScheme.surfaceContainerHighest,
-// //     );
-// //   }
-// //
-// //   Widget _buildStepContent() {
-// //     final theme = Theme.of(context);
-// //     final colorScheme = theme.colorScheme;
-// //
-// //     return ReactiveForm(
-// //       formGroup: _getCurrentForm(),
-// //       child: Column(
-// //         crossAxisAlignment: CrossAxisAlignment.start,
-// //         children: [
-// //           LocationStatusWidget(location: widget.location),
-// //           DesignTokens.verticalSpaceMd,
-// //           if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
-// //           if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
-// //           if (_currentStep == 2) _buildStep3Content(theme, colorScheme),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep1Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 1: Work Details',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Provide details about the work performed and parts used',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveMultilineInput(
-// //           formControlName: 'workLog',
-// //           hint: 'Describe the work performed...',
-// //           minLines: 4,
-// //           maxLines: 8,
-// //         ),
-// //         DesignTokens.verticalSpaceLg,
-// //         Row(
-// //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// //           children: [
-// //             Text('Parts Used (Optional)',
-// //                 style: theme.textTheme.bodyMedium
-// //                     ?.copyWith(fontWeight: FontWeight.w500)),
-// //             ReactiveFormArray(
-// //               formArrayName: 'parts',
-// //               builder: (context, formArray, child) {
-// //                 return TextButton.icon(
-// //                   onPressed: () => _handleAddPart(formArray),
-// //                   icon: const Icon(Icons.add),
-// //                   label: const Text('Add Part'),
-// //                 );
-// //               },
-// //             ),
-// //           ],
-// //         ),
-// //         RSizedBox(height: DesignTokens.space2),
-// //         ReactiveFormArray(
-// //           formArrayName: 'parts',
-// //           builder: (context, formArray, child) {
-// //             if (formArray.value == null || (formArray.value as List).isEmpty) {
-// //               return Container(
-// //                 padding: REdgeInsets.all(DesignTokens.space4),
-// //                 decoration: BoxDecoration(
-// //                   color: colorScheme.surfaceContainerHighest,
-// //                   borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //                   border: Border.all(
-// //                       color: colorScheme.outline.withValues(alpha: 0.3)),
-// //                 ),
-// //                 child: Row(
-// //                   children: [
-// //                     Icon(Icons.info_outline,
-// //                         color: colorScheme.onSurfaceVariant),
-// //                     RSizedBox(width: DesignTokens.space3),
-// //                     Expanded(
-// //                       child: Text(
-// //                         'No parts added yet. Tap "Add Part" to record parts used.',
-// //                         style: theme.textTheme.bodySmall?.copyWith(
-// //                           color: colorScheme.onSurfaceVariant,
-// //                         ),
-// //                       ),
-// //                     ),
-// //                   ],
-// //                 ),
-// //               );
-// //             }
-// //
-// //             return Column(
-// //               children: List.generate(
-// //                 formArray.controls.length,
-// //                 (index) =>
-// //                     _buildPartEntry(formArray, index, theme, colorScheme),
-// //               ),
-// //             );
-// //           },
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
-// //       ColorScheme colorScheme) {
-// //     return ReactiveForm(
-// //       formGroup: formArray.controls[index] as FormGroup,
-// //       child: Container(
-// //         margin: REdgeInsets.only(bottom: DesignTokens.space3),
-// //         padding: REdgeInsets.all(DesignTokens.space4),
-// //         decoration: BoxDecoration(
-// //           color: colorScheme.surface,
-// //           borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-// //           border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
-// //         ),
-// //         child: Column(
-// //           children: [
-// //             Row(
-// //               children: [
-// //                 Expanded(
-// //                   child: Text('Part ${index + 1}',
-// //                       style: theme.textTheme.labelMedium?.copyWith(
-// //                         fontWeight: FontWeight.w600,
-// //                         color: colorScheme.onSurfaceVariant,
-// //                       )),
-// //                 ),
-// //                 IconButton(
-// //                   onPressed: () => _handleRemovePart(formArray, index),
-// //                   icon: const Icon(Icons.delete),
-// //                   color: colorScheme.error,
-// //                 ),
-// //               ],
-// //             ),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //                 formControlName: 'partNumber', label: 'Part Number'),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(formControlName: 'partName', label: 'Part Name'),
-// //             RSizedBox(height: DesignTokens.space2),
-// //             ReactiveTextInput(
-// //               formControlName: 'quantity',
-// //               label: 'Quantity',
-// //               keyboardType: TextInputType.number,
-// //             ),
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   Widget _buildStep2Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 2: Capture Images',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Take photos of the completed work (optional)',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveImagePicker(formControlName: 'files', maxImages: 10),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildStep3Content(ThemeData theme, ColorScheme colorScheme) {
-// //     return Column(
-// //       crossAxisAlignment: CrossAxisAlignment.start,
-// //       children: [
-// //         Text('Step 3: Customer Signature',
-// //             style: theme.textTheme.titleMedium
-// //                 ?.copyWith(fontWeight: FontWeight.w600)),
-// //         DesignTokens.verticalSpaceSmall,
-// //         Text('Get customer confirmation and signature',
-// //             style: theme.textTheme.bodyMedium
-// //                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveTextInput(formControlName: 'customerName', hint: 'Enter name'),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveSignaturePad(formControlName: 'signature'),
-// //         DesignTokens.verticalSpaceLg,
-// //         ReactiveMultilineInput(
-// //           formControlName: 'completionNotes',
-// //           hint: 'Add any additional notes...',
-// //           minLines: 3,
-// //           maxLines: 5,
-// //         ),
-// //       ],
-// //     );
-// //   }
-// //
-// //   Widget _buildNavigationButtons(ThemeData theme, ColorScheme colorScheme) {
-// //     final isLastStep = _currentStep == 2;
-// //
-// //     return Container(
-// //       padding: REdgeInsets.all(DesignTokens.space4),
-// //       decoration: BoxDecoration(
-// //         color: colorScheme.surface,
-// //         border: Border(
-// //           top: BorderSide(color: colorScheme.outline.withValues(alpha: 0.2)),
-// //         ),
-// //       ),
-// //       child: SafeArea(
-// //         top: false,
-// //         child: Row(
-// //           children: [
-// //             if (_currentStep > 0)
-// //               Expanded(
-// //                 child: OutlinedButton(
-// //                   onPressed: () {
-// //                     setState(() {
-// //                       _currentStep--;
-// //                     });
-// //                   },
-// //                   child: const Text('Back'),
-// //                 ),
-// //               ),
-// //             if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
-// //             Expanded(
-// //               child: FilledButton(
-// //                 onPressed: () async {
-// //                   final currentForm = _getCurrentForm();
-// //                   currentForm.markAllAsTouched();
-// //
-// //                   if (currentForm.valid) {
-// //                     await _saveCache();
-// //
-// //                     if (isLastStep) {
-// //                       _handleSubmit();
-// //                     } else {
-// //                       setState(() {
-// //                         _currentStep++;
-// //                       });
-// //                     }
-// //                   }
-// //                 },
-// //                 child: Text(isLastStep ? 'Submit' : 'Next'),
-// //               ),
-// //             ),
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// //
-// //   @override
-// //   void dispose() {
-// //     _step1Form.dispose();
-// //     _step2Form.dispose();
-// //     _step3Form.dispose();
-// //     super.dispose();
-// //   }
-// // }
-// import 'dart:io';
-//
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:reactive_forms/reactive_forms.dart';
-//
-// import '../../../../core/di/injection.dart';
-// import '../../../../core/theme/design_tokens.dart';
-// import '../../../../core/widgets/form/location_status_widget.dart';
-// import '../../../../core/widgets/form/reactive_image_picker.dart';
-// import '../../../../core/widgets/form/reactive_multiline_input.dart';
-// import '../../../../core/widgets/form/reactive_signature_pad.dart';
-// import '../../../../core/widgets/form/reactive_text_input.dart';
-// import '../../data/models/work_order_completion_cache_model.dart';
-// import '../../data/services/work_order_completion_cache_service.dart';
-// import '../../domain/entities/location_entity.dart';
-// import '../../domain/entities/work_order_entity.dart';
-// import '../blocs/work_order_action/work_order_action_bloc.dart';
-// import '../blocs/work_order_action/work_order_action_event.dart';
-// import '../blocs/work_order_action/work_order_action_state.dart';
-// import '../forms/work_order_forms.dart';
-//
-// class WorkOrderCompleteWizard extends StatefulWidget {
-//   final WorkOrderEntity workOrder;
-//   final LocationEntity? location;
-//   final WorkOrderActionBloc bloc;
-//   final WorkOrderCompletionCacheService cacheService;
-//
-//   const WorkOrderCompleteWizard({
-//     super.key,
-//     required this.workOrder,
-//     required this.location,
-//     required this.bloc,
-//     required this.cacheService,
-//   });
-//
-//   static Future<void> show({
-//     required BuildContext context,
-//     required WorkOrderEntity workOrder,
-//     LocationEntity? location,
-//   }) async {
-//     final bloc = context.read<WorkOrderActionBloc>();
-//     final cacheService = getIt<WorkOrderCompletionCacheService>();
-//
-//     await showModalBottomSheet(
-//       context: context,
-//       isScrollControlled: true,
-//       backgroundColor: Colors.transparent,
-//       isDismissible: false,
-//       enableDrag: false,
-//       builder: (bottomSheetContext) => BlocProvider.value(
-//         value: bloc,
-//         child: WorkOrderCompleteWizard(
-//           workOrder: workOrder,
-//           location: location,
-//           bloc: bloc,
-//           cacheService: cacheService,
-//         ),
-//       ),
-//     );
-//   }
-//
-//   @override
-//   State<WorkOrderCompleteWizard> createState() =>
-//       _WorkOrderCompleteWizardState();
-// }
-//
-// class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
-//   int _currentStep = 0;
-//   late FormGroup _step1Form;
-//   late FormGroup _step2Form;
-//   late FormGroup _step3Form;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _initializeForms();
-//     _loadCachedData();
-//   }
-//
-//   void _initializeForms() {
-//     _step1Form = WorkOrderForms.buildCompleteFormStep1();
-//     _step2Form = WorkOrderForms.buildCompleteFormStep2();
-//     _step3Form = WorkOrderForms.buildCompleteFormStep3();
-//   }
-//
-//   Future<void> _loadCachedData() async {
-//     final cache = await widget.cacheService.loadCache(widget.workOrder.id);
-//     if (cache != null && mounted) {
-//       setState(() {
-//         _currentStep = cache.currentStep;
-//       });
-//
-//       if (cache.workLog != null) {
-//         _step1Form.control('workLog').value = cache.workLog;
-//       }
-//
-//       if (cache.partsUsed.isNotEmpty) {
-//         final partsArray = _step1Form.control('parts') as FormArray;
-//         partsArray.clear();
-//         for (final cachedPart in cache.partsUsed) {
-//           final partGroup = WorkOrderForms.createPartEntry(
-//             partNumber: cachedPart.partNumber,
-//             partName: cachedPart.partName,
-//             quantity: cachedPart.quantity,
-//           );
-//           partsArray.add(partGroup);
-//         }
-//       }
-//
-//       if (cache.images.isNotEmpty) {
-//         final imageFiles = cache.images.map((path) => File(path)).toList();
-//         _step2Form.control('files').value = imageFiles;
-//       }
-//
-//       if (cache.customerName != null) {
-//         _step3Form.control('customerName').value = cache.customerName;
-//       }
-//       if (cache.completionNotes != null) {
-//         _step3Form.control('completionNotes').value = cache.completionNotes;
-//       }
-//       if (cache.signaturePath != null) {
-//         final signatureFile = File(cache.signaturePath!);
-//         if (await signatureFile.exists()) {
-//           _step3Form.control('signature').value = signatureFile;
-//         }
-//       }
-//     }
-//   }
-//
-//   Future<void> _saveCache() async {
-//     final step1Data =
-//         WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
-//
-//     final cachedParts = (step1Data['partsUsed'] as List? ?? [])
-//         .map((part) => CachedPartUsedModel(
-//               partNumber: part.partNumber,
-//               quantity: part.quantityUsed,
-//               partName: part.partName ?? '',
-//               category: '',
-//               quantityAvailable: 0,
-//               unitPrice: 0.0,
-//               status: 'used',
-//             ))
-//         .toList();
-//
-//     final imagePaths = (step1Data['files'] as List<File>? ?? [])
-//         .map((file) => file.path)
-//         .toList();
-//
-//     final cache = WorkOrderCompletionCacheModel(
-//       workOrderId: widget.workOrder.id,
-//       currentStep: _currentStep,
-//       workLog: step1Data['workLog'],
-//       partsUsed: cachedParts,
-//       images: imagePaths,
-//       customerName: step1Data['customerName'],
-//       signaturePath: step1Data['signature']?.path,
-//       completionNotes: step1Data['completionNotes'],
-//       lastUpdated: DateTime.now(),
-//     );
-//
-//     await widget.cacheService.saveCache(cache);
-//   }
-//
-//   void _handleClose() {
-//     _saveCache();
-//     Navigator.of(context).pop();
-//   }
-//
-//   void _handleAddPart(FormArray formArray) {
-//     formArray.add(WorkOrderForms.createPartEntry(
-//       partNumber: '',
-//       partName: '',
-//       quantity: 1,
-//     ));
-//   }
-//
-//   void _handleRemovePart(FormArray formArray, int index) {
-//     formArray.removeAt(index);
-//   }
-//
-//   FormGroup _getCurrentForm() {
-//     switch (_currentStep) {
-//       case 0:
-//         return _step1Form;
-//       case 1:
-//         return _step2Form;
-//       case 2:
-//         return _step3Form;
-//       default:
-//         return _step1Form;
-//     }
-//   }
-//
-//   void _handleSubmit() {
-//     final data = WorkOrderForms.getCompleteFormData(
-//       _step1Form,
-//       _step2Form,
-//       _step3Form,
-//     );
-//
-//     final workLog = data['workLog'] as String;
-//     final customerName = data['customerName'] as String;
-//     final signature = data['signature'] as File;
-//     final partsUsed = (data['partsUsed'] as List<PartUsedEntity>?) ?? [];
-//     final files = (data['files'] as List<File>?) ?? [];
-//     final completionNotes = data['completionNotes'] as String?;
-//     final latitude = widget.location?.latitude ?? 0.0;
-//     final longitude = widget.location?.longitude ?? 0.0;
-//
-//     widget.bloc.add(
-//       WorkOrderActionEvent.completeWorkOrder(
-//         workOrderId: widget.workOrder.id,
-//         workLog: workLog,
-//         customerName: customerName,
-//         signature: signature,
-//         partsUsed: partsUsed,
-//         files: files,
-//         latitude: latitude,
-//         longitude: longitude,
-//         completionNotes: completionNotes,
-//       ),
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//     final colorScheme = theme.colorScheme;
-//     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-//
-//     return BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-//       bloc: widget.bloc,
-//       listener: (context, state) {
-//         state.maybeWhen(
-//           actionSuccess: (workOrder, actionType, message, groupedImages) {
-//             widget.cacheService.clearCache(widget.workOrder.id);
-//             Navigator.of(context).pop();
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               SnackBar(
-//                 content: Text(message),
-//                 backgroundColor: colorScheme.primary,
-//               ),
-//             );
-//           },
-//           error: (failure, workOrder, isOffline) {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               SnackBar(
-//                 content: Text(failure.message),
-//                 backgroundColor: colorScheme.error,
-//               ),
-//             );
-//           },
-//           orElse: () {},
-//         );
-//       },
-//       builder: (context, state) {
-//         return GestureDetector(
-//           onTap: () => FocusScope.of(context).unfocus(),
-//           child: Container(
-//             height: MediaQuery.of(context).size.height * 0.9,
-//             decoration: BoxDecoration(
-//               color: colorScheme.surface,
-//               borderRadius: BorderRadius.vertical(
-//                 top: Radius.circular(DesignTokens.radiusLg.r),
-//               ),
-//             ),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.max,
-//               children: [
-//                 // Fixed Header
-//                 _buildHeader(theme, colorScheme),
-//                 Divider(height: 1.h, color: colorScheme.outline),
-//
-//                 // Fixed Progress Indicator
-//                 _buildProgressIndicator(theme, colorScheme),
-//
-//                 // Scrollable Content
-//                 Expanded(
-//                   child: SingleChildScrollView(
-//                     padding: EdgeInsets.only(
-//                       left: DesignTokens.space4.w,
-//                       right: DesignTokens.space4.w,
-//                       top: DesignTokens.space4.h,
-//                       bottom: keyboardHeight +
-//                           100.h, // Space for keyboard + buttons
-//                     ),
-//                     keyboardDismissBehavior:
-//                         ScrollViewKeyboardDismissBehavior.onDrag,
-//                     child: _buildStepContent(),
-//                   ),
-//                 ),
-//
-//                 // Fixed Navigation Buttons (Outside scroll, always visible)
-//                 _buildNavigationButtons(theme, colorScheme),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   Widget _buildHeader(ThemeData theme, ColorScheme colorScheme) {
-//     return Padding(
-//       padding: REdgeInsets.all(DesignTokens.space4),
-//       child: Row(
-//         children: [
-//           Icon(Icons.check_circle, color: colorScheme.primary, size: 28.sp),
-//           RSizedBox(width: DesignTokens.space3),
-//           Expanded(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text('Complete Work Order',
-//                     style: theme.textTheme.titleMedium
-//                         ?.copyWith(fontWeight: FontWeight.w600)),
-//                 Text('Work Order #${widget.workOrder.id}',
-//                     style: theme.textTheme.bodyMedium
-//                         ?.copyWith(color: colorScheme.onSurfaceVariant)),
-//               ],
-//             ),
-//           ),
-//           IconButton(
-//             onPressed: _handleClose,
-//             icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
-//     return Padding(
-//       padding:
-//           REdgeInsets.symmetric(horizontal: DesignTokens.space4, vertical: 8),
-//       child: Row(
-//         children: [
-//           _buildStepIndicator(0, 'Work Log', theme, colorScheme),
-//           Expanded(child: _buildStepConnector(0, colorScheme)),
-//           _buildStepIndicator(1, 'Images', theme, colorScheme),
-//           Expanded(child: _buildStepConnector(1, colorScheme)),
-//           _buildStepIndicator(2, 'Signature', theme, colorScheme),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildStepIndicator(
-//       int step, String label, ThemeData theme, ColorScheme colorScheme) {
-//     final isActive = step == _currentStep;
-//     final isCompleted = step < _currentStep;
-//
-//     return Column(
-//       children: [
-//         Container(
-//           width: 32.w,
-//           height: 32.h,
-//           decoration: BoxDecoration(
-//             color: isCompleted || isActive
-//                 ? colorScheme.primary
-//                 : colorScheme.surfaceContainerHighest,
-//             shape: BoxShape.circle,
-//           ),
-//           child: Center(
-//             child: isCompleted
-//                 ? Icon(Icons.check, color: colorScheme.onPrimary, size: 16.sp)
-//                 : Text('${step + 1}',
-//                     style: theme.textTheme.labelMedium?.copyWith(
-//                         color: colorScheme.onPrimary,
-//                         fontWeight: FontWeight.w600)),
-//           ),
-//         ),
-//         RSizedBox(height: DesignTokens.space1),
-//         Text(label,
-//             style: theme.textTheme.labelSmall?.copyWith(
-//               color: isActive
-//                   ? colorScheme.onSurface
-//                   : colorScheme.onSurfaceVariant,
-//               fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-//             )),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildStepConnector(int step, ColorScheme colorScheme) {
-//     final isCompleted = step < _currentStep;
-//     return Container(
-//       height: 2.h,
-//       margin: REdgeInsets.only(bottom: 20.h),
-//       color: isCompleted
-//           ? colorScheme.primary
-//           : colorScheme.surfaceContainerHighest,
-//     );
-//   }
-//
-//   Widget _buildStepContent() {
-//     final theme = Theme.of(context);
-//     final colorScheme = theme.colorScheme;
-//
-//     return ReactiveForm(
-//       formGroup: _getCurrentForm(),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           LocationStatusWidget(location: widget.location),
-//           DesignTokens.verticalSpaceMd,
-//           if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
-//           if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
-//           if (_currentStep == 2) _buildStep3Content(theme, colorScheme),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Widget _buildStep1Content(ThemeData theme, ColorScheme colorScheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Step 1: Work Details',
-//             style: theme.textTheme.titleMedium
-//                 ?.copyWith(fontWeight: FontWeight.w600)),
-//         DesignTokens.verticalSpaceSmall,
-//         Text('Provide details about the work performed and parts used',
-//             style: theme.textTheme.bodyMedium
-//                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-//         DesignTokens.verticalSpaceLg,
-//         ReactiveMultilineInput(
-//           formControlName: 'workLog',
-//           hint: 'Describe the work performed...',
-//           minLines: 4,
-//           maxLines: 8,
-//         ),
-//         DesignTokens.verticalSpaceLg,
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Text('Parts Used (Optional)',
-//                 style: theme.textTheme.bodyMedium
-//                     ?.copyWith(fontWeight: FontWeight.w500)),
-//             ReactiveFormArray(
-//               formArrayName: 'parts',
-//               builder: (context, formArray, child) {
-//                 return TextButton.icon(
-//                   onPressed: () => _handleAddPart(formArray),
-//                   icon: const Icon(Icons.add),
-//                   label: const Text('Add Part'),
-//                 );
-//               },
-//             ),
-//           ],
-//         ),
-//         RSizedBox(height: DesignTokens.space2),
-//         ReactiveFormArray(
-//           formArrayName: 'parts',
-//           builder: (context, formArray, child) {
-//             if (formArray.value == null || (formArray.value as List).isEmpty) {
-//               return Container(
-//                 padding: REdgeInsets.all(DesignTokens.space4),
-//                 decoration: BoxDecoration(
-//                   color: colorScheme.surfaceContainerHighest,
-//                   borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-//                   border: Border.all(
-//                       color: colorScheme.outline.withValues(alpha: 0.3)),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     Icon(Icons.info_outline,
-//                         color: colorScheme.onSurfaceVariant),
-//                     RSizedBox(width: DesignTokens.space3),
-//                     Expanded(
-//                       child: Text(
-//                         'No parts added yet. Tap "Add Part" to record parts used.',
-//                         style: theme.textTheme.bodySmall?.copyWith(
-//                           color: colorScheme.onSurfaceVariant,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               );
-//             }
-//
-//             return Column(
-//               children: List.generate(
-//                 formArray.controls.length,
-//                 (index) =>
-//                     _buildPartEntry(formArray, index, theme, colorScheme),
-//               ),
-//             );
-//           },
-//         ),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
-//       ColorScheme colorScheme) {
-//     return ReactiveForm(
-//       formGroup: formArray.controls[index] as FormGroup,
-//       child: Container(
-//         margin: REdgeInsets.only(bottom: DesignTokens.space3),
-//         padding: REdgeInsets.all(DesignTokens.space4),
-//         decoration: BoxDecoration(
-//           color: colorScheme.surface,
-//           borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-//           border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
-//         ),
-//         child: Column(
-//           children: [
-//             Row(
-//               children: [
-//                 Expanded(
-//                   child: Text('Part ${index + 1}',
-//                       style: theme.textTheme.labelMedium?.copyWith(
-//                         fontWeight: FontWeight.w600,
-//                         color: colorScheme.onSurfaceVariant,
-//                       )),
-//                 ),
-//                 IconButton(
-//                   onPressed: () => _handleRemovePart(formArray, index),
-//                   icon: const Icon(Icons.delete),
-//                   color: colorScheme.error,
-//                 ),
-//               ],
-//             ),
-//             RSizedBox(height: DesignTokens.space2),
-//             ReactiveTextInput(
-//                 formControlName: 'partNumber', label: 'Part Number'),
-//             RSizedBox(height: DesignTokens.space2),
-//             ReactiveTextInput(formControlName: 'partName', label: 'Part Name'),
-//             RSizedBox(height: DesignTokens.space2),
-//             ReactiveTextInput(
-//               formControlName: 'quantity',
-//               label: 'Quantity',
-//               keyboardType: TextInputType.number,
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildStep2Content(ThemeData theme, ColorScheme colorScheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Step 2: Capture Images',
-//             style: theme.textTheme.titleMedium
-//                 ?.copyWith(fontWeight: FontWeight.w600)),
-//         DesignTokens.verticalSpaceSmall,
-//         Text('Take photos of the completed work (optional)',
-//             style: theme.textTheme.bodyMedium
-//                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-//         DesignTokens.verticalSpaceLg,
-//         ReactiveImagePicker(formControlName: 'files', maxImages: 10),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildStep3Content(ThemeData theme, ColorScheme colorScheme) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text('Step 3: Customer Signature',
-//             style: theme.textTheme.titleMedium
-//                 ?.copyWith(fontWeight: FontWeight.w600)),
-//         DesignTokens.verticalSpaceSmall,
-//         Text('Get customer confirmation and signature',
-//             style: theme.textTheme.bodyMedium
-//                 ?.copyWith(color: colorScheme.onSurfaceVariant)),
-//         DesignTokens.verticalSpaceLg,
-//         ReactiveTextInput(formControlName: 'customerName', hint: 'Enter name'),
-//         DesignTokens.verticalSpaceLg,
-//         ReactiveSignaturePad(formControlName: 'signature'),
-//         DesignTokens.verticalSpaceLg,
-//         ReactiveMultilineInput(
-//           formControlName: 'completionNotes',
-//           hint: 'Add any additional notes...',
-//           minLines: 3,
-//           maxLines: 5,
-//         ),
-//       ],
-//     );
-//   }
-//
-//   Widget _buildNavigationButtons(ThemeData theme, ColorScheme colorScheme) {
-//     final isLastStep = _currentStep == 2;
-//
-//     return Container(
-//       padding: REdgeInsets.all(DesignTokens.space4),
-//       decoration: BoxDecoration(
-//         color: colorScheme.surface,
-//         border: Border(
-//           top: BorderSide(color: colorScheme.outline.withValues(alpha: 0.2)),
-//         ),
-//       ),
-//       child: SafeArea(
-//         top: false,
-//         child: Row(
-//           children: [
-//             if (_currentStep > 0)
-//               Expanded(
-//                 child: OutlinedButton(
-//                   onPressed: () {
-//                     setState(() {
-//                       _currentStep--;
-//                     });
-//                   },
-//                   child: const Text('Back'),
-//                 ),
-//               ),
-//             if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
-//             Expanded(
-//               child: FilledButton(
-//                 onPressed: () async {
-//                   final currentForm = _getCurrentForm();
-//                   currentForm.markAllAsTouched();
-//
-//                   if (currentForm.valid) {
-//                     await _saveCache();
-//
-//                     if (isLastStep) {
-//                       _handleSubmit();
-//                     } else {
-//                       setState(() {
-//                         _currentStep++;
-//                       });
-//                     }
-//                   }
-//                 },
-//                 child: Text(isLastStep ? 'Submit' : 'Next'),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   @override
-//   void dispose() {
-//     _step1Form.dispose();
-//     _step2Form.dispose();
-//     _step3Form.dispose();
-//     super.dispose();
-//   }
-// }
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -2613,31 +6,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../core/services/location_models.dart';
+import '../../../../core/services/location_service.dart';
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/widgets/form/location_status_widget.dart';
+import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 import '../../../../core/widgets/form/reactive_image_picker.dart';
 import '../../../../core/widgets/form/reactive_multiline_input.dart';
 import '../../../../core/widgets/form/reactive_signature_pad.dart';
 import '../../../../core/widgets/form/reactive_text_input.dart';
+import '../../../parts/domain/entities/part_entity.dart';
+import '../../../parts/domain/usecases/get_parts_usecase.dart';
 import '../../data/models/work_order_completion_cache_model.dart';
 import '../../data/services/work_order_completion_cache_service.dart';
-import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_order_action/work_order_action_bloc.dart';
 import '../blocs/work_order_action/work_order_action_event.dart';
 import '../blocs/work_order_action/work_order_action_state.dart';
 import '../forms/work_order_forms.dart';
 
+/// Redesigned Work Order Complete Wizard with 5-step flow
+///
+/// Steps:
+/// 1. Customer Info + Work Log (required)
+/// 2. Parts Used (optional - can skip)
+/// 3. Work Images (optional - can skip)
+/// 4. Signature + Notes (signature required)
+/// 5. Location Capture + Review (required - blocks submission)
 class WorkOrderCompleteWizard extends StatefulWidget {
   final WorkOrderEntity workOrder;
-  final LocationEntity? location;
   final WorkOrderActionBloc bloc;
   final WorkOrderCompletionCacheService cacheService;
 
   const WorkOrderCompleteWizard({
     super.key,
     required this.workOrder,
-    required this.location,
     required this.bloc,
     required this.cacheService,
   });
@@ -2645,7 +47,6 @@ class WorkOrderCompleteWizard extends StatefulWidget {
   static Future<void> show({
     required BuildContext context,
     required WorkOrderEntity workOrder,
-    LocationEntity? location,
   }) async {
     final bloc = context.read<WorkOrderActionBloc>();
     final cacheService = getIt<WorkOrderCompletionCacheService>();
@@ -2660,7 +61,6 @@ class WorkOrderCompleteWizard extends StatefulWidget {
         value: bloc,
         child: WorkOrderCompleteWizard(
           workOrder: workOrder,
-          location: location,
           bloc: bloc,
           cacheService: cacheService,
         ),
@@ -2675,21 +75,66 @@ class WorkOrderCompleteWizard extends StatefulWidget {
 
 class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
   int _currentStep = 0;
-  late FormGroup _step1Form;
-  late FormGroup _step2Form;
-  late FormGroup _step3Form;
+  late FormGroup _step1Form; // Customer + Work Log
+  late FormGroup _step2Form; // Parts
+  late FormGroup _step3Form; // Images
+  late FormGroup _step4Form; // Signature + Notes
+  // Step 5 has no form - just location capture + review
+
+  // Parts management
+  final _getPartsUseCase = getIt<GetPartsUseCase>();
+  List<PartEntity> _availableParts = [];
+  bool _isLoadingParts = false;
+
+  // Location management
+  final _locationService = getIt<LocationService>();
+  LocationResult? _locationResult;
+  bool _isCapturingLocation = false;
 
   @override
   void initState() {
     super.initState();
     _initializeForms();
     _loadCachedData();
+    _loadAvailableParts();
   }
 
   void _initializeForms() {
     _step1Form = WorkOrderForms.buildCompleteFormStep1();
     _step2Form = WorkOrderForms.buildCompleteFormStep2();
     _step3Form = WorkOrderForms.buildCompleteFormStep3();
+    _step4Form = WorkOrderForms.buildCompleteFormStep4();
+  }
+
+  Future<void> _loadAvailableParts() async {
+    setState(() {
+      _isLoadingParts = true;
+    });
+
+    final result = await _getPartsUseCase(status: PartStatus.active);
+    result.fold(
+      (failure) {
+        if (mounted) {
+          setState(() {
+            _isLoadingParts = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to load parts: ${failure.message}'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      },
+      (parts) {
+        if (mounted) {
+          setState(() {
+            _availableParts = parts;
+            _isLoadingParts = false;
+          });
+        }
+      },
+    );
   }
 
   Future<void> _loadCachedData() async {
@@ -2699,12 +144,17 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         _currentStep = cache.currentStep;
       });
 
+      // Restore step 1 data
+      if (cache.customerName != null) {
+        _step1Form.control('customerName').value = cache.customerName;
+      }
       if (cache.workLog != null) {
         _step1Form.control('workLog').value = cache.workLog;
       }
 
+      // Restore step 2 data (parts)
       if (cache.partsUsed.isNotEmpty) {
-        final partsArray = _step1Form.control('parts') as FormArray;
+        final partsArray = _step2Form.control('parts') as FormArray;
         partsArray.clear();
         for (final cachedPart in cache.partsUsed) {
           final partGroup = WorkOrderForms.createPartEntry(
@@ -2716,35 +166,38 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         }
       }
 
+      // Restore step 3 data (images)
       if (cache.images.isNotEmpty) {
         final imageFiles = cache.images.map((path) => File(path)).toList();
-        _step2Form.control('files').value = imageFiles;
+        _step3Form.control('files').value = imageFiles;
       }
 
-      if (cache.customerName != null) {
-        _step3Form.control('customerName').value = cache.customerName;
-      }
-      if (cache.completionNotes != null) {
-        _step3Form.control('completionNotes').value = cache.completionNotes;
-      }
+      // Restore step 4 data (signature + notes)
       if (cache.signaturePath != null) {
         final signatureFile = File(cache.signaturePath!);
         if (await signatureFile.exists()) {
-          _step3Form.control('signature').value = signatureFile;
+          _step4Form.control('signature').value = signatureFile;
         }
+      }
+      if (cache.completionNotes != null) {
+        _step4Form.control('completionNotes').value = cache.completionNotes;
       }
     }
   }
 
   Future<void> _saveCache() async {
-    final step1Data =
-        WorkOrderForms.getCompleteFormData(_step1Form, _step2Form, _step3Form);
+    final data = WorkOrderForms.getCompleteFormData(
+      _step1Form,
+      _step2Form,
+      _step3Form,
+      _step4Form,
+    );
 
-    final cachedParts = (step1Data['partsUsed'] as List? ?? [])
+    final cachedParts = (data['parts'] as List? ?? [])
         .map((part) => CachedPartUsedModel(
-              partNumber: part.partNumber,
-              quantity: part.quantityUsed,
-              partName: part.partName ?? '',
+              partNumber: part['partNumber'],
+              quantity: part['quantity'],
+              partName: part['partName'] ?? '',
               category: '',
               quantityAvailable: 0,
               unitPrice: 0.0,
@@ -2752,19 +205,19 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ))
         .toList();
 
-    final imagePaths = (step1Data['files'] as List<File>? ?? [])
+    final imagePaths = (data['files'] as List<File>? ?? [])
         .map((file) => file.path)
         .toList();
 
     final cache = WorkOrderCompletionCacheModel(
       workOrderId: widget.workOrder.id,
       currentStep: _currentStep,
-      workLog: step1Data['workLog'],
+      customerName: data['customerName'],
+      workLog: data['workLog'],
       partsUsed: cachedParts,
       images: imagePaths,
-      customerName: step1Data['customerName'],
-      signaturePath: step1Data['signature']?.path,
-      completionNotes: step1Data['completionNotes'],
+      signaturePath: data['signature']?.path,
+      completionNotes: data['completionNotes'],
       lastUpdated: DateTime.now(),
     );
 
@@ -2776,28 +229,78 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     Navigator.of(context).pop();
   }
 
-  void _handleAddPart(FormArray formArray) {
-    formArray.add(WorkOrderForms.createPartEntry(
-      partNumber: '',
-      partName: '',
-      quantity: 1,
-    ));
+  Future<void> _captureLocation() async {
+    setState(() {
+      _isCapturingLocation = true;
+      _locationResult = null;
+    });
+
+    final result = await _locationService.getCurrentLocationEnhanced();
+
+    if (mounted) {
+      setState(() {
+        _isCapturingLocation = false;
+        _locationResult = result;
+      });
+
+      if (!result.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.error?.message ?? 'Failed to capture location'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: _captureLocation,
+              textColor: Theme.of(context).colorScheme.onError,
+            ),
+          ),
+        );
+      }
+    }
   }
 
-  void _handleRemovePart(FormArray formArray, int index) {
-    formArray.removeAt(index);
+  void _handleNext() async {
+    final currentForm = _getCurrentForm();
+
+    // Validate current step's form (if it has one)
+    if (currentForm != null) {
+      currentForm.markAllAsTouched();
+      if (!currentForm.valid) {
+        return;
+      }
+    }
+
+    // Save progress
+    await _saveCache();
+
+    // If moving to step 5 (location + review), trigger location capture
+    if (_currentStep == 3) {
+      setState(() {
+        _currentStep++;
+      });
+      _captureLocation();
+    } else {
+      setState(() {
+        _currentStep++;
+      });
+    }
   }
 
-  FormGroup _getCurrentForm() {
-    switch (_currentStep) {
-      case 0:
-        return _step1Form;
-      case 1:
-        return _step2Form;
-      case 2:
-        return _step3Form;
-      default:
-        return _step1Form;
+  void _handleBack() {
+    setState(() {
+      _currentStep--;
+    });
+  }
+
+  void _handleSkip() async {
+    await _saveCache();
+    setState(() {
+      _currentStep++;
+    });
+
+    // If skipping to step 5, capture location
+    if (_currentStep == 4) {
+      _captureLocation();
     }
   }
 
@@ -2806,16 +309,32 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       _step1Form,
       _step2Form,
       _step3Form,
+      _step4Form,
     );
 
-    final workLog = data['workLog'] as String;
+    if (_locationResult == null || !_locationResult!.isSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Location must be captured before submitting'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
+    final location = _locationResult!.location!;
     final customerName = data['customerName'] as String;
+    final workLog = data['workLog'] as String;
     final signature = data['signature'] as File;
-    final partsUsed = (data['partsUsed'] as List<PartUsedEntity>?) ?? [];
+    final partsUsed = (data['parts'] as List? ?? [])
+        .map((p) => PartUsedEntity(
+              partNumber: p['partNumber'],
+              quantityUsed: p['quantity'],
+              partName: p['partName'],
+            ))
+        .toList();
     final files = (data['files'] as List<File>?) ?? [];
     final completionNotes = data['completionNotes'] as String?;
-    final latitude = widget.location?.latitude ?? 0.0;
-    final longitude = widget.location?.longitude ?? 0.0;
 
     widget.bloc.add(
       WorkOrderActionEvent.completeWorkOrder(
@@ -2825,11 +344,173 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         signature: signature,
         partsUsed: partsUsed,
         files: files,
-        latitude: latitude,
-        longitude: longitude,
+        latitude: location.latitude,
+        longitude: location.longitude,
         completionNotes: completionNotes,
       ),
     );
+  }
+
+  FormGroup? _getCurrentForm() {
+    switch (_currentStep) {
+      case 0:
+        return _step1Form;
+      case 1:
+        return _step2Form;
+      case 2:
+        return _step3Form;
+      case 3:
+        return _step4Form;
+      case 4:
+        return null; // Step 5 has no form
+      default:
+        return null;
+    }
+  }
+
+  bool _canSkipCurrentStep() {
+    // Only steps 2 (parts) and 3 (images) can be skipped
+    return _currentStep == 1 || _currentStep == 2;
+  }
+
+  String _getStepTitle() {
+    switch (_currentStep) {
+      case 0:
+        return 'Customer & Work Details';
+      case 1:
+        return 'Parts Used';
+      case 2:
+        return 'Work Images';
+      case 3:
+        return 'Customer Signature';
+      case 4:
+        return 'Location & Review';
+      default:
+        return '';
+    }
+  }
+
+  String _getStepDescription() {
+    switch (_currentStep) {
+      case 0:
+        return 'Enter customer information and work performed';
+      case 1:
+        return 'Add parts used (optional)';
+      case 2:
+        return 'Capture images of completed work (optional)';
+      case 3:
+        return 'Get customer signature and add notes';
+      case 4:
+        return 'Verify location and review all details';
+      default:
+        return '';
+    }
+  }
+
+  void _handleAddPart(FormArray formArray) {
+    if (_availableParts.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_isLoadingParts
+              ? 'Loading parts, please wait...'
+              : 'No parts available in inventory'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(DesignTokens.radiusLg.r)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            Padding(
+              padding: REdgeInsets.all(DesignTokens.space4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select Part',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+            Divider(height: DesignTokens.space1.h),
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                padding: REdgeInsets.all(DesignTokens.space4),
+                itemCount: _availableParts.length,
+                itemBuilder: (context, index) {
+                  final part = _availableParts[index];
+                  return Card(
+                    margin: REdgeInsets.only(bottom: DesignTokens.space3),
+                    child: ListTile(
+                      title: Text(
+                        part.partName,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RSizedBox(height: DesignTokens.space1),
+                          Text('Part #: ${part.partNumber}'),
+                          Text('Category: ${part.category}'),
+                          Text('Available: ${part.quantityAvailable}'),
+                        ],
+                      ),
+                      trailing: Icon(
+                        part.isInStock
+                            ? Icons.check_circle
+                            : part.isLowStock
+                                ? Icons.warning
+                                : Icons.cancel,
+                        color: part.isInStock
+                            ? Colors.green
+                            : part.isLowStock
+                                ? Colors.orange
+                                : Colors.red,
+                      ),
+                      onTap: () {
+                        formArray.add(WorkOrderForms.createPartEntry(
+                          partNumber: part.partNumber,
+                          partName: part.partName,
+                          quantity: 1,
+                        ));
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleRemovePart(FormArray formArray, int index) {
+    formArray.removeAt(index);
   }
 
   @override
@@ -2875,10 +556,12 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildHeader(theme, colorScheme),
-              Divider(height: 1.h, color: colorScheme.outline),
+              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
+              _buildStepHeader(theme, colorScheme),
+              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
               _buildProgressIndicator(theme, colorScheme),
               Flexible(child: _buildStepContent()),
-              _buildNavigationButtons(theme, colorScheme),
+              _buildNavigationButtons(theme, colorScheme, state),
             ],
           ),
         );
@@ -2891,7 +574,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       padding: REdgeInsets.all(DesignTokens.space4),
       child: Row(
         children: [
-          Icon(Icons.check_circle, color: colorScheme.primary, size: 28.sp),
+          Icon(Icons.check_circle,
+              color: colorScheme.primary, size: DesignTokens.iconLg.sp),
           RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: Column(
@@ -2915,218 +599,571 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildStepHeader(ThemeData theme, ColorScheme colorScheme) {
     return Padding(
-      padding:
-          REdgeInsets.symmetric(horizontal: DesignTokens.space4, vertical: 8),
-      child: Row(
+      padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4, vertical: DesignTokens.space3),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildStepIndicator(0, 'Work Log', theme, colorScheme),
-          Expanded(child: _buildStepConnector(0, colorScheme)),
-          _buildStepIndicator(1, 'Images', theme, colorScheme),
-          Expanded(child: _buildStepConnector(1, colorScheme)),
-          _buildStepIndicator(2, 'Signature', theme, colorScheme),
+          Row(
+            children: [
+              Text(
+                'Step ${_currentStep + 1} of 5',
+                style: theme.textTheme.labelMedium
+                    ?.copyWith(color: colorScheme.primary),
+              ),
+              if (_canSkipCurrentStep()) ...[
+                RSizedBox(width: DesignTokens.space2),
+                Container(
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space2,
+                    vertical: DesignTokens.space1,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.secondaryContainer,
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusSm.r),
+                  ),
+                  child: Text(
+                    'Optional',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSecondaryContainer,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          RSizedBox(height: DesignTokens.space1),
+          Text(
+            _getStepTitle(),
+            style:
+                theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          RSizedBox(height: DesignTokens.space1),
+          Text(
+            _getStepDescription(),
+            style: theme.textTheme.bodyMedium
+                ?.copyWith(color: colorScheme.onSurfaceVariant),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStepIndicator(
-      int step, String label, ThemeData theme, ColorScheme colorScheme) {
-    final isActive = step == _currentStep;
-    final isCompleted = step < _currentStep;
+  Widget _buildProgressIndicator(ThemeData theme, ColorScheme colorScheme) {
+    return Padding(
+      padding: REdgeInsets.symmetric(
+          horizontal: DesignTokens.space4, vertical: DesignTokens.space2),
+      child: Row(
+        children: List.generate(5, (index) {
+          final isCompleted = index < _currentStep;
+          final isActive = index == _currentStep;
 
-    return Column(
+          return Expanded(
+            child: Container(
+              height: DesignTokens.space1.h,
+              margin: REdgeInsets.only(
+                  right: index < 4 ? DesignTokens.space1 : 0),
+              decoration: BoxDecoration(
+                color: isCompleted || isActive
+                    ? colorScheme.primary
+                    : colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(DesignTokens.radiusFull.r),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildStepContent() {
+    final viewInsets = MediaQuery.of(context).viewInsets;
+
+    return ListView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      padding: EdgeInsets.only(
+        left: DesignTokens.space4,
+        right: DesignTokens.space4,
+        top: DesignTokens.space4,
+        bottom: DesignTokens.space4 + viewInsets.bottom,
+      ),
       children: [
-        Container(
-          width: 32.w,
-          height: 32.h,
-          decoration: BoxDecoration(
-            color: isCompleted || isActive
-                ? colorScheme.primary
-                : colorScheme.surfaceContainerHighest,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: isCompleted
-                ? Icon(Icons.check, color: colorScheme.onPrimary, size: 16.sp)
-                : Text('${step + 1}',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                        color: colorScheme.onPrimary,
-                        fontWeight: FontWeight.w600)),
-          ),
-        ),
-        RSizedBox(height: DesignTokens.space1),
-        Text(label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: isActive
-                  ? colorScheme.onSurface
-                  : colorScheme.onSurfaceVariant,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-            )),
+        if (_currentStep == 0) _buildStep1Content(),
+        if (_currentStep == 1) _buildStep2Content(),
+        if (_currentStep == 2) _buildStep3Content(),
+        if (_currentStep == 3) _buildStep4Content(),
+        if (_currentStep == 4) _buildStep5Content(),
       ],
     );
   }
 
-  Widget _buildStepConnector(int step, ColorScheme colorScheme) {
-    final isCompleted = step < _currentStep;
-    return Container(
-      height: 2.h,
-      margin: REdgeInsets.only(bottom: 20.h),
-      color: isCompleted
-          ? colorScheme.primary
-          : colorScheme.surfaceContainerHighest,
-    );
-  }
-
-  /// 🔥 CHANGED: adds bottom padding equal to keyboard height so page scrolls
-  Widget _buildStepContent() {
+  // Step 1: Customer Info + Work Log
+  Widget _buildStep1Content() {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final viewInsets = MediaQuery.of(context).viewInsets;
 
     return ReactiveForm(
-      formGroup: _getCurrentForm(),
-      child: ListView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: EdgeInsets.only(
-          left: DesignTokens.space4,
-          right: DesignTokens.space4,
-          top: DesignTokens.space4,
-          bottom: DesignTokens.space4 + viewInsets.bottom,
-        ),
+      formGroup: _step1Form,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LocationStatusWidget(location: widget.location),
-          DesignTokens.verticalSpaceMd,
-          if (_currentStep == 0) _buildStep1Content(theme, colorScheme),
-          if (_currentStep == 1) _buildStep2Content(theme, colorScheme),
-          if (_currentStep == 2) _buildStep3Content(theme, colorScheme),
+          ReactiveTextInput(
+            formControlName: 'customerName',
+            hint: 'Enter customer name',
+            label: 'Customer Name',
+            prefixIcon: Icons.person,
+          ),
+          DesignTokens.verticalSpaceLarge,
+          ReactiveMultilineInput(
+            formControlName: 'workLog',
+            hint: 'Describe the work performed in detail...',
+            label: 'Work Log',
+            minLines: 5,
+            maxLines: 10,
+          ),
+          DesignTokens.verticalSpaceSmall,
+          Text(
+            'Minimum 20 characters required',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStep1Content(ThemeData theme, ColorScheme colorScheme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Step 1: Work Details',
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontWeight: FontWeight.w600)),
-        DesignTokens.verticalSpaceSmall,
-        Text('Provide details about the work performed and parts used',
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: colorScheme.onSurfaceVariant)),
-        DesignTokens.verticalSpaceLg,
-        ReactiveMultilineInput(
-          formControlName: 'workLog',
-          hint: 'Describe the work performed...',
-          minLines: 4,
-          maxLines: 8,
-        ),
-        DesignTokens.verticalSpaceLg,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Parts Used (Optional)',
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w500)),
-            ReactiveFormArray(
-              formArrayName: 'parts',
-              builder: (context, formArray, child) {
-                return TextButton.icon(
-                  onPressed: () => _handleAddPart(formArray),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add Part'),
-                );
-              },
-            ),
-          ],
-        ),
-        RSizedBox(height: DesignTokens.space2),
-        ReactiveFormArray(
-          formArrayName: 'parts',
-          builder: (context, formArray, child) {
-            if (formArray.value == null || (formArray.value as List).isEmpty) {
-              return Container(
-                padding: REdgeInsets.all(DesignTokens.space4),
-                decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-                  border: Border.all(
-                      color: colorScheme.outline.withValues(alpha: 0.3)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline,
-                        color: colorScheme.onSurfaceVariant),
-                    RSizedBox(width: DesignTokens.space3),
-                    Expanded(
-                      child: Text(
-                        'No parts added yet. Tap "Add Part" to record parts used.',
-                        style: theme.textTheme.bodySmall?.copyWith(
+  // Step 2: Parts Selection
+  Widget _buildStep2Content() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return ReactiveForm(
+      formGroup: _step2Form,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Parts Used',
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              ReactiveFormArray(
+                formArrayName: 'parts',
+                builder: (context, formArray, child) {
+                  return FilledButton.tonalIcon(
+                    onPressed: () => _handleAddPart(formArray),
+                    icon: Icon(Icons.add, size: DesignTokens.iconSm.sp),
+                    label: const Text('Add Part'),
+                  );
+                },
+              ),
+            ],
+          ),
+          DesignTokens.verticalSpaceMedium,
+          ReactiveFormArray(
+            formArrayName: 'parts',
+            builder: (context, formArray, child) {
+              if (formArray.value == null || (formArray.value as List).isEmpty) {
+                return Container(
+                  padding: REdgeInsets.all(DesignTokens.space6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radiusMd.r),
+                    border: Border.all(
+                      color: colorScheme.outline.withValues(alpha: 0.3),
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.inventory_2_outlined,
+                        size: DesignTokens.iconLg.sp,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      DesignTokens.verticalSpaceSmall,
+                      Text(
+                        'No parts added',
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      DesignTokens.verticalSpaceSmall,
+                      Text(
+                        'Tap "Add Part" to select parts from inventory',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                );
+              }
+
+              return Column(
+                children: List.generate(
+                  formArray.controls.length,
+                  (index) => _buildPartCard(formArray, index, theme, colorScheme),
                 ),
               );
-            }
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-            return Column(
-              children: List.generate(
-                formArray.controls.length,
-                (index) =>
-                    _buildPartEntry(formArray, index, theme, colorScheme),
+  Widget _buildPartCard(
+      FormArray formArray, int index, ThemeData theme, ColorScheme colorScheme) {
+    final partGroup = formArray.controls[index] as FormGroup;
+    final partNumber = partGroup.control('partNumber').value as String? ?? '';
+    final partName = partGroup.control('partName').value as String? ?? '';
+
+    return ReactiveForm(
+      formGroup: partGroup,
+      child: Card(
+        margin: REdgeInsets.only(bottom: DesignTokens.space3),
+        child: Padding(
+          padding: REdgeInsets.all(DesignTokens.space4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          partName.isNotEmpty ? partName : 'Part ${index + 1}',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        if (partNumber.isNotEmpty) ...[
+                          RSizedBox(height: DesignTokens.space1),
+                          Text(
+                            'Part #: $partNumber',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _handleRemovePart(formArray, index),
+                    icon: const Icon(Icons.delete),
+                    color: colorScheme.error,
+                  ),
+                ],
               ),
-            );
-          },
+              DesignTokens.verticalSpaceMedium,
+              ReactiveTextInput(
+                formControlName: 'quantity',
+                label: 'Quantity Used',
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Step 3: Work Images
+  Widget _buildStep3Content() {
+    final theme = Theme.of(context);
+
+    return ReactiveForm(
+      formGroup: _step3Form,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Capture Images',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          DesignTokens.verticalSpaceSmall,
+          Text(
+            'Take photos documenting the completed work',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          DesignTokens.verticalSpaceLarge,
+          ReactiveImagePicker(
+            formControlName: 'files',
+            maxImages: 10,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Step 4: Signature + Notes
+  Widget _buildStep4Content() {
+    final theme = Theme.of(context);
+
+    return ReactiveForm(
+      formGroup: _step4Form,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Customer Signature',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          DesignTokens.verticalSpaceSmall,
+          Text(
+            'Collect customer signature to confirm completion',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          DesignTokens.verticalSpaceLarge,
+          ReactiveSignaturePad(formControlName: 'signature'),
+          DesignTokens.verticalSpaceLarge,
+          ReactiveMultilineInput(
+            formControlName: 'completionNotes',
+            hint: 'Add any additional notes or observations...',
+            label: 'Completion Notes (Optional)',
+            minLines: 3,
+            maxLines: 5,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Step 5: Location + Review
+  Widget _buildStep5Content() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final fsmTheme = context.fsmTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Location Capture Section
+        Container(
+          padding: REdgeInsets.all(DesignTokens.space4),
+          decoration: BoxDecoration(
+            color: _locationResult?.isSuccess == true
+                ? fsmTheme.statusCompleted.withValues(alpha: 0.1)
+                : colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+            border: Border.all(
+              color: _locationResult?.isSuccess == true
+                  ? fsmTheme.statusCompleted
+                  : colorScheme.outline.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    _isCapturingLocation
+                        ? Icons.location_searching
+                        : _locationResult?.isSuccess == true
+                            ? Icons.location_on
+                            : Icons.location_off,
+                    color: _isCapturingLocation
+                        ? colorScheme.primary
+                        : _locationResult?.isSuccess == true
+                            ? fsmTheme.statusCompleted
+                            : colorScheme.error,
+                    size: DesignTokens.iconMd.sp,
+                  ),
+                  RSizedBox(width: DesignTokens.space2),
+                  Text(
+                    _isCapturingLocation
+                        ? 'Capturing Location...'
+                        : _locationResult?.isSuccess == true
+                            ? 'Location Captured'
+                            : 'Location Required',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              if (_isCapturingLocation) ...[
+                DesignTokens.verticalSpaceMedium,
+                LinearProgressIndicator(
+                  borderRadius: BorderRadius.circular(DesignTokens.radiusFull.r),
+                ),
+              ],
+              if (_locationResult != null) ...[
+                DesignTokens.verticalSpaceSmall,
+                if (_locationResult!.isSuccess) ...[
+                  Text(
+                    'Lat: ${_locationResult!.location!.latitude.toStringAsFixed(6)}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  Text(
+                    'Lng: ${_locationResult!.location!.longitude.toStringAsFixed(6)}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                  if (_locationResult!.location!.accuracy != null) ...[
+                    Text(
+                      'Accuracy: ${_locationResult!.location!.accuracy!.toStringAsFixed(1)}m',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ] else ...[
+                  Text(
+                    _locationResult!.error?.message ?? 'Failed to capture location',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.error,
+                    ),
+                  ),
+                  DesignTokens.verticalSpaceSmall,
+                  FilledButton.tonalIcon(
+                    onPressed: _captureLocation,
+                    icon: Icon(Icons.refresh, size: DesignTokens.iconSm.sp),
+                    label: const Text('Retry'),
+                  ),
+                ],
+              ],
+            ],
+          ),
+        ),
+        DesignTokens.verticalSpaceLarge,
+
+        // Review Summary Section
+        Text(
+          'Review Summary',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        DesignTokens.verticalSpaceSmall,
+        Text(
+          'Please review all information before submitting',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        DesignTokens.verticalSpaceMedium,
+
+        _buildReviewCard(
+          icon: Icons.person,
+          title: 'Customer',
+          value: _step1Form.control('customerName').value?.toString() ??
+              'Not provided',
+          onEdit: () => setState(() => _currentStep = 0),
+        ),
+        _buildReviewCard(
+          icon: Icons.description,
+          title: 'Work Log',
+          value: _step1Form.control('workLog').value?.toString() ?? 'Not provided',
+          maxLines: 3,
+          onEdit: () => setState(() => _currentStep = 0),
+        ),
+        _buildReviewCard(
+          icon: Icons.inventory,
+          title: 'Parts Used',
+          value: () {
+            final partsArray = _step2Form.control('parts') as FormArray;
+            if (partsArray.controls.isEmpty) return 'No parts added';
+            return '${partsArray.controls.length} part(s) selected';
+          }(),
+          onEdit: () => setState(() => _currentStep = 1),
+        ),
+        _buildReviewCard(
+          icon: Icons.image,
+          title: 'Images',
+          value: () {
+            final files = _step3Form.control('files').value as List<File>?;
+            if (files == null || files.isEmpty) return 'No images captured';
+            return '${files.length} image(s) attached';
+          }(),
+          onEdit: () => setState(() => _currentStep = 2),
+        ),
+        _buildReviewCard(
+          icon: Icons.draw,
+          title: 'Signature',
+          value: _step4Form.control('signature').value != null
+              ? 'Signature captured'
+              : 'Not captured',
+          onEdit: () => setState(() => _currentStep = 3),
         ),
       ],
     );
   }
 
-  Widget _buildPartEntry(FormArray formArray, int index, ThemeData theme,
-      ColorScheme colorScheme) {
-    return ReactiveForm(
-      formGroup: formArray.controls[index] as FormGroup,
-      child: Container(
-        margin: REdgeInsets.only(bottom: DesignTokens.space3),
+  Widget _buildReviewCard({
+    required IconData icon,
+    required String title,
+    required String value,
+    int maxLines = 1,
+    required VoidCallback onEdit,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Card(
+      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+      child: Padding(
         padding: REdgeInsets.all(DesignTokens.space4),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-          border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
-        ),
-        child: Column(
+        child: Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text('Part ${index + 1}',
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurfaceVariant,
-                      )),
-                ),
-                IconButton(
-                  onPressed: () => _handleRemovePart(formArray, index),
-                  icon: const Icon(Icons.delete),
-                  color: colorScheme.error,
-                ),
-              ],
+            Icon(icon,
+                size: DesignTokens.iconMd.sp,
+                color: colorScheme.onSurfaceVariant),
+            RSizedBox(width: DesignTokens.space3),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  RSizedBox(height: DesignTokens.space1),
+                  Text(
+                    value,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: maxLines,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-            RSizedBox(height: DesignTokens.space2),
-            ReactiveTextInput(
-                formControlName: 'partNumber', label: 'Part Number'),
-            RSizedBox(height: DesignTokens.space2),
-            ReactiveTextInput(formControlName: 'partName', label: 'Part Name'),
-            RSizedBox(height: DesignTokens.space2),
-            ReactiveTextInput(
-              formControlName: 'quantity',
-              label: 'Quantity',
-              keyboardType: TextInputType.number,
+            IconButton(
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit),
+              color: colorScheme.primary,
             ),
           ],
         ),
@@ -3134,87 +1171,62 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildStep2Content(ThemeData theme, ColorScheme colorScheme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Step 2: Capture Images',
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontWeight: FontWeight.w600)),
-        DesignTokens.verticalSpaceSmall,
-        Text('Take photos of the completed work (optional)',
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: colorScheme.onSurfaceVariant)),
-        DesignTokens.verticalSpaceLg,
-        ReactiveImagePicker(formControlName: 'files', maxImages: 10),
-      ],
+  Widget _buildNavigationButtons(
+      ThemeData theme, ColorScheme colorScheme, WorkOrderActionState state) {
+    final isLastStep = _currentStep == 4;
+    final isLoading = state.maybeWhen(
+      actionInProgress: (_, __, ___) => true,
+      orElse: () => false,
     );
-  }
 
-  Widget _buildStep3Content(ThemeData theme, ColorScheme colorScheme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Step 3: Customer Signature',
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontWeight: FontWeight.w600)),
-        DesignTokens.verticalSpaceSmall,
-        Text('Get customer confirmation and signature',
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: colorScheme.onSurfaceVariant)),
-        DesignTokens.verticalSpaceLg,
-        ReactiveTextInput(formControlName: 'customerName', hint: 'Enter name'),
-        DesignTokens.verticalSpaceLg,
-        ReactiveSignaturePad(formControlName: 'signature'),
-        DesignTokens.verticalSpaceLg,
-        ReactiveMultilineInput(
-          formControlName: 'completionNotes',
-          hint: 'Add any additional notes...',
-          minLines: 3,
-          maxLines: 5,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNavigationButtons(ThemeData theme, ColorScheme colorScheme) {
-    final isLastStep = _currentStep == 2;
-
-    return Padding(
+    return Container(
       padding: REdgeInsets.all(DesignTokens.space4),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          top: BorderSide(
+            color: colorScheme.outline.withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+      ),
       child: Row(
         children: [
           if (_currentStep > 0)
             Expanded(
               child: OutlinedButton(
-                onPressed: () {
-                  setState(() {
-                    _currentStep--;
-                  });
-                },
+                onPressed: isLoading ? null : _handleBack,
                 child: const Text('Back'),
               ),
             ),
           if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
+          if (_canSkipCurrentStep())
+            Expanded(
+              child: OutlinedButton(
+                onPressed: isLoading ? null : _handleSkip,
+                child: const Text('Skip'),
+              ),
+            ),
+          if (_canSkipCurrentStep()) RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: FilledButton(
-              onPressed: () async {
-                final currentForm = _getCurrentForm();
-                currentForm.markAllAsTouched();
-
-                if (currentForm.valid) {
-                  await _saveCache();
-
-                  if (isLastStep) {
-                    _handleSubmit();
-                  } else {
-                    setState(() {
-                      _currentStep++;
-                    });
-                  }
-                }
-              },
-              child: Text(isLastStep ? 'Submit' : 'Next'),
+              onPressed: isLoading
+                  ? null
+                  : isLastStep
+                      ? (_locationResult?.isSuccess == true
+                          ? _handleSubmit
+                          : null)
+                      : _handleNext,
+              child: isLoading
+                  ? SizedBox(
+                      height: DesignTokens.iconSm.h,
+                      width: DesignTokens.iconSm.w,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.w,
+                        color: colorScheme.onPrimary,
+                      ),
+                    )
+                  : Text(isLastStep ? 'Submit' : 'Next'),
             ),
           ),
         ],
@@ -3227,6 +1239,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     _step1Form.dispose();
     _step2Form.dispose();
     _step3Form.dispose();
+    _step4Form.dispose();
     super.dispose();
   }
 }

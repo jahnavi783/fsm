@@ -18,7 +18,7 @@ mixin _$WorkOrderCompletionCacheModel {
   @HiveField(0)
   int get workOrderId;
 
-  /// Current step in the multi-step form (0-2)
+  /// Current step in the multi-step form (0-3)
   @HiveField(1)
   int get currentStep;
 
@@ -425,7 +425,7 @@ class _WorkOrderCompletionCacheModel implements WorkOrderCompletionCacheModel {
   @HiveField(0)
   final int workOrderId;
 
-  /// Current step in the multi-step form (0-2)
+  /// Current step in the multi-step form (0-3)
   @override
   @JsonKey()
   @HiveField(1)

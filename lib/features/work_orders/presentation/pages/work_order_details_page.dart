@@ -1241,7 +1241,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     });
   }
 
-
   void _assignToMe(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {
       // Show a confirmation dialog before assigning to self

@@ -7,6 +7,7 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_image_captur
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_preview_dialog.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_image_thumbnail.dart';
 import 'package:intl/intl.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 
 /// Timeline entry model to hold capture data with action type context
 class _TimelineEntry {
@@ -94,18 +95,45 @@ class WorkOrderImageGallerySection extends StatelessWidget {
           _buildHeader(context, entries.length),
           DesignTokens.verticalSpaceMedium,
 
-          // Timeline entries
-          ...entries.asMap().entries.map((entry) {
-            final index = entry.key;
-            final timelineEntry = entry.value;
-            final isLast = index == entries.length - 1;
-
-            return _buildTimelineEntry(
-              context,
-              timelineEntry,
-              isLast,
-            );
-          }),
+          // Timeline using timelines_plus
+          Padding(
+            padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+            child: FixedTimeline.tileBuilder(
+              theme: TimelineThemeData(
+                nodePosition: 0,
+                connectorTheme: ConnectorThemeData(
+                  thickness: 2.w,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.12),
+                ),
+              ),
+              builder: TimelineTileBuilder.connected(
+                connectionDirection: ConnectionDirection.before,
+                itemCount: entries.length,
+                contentsBuilder: (context, index) => Padding(
+                  padding: REdgeInsets.only(
+                    left: DesignTokens.space4,
+                    bottom: DesignTokens.space6,
+                  ),
+                  child: _buildTimelineContent(context, entries[index]),
+                ),
+                indicatorBuilder: (context, index) => _buildTimelineIndicator(
+                  context,
+                  entries[index],
+                ),
+                connectorBuilder: (context, index, type) {
+                  return SolidLineConnector(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.12),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -202,63 +230,15 @@ class WorkOrderImageGallerySection extends StatelessWidget {
     );
   }
 
-  /// Build a single timeline entry
-  Widget _buildTimelineEntry(
-    BuildContext context,
-    _TimelineEntry entry,
-    bool isLast,
-  ) {
-    return Padding(
-      padding: REdgeInsets.only(
-          left: DesignTokens.space4,
-          right: DesignTokens.space4,
-          bottom: DesignTokens.space6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Timeline marker and line
-          Column(
-            children: [
-              // Marker circle with icon
-              _buildTimelineMarker(context, entry),
-
-              // Connecting line (if not last entry)
-              if (!isLast)
-                Container(
-                  width: 2.w,
-                  height: 40.h,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.12),
-                ),
-            ],
-          ),
-
-          DesignTokens.horizontalSpaceMedium,
-
-          // Timeline content
-          Expanded(
-            child: _buildTimelineContent(context, entry),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Build timeline marker (colored circle with icon)
-  Widget _buildTimelineMarker(BuildContext context, _TimelineEntry entry) {
+  /// Build timeline indicator using DotIndicator from timelines_plus
+  Widget _buildTimelineIndicator(BuildContext context, _TimelineEntry entry) {
     final color = entry.getColor(context);
-    return Container(
-      width: 40.w,
-      height: 40.w,
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: color,
-          width: 2.w,
-        ),
+    return DotIndicator(
+      size: 40.w,
+      color: color.withValues(alpha: 0.15),
+      border: Border.all(
+        color: color,
+        width: 2.w,
       ),
       child: Icon(
         entry.icon,

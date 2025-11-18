@@ -1216,7 +1216,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
       WorkOrderCompleteWizard.show(
         context: context,
         workOrder: workOrder,
-        location: null,
       );
     });
   }

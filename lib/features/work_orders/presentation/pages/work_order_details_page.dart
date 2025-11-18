@@ -1184,7 +1184,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         context: context,
         action: WorkOrderAction.start,
         workOrder: workOrder,
-        location: null,
       );
     });
   }
@@ -1195,7 +1194,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         context: context,
         action: WorkOrderAction.pause,
         workOrder: workOrder,
-        location: null,
       );
     });
   }
@@ -1206,7 +1204,6 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         context: context,
         action: WorkOrderAction.resume,
         workOrder: workOrder,
-        location: null,
       );
     });
   }
@@ -1226,11 +1223,9 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         context: context,
         action: WorkOrderAction.reject,
         workOrder: workOrder,
-        location: null,
       );
     });
   }
-
 
   void _assignToMe(BuildContext context, WorkOrderEntity workOrder) {
     _executeIfMounted(() {

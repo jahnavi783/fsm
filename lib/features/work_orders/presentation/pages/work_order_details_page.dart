@@ -847,6 +847,15 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     bool isOffline, {
     bool isActionInProgress = false,
   }) {
+    // --- COMPUTE ESTIMATION TIME FROM HOURS ---
+    String estimationValue;
+    final hrs = workOrder.durationHours;
+
+    if (hrs == null) {
+      estimationValue = "0 hours";
+    } else {
+      estimationValue = "${hrs.toStringAsFixed(1)} hours";
+    }
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -948,9 +957,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                             _buildHeaderInfoChip(
                               icon: Icons.schedule,
                               label: 'Estimation Time',
-                              value: workOrder.durationDays > 0
-                                  ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
-                                  : '0 days',
+                              // value: workOrder.durationDays > 0
+                              //     ? '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}'
+                              //     : '0 days',
+                              value: estimationValue,
                             ),
                           ],
                         ),

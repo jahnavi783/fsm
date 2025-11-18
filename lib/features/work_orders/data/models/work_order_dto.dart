@@ -1,16 +1,25 @@
 import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:fsm/core/converters/json_array_converter.dart';
-import 'package:fsm/features/work_orders/data/models/service_request_dto.dart';
 import 'package:fsm/features/work_orders/data/models/customer_dto.dart';
 import 'package:fsm/features/work_orders/data/models/location_dto.dart';
 import 'package:fsm/features/work_orders/data/models/part_dto.dart';
 import 'package:fsm/features/work_orders/data/models/part_used_dto.dart';
+import 'package:fsm/features/work_orders/data/models/service_request_dto.dart';
 import 'package:fsm/features/work_orders/data/models/work_log_dto.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
 part 'work_order_dto.freezed.dart';
 part 'work_order_dto.g.dart';
+
+double? _toDoubleNullable(dynamic value) {
+  if (value == null) return null;
+  if (value is double) return value;
+  if (value is int) return value.toDouble();
+  if (value is String) return double.tryParse(value.trim());
+  return null;
+}
 
 // Helper functions for parts_used field conversion
 List<PartUsedDto>? _partsUsedFromJson(dynamic json) {
@@ -20,7 +29,9 @@ List<PartUsedDto>? _partsUsedFromJson(dynamic json) {
 
   // Handle List case (if API sends array directly)
   if (json is List) {
-    return json.map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>)).toList();
+    return json
+        .map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   // Handle String case (JSON string)
@@ -31,7 +42,9 @@ List<PartUsedDto>? _partsUsedFromJson(dynamic json) {
 
     try {
       final List<dynamic> decoded = jsonDecode(json) as List<dynamic>;
-      return decoded.map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>)).toList();
+      return decoded
+          .map((e) => PartUsedDto.fromJson(e as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       return null;
     }
@@ -45,7 +58,8 @@ dynamic _partsUsedToJson(List<PartUsedDto>? partsUsed) {
     return null;
   }
 
-  final List<Map<String, dynamic>> jsonList = partsUsed.map((e) => e.toJson()).toList();
+  final List<Map<String, dynamic>> jsonList =
+      partsUsed.map((e) => e.toJson()).toList();
   return jsonEncode(jsonList);
 }
 
@@ -64,6 +78,8 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     @Default('') String location,
     required String status,
     @JsonKey(name: 'duration_days') @Default(0) int durationDays,
+    @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+    double? durationHours,
     @JsonKey(name: 'created_by') int? createdBy,
     @JsonKey(name: 'assigned_to') int? assignedTo,
     @JsonKey(name: 'started_at') String? startedAt,
@@ -88,8 +104,7 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'location_details') LocationDto? locationDetails,
     @Default([]) List<WorkLogDto> workLogs,
     @Default([]) List<String> requiredSkills,
-    @JsonArrayConverter<PartDto>()
-    @Default([]) List<PartDto>? requiredParts,
+    @JsonArrayConverter<PartDto>() @Default([]) List<PartDto>? requiredParts,
     @Default([]) List<String> attachments,
     String? completionNotes,
     @Default([]) List<String> images,
@@ -125,6 +140,7 @@ extension WorkOrderDtoX on WorkOrderDto {
       location: location,
       status: _mapStatus(status),
       durationDays: durationDays,
+      durationHours: durationHours,
       createdAt: DateTime.parse(createdAt),
       updatedAt: DateTime.parse(updatedAt),
       startedAt: startedAt != null ? DateTime.parse(startedAt!) : null,

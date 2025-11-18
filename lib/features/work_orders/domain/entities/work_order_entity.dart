@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:fsm/features/work_orders/domain/entities/service_request_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/customer_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/location_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/part_entity.dart';
+import 'package:fsm/features/work_orders/domain/entities/service_request_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_log_entity.dart';
 
 part 'work_order_entity.freezed.dart';
@@ -22,6 +22,7 @@ abstract class WorkOrderEntity with _$WorkOrderEntity {
     required String location,
     required WorkOrderStatus status,
     required int durationDays,
+    double? durationHours,
     required DateTime createdAt,
     required DateTime updatedAt,
     DateTime? startedAt,

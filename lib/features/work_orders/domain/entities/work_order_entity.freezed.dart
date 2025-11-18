@@ -24,6 +24,7 @@ mixin _$WorkOrderEntity {
   String get location;
   WorkOrderStatus get status;
   int get durationDays;
+  double? get durationHours;
   DateTime get createdAt;
   DateTime get updatedAt;
   DateTime? get startedAt;
@@ -71,6 +72,8 @@ mixin _$WorkOrderEntity {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.durationHours, durationHours) ||
+                other.durationHours == durationHours) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -116,6 +119,7 @@ mixin _$WorkOrderEntity {
         location,
         status,
         durationDays,
+        durationHours,
         createdAt,
         updatedAt,
         startedAt,
@@ -137,7 +141,7 @@ mixin _$WorkOrderEntity {
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
   }
 }
 
@@ -158,6 +162,7 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       String location,
       WorkOrderStatus status,
       int durationDays,
+      double? durationHours,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -204,6 +209,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? durationHours = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -263,6 +269,10 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      durationHours: freezed == durationHours
+          ? _self.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as double?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -481,6 +491,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            double? durationHours,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -515,6 +526,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -563,6 +575,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            double? durationHours,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -596,6 +609,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -643,6 +657,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            double? durationHours,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -676,6 +691,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -713,6 +729,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
       required this.location,
       required this.status,
       required this.durationDays,
+      this.durationHours,
       required this.createdAt,
       required this.updatedAt,
       this.startedAt,
@@ -758,6 +775,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
   final WorkOrderStatus status;
   @override
   final int durationDays;
+  @override
+  final double? durationHours;
   @override
   final DateTime createdAt;
   @override
@@ -864,6 +883,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.durationHours, durationHours) ||
+                other.durationHours == durationHours) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -910,6 +931,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
         location,
         status,
         durationDays,
+        durationHours,
         createdAt,
         updatedAt,
         startedAt,
@@ -931,7 +953,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
   }
 }
 
@@ -954,6 +976,7 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       String location,
       WorkOrderStatus status,
       int durationDays,
+      double? durationHours,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -1003,6 +1026,7 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? durationHours = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -1062,6 +1086,10 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      durationHours: freezed == durationHours
+          ? _self.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as double?,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable

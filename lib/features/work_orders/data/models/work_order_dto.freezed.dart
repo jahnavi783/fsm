@@ -29,6 +29,8 @@ mixin _$WorkOrderDto {
   String get status;
   @JsonKey(name: 'duration_days')
   int get durationDays;
+  @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+  double? get durationHours;
   @JsonKey(name: 'created_by')
   int? get createdBy;
   @JsonKey(name: 'assigned_to')
@@ -104,6 +106,8 @@ mixin _$WorkOrderDto {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.durationHours, durationHours) ||
+                other.durationHours == durationHours) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.assignedTo, assignedTo) ||
@@ -160,6 +164,7 @@ mixin _$WorkOrderDto {
         location,
         status,
         durationDays,
+        durationHours,
         createdBy,
         assignedTo,
         startedAt,
@@ -186,7 +191,7 @@ mixin _$WorkOrderDto {
 
   @override
   String toString() {
-    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
+    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
   }
 }
 
@@ -207,6 +212,8 @@ abstract mixin class $WorkOrderDtoCopyWith<$Res> {
       String location,
       String status,
       @JsonKey(name: 'duration_days') int durationDays,
+      @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+      double? durationHours,
       @JsonKey(name: 'created_by') int? createdBy,
       @JsonKey(name: 'assigned_to') int? assignedTo,
       @JsonKey(name: 'started_at') String? startedAt,
@@ -263,6 +270,7 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? durationHours = freezed,
     Object? createdBy = freezed,
     Object? assignedTo = freezed,
     Object? startedAt = freezed,
@@ -327,6 +335,10 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      durationHours: freezed == durationHours
+          ? _self.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as double?,
       createdBy: freezed == createdBy
           ? _self.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -593,6 +605,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             String location,
             String status,
             @JsonKey(name: 'duration_days') int durationDays,
+            @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+            double? durationHours,
             @JsonKey(name: 'created_by') int? createdBy,
             @JsonKey(name: 'assigned_to') int? assignedTo,
             @JsonKey(name: 'started_at') String? startedAt,
@@ -636,6 +650,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdBy,
             _that.assignedTo,
             _that.startedAt,
@@ -689,6 +704,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             String location,
             String status,
             @JsonKey(name: 'duration_days') int durationDays,
+            @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+            double? durationHours,
             @JsonKey(name: 'created_by') int? createdBy,
             @JsonKey(name: 'assigned_to') int? assignedTo,
             @JsonKey(name: 'started_at') String? startedAt,
@@ -731,6 +748,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdBy,
             _that.assignedTo,
             _that.startedAt,
@@ -783,6 +801,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             String location,
             String status,
             @JsonKey(name: 'duration_days') int durationDays,
+            @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+            double? durationHours,
             @JsonKey(name: 'created_by') int? createdBy,
             @JsonKey(name: 'assigned_to') int? assignedTo,
             @JsonKey(name: 'started_at') String? startedAt,
@@ -825,6 +845,7 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.durationHours,
             _that.createdBy,
             _that.assignedTo,
             _that.startedAt,
@@ -867,6 +888,8 @@ class _WorkOrderDto implements WorkOrderDto {
       this.location = '',
       required this.status,
       @JsonKey(name: 'duration_days') this.durationDays = 0,
+      @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+      this.durationHours,
       @JsonKey(name: 'created_by') this.createdBy,
       @JsonKey(name: 'assigned_to') this.assignedTo,
       @JsonKey(name: 'started_at') this.startedAt,
@@ -930,6 +953,9 @@ class _WorkOrderDto implements WorkOrderDto {
   @override
   @JsonKey(name: 'duration_days')
   final int durationDays;
+  @override
+  @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+  final double? durationHours;
   @override
   @JsonKey(name: 'created_by')
   final int? createdBy;
@@ -1075,6 +1101,8 @@ class _WorkOrderDto implements WorkOrderDto {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.durationHours, durationHours) ||
+                other.durationHours == durationHours) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.assignedTo, assignedTo) ||
@@ -1132,6 +1160,7 @@ class _WorkOrderDto implements WorkOrderDto {
         location,
         status,
         durationDays,
+        durationHours,
         createdBy,
         assignedTo,
         startedAt,
@@ -1158,7 +1187,7 @@ class _WorkOrderDto implements WorkOrderDto {
 
   @override
   String toString() {
-    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
+    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
   }
 }
 
@@ -1181,6 +1210,8 @@ abstract mixin class _$WorkOrderDtoCopyWith<$Res>
       String location,
       String status,
       @JsonKey(name: 'duration_days') int durationDays,
+      @JsonKey(name: 'duration_hours', fromJson: _toDoubleNullable)
+      double? durationHours,
       @JsonKey(name: 'created_by') int? createdBy,
       @JsonKey(name: 'assigned_to') int? assignedTo,
       @JsonKey(name: 'started_at') String? startedAt,
@@ -1243,6 +1274,7 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? durationHours = freezed,
     Object? createdBy = freezed,
     Object? assignedTo = freezed,
     Object? startedAt = freezed,
@@ -1307,6 +1339,10 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      durationHours: freezed == durationHours
+          ? _self.durationHours
+          : durationHours // ignore: cast_nullable_to_non_nullable
+              as double?,
       createdBy: freezed == createdBy
           ? _self.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable

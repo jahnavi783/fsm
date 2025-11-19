@@ -421,6 +421,14 @@ class _WorkOrderFormSheetState extends State<WorkOrderFormSheet> {
           formControlName: 'notes',
           hint: 'Add any notes about resuming...',
         ),
+        DesignTokens.verticalSpaceMedium,
+        Text('Attachments (Optional)',
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary)),
+        DesignTokens.verticalSpaceSmall,
+        ReactiveImagePicker(formControlName: 'files', maxImages: 5)
       ];
 
   List<Widget> _buildRejectFormFields() => [

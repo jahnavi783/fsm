@@ -58,12 +58,23 @@ class _InProgressWorkOrderCarouselState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: REdgeInsets.only(left: DesignTokens.space4),
-          child: Text(
-            'In Progress',
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
+          padding: REdgeInsets.only(
+              left: DesignTokens.space4, top: DesignTokens.space3),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              'In Progress',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
           ),
         ),

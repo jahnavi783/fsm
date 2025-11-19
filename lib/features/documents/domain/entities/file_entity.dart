@@ -37,23 +37,48 @@ abstract class FileEntity with _$FileEntity {
   bool get isAvailableOffline => isDownloaded == true && localPath != null;
 
   /// Extract file extension from fileName
+  // String get fileExtension {
+  //   if (fileName?.isEmpty ?? true) {
+  //     return '';
+  //   }
+  //   return fileName!.split('.').last.toLowerCase();
+  // }
+  /// Extract file extension safely (fallback to fileType or URL)
   String get fileExtension {
-    if (fileName?.isEmpty ?? true) {
-      return '';
+    // 1. Prefer MIME type "video/mp4"
+    if (fileType.isNotEmpty && fileType.contains('/')) {
+      return fileType.split('/').last.toLowerCase();
     }
-    return fileName!.split('.').last.toLowerCase();
+
+    // 2. Fall back to URL extension
+    final uri = Uri.tryParse(fileUrl);
+    final path = uri?.path.toLowerCase() ?? '';
+
+    if (path.contains('.')) {
+      return path.split('.').last; // extract ".mp4"
+    }
+
+    return '';
   }
 
-  /// Check if file is a PDF
+  /// Check if video
+  bool get isVideo {
+    final ext = fileExtension.toLowerCase();
+    return ['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm'].contains(ext);
+  }
+
+  /// Check if PDF
   bool get isPdf => fileExtension == 'pdf';
 
-  /// Check if file is an image
-  bool get isImage =>
-      ['jpg', 'jpeg', 'png', 'gif', 'bmp'].contains(fileExtension);
-
-  /// Check if file is a video
-  bool get isVideo => ['mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm']
-      .contains(fileExtension);
+  /// Check if image
+  bool get isImage => [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'bmp',
+        'webp',
+      ].contains(fileExtension);
 
   /// Format file size for display (e.g., "1.5 MB")
   String get fileSizeFormatted {

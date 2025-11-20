@@ -489,7 +489,8 @@ class _WorkOrderFormSheetState extends State<WorkOrderFormSheet> {
                   ? null
                   : () => _handleSubmit(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: _getSubmitButtonColor(context),
+                // backgroundColor: _getSubmitButtonColor(context),
+                backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 minimumSize: Size(double.infinity, 48.h),
                 shape: RoundedRectangleBorder(

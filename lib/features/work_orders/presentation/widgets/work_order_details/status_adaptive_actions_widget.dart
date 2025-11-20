@@ -151,40 +151,38 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     return RSizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-            onPressed: isLoading ? null : onPressed,
-            icon: isLoading
-                ? RSizedBox(
-                    width: 20.w,
-                    height: 20.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        color.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  )
-                : Icon(icon),
-            label: Text(
-              label,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              disabledBackgroundColor: color.withValues(alpha: 0.5),
-              disabledForegroundColor: Theme.of(context)
-                  .colorScheme
-                  .onPrimary
-                  .withValues(alpha: 0.5),
-              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-              ),
-            ),
+        onPressed: isLoading ? null : onPressed,
+        icon: isLoading
+            ? RSizedBox(
+                width: 20.w,
+                height: 20.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    color.withValues(alpha: 0.7),
+                  ),
+                ),
+              )
+            : Icon(icon),
+        label: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
           ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          disabledBackgroundColor: color.withValues(alpha: 0.5),
+          disabledForegroundColor:
+              Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
+          padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+          ),
+        ),
+      ),
     );
   }
 
@@ -202,80 +200,79 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     required bool isLoading,
   }) {
     return Row(
-          children: [
-            // Primary button (left, 50% width)
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: isLoading ? null : primaryOnPressed,
-                // onPressed: isLoading ? primaryOnPressed : primaryOnPressed,
-                icon: isLoading
-                    ? RSizedBox(
-                        width: 18.w,
-                        height: 18.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            primaryColor.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      )
-                    : Icon(primaryIcon, size: 18.sp),
-                label: Text(
-                  primaryLabel,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  disabledBackgroundColor: primaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary
-                      .withValues(alpha: 0.5),
-                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
+      children: [
+        // Primary button (left, 50% width)
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: isLoading ? null : primaryOnPressed,
+            // onPressed: isLoading ? primaryOnPressed : primaryOnPressed,
+            icon: isLoading
+                ? RSizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        primaryColor.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  )
+                : Icon(primaryIcon, size: 18.sp),
+            label: Text(
+              primaryLabel,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              disabledBackgroundColor: primaryColor.withValues(alpha: 0.5),
+              disabledForegroundColor: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.5),
+              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
+          ),
+        ),
 
-            DesignTokens.horizontalSpace(DesignTokens.space3),
+        DesignTokens.horizontalSpace(DesignTokens.space3),
 
-            // Secondary button (right, 50% width)
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: isLoading ? null : secondaryOnPressed,
-                icon: Icon(secondaryIcon, size: 18.sp),
-                label: Text(
-                  secondaryLabel,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: secondaryColor,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  disabledBackgroundColor:
-                      secondaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary
-                      .withValues(alpha: 0.5),
-                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
+        // Secondary button (right, 50% width)
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: isLoading ? null : secondaryOnPressed,
+            icon: Icon(secondaryIcon, size: 18.sp),
+            label: Text(
+              secondaryLabel,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: secondaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              disabledBackgroundColor: secondaryColor.withValues(alpha: 0.5),
+              disabledForegroundColor: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.5),
+              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-          ],
+          ),
+        ),
+      ],
     );
   }
 }

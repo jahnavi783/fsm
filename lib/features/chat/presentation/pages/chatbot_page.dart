@@ -718,7 +718,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
         alignment: Alignment.centerLeft,
         child: Padding(
           padding: EdgeInsets.all(8),
-          child: Text("FSM is typing..."),
+          child: Text("Agent is typing..."),
         ),
       );
     }

@@ -205,9 +205,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ))
         .toList();
 
-    final imagePaths = (data['files'] as List<File>? ?? [])
-        .map((file) => file.path)
-        .toList();
+    final imagePaths =
+        (data['files'] as List<File>? ?? []).map((file) => file.path).toList();
 
     final cache = WorkOrderCompletionCacheModel(
       workOrderId: widget.workOrder.id,
@@ -246,7 +245,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       if (!result.isSuccess) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result.error?.message ?? 'Failed to capture location'),
+            content:
+                Text(result.error?.message ?? 'Failed to capture location'),
             backgroundColor: Theme.of(context).colorScheme.error,
             action: SnackBarAction(
               label: 'Retry',
@@ -424,8 +424,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       context: context,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(DesignTokens.radiusLg.r)),
+        borderRadius: BorderRadius.vertical(
+            top: Radius.circular(DesignTokens.radiusLg.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
@@ -556,9 +556,11 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildHeader(theme, colorScheme),
-              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
+              Divider(
+                  height: DesignTokens.space1.h, color: colorScheme.outline),
               _buildStepHeader(theme, colorScheme),
-              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
+              Divider(
+                  height: DesignTokens.space1.h, color: colorScheme.outline),
               _buildProgressIndicator(theme, colorScheme),
               Flexible(child: _buildStepContent()),
               _buildNavigationButtons(theme, colorScheme, state),
@@ -639,8 +641,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           RSizedBox(height: DesignTokens.space1),
           Text(
             _getStepTitle(),
-            style:
-                theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.w600),
           ),
           RSizedBox(height: DesignTokens.space1),
           Text(
@@ -665,8 +667,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           return Expanded(
             child: Container(
               height: DesignTokens.space1.h,
-              margin: REdgeInsets.only(
-                  right: index < 4 ? DesignTokens.space1 : 0),
+              margin:
+                  REdgeInsets.only(right: index < 4 ? DesignTokens.space1 : 0),
               decoration: BoxDecoration(
                 color: isCompleted || isActive
                     ? colorScheme.primary
@@ -720,7 +722,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ReactiveMultilineInput(
             formControlName: 'workLog',
             hint: 'Describe the work performed in detail...',
-            label: 'Work Log',
+            label: 'Work Log Summary',
             minLines: 5,
             maxLines: 10,
           ),
@@ -770,7 +772,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ReactiveFormArray(
             formArrayName: 'parts',
             builder: (context, formArray, child) {
-              if (formArray.value == null || (formArray.value as List).isEmpty) {
+              if (formArray.value == null ||
+                  (formArray.value as List).isEmpty) {
                 return Container(
                   padding: REdgeInsets.all(DesignTokens.space6),
                   decoration: BoxDecoration(
@@ -813,7 +816,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               return Column(
                 children: List.generate(
                   formArray.controls.length,
-                  (index) => _buildPartCard(formArray, index, theme, colorScheme),
+                  (index) =>
+                      _buildPartCard(formArray, index, theme, colorScheme),
                 ),
               );
             },
@@ -823,8 +827,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildPartCard(
-      FormArray formArray, int index, ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildPartCard(FormArray formArray, int index, ThemeData theme,
+      ColorScheme colorScheme) {
     final partGroup = formArray.controls[index] as FormGroup;
     final partNumber = partGroup.control('partNumber').value as String? ?? '';
     final partName = partGroup.control('partName').value as String? ?? '';
@@ -1008,7 +1012,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               if (_isCapturingLocation) ...[
                 DesignTokens.verticalSpaceMedium,
                 LinearProgressIndicator(
-                  borderRadius: BorderRadius.circular(DesignTokens.radiusFull.r),
+                  borderRadius:
+                      BorderRadius.circular(DesignTokens.radiusFull.r),
                 ),
               ],
               if (_locationResult != null) ...[
@@ -1038,7 +1043,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                   ],
                 ] else ...[
                   Text(
-                    _locationResult!.error?.message ?? 'Failed to capture location',
+                    _locationResult!.error?.message ??
+                        'Failed to capture location',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.error,
                     ),
@@ -1082,7 +1088,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         _buildReviewCard(
           icon: Icons.description,
           title: 'Work Log',
-          value: _step1Form.control('workLog').value?.toString() ?? 'Not provided',
+          value:
+              _step1Form.control('workLog').value?.toString() ?? 'Not provided',
           maxLines: 3,
           onEdit: () => setState(() => _currentStep = 0),
         ),

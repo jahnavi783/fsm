@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:fsm/features/documents/data/models/document_hive_model.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/document_entity.dart';
@@ -307,7 +309,8 @@ class DocumentRepositoryImpl implements IDocumentRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteDownloadedDocument(String documentId) async {
+  Future<Either<Failure, void>> deleteDownloadedDocument(
+      String documentId) async {
     try {
       await _localDataSource.deleteDocumentFile(documentId);
       return const Right(null);

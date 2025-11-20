@@ -53,7 +53,7 @@ class StatsCard extends StatelessWidget {
                 ),
               ],
               border: Border.all(
-                color: color.withValues(alpha: 0.1),
+                color: color.withValues(alpha: 0.6),
                 width: DesignTokens.borderWidthThin,
               ),
             ),

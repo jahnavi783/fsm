@@ -851,10 +851,10 @@ import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../../core/widgets/stats_card.dart' as stats;
 import '../../../../core/widgets/widgets.dart'
     hide StatsGrid, StatsCard, StatsCardData; // Barrel import, hide duplicates
-import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
@@ -863,8 +863,8 @@ import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
 import '../blocs/work_orders_list/work_orders_list_state.dart';
-import '../widgets/work_order_list_card.dart';
 import '../widgets/carousels/in_progress_work_order_carousel.dart';
+import '../widgets/work_order_list_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -1437,13 +1437,19 @@ class _DashboardPageState extends State<DashboardPage> {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                      icon:
-                          Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
-                      label: Text('Assign to Me',
-                          style: theme.textTheme.labelLarge),
+                      icon: Icon(
+                        Icons.person_add,
+                        size: DesignTokens.iconSm.sp,
+                      ),
+                      label: Text(
+                        'Assign to Me',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: theme.colorScheme.onPrimary,
+                        foregroundColor: Colors.white,
                         padding: REdgeInsets.symmetric(
                           horizontal: DesignTokens.space4,
                           vertical: DesignTokens.space3,

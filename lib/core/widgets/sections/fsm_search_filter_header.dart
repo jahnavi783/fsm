@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
-import '../inputs/fsm_search_bar.dart';
-import '../inputs/fsm_filter_chip_group.dart';
+
 import '../inputs/filter_chip_data.dart';
+import '../inputs/fsm_filter_chip_group.dart';
+import '../inputs/fsm_search_bar.dart';
 
 /// FSMSearchFilterHeader - Standardized search + filter component
 ///
@@ -27,6 +28,7 @@ class FSMSearchFilterHeader<T> extends StatefulWidget {
   final ValueChanged<String>? onSearchSubmitted;
   final bool showVoiceSearch;
   final bool showSearch;
+  final VoidCallback? onVoiceSearchTap;
 
   // Filter properties
   final List<FilterChipData<T>>? filterOptions;
@@ -52,6 +54,8 @@ class FSMSearchFilterHeader<T> extends StatefulWidget {
     this.onSearchSubmitted,
     this.showVoiceSearch = false,
     this.showSearch = true,
+    this.onVoiceSearchTap,
+
     // Filters
     this.filterOptions,
     this.selectedFilters = const [],
@@ -78,6 +82,7 @@ class FSMSearchFilterHeader<T> extends StatefulWidget {
     this.padding,
     this.margin,
     this.height,
+    this.onVoiceSearchTap,
     this.isLoading = false,
   })  : showSearch = true,
         filterOptions = null,
@@ -97,6 +102,7 @@ class FSMSearchFilterHeader<T> extends StatefulWidget {
     this.multiSelectFilters = true,
     this.showClearAll = true,
     this.clearAllLabel = 'Clear All',
+    this.onVoiceSearchTap,
     this.padding,
     this.margin,
     this.height,
@@ -162,6 +168,7 @@ class _FSMSearchFilterHeaderState<T> extends State<FSMSearchFilterHeader<T>> {
               onChanged: widget.onSearchChanged,
               onSubmitted: widget.onSearchSubmitted,
               showVoiceSearch: widget.showVoiceSearch,
+              onVoiceSearchTap: widget.onVoiceSearchTap,
               showFilterButton: widget.showFilters &&
                   widget.filterOptions != null &&
                   widget.filterOptions!.isNotEmpty,

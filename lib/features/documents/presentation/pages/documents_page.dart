@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
@@ -28,10 +29,12 @@ class _DocumentsPageState extends State<DocumentsPage> {
   late final DocumentsBloc _documentsBloc;
   String _searchQuery = '';
   List<String> _selectedCategories = [];
-
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
   @override
   void initState() {
     super.initState();
+    _speech = stt.SpeechToText();
     _scrollController.addListener(_onScroll);
 
     // Initialize DocumentsBloc and load documents initially
@@ -76,6 +79,43 @@ class _DocumentsPageState extends State<DocumentsPage> {
               _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
         ),
       );
+    }
+  }
+
+  void _startVoiceSearch() async {
+    bool available = await _speech.initialize();
+
+    if (!available) {
+      print("speech not available");
+      return;
+    }
+
+    setState(() => _isListening = true);
+
+    _speech.listen(
+      onResult: (result) {
+        setState(() {
+          _searchQuery = result.recognizedWords;
+        });
+
+        // Trigger the existing search logic
+        _onSearchChanged(result.recognizedWords);
+      },
+      listenFor: const Duration(seconds: 5),
+      pauseFor: const Duration(seconds: 2),
+    );
+  }
+
+  void _stopVoiceSearch() {
+    _speech.stop();
+    setState(() => _isListening = false);
+  }
+
+  void _handleVoiceSearch() {
+    if (_isListening) {
+      _stopVoiceSearch();
+    } else {
+      _startVoiceSearch();
     }
   }
 
@@ -134,6 +174,8 @@ class _DocumentsPageState extends State<DocumentsPage> {
             onSearchChanged: _onSearchChanged,
             onSearchSubmitted: (query) => _onSearchChanged(query),
             showVoiceSearch: true,
+            onVoiceSearchTap: _handleVoiceSearch,
+
             showFilters: state.categories.isNotEmpty,
             filterOptions: state.categories.isNotEmpty
                 ? state.categories

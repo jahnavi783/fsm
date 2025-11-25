@@ -187,6 +187,7 @@ class _PartsPageState extends State<PartsPage> {
                 ),
               );
             },
+            onVoiceSearchTap: () {},
           );
         },
       ),

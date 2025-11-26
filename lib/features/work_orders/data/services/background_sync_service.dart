@@ -382,6 +382,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fsm/features/work_orders/data/services/sync_events.dart';
 
 import 'offline_queue_service.dart';
 
@@ -457,6 +458,9 @@ class OfflineSyncService {
     }
 
     _isSyncing = true;
+    SyncEvents.instance.notify(
+      SyncEvent(type: SyncEventType.syncStarted, pendingCount: queueSize),
+    );
 
     try {
       print('🔄 Starting sync: $queueSize requests in queue');
@@ -511,11 +515,24 @@ class OfflineSyncService {
       if (remainingSize == 0) {
         print('✅ Sync completed - all requests processed');
         await _notify("✅ Sync Complete", "All changes synced successfully");
+
+        // 🔔 notify sync completed
+        SyncEvents.instance.notify(
+          SyncEvent(type: SyncEventType.syncCompleted, pendingCount: 0),
+        );
       } else {
         print('⚠️ Sync incomplete - $remainingSize requests remaining');
         await _notify(
           "⚠️ Sync Incomplete",
           "$remainingSize action(s) pending. Will retry automatically.",
+        );
+
+        // 🔔 notify sync incomplete
+        SyncEvents.instance.notify(
+          SyncEvent(
+            type: SyncEventType.syncIncomplete,
+            pendingCount: remainingSize,
+          ),
         );
       }
     } catch (e, stackTrace) {
@@ -523,6 +540,11 @@ class OfflineSyncService {
       print(stackTrace);
       await _notify(
           "❌ Sync Error", "Failed to sync. Will retry automatically.");
+
+      // 🔔 notify sync error
+      SyncEvents.instance.notify(
+        SyncEvent(type: SyncEventType.syncError),
+      );
     } finally {
       _isSyncing = false;
     }

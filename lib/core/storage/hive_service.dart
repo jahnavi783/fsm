@@ -1,17 +1,18 @@
+import 'dart:io';
+
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
-import '../constants/app_constants.dart';
-import '../services/logging_service.dart';
-import '../constants/hive_boxes.dart';
-import '../../features/work_orders/data/models/work_order_hive_model.dart';
-import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
-import '../../features/documents/data/models/document_hive_model.dart';
 import '../../features/calendar/data/models/calendar_event_hive_model.dart';
-import '../../features/profile/data/models/profile_hive_model.dart';
+import '../../features/documents/data/models/document_hive_model.dart';
 import '../../features/parts/data/models/part_hive_model.dart' as parts;
+import '../../features/profile/data/models/profile_hive_model.dart';
+import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
+import '../../features/work_orders/data/models/work_order_hive_model.dart';
+import '../constants/app_constants.dart';
+import '../constants/hive_boxes.dart';
+import '../services/logging_service.dart';
 
 @preResolve
 @singleton
@@ -54,18 +55,6 @@ class HiveService {
       }
       if (!Hive.isAdapterRegistered(HiveBoxes.partUsedEntityTypeId)) {
         Hive.registerAdapter(PartUsedHiveModelAdapter());
-      }
-      if (!Hive.isAdapterRegistered(HiveBoxes.customerEntityTypeId)) {
-        Hive.registerAdapter(CustomerHiveModelAdapter());
-      }
-      if (!Hive.isAdapterRegistered(HiveBoxes.locationEntityTypeId)) {
-        Hive.registerAdapter(LocationHiveModelAdapter());
-      }
-      if (!Hive.isAdapterRegistered(HiveBoxes.serviceRequestEntityTypeId)) {
-        Hive.registerAdapter(ServiceRequestHiveModelAdapter());
-      }
-      if (!Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)) {
-        Hive.registerAdapter(WorkLogHiveModelAdapter());
       }
 
       // Register Parts adapter (using alias to avoid conflict)

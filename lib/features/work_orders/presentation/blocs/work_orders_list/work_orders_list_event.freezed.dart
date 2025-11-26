@@ -60,6 +60,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult Function(_ClearFilters value)? clearFilters,
     TResult Function(_SyncPendingWorkOrders value)? syncPendingWorkOrders,
     TResult Function(_AssignWorkOrderToSelf value)? assignWorkOrderToSelf,
+    TResult Function(_RefreshAfterSync value)? refreshAfterSync,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -82,6 +83,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders(_that);
       case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
         return assignWorkOrderToSelf(_that);
+      case _RefreshAfterSync() when refreshAfterSync != null:
+        return refreshAfterSync(_that);
       case _:
         return orElse();
     }
@@ -113,6 +116,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         syncPendingWorkOrders,
     required TResult Function(_AssignWorkOrderToSelf value)
         assignWorkOrderToSelf,
+    required TResult Function(_RefreshAfterSync value) refreshAfterSync,
   }) {
     final _that = this;
     switch (_that) {
@@ -134,6 +138,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders(_that);
       case _AssignWorkOrderToSelf():
         return assignWorkOrderToSelf(_that);
+      case _RefreshAfterSync():
+        return refreshAfterSync(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -162,6 +168,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult? Function(_ClearFilters value)? clearFilters,
     TResult? Function(_SyncPendingWorkOrders value)? syncPendingWorkOrders,
     TResult? Function(_AssignWorkOrderToSelf value)? assignWorkOrderToSelf,
+    TResult? Function(_RefreshAfterSync value)? refreshAfterSync,
   }) {
     final _that = this;
     switch (_that) {
@@ -183,6 +190,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders(_that);
       case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
         return assignWorkOrderToSelf(_that);
+      case _RefreshAfterSync() when refreshAfterSync != null:
+        return refreshAfterSync(_that);
       case _:
         return null;
     }
@@ -213,6 +222,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult Function()? clearFilters,
     TResult Function()? syncPendingWorkOrders,
     TResult Function(int workOrderId)? assignWorkOrderToSelf,
+    TResult Function()? refreshAfterSync,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -236,6 +246,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders();
       case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
         return assignWorkOrderToSelf(_that.workOrderId);
+      case _RefreshAfterSync() when refreshAfterSync != null:
+        return refreshAfterSync();
       case _:
         return orElse();
     }
@@ -267,6 +279,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     required TResult Function() clearFilters,
     required TResult Function() syncPendingWorkOrders,
     required TResult Function(int workOrderId) assignWorkOrderToSelf,
+    required TResult Function() refreshAfterSync,
   }) {
     final _that = this;
     switch (_that) {
@@ -289,6 +302,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders();
       case _AssignWorkOrderToSelf():
         return assignWorkOrderToSelf(_that.workOrderId);
+      case _RefreshAfterSync():
+        return refreshAfterSync();
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -319,6 +334,7 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
     TResult? Function()? clearFilters,
     TResult? Function()? syncPendingWorkOrders,
     TResult? Function(int workOrderId)? assignWorkOrderToSelf,
+    TResult? Function()? refreshAfterSync,
   }) {
     final _that = this;
     switch (_that) {
@@ -341,6 +357,8 @@ extension WorkOrdersListEventPatterns on WorkOrdersListEvent {
         return syncPendingWorkOrders();
       case _AssignWorkOrderToSelf() when assignWorkOrderToSelf != null:
         return assignWorkOrderToSelf(_that.workOrderId);
+      case _RefreshAfterSync() when refreshAfterSync != null:
+        return refreshAfterSync();
       case _:
         return null;
     }
@@ -801,6 +819,26 @@ class __$AssignWorkOrderToSelfCopyWithImpl<$Res>
           : workOrderId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
+  }
+}
+
+/// @nodoc
+
+class _RefreshAfterSync implements WorkOrdersListEvent {
+  const _RefreshAfterSync();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _RefreshAfterSync);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'WorkOrdersListEvent.refreshAfterSync()';
   }
 }
 

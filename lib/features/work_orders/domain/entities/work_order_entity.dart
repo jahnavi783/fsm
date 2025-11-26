@@ -40,6 +40,7 @@ abstract class WorkOrderEntity with _$WorkOrderEntity {
     @Default([]) List<PartEntity> requiredParts,
     @Default([]) List<String> attachments,
     String? completionNotes,
+    String? userId,
   }) = _WorkOrderEntity;
 
   // Business logic methods

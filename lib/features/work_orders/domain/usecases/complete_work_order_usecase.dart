@@ -1,18 +1,39 @@
 import 'dart:io';
+
 import 'package:either_dart/either.dart';
-import 'package:injectable/injectable.dart';
 import 'package:fsm/core/error/failures.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../../core/network/network_info.dart';
 
 @injectable
 class CompleteWorkOrderUseCase {
   final IWorkOrderRepository _repository;
+  final NetworkInfo _networkInfo;
 
-  CompleteWorkOrderUseCase(this._repository);
+  CompleteWorkOrderUseCase(
+    this._repository,
+    this._networkInfo,
+  );
 
   Future<Either<Failure, WorkOrderEntity>> call(
-      CompleteWorkOrderParams params) {
+      CompleteWorkOrderParams params) async {
+    final isConnected = await _networkInfo.isConnected;
+    if (!isConnected) {
+      return _repository.completeWorkOrder(
+        workOrderId: params.workOrderId,
+        workLog: params.workLog,
+        customerName: params.customerName,
+        signature: params.signature,
+        partsUsed: params.partsUsed,
+        files: params.files,
+        latitude: params.latitude,
+        longitude: params.longitude,
+        completionNotes: params.completionNotes,
+      ); // Return locally-updated entity (status = completed)
+    }
     return _repository.completeWorkOrder(
       workOrderId: params.workOrderId,
       workLog: params.workLog,

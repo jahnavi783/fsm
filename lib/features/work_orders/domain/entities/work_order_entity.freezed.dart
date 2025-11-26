@@ -42,6 +42,7 @@ mixin _$WorkOrderEntity {
   List<PartEntity> get requiredParts;
   List<String> get attachments;
   String? get completionNotes;
+  String? get userId;
 
   /// Create a copy of WorkOrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -103,7 +104,8 @@ mixin _$WorkOrderEntity {
             const DeepCollectionEquality()
                 .equals(other.attachments, attachments) &&
             (identical(other.completionNotes, completionNotes) ||
-                other.completionNotes == completionNotes));
+                other.completionNotes == completionNotes) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
@@ -136,12 +138,13 @@ mixin _$WorkOrderEntity {
         const DeepCollectionEquality().hash(requiredSkills),
         const DeepCollectionEquality().hash(requiredParts),
         const DeepCollectionEquality().hash(attachments),
-        completionNotes
+        completionNotes,
+        userId
       ]);
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -179,7 +182,8 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       List<String> requiredSkills,
       List<PartEntity> requiredParts,
       List<String> attachments,
-      String? completionNotes});
+      String? completionNotes,
+      String? userId});
 
   $CustomerEntityCopyWith<$Res>? get customer;
   $LocationEntityCopyWith<$Res>? get locationDetails;
@@ -227,6 +231,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -340,6 +345,10 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
       completionNotes: freezed == completionNotes
           ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -508,7 +517,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)?
+            String? completionNotes,
+            String? userId)?
         $default, {
     required TResult orElse(),
   }) {
@@ -543,7 +553,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         return orElse();
     }
@@ -592,7 +603,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)
+            String? completionNotes,
+            String? userId)
         $default,
   ) {
     final _that = this;
@@ -626,7 +638,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -674,7 +687,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)?
+            String? completionNotes,
+            String? userId)?
         $default,
   ) {
     final _that = this;
@@ -708,7 +722,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         return null;
     }
@@ -746,7 +761,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
       final List<String> requiredSkills = const [],
       final List<PartEntity> requiredParts = const [],
       final List<String> attachments = const [],
-      this.completionNotes})
+      this.completionNotes,
+      this.userId})
       : _partsUsed = partsUsed,
         _images = images,
         _workLogs = workLogs,
@@ -853,6 +869,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
 
   @override
   final String? completionNotes;
+  @override
+  final String? userId;
 
   /// Create a copy of WorkOrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -915,7 +933,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
             const DeepCollectionEquality()
                 .equals(other._attachments, _attachments) &&
             (identical(other.completionNotes, completionNotes) ||
-                other.completionNotes == completionNotes));
+                other.completionNotes == completionNotes) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
@@ -948,12 +967,13 @@ class _WorkOrderEntity extends WorkOrderEntity {
         const DeepCollectionEquality().hash(_requiredSkills),
         const DeepCollectionEquality().hash(_requiredParts),
         const DeepCollectionEquality().hash(_attachments),
-        completionNotes
+        completionNotes,
+        userId
       ]);
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -993,7 +1013,8 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       List<String> requiredSkills,
       List<PartEntity> requiredParts,
       List<String> attachments,
-      String? completionNotes});
+      String? completionNotes,
+      String? userId});
 
   @override
   $CustomerEntityCopyWith<$Res>? get customer;
@@ -1044,6 +1065,7 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_WorkOrderEntity(
       id: null == id
@@ -1157,6 +1179,10 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
       completionNotes: freezed == completionNotes
           ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

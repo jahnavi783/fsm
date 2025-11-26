@@ -35,4 +35,7 @@ class WorkOrdersListEvent with _$WorkOrdersListEvent {
   const factory WorkOrdersListEvent.assignWorkOrderToSelf({
     required int workOrderId,
   }) = _AssignWorkOrderToSelf;
+
+  /// ⭐ REQUIRED FOR OFFLINE AUTO REFRESH
+  const factory WorkOrdersListEvent.refreshAfterSync() = _RefreshAfterSync;
 }

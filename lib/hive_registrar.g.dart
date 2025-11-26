@@ -18,15 +18,11 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(ChatMessageHiveModelAdapter());
     registerAdapter(ChatSessionHiveModelAdapter());
-    registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
-    registerAdapter(LocationHiveModelAdapter());
     registerAdapter(PartHiveModelAdapter());
     registerAdapter(PartUsedHiveModelAdapter());
     registerAdapter(ProfileHiveModelAdapter());
     registerAdapter(ProfilePreferencesHiveModelAdapter());
-    registerAdapter(ServiceRequestHiveModelAdapter());
-    registerAdapter(WorkLogHiveModelAdapter());
     registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());
   }
@@ -38,15 +34,11 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(ChatMessageHiveModelAdapter());
     registerAdapter(ChatSessionHiveModelAdapter());
-    registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
-    registerAdapter(LocationHiveModelAdapter());
     registerAdapter(PartHiveModelAdapter());
     registerAdapter(PartUsedHiveModelAdapter());
     registerAdapter(ProfileHiveModelAdapter());
     registerAdapter(ProfilePreferencesHiveModelAdapter());
-    registerAdapter(ServiceRequestHiveModelAdapter());
-    registerAdapter(WorkLogHiveModelAdapter());
     registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());
   }

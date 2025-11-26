@@ -155,6 +155,8 @@ import '../../features/work_orders/data/datasources/work_order_remote_datasource
     as _i255;
 import '../../features/work_orders/data/repositories/work_order_repository_impl.dart'
     as _i937;
+import '../../features/work_orders/data/services/local_user_store.dart'
+    as _i253;
 import '../../features/work_orders/data/services/work_order_completion_cache_service.dart'
     as _i379;
 import '../../features/work_orders/domain/repositories/i_work_order_repository.dart'
@@ -230,6 +232,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1066.MemoryManagementService());
     gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
     gh.lazySingleton<_i706.Uuid>(() => chatModule.uuid());
+    gh.lazySingleton<_i253.LocalUserStore>(() => _i253.LocalUserStore());
     gh.factory<_i185.AppRouteObserver>(
         () => _i185.AppRouteObserver(gh<_i520.LoggingService>()));
     gh.singleton<_i188.ErrorBloc>(
@@ -324,6 +327,13 @@ extension GetItInjectableX on _i174.GetIt {
         _i123.CalendarRemoteDataSourceImpl(gh<_i584.CalendarApiClient>()));
     gh.factory<_i749.DocumentRemoteDataSource>(() =>
         _i749.DocumentRemoteDataSourceImpl(gh<_i936.DocumentApiClient>()));
+    gh.factory<_i556.IWorkOrderRepository>(() => _i937.WorkOrderRepositoryImpl(
+          gh<_i255.WorkOrderRemoteDataSource>(),
+          gh<_i701.WorkOrderLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+          gh<_i520.LoggingService>(),
+          gh<_i253.LocalUserStore>(),
+        ));
     gh.factory<_i831.CheckAuthUseCase>(
         () => _i831.CheckAuthUseCase(gh<_i589.IAuthRepository>()));
     gh.factory<_i188.LoginUseCase>(
@@ -336,16 +346,27 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i327.ProfileRemoteDataSourceImpl(gh<_i751.ProfileApiClient>()));
     gh.factory<_i747.PartsRemoteDataSource>(
         () => _i747.PartsRemoteDataSourceImpl(gh<_i1011.PartsApiClient>()));
+    gh.factory<_i460.CompleteWorkOrderUseCase>(
+        () => _i460.CompleteWorkOrderUseCase(
+              gh<_i556.IWorkOrderRepository>(),
+              gh<_i932.NetworkInfo>(),
+            ));
+    gh.factory<_i874.GetWorkOrdersUseCase>(
+        () => _i874.GetWorkOrdersUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i1023.GetWorkOrderDetailsUseCase>(() =>
+        _i1023.GetWorkOrderDetailsUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i959.PauseWorkOrderUseCase>(
+        () => _i959.PauseWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i310.RejectWorkOrderUseCase>(
+        () => _i310.RejectWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i489.ResumeWorkOrderUseCase>(
+        () => _i489.ResumeWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
+    gh.factory<_i188.StartWorkOrderUseCase>(
+        () => _i188.StartWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
     gh.factory<_i342.ICalendarRepository>(() => _i712.CalendarRepositoryImpl(
           gh<_i123.CalendarRemoteDataSource>(),
           gh<_i494.CalendarLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
-        ));
-    gh.factory<_i556.IWorkOrderRepository>(() => _i937.WorkOrderRepositoryImpl(
-          gh<_i255.WorkOrderRemoteDataSource>(),
-          gh<_i701.WorkOrderLocalDataSource>(),
-          gh<_i932.NetworkInfo>(),
-          gh<_i520.LoggingService>(),
         ));
     gh.factory<_i159.ChatRemoteDataSource>(
         () => _i159.ChatRemoteDataSourceImpl(gh<_i6.ChatApiClient>()));
@@ -358,6 +379,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i490.IPartsRepository>(() => _i644.PartsRepositoryImpl(
           gh<_i747.PartsRemoteDataSource>(),
           gh<_i641.PartsLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i81.DashboardBloc>(() => _i81.DashboardBloc(
+          gh<_i874.GetWorkOrdersUseCase>(),
+          gh<_i556.IWorkOrderRepository>(),
+          gh<_i589.IAuthRepository>(),
+          gh<_i932.NetworkInfo>(),
+        ));
+    gh.factory<_i332.WorkOrdersListBloc>(() => _i332.WorkOrdersListBloc(
+          gh<_i874.GetWorkOrdersUseCase>(),
+          gh<_i556.IWorkOrderRepository>(),
+          gh<_i589.IAuthRepository>(),
           gh<_i932.NetworkInfo>(),
         ));
     gh.factory<_i121.IDocumentRepository>(() => _i113.DocumentRepositoryImpl(
@@ -388,25 +421,21 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i992.AuthLocalDataSource>(),
           gh<_i331.AuthBloc>(),
         ));
+    gh.factory<_i532.WorkOrderActionBloc>(() => _i532.WorkOrderActionBloc(
+          gh<_i1023.GetWorkOrderDetailsUseCase>(),
+          gh<_i188.StartWorkOrderUseCase>(),
+          gh<_i959.PauseWorkOrderUseCase>(),
+          gh<_i489.ResumeWorkOrderUseCase>(),
+          gh<_i460.CompleteWorkOrderUseCase>(),
+          gh<_i310.RejectWorkOrderUseCase>(),
+          gh<_i669.LocationService>(),
+          gh<_i932.NetworkInfo>(),
+        ));
     gh.factory<_i879.IProfileRepository>(() => _i334.ProfileRepositoryImpl(
           gh<_i327.ProfileRemoteDataSource>(),
           gh<_i1046.ProfileLocalDataSource>(),
           gh<_i932.NetworkInfo>(),
         ));
-    gh.factory<_i460.CompleteWorkOrderUseCase>(
-        () => _i460.CompleteWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i874.GetWorkOrdersUseCase>(
-        () => _i874.GetWorkOrdersUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i1023.GetWorkOrderDetailsUseCase>(() =>
-        _i1023.GetWorkOrderDetailsUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i959.PauseWorkOrderUseCase>(
-        () => _i959.PauseWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i310.RejectWorkOrderUseCase>(
-        () => _i310.RejectWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i489.ResumeWorkOrderUseCase>(
-        () => _i489.ResumeWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
-    gh.factory<_i188.StartWorkOrderUseCase>(
-        () => _i188.StartWorkOrderUseCase(gh<_i556.IWorkOrderRepository>()));
     gh.factory<_i1036.CheckPartAvailabilityUseCase>(() =>
         _i1036.CheckPartAvailabilityUseCase(gh<_i490.IPartsRepository>()));
     gh.factory<_i1054.GetLowStockPartsUseCase>(
@@ -447,18 +476,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i81.IChatRepository>(),
           gh<_i706.Uuid>(),
         ));
-    gh.factory<_i81.DashboardBloc>(() => _i81.DashboardBloc(
-          gh<_i874.GetWorkOrdersUseCase>(),
-          gh<_i556.IWorkOrderRepository>(),
-          gh<_i589.IAuthRepository>(),
-          gh<_i932.NetworkInfo>(),
-        ));
-    gh.factory<_i332.WorkOrdersListBloc>(() => _i332.WorkOrdersListBloc(
-          gh<_i874.GetWorkOrdersUseCase>(),
-          gh<_i556.IWorkOrderRepository>(),
-          gh<_i589.IAuthRepository>(),
-          gh<_i932.NetworkInfo>(),
-        ));
     gh.factory<_i239.DocumentsBloc>(() => _i239.DocumentsBloc(
           gh<_i911.GetDocumentsUseCase>(),
           gh<_i633.SearchDocumentsUseCase>(),
@@ -474,16 +491,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i90.UpdatePreferencesUseCase(gh<_i879.IProfileRepository>()));
     gh.factory<_i478.UpdateProfileUseCase>(
         () => _i478.UpdateProfileUseCase(gh<_i879.IProfileRepository>()));
-    gh.factory<_i532.WorkOrderActionBloc>(() => _i532.WorkOrderActionBloc(
-          gh<_i1023.GetWorkOrderDetailsUseCase>(),
-          gh<_i188.StartWorkOrderUseCase>(),
-          gh<_i959.PauseWorkOrderUseCase>(),
-          gh<_i489.ResumeWorkOrderUseCase>(),
-          gh<_i460.CompleteWorkOrderUseCase>(),
-          gh<_i310.RejectWorkOrderUseCase>(),
-          gh<_i669.LocationService>(),
-          gh<_i932.NetworkInfo>(),
-        ));
     gh.factory<_i349.ProfileBloc>(() => _i349.ProfileBloc(
           gh<_i965.GetProfileUseCase>(),
           gh<_i478.UpdateProfileUseCase>(),

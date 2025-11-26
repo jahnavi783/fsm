@@ -967,7 +967,8 @@ import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
-import '../services/background_sync_service.dart';
+import '../services/background_sync_service.dart'; // contains OfflineSyncService
+import '../services/local_user_store.dart';
 import '../services/offline_queue_service.dart';
 import '../services/offline_request.dart';
 
@@ -977,16 +978,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   final WorkOrderLocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
   final LoggingService _logger;
+  final LocalUserStore _userStore;
 
   WorkOrderRepositoryImpl(
     this._remoteDataSource,
     this._localDataSource,
     this._networkInfo,
     this._logger,
+    this._userStore,
   );
 
   static const _uuid = Uuid();
 
+  // ---------------------------------------------------------------------------
+  // FETCH LIST
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrdersData>> getWorkOrders({
     required int page,
@@ -1005,7 +1011,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
 
     try {
       if (await _networkInfo.isConnected) {
-        // Remote
+        // Online: remote + cache
         final response = await _remoteDataSource.getWorkOrders(
           page: page,
           limit: limit,
@@ -1018,8 +1024,14 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           ...response.workOrders,
           ...response.unassignedWorkOrders,
         ];
-        final hiveModels =
-            allWorkOrders.map((dto) => _mapDtoToHiveModel(dto)).toList();
+
+        // _mapDtoToHiveModel is async – build list sequentially
+        final List<WorkOrderHiveModel> hiveModels = [];
+        for (final dto in allWorkOrders) {
+          final hiveModel = await _mapDtoToHiveModel(dto);
+          hiveModels.add(hiveModel);
+        }
+
         await _localDataSource.cacheWorkOrders(hiveModels);
 
         _logger.info(
@@ -1040,6 +1052,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         );
         return Right(workOrdersData);
       } else {
+        // Offline: read from cache, filtered by user
         _logger.warning(
           'No internet connection, falling back to cache',
           tag: 'WORK_ORDER_REPO',
@@ -1048,9 +1061,18 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final cachedModels =
             await _localDataSource.getCachedWorkOrders(status: status);
 
-        if (cachedModels.isEmpty) {
+        final currentUserId = await _userStore.getUserId();
+        final filtered =
+            cachedModels.where((m) => m.userId == currentUserId).toList();
+
+        _logger.info(
+          'Filtered ${filtered.length} work orders for user $currentUserId',
+          tag: 'WORK_ORDER_REPO',
+        );
+
+        if (filtered.isEmpty) {
           _logger.warning(
-            'No cached work orders available offline',
+            'No cached work orders available offline for this user',
             tag: 'WORK_ORDER_REPO',
           );
           return const Left(
@@ -1058,12 +1080,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           );
         }
 
-        _logger.info(
-          'Retrieved ${cachedModels.length} work orders from cache',
-          tag: 'WORK_ORDER_REPO',
-        );
-
-        final entities = cachedModels.map((m) => m.toEntity()).toList();
+        final entities = filtered.map((m) => m.toEntity()).toList();
 
         final assignedEntities =
             entities.where((e) => e.status != WorkOrderStatus.created).toList();
@@ -1107,6 +1124,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // FETCH BY ID
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> getWorkOrderById(int id) async {
     _logger.info('Getting work order by ID: $id', tag: 'WORK_ORDER_REPO');
@@ -1115,7 +1135,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       if (await _networkInfo.isConnected) {
         final workOrderDto = await _remoteDataSource.getWorkOrderById(id);
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.info(
@@ -1173,8 +1193,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
-  // ---------------- WORK ORDER ACTIONS WITH OFFLINE QUEUE -----------------
-
+  // ---------------------------------------------------------------------------
+  // START
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> startWorkOrder({
     required int workOrderId,
@@ -1201,7 +1222,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           notes: notes,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.workOrder('Successfully started work order $workOrderId');
@@ -1235,9 +1256,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           url: '/work-orders/$workOrderId/start',
           method: 'PATCH',
           body: {
-            "gps_coordinates": "[$longitude, $latitude]",
-            "files": [],
-            if (notes != null) "notes": notes,
+            'gps_coordinates': '[$longitude, $latitude]',
+            'files': [],
+            if (notes != null) 'notes': notes,
           },
           description: 'Start work order #$workOrderId',
           headers: {},
@@ -1281,6 +1302,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // PAUSE
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> pauseWorkOrder({
     required int workOrderId,
@@ -1307,7 +1331,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           files: files,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.workOrder('Successfully paused work order $workOrderId');
@@ -1342,8 +1366,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           method: 'PATCH',
           body: {
             'reason': reason,
-            "gps_coordinates": "[$longitude, $latitude]",
-            "files": [],
+            'gps_coordinates': '[$longitude, $latitude]',
+            'files': [],
           },
           description: 'Pause work order #$workOrderId',
           headers: {},
@@ -1387,6 +1411,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // RESUME
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> resumeWorkOrder({
     required int workOrderId,
@@ -1413,7 +1440,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           notes: notes,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.workOrder('Successfully resumed work order $workOrderId');
@@ -1447,9 +1474,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           url: '/work-orders/$workOrderId/resume',
           method: 'PATCH',
           body: {
-            "gps_coordinates": "[$longitude, $latitude]",
-            "files": [],
-            if (notes != null) "notes": notes,
+            'gps_coordinates': '[$longitude, $latitude]',
+            'files': [],
+            if (notes != null) 'notes': notes,
           },
           description: 'Resume work order #$workOrderId',
           headers: {},
@@ -1493,6 +1520,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // COMPLETE
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> completeWorkOrder({
     required int workOrderId,
@@ -1531,7 +1561,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           completionNotes: completionNotes,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.workOrder('Successfully completed work order $workOrderId');
@@ -1554,7 +1584,6 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           );
         }
 
-        // Optimistic local update
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.completed.index,
           completedAt: DateTime.now(),
@@ -1565,16 +1594,14 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
                   partNumber: p.partNumber,
                   quantityUsed: p.quantityUsed,
                   partName: p.partName,
-                  description: p.description,
+                  description: p.description ?? '',
                 ),
               )
               .toList(),
           images: files.map((f) => f.path).toList(),
-          completionNotes: completionNotes,
         );
         await _localDataSource.updateWorkOrder(updatedModel);
 
-        // NOTE: for simplicity we queue only the core fields (no files/signature).
         final req = OfflineRequest(
           id: _uuid.v4(),
           url: '/work-orders/$workOrderId/complete',
@@ -1583,13 +1610,15 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             'work_log': workLog,
             'customer_name': customerName,
             'parts_used': partsUsed
-                .map((p) => {
-                      'part_number': p.partNumber,
-                      'quantity_used': p.quantityUsed
-                    })
+                .map(
+                  (p) => {
+                    'part_number': p.partNumber,
+                    'quantity_used': p.quantityUsed,
+                  },
+                )
                 .toList(),
-            "files": [],
-            "gps_coordinates": "[$longitude, $latitude]",
+            'files': [],
+            'gps_coordinates': '[$longitude, $latitude]',
             if (completionNotes != null) 'completion_notes': completionNotes,
           },
           description: 'Complete work order #$workOrderId',
@@ -1634,6 +1663,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // REJECT
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> rejectWorkOrder({
     required int workOrderId,
@@ -1657,7 +1689,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           longitude: longitude,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.workOrder('Successfully rejected work order $workOrderId');
@@ -1692,7 +1724,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           method: 'PATCH',
           body: {
             'reason': reason,
-            "gps_coordinates": "[$longitude, $latitude]",
+            'gps_coordinates': '[$longitude, $latitude]',
           },
           description: 'Reject work order #$workOrderId',
           headers: {},
@@ -1736,6 +1768,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // ASSIGN
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderEntity>> assignWorkOrder({
     required int workOrderId,
@@ -1757,7 +1792,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           technicianId: technicianId,
         );
 
-        final hiveModel = _mapDtoToHiveModel(workOrderDto);
+        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
         await _localDataSource.updateWorkOrder(hiveModel);
 
         _logger.info(
@@ -1839,20 +1874,21 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
-  // ------------------- SYNC (NOW NO-OP, HANDLED BY BACKGROUND) -------------
-
+  // ---------------------------------------------------------------------------
+  // SYNC – now delegated to background service
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, List<WorkOrderEntity>>> syncPendingWorkOrders() async {
     _logger.info(
       'syncPendingWorkOrders called; sync handled by OfflineSyncService in background.',
       tag: 'WORK_ORDER_REPO',
     );
-    // Nothing to do here because we now sync via OfflineQueueService + OfflineSyncService.
-    return const Right(<WorkOrderEntity>[]);
+    return Right(<WorkOrderEntity>[]);
   }
 
-  // ------------------- CACHE HELPERS & MAPPERS -----------------------------
-
+  // ---------------------------------------------------------------------------
+  // CACHE HELPERS
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, void>> cacheWorkOrders(
       List<WorkOrderEntity> workOrders) async {
@@ -1930,6 +1966,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // ERROR MAPPING
+  // ---------------------------------------------------------------------------
   Failure _handleDioException(DioException e) {
     _logger.error(
       'Handling Dio exception',
@@ -1968,11 +2007,17 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
-  WorkOrderHiveModel _mapDtoToHiveModel(WorkOrderDto dto) {
+  // ---------------------------------------------------------------------------
+  // MAPPERS
+  // ---------------------------------------------------------------------------
+  Future<WorkOrderHiveModel> _mapDtoToHiveModel(WorkOrderDto dto) async {
+    final userId = await _userStore.getUserId();
+
     return WorkOrderHiveModel(
       id: dto.id,
       woNumber: dto.woNumber,
       srId: dto.srId,
+      userId: userId,
       summary: dto.summary,
       problemDescription: dto.problemDescription,
       priority: _mapPriorityToIndex(dto.priority),
@@ -1988,10 +2033,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           dto.completedAt != null ? DateTime.parse(dto.completedAt!) : null,
       pauseLogs: dto.pauseLogs,
       workLog: dto.workLog,
-      partsUsed: [], // extend if needed
+      partsUsed: [], // you can enrich this later if backend sends parts
       images: dto.images ?? [],
       cachedAt: DateTime.now(),
       isPendingSync: false,
+      pendingAction: null,
     );
   }
 
@@ -2000,6 +2046,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       id: entity.id,
       woNumber: entity.woNumber,
       srId: entity.srId,
+      userId: entity.userId,
       summary: entity.summary,
       problemDescription: entity.problemDescription,
       priority: entity.priority.index,
@@ -2027,6 +2074,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       images: entity.images,
       cachedAt: DateTime.now(),
       isPendingSync: false,
+      pendingAction: null,
     );
   }
 
@@ -2066,6 +2114,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // GROUPED IMAGES
+  // ---------------------------------------------------------------------------
   @override
   Future<Either<Failure, WorkOrderGroupedImagesEntity>> getGroupedImages(
       int workOrderId) async {
@@ -2076,7 +2127,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
 
     try {
       if (await _networkInfo.isConnected) {
-        final groupedImagesDto =
+        final WorkOrderGroupedImagesResponseDto groupedImagesDto =
             await _remoteDataSource.getGroupedImages(workOrderId);
 
         _logger.info(

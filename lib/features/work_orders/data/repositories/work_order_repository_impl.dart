@@ -1593,7 +1593,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
                 (p) => PartUsedHiveModel(
                   partNumber: p.partNumber,
                   quantityUsed: p.quantityUsed,
-                  partName: p.partName,
+                  partName: p.partName ?? '',
                   description: p.description ?? '',
                 ),
               )
@@ -1618,7 +1618,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
                 )
                 .toList(),
             'files': [],
-            'gps_coordinates': '[$longitude, $latitude]',
+            // 'gps_coordinates': '[$latitude, $longitude]',
+            'gps_coordinates': [longitude, latitude],
+
             if (completionNotes != null) 'completion_notes': completionNotes,
           },
           description: 'Complete work order #$workOrderId',

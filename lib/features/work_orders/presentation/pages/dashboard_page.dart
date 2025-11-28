@@ -1482,9 +1482,19 @@ class _DashboardPageState extends State<DashboardPage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Assign Work Order'),
+        title: const Text(
+          'Assign Work Order',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
         content: const Text(
-            'Are you sure you want to assign this work order to yourself?'),
+          'Are you sure you want to assign this work order to yourself?',
+          style: TextStyle(color: Colors.black87),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

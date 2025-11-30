@@ -26,6 +26,7 @@ class DocumentsPage extends StatefulWidget {
 
 class _DocumentsPageState extends State<DocumentsPage> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
   late final DocumentsBloc _documentsBloc;
   String _searchQuery = '';
   List<String> _selectedCategories = [];
@@ -46,6 +47,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     _documentsBloc.close();
     super.dispose();
   }
@@ -86,23 +88,53 @@ class _DocumentsPageState extends State<DocumentsPage> {
     bool available = await _speech.initialize();
 
     if (!available) {
-      print("speech not available");
+      debugPrint("speech not available");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Voice recognition not available'),
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return;
     }
 
     setState(() => _isListening = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🎙 Listening...'),
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
 
     _speech.listen(
       onResult: (result) {
-        setState(() {
-          _searchQuery = result.recognizedWords;
-        });
+        if (result.finalResult) {
+          // FIXED: Update both the state variable AND the controller
+          final recognizedText = result.recognizedWords;
+          setState(() {
+            _searchQuery = recognizedText;
+          });
 
-        // Trigger the existing search logic
-        _onSearchChanged(result.recognizedWords);
+          // Update the search controller so the UI shows the text
+          _searchController.text = recognizedText;
+
+          // Trigger the search
+          _onSearchChanged(recognizedText);
+
+          // Stop listening after final result
+          _stopVoiceSearch();
+        } else {
+          // Optional: Show interim results in real-time
+          setState(() {
+            _searchQuery = result.recognizedWords;
+          });
+          _searchController.text = result.recognizedWords;
+        }
       },
-      listenFor: const Duration(seconds: 5),
-      pauseFor: const Duration(seconds: 2),
+      listenFor: const Duration(seconds: 10), // Increased timeout
+      pauseFor: const Duration(seconds: 3),
     );
   }
 

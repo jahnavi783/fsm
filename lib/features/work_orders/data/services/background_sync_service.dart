@@ -378,19 +378,26 @@
 //   error,
 // }
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fsm/features/work_orders/data/services/sync_events.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
 
+import 'local_user_store.dart';
 import 'offline_queue_service.dart';
+import 'offline_request.dart';
 
 /// Background service that monitors connectivity and syncs offline requests
 class OfflineSyncService {
   OfflineSyncService._();
   static final OfflineSyncService instance = OfflineSyncService._();
-
+  late LocalUserStore _userStore;
   late final Dio _dio;
   StreamSubscription<List<ConnectivityResult>>? _subscription;
 
@@ -399,12 +406,12 @@ class OfflineSyncService {
   bool _isSyncing = false;
 
   /// Initialize the sync service - call once during app startup
-  Future<void> init(Dio dio) async {
+  Future<void> init(Dio dio, LocalUserStore userStore) async {
     if (_initialized) return;
     _initialized = true;
 
     _dio = dio;
-
+    _userStore = userStore;
     // Initialize notifications
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     await _notifications.initialize(
@@ -422,7 +429,7 @@ class OfflineSyncService {
     final currentResults = await Connectivity().checkConnectivity();
     await _handleConnectivityChange(currentResults);
 
-    print('✅ OfflineSyncService initialized');
+    debugPrint('✅ OfflineSyncService initialized');
   }
 
   /// Dispose resources
@@ -438,19 +445,22 @@ class OfflineSyncService {
         results.contains(ConnectivityResult.wifi);
 
     if (online) {
-      print('📡 Network connected - attempting sync');
+      debugPrint('📡 Network connected - attempting sync');
       await _flush();
     } else {
-      print('📴 Network disconnected');
+      debugPrint('📴 Network disconnected');
     }
   }
 
   /// Flush offline requests when online
   Future<void> _flush() async {
     if (_isSyncing) {
-      print('⏭️ Sync already in progress, skipping');
+      debugPrint('⏭️ Sync already in progress, skipping');
       return;
     }
+    final token = await _userStore.getAccessToken();
+
+    _dio.options.headers['Authorization'] = 'Bearer $token';
 
     final queueSize = await OfflineQueueService.instance.getQueueSize();
     if (queueSize == 0) {
@@ -463,102 +473,320 @@ class OfflineSyncService {
     );
 
     try {
-      print('🔄 Starting sync: $queueSize requests in queue');
+      debugPrint('🔄 Starting sync: $queueSize requests in queue');
 
-      await OfflineQueueService.instance.processQueue((req) async {
-        try {
-          final response = await _dio.request(
-            req.url,
-            data: req.body,
-            options: Options(
-              method: req.method,
-              headers: req.headers,
-              validateStatus: (status) => status != null && status < 500,
-            ),
-          );
-
-          final status = response.statusCode ?? 0;
-
-          // SUCCESS: 2xx status codes
-          if (status >= 200 && status < 300) {
-            await _notify("✓ Synced", req.description);
-            return true; // Remove from queue
-          }
-
-          // CLIENT ERROR: 4xx - Don't retry, remove from queue
-          if (status >= 400 && status < 500) {
-            print('⚠️ Client error $status for ${req.description}');
-            await _notify(
-                "⚠️ Sync Error", "${req.description} - Error $status");
-            return true; // Remove from queue to unblock others
-          }
-
-          // SERVER ERROR: 5xx - Keep in queue and STOP
-          print('❌ Server error $status for ${req.description}');
-          await _notify("❌ Sync Failed", "${req.description} - Server error");
-          return false; // Stop processing queue
-        } on DioException catch (e) {
-          // Network/timeout errors - Keep in queue and STOP
-          print('❌ Network error for ${req.description}: ${e.type}');
-          await _notify("❌ Sync Failed", "${req.description} - Network error");
-          return false; // Stop processing queue
-        } catch (e) {
-          // Unknown errors - Keep in queue and STOP
-          print('❌ Unknown error for ${req.description}: $e');
-          await _notify("❌ Sync Failed", "${req.description} - Error occurred");
-          return false; // Stop processing queue
-        }
-      });
+      await OfflineQueueService.instance.processQueue(
+        (req) => _processRequest(req), // ✅ Properly handles all file logic
+      );
 
       final remainingSize = await OfflineQueueService.instance.getQueueSize();
 
       if (remainingSize == 0) {
-        print('✅ Sync completed - all requests processed');
-        await _notify("✅ Sync Complete", "All changes synced successfully");
+        debugPrint('✅ Sync completed - all requests processed');
+        // await _notify("✅ Sync Complete", "All changes synced successfully");
 
         // 🔔 notify sync completed
         SyncEvents.instance.notify(
           SyncEvent(type: SyncEventType.syncCompleted, pendingCount: 0),
         );
       } else {
-        print('⚠️ Sync incomplete - $remainingSize requests remaining');
-        await _notify(
-          "⚠️ Sync Incomplete",
-          "$remainingSize action(s) pending. Will retry automatically.",
-        );
+        debugPrint('⚠️ Sync incomplete - $remainingSize requests remaining');
+        // await _notify(
+        //   "⚠️ Sync Incomplete",
+        //   "$remainingSize action(s) pending. Will retry automatically.",
+        // );
 
         // 🔔 notify sync incomplete
-        SyncEvents.instance.notify(
-          SyncEvent(
-            type: SyncEventType.syncIncomplete,
-            pendingCount: remainingSize,
-          ),
-        );
+        // SyncEvents.instance.notify(
+        //   SyncEvent(
+        //     type: SyncEventType.syncIncomplete,
+        //     pendingCount: remainingSize,
+        //   ),
+        // );
       }
     } catch (e, stackTrace) {
-      print('💥 Sync error: $e');
+      debugPrint('💥 Sync error: $e');
       print(stackTrace);
-      await _notify(
-          "❌ Sync Error", "Failed to sync. Will retry automatically.");
+      // await _notify(
+      //     "❌ Sync Error", "Failed to sync. Will retry automatically.");
 
       // 🔔 notify sync error
-      SyncEvents.instance.notify(
-        SyncEvent(type: SyncEventType.syncError),
-      );
+      // SyncEvents.instance.notify(
+      //   SyncEvent(type: SyncEventType.syncError),
+      // );
     } finally {
       _isSyncing = false;
     }
   }
 
+  /// Process a single offline request with file handling
+  Future<bool> _processRequest(OfflineRequest request) async {
+    try {
+      debugPrint('📤 Processing: ${request.description}');
+
+      // Check if request has files to upload
+      final filePaths = request.body['file_paths'] as List<dynamic>?;
+      final signaturePath = request.body['signature_path'] as String?;
+
+      final hasFiles = (filePaths != null && filePaths.isNotEmpty) ||
+          (signaturePath != null && signaturePath.isNotEmpty);
+
+      Response response;
+
+      if (hasFiles) {
+        // Process request with file uploads
+        response = await _processRequestWithFiles(
+          request,
+          filePaths?.cast<String>(),
+          signaturePath,
+        );
+      } else {
+        // Process regular request without files
+        response = await _processRegularRequest(request);
+      }
+
+      final status = response.statusCode ?? 0;
+
+      // SUCCESS: 2xx status codes
+      if (status >= 200 && status < 300) {
+        debugPrint('✅ Success: ${request.description}');
+        // await _notify("✓ Synced", request.description);
+
+        // Clean up files after successful sync
+        if (hasFiles) {
+          await _cleanupFiles(filePaths?.cast<String>(), signaturePath);
+        }
+
+        return true; // Remove from queue
+      }
+
+      // CLIENT ERROR: 4xx - Don't retry, remove from queue
+      if (status >= 400 && status < 500) {
+        debugPrint('⚠️ Client error $status for ${request.description}');
+        // await _notify(
+        //     "⚠️ Sync Error", "${request.description} - Error $status");
+
+        // Clean up files even on client error to avoid orphans
+        if (hasFiles) {
+          await _cleanupFiles(filePaths?.cast<String>(), signaturePath);
+        }
+
+        return true; // Remove from queue to unblock others
+      }
+
+      // SERVER ERROR: 5xx - Keep in queue and STOP
+
+      // await _notify("❌ Sync Failed", "${request.description} - Server error");
+      return false; // Stop processing queue
+    } on DioException catch (e) {
+      // Network/timeout errors - Keep in queue and STOP
+
+      // await _notify("❌ Sync Failed", "${request.description} - Network error");
+      return false; // Stop processing queue
+    } catch (e, stackTrace) {
+      // Unknown errors - Keep in queue and STOP
+      debugPrint('❌ Unknown error for ${request.description}: $e');
+      print(stackTrace);
+      // await _notify("❌ Sync Failed", "${request.description} - Error occurred");
+      return false; // Stop processing queue
+    }
+  }
+
+  /// Process regular request without files
+  Future<Response> _processRegularRequest(OfflineRequest request) async {
+    return await _dio.request(
+      request.url,
+      data: request.body,
+      options: Options(
+        method: request.method,
+        headers: request.headers,
+        validateStatus: (status) => status != null && status < 500,
+      ),
+    );
+  }
+
+  /// Process request with file uploads using multipart/form-data
+  Future<Response> _processRequestWithFiles(
+    OfflineRequest request,
+    List<String>? filePaths,
+    String? signaturePath,
+  ) async {
+    debugPrint('📎 Processing request with files');
+    debugPrint('   Files: ${filePaths?.length ?? 0}');
+    debugPrint('   Signature: ${signaturePath != null ? "Yes" : "No"}');
+
+    final formData = FormData();
+
+    // Add all non-file fields from body
+    final bodyWithoutFiles = Map<String, dynamic>.from(request.body);
+    bodyWithoutFiles.remove('file_paths');
+    bodyWithoutFiles.remove('signature_path');
+
+    // Add regular fields to form data
+    for (final entry in bodyWithoutFiles.entries) {
+      final key = entry.key;
+      final value = entry.value;
+
+      if (value == null) continue;
+
+      if (value is List) {
+        // For lists like gps_coordinates or parts_used
+        if (value.isEmpty) continue;
+
+        // If it's a list of maps (like parts_used), convert to JSON string
+        if (value.first is Map) {
+          formData.fields.add(MapEntry(key, jsonEncode(value)));
+        } else {
+          // For simple lists like coordinates, convert to string
+          formData.fields.add(MapEntry(key, value.toString()));
+        }
+      } else {
+        // Regular string/number fields
+        formData.fields.add(MapEntry(key, value.toString()));
+      }
+    }
+
+    // Add signature file if present
+    if (signaturePath != null && signaturePath.isNotEmpty) {
+      final signatureFile = File(signaturePath);
+      if (await signatureFile.exists()) {
+        final fileName = path.basename(signaturePath);
+        debugPrint('   📸 Adding signature: $fileName');
+
+        formData.files.add(
+          MapEntry(
+            'signature',
+            await MultipartFile.fromFile(
+              signaturePath,
+              filename: fileName,
+              contentType: MediaType('image', 'png'),
+            ),
+          ),
+        );
+      } else {
+        debugPrint('   ⚠️ Signature file not found: $signaturePath');
+      }
+    }
+
+    // Add regular files if present
+    if (filePaths != null && filePaths.isNotEmpty) {
+      for (final filePath in filePaths) {
+        final file = File(filePath);
+        if (await file.exists()) {
+          final fileName = path.basename(filePath);
+
+          // Determine content type based on file extension
+          MediaType contentType;
+          final ext = path.extension(fileName).toLowerCase();
+
+          if (ext == '.jpg' || ext == '.jpeg') {
+            contentType = MediaType('image', 'jpeg');
+          } else if (ext == '.png') {
+            contentType = MediaType('image', 'png');
+          } else if (ext == '.pdf') {
+            contentType = MediaType('application', 'pdf');
+          } else {
+            contentType = MediaType('application', 'octet-stream');
+          }
+
+          debugPrint('   📎 Adding file: $fileName ($contentType)');
+
+          formData.files.add(
+            MapEntry(
+              'files',
+              await MultipartFile.fromFile(
+                filePath,
+                filename: fileName,
+                contentType: contentType,
+              ),
+            ),
+          );
+        } else {
+          debugPrint('   ⚠️ File not found: $filePath');
+        }
+      }
+    }
+
+    debugPrint('   📤 Uploading ${formData.files.length} file(s)...');
+
+    // Send the request
+    final response = await _dio.request(
+      request.url,
+      data: formData,
+      options: Options(
+        method: request.method,
+        headers: {
+          ...request.headers,
+          'Content-Type': 'multipart/form-data',
+        },
+        validateStatus: (status) => status != null && status < 500,
+      ),
+    );
+
+    debugPrint('   ✅ Upload completed with status ${response.statusCode}');
+    return response;
+  }
+
+  /// Clean up stored files after successful sync
+  Future<void> _cleanupFiles(
+    List<String>? filePaths,
+    String? signaturePath,
+  ) async {
+    try {
+      int deletedCount = 0;
+
+      // Delete signature file
+      if (signaturePath != null && signaturePath.isNotEmpty) {
+        final signatureFile = File(signaturePath);
+        if (await signatureFile.exists()) {
+          await signatureFile.delete();
+          deletedCount++;
+          debugPrint('   🗑️ Deleted signature file');
+        }
+      }
+
+      // Delete regular files
+      if (filePaths != null && filePaths.isNotEmpty) {
+        for (final filePath in filePaths) {
+          final file = File(filePath);
+          if (await file.exists()) {
+            await file.delete();
+            deletedCount++;
+          }
+        }
+        debugPrint('   🗑️ Deleted $deletedCount file(s)');
+      }
+
+      // Clean up empty parent directory
+      if (signaturePath != null ||
+          (filePaths != null && filePaths.isNotEmpty)) {
+        final firstPath = signaturePath ?? filePaths!.first;
+        final parentDir = Directory(firstPath).parent;
+
+        if (await parentDir.exists()) {
+          final contents = await parentDir.list().toList();
+          if (contents.isEmpty) {
+            await parentDir.delete(recursive: true);
+            debugPrint('   🗑️ Deleted empty directory');
+          }
+        }
+      }
+    } catch (e, stackTrace) {
+      debugPrint('⚠️ Error cleaning up files: $e');
+      print(stackTrace);
+      // Don't throw - cleanup failure shouldn't fail the sync
+    }
+  }
+
   /// Manually trigger sync
   Future<void> manualSync() async {
-    print('🔄 Manual sync triggered');
+    debugPrint('🔄 Manual sync triggered');
     await _flush();
   }
 
   /// Notify when request is queued offline
   Future<void> notifyQueued(String description) async {
-    await _notify("📦 Queued Offline", description);
+    // await _notify("📦 Queued Offline", description);
   }
 
   /// Show notification

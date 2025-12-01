@@ -965,6 +965,8 @@ import 'package:fsm/features/work_orders/domain/entities/work_orders_data.dart';
 import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../services/background_sync_service.dart'; // contains OfflineSyncService
@@ -989,6 +991,105 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   );
 
   static const _uuid = Uuid();
+
+  /// Stores files locally and returns their paths
+  Future<List<String>> _storeFilesLocally(
+    List<File> files,
+    String workOrderId,
+    String action,
+  ) async {
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final offlineFilesDir = Directory(
+        path.join(appDir.path, 'offline_files', workOrderId, action),
+      );
+
+      if (!await offlineFilesDir.exists()) {
+        await offlineFilesDir.create(recursive: true);
+      }
+
+      final List<String> storedPaths = [];
+
+      for (int i = 0; i < files.length; i++) {
+        final file = files[i];
+        final fileName = path.basename(file.path);
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final newFileName = '${timestamp}_$i\_$fileName';
+        final newPath = path.join(offlineFilesDir.path, newFileName);
+
+        // Copy file to offline storage
+        await file.copy(newPath);
+        storedPaths.add(newPath);
+
+        _logger.debug(
+          'Stored file locally: $newPath',
+          tag: 'WORK_ORDER_REPO',
+        );
+      }
+
+      return storedPaths;
+    } catch (e, stackTrace) {
+      _logger.error(
+        'Error storing files locally',
+        tag: 'WORK_ORDER_REPO',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return [];
+    }
+  }
+
+  /// Retrieves stored files from local paths
+  Future<List<File>> _retrieveStoredFiles(List<String> filePaths) async {
+    final List<File> files = [];
+
+    for (final filePath in filePaths) {
+      try {
+        final file = File(filePath);
+        if (await file.exists()) {
+          files.add(file);
+        } else {
+          _logger.warning(
+            'Stored file not found: $filePath',
+            tag: 'WORK_ORDER_REPO',
+          );
+        }
+      } catch (e) {
+        _logger.error(
+          'Error retrieving file: $filePath',
+          tag: 'WORK_ORDER_REPO',
+          error: e,
+        );
+      }
+    }
+
+    return files;
+  }
+
+  /// Cleans up stored files after successful sync
+  Future<void> _cleanupStoredFiles(String workOrderId, String action) async {
+    try {
+      final appDir = await getApplicationDocumentsDirectory();
+      final offlineFilesDir = Directory(
+        path.join(appDir.path, 'offline_files', workOrderId, action),
+      );
+
+      if (await offlineFilesDir.exists()) {
+        await offlineFilesDir.delete(recursive: true);
+        _logger.debug(
+          'Cleaned up offline files for WO $workOrderId action $action',
+          tag: 'WORK_ORDER_REPO',
+        );
+      }
+    } catch (e, stackTrace) {
+      _logger.error(
+        'Error cleaning up stored files',
+        tag: 'WORK_ORDER_REPO',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // FETCH LIST
@@ -1244,6 +1345,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             CacheFailure(message: 'Work order not found in cache'),
           );
         }
+        final storedFilePaths = await _storeFilesLocally(
+          files,
+          workOrderId.toString(),
+          'start',
+        );
 
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.inProgress.index,
@@ -1257,7 +1363,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           method: 'PATCH',
           body: {
             'gps_coordinates': '[$longitude, $latitude]',
-            'files': [],
+            'file_paths': storedFilePaths,
             if (notes != null) 'notes': notes,
           },
           description: 'Start work order #$workOrderId',
@@ -1353,6 +1459,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             CacheFailure(message: 'Work order not found in cache'),
           );
         }
+        final storedFilePaths = await _storeFilesLocally(
+          files,
+          workOrderId.toString(),
+          'pause',
+        );
 
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.paused.index,
@@ -1367,7 +1478,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           body: {
             'reason': reason,
             'gps_coordinates': '[$longitude, $latitude]',
-            'files': [],
+            'file_paths': storedFilePaths,
           },
           description: 'Pause work order #$workOrderId',
           headers: {},
@@ -1462,6 +1573,11 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             CacheFailure(message: 'Work order not found in cache'),
           );
         }
+        final storedFilePaths = await _storeFilesLocally(
+          files,
+          workOrderId.toString(),
+          'resume',
+        );
 
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.inProgress.index,
@@ -1475,7 +1591,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           method: 'PATCH',
           body: {
             'gps_coordinates': '[$longitude, $latitude]',
-            'files': [],
+            'file_paths': storedFilePaths,
             if (notes != null) 'notes': notes,
           },
           description: 'Resume work order #$workOrderId',
@@ -1583,6 +1699,17 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
             CacheFailure(message: 'Work order not found in cache'),
           );
         }
+        final allFilesToStore = [signature, ...files];
+        final storedFilePaths = await _storeFilesLocally(
+          allFilesToStore,
+          workOrderId.toString(),
+          'complete',
+        );
+        final signaturePath =
+            storedFilePaths.isNotEmpty ? storedFilePaths.first : '';
+        final filePaths = storedFilePaths.length > 1
+            ? storedFilePaths.sublist(1)
+            : <String>[];
 
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.completed.index,
@@ -1598,7 +1725,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
                 ),
               )
               .toList(),
-          images: files.map((f) => f.path).toList(),
+          images: filePaths,
         );
         await _localDataSource.updateWorkOrder(updatedModel);
 
@@ -1609,6 +1736,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           body: {
             'work_log': workLog,
             'customer_name': customerName,
+            'signature_path': signaturePath, // Store signature path
+            'file_paths': filePaths, // Store file paths
             'parts_used': partsUsed
                 .map(
                   (p) => {
@@ -1617,7 +1746,6 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
                   },
                 )
                 .toList(),
-            'files': [],
             // 'gps_coordinates': '[$latitude, $longitude]',
             'gps_coordinates': [longitude, latitude],
 

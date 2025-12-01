@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../features/work_orders/data/services/background_sync_service.dart';
+import '../../features/work_orders/data/services/local_user_store.dart';
 import 'injection.config.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -18,7 +19,8 @@ Future<void> configureDependencies(String environment) async {
 
   // 2) Initialize offline sync once, using the Dio already in DI
   await OfflineSyncService.instance.init(
-    getIt(), // resolves Dio from GetIt
+    getIt(),
+    getIt<LocalUserStore>(), // resolves Dio from GetIt
   );
 }
 

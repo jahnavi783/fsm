@@ -47,6 +47,22 @@ import 'package:injectable/injectable.dart';
 class LocalUserStore {
   static const _boxName = 'user_box';
   static const _keyUserId = 'current_user_id';
+  static const _keyAccessToken = 'access_token';
+
+  Future<void> saveAccessToken(String token) async {
+    final box = await Hive.openBox(_boxName);
+    await box.put(_keyAccessToken, token);
+  }
+
+  Future<String?> getAccessToken() async {
+    final box = await Hive.openBox(_boxName);
+    return box.get(_keyAccessToken);
+  }
+
+  Future<void> clearAccessToken() async {
+    final box = await Hive.openBox(_boxName);
+    await box.delete(_keyAccessToken);
+  }
 
   Future<void> saveUserId(String userId) async {
     final box = await Hive.openBox(_boxName);

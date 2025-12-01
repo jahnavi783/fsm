@@ -108,7 +108,7 @@
 //       queue.add(request);
 //       await _saveQueue(queue);
 //
-//       print('✓ Enqueued: ${request.description} (Queue size: ${queue.length})');
+//       debugPrint('✓ Enqueued: ${request.description} (Queue size: ${queue.length})');
 //     } finally {
 //       newLock.complete();
 //     }
@@ -266,15 +266,17 @@
 //     return 'ProcessResult{success: $success, processed: $processedCount, failed: $failedCount, remaining: $remainingCount, message: $message}';
 //   }
 // }
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'local_user_store.dart';
 import 'offline_request.dart';
 
 /// Manages the persistent queue of offline requests
 class OfflineQueueService {
   OfflineQueueService._();
   static final OfflineQueueService instance = OfflineQueueService._();
-
+  late final LocalUserStore _userStore;
   static const String _key = 'offline_queue_v1';
   static int _sequenceCounter = 0;
 
@@ -287,7 +289,7 @@ class OfflineQueueService {
     try {
       return OfflineRequest.decodeList(raw);
     } catch (e) {
-      print('❌ Error reading queue: $e');
+      debugPrint('❌ Error reading queue: $e');
       // Clear corrupted data
       await prefs.remove(_key);
       return [];
@@ -340,7 +342,7 @@ class OfflineQueueService {
 
     await _save(list);
 
-    print(
+    debugPrint(
         '✓ Enqueued: ${request.description} (seq: $requestWithSequence.sequenceNumber, queue size: ${list.length})');
   }
 
@@ -353,11 +355,11 @@ class OfflineQueueService {
     final list = await _get();
 
     if (list.isEmpty) {
-      print('ℹ️ Queue is empty');
+      debugPrint('ℹ️ Queue is empty');
       return;
     }
 
-    print('🔄 Processing ${list.length} requests in queue');
+    debugPrint('🔄 Processing ${list.length} requests in queue');
 
     final remaining = <OfflineRequest>[];
     int successCount = 0;
@@ -365,19 +367,20 @@ class OfflineQueueService {
     // Process sequentially - STOP on first failure
     for (final request in list) {
       try {
-        print(
+        debugPrint(
             '⚙️ Processing [${request.sequenceNumber}]: ${request.description}');
 
         final success = await processor(request);
 
         if (success) {
           successCount++;
-          print(
+          debugPrint(
               '✅ Success [${request.sequenceNumber}]: ${request.description}');
         } else {
           // FAILED - stop processing and keep this + all remaining in queue
-          print('❌ Failed [${request.sequenceNumber}]: ${request.description}');
-          print(
+          debugPrint(
+              '❌ Failed [${request.sequenceNumber}]: ${request.description}');
+          debugPrint(
               '⏸️ Stopping queue processing. ${list.length - successCount} requests remain.');
 
           // Keep failed request and all subsequent requests
@@ -387,10 +390,10 @@ class OfflineQueueService {
         }
       } catch (e, stackTrace) {
         // Exception - stop processing
-        print(
+        debugPrint(
             '💥 Exception [${request.sequenceNumber}]: ${request.description} - $e');
         print(stackTrace);
-        print('⏸️ Stopping queue processing due to exception.');
+        debugPrint('⏸️ Stopping queue processing due to exception.');
 
         // Keep failed request and all subsequent requests
         final currentIndex = list.indexOf(request);
@@ -403,9 +406,9 @@ class OfflineQueueService {
     await _save(remaining);
 
     if (remaining.isEmpty) {
-      print('✅ All $successCount requests processed successfully');
+      debugPrint('✅ All $successCount requests processed successfully');
     } else {
-      print(
+      debugPrint(
           '⚠️ Processed $successCount requests. ${remaining.length} remaining in queue.');
     }
   }
@@ -413,7 +416,7 @@ class OfflineQueueService {
   /// Clear all queued requests
   Future<void> clearQueue() async {
     await _save([]);
-    print('🗑️ Queue cleared');
+    debugPrint('🗑️ Queue cleared');
   }
 
   /// Get queue size

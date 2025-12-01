@@ -64,6 +64,7 @@
 // }
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -72,6 +73,8 @@ import 'core/config/app_config.dart';
 import 'core/config/environment_resolver.dart' as env;
 import 'core/di/injection.dart';
 import 'core/services/error_boundary_service.dart';
+import 'features/work_orders/data/services/background_sync_service.dart';
+import 'features/work_orders/data/services/local_user_store.dart';
 
 /// Main entry point for the FSM Flutter app
 void main() {
@@ -95,6 +98,10 @@ void main() {
 
       // Initialize error boundary service
       getIt<ErrorBoundaryService>().initialize();
+      // Initialize offline sync background service
+      final dio = getIt<Dio>();
+      final userStore = getIt<LocalUserStore>();
+      await OfflineSyncService.instance.init(dio, userStore);
 
       // Start app
       runApp(const MyApp());

@@ -483,7 +483,7 @@ class OfflineSyncService {
 
       if (remainingSize == 0) {
         debugPrint('✅ Sync completed - all requests processed');
-        // await _notify("✅ Sync Complete", "All changes synced successfully");
+        await _notify("✅ Sync Complete", "All changes synced successfully");
 
         // 🔔 notify sync completed
         SyncEvents.instance.notify(
@@ -491,29 +491,29 @@ class OfflineSyncService {
         );
       } else {
         debugPrint('⚠️ Sync incomplete - $remainingSize requests remaining');
-        // await _notify(
-        //   "⚠️ Sync Incomplete",
-        //   "$remainingSize action(s) pending. Will retry automatically.",
-        // );
+        await _notify(
+          "⚠️ Sync Incomplete",
+          "$remainingSize action(s) pending. Will retry automatically.",
+        );
 
         // 🔔 notify sync incomplete
-        // SyncEvents.instance.notify(
-        //   SyncEvent(
-        //     type: SyncEventType.syncIncomplete,
-        //     pendingCount: remainingSize,
-        //   ),
-        // );
+        SyncEvents.instance.notify(
+          SyncEvent(
+            type: SyncEventType.syncIncomplete,
+            pendingCount: remainingSize,
+          ),
+        );
       }
     } catch (e, stackTrace) {
       debugPrint('💥 Sync error: $e');
       print(stackTrace);
-      // await _notify(
-      //     "❌ Sync Error", "Failed to sync. Will retry automatically.");
+      await _notify(
+          "❌ Sync Error", "Failed to sync. Will retry automatically.");
 
       // 🔔 notify sync error
-      // SyncEvents.instance.notify(
-      //   SyncEvent(type: SyncEventType.syncError),
-      // );
+      SyncEvents.instance.notify(
+        SyncEvent(type: SyncEventType.syncError),
+      );
     } finally {
       _isSyncing = false;
     }
@@ -550,7 +550,7 @@ class OfflineSyncService {
       // SUCCESS: 2xx status codes
       if (status >= 200 && status < 300) {
         debugPrint('✅ Success: ${request.description}');
-        // await _notify("✓ Synced", request.description);
+        await _notify("✓ Synced", request.description);
 
         // Clean up files after successful sync
         if (hasFiles) {
@@ -563,8 +563,8 @@ class OfflineSyncService {
       // CLIENT ERROR: 4xx - Don't retry, remove from queue
       if (status >= 400 && status < 500) {
         debugPrint('⚠️ Client error $status for ${request.description}');
-        // await _notify(
-        //     "⚠️ Sync Error", "${request.description} - Error $status");
+        await _notify(
+            "⚠️ Sync Error", "${request.description} - Error $status");
 
         // Clean up files even on client error to avoid orphans
         if (hasFiles) {
@@ -576,18 +576,18 @@ class OfflineSyncService {
 
       // SERVER ERROR: 5xx - Keep in queue and STOP
 
-      // await _notify("❌ Sync Failed", "${request.description} - Server error");
+      await _notify("❌ Sync Failed", "${request.description} - Server error");
       return false; // Stop processing queue
     } on DioException catch (e) {
       // Network/timeout errors - Keep in queue and STOP
 
-      // await _notify("❌ Sync Failed", "${request.description} - Network error");
+      await _notify("❌ Sync Failed", "${request.description} - Network error");
       return false; // Stop processing queue
     } catch (e, stackTrace) {
       // Unknown errors - Keep in queue and STOP
       debugPrint('❌ Unknown error for ${request.description}: $e');
       print(stackTrace);
-      // await _notify("❌ Sync Failed", "${request.description} - Error occurred");
+      await _notify("❌ Sync Failed", "${request.description} - Error occurred");
       return false; // Stop processing queue
     }
   }
@@ -786,7 +786,7 @@ class OfflineSyncService {
 
   /// Notify when request is queued offline
   Future<void> notifyQueued(String description) async {
-    // await _notify("📦 Queued Offline", description);
+    await _notify("📦 Queued Offline", description);
   }
 
   /// Show notification

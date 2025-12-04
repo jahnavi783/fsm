@@ -341,7 +341,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                     Text(
                       displayDate,
                       style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: 9.sp,
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface

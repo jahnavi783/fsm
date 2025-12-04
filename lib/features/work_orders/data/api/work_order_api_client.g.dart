@@ -89,9 +89,11 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     required int id,
     required String gpsCoordinates,
     List<File> files = const [],
+    String? comments,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry('gps_coordinates', gpsCoordinates));
@@ -106,6 +108,9 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
         ),
       ),
     );
+    if (comments != null) {
+      _data.fields.add(MapEntry('comments', comments));
+    }
     final _options = _setStreamType<WorkOrderResponse>(
       Options(
         method: 'PATCH',
@@ -187,6 +192,7 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
     required int id,
     String? gpsCoordinates,
     List<File> files = const [],
+    String? comments,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -207,6 +213,9 @@ class _WorkOrderApiClient implements WorkOrderApiClient {
         ),
       ),
     );
+    if (comments != null) {
+      _data.fields.add(MapEntry('comments', comments));
+    }
     final _options = _setStreamType<WorkOrderResponse>(
       Options(
         method: 'PATCH',

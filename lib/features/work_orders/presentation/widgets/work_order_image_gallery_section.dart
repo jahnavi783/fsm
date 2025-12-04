@@ -391,6 +391,17 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                   isHighlighted: true,
                 ),
               ],
+              // Reason (for start actions/resume actions)
+              if (entry.capture.comments != null &&
+                  entry.capture.comments!.isNotEmpty) ...[
+                DesignTokens.verticalSpaceXs,
+                _buildMetadataRow(
+                  context,
+                  Icons.info_outline,
+                  'Notes: ${entry.capture.comments}',
+                  isHighlighted: true,
+                ),
+              ],
 
               // Remarks
               if (entry.capture.remarks != null &&

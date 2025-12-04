@@ -22,6 +22,7 @@ mixin _$WorkOrderImageCaptureEntity {
   CapturedByEntity? get capturedBy;
   DateTime? get capturedAt;
   String? get reason;
+  String? get comments;
   String? get remarks;
 
   /// Create a copy of WorkOrderImageCaptureEntity
@@ -51,6 +52,8 @@ mixin _$WorkOrderImageCaptureEntity {
             (identical(other.capturedAt, capturedAt) ||
                 other.capturedAt == capturedAt) &&
             (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.comments, comments) ||
+                other.comments == comments) &&
             (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
@@ -65,11 +68,12 @@ mixin _$WorkOrderImageCaptureEntity {
       capturedBy,
       capturedAt,
       reason,
+      comments,
       remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks)';
   }
 }
 
@@ -89,6 +93,7 @@ abstract mixin class $WorkOrderImageCaptureEntityCopyWith<$Res> {
       CapturedByEntity? capturedBy,
       DateTime? capturedAt,
       String? reason,
+      String? comments,
       String? remarks});
 
   $CapturedByEntityCopyWith<$Res>? get capturedBy;
@@ -115,6 +120,7 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
     Object? capturedBy = freezed,
     Object? capturedAt = freezed,
     Object? reason = freezed,
+    Object? comments = freezed,
     Object? remarks = freezed,
   }) {
     return _then(_self.copyWith(
@@ -149,6 +155,10 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
       reason: freezed == reason
           ? _self.reason
           : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comments: freezed == comments
+          ? _self.comments
+          : comments // ignore: cast_nullable_to_non_nullable
               as String?,
       remarks: freezed == remarks
           ? _self.remarks
@@ -274,6 +284,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             CapturedByEntity? capturedBy,
             DateTime? capturedAt,
             String? reason,
+            String? comments,
             String? remarks)?
         $default, {
     required TResult orElse(),
@@ -290,6 +301,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
+            _that.comments,
             _that.remarks);
       case _:
         return orElse();
@@ -320,6 +332,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             CapturedByEntity? capturedBy,
             DateTime? capturedAt,
             String? reason,
+            String? comments,
             String? remarks)
         $default,
   ) {
@@ -335,6 +348,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
+            _that.comments,
             _that.remarks);
       case _:
         throw StateError('Unexpected subclass');
@@ -364,6 +378,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             CapturedByEntity? capturedBy,
             DateTime? capturedAt,
             String? reason,
+            String? comments,
             String? remarks)?
         $default,
   ) {
@@ -379,6 +394,7 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
+            _that.comments,
             _that.remarks);
       case _:
         return null;
@@ -398,6 +414,7 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
       this.capturedBy,
       this.capturedAt,
       this.reason,
+      this.comments,
       this.remarks})
       : _imageUrls = imageUrls;
 
@@ -424,6 +441,8 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
   final DateTime? capturedAt;
   @override
   final String? reason;
+  @override
+  final String? comments;
   @override
   final String? remarks;
 
@@ -455,6 +474,8 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
             (identical(other.capturedAt, capturedAt) ||
                 other.capturedAt == capturedAt) &&
             (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.comments, comments) ||
+                other.comments == comments) &&
             (identical(other.remarks, remarks) || other.remarks == remarks));
   }
 
@@ -469,11 +490,12 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
       capturedBy,
       capturedAt,
       reason,
+      comments,
       remarks);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks)';
   }
 }
 
@@ -495,6 +517,7 @@ abstract mixin class _$WorkOrderImageCaptureEntityCopyWith<$Res>
       CapturedByEntity? capturedBy,
       DateTime? capturedAt,
       String? reason,
+      String? comments,
       String? remarks});
 
   @override
@@ -522,6 +545,7 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
     Object? capturedBy = freezed,
     Object? capturedAt = freezed,
     Object? reason = freezed,
+    Object? comments = freezed,
     Object? remarks = freezed,
   }) {
     return _then(_WorkOrderImageCaptureEntity(
@@ -556,6 +580,10 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
       reason: freezed == reason
           ? _self.reason
           : reason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comments: freezed == comments
+          ? _self.comments
+          : comments // ignore: cast_nullable_to_non_nullable
               as String?,
       remarks: freezed == remarks
           ? _self.remarks

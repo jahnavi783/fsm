@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -35,6 +36,8 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   DocumentEntity? _document;
   FileEntity? _selectedFile; // Track selected file for multi-file support
   bool _isLoading = true;
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
   String? _errorMessage;
   int _currentPage = 1;
   int _totalPages = 0;
@@ -150,6 +153,63 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     }
   }
 
+  void _startVoiceSearch() async {
+    _speech = stt.SpeechToText();
+    bool available = await _speech.initialize();
+
+    if (!available) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Voice recognition not available'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isListening = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🎙 Listening...'),
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+    _speech.listen(
+      listenFor: const Duration(seconds: 10),
+      pauseFor: const Duration(seconds: 2),
+      onResult: (result) {
+        if (result.finalResult) {
+          final spokenText = result.recognizedWords.trim();
+
+          if (spokenText.isNotEmpty) {
+            // Update search text box (optional)
+            _searchController.text = spokenText;
+
+            // Directly trigger PDF search
+            _performPdfSearch(spokenText);
+          }
+
+          _stopVoiceSearch();
+        }
+      },
+    );
+  }
+
+  void _stopVoiceSearch() {
+    _speech.stop();
+    setState(() => _isListening = false);
+  }
+
+  void _handleVoiceSearch() {
+    if (_isListening) {
+      _stopVoiceSearch();
+    } else {
+      _startVoiceSearch();
+    }
+  }
+
   void _showPdfSearchDialog() {
     _searchController.clear();
     showDialog(
@@ -238,6 +298,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
               currentPage: _currentPage,
               totalPages: _totalPages,
               onSearchTap: _showPdfSearchDialog,
+              onSearchVoiceTap: _handleVoiceSearch,
               onExternalOpen: _launchExternalUrl,
             ),
         ],
@@ -588,6 +649,7 @@ class _ResponsiveAppBarActions extends StatelessWidget {
   final int totalPages;
   final VoidCallback onSearchTap;
   final VoidCallback onExternalOpen;
+  final VoidCallback onSearchVoiceTap;
 
   const _ResponsiveAppBarActions({
     required this.document,
@@ -597,6 +659,7 @@ class _ResponsiveAppBarActions extends StatelessWidget {
     required this.totalPages,
     required this.onSearchTap,
     required this.onExternalOpen,
+    required this.onSearchVoiceTap,
   });
 
   @override
@@ -645,10 +708,15 @@ class _ResponsiveAppBarActions extends StatelessWidget {
               ),
             if (selectedFile?.isPdf == true)
               IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: onSearchTap,
-                tooltip: 'Search',
+                icon: const Icon(Icons.mic_none),
+                onPressed: onSearchVoiceTap,
+                tooltip: 'Voice Search',
               ),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: onSearchTap,
+              tooltip: 'Search',
+            ),
             IconButton(
               icon: const Icon(Icons.open_in_new),
               onPressed: onExternalOpen,

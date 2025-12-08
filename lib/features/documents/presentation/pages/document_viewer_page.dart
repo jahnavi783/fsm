@@ -672,31 +672,31 @@ class _ResponsiveAppBarActions extends StatelessWidget {
             if (document.files.length > 1)
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 150),
-                child: DropdownButton<FileEntity>(
-                  value: selectedFile,
-                  underline: const SizedBox.shrink(),
-                  isExpanded: true,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  items: document.files.map((file) {
-                    return DropdownMenuItem(
-                      value: file,
-                      child: SizedBox(
-                        child: Text(
-                          file.fileName ?? 'File',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(fontSize: 12),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (file) {
-                    if (file != null) onFileChanged(file);
-                  },
-                ),
+                // child: DropdownButton<FileEntity>(
+                //   value: selectedFile,
+                //   underline: const SizedBox.shrink(),
+                //   isExpanded: true,
+                //   icon: const Icon(Icons.arrow_drop_down),
+                //   items: document.files.map((file) {
+                //     return DropdownMenuItem(
+                //       value: file,
+                //       child: SizedBox(
+                //         child: Text(
+                //           file.fileName ?? 'File',
+                //           overflow: TextOverflow.ellipsis,
+                //           maxLines: 1,
+                //           style: Theme.of(context)
+                //               .textTheme
+                //               .bodyMedium
+                //               ?.copyWith(fontSize: 12),
+                //         ),
+                //       ),
+                //     );
+                //   }).toList(),
+                //   onChanged: (file) {
+                //     if (file != null) onFileChanged(file);
+                //   },
+                // ),
               ),
             if (selectedFile?.isPdf == true && totalPages > 0)
               Padding(
@@ -712,11 +712,12 @@ class _ResponsiveAppBarActions extends StatelessWidget {
                 onPressed: onSearchVoiceTap,
                 tooltip: 'Voice Search',
               ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: onSearchTap,
-              tooltip: 'Search',
-            ),
+            if (selectedFile?.isPdf == true)
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: onSearchTap,
+                tooltip: 'Search',
+              ),
             IconButton(
               icon: const Icon(Icons.open_in_new),
               onPressed: onExternalOpen,

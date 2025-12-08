@@ -664,7 +664,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     _workOrderActionBloc = context.read<WorkOrderActionBloc>();
   }
 
-  bool _executeIfMounted(VoidCallback callback) {
+  _executeIfMounted(VoidCallback callback) {
     if (!mounted) return false;
     callback();
     return true;
@@ -684,37 +684,39 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                 SnackBar(
                   content: Text(message),
                   backgroundColor: fsmTheme.success,
+                  duration: const Duration(seconds: 2),
                 ),
               );
 
               // IMPORTANT FIX: Automatically reload the work order to get updated timeline
               // Add a small delay to ensure backend has processed the action
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (mounted) {
-                  context.read<WorkOrderActionBloc>().add(
-                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                      );
-                }
-              });
+              // Future.delayed(const Duration(milliseconds: 500), () {
+              //   if (mounted) {
+              //     context.read<WorkOrderActionBloc>().add(
+              //           WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+              //         );
+              //   }
+              //   _snackShown = false;
+              // });
             },
-            error: (failure, workOrder, isOffline) {
-              final theme = Theme.of(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(failure.message),
-                  backgroundColor: theme.colorScheme.error,
-                ),
-              );
-            },
-            locationError: (workOrder, message) {
-              final fsmTheme = context.fsmTheme;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: fsmTheme.warning,
-                ),
-              );
-            },
+            // error: (failure, workOrder, isOffline) {
+            //   final theme = Theme.of(context);
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //     SnackBar(
+            //       content: Text(failure.message),
+            //       backgroundColor: theme.colorScheme.error,
+            //     ),
+            //   );
+            // },
+            // locationError: (workOrder, message) {
+            //   final fsmTheme = context.fsmTheme;
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //     SnackBar(
+            //       content: Text(message),
+            //       backgroundColor: fsmTheme.warning,
+            //     ),
+            //   );
+            // },
             orElse: () {},
           );
         },

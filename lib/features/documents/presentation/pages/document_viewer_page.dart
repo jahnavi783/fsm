@@ -588,11 +588,11 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
               icon: const Icon(Icons.navigate_before),
               tooltip: 'Previous page',
             ),
-            IconButton(
-              onPressed: () => _pdfViewerController.zoomLevel = 1.0,
-              icon: const Icon(Icons.zoom_out_map),
-              tooltip: 'Fit to screen',
-            ),
+            // IconButton(
+            //   onPressed: () => _pdfViewerController.zoomLevel = 1.0,
+            //   icon: const Icon(Icons.zoom_out_map),
+            //   tooltip: 'Fit to screen',
+            // ),
             IconButton(
               onPressed: () {
                 showDialog(

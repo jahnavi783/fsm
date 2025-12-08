@@ -811,16 +811,14 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fsm/core/theme/app_colors.dart';
 import 'package:fsm/core/widgets/fsm_app_bar.dart';
-import 'package:fsm/features/auth/presentation/blocs/auth/auth_state.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/di/injection.dart';
-import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
+import '../../../auth/data/datasources/auth_local_datasource.dart';
 
 @RoutePage()
 class ChatbotPage extends StatefulWidget {
@@ -842,7 +840,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   // API Configuration
   static const String _apiUrl = 'http://172.16.117.136:8066/api/chat';
   String? _authToken;
-  // String? _userEmail;
+  String? _refreshToken;
   String _sessionId = const Uuid().v4();
   String? _error;
 
@@ -859,22 +857,53 @@ class _ChatbotPageState extends State<ChatbotPage> {
   }
 
   // Bootstrap: Extract token from AuthBloc
+  // Future<void> _bootstrap() async {
+  //   try {
+  //     final authState = BlocProvider.of<AuthBloc>(context).state;
+  //
+  //     // Extract access token and user email using maybeWhen
+  //     final token = authState.maybeWhen(
+  //       authenticated: (user) => user.accessToken,
+  //       orElse: () => null,
+  //     );
+  //     _refreshToken = authState.maybeWhen(
+  //       authenticated: (user) => user.refreshToken,
+  //       orElse: () => null,
+  //     );
+  //
+  //     if (token == null) {
+  //       setState(() {
+  //         _error = "Authentication expired. Please log in again.";
+  //         _inputEnabled = false;
+  //       });
+  //       _showErrorMessage();
+  //       return;
+  //     }
+  //
+  //     setState(() {
+  //       _authToken = token;
+  //       // _userEmail = email;
+  //       _refreshToken;
+  //       _error = null;
+  //     });
+  //
+  //     await _startSession();
+  //   } catch (e) {
+  //     setState(() {
+  //       _error = "Failed to initialize chat: ${e.toString()}";
+  //       _inputEnabled = false;
+  //     });
+  //     _showErrorMessage();
+  //   }
+  // }
   Future<void> _bootstrap() async {
     try {
-      final authState = BlocProvider.of<AuthBloc>(context).state;
+      final authLocal = getIt<AuthLocalDataSource>();
 
-      // Extract access token and user email using maybeWhen
-      final token = authState.maybeWhen(
-        authenticated: (user) => user.accessToken,
-        orElse: () => null,
-      );
+      final token = await authLocal.getAccessToken();
+      final refreshToken = await authLocal.getRefreshToken();
 
-      // final email = authState.maybeWhen(
-      //   authenticated: (user) => user.email, // Adjust field name if different
-      //   orElse: () => null,
-      // );
-
-      if (token == null) {
+      if (token == null || refreshToken == null) {
         setState(() {
           _error = "Authentication expired. Please log in again.";
           _inputEnabled = false;
@@ -885,7 +914,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
       setState(() {
         _authToken = token;
-        // _userEmail = email;
+        _refreshToken = refreshToken;
         _error = null;
       });
 
@@ -1048,7 +1077,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FSMAppBar.gradient(
-        titleWidget: Row(children: const [
+        titleWidget: Row(children: [
           Icon(Icons.smart_toy, color: Colors.white),
           SizedBox(width: 8),
           Text('AI Assistant')
@@ -1076,15 +1105,15 @@ class _ChatbotPageState extends State<ChatbotPage> {
                             Icon(
                               Icons.error_outline,
                               size: 64,
-                              color: Colors.red[300],
+                              color: Theme.of(context).colorScheme.error,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               _error!,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.red,
+                                color: Theme.of(context).colorScheme.error,
                               ),
                             ),
                           ],
@@ -1107,9 +1136,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const CircleAvatar(
+                                CircleAvatar(
                                   radius: 16,
-                                  backgroundColor: Color(0xFF00796B),
+                                  // backgroundColor: Color(0xFF00796B),
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
                                   child: Icon(Icons.smart_toy,
                                       color: Colors.white, size: 18),
                                 ),
@@ -1119,7 +1150,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                       const EdgeInsets.symmetric(vertical: 4),
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFE5F4F1),
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: const _TypingDots(),
@@ -1139,7 +1170,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: isUserMessage
-                                  ? const Color(0xFF00796B)
+                                  // ? const Color(0xFF00796B)
+                                  ? Theme.of(context).primaryColor
                                   : const Color(0xFFE5F4F1),
                               borderRadius: BorderRadius.only(
                                 topLeft: const Radius.circular(16),
@@ -1186,10 +1218,10 @@ class _ChatbotPageState extends State<ChatbotPage> {
               ),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.attach_file, color: AppColors.primary),
-                    onPressed: _inputEnabled ? () {} : null,
-                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.attach_file, color: AppColors.primary),
+                  //   onPressed: _inputEnabled ? () {} : null,
+                  // ),
                   Expanded(
                     child: TextField(
                       controller: _textCtrl,
@@ -1261,8 +1293,9 @@ class _TypingDotsState extends State<_TypingDots>
                 child: Container(
                   width: 6,
                   height: 6,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF00796B),
+                  decoration: BoxDecoration(
+                    // color: Color(0xFF00796B),
+                    color: Theme.of(context).primaryColor,
                     shape: BoxShape.circle,
                   ),
                 ),

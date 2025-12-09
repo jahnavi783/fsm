@@ -664,7 +664,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     _workOrderActionBloc = context.read<WorkOrderActionBloc>();
   }
 
-  _executeIfMounted(VoidCallback callback) {
+  bool _executeIfMounted(VoidCallback callback) {
     if (!mounted) return false;
     callback();
     return true;
@@ -677,27 +677,25 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         listener: (context, state) {
           state.maybeWhen(
             actionSuccess: (workOrder, actionType, message, _) {
-              final fsmTheme = context.fsmTheme;
+              // final fsmTheme = context.fsmTheme;
 
               // Show success message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: fsmTheme.success,
-                  duration: const Duration(seconds: 2),
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text(message),
+              //     backgroundColor: fsmTheme.success,
+              //   ),
+              // );
 
               // IMPORTANT FIX: Automatically reload the work order to get updated timeline
               // Add a small delay to ensure backend has processed the action
-              // Future.delayed(const Duration(milliseconds: 500), () {
-              //   if (mounted) {
-              //     context.read<WorkOrderActionBloc>().add(
-              //           WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-              //         );
-              //   }
-              //   _snackShown = false;
-              // });
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (mounted) {
+                  context.read<WorkOrderActionBloc>().add(
+                        WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
+                      );
+                }
+              });
             },
             // error: (failure, workOrder, isOffline) {
             //   final theme = Theme.of(context);

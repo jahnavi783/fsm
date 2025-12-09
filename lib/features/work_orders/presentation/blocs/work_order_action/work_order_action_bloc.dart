@@ -464,6 +464,8 @@ import 'package:fsm/features/work_orders/domain/usecases/start_work_order_usecas
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 
+import '../../../domain/entities/work_log_entity.dart';
+import '../../../domain/entities/work_order_grouped_images_entity.dart';
 import 'work_order_action_event.dart';
 import 'work_order_action_state.dart';
 
@@ -534,8 +536,17 @@ class WorkOrderActionBloc
         ));
       },
       (detailsResult) {
+        final mergedLogs = mergeImagesIntoLogs(
+          detailsResult.workOrder.workLogs,
+          detailsResult.groupedImages ??
+              WorkOrderGroupedImagesEntity(
+                workOrderId: detailsResult.workOrder.id,
+                groupedImages: {},
+              ),
+        );
+
         emit(WorkOrderActionState.loaded(
-          workOrder: detailsResult.workOrder,
+          workOrder: detailsResult.workOrder.copyWith(workLogs: mergedLogs),
           isOffline: !isConnected,
           groupedImages: detailsResult.groupedImages,
           isLoadingImages: false,
@@ -876,5 +887,49 @@ class WorkOrderActionBloc
       },
       orElse: () {},
     );
+  }
+
+  List<WorkLogEntity> mergeImagesIntoLogs(
+    List<WorkLogEntity> logs,
+    WorkOrderGroupedImagesEntity groupedImages,
+  ) {
+    return logs.map((log) {
+      List<String> images = [];
+
+      switch (log.type) {
+        case WorkLogType.started:
+          images = groupedImages.startImages
+              .where((img) => img.timestamp == log.timestamp.toIso8601String())
+              .expand((img) => img.imageUrls)
+              .toList();
+          break;
+
+        case WorkLogType.paused:
+          images = groupedImages.pauseImages
+              .where((img) => img.timestamp == log.timestamp.toIso8601String())
+              .expand((img) => img.imageUrls)
+              .toList();
+          break;
+
+        case WorkLogType.resumed:
+          images = groupedImages.resumeImages
+              .where((img) => img.timestamp == log.timestamp.toIso8601String())
+              .expand((img) => img.imageUrls)
+              .toList();
+          break;
+
+        case WorkLogType.completed:
+          images = groupedImages.completeImages
+              .where((img) => img.timestamp == log.timestamp.toIso8601String())
+              .expand((img) => img.imageUrls)
+              .toList();
+          break;
+
+        default:
+          images = [];
+      }
+
+      return log.copyWith(imageUrls: images);
+    }).toList();
   }
 }

@@ -62,17 +62,19 @@ class _DocumentsPageState extends State<DocumentsPage> {
   }
 
   void _onSearchChanged(String query) {
+    final q = query.toLowerCase().trim();
     setState(() {
       _searchQuery = query;
     });
+    final categoryToSend = query.isEmpty
+        ? _selectedCategories.isNotEmpty
+            ? _selectedCategories.first
+            : null
+        : null;
 
     if (query.isNotEmpty) {
       _documentsBloc.add(
-        DocumentsEvent.searchDocuments(
-          query: query,
-          category:
-              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
-        ),
+        DocumentsEvent.searchDocuments(query: query, category: categoryToSend),
       );
     } else {
       _documentsBloc.add(

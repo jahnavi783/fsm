@@ -70,6 +70,8 @@ abstract class WorkOrderEntity with _$WorkOrderEntity {
 
   String get statusDisplayName => status.displayName;
   String get priorityDisplayName => priority.displayName;
+  String get serviceRequestNumber =>
+      serviceRequest?.srNumber ?? 'SR-${srId.toString().padLeft(12, '0')}';
 }
 
 enum WorkOrderStatus {

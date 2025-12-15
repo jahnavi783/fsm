@@ -828,7 +828,8 @@ class ChatbotPage extends StatefulWidget {
   State<ChatbotPage> createState() => _ChatbotPageState();
 }
 
-class _ChatbotPageState extends State<ChatbotPage> {
+class _ChatbotPageState extends State<ChatbotPage>
+    with AutomaticKeepAliveClientMixin {
   final List<types.Message> _messages = [];
   final _user = const types.User(id: 'user-1', firstName: 'You');
   final _bot = const types.User(id: 'bot-1', firstName: 'FSM Agent');
@@ -838,7 +839,8 @@ class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController _textCtrl = TextEditingController();
 
   // API Configuration
-  static const String _apiUrl = 'http://172.16.117.136:8066/api/chat';
+  static const String _apiUrl =
+      'https://unbracketed-royal-sphereless.ngrok-free.dev/api/chat';
   String? _authToken;
   String? _refreshToken;
   String _sessionId = const Uuid().v4();
@@ -980,7 +982,32 @@ class _ChatbotPageState extends State<ChatbotPage> {
     );
   }
 
+  bool _welcomeMessage(String msg) {
+    final t = msg.toLowerCase().trim();
+    return [
+      'hii',
+      'hi'
+          'hello',
+      'hey',
+      'greetings',
+      'good morning',
+      'good afternoon',
+      'good evening'
+    ].contains(t);
+  }
+
+  String _welcomeMessageResponse() {
+    return "Hello! there, How can I help you today?";
+  }
+
+  String _cleanMessage(String msg) {
+    return msg.replaceAll('**', '').replaceAll('*', '').trim();
+  }
+
   Future<String> _sendMessageToAPI(String query) async {
+    if (_welcomeMessage(query)) {
+      return _welcomeMessageResponse();
+    }
     if (_authToken == null) {
       return 'Authentication error. Please log in again.';
     }
@@ -1004,12 +1031,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
       );
 
       final data = response.data;
-
-      if (data["success"] == true && data["message"] != null) {
-        return data["message"];
-      } else {
-        return data["message"] ?? "Sorry, I could not process your request.";
-      }
+      final rawMessage =
+          data["message"] ?? "Sorry, I could not process your request.";
+      return _cleanMessage(rawMessage);
     } catch (e) {
       debugPrint("Chat API error: $e");
       return "Sorry, I encountered an error. Please check your connection and try again.";
@@ -1074,7 +1098,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: FSMAppBar.gradient(
         titleWidget: Row(children: [

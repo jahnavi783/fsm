@@ -97,15 +97,15 @@ class BasicInformationSection extends StatelessWidget {
               ),
             ),
             DesignTokens.horizontalSpaceMd,
-            Expanded(
-              child: InfoItemCard(
-                label: 'Duration',
-                // value:
-                //     '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
-                value: _formatDuration(workOrder),
-                icon: Icons.timelapse,
-              ),
-            ),
+            // Expanded(
+            //   child: InfoItemCard(
+            //     label: 'Duration',
+            //     // value:
+            //     //     '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
+            //     value: _formatDuration(workOrder),
+            //     icon: Icons.timelapse,
+            //   ),
+            // ),
           ],
         ),
       ],

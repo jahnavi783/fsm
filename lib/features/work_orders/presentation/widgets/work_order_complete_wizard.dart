@@ -205,9 +205,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ))
         .toList();
 
-    final imagePaths = (data['files'] as List<File>? ?? [])
-        .map((file) => file.path)
-        .toList();
+    final imagePaths =
+        (data['files'] as List<File>? ?? []).map((file) => file.path).toList();
 
     final cache = WorkOrderCompletionCacheModel(
       workOrderId: widget.workOrder.id,
@@ -246,7 +245,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       if (!result.isSuccess) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result.error?.message ?? 'Failed to capture location'),
+            content:
+                Text(result.error?.message ?? 'Failed to capture location'),
             backgroundColor: Theme.of(context).colorScheme.error,
             action: SnackBarAction(
               label: 'Retry',
@@ -424,8 +424,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       context: context,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(DesignTokens.radiusLg.r)),
+        borderRadius: BorderRadius.vertical(
+            top: Radius.circular(DesignTokens.radiusLg.r)),
       ),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
@@ -460,44 +460,117 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 itemCount: _availableParts.length,
                 itemBuilder: (context, index) {
                   final part = _availableParts[index];
-                  return Card(
-                    margin: REdgeInsets.only(bottom: DesignTokens.space3),
-                    child: ListTile(
-                      title: Text(
-                        part.partName,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
+                  final isOutOfStock = part.quantityAvailable <= 0;
+                  return Opacity(
+                    opacity: isOutOfStock ? 0.5 : 1.0,
+                    child: Card(
+                      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+                      color: isOutOfStock
+                          ? Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                          : null,
+                      child: ListTile(
+                        title: Text(
+                          part.partName,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RSizedBox(height: DesignTokens.space1),
+                            // Text('Part #: ${part.partNumber}'),
+                            Text(
+                              'Part #: ${part.partNumber}',
+                              style: TextStyle(
+                                color: isOutOfStock
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.5)
+                                    : null,
+                              ),
                             ),
+                            Text(
+                              'Category: ${part.category}',
+                              style: TextStyle(
+                                  color: isOutOfStock
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.5)
+                                      : null),
+                            ),
+                            Text(
+                              'Available: ${part.quantityAvailable}',
+                              style: TextStyle(
+                                  color: isOutOfStock
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.5)
+                                      : null),
+                            ),
+                            if (isOutOfStock) ...[
+                              RSizedBox(height: DesignTokens.space1),
+                              Text(
+                                'OUT OF STOCK',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        trailing: Icon(
+                          isOutOfStock
+                              ? Icons.block
+                              : part.isInStock
+                                  ? Icons.check_circle
+                                  : part.isLowStock
+                                      ? Icons.warning
+                                      : Icons.cancel,
+                          color: isOutOfStock
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withValues(alpha: 0.6)
+                              : part.isInStock
+                                  ? Colors.green
+                                  : part.isLowStock
+                                      ? Colors.orange
+                                      : Colors.red,
+                        ),
+                        onTap: isOutOfStock
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      '${part.partName} is currently out of stock',
+                                    ),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : () {
+                                formArray.add(
+                                  WorkOrderForms.createPartEntry(
+                                    partNumber: part.partNumber,
+                                    partName: part.partName,
+                                    quantity: 1,
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              },
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RSizedBox(height: DesignTokens.space1),
-                          Text('Part #: ${part.partNumber}'),
-                          Text('Category: ${part.category}'),
-                          Text('Available: ${part.quantityAvailable}'),
-                        ],
-                      ),
-                      trailing: Icon(
-                        part.isInStock
-                            ? Icons.check_circle
-                            : part.isLowStock
-                                ? Icons.warning
-                                : Icons.cancel,
-                        color: part.isInStock
-                            ? Colors.green
-                            : part.isLowStock
-                                ? Colors.orange
-                                : Colors.red,
-                      ),
-                      onTap: () {
-                        formArray.add(WorkOrderForms.createPartEntry(
-                          partNumber: part.partNumber,
-                          partName: part.partName,
-                          quantity: 1,
-                        ));
-                        Navigator.pop(context);
-                      },
                     ),
                   );
                 },
@@ -556,9 +629,11 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildHeader(theme, colorScheme),
-              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
+              Divider(
+                  height: DesignTokens.space1.h, color: colorScheme.outline),
               _buildStepHeader(theme, colorScheme),
-              Divider(height: DesignTokens.space1.h, color: colorScheme.outline),
+              Divider(
+                  height: DesignTokens.space1.h, color: colorScheme.outline),
               _buildProgressIndicator(theme, colorScheme),
               Flexible(child: _buildStepContent()),
               _buildNavigationButtons(theme, colorScheme, state),
@@ -639,8 +714,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           RSizedBox(height: DesignTokens.space1),
           Text(
             _getStepTitle(),
-            style:
-                theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.w600),
           ),
           RSizedBox(height: DesignTokens.space1),
           Text(
@@ -665,8 +740,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           return Expanded(
             child: Container(
               height: DesignTokens.space1.h,
-              margin: REdgeInsets.only(
-                  right: index < 4 ? DesignTokens.space1 : 0),
+              margin:
+                  REdgeInsets.only(right: index < 4 ? DesignTokens.space1 : 0),
               decoration: BoxDecoration(
                 color: isCompleted || isActive
                     ? colorScheme.primary
@@ -770,7 +845,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ReactiveFormArray(
             formArrayName: 'parts',
             builder: (context, formArray, child) {
-              if (formArray.value == null || (formArray.value as List).isEmpty) {
+              if (formArray.value == null ||
+                  (formArray.value as List).isEmpty) {
                 return Container(
                   padding: REdgeInsets.all(DesignTokens.space6),
                   decoration: BoxDecoration(
@@ -813,7 +889,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               return Column(
                 children: List.generate(
                   formArray.controls.length,
-                  (index) => _buildPartCard(formArray, index, theme, colorScheme),
+                  (index) =>
+                      _buildPartCard(formArray, index, theme, colorScheme),
                 ),
               );
             },
@@ -823,8 +900,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
     );
   }
 
-  Widget _buildPartCard(
-      FormArray formArray, int index, ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildPartCard(FormArray formArray, int index, ThemeData theme,
+      ColorScheme colorScheme) {
     final partGroup = formArray.controls[index] as FormGroup;
     final partNumber = partGroup.control('partNumber').value as String? ?? '';
     final partName = partGroup.control('partName').value as String? ?? '';
@@ -939,13 +1016,13 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           DesignTokens.verticalSpaceLarge,
           ReactiveSignaturePad(formControlName: 'signature'),
           DesignTokens.verticalSpaceLarge,
-          ReactiveMultilineInput(
-            formControlName: 'completionNotes',
-            hint: 'Add any additional notes or observations...',
-            label: 'Completion Notes (Optional)',
-            minLines: 3,
-            maxLines: 5,
-          ),
+          // ReactiveMultilineInput(
+          //   formControlName: 'completionNotes',
+          //   hint: 'Add any additional notes or observations...',
+          //   label: 'Completion Notes (Optional)',
+          //   minLines: 3,
+          //   maxLines: 5,
+          // ),
         ],
       ),
     );
@@ -1008,7 +1085,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
               if (_isCapturingLocation) ...[
                 DesignTokens.verticalSpaceMedium,
                 LinearProgressIndicator(
-                  borderRadius: BorderRadius.circular(DesignTokens.radiusFull.r),
+                  borderRadius:
+                      BorderRadius.circular(DesignTokens.radiusFull.r),
                 ),
               ],
               if (_locationResult != null) ...[
@@ -1038,7 +1116,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                   ],
                 ] else ...[
                   Text(
-                    _locationResult!.error?.message ?? 'Failed to capture location',
+                    _locationResult!.error?.message ??
+                        'Failed to capture location',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: colorScheme.error,
                     ),
@@ -1082,7 +1161,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         _buildReviewCard(
           icon: Icons.description,
           title: 'Work Log',
-          value: _step1Form.control('workLog').value?.toString() ?? 'Not provided',
+          value:
+              _step1Form.control('workLog').value?.toString() ?? 'Not provided',
           maxLines: 3,
           onEdit: () => setState(() => _currentStep = 0),
         ),
@@ -1201,13 +1281,13 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ),
           if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
           if (_canSkipCurrentStep())
-            Expanded(
-              child: OutlinedButton(
-                onPressed: isLoading ? null : _handleSkip,
-                child: const Text('Skip'),
-              ),
-            ),
-          if (_canSkipCurrentStep()) RSizedBox(width: DesignTokens.space3),
+            // Expanded(
+            //   child: OutlinedButton(
+            //     onPressed: isLoading ? null : _handleSkip,
+            //     child: const Text('Skip'),
+            //   ),
+            // ),
+            if (_canSkipCurrentStep()) RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: FilledButton(
               onPressed: isLoading

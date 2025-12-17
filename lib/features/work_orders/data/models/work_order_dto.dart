@@ -178,7 +178,7 @@ extension WorkOrderDtoX on WorkOrderDto {
         return WorkOrderStatus.rejected;
       case 'reassigned':
       case 're_assigned': // Handle both API formats
-        return WorkOrderStatus.reAssigned;
+        return WorkOrderStatus.assigned;
       default:
         return WorkOrderStatus.assigned;
     }

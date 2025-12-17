@@ -245,12 +245,12 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
             },
             child: const Text('Close'),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () {
-              if (_searchController.text.isNotEmpty) {
-                _performPdfSearch(_searchController.text);
-                Navigator.of(context).pop();
-              }
+              // if (_searchController.text.isNotEmpty) {
+              _performPdfSearch(_searchController.text);
+              Navigator.of(context).pop();
+              // }
             },
             child: const Text('Search'),
           ),
@@ -260,9 +260,29 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   }
 
   void _performPdfSearch(String searchText) {
-    // Use the PdfViewerController to search
-    // Note: The actual search highlighting is handled by Syncfusion's built-in search
-    _pdfViewerController.searchText(searchText);
+    // Clear previous search first
+    _pdfViewerController.clearSelection();
+
+    final searchResult = _pdfViewerController.searchText(searchText);
+
+    // Use a one-time listener
+    void listener() {
+      if (searchResult.isSearchCompleted) {
+        if (searchResult.totalInstanceCount == 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No results found for "$searchText"'),
+              duration: const Duration(seconds: 2),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        // Remove listener after use
+        searchResult.removeListener(listener);
+      }
+    }
+
+    searchResult.addListener(listener);
   }
 
   Future<void> _launchExternalUrl() async {

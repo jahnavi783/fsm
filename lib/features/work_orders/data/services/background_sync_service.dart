@@ -894,7 +894,7 @@ class OfflineSyncService {
     final online = results.contains(ConnectivityResult.mobile) ||
         results.contains(ConnectivityResult.wifi);
 
-    if (online) {
+    if (online && !_isSyncing) {
       debugPrint('📡 Network connected - attempting sync');
       await _flush();
     } else {
@@ -910,13 +910,13 @@ class OfflineSyncService {
       debugPrint('⏭️ Sync already in progress, skipping');
       return;
     }
+    _isSyncing = true;
 
     final queueSize = await OfflineQueueService.instance.getQueueSize();
     if (queueSize == 0) {
+      _isSyncing = false;
       return;
     }
-
-    _isSyncing = true;
 
     SyncEvents.instance.notify(
       SyncEvent(type: SyncEventType.syncStarted, pendingCount: queueSize),

@@ -841,6 +841,8 @@
 //         );
 //   }
 // }
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -859,6 +861,7 @@ import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
 import '../../../chat/presentation/pages/chatbot_page.dart';
+import '../../data/services/sync_events.dart' as sync_service;
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
@@ -895,6 +898,7 @@ class _DashboardPageState extends State<DashboardPage> {
   // Filter state - using String to match FilterChipData value type
   String _selectedFilter =
       'assigned'; // Default to 'assigned' (previously tab index 1)
+  StreamSubscription<sync_service.SyncEvent>? _syncSubscription;
 
   @override
   void initState() {
@@ -907,11 +911,54 @@ class _DashboardPageState extends State<DashboardPage> {
             page: 1,
           ),
         );
+    _syncSubscription = sync_service.SyncEvents.instance.stream.listen((event) {
+      if (event.type == sync_service.SyncEventType.syncCompleted) {
+        debugPrint('🔄 Sync completed - refreshing dashboard');
+        context.read<WorkOrdersListBloc>().add(
+              const WorkOrdersListEvent.refreshWorkOrders(),
+            );
+        // Show success message to user
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'Changes synced successfully',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.black,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              margin: const EdgeInsets.all(16),
+              action: SnackBarAction(
+                label: '✕',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _syncSubscription?.cancel();
     super.dispose();
   }
 

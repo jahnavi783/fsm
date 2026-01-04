@@ -18,6 +18,9 @@ _WorkOrderGroupedImagesResponseDto _$WorkOrderGroupedImagesResponseDtoFromJson(
                     e as Map<String, dynamic>))
                 .toList()),
       ),
+      pauseCounts: (json['pause_counts'] as List<dynamic>?)
+          ?.map((e) => PauseCountDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorkOrderGroupedImagesResponseDtoToJson(
@@ -25,4 +28,23 @@ Map<String, dynamic> _$WorkOrderGroupedImagesResponseDtoToJson(
     <String, dynamic>{
       'work_order_id': instance.workOrderId,
       'grouped_images': instance.groupedImages,
+      'pause_counts': instance.pauseCounts,
+    };
+
+_PauseCountDto _$PauseCountDtoFromJson(Map<String, dynamic> json) =>
+    _PauseCountDto(
+      userId: (json['user_id'] as num).toInt(),
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      email: json['email'] as String,
+      pauseCount: (json['pause_count'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$PauseCountDtoToJson(_PauseCountDto instance) =>
+    <String, dynamic>{
+      'user_id': instance.userId,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'email': instance.email,
+      'pause_count': instance.pauseCount,
     };

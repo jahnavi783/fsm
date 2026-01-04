@@ -689,6 +689,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
 
               // IMPORTANT FIX: Automatically reload the work order to get updated timeline
               // Add a small delay to ensure backend has processed the action
+              // Future.delayed(const Duration(milliseconds: 500), () {
               Future.delayed(const Duration(milliseconds: 500), () {
                 if (mounted) {
                   context.read<WorkOrderActionBloc>().add(
@@ -723,7 +724,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                    _, __) =>
+                    _, __, ___) =>
                 _buildWorkOrderDetails(
               workOrder,
               currentLocation,
@@ -987,15 +988,39 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           ),
         ],
       ),
-      bottomNavigationBar: StatusAdaptiveActionsWidget(
-        workOrder: workOrder,
-        isActionInProgress: isActionInProgress,
-        onStart: () => _startWorkOrder(context, workOrder),
-        onPause: () => _pauseWorkOrder(context, workOrder),
-        onResume: () => _resumeWorkOrder(context, workOrder),
-        onComplete: () => _completeWorkOrder(context, workOrder),
-        onReject: () => _rejectWorkOrder(context, workOrder),
-        onAssignToMe: () => _assignToMe(context, workOrder),
+      // bottomNavigationBar: StatusAdaptiveActionsWidget(
+      //   workOrder: workOrder,
+      //   isActionInProgress: isActionInProgress,
+      //   onStart: () => _startWorkOrder(context, workOrder),
+      //   onPause: () => _pauseWorkOrder(context, workOrder),
+      //   onResume: () => _resumeWorkOrder(context, workOrder),
+      //   onComplete: () => _completeWorkOrder(context, workOrder),
+      //   onReject: () => _rejectWorkOrder(context, workOrder),
+      //   onAssignToMe: () => _assignToMe(context, workOrder),
+      // ),
+      bottomNavigationBar:
+          BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
+        builder: (context, state) {
+          return StatusAdaptiveActionsWidget(
+            workOrder: workOrder,
+            isActionInProgress: state.maybeWhen(
+              actionInProgress: (_, __, ___) => true,
+              loading: () => true,
+              orElse: () => false,
+            ),
+            currentUserPauseCount: state.maybeWhen(
+              loaded: (_, __, ___, ____, _____, ______, pauseCount) =>
+                  pauseCount,
+              orElse: () => 0,
+            ),
+            onStart: () => _startWorkOrder(context, workOrder),
+            onPause: () => _pauseWorkOrder(context, workOrder),
+            onResume: () => _resumeWorkOrder(context, workOrder),
+            onComplete: () => _completeWorkOrder(context, workOrder),
+            onReject: () => _rejectWorkOrder(context, workOrder),
+            onAssignToMe: () => _assignToMe(context, workOrder),
+          );
+        },
       ),
     );
   }
@@ -1065,7 +1090,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     return BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (_, __, ___, ____, groupedImages, _____) {
+          loaded: (_, __, ___, ____, groupedImages, ______, _______) {
             if (groupedImages != null) {
               return WorkOrderImageGallerySection(
                 groupedImages: groupedImages,

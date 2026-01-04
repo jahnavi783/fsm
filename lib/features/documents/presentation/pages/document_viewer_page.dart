@@ -34,7 +34,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
   DocumentEntity? _document;
-  FileEntity? _selectedFile; // Track selected file for multi-file support
+  FileEntity? _selectedFile;
   bool _isLoading = true;
   late stt.SpeechToText _speech;
   bool _isListening = false;
@@ -43,23 +43,36 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
   int _totalPages = 0;
   late TextEditingController _searchController;
 
+  // Search navigation variables
+  PdfTextSearchResult? _currentSearchResult;
+  int _currentSearchIndex = 0;
+  int _totalSearchResults = 0;
+  bool _isSearchActive = false;
+
   void _onFileChanged(FileEntity file) {
     setState(() {
       _selectedFile = file;
-
-      // Dispose old video controllers if any
       _videoPlayerController?.dispose();
       _chewieController?.dispose();
       _videoPlayerController = null;
       _chewieController = null;
-
       _currentPage = 1;
       _totalPages = 0;
+      _clearSearch();
     });
 
     if (file.isVideo) {
       _initializeVideoPlayer(file);
     }
+  }
+
+  void _clearSearch() {
+    _currentSearchResult?.removeListener(_searchListener);
+    _pdfViewerController.clearSelection();
+    _currentSearchResult = null;
+    _currentSearchIndex = 0;
+    _totalSearchResults = 0;
+    _isSearchActive = false;
   }
 
   @override
@@ -75,6 +88,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
     _searchController.dispose();
+    _currentSearchResult?.removeListener(_searchListener);
     super.dispose();
   }
 
@@ -93,13 +107,11 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         (document) {
           setState(() {
             _document = document;
-            // Select first file by default
             _selectedFile =
                 document.files.isNotEmpty ? document.files.first : null;
             _isLoading = false;
           });
 
-          // Initialize video player if selected file is a video
           if (_selectedFile?.isVideo == true) {
             _initializeVideoPlayer(_selectedFile!);
           }
@@ -184,10 +196,7 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
           final spokenText = result.recognizedWords.trim();
 
           if (spokenText.isNotEmpty) {
-            // Update search text box (optional)
             _searchController.text = spokenText;
-
-            // Directly trigger PDF search
             _performPdfSearch(spokenText);
           }
 
@@ -231,7 +240,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
           ),
           onSubmitted: (value) {
             if (value.isNotEmpty) {
-              // Trigger search when user submits
               _performPdfSearch(value);
               Navigator.of(context).pop();
             }
@@ -240,17 +248,15 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         actions: [
           TextButton(
             onPressed: () {
-              _pdfViewerController.clearSelection();
+              _clearSearch();
               Navigator.of(context).pop();
             },
             child: const Text('Close'),
           ),
           TextButton(
             onPressed: () {
-              // if (_searchController.text.isNotEmpty) {
               _performPdfSearch(_searchController.text);
               Navigator.of(context).pop();
-              // }
             },
             child: const Text('Search'),
           ),
@@ -259,30 +265,69 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
     );
   }
 
+  void _searchListener() {
+    if (_currentSearchResult!.isSearchCompleted) {
+      setState(() {
+        _totalSearchResults = _currentSearchResult!.totalInstanceCount;
+        _currentSearchIndex = _currentSearchResult!.currentInstanceIndex;
+        _isSearchActive = _totalSearchResults > 0;
+      });
+
+      if (_totalSearchResults == 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No results found for "${_searchController.text}"'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } else {
+      // Update index while searching is in progress
+      setState(() {
+        _currentSearchIndex = _currentSearchResult!.currentInstanceIndex;
+      });
+    }
+  }
+
   void _performPdfSearch(String searchText) {
-    // Clear previous search first
-    _pdfViewerController.clearSelection();
+    if (searchText.isEmpty) return;
+
+    _clearSearch();
 
     final searchResult = _pdfViewerController.searchText(searchText);
+    _currentSearchResult = searchResult;
+    _currentSearchResult!.addListener(_searchListener);
+  }
 
-    // Use a one-time listener
-    void listener() {
-      if (searchResult.isSearchCompleted) {
-        if (searchResult.totalInstanceCount == 0) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('No results found for "$searchText"'),
-              duration: const Duration(seconds: 2),
-              backgroundColor: Colors.red,
-            ),
-          );
+  void _navigateToNextSearchResult() {
+    if (_currentSearchResult != null && _totalSearchResults > 0) {
+      _currentSearchResult!.nextInstance();
+
+      // Update the current index after navigation
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          setState(() {
+            _currentSearchIndex = _currentSearchResult!.currentInstanceIndex;
+          });
         }
-        // Remove listener after use
-        searchResult.removeListener(listener);
-      }
+      });
     }
+  }
 
-    searchResult.addListener(listener);
+  void _navigateToPreviousSearchResult() {
+    if (_currentSearchResult != null && _totalSearchResults > 0) {
+      _currentSearchResult!.previousInstance();
+
+      // Update the current index after navigation
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          setState(() {
+            _currentSearchIndex = _currentSearchResult!.currentInstanceIndex;
+          });
+        }
+      });
+    }
   }
 
   Future<void> _launchExternalUrl() async {
@@ -305,7 +350,6 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // PopScope workaround removed - Auto Route with includePrefixMatches handles deep link stacks automatically
     return Scaffold(
       appBar: FSMAppBar.gradient(
         title: _document?.title ?? 'Document',
@@ -320,6 +364,9 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
               onSearchTap: _showPdfSearchDialog,
               onSearchVoiceTap: _handleVoiceSearch,
               onExternalOpen: _launchExternalUrl,
+              isSearchActive: _isSearchActive,
+              currentSearchIndex: _currentSearchIndex,
+              totalSearchResults: _totalSearchResults,
             ),
         ],
       ),
@@ -601,59 +648,79 @@ class _DocumentViewerPageState extends State<DocumentViewerPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-              onPressed: _currentPage > 1
-                  ? () => _pdfViewerController.previousPage()
-                  : null,
-              icon: const Icon(Icons.navigate_before),
-              tooltip: 'Previous page',
-            ),
-            // IconButton(
-            //   onPressed: () => _pdfViewerController.zoomLevel = 1.0,
-            //   icon: const Icon(Icons.zoom_out_map),
-            //   tooltip: 'Fit to screen',
-            // ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(
-                      'Go to page',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    content: TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: 'Page number (1-$_totalPages)',
+            // Search navigation or page navigation
+            if (_isSearchActive) ...[
+              IconButton(
+                onPressed: _navigateToPreviousSearchResult,
+                icon: const Icon(Icons.arrow_back),
+                tooltip: 'Previous result',
+              ),
+              Text(
+                '$_currentSearchIndex / $_totalSearchResults',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              IconButton(
+                onPressed: _navigateToNextSearchResult,
+                icon: const Icon(Icons.arrow_forward),
+                tooltip: 'Next result',
+              ),
+              IconButton(
+                onPressed: _clearSearch,
+                icon: const Icon(Icons.close),
+                tooltip: 'Clear search',
+              ),
+            ] else ...[
+              IconButton(
+                onPressed: _currentPage > 1
+                    ? () => _pdfViewerController.previousPage()
+                    : null,
+                icon: const Icon(Icons.navigate_before),
+                tooltip: 'Previous page',
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(
+                        'Go to page',
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      onSubmitted: (value) {
-                        final page = int.tryParse(value);
-                        if (page != null && page >= 1 && page <= _totalPages) {
-                          _pdfViewerController.jumpToPage(page);
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
+                      content: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Page number (1-$_totalPages)',
+                        ),
+                        onSubmitted: (value) {
+                          final page = int.tryParse(value);
+                          if (page != null &&
+                              page >= 1 &&
+                              page <= _totalPages) {
+                            _pdfViewerController.jumpToPage(page);
+                            Navigator.of(context).pop();
+                          }
+                        },
                       ),
-                    ],
-                  ),
-                );
-              },
-              icon: const Icon(Icons.format_list_numbered),
-              tooltip: 'Go to page',
-            ),
-            IconButton(
-              onPressed: _currentPage < _totalPages
-                  ? () => _pdfViewerController.nextPage()
-                  : null,
-              icon: const Icon(Icons.navigate_next),
-              tooltip: 'Next page',
-            ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Cancel'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.format_list_numbered),
+                tooltip: 'Go to page',
+              ),
+              IconButton(
+                onPressed: _currentPage < _totalPages
+                    ? () => _pdfViewerController.nextPage()
+                    : null,
+                icon: const Icon(Icons.navigate_next),
+                tooltip: 'Next page',
+              ),
+            ],
           ],
         ),
       ),
@@ -670,6 +737,9 @@ class _ResponsiveAppBarActions extends StatelessWidget {
   final VoidCallback onSearchTap;
   final VoidCallback onExternalOpen;
   final VoidCallback onSearchVoiceTap;
+  final bool isSearchActive;
+  final int currentSearchIndex;
+  final int totalSearchResults;
 
   const _ResponsiveAppBarActions({
     required this.document,
@@ -680,6 +750,9 @@ class _ResponsiveAppBarActions extends StatelessWidget {
     required this.onSearchTap,
     required this.onExternalOpen,
     required this.onSearchVoiceTap,
+    required this.isSearchActive,
+    required this.currentSearchIndex,
+    required this.totalSearchResults,
   });
 
   @override
@@ -689,36 +762,26 @@ class _ResponsiveAppBarActions extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (document.files.length > 1)
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 150),
-                // child: DropdownButton<FileEntity>(
-                //   value: selectedFile,
-                //   underline: const SizedBox.shrink(),
-                //   isExpanded: true,
-                //   icon: const Icon(Icons.arrow_drop_down),
-                //   items: document.files.map((file) {
-                //     return DropdownMenuItem(
-                //       value: file,
-                //       child: SizedBox(
-                //         child: Text(
-                //           file.fileName ?? 'File',
-                //           overflow: TextOverflow.ellipsis,
-                //           maxLines: 1,
-                //           style: Theme.of(context)
-                //               .textTheme
-                //               .bodyMedium
-                //               ?.copyWith(fontSize: 12),
-                //         ),
-                //       ),
-                //     );
-                //   }).toList(),
-                //   onChanged: (file) {
-                //     if (file != null) onFileChanged(file);
-                //   },
-                // ),
-              ),
-            if (selectedFile?.isPdf == true && totalPages > 0)
+            if (selectedFile?.isPdf == true && isSearchActive)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Text(
+                    '$currentSearchIndex/$totalSearchResults',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              )
+            else if (selectedFile?.isPdf == true && totalPages > 0)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(

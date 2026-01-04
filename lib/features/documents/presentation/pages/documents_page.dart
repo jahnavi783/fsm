@@ -221,7 +221,7 @@ class _DocumentsPageState extends State<DocumentsPage> {
                 : null,
             selectedFilters: _selectedCategories,
             onFilterChanged: _onFilterChanged,
-            multiSelectFilters: true,
+            multiSelectFilters: false,
             // Content
             listContent: _buildListContent(state),
             isLoading: state.isLoading,

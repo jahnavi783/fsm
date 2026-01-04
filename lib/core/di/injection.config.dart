@@ -411,16 +411,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i342.ICalendarRepository>(),
           gh<_i932.NetworkInfo>(),
         ));
-    gh.factory<_i81.IChatRepository>(() => _i796.ChatRepository(
-          gh<_i159.ChatRemoteDataSource>(),
-          gh<_i230.ChatLocalDataSource>(),
-          gh<_i932.NetworkInfo>(),
-          gh<_i520.LoggingService>(),
-        ));
-    gh.factory<_i530.AuthGuard>(() => _i530.AuthGuard(
-          gh<_i992.AuthLocalDataSource>(),
-          gh<_i331.AuthBloc>(),
-        ));
     gh.factory<_i532.WorkOrderActionBloc>(() => _i532.WorkOrderActionBloc(
           gh<_i1023.GetWorkOrderDetailsUseCase>(),
           gh<_i188.StartWorkOrderUseCase>(),
@@ -430,6 +420,17 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i310.RejectWorkOrderUseCase>(),
           gh<_i669.LocationService>(),
           gh<_i932.NetworkInfo>(),
+          gh<_i253.LocalUserStore>(),
+        ));
+    gh.factory<_i81.IChatRepository>(() => _i796.ChatRepository(
+          gh<_i159.ChatRemoteDataSource>(),
+          gh<_i230.ChatLocalDataSource>(),
+          gh<_i932.NetworkInfo>(),
+          gh<_i520.LoggingService>(),
+        ));
+    gh.factory<_i530.AuthGuard>(() => _i530.AuthGuard(
+          gh<_i992.AuthLocalDataSource>(),
+          gh<_i331.AuthBloc>(),
         ));
     gh.factory<_i879.IProfileRepository>(() => _i334.ProfileRepositoryImpl(
           gh<_i327.ProfileRemoteDataSource>(),

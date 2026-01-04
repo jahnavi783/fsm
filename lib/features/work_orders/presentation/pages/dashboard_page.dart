@@ -860,7 +860,6 @@ import '../../../../core/widgets/widgets.dart'
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
-import '../../../chat/presentation/pages/chatbot_page.dart';
 import '../../data/services/sync_events.dart' as sync_service;
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
@@ -1067,11 +1066,14 @@ class _DashboardPageState extends State<DashboardPage> {
           // ═══════════════════════════════════════════════════════════
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ChatbotPage(),
-                ),
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ChatbotPage(userName: userName),
+              //   ),
+              // );
+              context.router.push(
+                ChatbotRoute(userName: userName),
               );
             },
             label: const Text('AI Assistant'),

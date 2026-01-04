@@ -16,6 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$WorkOrderGroupedImagesEntity {
   int get workOrderId;
   Map<String, List<WorkOrderImageCaptureEntity>> get groupedImages;
+  List<PauseCountEntity> get pauseCounts;
 
   /// Create a copy of WorkOrderGroupedImagesEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -34,16 +35,21 @@ mixin _$WorkOrderGroupedImagesEntity {
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             const DeepCollectionEquality()
-                .equals(other.groupedImages, groupedImages));
+                .equals(other.groupedImages, groupedImages) &&
+            const DeepCollectionEquality()
+                .equals(other.pauseCounts, pauseCounts));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workOrderId,
-      const DeepCollectionEquality().hash(groupedImages));
+  int get hashCode => Object.hash(
+      runtimeType,
+      workOrderId,
+      const DeepCollectionEquality().hash(groupedImages),
+      const DeepCollectionEquality().hash(pauseCounts));
 
   @override
   String toString() {
-    return 'WorkOrderGroupedImagesEntity(workOrderId: $workOrderId, groupedImages: $groupedImages)';
+    return 'WorkOrderGroupedImagesEntity(workOrderId: $workOrderId, groupedImages: $groupedImages, pauseCounts: $pauseCounts)';
   }
 }
 
@@ -56,7 +62,8 @@ abstract mixin class $WorkOrderGroupedImagesEntityCopyWith<$Res> {
   @useResult
   $Res call(
       {int workOrderId,
-      Map<String, List<WorkOrderImageCaptureEntity>> groupedImages});
+      Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+      List<PauseCountEntity> pauseCounts});
 }
 
 /// @nodoc
@@ -74,6 +81,7 @@ class _$WorkOrderGroupedImagesEntityCopyWithImpl<$Res>
   $Res call({
     Object? workOrderId = null,
     Object? groupedImages = null,
+    Object? pauseCounts = null,
   }) {
     return _then(_self.copyWith(
       workOrderId: null == workOrderId
@@ -84,6 +92,10 @@ class _$WorkOrderGroupedImagesEntityCopyWithImpl<$Res>
           ? _self.groupedImages
           : groupedImages // ignore: cast_nullable_to_non_nullable
               as Map<String, List<WorkOrderImageCaptureEntity>>,
+      pauseCounts: null == pauseCounts
+          ? _self.pauseCounts
+          : pauseCounts // ignore: cast_nullable_to_non_nullable
+              as List<PauseCountEntity>,
     ));
   }
 }
@@ -181,15 +193,18 @@ extension WorkOrderGroupedImagesEntityPatterns on WorkOrderGroupedImagesEntity {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int workOrderId,
-            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages)?
+    TResult Function(
+            int workOrderId,
+            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+            List<PauseCountEntity> pauseCounts)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _WorkOrderGroupedImagesEntity() when $default != null:
-        return $default(_that.workOrderId, _that.groupedImages);
+        return $default(
+            _that.workOrderId, _that.groupedImages, _that.pauseCounts);
       case _:
         return orElse();
     }
@@ -210,14 +225,17 @@ extension WorkOrderGroupedImagesEntityPatterns on WorkOrderGroupedImagesEntity {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int workOrderId,
-            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages)
+    TResult Function(
+            int workOrderId,
+            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+            List<PauseCountEntity> pauseCounts)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderGroupedImagesEntity():
-        return $default(_that.workOrderId, _that.groupedImages);
+        return $default(
+            _that.workOrderId, _that.groupedImages, _that.pauseCounts);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -237,14 +255,17 @@ extension WorkOrderGroupedImagesEntityPatterns on WorkOrderGroupedImagesEntity {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int workOrderId,
-            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages)?
+    TResult? Function(
+            int workOrderId,
+            Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+            List<PauseCountEntity> pauseCounts)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _WorkOrderGroupedImagesEntity() when $default != null:
-        return $default(_that.workOrderId, _that.groupedImages);
+        return $default(
+            _that.workOrderId, _that.groupedImages, _that.pauseCounts);
       case _:
         return null;
     }
@@ -257,8 +278,10 @@ class _WorkOrderGroupedImagesEntity extends WorkOrderGroupedImagesEntity {
   const _WorkOrderGroupedImagesEntity(
       {required this.workOrderId,
       required final Map<String, List<WorkOrderImageCaptureEntity>>
-          groupedImages})
+          groupedImages,
+      final List<PauseCountEntity> pauseCounts = const []})
       : _groupedImages = groupedImages,
+        _pauseCounts = pauseCounts,
         super._();
 
   @override
@@ -269,6 +292,15 @@ class _WorkOrderGroupedImagesEntity extends WorkOrderGroupedImagesEntity {
     if (_groupedImages is EqualUnmodifiableMapView) return _groupedImages;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_groupedImages);
+  }
+
+  final List<PauseCountEntity> _pauseCounts;
+  @override
+  @JsonKey()
+  List<PauseCountEntity> get pauseCounts {
+    if (_pauseCounts is EqualUnmodifiableListView) return _pauseCounts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pauseCounts);
   }
 
   /// Create a copy of WorkOrderGroupedImagesEntity
@@ -288,16 +320,21 @@ class _WorkOrderGroupedImagesEntity extends WorkOrderGroupedImagesEntity {
             (identical(other.workOrderId, workOrderId) ||
                 other.workOrderId == workOrderId) &&
             const DeepCollectionEquality()
-                .equals(other._groupedImages, _groupedImages));
+                .equals(other._groupedImages, _groupedImages) &&
+            const DeepCollectionEquality()
+                .equals(other._pauseCounts, _pauseCounts));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workOrderId,
-      const DeepCollectionEquality().hash(_groupedImages));
+  int get hashCode => Object.hash(
+      runtimeType,
+      workOrderId,
+      const DeepCollectionEquality().hash(_groupedImages),
+      const DeepCollectionEquality().hash(_pauseCounts));
 
   @override
   String toString() {
-    return 'WorkOrderGroupedImagesEntity(workOrderId: $workOrderId, groupedImages: $groupedImages)';
+    return 'WorkOrderGroupedImagesEntity(workOrderId: $workOrderId, groupedImages: $groupedImages, pauseCounts: $pauseCounts)';
   }
 }
 
@@ -312,7 +349,8 @@ abstract mixin class _$WorkOrderGroupedImagesEntityCopyWith<$Res>
   @useResult
   $Res call(
       {int workOrderId,
-      Map<String, List<WorkOrderImageCaptureEntity>> groupedImages});
+      Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+      List<PauseCountEntity> pauseCounts});
 }
 
 /// @nodoc
@@ -330,6 +368,7 @@ class __$WorkOrderGroupedImagesEntityCopyWithImpl<$Res>
   $Res call({
     Object? workOrderId = null,
     Object? groupedImages = null,
+    Object? pauseCounts = null,
   }) {
     return _then(_WorkOrderGroupedImagesEntity(
       workOrderId: null == workOrderId
@@ -340,6 +379,10 @@ class __$WorkOrderGroupedImagesEntityCopyWithImpl<$Res>
           ? _self._groupedImages
           : groupedImages // ignore: cast_nullable_to_non_nullable
               as Map<String, List<WorkOrderImageCaptureEntity>>,
+      pauseCounts: null == pauseCounts
+          ? _self._pauseCounts
+          : pauseCounts // ignore: cast_nullable_to_non_nullable
+              as List<PauseCountEntity>,
     ));
   }
 }

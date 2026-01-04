@@ -53,7 +53,8 @@ class BasicInformationSection extends StatelessWidget {
               child: InfoItemCard(
                 label: 'Ticket ID',
                 // value: 'SR-${workOrder.srId.toString().padLeft(12, '0')}',
-                value: workOrder.serviceRequestNumber,
+                // value: workOrder.serviceRequestNumber,
+                value: workOrder.displayServiceRequestNumber,
                 icon: Icons.request_page,
               ),
             ),

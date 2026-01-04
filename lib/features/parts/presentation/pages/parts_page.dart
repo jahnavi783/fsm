@@ -196,7 +196,7 @@ class _PartsPageState extends State<PartsPage> {
 
   Widget _buildListContent(PartsState state) {
     return ListView.builder(
-      controller: _scrollController,
+      // controller: _scrollController,
       padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       itemCount: state.filteredParts.length + (state.isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {

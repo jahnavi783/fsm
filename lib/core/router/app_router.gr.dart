@@ -85,18 +85,49 @@ class CalendarRoute extends _i20.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.ChatbotPage]
-class ChatbotRoute extends _i20.PageRouteInfo<void> {
-  const ChatbotRoute({List<_i20.PageRouteInfo>? children})
-      : super(ChatbotRoute.name, initialChildren: children);
+class ChatbotRoute extends _i20.PageRouteInfo<ChatbotRouteArgs> {
+  ChatbotRoute({
+    _i21.Key? key,
+    required String userName,
+    List<_i20.PageRouteInfo>? children,
+  }) : super(
+          ChatbotRoute.name,
+          args: ChatbotRouteArgs(key: key, userName: userName),
+          initialChildren: children,
+        );
 
   static const String name = 'ChatbotRoute';
 
   static _i20.PageInfo page = _i20.PageInfo(
     name,
     builder: (data) {
-      return const _i3.ChatbotPage();
+      final args = data.argsAs<ChatbotRouteArgs>();
+      return _i3.ChatbotPage(key: args.key, userName: args.userName);
     },
   );
+}
+
+class ChatbotRouteArgs {
+  const ChatbotRouteArgs({this.key, required this.userName});
+
+  final _i21.Key? key;
+
+  final String userName;
+
+  @override
+  String toString() {
+    return 'ChatbotRouteArgs{key: $key, userName: $userName}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ChatbotRouteArgs) return false;
+    return key == other.key && userName == other.userName;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ userName.hashCode;
 }
 
 /// generated route for

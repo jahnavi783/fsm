@@ -19,6 +19,7 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
 class StatusAdaptiveActionsWidget extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final bool isActionInProgress;
+  final int currentUserPauseCount;
   final VoidCallback? onStart;
   final VoidCallback? onPause;
   final VoidCallback? onResume;
@@ -30,6 +31,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     super.key,
     required this.workOrder,
     required this.isActionInProgress,
+    required this.currentUserPauseCount,
     this.onStart,
     this.onPause,
     this.onResume,
@@ -89,6 +91,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
         );
 
       case WorkOrderStatus.assigned:
+      case WorkOrderStatus.reAssigned:
         // Assigned → "Start" + "Reject" (side-by-side)
         return _buildDualButtons(
           context,
@@ -106,18 +109,32 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
 
       case WorkOrderStatus.inProgress:
         // InProgress → "Pause" + "Complete" (side-by-side)
-        return _buildDualButtons(
-          context,
-          primaryLabel: 'Pause Job',
-          primaryIcon: Icons.pause,
-          primaryColor: fsmTheme.statusPending,
-          primaryOnPressed: !isLoading ? onPause : null,
-          secondaryLabel: 'Complete Job',
-          secondaryIcon: Icons.check_circle,
-          secondaryColor: theme.colorScheme.primary,
-          secondaryOnPressed: !isLoading ? onComplete : null,
-          isLoading: isLoading,
-        );
+        final canPause = currentUserPauseCount < 3;
+        // final canPause = workOrder.pauseCount < 3;
+        if (canPause) {
+          return _buildDualButtons(
+            context,
+            primaryLabel: 'Pause Job',
+            primaryIcon: Icons.pause,
+            primaryColor: fsmTheme.statusPending,
+            primaryOnPressed: !isLoading ? onPause : null,
+            secondaryLabel: 'Complete Job',
+            secondaryIcon: Icons.check_circle,
+            secondaryColor: theme.colorScheme.primary,
+            secondaryOnPressed: !isLoading ? onComplete : null,
+            isLoading: isLoading,
+          );
+        } else {
+          return _buildSingleButton(
+            context,
+            label: 'Complete Job',
+            icon: Icons.check_circle,
+            // color: fsmTheme.statusCompleted,
+            color: theme.colorScheme.primary,
+            onPressed: !isLoading ? onComplete : null,
+            isLoading: isLoading,
+          );
+        }
 
       case WorkOrderStatus.paused:
         // Paused → "Resume"
@@ -151,40 +168,38 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     return RSizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-            onPressed: isLoading ? null : onPressed,
-            icon: isLoading
-                ? RSizedBox(
-                    width: 20.w,
-                    height: 20.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        color.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  )
-                : Icon(icon),
-            label: Text(
-              label,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              disabledBackgroundColor: color.withValues(alpha: 0.5),
-              disabledForegroundColor: Theme.of(context)
-                  .colorScheme
-                  .onPrimary
-                  .withValues(alpha: 0.5),
-              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
-              ),
-            ),
+        onPressed: isLoading ? null : onPressed,
+        icon: isLoading
+            ? RSizedBox(
+                width: 20.w,
+                height: 20.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    color.withValues(alpha: 0.7),
+                  ),
+                ),
+              )
+            : Icon(icon),
+        label: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
           ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          disabledBackgroundColor: color.withValues(alpha: 0.5),
+          disabledForegroundColor:
+              Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
+          padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(DesignTokens.radiusMd.r),
+          ),
+        ),
+      ),
     );
   }
 
@@ -202,80 +217,79 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     required bool isLoading,
   }) {
     return Row(
-          children: [
-            // Primary button (left, 50% width)
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: isLoading ? null : primaryOnPressed,
-                // onPressed: isLoading ? primaryOnPressed : primaryOnPressed,
-                icon: isLoading
-                    ? RSizedBox(
-                        width: 18.w,
-                        height: 18.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            primaryColor.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      )
-                    : Icon(primaryIcon, size: 18.sp),
-                label: Text(
-                  primaryLabel,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  disabledBackgroundColor: primaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary
-                      .withValues(alpha: 0.5),
-                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
+      children: [
+        // Primary button (left, 50% width)
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: isLoading ? null : primaryOnPressed,
+            // onPressed: isLoading ? primaryOnPressed : primaryOnPressed,
+            icon: isLoading
+                ? RSizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        primaryColor.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  )
+                : Icon(primaryIcon, size: 18.sp),
+            label: Text(
+              primaryLabel,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              disabledBackgroundColor: primaryColor.withValues(alpha: 0.5),
+              disabledForegroundColor: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.5),
+              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
+          ),
+        ),
 
-            DesignTokens.horizontalSpace(DesignTokens.space3),
+        DesignTokens.horizontalSpace(DesignTokens.space3),
 
-            // Secondary button (right, 50% width)
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: isLoading ? null : secondaryOnPressed,
-                icon: Icon(secondaryIcon, size: 18.sp),
-                label: Text(
-                  secondaryLabel,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: secondaryColor,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  disabledBackgroundColor:
-                      secondaryColor.withValues(alpha: 0.5),
-                  disabledForegroundColor: Theme.of(context)
-                      .colorScheme
-                      .onPrimary
-                      .withValues(alpha: 0.5),
-                  padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
+        // Secondary button (right, 50% width)
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: isLoading ? null : secondaryOnPressed,
+            icon: Icon(secondaryIcon, size: 18.sp),
+            label: Text(
+              secondaryLabel,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: secondaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              disabledBackgroundColor: secondaryColor.withValues(alpha: 0.5),
+              disabledForegroundColor: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.5),
+              padding: REdgeInsets.symmetric(vertical: DesignTokens.space3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-          ],
+          ),
+        ),
+      ],
     );
   }
 }

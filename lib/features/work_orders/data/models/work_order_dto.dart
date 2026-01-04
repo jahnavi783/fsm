@@ -69,6 +69,8 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     required int id,
     @JsonKey(name: 'wo_number') required String woNumber,
     @JsonKey(name: 'sr_id') required int srId,
+    @JsonKey(name: 'pause_count') @Default(0) int pauseCount,
+    @JsonKey(name: 'service_request_number') String? serviceRequestNumber,
     @Default('') String summary,
     @JsonKey(name: 'problem_description')
     @Default('')
@@ -129,6 +131,12 @@ abstract class UserDto with _$UserDto {
 // Extension for mapping to domain entity
 extension WorkOrderDtoX on WorkOrderDto {
   WorkOrderEntity toEntity() {
+    // FIXED: Extract sr_number from serviceRequest object
+    // Priority: serviceRequestNumber > serviceRequest.srNumber > fallback
+    final ticketNumber = serviceRequestNumber ??
+        serviceRequest?.srNumber ??
+        'SR-${srId.toString().padLeft(12, '0')}';
+
     return WorkOrderEntity(
       id: id,
       woNumber: woNumber,
@@ -150,6 +158,8 @@ extension WorkOrderDtoX on WorkOrderDto {
       workLog: workLog,
       partsUsed: partsUsed?.map((p) => p.toEntity()).toList() ?? [],
       images: images,
+      //  FIXED: Pass the extracted ticket number
+      serviceRequestNumber: ticketNumber,
       customer: customer?.toEntity(),
       locationDetails: locationDetails?.toEntity(),
       serviceRequest: serviceRequest?.toEntity(),

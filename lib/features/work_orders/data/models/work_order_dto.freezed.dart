@@ -19,6 +19,10 @@ mixin _$WorkOrderDto {
   String get woNumber;
   @JsonKey(name: 'sr_id')
   int get srId;
+  @JsonKey(name: 'pause_count')
+  int get pauseCount;
+  @JsonKey(name: 'service_request_number')
+  String? get serviceRequestNumber;
   String get summary;
   @JsonKey(name: 'problem_description')
   String get problemDescription;
@@ -94,6 +98,10 @@ mixin _$WorkOrderDto {
             (identical(other.woNumber, woNumber) ||
                 other.woNumber == woNumber) &&
             (identical(other.srId, srId) || other.srId == srId) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
+            (identical(other.serviceRequestNumber, serviceRequestNumber) ||
+                other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.summary, summary) || other.summary == summary) &&
             (identical(other.problemDescription, problemDescription) ||
                 other.problemDescription == problemDescription) &&
@@ -157,6 +165,8 @@ mixin _$WorkOrderDto {
         id,
         woNumber,
         srId,
+        pauseCount,
+        serviceRequestNumber,
         summary,
         problemDescription,
         priority,
@@ -191,7 +201,7 @@ mixin _$WorkOrderDto {
 
   @override
   String toString() {
-    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
+    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, pauseCount: $pauseCount, serviceRequestNumber: $serviceRequestNumber, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
   }
 }
 
@@ -205,6 +215,8 @@ abstract mixin class $WorkOrderDtoCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'wo_number') String woNumber,
       @JsonKey(name: 'sr_id') int srId,
+      @JsonKey(name: 'pause_count') int pauseCount,
+      @JsonKey(name: 'service_request_number') String? serviceRequestNumber,
       String summary,
       @JsonKey(name: 'problem_description') String problemDescription,
       String priority,
@@ -263,6 +275,8 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
     Object? id = null,
     Object? woNumber = null,
     Object? srId = null,
+    Object? pauseCount = null,
+    Object? serviceRequestNumber = freezed,
     Object? summary = null,
     Object? problemDescription = null,
     Object? priority = null,
@@ -307,6 +321,14 @@ class _$WorkOrderDtoCopyWithImpl<$Res> implements $WorkOrderDtoCopyWith<$Res> {
           ? _self.srId
           : srId // ignore: cast_nullable_to_non_nullable
               as int,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      serviceRequestNumber: freezed == serviceRequestNumber
+          ? _self.serviceRequestNumber
+          : serviceRequestNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       summary: null == summary
           ? _self.summary
           : summary // ignore: cast_nullable_to_non_nullable
@@ -598,6 +620,9 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             int id,
             @JsonKey(name: 'wo_number') String woNumber,
             @JsonKey(name: 'sr_id') int srId,
+            @JsonKey(name: 'pause_count') int pauseCount,
+            @JsonKey(name: 'service_request_number')
+            String? serviceRequestNumber,
             String summary,
             @JsonKey(name: 'problem_description') String problemDescription,
             String priority,
@@ -643,6 +668,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.id,
             _that.woNumber,
             _that.srId,
+            _that.pauseCount,
+            _that.serviceRequestNumber,
             _that.summary,
             _that.problemDescription,
             _that.priority,
@@ -697,6 +724,9 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             int id,
             @JsonKey(name: 'wo_number') String woNumber,
             @JsonKey(name: 'sr_id') int srId,
+            @JsonKey(name: 'pause_count') int pauseCount,
+            @JsonKey(name: 'service_request_number')
+            String? serviceRequestNumber,
             String summary,
             @JsonKey(name: 'problem_description') String problemDescription,
             String priority,
@@ -741,6 +771,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.id,
             _that.woNumber,
             _that.srId,
+            _that.pauseCount,
+            _that.serviceRequestNumber,
             _that.summary,
             _that.problemDescription,
             _that.priority,
@@ -794,6 +826,9 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             int id,
             @JsonKey(name: 'wo_number') String woNumber,
             @JsonKey(name: 'sr_id') int srId,
+            @JsonKey(name: 'pause_count') int pauseCount,
+            @JsonKey(name: 'service_request_number')
+            String? serviceRequestNumber,
             String summary,
             @JsonKey(name: 'problem_description') String problemDescription,
             String priority,
@@ -838,6 +873,8 @@ extension WorkOrderDtoPatterns on WorkOrderDto {
             _that.id,
             _that.woNumber,
             _that.srId,
+            _that.pauseCount,
+            _that.serviceRequestNumber,
             _that.summary,
             _that.problemDescription,
             _that.priority,
@@ -881,6 +918,8 @@ class _WorkOrderDto implements WorkOrderDto {
       {required this.id,
       @JsonKey(name: 'wo_number') required this.woNumber,
       @JsonKey(name: 'sr_id') required this.srId,
+      @JsonKey(name: 'pause_count') this.pauseCount = 0,
+      @JsonKey(name: 'service_request_number') this.serviceRequestNumber,
       this.summary = '',
       @JsonKey(name: 'problem_description') this.problemDescription = '',
       required this.priority,
@@ -934,6 +973,12 @@ class _WorkOrderDto implements WorkOrderDto {
   @override
   @JsonKey(name: 'sr_id')
   final int srId;
+  @override
+  @JsonKey(name: 'pause_count')
+  final int pauseCount;
+  @override
+  @JsonKey(name: 'service_request_number')
+  final String? serviceRequestNumber;
   @override
   @JsonKey()
   final String summary;
@@ -1089,6 +1134,10 @@ class _WorkOrderDto implements WorkOrderDto {
             (identical(other.woNumber, woNumber) ||
                 other.woNumber == woNumber) &&
             (identical(other.srId, srId) || other.srId == srId) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
+            (identical(other.serviceRequestNumber, serviceRequestNumber) ||
+                other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.summary, summary) || other.summary == summary) &&
             (identical(other.problemDescription, problemDescription) ||
                 other.problemDescription == problemDescription) &&
@@ -1153,6 +1202,8 @@ class _WorkOrderDto implements WorkOrderDto {
         id,
         woNumber,
         srId,
+        pauseCount,
+        serviceRequestNumber,
         summary,
         problemDescription,
         priority,
@@ -1187,7 +1238,7 @@ class _WorkOrderDto implements WorkOrderDto {
 
   @override
   String toString() {
-    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
+    return 'WorkOrderDto(id: $id, woNumber: $woNumber, srId: $srId, pauseCount: $pauseCount, serviceRequestNumber: $serviceRequestNumber, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdBy: $createdBy, assignedTo: $assignedTo, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, rejectionLogs: $rejectionLogs, workLog: $workLog, partsUsed: $partsUsed, createdAt: $createdAt, updatedAt: $updatedAt, createdByUser: $createdByUser, assignedToUser: $assignedToUser, serviceRequest: $serviceRequest, customer: $customer, locationDetails: $locationDetails, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, images: $images)';
   }
 }
 
@@ -1203,6 +1254,8 @@ abstract mixin class _$WorkOrderDtoCopyWith<$Res>
       {int id,
       @JsonKey(name: 'wo_number') String woNumber,
       @JsonKey(name: 'sr_id') int srId,
+      @JsonKey(name: 'pause_count') int pauseCount,
+      @JsonKey(name: 'service_request_number') String? serviceRequestNumber,
       String summary,
       @JsonKey(name: 'problem_description') String problemDescription,
       String priority,
@@ -1267,6 +1320,8 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
     Object? id = null,
     Object? woNumber = null,
     Object? srId = null,
+    Object? pauseCount = null,
+    Object? serviceRequestNumber = freezed,
     Object? summary = null,
     Object? problemDescription = null,
     Object? priority = null,
@@ -1311,6 +1366,14 @@ class __$WorkOrderDtoCopyWithImpl<$Res>
           ? _self.srId
           : srId // ignore: cast_nullable_to_non_nullable
               as int,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      serviceRequestNumber: freezed == serviceRequestNumber
+          ? _self.serviceRequestNumber
+          : serviceRequestNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       summary: null == summary
           ? _self.summary
           : summary // ignore: cast_nullable_to_non_nullable

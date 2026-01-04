@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
+
 import 'filter_chip_data.dart';
 
 /// FSMFilterChipGroup - Multi-select/single-select filter chips component
@@ -61,7 +62,7 @@ class FSMFilterChipGroup<T> extends StatefulWidget {
     required this.options,
     required this.selectedValues,
     required this.onSelectionChanged,
-    this.multiSelect = true,
+    this.multiSelect = false,
     this.showClearAll = true,
     this.showFilterCount = true,
     this.clearAllLabel = 'Clear All',
@@ -165,7 +166,8 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: widget.options.length,
-              separatorBuilder: (context, index) => SizedBox(width: widget.spacing.w),
+              separatorBuilder: (context, index) =>
+                  SizedBox(width: widget.spacing.w),
               itemBuilder: (context, index) {
                 final option = widget.options[index];
                 final isSelected = _selectedValues.contains(option.value);
@@ -176,8 +178,10 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
                   isSelected: isSelected,
                   isDisabled: isDisabled,
                   leadingIcon: option.leadingIcon,
-                  backgroundColor: widget.chipBackgroundColor ?? fsmTheme.chipBackground,
-                  selectedColor: widget.selectedChipColor ?? theme.colorScheme.primary,
+                  backgroundColor:
+                      widget.chipBackgroundColor ?? fsmTheme.chipBackground,
+                  selectedColor:
+                      widget.selectedChipColor ?? theme.colorScheme.primary,
                   onTap: isDisabled ? null : () => _handleChipTap(option.value),
                 );
               },
@@ -194,7 +198,8 @@ class _FSMFilterChipGroupState<T> extends State<FSMFilterChipGroup<T>> {
                   horizontal: DesignTokens.space3,
                   vertical: DesignTokens.space2,
                 ),
-                minimumSize: Size(DesignTokens.buttonHeightMd, DesignTokens.buttonHeightSm),
+                minimumSize: Size(
+                    DesignTokens.buttonHeightMd, DesignTokens.buttonHeightSm),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(

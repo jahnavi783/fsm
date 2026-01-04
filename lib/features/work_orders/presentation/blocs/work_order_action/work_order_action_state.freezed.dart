@@ -190,7 +190,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             bool isLocationLoading,
             bool isOffline,
             WorkOrderGroupedImagesEntity? groupedImages,
-            bool isLoadingImages)?
+            bool isLoadingImages,
+            int currentUserPauseCount)?
         loaded,
     TResult Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)?
@@ -217,7 +218,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             _that.isLocationLoading,
             _that.isOffline,
             _that.groupedImages,
-            _that.isLoadingImages);
+            _that.isLoadingImages,
+            _that.currentUserPauseCount);
       case _ActionInProgress() when actionInProgress != null:
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
@@ -256,7 +258,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             bool isLocationLoading,
             bool isOffline,
             WorkOrderGroupedImagesEntity? groupedImages,
-            bool isLoadingImages)
+            bool isLoadingImages,
+            int currentUserPauseCount)
         loaded,
     required TResult Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)
@@ -283,7 +286,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             _that.isLocationLoading,
             _that.isOffline,
             _that.groupedImages,
-            _that.isLoadingImages);
+            _that.isLoadingImages,
+            _that.currentUserPauseCount);
       case _ActionInProgress():
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
@@ -321,7 +325,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             bool isLocationLoading,
             bool isOffline,
             WorkOrderGroupedImagesEntity? groupedImages,
-            bool isLoadingImages)?
+            bool isLoadingImages,
+            int currentUserPauseCount)?
         loaded,
     TResult? Function(WorkOrderEntity workOrder, String actionType,
             LocationEntity? currentLocation)?
@@ -347,7 +352,8 @@ extension WorkOrderActionStatePatterns on WorkOrderActionState {
             _that.isLocationLoading,
             _that.isOffline,
             _that.groupedImages,
-            _that.isLoadingImages);
+            _that.isLoadingImages,
+            _that.currentUserPauseCount);
       case _ActionInProgress() when actionInProgress != null:
         return actionInProgress(
             _that.workOrder, _that.actionType, _that.currentLocation);
@@ -413,7 +419,8 @@ class _Loaded implements WorkOrderActionState {
       this.isLocationLoading = false,
       this.isOffline = false,
       this.groupedImages,
-      this.isLoadingImages = false});
+      this.isLoadingImages = false,
+      this.currentUserPauseCount = 0});
 
   final WorkOrderEntity workOrder;
   final LocationEntity? currentLocation;
@@ -424,6 +431,8 @@ class _Loaded implements WorkOrderActionState {
   final WorkOrderGroupedImagesEntity? groupedImages;
   @JsonKey()
   final bool isLoadingImages;
+  @JsonKey()
+  final int currentUserPauseCount;
 
   /// Create a copy of WorkOrderActionState
   /// with the given fields replaced by the non-null parameter values.
@@ -448,16 +457,25 @@ class _Loaded implements WorkOrderActionState {
             (identical(other.groupedImages, groupedImages) ||
                 other.groupedImages == groupedImages) &&
             (identical(other.isLoadingImages, isLoadingImages) ||
-                other.isLoadingImages == isLoadingImages));
+                other.isLoadingImages == isLoadingImages) &&
+            (identical(other.currentUserPauseCount, currentUserPauseCount) ||
+                other.currentUserPauseCount == currentUserPauseCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, workOrder, currentLocation,
-      isLocationLoading, isOffline, groupedImages, isLoadingImages);
+  int get hashCode => Object.hash(
+      runtimeType,
+      workOrder,
+      currentLocation,
+      isLocationLoading,
+      isOffline,
+      groupedImages,
+      isLoadingImages,
+      currentUserPauseCount);
 
   @override
   String toString() {
-    return 'WorkOrderActionState.loaded(workOrder: $workOrder, currentLocation: $currentLocation, isLocationLoading: $isLocationLoading, isOffline: $isOffline, groupedImages: $groupedImages, isLoadingImages: $isLoadingImages)';
+    return 'WorkOrderActionState.loaded(workOrder: $workOrder, currentLocation: $currentLocation, isLocationLoading: $isLocationLoading, isOffline: $isOffline, groupedImages: $groupedImages, isLoadingImages: $isLoadingImages, currentUserPauseCount: $currentUserPauseCount)';
   }
 }
 
@@ -473,7 +491,8 @@ abstract mixin class _$LoadedCopyWith<$Res>
       bool isLocationLoading,
       bool isOffline,
       WorkOrderGroupedImagesEntity? groupedImages,
-      bool isLoadingImages});
+      bool isLoadingImages,
+      int currentUserPauseCount});
 
   $WorkOrderEntityCopyWith<$Res> get workOrder;
   $LocationEntityCopyWith<$Res>? get currentLocation;
@@ -497,6 +516,7 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
     Object? isOffline = null,
     Object? groupedImages = freezed,
     Object? isLoadingImages = null,
+    Object? currentUserPauseCount = null,
   }) {
     return _then(_Loaded(
       workOrder: null == workOrder
@@ -523,6 +543,10 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
           ? _self.isLoadingImages
           : isLoadingImages // ignore: cast_nullable_to_non_nullable
               as bool,
+      currentUserPauseCount: null == currentUserPauseCount
+          ? _self.currentUserPauseCount
+          : currentUserPauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 

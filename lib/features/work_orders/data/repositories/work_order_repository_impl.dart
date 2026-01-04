@@ -1364,7 +1364,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           body: {
             'gps_coordinates': '[$longitude, $latitude]',
             'file_paths': storedFilePaths,
-            if (notes != null) 'notes': notes,
+            if (notes != null) 'comments': notes,
           },
           description: 'Start work order #$workOrderId',
           headers: {},
@@ -1592,7 +1592,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           body: {
             'gps_coordinates': '[$longitude, $latitude]',
             'file_paths': storedFilePaths,
-            if (notes != null) 'notes': notes,
+            if (notes != null) 'comments': notes,
           },
           description: 'Resume work order #$workOrderId',
           headers: {},
@@ -2142,19 +2142,25 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
   // ---------------------------------------------------------------------------
   Future<WorkOrderHiveModel> _mapDtoToHiveModel(WorkOrderDto dto) async {
     final userId = await _userStore.getUserId();
-
+    // The backend sends it inside serviceRequest object, not as serviceRequestNumber
+    final ticketNumber = dto.serviceRequestNumber ??
+        dto.serviceRequest?.srNumber ??
+        'SR-${dto.srId.toString().padLeft(12, '0')}';
     return WorkOrderHiveModel(
       id: dto.id,
       woNumber: dto.woNumber,
       srId: dto.srId,
+      serviceRequestNumber: ticketNumber,
       userId: userId,
       summary: dto.summary,
       problemDescription: dto.problemDescription,
       priority: _mapPriorityToIndex(dto.priority),
       visitDate: DateTime.parse(dto.visitDate),
+      // pauseCount: dto.pauseCount,
       location: dto.location,
       status: _mapStatusToIndex(dto.status),
       durationDays: dto.durationDays,
+      durationHours: dto.durationHours,
       createdAt: DateTime.parse(dto.createdAt),
       updatedAt: DateTime.parse(dto.updatedAt),
       startedAt: dto.startedAt != null ? DateTime.parse(dto.startedAt!) : null,
@@ -2176,6 +2182,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       id: entity.id,
       woNumber: entity.woNumber,
       srId: entity.srId,
+      serviceRequestNumber: entity.serviceRequestNumber,
       userId: entity.userId,
       summary: entity.summary,
       problemDescription: entity.problemDescription,
@@ -2184,6 +2191,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       location: entity.location,
       status: entity.status.index,
       durationDays: entity.durationDays,
+      durationHours: entity.durationHours,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       startedAt: entity.startedAt,

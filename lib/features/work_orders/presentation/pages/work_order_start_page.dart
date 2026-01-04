@@ -12,6 +12,7 @@ import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/wo
 import 'package:fsm/features/work_orders/presentation/blocs/work_order_action/work_order_action_state.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_form_sheet.dart';
 import 'package:fsm/features/work_orders/presentation/widgets/work_order_status_chip.dart';
+
 import '../../../../core/theme/extensions/fsm_theme_extension.dart';
 
 @RoutePage()
@@ -115,7 +116,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
                 );
               },
               loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                  _, __) {
+                  _, __, ___) {
                 // Auto-show start bottom sheet when work order is loaded
                 if (!_showStartBottomSheet && workOrder.canBeStarted) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -132,7 +133,7 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
               initial: () => const Center(child: CircularProgressIndicator()),
               loading: () => const Center(child: CircularProgressIndicator()),
               loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                      _, __) =>
+                      _, __, ___) =>
                   _buildStartInterface(
                       workOrder, currentLocation, isLocationLoading, isOffline),
               actionInProgress: (workOrder, actionType, currentLocation) =>
@@ -475,7 +476,25 @@ class _WorkOrderStartViewState extends State<WorkOrderStartView> {
     context.router.push(WorkOrderDetailsRoute(workOrderId: widget.workOrderId));
   }
 
+  // void _handleRetryLocation() {
+  //   final state = context.read<WorkOrderActionBloc>().state;
+  //
+  //   if (state is _ActionInProgress || state is _Loading) return;
+  //   context.read<WorkOrderActionBloc>().add(
+  //         const WorkOrderActionEvent.captureLocation(),
+  //       );
+  // }
   void _handleRetryLocation() {
+    final state = context.read<WorkOrderActionBloc>().state;
+
+    final isBusy = state.maybeWhen(
+      actionInProgress: (_, __, ___) => true,
+      loading: () => true,
+      orElse: () => false,
+    );
+
+    if (isBusy) return;
+
     context.read<WorkOrderActionBloc>().add(
           const WorkOrderActionEvent.captureLocation(),
         );

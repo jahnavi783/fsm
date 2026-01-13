@@ -25,7 +25,8 @@ mixin _$WorkOrderEntity {
   WorkOrderStatus get status;
   int get durationDays;
   String? get serviceRequestNumber;
-  double? get durationHours; // @Default(0) int pauseCount,
+  double? get durationHours;
+  int get pauseCount;
   DateTime get createdAt;
   DateTime get updatedAt;
   DateTime? get startedAt;
@@ -78,6 +79,8 @@ mixin _$WorkOrderEntity {
                 other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.durationHours, durationHours) ||
                 other.durationHours == durationHours) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -126,6 +129,7 @@ mixin _$WorkOrderEntity {
         durationDays,
         serviceRequestNumber,
         durationHours,
+        pauseCount,
         createdAt,
         updatedAt,
         startedAt,
@@ -148,7 +152,7 @@ mixin _$WorkOrderEntity {
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, pauseCount: $pauseCount, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -171,6 +175,7 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       int durationDays,
       String? serviceRequestNumber,
       double? durationHours,
+      int pauseCount,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -220,6 +225,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
     Object? durationDays = null,
     Object? serviceRequestNumber = freezed,
     Object? durationHours = freezed,
+    Object? pauseCount = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -288,6 +294,10 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationHours
           : durationHours // ignore: cast_nullable_to_non_nullable
               as double?,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -512,6 +522,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             int durationDays,
             String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -549,6 +560,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.durationDays,
             _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -600,6 +612,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             int durationDays,
             String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -636,6 +649,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.durationDays,
             _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -686,6 +700,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             int durationDays,
             String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
@@ -722,6 +737,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.durationDays,
             _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -762,6 +778,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
       required this.durationDays,
       this.serviceRequestNumber,
       this.durationHours,
+      this.pauseCount = 0,
       required this.createdAt,
       required this.updatedAt,
       this.startedAt,
@@ -812,7 +829,9 @@ class _WorkOrderEntity extends WorkOrderEntity {
   final String? serviceRequestNumber;
   @override
   final double? durationHours;
-// @Default(0) int pauseCount,
+  @override
+  @JsonKey()
+  final int pauseCount;
   @override
   final DateTime createdAt;
   @override
@@ -925,6 +944,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
                 other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.durationHours, durationHours) ||
                 other.durationHours == durationHours) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -974,6 +995,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
         durationDays,
         serviceRequestNumber,
         durationHours,
+        pauseCount,
         createdAt,
         updatedAt,
         startedAt,
@@ -996,7 +1018,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, pauseCount: $pauseCount, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -1021,6 +1043,7 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       int durationDays,
       String? serviceRequestNumber,
       double? durationHours,
+      int pauseCount,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
@@ -1073,6 +1096,7 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
     Object? durationDays = null,
     Object? serviceRequestNumber = freezed,
     Object? durationHours = freezed,
+    Object? pauseCount = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -1141,6 +1165,10 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationHours
           : durationHours // ignore: cast_nullable_to_non_nullable
               as double?,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable

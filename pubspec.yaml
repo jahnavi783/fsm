@@ -114,6 +114,7 @@ dev_dependencies:
   golden_toolkit: ^0.15.0
   integration_test:
     sdk: flutter
+  http_mock_adapter: ^0.6.1
 
 
 

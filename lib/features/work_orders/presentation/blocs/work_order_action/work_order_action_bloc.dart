@@ -659,6 +659,15 @@ class WorkOrderActionBloc
         ));
       },
       (updatedWorkOrder) {
+        print('===== AFTER PAUSE =====');
+        print(
+            'updatedWorkOrder.workLogs.length: ${updatedWorkOrder.workLogs.length}');
+        print(
+            'Pause count in updated WO: ${updatedWorkOrder.workLogs.where((log) => log.type == WorkLogType.paused).length}');
+        for (var log in updatedWorkOrder.workLogs) {
+          print('Log: ${log.type} at ${log.timestamp}');
+        }
+        print('=======================');
         emit(WorkOrderActionState.actionSuccess(
           workOrder: updatedWorkOrder,
           actionType: 'pause',

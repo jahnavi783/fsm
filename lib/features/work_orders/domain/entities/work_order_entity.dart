@@ -181,7 +181,7 @@ abstract class WorkOrderEntity with _$WorkOrderEntity {
     required int durationDays,
     String? serviceRequestNumber,
     double? durationHours,
-    // @Default(0) int pauseCount,
+    @Default(0) int pauseCount,
     required DateTime createdAt,
     required DateTime updatedAt,
     DateTime? startedAt,

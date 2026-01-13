@@ -306,24 +306,10 @@ class OfflineQueueService {
     }
   }
 
-  /// Enqueue a new request with deduplication
   Future<void> enqueue(OfflineRequest request) async {
     final list = await _get();
+    final sequence = DateTime.now().millisecondsSinceEpoch;
 
-    // CRITICAL: Remove conflicting actions for same work order
-    if (request.workOrderId != null) {
-      list.removeWhere((existing) {
-        // Same work order AND same action endpoint
-        final isSameWorkOrder = existing.workOrderId == request.workOrderId;
-        final existingAction = existing.url.split('/').last;
-        final newAction = request.url.split('/').last;
-        final isSameAction = existingAction == newAction;
-
-        return isSameWorkOrder && isSameAction;
-      });
-    }
-
-    // Create request with sequence number
     final requestWithSequence = OfflineRequest(
       id: request.id,
       url: request.url,
@@ -331,19 +317,16 @@ class OfflineQueueService {
       body: request.body,
       headers: request.headers,
       description: request.description,
-      sequenceNumber: ++_sequenceCounter,
+      sequenceNumber: sequence, // Use timestamp
       workOrderId: request.workOrderId,
     );
 
     list.add(requestWithSequence);
 
-    // Sort by sequence number to maintain order
+    // Sort by sequence number to ensure Pause 1 is before Resume 1, etc.
     list.sort((a, b) => a.sequenceNumber.compareTo(b.sequenceNumber));
 
     await _save(list);
-
-    debugPrint(
-        '✓ Enqueued: ${request.description} (seq: $requestWithSequence.sequenceNumber, queue size: ${list.length})');
   }
 
   /// Process queue with a processor function
@@ -358,6 +341,13 @@ class OfflineQueueService {
       debugPrint('ℹ️ Queue is empty');
       return;
     }
+    // Sort by work order AND sequence to ensure proper order
+    list.sort((a, b) {
+      if (a.workOrderId != b.workOrderId) {
+        return (a.workOrderId ?? '').compareTo(b.workOrderId ?? '');
+      }
+      return a.sequenceNumber.compareTo(b.sequenceNumber);
+    });
 
     debugPrint('🔄 Processing ${list.length} requests in queue');
 

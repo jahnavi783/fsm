@@ -1091,6 +1091,36 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
     }
   }
 
+  Future<void> _updateWorkOrderSafely(
+    WorkOrderDto dto,
+  ) async {
+    final serverModel = await _mapDtoToHiveModel(dto);
+    final localModel = await _localDataSource.getCachedWorkOrderById(dto.id);
+
+    if (localModel == null) {
+      await _localDataSource.updateWorkOrder(serverModel);
+      return;
+    }
+    final preservedPauseCount = serverModel.pauseCount > localModel.pauseCount
+        ? serverModel.pauseCount
+        : localModel.pauseCount;
+
+    final merged = localModel.copyWith(
+      status: serverModel.status,
+      // pauseCount: serverModel.pauseCount ?? 0,
+      pauseCount: preservedPauseCount,
+      startedAt: serverModel.startedAt,
+      resumedAt: serverModel.resumedAt,
+      completedAt: serverModel.completedAt,
+      workLog: serverModel.workLog,
+      pauseLogs: serverModel.pauseLogs,
+      images: serverModel.images,
+      partsUsed: serverModel.partsUsed,
+    );
+
+    await _localDataSource.updateWorkOrder(merged);
+  }
+
   // ---------------------------------------------------------------------------
   // FETCH LIST
   // ---------------------------------------------------------------------------
@@ -1236,8 +1266,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       if (await _networkInfo.isConnected) {
         final workOrderDto = await _remoteDataSource.getWorkOrderById(id);
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.info(
           'Successfully fetched work order $id',
@@ -1323,8 +1354,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           notes: notes,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.workOrder('Successfully started work order $workOrderId');
         return Right(workOrderDto.toEntity());
@@ -1437,8 +1469,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           files: files,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.workOrder('Successfully paused work order $workOrderId');
         return Right(workOrderDto.toEntity());
@@ -1468,6 +1501,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
         final updatedModel = cachedModel.copyWith(
           status: WorkOrderStatus.paused.index,
           pauseLogs: reason,
+          pauseCount: cachedModel.pauseCount + 1,
         );
         await _localDataSource.updateWorkOrder(updatedModel);
 
@@ -1482,7 +1516,8 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           },
           description: 'Pause work order #$workOrderId',
           headers: {},
-          sequenceNumber: 0,
+          // sequenceNumber: 0,
+          sequenceNumber: DateTime.now().millisecondsSinceEpoch,
           workOrderId: workOrderId.toString(),
         );
 
@@ -1551,8 +1586,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           notes: notes,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.workOrder('Successfully resumed work order $workOrderId');
         return Right(workOrderDto.toEntity());
@@ -1677,8 +1713,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           completionNotes: completionNotes,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.workOrder('Successfully completed work order $workOrderId');
         return Right(workOrderDto.toEntity());
@@ -1819,8 +1856,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           longitude: longitude,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.workOrder('Successfully rejected work order $workOrderId');
         return Right(workOrderDto.toEntity());
@@ -1922,8 +1960,9 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
           technicianId: technicianId,
         );
 
-        final hiveModel = await _mapDtoToHiveModel(workOrderDto);
-        await _localDataSource.updateWorkOrder(hiveModel);
+        // final hiveModel = await _mapDtoToHiveModel(workOrderDto);
+        // await _localDataSource.updateWorkOrder(hiveModel);
+        await _updateWorkOrderSafely(workOrderDto);
 
         _logger.info(
           'Successfully assigned work order $workOrderId to technician $technicianId',
@@ -2157,6 +2196,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       priority: _mapPriorityToIndex(dto.priority),
       visitDate: DateTime.parse(dto.visitDate),
       // pauseCount: dto.pauseCount,
+      pauseCount: dto.pauseCount ?? 0,
       location: dto.location,
       status: _mapStatusToIndex(dto.status),
       durationDays: dto.durationDays,
@@ -2197,6 +2237,7 @@ class WorkOrderRepositoryImpl implements IWorkOrderRepository {
       startedAt: entity.startedAt,
       resumedAt: entity.resumedAt,
       completedAt: entity.completedAt,
+      pauseCount: entity.pauseCount,
       pauseLogs: entity.pauseLogs,
       workLog: entity.workLog,
       partsUsed: entity.partsUsed

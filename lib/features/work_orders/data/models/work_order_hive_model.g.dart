@@ -42,13 +42,14 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       isPendingSync: fields[22] as bool,
       pendingAction: fields[23] as String?,
       serviceRequestNumber: fields[24] as String?,
+      pauseCount: fields[25] == null ? 0 : (fields[25] as num).toInt(),
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkOrderHiveModel obj) {
     writer
-      ..writeByte(25)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -98,7 +99,9 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       ..writeByte(23)
       ..write(obj.pendingAction)
       ..writeByte(24)
-      ..write(obj.serviceRequestNumber);
+      ..write(obj.serviceRequestNumber)
+      ..writeByte(25)
+      ..write(obj.pauseCount);
   }
 
   @override

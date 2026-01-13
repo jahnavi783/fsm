@@ -297,6 +297,8 @@ class WorkOrderHiveModel extends HiveObject {
 
   @HiveField(24)
   final String? serviceRequestNumber;
+  @HiveField(25)
+  final int pauseCount;
 
   WorkOrderHiveModel({
     required this.id,
@@ -310,7 +312,7 @@ class WorkOrderHiveModel extends HiveObject {
     required this.location,
     required this.status,
     required this.durationDays,
-    // ✅ FIXED: Added missing durationHours parameter
+    // FIXED: Added missing durationHours parameter
     this.durationHours,
     required this.createdAt,
     required this.updatedAt,
@@ -325,6 +327,7 @@ class WorkOrderHiveModel extends HiveObject {
     required this.isPendingSync,
     this.pendingAction,
     this.serviceRequestNumber,
+    this.pauseCount = 0,
   });
 
   WorkOrderHiveModel copyWith({
@@ -341,6 +344,7 @@ class WorkOrderHiveModel extends HiveObject {
     String? serviceRequestNumber,
     // ✅ FIXED: Added durationHours parameter to copyWith
     double? durationHours,
+    int? pauseCount,
   }) {
     return WorkOrderHiveModel(
       id: id,
@@ -366,6 +370,7 @@ class WorkOrderHiveModel extends HiveObject {
       workLog: workLog ?? this.workLog,
       partsUsed: partsUsed ?? this.partsUsed,
       images: images ?? this.images,
+      pauseCount: pauseCount ?? this.pauseCount,
       cachedAt: cachedAt,
       isPendingSync: isPendingSync ?? this.isPendingSync,
       pendingAction: pendingAction ?? this.pendingAction,
@@ -395,6 +400,7 @@ class WorkOrderHiveModel extends HiveObject {
       pauseLogs: pauseLogs,
       workLog: workLog,
       serviceRequestNumber: serviceRequestNumber,
+      pauseCount: pauseCount,
       partsUsed: (partsUsed ?? [])
           .map(
             (p) => PartUsedEntity(

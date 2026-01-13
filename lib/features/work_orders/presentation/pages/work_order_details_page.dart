@@ -675,15 +675,25 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     return Scaffold(
       body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
         listener: (context, state) {
+          debugPrint('SnackBar listener triggered');
           state.maybeWhen(
             actionSuccess: (workOrder, actionType, message, _) {
               // final fsmTheme = context.fsmTheme;
-
-              // Show success message
+              // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //
+              // // Show success message
               // ScaffoldMessenger.of(context).showSnackBar(
               //   SnackBar(
               //     content: Text(message),
               //     backgroundColor: fsmTheme.success,
+              //     duration: const Duration(seconds: 2),
+              //     action: SnackBarAction(
+              //       label: '✕', //close icon
+              //       textColor: Colors.white,
+              //       onPressed: () {
+              //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //       },
+              //     ),
               //   ),
               // );
 
@@ -1003,11 +1013,8 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         builder: (context, state) {
           return StatusAdaptiveActionsWidget(
             workOrder: workOrder,
-            isActionInProgress: state.maybeWhen(
-              actionInProgress: (_, __, ___) => true,
-              loading: () => true,
-              orElse: () => false,
-            ),
+            isActionInProgress: isActionInProgress,
+            isOffline: isOffline,
             currentUserPauseCount: state.maybeWhen(
               loaded: (_, __, ___, ____, _____, ______, pauseCount) =>
                   pauseCount,
@@ -1090,7 +1097,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
     return BlocBuilder<WorkOrderActionBloc, WorkOrderActionState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (_, __, ___, ____, groupedImages, ______, _______) {
+          loaded: (_, __, ___, ____, groupedImages, _____, ______) {
             if (groupedImages != null) {
               return WorkOrderImageGallerySection(
                 groupedImages: groupedImages,

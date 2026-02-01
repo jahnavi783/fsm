@@ -20,8 +20,8 @@ mixin _$UserDto {
   @JsonKey(name: 'last_name')
   String get lastName;
   String get email;
-  String? get phone;
-  Gender? get gender;
+  String? get phone; // Gender? gender,
+  String? get gender;
   String? get city;
   DateTime? get dob;
   @JsonKey(name: 'role_id')
@@ -79,7 +79,7 @@ abstract mixin class $UserDtoCopyWith<$Res> {
       @JsonKey(name: 'last_name') String lastName,
       String email,
       String? phone,
-      Gender? gender,
+      String? gender,
       String? city,
       DateTime? dob,
       @JsonKey(name: 'role_id') UserRole? roleId,
@@ -133,7 +133,7 @@ class _$UserDtoCopyWithImpl<$Res> implements $UserDtoCopyWith<$Res> {
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
+              as String?,
       city: freezed == city
           ? _self.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -253,7 +253,7 @@ extension UserDtoPatterns on UserDto {
             @JsonKey(name: 'last_name') String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             @JsonKey(name: 'role_id') UserRole? roleId,
@@ -301,7 +301,7 @@ extension UserDtoPatterns on UserDto {
             @JsonKey(name: 'last_name') String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             @JsonKey(name: 'role_id') UserRole? roleId,
@@ -347,7 +347,7 @@ extension UserDtoPatterns on UserDto {
             @JsonKey(name: 'last_name') String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             @JsonKey(name: 'role_id') UserRole? roleId,
@@ -404,8 +404,9 @@ class _UserDto extends UserDto {
   final String email;
   @override
   final String? phone;
+// Gender? gender,
   @override
-  final Gender? gender;
+  final String? gender;
   @override
   final String? city;
   @override
@@ -473,7 +474,7 @@ abstract mixin class _$UserDtoCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
       @JsonKey(name: 'last_name') String lastName,
       String email,
       String? phone,
-      Gender? gender,
+      String? gender,
       String? city,
       DateTime? dob,
       @JsonKey(name: 'role_id') UserRole? roleId,
@@ -527,7 +528,7 @@ class __$UserDtoCopyWithImpl<$Res> implements _$UserDtoCopyWith<$Res> {
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
+              as String?,
       city: freezed == city
           ? _self.city
           : city // ignore: cast_nullable_to_non_nullable

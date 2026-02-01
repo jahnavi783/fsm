@@ -214,13 +214,15 @@
 //         'description': description,
 //       };
 // }
+import 'package:fsm/features/work_orders/data/models/work_log_hive_model.dart';
 import 'package:hive_ce/hive.dart';
 
 import '../../domain/entities/work_order_entity.dart';
 
 part 'work_order_hive_model.g.dart';
 
-@HiveType(typeId: 5)
+// @HiveType(typeId: 5)
+@HiveType(typeId: 1)
 class WorkOrderHiveModel extends HiveObject {
   @HiveField(0)
   final int id;
@@ -275,7 +277,7 @@ class WorkOrderHiveModel extends HiveObject {
   final DateTime? completedAt;
 
   @HiveField(17)
-  final String? pauseLogs;
+  final List<String>? pauseLogs;
 
   @HiveField(18)
   final String? workLog;
@@ -299,7 +301,8 @@ class WorkOrderHiveModel extends HiveObject {
   final String? serviceRequestNumber;
   @HiveField(25)
   final int pauseCount;
-
+  @HiveField(26)
+  final List<WorkLogHiveModel>? workLogs;
   WorkOrderHiveModel({
     required this.id,
     required this.woNumber,
@@ -322,6 +325,7 @@ class WorkOrderHiveModel extends HiveObject {
     this.pauseLogs,
     this.workLog,
     this.partsUsed,
+    this.workLogs,
     required this.images,
     required this.cachedAt,
     required this.isPendingSync,
@@ -335,9 +339,10 @@ class WorkOrderHiveModel extends HiveObject {
     String? pendingAction,
     bool? isPendingSync,
     DateTime? startedAt,
+    DateTime? pausedAt,
     DateTime? resumedAt,
     DateTime? completedAt,
-    String? pauseLogs,
+    List<String>? pauseLogs,
     String? workLog,
     List<String>? images,
     List<PartUsedHiveModel>? partsUsed,
@@ -345,6 +350,7 @@ class WorkOrderHiveModel extends HiveObject {
     // ✅ FIXED: Added durationHours parameter to copyWith
     double? durationHours,
     int? pauseCount,
+    List<WorkLogHiveModel>? workLogs,
   }) {
     return WorkOrderHiveModel(
       id: id,
@@ -374,6 +380,7 @@ class WorkOrderHiveModel extends HiveObject {
       cachedAt: cachedAt,
       isPendingSync: isPendingSync ?? this.isPendingSync,
       pendingAction: pendingAction ?? this.pendingAction,
+      workLogs: workLogs ?? this.workLogs,
     );
   }
 
@@ -401,6 +408,11 @@ class WorkOrderHiveModel extends HiveObject {
       workLog: workLog,
       serviceRequestNumber: serviceRequestNumber,
       pauseCount: pauseCount,
+      // workLogs: (workLogs ?? []).map((w) => w.toEntity()).toList(),
+      workLogs: (workLogs ?? [])
+          .map((w) => w.toEntity(workOrderId: id)) // Pass the work order ID
+          .toList(),
+
       partsUsed: (partsUsed ?? [])
           .map(
             (p) => PartUsedEntity(
@@ -416,7 +428,8 @@ class WorkOrderHiveModel extends HiveObject {
   }
 }
 
-@HiveType(typeId: 6)
+// @HiveType(typeId: 6)
+@HiveType(typeId: 2)
 class PartUsedHiveModel {
   @HiveField(0)
   final String partNumber;

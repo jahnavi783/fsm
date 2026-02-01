@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:fsm/core/network/network_info.dart';
-import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
-import 'package:fsm/features/work_orders/domain/usecases/get_work_orders_usecase.dart';
-import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
 import 'package:fsm/features/auth/domain/repositories/i_auth_repository.dart';
+import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:fsm/features/work_orders/domain/repositories/i_work_order_repository.dart';
+import 'package:fsm/features/work_orders/domain/usecases/get_work_orders_usecase.dart';
+import 'package:injectable/injectable.dart';
+
 import 'dashboard_event.dart';
 import 'dashboard_state.dart';
 
@@ -53,7 +54,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     final result = await _getWorkOrdersUseCase(GetWorkOrdersParams(
       page: 1,
-      limit: 50, // Load more for dashboard
+      limit: 1000, // Load more for dashboard
     ));
 
     await result.fold(
@@ -698,5 +699,5 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
 // Use the generated Freezed classes directly:
 // - DashboardState.loaded() for loaded state
-// - DashboardState.error() for error state  
+// - DashboardState.error() for error state
 // - DashboardState.syncing() for syncing state

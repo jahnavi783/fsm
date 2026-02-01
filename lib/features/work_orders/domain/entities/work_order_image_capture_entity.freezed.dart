@@ -24,6 +24,8 @@ mixin _$WorkOrderImageCaptureEntity {
   String? get reason;
   String? get comments;
   String? get remarks;
+  DateTime? get actionAt;
+  int? get sequenceNumber;
 
   /// Create a copy of WorkOrderImageCaptureEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -54,7 +56,11 @@ mixin _$WorkOrderImageCaptureEntity {
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.comments, comments) ||
                 other.comments == comments) &&
-            (identical(other.remarks, remarks) || other.remarks == remarks));
+            (identical(other.remarks, remarks) || other.remarks == remarks) &&
+            (identical(other.actionAt, actionAt) ||
+                other.actionAt == actionAt) &&
+            (identical(other.sequenceNumber, sequenceNumber) ||
+                other.sequenceNumber == sequenceNumber));
   }
 
   @override
@@ -69,11 +75,13 @@ mixin _$WorkOrderImageCaptureEntity {
       capturedAt,
       reason,
       comments,
-      remarks);
+      remarks,
+      actionAt,
+      sequenceNumber);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks, actionAt: $actionAt, sequenceNumber: $sequenceNumber)';
   }
 }
 
@@ -94,7 +102,9 @@ abstract mixin class $WorkOrderImageCaptureEntityCopyWith<$Res> {
       DateTime? capturedAt,
       String? reason,
       String? comments,
-      String? remarks});
+      String? remarks,
+      DateTime? actionAt,
+      int? sequenceNumber});
 
   $CapturedByEntityCopyWith<$Res>? get capturedBy;
 }
@@ -122,6 +132,8 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
     Object? reason = freezed,
     Object? comments = freezed,
     Object? remarks = freezed,
+    Object? actionAt = freezed,
+    Object? sequenceNumber = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -164,6 +176,14 @@ class _$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
           ? _self.remarks
           : remarks // ignore: cast_nullable_to_non_nullable
               as String?,
+      actionAt: freezed == actionAt
+          ? _self.actionAt
+          : actionAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      sequenceNumber: freezed == sequenceNumber
+          ? _self.sequenceNumber
+          : sequenceNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -285,7 +305,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             DateTime? capturedAt,
             String? reason,
             String? comments,
-            String? remarks)?
+            String? remarks,
+            DateTime? actionAt,
+            int? sequenceNumber)?
         $default, {
     required TResult orElse(),
   }) {
@@ -302,7 +324,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedAt,
             _that.reason,
             _that.comments,
-            _that.remarks);
+            _that.remarks,
+            _that.actionAt,
+            _that.sequenceNumber);
       case _:
         return orElse();
     }
@@ -333,7 +357,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             DateTime? capturedAt,
             String? reason,
             String? comments,
-            String? remarks)
+            String? remarks,
+            DateTime? actionAt,
+            int? sequenceNumber)
         $default,
   ) {
     final _that = this;
@@ -349,7 +375,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedAt,
             _that.reason,
             _that.comments,
-            _that.remarks);
+            _that.remarks,
+            _that.actionAt,
+            _that.sequenceNumber);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -379,7 +407,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             DateTime? capturedAt,
             String? reason,
             String? comments,
-            String? remarks)?
+            String? remarks,
+            DateTime? actionAt,
+            int? sequenceNumber)?
         $default,
   ) {
     final _that = this;
@@ -395,7 +425,9 @@ extension WorkOrderImageCaptureEntityPatterns on WorkOrderImageCaptureEntity {
             _that.capturedAt,
             _that.reason,
             _that.comments,
-            _that.remarks);
+            _that.remarks,
+            _that.actionAt,
+            _that.sequenceNumber);
       case _:
         return null;
     }
@@ -415,7 +447,9 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
       this.capturedAt,
       this.reason,
       this.comments,
-      this.remarks})
+      this.remarks,
+      this.actionAt,
+      this.sequenceNumber})
       : _imageUrls = imageUrls;
 
   @override
@@ -445,6 +479,10 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
   final String? comments;
   @override
   final String? remarks;
+  @override
+  final DateTime? actionAt;
+  @override
+  final int? sequenceNumber;
 
   /// Create a copy of WorkOrderImageCaptureEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -476,7 +514,11 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.comments, comments) ||
                 other.comments == comments) &&
-            (identical(other.remarks, remarks) || other.remarks == remarks));
+            (identical(other.remarks, remarks) || other.remarks == remarks) &&
+            (identical(other.actionAt, actionAt) ||
+                other.actionAt == actionAt) &&
+            (identical(other.sequenceNumber, sequenceNumber) ||
+                other.sequenceNumber == sequenceNumber));
   }
 
   @override
@@ -491,11 +533,13 @@ class _WorkOrderImageCaptureEntity implements WorkOrderImageCaptureEntity {
       capturedAt,
       reason,
       comments,
-      remarks);
+      remarks,
+      actionAt,
+      sequenceNumber);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks)';
+    return 'WorkOrderImageCaptureEntity(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, latitude: $latitude, longitude: $longitude, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, comments: $comments, remarks: $remarks, actionAt: $actionAt, sequenceNumber: $sequenceNumber)';
   }
 }
 
@@ -518,7 +562,9 @@ abstract mixin class _$WorkOrderImageCaptureEntityCopyWith<$Res>
       DateTime? capturedAt,
       String? reason,
       String? comments,
-      String? remarks});
+      String? remarks,
+      DateTime? actionAt,
+      int? sequenceNumber});
 
   @override
   $CapturedByEntityCopyWith<$Res>? get capturedBy;
@@ -547,6 +593,8 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
     Object? reason = freezed,
     Object? comments = freezed,
     Object? remarks = freezed,
+    Object? actionAt = freezed,
+    Object? sequenceNumber = freezed,
   }) {
     return _then(_WorkOrderImageCaptureEntity(
       id: freezed == id
@@ -589,6 +637,14 @@ class __$WorkOrderImageCaptureEntityCopyWithImpl<$Res>
           ? _self.remarks
           : remarks // ignore: cast_nullable_to_non_nullable
               as String?,
+      actionAt: freezed == actionAt
+          ? _self.actionAt
+          : actionAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      sequenceNumber: freezed == sequenceNumber
+          ? _self.sequenceNumber
+          : sequenceNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 

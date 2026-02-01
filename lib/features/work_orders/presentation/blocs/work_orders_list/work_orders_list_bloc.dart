@@ -96,8 +96,11 @@ class WorkOrdersListBloc
           workOrders: workOrdersData.workOrders,
           unassignedWorkOrders: workOrdersData.unassignedWorkOrders,
           unassignedCount: workOrdersData.unassignedCount,
-          currentPage: page,
-          hasReachedMax: workOrdersData.workOrders.length < limit,
+          // currentPage: page,
+          // hasReachedMax: workOrdersData.workOrders.length < limit,
+          currentPage: 1,
+          hasReachedMax: true,
+          isLoadingMore: false,
           statusFilter: status,
           priorityFilter: priority,
           searchQuery: searchQuery,
@@ -109,146 +112,154 @@ class WorkOrdersListBloc
   }
 
   Future<void> _loadMoreWorkOrders(Emitter<WorkOrdersListState> emit) async {
-    final currentState = state;
-    if (!currentState.maybeWhen(
-      loaded: (_, __, ___, ____, hasReachedMax, isLoadingMore, ______, _______,
-              ________, _________, __________) =>
-          !hasReachedMax && !isLoadingMore,
-      orElse: () => false,
-    )) {
-      return;
-    }
-
-    final nextPage = currentState.maybeWhen(
-      loaded: (_, __, ___, currentPage, ____, _____, ______, _______, ________,
-              _________, __________) =>
-          currentPage + 1,
-      orElse: () => 1,
-    );
-
-    // Update state to show loading more
-    emit(currentState.maybeWhen(
-      loaded: (workOrders,
-              unassignedWorkOrders,
-              unassignedCount,
-              currentPage,
-              hasReachedMax,
-              _,
-              statusFilter,
-              priorityFilter,
-              searchQuery,
-              isOffline,
-              hasPendingSync) =>
-          WorkOrdersListState.loaded(
-        workOrders: workOrders,
-        unassignedWorkOrders: unassignedWorkOrders,
-        unassignedCount: unassignedCount,
-        currentPage: currentPage,
-        hasReachedMax: hasReachedMax,
-        isLoadingMore: true,
-        statusFilter: statusFilter,
-        priorityFilter: priorityFilter,
-        searchQuery: searchQuery,
-        isOffline: isOffline,
-        hasPendingSync: hasPendingSync,
-      ),
-      orElse: () => currentState,
-    ));
-
-    final result = await _getWorkOrdersUseCase(GetWorkOrdersParams(
-      page: nextPage,
-      limit: 20,
-      status: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
-                ________, _________, __________) =>
-            statusFilter,
-        orElse: () => null,
-      ),
-      priority: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
-                ________, _________, __________) =>
-            priorityFilter,
-        orElse: () => null,
-      ),
-      searchQuery: currentState.maybeWhen(
-        loaded: (_, __, ___, ____, _____, ______, _______, ________,
-                searchQuery, _________, __________) =>
-            searchQuery,
-        orElse: () => null,
-      ),
-    ));
-
-    result.fold(
-      (failure) {
-        emit(currentState.maybeWhen(
-          loaded: (workOrders,
-                  unassignedWorkOrders,
-                  unassignedCount,
-                  currentPage,
-                  hasReachedMax,
-                  _,
-                  statusFilter,
-                  priorityFilter,
-                  searchQuery,
-                  isOffline,
-                  hasPendingSync) =>
-              WorkOrdersListState.loaded(
-            workOrders: workOrders,
-            unassignedWorkOrders: unassignedWorkOrders,
-            unassignedCount: unassignedCount,
-            currentPage: currentPage,
-            hasReachedMax: hasReachedMax,
-            isLoadingMore: false,
-            statusFilter: statusFilter,
-            priorityFilter: priorityFilter,
-            searchQuery: searchQuery,
-            isOffline: isOffline,
-            hasPendingSync: hasPendingSync,
-          ),
-          orElse: () => currentState,
-        ));
-      },
-      (workOrdersData) {
-        final currentWorkOrders = currentState.maybeWhen(
-          loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
-                  ________, _________, __________) =>
-              workOrders,
-          orElse: () => <WorkOrderEntity>[],
-        );
-        final allWorkOrders = [
-          ...currentWorkOrders,
-          ...workOrdersData.workOrders
-        ];
-
-        emit(currentState.maybeWhen(
-          loaded: (_,
-                  unassignedWorkOrders,
-                  unassignedCount,
-                  ____,
-                  _____,
-                  ______,
-                  statusFilter,
-                  priorityFilter,
-                  searchQuery,
-                  isOffline,
-                  hasPendingSync) =>
-              WorkOrdersListState.loaded(
-            workOrders: allWorkOrders,
-            unassignedWorkOrders: unassignedWorkOrders,
-            unassignedCount: unassignedCount,
-            currentPage: nextPage,
-            hasReachedMax: workOrdersData.workOrders.length < 20,
-            isLoadingMore: false,
-            statusFilter: statusFilter,
-            priorityFilter: priorityFilter,
-            searchQuery: searchQuery,
-            isOffline: isOffline,
-            hasPendingSync: hasPendingSync,
-          ),
-          orElse: () => currentState,
-        ));
-      },
-    );
+    // final currentState = state;
+    // final isConnected = await _networkInfo.isConnected;
+    // if (!currentState.maybeWhen(
+    //   loaded: (_, __, ___, ____, hasReachedMax, isLoadingMore, ______, _______,
+    //           ________, _________, __________) =>
+    //       !hasReachedMax && !isLoadingMore,
+    //   orElse: () => false,
+    // )) {
+    //   return;
+    // }
+    // if (!isConnected) {
+    //   return; // Exit early - all data already loaded
+    // }
+    //
+    // final nextPage = currentState.maybeWhen(
+    //   loaded: (_, __, ___, currentPage, ____, _____, ______, _______, ________,
+    //           _________, __________) =>
+    //       currentPage + 1,
+    //   orElse: () => 1,
+    // );
+    //
+    // // Update state to show loading more
+    // emit(currentState.maybeWhen(
+    //   loaded: (workOrders,
+    //           unassignedWorkOrders,
+    //           unassignedCount,
+    //           currentPage,
+    //           hasReachedMax,
+    //           _,
+    //           statusFilter,
+    //           priorityFilter,
+    //           searchQuery,
+    //           isOffline,
+    //           hasPendingSync) =>
+    //       WorkOrdersListState.loaded(
+    //     workOrders: workOrders,
+    //     unassignedWorkOrders: unassignedWorkOrders,
+    //     unassignedCount: unassignedCount,
+    //     // currentPage: currentPage,
+    //     currentPage: 1,
+    //     // hasReachedMax: hasReachedMax,
+    //     hasReachedMax: true,
+    //     // isLoadingMore: true,
+    //     isLoadingMore: false,
+    //     statusFilter: statusFilter,
+    //     priorityFilter: priorityFilter,
+    //     searchQuery: searchQuery,
+    //     isOffline: isOffline,
+    //     hasPendingSync: hasPendingSync,
+    //   ),
+    //   orElse: () => currentState,
+    // ));
+    //
+    // final result = await _getWorkOrdersUseCase(GetWorkOrdersParams(
+    //   page: nextPage,
+    //   limit: 20,
+    //   status: currentState.maybeWhen(
+    //     loaded: (_, __, ___, ____, _____, ______, statusFilter, _______,
+    //             ________, _________, __________) =>
+    //         statusFilter,
+    //     orElse: () => null,
+    //   ),
+    //   priority: currentState.maybeWhen(
+    //     loaded: (_, __, ___, ____, _____, ______, _______, priorityFilter,
+    //             ________, _________, __________) =>
+    //         priorityFilter,
+    //     orElse: () => null,
+    //   ),
+    //   searchQuery: currentState.maybeWhen(
+    //     loaded: (_, __, ___, ____, _____, ______, _______, ________,
+    //             searchQuery, _________, __________) =>
+    //         searchQuery,
+    //     orElse: () => null,
+    //   ),
+    // ));
+    //
+    // result.fold(
+    //   (failure) {
+    //     emit(currentState.maybeWhen(
+    //       loaded: (workOrders,
+    //               unassignedWorkOrders,
+    //               unassignedCount,
+    //               currentPage,
+    //               hasReachedMax,
+    //               _,
+    //               statusFilter,
+    //               priorityFilter,
+    //               searchQuery,
+    //               isOffline,
+    //               hasPendingSync) =>
+    //           WorkOrdersListState.loaded(
+    //         workOrders: workOrders,
+    //         unassignedWorkOrders: unassignedWorkOrders,
+    //         unassignedCount: unassignedCount,
+    //         currentPage: currentPage,
+    //         hasReachedMax: hasReachedMax,
+    //         isLoadingMore: false,
+    //         statusFilter: statusFilter,
+    //         priorityFilter: priorityFilter,
+    //         searchQuery: searchQuery,
+    //         isOffline: isOffline,
+    //         hasPendingSync: hasPendingSync,
+    //       ),
+    //       orElse: () => currentState,
+    //     ));
+    //   },
+    //   (workOrdersData) {
+    //     final currentWorkOrders = currentState.maybeWhen(
+    //       loaded: (workOrders, _, __, ___, ____, _____, ______, _______,
+    //               ________, _________, __________) =>
+    //           workOrders,
+    //       orElse: () => <WorkOrderEntity>[],
+    //     );
+    //     final allWorkOrders = [
+    //       ...currentWorkOrders,
+    //       ...workOrdersData.workOrders
+    //     ];
+    //
+    //     emit(currentState.maybeWhen(
+    //       loaded: (_,
+    //               unassignedWorkOrders,
+    //               unassignedCount,
+    //               ____,
+    //               _____,
+    //               ______,
+    //               statusFilter,
+    //               priorityFilter,
+    //               searchQuery,
+    //               isOffline,
+    //               hasPendingSync) =>
+    //           WorkOrdersListState.loaded(
+    //         workOrders: allWorkOrders,
+    //         unassignedWorkOrders: unassignedWorkOrders,
+    //         unassignedCount: unassignedCount,
+    //         currentPage: nextPage,
+    //         hasReachedMax: workOrdersData.workOrders.length < 20,
+    //         isLoadingMore: false,
+    //         statusFilter: statusFilter,
+    //         priorityFilter: priorityFilter,
+    //         searchQuery: searchQuery,
+    //         isOffline: isOffline,
+    //         hasPendingSync: hasPendingSync,
+    //       ),
+    //       orElse: () => currentState,
+    //     ));
+    //   },
+    // );
+    return;
   }
 
   Future<void> _refreshWorkOrders(Emitter<WorkOrdersListState> emit) async {

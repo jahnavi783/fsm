@@ -1,8 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../features/work_orders/data/repositories/work_order_repository_impl.dart';
 import '../../features/work_orders/data/services/background_sync_service.dart';
 import '../../features/work_orders/data/services/local_user_store.dart';
+import '../../features/work_orders/domain/repositories/i_work_order_repository.dart';
 import 'injection.config.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -22,6 +24,8 @@ Future<void> configureDependencies(String environment) async {
     getIt(),
     getIt<LocalUserStore>(), // resolves Dio from GetIt
   );
+  // ✅ 3) Initialize WorkOrderRepository callback
+  (getIt<IWorkOrderRepository>() as WorkOrderRepositoryImpl).init();
 }
 
 /// Environment constants

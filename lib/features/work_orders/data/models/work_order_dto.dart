@@ -63,13 +63,28 @@ dynamic _partsUsedToJson(List<PartUsedDto>? partsUsed) {
   return jsonEncode(jsonList);
 }
 
+List<String>? _pauseLogsFromJson(dynamic value) {
+  if (value == null) return null;
+
+  if (value is List) {
+    return value.map((e) => e.toString()).toList();
+  }
+
+  if (value is String) {
+    return [value];
+  }
+
+  return null;
+}
+
 @freezed
 abstract class WorkOrderDto with _$WorkOrderDto {
   const factory WorkOrderDto({
     required int id,
     @JsonKey(name: 'wo_number') required String woNumber,
     @JsonKey(name: 'sr_id') required int srId,
-    @JsonKey(name: 'pause_count') @Default(0) int pauseCount,
+    // @JsonKey(name: 'pause_count') @Default(0) int pauseCount,
+    @JsonKey(name: 'pause_count') int? pauseCount,
     @JsonKey(name: 'service_request_number') String? serviceRequestNumber,
     @Default('') String summary,
     @JsonKey(name: 'problem_description')
@@ -87,7 +102,9 @@ abstract class WorkOrderDto with _$WorkOrderDto {
     @JsonKey(name: 'started_at') String? startedAt,
     @JsonKey(name: 'resumed_at') String? resumedAt,
     @JsonKey(name: 'completed_at') String? completedAt,
-    @JsonKey(name: 'pause_logs') String? pauseLogs,
+    // @JsonKey(name: 'pause_logs') List<String>? pauseLogs,
+    @JsonKey(name: 'pause_logs', fromJson: _pauseLogsFromJson)
+    List<String>? pauseLogs,
     @JsonKey(name: 'rejection_logs') String? rejectionLogs,
     @JsonKey(name: 'work_log') String? workLog,
     @JsonKey(

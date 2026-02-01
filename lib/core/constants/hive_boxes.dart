@@ -10,9 +10,11 @@ abstract class HiveBoxes {
   static const String profile = 'profile_box';
   static const String profilePreferences = 'profile_preferences_box';
   static const String settingsBox = 'settings_box';
-  static const String workOrderCompletionCache = 'work_order_completion_cache_box';
+  static const String workOrderCompletionCache =
+      'work_order_completion_cache_box';
   static const String chatMessages = 'chat_messages_box';
   static const String chatSessions = 'chat_sessions_box';
+  static const String workLogs = 'work_logs_box';
 
   // Type IDs for Hive adapters
   static const int userEntityTypeId = 0;

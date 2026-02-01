@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,6 +9,7 @@ import '../../features/calendar/data/models/calendar_event_hive_model.dart';
 import '../../features/documents/data/models/document_hive_model.dart';
 import '../../features/parts/data/models/part_hive_model.dart' as parts;
 import '../../features/profile/data/models/profile_hive_model.dart';
+import '../../features/work_orders/data/models/work_log_hive_model.dart';
 import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
 import '../../features/work_orders/data/models/work_order_hive_model.dart';
 import '../constants/app_constants.dart';
@@ -38,17 +40,49 @@ class HiveService {
 
     // Register Hive adapters
     _registerAdapters();
+    _settingsBox = await Hive.openBox(HiveBoxes.settingsBox);
+
+    // Check if migration is needed (one-time only)
+    final needsMigration =
+        _settingsBox.get('needs_typeid_migration', defaultValue: true);
+
+    if (needsMigration) {
+      _loggingService.info('🔄 Performing one-time Hive migration...');
+
+      // Close settings box before deleting
+      await _settingsBox.close();
+
+      // Delete all .hive files
+      final dir = Directory(appDocPath);
+      await for (final file in dir.list()) {
+        if (file.path.contains('.hive')) {
+          await file.delete();
+        }
+      }
+
+      // Reopen settings box and mark migration complete
+      _settingsBox = await Hive.openBox(HiveBoxes.settingsBox);
+      await _settingsBox.put('needs_typeid_migration', false);
+
+      _loggingService.info('✅ Migration complete');
+    }
 
     // Open essential boxes
     _authBox = await Hive.openBox(HiveBoxes.authBox);
-    _settingsBox = await Hive.openBox(HiveBoxes.settingsBox);
+    debugPrint('DEBUG: Is WorkLog registered? ${Hive.isAdapterRegistered(6)}');
 
     // Open feature-specific boxes
     await _openFeatureBoxes();
+    // await _fixHiveCorruptionIfNeeded();
   }
 
   void _registerAdapters() {
     try {
+      // Register Work Log adapter (TIMELINE)
+      if (!Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)) {
+        Hive.registerAdapter(WorkLogHiveModelAdapter());
+      }
+
       // Register Work Order related adapters
       if (!Hive.isAdapterRegistered(HiveBoxes.workOrderEntityTypeId)) {
         Hive.registerAdapter(WorkOrderHiveModelAdapter());
@@ -66,7 +100,6 @@ class HiveService {
       if (!Hive.isAdapterRegistered(HiveBoxes.documentEntityTypeId)) {
         Hive.registerAdapter(DocumentHiveModelAdapter());
       }
-
       // Register Calendar Event adapter
       if (!Hive.isAdapterRegistered(HiveBoxes.calendarEventEntityTypeId)) {
         Hive.registerAdapter(CalendarEventHiveModelAdapter());
@@ -87,6 +120,8 @@ class HiveService {
       if (!Hive.isAdapterRegistered(HiveBoxes.cachedPartUsedTypeId)) {
         Hive.registerAdapter(CachedPartUsedModelAdapter());
       }
+      debugPrint('WorkLog adapter registered: '
+          '${Hive.isAdapterRegistered(HiveBoxes.workLogEntityTypeId)}');
     } catch (e) {
       // Log adapter registration errors but don't crash the app
       _loggingService.error('Error registering Hive adapters: $e', error: e);
@@ -109,6 +144,7 @@ class HiveService {
       await Hive.openBox<ProfileHiveModel>(HiveBoxes.profile);
       await Hive.openBox<ProfilePreferencesHiveModel>(
           HiveBoxes.profilePreferences);
+      await Hive.openBox<WorkLogHiveModel>(HiveBoxes.workLogs);
     } catch (e) {
       _loggingService.error('Error opening feature boxes: $e', error: e);
       rethrow;

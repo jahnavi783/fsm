@@ -8,7 +8,7 @@ part of 'work_order_hive_model.dart';
 
 class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
   @override
-  final typeId = 5;
+  final typeId = 1;
 
   @override
   WorkOrderHiveModel read(BinaryReader reader) {
@@ -34,9 +34,10 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       startedAt: fields[14] as DateTime?,
       resumedAt: fields[15] as DateTime?,
       completedAt: fields[16] as DateTime?,
-      pauseLogs: fields[17] as String?,
+      pauseLogs: (fields[17] as List?)?.cast<String>(),
       workLog: fields[18] as String?,
       partsUsed: (fields[19] as List?)?.cast<PartUsedHiveModel>(),
+      workLogs: (fields[26] as List?)?.cast<WorkLogHiveModel>(),
       images: (fields[20] as List).cast<String>(),
       cachedAt: fields[21] as DateTime,
       isPendingSync: fields[22] as bool,
@@ -49,7 +50,7 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
   @override
   void write(BinaryWriter writer, WorkOrderHiveModel obj) {
     writer
-      ..writeByte(26)
+      ..writeByte(27)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -101,7 +102,9 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
       ..writeByte(24)
       ..write(obj.serviceRequestNumber)
       ..writeByte(25)
-      ..write(obj.pauseCount);
+      ..write(obj.pauseCount)
+      ..writeByte(26)
+      ..write(obj.workLogs);
   }
 
   @override
@@ -117,7 +120,7 @@ class WorkOrderHiveModelAdapter extends TypeAdapter<WorkOrderHiveModel> {
 
 class PartUsedHiveModelAdapter extends TypeAdapter<PartUsedHiveModel> {
   @override
-  final typeId = 6;
+  final typeId = 2;
 
   @override
   PartUsedHiveModel read(BinaryReader reader) {

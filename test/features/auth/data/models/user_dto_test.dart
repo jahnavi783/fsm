@@ -9,7 +9,7 @@ void main() {
     lastName: 'Doe',
     email: 'test@example.com',
     phone: '+1234567890',
-    gender: Gender.male,
+    gender: 'male',
     city: 'New York',
     roleId: UserRole.technician,
     role: 'Technician',

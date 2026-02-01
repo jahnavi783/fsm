@@ -1,6 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
+
+import '../../../features/auth/data/datasources/auth_local_datasource.dart';
+import '../../di/injection.dart';
+import '../../router/app_router.gr.dart';
 
 /// FSMDrawer - Enhanced Material 3 navigation drawer for FSM app
 ///
@@ -155,7 +160,12 @@ class FSMDrawer extends StatelessWidget {
                   label: 'AI Assistant',
                   section: 'chat',
                   currentRoute: currentRoute,
-                  onTap: () => onNavigate('chat'),
+                  // onTap: () => onNavigate('chat'),
+                  onTap: () async {
+                    final authLocal = getIt<AuthLocalDataSource>();
+                    final userName = await authLocal.getUserName() ?? 'User';
+                    context.router.push(ChatbotRoute(userName: userName));
+                  },
                 ),
                 _NavigationItem(
                   icon: Icons.person_outline,

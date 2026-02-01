@@ -1717,23 +1717,43 @@ class _TimelineEntry {
   final WorkOrderImageCaptureEntity capture;
   final String actionType;
   final DateTime occurredAt;
+  final int sortKey;
   _TimelineEntry({
     required this.capture,
     required this.actionType,
-  }) : occurredAt = _parseTimestamp(capture);
+  })  : occurredAt = _resolveOccurredAt(capture),
+        sortKey = _resolveSortKey(capture);
 
-  static DateTime _parseTimestamp(WorkOrderImageCaptureEntity capture) {
-    // final parsed = DateTime.tryParse(capture.timestamp ?? '');
-    // return parsed?.toUtc() ?? DateTime.fromMillisecondsSinceEpoch(0);
-    final parsed = DateTime.tryParse(capture.timestamp ?? '');
-    if (parsed != null) {
-      return parsed.toUtc();
-    }
-    if (capture.capturedAt != null) {
-      return capture.capturedAt!.toUtc();
-    }
+  // static DateTime _parseTimestamp(WorkOrderImageCaptureEntity capture) {
+  //   // final parsed = DateTime.tryParse(capture.timestamp ?? '');
+  //   // return parsed?.toUtc() ?? DateTime.fromMillisecondsSinceEpoch(0);
+  //   final parsed = DateTime.tryParse(capture.timestamp ?? '');
+  //   if (parsed != null) {
+  //     return parsed.toUtc();
+  //   }
+  //   if (capture.capturedAt != null) {
+  //     return capture.capturedAt!.toUtc();
+  //   }
+  //
+  //   return DateTime.fromMillisecondsSinceEpoch(0);
+  // }
+  static DateTime _resolveOccurredAt(WorkOrderImageCaptureEntity c) {
+    if (c.actionAt != null) return c.actionAt!.toUtc();
+
+    final parsed = DateTime.tryParse(c.timestamp ?? '');
+    if (parsed != null) return parsed.toUtc();
+
+    if (c.capturedAt != null) return c.capturedAt!.toUtc();
 
     return DateTime.fromMillisecondsSinceEpoch(0);
+  }
+
+  static int _resolveSortKey(WorkOrderImageCaptureEntity c) {
+    return c.sequenceNumber ??
+        c.actionAt?.millisecondsSinceEpoch ??
+        DateTime.tryParse(c.timestamp ?? '')?.millisecondsSinceEpoch ??
+        c.capturedAt?.millisecondsSinceEpoch ??
+        0;
   }
 
   /// Get color for this action type using FSM theme extension
@@ -1804,7 +1824,8 @@ class WorkOrderImageGallerySection extends StatelessWidget {
               actionType: entry['actionType'] as String,
             ))
         .toList();
-    entries.sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    // entries.sort((a, b) => a.occurredAt.compareTo(b.occurredAt));
+    entries.sort((a, b) => a.sortKey.compareTo(b.sortKey));
 
     return Padding(
       padding: REdgeInsets.only(top: DesignTokens.space4),

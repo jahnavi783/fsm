@@ -129,13 +129,13 @@ class _PartsPageState extends State<PartsPage> {
                 leadingIcon: Icons.inventory_2,
               ),
               const FilterChipData<String>(
-                value: 'electrical',
-                label: 'Electrical',
+                value: 'compressor parts',
+                label: 'Compressor Parts',
                 leadingIcon: Icons.electrical_services,
               ),
               const FilterChipData<String>(
-                value: 'hydraulic',
-                label: 'Hydraulic',
+                value: 'valves & pumps',
+                label: 'Valves & Pumps',
                 leadingIcon: Icons.water_drop,
               ),
               const FilterChipData<String>(
@@ -144,8 +144,13 @@ class _PartsPageState extends State<PartsPage> {
                 leadingIcon: Icons.settings,
               ),
               const FilterChipData<String>(
-                value: 'tools',
-                label: 'Tools',
+                value: 'filters',
+                label: 'Filters',
+                leadingIcon: Icons.filter_alt,
+              ),
+              const FilterChipData<String>(
+                value: 'drilling components',
+                label: 'Drilling Components',
                 leadingIcon: Icons.construction,
               ),
             ],

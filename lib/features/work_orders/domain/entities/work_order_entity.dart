@@ -187,7 +187,7 @@ abstract class WorkOrderEntity with _$WorkOrderEntity {
     DateTime? startedAt,
     DateTime? resumedAt,
     DateTime? completedAt,
-    String? pauseLogs,
+    List<String>? pauseLogs,
     String? workLog,
     @Default([]) List<PartUsedEntity> partsUsed,
     @Default([]) List<String> images,

@@ -649,6 +649,8 @@ class WorkOrderDetailsView extends StatefulWidget {
 
 class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   WorkOrderActionBloc? _workOrderActionBloc;
+  bool? _wasOffline = false;
+  final bool _hasReloadedAfterSync = false;
 
   @override
   void initState() {
@@ -677,6 +679,25 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         listener: (context, state) {
           debugPrint('SnackBar listener triggered');
           state.maybeWhen(
+            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                _, __, ___) {
+              if (_wasOffline == true &&
+                  isOffline == false &&
+                  !_hasReloadedAfterSync) {
+                // Just went online and synced! Reload to get updated pause count
+                debugPrint(
+                    '🔄 Detected sync completion, reloading work order...');
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  if (mounted) {
+                    context.read<WorkOrderActionBloc>().add(
+                          WorkOrderActionEvent.loadWorkOrder(
+                              widget.workOrderId),
+                        );
+                  }
+                });
+              }
+              _wasOffline = isOffline;
+            },
             actionSuccess: (workOrder, actionType, message, _) {
               // final fsmTheme = context.fsmTheme;
               // ScaffoldMessenger.of(context).hideCurrentSnackBar();

@@ -32,7 +32,7 @@ mixin _$WorkOrderEntity {
   DateTime? get startedAt;
   DateTime? get resumedAt;
   DateTime? get completedAt;
-  String? get pauseLogs;
+  List<String>? get pauseLogs;
   String? get workLog;
   List<PartUsedEntity> get partsUsed;
   List<String> get images;
@@ -91,8 +91,7 @@ mixin _$WorkOrderEntity {
                 other.resumedAt == resumedAt) &&
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt) &&
-            (identical(other.pauseLogs, pauseLogs) ||
-                other.pauseLogs == pauseLogs) &&
+            const DeepCollectionEquality().equals(other.pauseLogs, pauseLogs) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality().equals(other.partsUsed, partsUsed) &&
             const DeepCollectionEquality().equals(other.images, images) &&
@@ -135,7 +134,7 @@ mixin _$WorkOrderEntity {
         startedAt,
         resumedAt,
         completedAt,
-        pauseLogs,
+        const DeepCollectionEquality().hash(pauseLogs),
         workLog,
         const DeepCollectionEquality().hash(partsUsed),
         const DeepCollectionEquality().hash(images),
@@ -181,7 +180,7 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       DateTime? startedAt,
       DateTime? resumedAt,
       DateTime? completedAt,
-      String? pauseLogs,
+      List<String>? pauseLogs,
       String? workLog,
       List<PartUsedEntity> partsUsed,
       List<String> images,
@@ -321,7 +320,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
       pauseLogs: freezed == pauseLogs
           ? _self.pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       workLog: freezed == workLog
           ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
@@ -528,7 +527,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -618,7 +617,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -706,7 +705,7 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -784,7 +783,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
       this.startedAt,
       this.resumedAt,
       this.completedAt,
-      this.pauseLogs,
+      final List<String>? pauseLogs,
       this.workLog,
       final List<PartUsedEntity> partsUsed = const [],
       final List<String> images = const [],
@@ -797,7 +796,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
       final List<String> attachments = const [],
       this.completionNotes,
       this.userId})
-      : _partsUsed = partsUsed,
+      : _pauseLogs = pauseLogs,
+        _partsUsed = partsUsed,
         _images = images,
         _workLogs = workLogs,
         _requiredSkills = requiredSkills,
@@ -842,8 +842,16 @@ class _WorkOrderEntity extends WorkOrderEntity {
   final DateTime? resumedAt;
   @override
   final DateTime? completedAt;
+  final List<String>? _pauseLogs;
   @override
-  final String? pauseLogs;
+  List<String>? get pauseLogs {
+    final value = _pauseLogs;
+    if (value == null) return null;
+    if (_pauseLogs is EqualUnmodifiableListView) return _pauseLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? workLog;
   final List<PartUsedEntity> _partsUsed;
@@ -956,8 +964,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
                 other.resumedAt == resumedAt) &&
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt) &&
-            (identical(other.pauseLogs, pauseLogs) ||
-                other.pauseLogs == pauseLogs) &&
+            const DeepCollectionEquality()
+                .equals(other._pauseLogs, _pauseLogs) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality()
                 .equals(other._partsUsed, _partsUsed) &&
@@ -1001,7 +1009,7 @@ class _WorkOrderEntity extends WorkOrderEntity {
         startedAt,
         resumedAt,
         completedAt,
-        pauseLogs,
+        const DeepCollectionEquality().hash(_pauseLogs),
         workLog,
         const DeepCollectionEquality().hash(_partsUsed),
         const DeepCollectionEquality().hash(_images),
@@ -1049,7 +1057,7 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       DateTime? startedAt,
       DateTime? resumedAt,
       DateTime? completedAt,
-      String? pauseLogs,
+      List<String>? pauseLogs,
       String? workLog,
       List<PartUsedEntity> partsUsed,
       List<String> images,
@@ -1190,9 +1198,9 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
           : completedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       pauseLogs: freezed == pauseLogs
-          ? _self.pauseLogs
+          ? _self._pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       workLog: freezed == workLog
           ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable

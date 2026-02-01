@@ -206,6 +206,7 @@ class WorkOrderLocalDataSourceImpl implements WorkOrderLocalDataSource {
         wo.copyWith(
           isPendingSync: true,
           pendingAction: action,
+          workLogs: [],
         ),
       );
     }

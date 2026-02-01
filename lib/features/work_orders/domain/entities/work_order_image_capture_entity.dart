@@ -16,5 +16,7 @@ abstract class WorkOrderImageCaptureEntity with _$WorkOrderImageCaptureEntity {
     String? reason,
     String? comments,
     String? remarks,
+    DateTime? actionAt,
+    int? sequenceNumber,
   }) = _WorkOrderImageCaptureEntity;
 }

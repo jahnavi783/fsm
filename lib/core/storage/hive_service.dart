@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../features/calendar/data/models/calendar_event_hive_model.dart';
 import '../../features/documents/data/models/document_hive_model.dart';
-import '../../features/parts/data/models/part_hive_model.dart' as parts;
+import '../../features/parts/data/models/part_hive_model.dart';
 import '../../features/profile/data/models/profile_hive_model.dart';
 import '../../features/work_orders/data/models/work_log_hive_model.dart';
 import '../../features/work_orders/data/models/work_order_completion_cache_model.dart';
@@ -93,7 +93,7 @@ class HiveService {
 
       // Register Parts adapter (using alias to avoid conflict)
       if (!Hive.isAdapterRegistered(HiveBoxes.partEntityTypeId)) {
-        Hive.registerAdapter(parts.PartHiveModelAdapter());
+        Hive.registerAdapter(PartHiveModelAdapter());
       }
 
       // Register Document adapter
@@ -136,7 +136,7 @@ class HiveService {
       await Hive.openBox<WorkOrderCompletionCacheModel>(
           HiveBoxes.workOrderCompletionCache);
       await Hive.openBox<DocumentHiveModel>(HiveBoxes.documents);
-      await Hive.openBox<parts.PartHiveModel>(HiveBoxes.parts);
+      await Hive.openBox<PartHiveModel>(HiveBoxes.parts);
       await Hive.openBox(HiveBoxes.inventory); // Generic box for inventory data
       await Hive.openBox<CalendarEventHiveModel>(HiveBoxes.calendarEvents);
       await Hive.openBox(

@@ -36,7 +36,7 @@ class WorkLogHiveModel {
   WorkLogEntity toEntity({required int workOrderId}) {
     return WorkLogEntity(
       id: timestamp.millisecondsSinceEpoch, // Use timestamp as unique ID
-      workOrderId: workOrderId,
+      workOrderId: workOrderId ?? 0,
       type: _mapActionToType(action),
       timestamp: timestamp,
       notes: notes,

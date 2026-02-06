@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$PartUsedDto {
-  String get partNumber;
+  String? get partNumber;
   @JsonKey(name: 'quantity_used')
   int get quantityUsed;
   String? get partName;
@@ -63,7 +63,7 @@ abstract mixin class $PartUsedDtoCopyWith<$Res> {
       _$PartUsedDtoCopyWithImpl;
   @useResult
   $Res call(
-      {String partNumber,
+      {String? partNumber,
       @JsonKey(name: 'quantity_used') int quantityUsed,
       String? partName,
       String? description});
@@ -81,16 +81,16 @@ class _$PartUsedDtoCopyWithImpl<$Res> implements $PartUsedDtoCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? partNumber = null,
+    Object? partNumber = freezed,
     Object? quantityUsed = null,
     Object? partName = freezed,
     Object? description = freezed,
   }) {
     return _then(_self.copyWith(
-      partNumber: null == partNumber
+      partNumber: freezed == partNumber
           ? _self.partNumber
           : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantityUsed: null == quantityUsed
           ? _self.quantityUsed
           : quantityUsed // ignore: cast_nullable_to_non_nullable
@@ -201,7 +201,7 @@ extension PartUsedDtoPatterns on PartUsedDto {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            String partNumber,
+            String? partNumber,
             @JsonKey(name: 'quantity_used') int quantityUsed,
             String? partName,
             String? description)?
@@ -234,7 +234,7 @@ extension PartUsedDtoPatterns on PartUsedDto {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            String partNumber,
+            String? partNumber,
             @JsonKey(name: 'quantity_used') int quantityUsed,
             String? partName,
             String? description)
@@ -265,7 +265,7 @@ extension PartUsedDtoPatterns on PartUsedDto {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            String partNumber,
+            String? partNumber,
             @JsonKey(name: 'quantity_used') int quantityUsed,
             String? partName,
             String? description)?
@@ -286,7 +286,7 @@ extension PartUsedDtoPatterns on PartUsedDto {
 @JsonSerializable()
 class _PartUsedDto implements PartUsedDto {
   const _PartUsedDto(
-      {required this.partNumber,
+      {this.partNumber,
       @JsonKey(name: 'quantity_used') required this.quantityUsed,
       this.partName,
       this.description});
@@ -294,7 +294,7 @@ class _PartUsedDto implements PartUsedDto {
       _$PartUsedDtoFromJson(json);
 
   @override
-  final String partNumber;
+  final String? partNumber;
   @override
   @JsonKey(name: 'quantity_used')
   final int quantityUsed;
@@ -353,7 +353,7 @@ abstract mixin class _$PartUsedDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String partNumber,
+      {String? partNumber,
       @JsonKey(name: 'quantity_used') int quantityUsed,
       String? partName,
       String? description});
@@ -371,16 +371,16 @@ class __$PartUsedDtoCopyWithImpl<$Res> implements _$PartUsedDtoCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? partNumber = null,
+    Object? partNumber = freezed,
     Object? quantityUsed = null,
     Object? partName = freezed,
     Object? description = freezed,
   }) {
     return _then(_PartUsedDto(
-      partNumber: null == partNumber
+      partNumber: freezed == partNumber
           ? _self.partNumber
           : partNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantityUsed: null == quantityUsed
           ? _self.quantityUsed
           : quantityUsed // ignore: cast_nullable_to_non_nullable

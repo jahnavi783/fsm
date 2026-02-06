@@ -7,7 +7,7 @@ part of 'part_used_dto.dart';
 // **************************************************************************
 
 _PartUsedDto _$PartUsedDtoFromJson(Map<String, dynamic> json) => _PartUsedDto(
-      partNumber: json['partNumber'] as String,
+      partNumber: json['partNumber'] as String?,
       quantityUsed: (json['quantity_used'] as num).toInt(),
       partName: json['partName'] as String?,
       description: json['description'] as String?,

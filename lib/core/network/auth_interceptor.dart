@@ -17,14 +17,24 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final accessToken = await _localDataSource.getAccessToken();
-
-    // Don't add token to auth endpoints
-    if (accessToken != null && !options.uri.toString().contains("/auth")) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
+    try {
+      final accessToken = await _localDataSource.getAccessToken();
+      // Don't add token to auth endpoints
+      if (accessToken != null &&
+          accessToken.isNotEmpty &&
+          !options.uri.toString().contains("/auth")) {
+        options.headers['Authorization'] = 'Bearer $accessToken';
+      }
+      return handler.next(options);
+    } catch (e) {
+      _loggingService.error(
+        'Error retrieving access token',
+        tag: 'AUTH_INTERCEPTOR',
+        error: e,
+      );
+      // Optionally, you can reject the request or proceed without token
+      return handler.next(options);
     }
-
-    return handler.next(options);
   }
 
   @override
@@ -46,7 +56,8 @@ class AuthInterceptor extends Interceptor {
         return handler.reject(
           DioException(
             requestOptions: err.requestOptions,
-            error: 'Session expired during file upload. Please login and try again.',
+            error:
+                'Session expired during file upload. Please login and try again.',
             response: err.response,
             type: DioExceptionType.badResponse,
           ),
@@ -132,62 +143,70 @@ class AuthInterceptor extends Interceptor {
   Future<bool> _refreshToken() async {
     try {
       final refreshToken = await _localDataSource.getRefreshToken();
-      if (refreshToken == null) {
+      if (refreshToken == null || refreshToken.isEmpty) {
         _loggingService.warning(
           'No refresh token found in storage',
           tag: 'AUTH_INTERCEPTOR',
         );
         return false;
       }
-
       _loggingService.debug(
         'Calling refresh token API...',
         tag: 'AUTH_INTERCEPTOR',
       );
-
       // Create a new Dio instance to avoid interceptors loop
       final tokenDio = Dio(BaseOptions(
         baseUrl: AppConfig.baseUrl,
         headers: {
           'Content-Type': 'application/json',
-          // Add Ngrok-specific header to bypass browser warning
           if (AppConfig.baseUrl.contains('ngrok-free.app') ||
               AppConfig.baseUrl.contains('ngrok.io'))
             'ngrok-skip-browser-warning': 'true',
         },
       ));
-
       // Call refresh token API
       final response = await tokenDio.post('/auth/refresh-token', data: {
         'refreshToken': refreshToken,
       });
-
       if (response.statusCode == 200) {
         final data = response.data;
-        await _localDataSource.saveTokens(
-          accessToken: data['accessToken'],
-          refreshToken: refreshToken
-        );
+        try {
+          await _localDataSource.saveTokens(
+              accessToken: data['accessToken'], refreshToken: refreshToken);
+        } catch (e) {
+          _loggingService.error(
+            'Error saving tokens to storage',
+            tag: 'AUTH_INTERCEPTOR',
+            error: e,
+          );
+          return false;
+        }
         _loggingService.info(
           'Tokens refreshed and saved successfully',
           tag: 'AUTH_INTERCEPTOR',
         );
         return true;
       }
-
       _loggingService.warning(
         'Refresh token API returned status: ${response.statusCode}',
         tag: 'AUTH_INTERCEPTOR',
       );
       return false;
     } catch (e) {
-      // If refresh token failed, clear tokens
       _loggingService.error(
         'Refresh token API call failed',
         tag: 'AUTH_INTERCEPTOR',
         error: e,
       );
-      await _localDataSource.clearAuthData();
+      try {
+        await _localDataSource.clearAuthData();
+      } catch (clearError) {
+        _loggingService.error(
+          'Error clearing auth data after refresh failure',
+          tag: 'AUTH_INTERCEPTOR',
+          error: clearError,
+        );
+      }
       return false;
     }
   }

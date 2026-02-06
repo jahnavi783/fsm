@@ -2096,7 +2096,7 @@ class WorkOrderImageGallerySection extends StatelessWidget {
                 _buildMetadataRow(
                   context,
                   Icons.location_on_outlined,
-                  '${entry.capture.latitude!.toStringAsFixed(6)}, ${entry.capture.longitude!.toStringAsFixed(6)}',
+                  '${entry.capture.longitude!.toStringAsFixed(6)} , ${entry.capture.latitude!.toStringAsFixed(6)}',
                 ),
               ],
 

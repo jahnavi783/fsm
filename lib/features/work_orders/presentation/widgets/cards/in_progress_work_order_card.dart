@@ -1,11 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fsm/core/router/app_router.gr.dart';
 import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/core/theme/spacing_theme.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+
+import '../../blocs/work_orders_list/work_orders_list_bloc.dart';
+import '../../blocs/work_orders_list/work_orders_list_event.dart';
 
 /// Minimal, visually prominent card for in-progress work orders
 /// Designed for carousel display with tap-to-navigate interaction
@@ -198,9 +202,17 @@ class InProgressWorkOrderCard extends StatelessWidget {
     return '${durationDays}d';
   }
 
-  void _navigateToDetails(BuildContext context) {
-    context.router.push(
+  Future<void> _navigateToDetails(BuildContext context) async {
+    // Navigate and wait for result
+    final result = await context.router.push(
       WorkOrderDetailsRoute(workOrderId: workOrder.id),
     );
+
+    // If result is true (action was performed), refresh the parent dashboard
+    if (result == true && context.mounted) {
+      context.read<WorkOrdersListBloc>().add(
+            const WorkOrdersListEvent.refreshWorkOrders(),
+          );
+    }
   }
 }

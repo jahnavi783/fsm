@@ -1274,10 +1274,7 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             ...filteredWorkOrders.map((workOrder) => WorkOrderListCard(
                   workOrder: workOrder,
-                  onTap: () {
-                    context.router
-                        .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-                  },
+                  onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
                   onStart: () =>
                       _handleWorkOrderAction(context, workOrder, 'start'),
                   onPause: () =>
@@ -1476,10 +1473,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   CompactWorkOrderListCard(
                     workOrder: workOrder,
-                    onTap: () {
-                      context.router.push(
-                          WorkOrderDetailsRoute(workOrderId: workOrder.id));
-                    },
+                    // onTap: () {
+                    //   context.router.push(
+                    //       WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                    // },
+                    // onTap: () async {
+                    //   final result = await context.router.push(
+                    //       WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                    //   if (result == true && mounted) _handleRefresh();
+                    // },
+                    onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
                   ),
                   DesignTokens.verticalSpaceSmall,
                   SizedBox(
@@ -1522,6 +1525,20 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       syncing: (workOrders) => _buildLoadingState(isSync: true),
     );
+  }
+
+  Future<void> _navigateToDetailsAndRefresh(int workOrderId) async {
+    // Navigate and wait for result
+    final result = await context.router.push(
+      WorkOrderDetailsRoute(workOrderId: workOrderId),
+    );
+
+    // If result is true (action was performed), refresh the dashboard
+    if (result == true && mounted) {
+      context.read<WorkOrdersListBloc>().add(
+            const WorkOrdersListEvent.refreshWorkOrders(),
+          );
+    }
   }
 
   void _assignWorkOrderToSelf(int workOrderId) {

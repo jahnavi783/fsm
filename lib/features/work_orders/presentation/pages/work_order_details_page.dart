@@ -651,6 +651,7 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
   WorkOrderActionBloc? _workOrderActionBloc;
   bool? _wasOffline = false;
   final bool _hasReloadedAfterSync = false;
+  bool _actionPerformed = false;
 
   @override
   void initState() {
@@ -674,19 +675,59 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
-        listener: (context, state) {
-          debugPrint('SnackBar listener triggered');
-          state.maybeWhen(
-            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                _, __, ___) {
-              if (_wasOffline == true &&
-                  isOffline == false &&
-                  !_hasReloadedAfterSync) {
-                // Just went online and synced! Reload to get updated pause count
-                debugPrint(
-                    '🔄 Detected sync completion, reloading work order...');
+    return WillPopScope(
+      onWillPop: () async {
+        _handleBackNavigation(); // Call handler
+        return true; // Prevent default pop (we handle it ourselves)
+      },
+      child: Scaffold(
+        body: BlocConsumer<WorkOrderActionBloc, WorkOrderActionState>(
+          listener: (context, state) {
+            debugPrint('SnackBar listener triggered');
+            state.maybeWhen(
+              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                  _, __, ___) {
+                if (_wasOffline == true &&
+                    isOffline == false &&
+                    !_hasReloadedAfterSync) {
+                  // Just went online and synced! Reload to get updated pause count
+                  debugPrint(
+                      '🔄 Detected sync completion, reloading work order...');
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    if (mounted) {
+                      context.read<WorkOrderActionBloc>().add(
+                            WorkOrderActionEvent.loadWorkOrder(
+                                widget.workOrderId),
+                          );
+                    }
+                  });
+                }
+                _wasOffline = isOffline;
+              },
+              actionSuccess: (workOrder, actionType, message, _) {
+                _actionPerformed = true;
+                // final fsmTheme = context.fsmTheme;
+                // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                //
+                // // Show success message
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text(message),
+                //     backgroundColor: fsmTheme.success,
+                //     duration: const Duration(seconds: 2),
+                //     action: SnackBarAction(
+                //       label: '✕', //close icon
+                //       textColor: Colors.white,
+                //       onPressed: () {
+                //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                //       },
+                //     ),
+                //   ),
+                // );
+
+                // IMPORTANT FIX: Automatically reload the work order to get updated timeline
+                // Add a small delay to ensure backend has processed the action
+                // Future.delayed(const Duration(milliseconds: 500), () {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   if (mounted) {
                     context.read<WorkOrderActionBloc>().add(
@@ -695,102 +736,77 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
                         );
                   }
                 });
-              }
-              _wasOffline = isOffline;
-            },
-            actionSuccess: (workOrder, actionType, message, _) {
-              // final fsmTheme = context.fsmTheme;
-              // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //
-              // // Show success message
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: Text(message),
-              //     backgroundColor: fsmTheme.success,
-              //     duration: const Duration(seconds: 2),
-              //     action: SnackBarAction(
-              //       label: '✕', //close icon
-              //       textColor: Colors.white,
-              //       onPressed: () {
-              //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //       },
+                // context.router.maybePop(true);
+                // Future.delayed(const Duration(milliseconds: 800), () {
+                //   if (mounted) {
+                //     debugPrint('✅ Reload complete - popping back to dashboard');
+                //     context.router.maybePop(true);
+                //   }
+                // });
+              },
+              // error: (failure, workOrder, isOffline) {
+              //   final theme = Theme.of(context);
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(
+              //       content: Text(failure.message),
+              //       backgroundColor: theme.colorScheme.error,
               //     ),
-              //   ),
-              // );
-
-              // IMPORTANT FIX: Automatically reload the work order to get updated timeline
-              // Add a small delay to ensure backend has processed the action
-              // Future.delayed(const Duration(milliseconds: 500), () {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (mounted) {
+              //   );
+              // },
+              // locationError: (workOrder, message) {
+              //   final fsmTheme = context.fsmTheme;
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(
+              //       content: Text(message),
+              //       backgroundColor: fsmTheme.warning,
+              //     ),
+              //   );
+              // },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return state.when(
+              initial: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
+                      _, __, ___) =>
+                  _buildWorkOrderDetails(
+                workOrder,
+                currentLocation,
+                isLocationLoading,
+                isOffline,
+                isActionInProgress: false,
+              ),
+              actionInProgress: (workOrder, actionType, currentLocation) =>
+                  ActionInProgressWidget(actionType: actionType),
+              actionSuccess: (workOrder, actionType, message, _) =>
+                  _buildWorkOrderDetails(
+                workOrder,
+                null,
+                false,
+                false,
+                isActionInProgress: false,
+              ),
+              error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
+                message: failure.message,
+                isOffline: isOffline,
+                onRetry: () {
                   context.read<WorkOrderActionBloc>().add(
                         WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
                       );
-                }
-              });
-            },
-            // error: (failure, workOrder, isOffline) {
-            //   final theme = Theme.of(context);
-            //   ScaffoldMessenger.of(context).showSnackBar(
-            //     SnackBar(
-            //       content: Text(failure.message),
-            //       backgroundColor: theme.colorScheme.error,
-            //     ),
-            //   );
-            // },
-            // locationError: (workOrder, message) {
-            //   final fsmTheme = context.fsmTheme;
-            //   ScaffoldMessenger.of(context).showSnackBar(
-            //     SnackBar(
-            //       content: Text(message),
-            //       backgroundColor: fsmTheme.warning,
-            //     ),
-            //   );
-            // },
-            orElse: () {},
-          );
-        },
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (workOrder, currentLocation, isLocationLoading, isOffline,
-                    _, __, ___) =>
-                _buildWorkOrderDetails(
-              workOrder,
-              currentLocation,
-              isLocationLoading,
-              isOffline,
-              isActionInProgress: false,
-            ),
-            actionInProgress: (workOrder, actionType, currentLocation) =>
-                ActionInProgressWidget(actionType: actionType),
-            actionSuccess: (workOrder, actionType, message, _) =>
-                _buildWorkOrderDetails(
-              workOrder,
-              null,
-              false,
-              false,
-              isActionInProgress: false,
-            ),
-            error: (failure, workOrder, isOffline) => WorkOrderErrorWidget(
-              message: failure.message,
-              isOffline: isOffline,
-              onRetry: () {
-                context.read<WorkOrderActionBloc>().add(
-                      WorkOrderActionEvent.loadWorkOrder(widget.workOrderId),
-                    );
-              },
-            ),
-            locationError: (workOrder, message) => _buildWorkOrderDetails(
-              workOrder,
-              null,
-              false,
-              false,
-              isActionInProgress: false,
-            ),
-          );
-        },
+                },
+              ),
+              locationError: (workOrder, message) => _buildWorkOrderDetails(
+                workOrder,
+                null,
+                false,
+                false,
+                isActionInProgress: false,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -813,6 +829,10 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
           FSMSliverAppBar.gradient(
             pinned: true,
             expandedHeight: 240.0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: _handleBackNavigation,
+            ),
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
                 child: Container(
@@ -1225,6 +1245,14 @@ class _WorkOrderDetailsViewState extends State<WorkOrderDetailsView> {
         backgroundColor: context.fsmTheme.success,
       ),
     );
+  }
+
+  void _handleBackNavigation() {
+    if (_actionPerformed) {
+      Navigator.of(context).pop(true); // Pass true to dashboard
+    } else {
+      Navigator.of(context).pop(); // Normal pop
+    }
   }
 
   void _handleRefresh() {

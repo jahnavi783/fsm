@@ -24,6 +24,7 @@ mixin _$WorkLogEntity {
   double? get longitude;
   String? get userId;
   String? get userName;
+  List<String>? get imageUrls;
 
   /// Create a copy of WorkLogEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -53,16 +54,28 @@ mixin _$WorkLogEntity {
                 other.longitude == longitude) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userName, userName) ||
-                other.userName == userName));
+                other.userName == userName) &&
+            const DeepCollectionEquality().equals(other.imageUrls, imageUrls));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, workOrderId, type,
-      description, timestamp, notes, latitude, longitude, userId, userName);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      workOrderId,
+      type,
+      description,
+      timestamp,
+      notes,
+      latitude,
+      longitude,
+      userId,
+      userName,
+      const DeepCollectionEquality().hash(imageUrls));
 
   @override
   String toString() {
-    return 'WorkLogEntity(id: $id, workOrderId: $workOrderId, type: $type, description: $description, timestamp: $timestamp, notes: $notes, latitude: $latitude, longitude: $longitude, userId: $userId, userName: $userName)';
+    return 'WorkLogEntity(id: $id, workOrderId: $workOrderId, type: $type, description: $description, timestamp: $timestamp, notes: $notes, latitude: $latitude, longitude: $longitude, userId: $userId, userName: $userName, imageUrls: $imageUrls)';
   }
 }
 
@@ -82,7 +95,8 @@ abstract mixin class $WorkLogEntityCopyWith<$Res> {
       double? latitude,
       double? longitude,
       String? userId,
-      String? userName});
+      String? userName,
+      List<String>? imageUrls});
 }
 
 /// @nodoc
@@ -108,6 +122,7 @@ class _$WorkLogEntityCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? userId = freezed,
     Object? userName = freezed,
+    Object? imageUrls = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -150,6 +165,10 @@ class _$WorkLogEntityCopyWithImpl<$Res>
           ? _self.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrls: freezed == imageUrls
+          ? _self.imageUrls
+          : imageUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -257,7 +276,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             double? latitude,
             double? longitude,
             String? userId,
-            String? userName)?
+            String? userName,
+            List<String>? imageUrls)?
         $default, {
     required TResult orElse(),
   }) {
@@ -274,7 +294,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             _that.latitude,
             _that.longitude,
             _that.userId,
-            _that.userName);
+            _that.userName,
+            _that.imageUrls);
       case _:
         return orElse();
     }
@@ -305,7 +326,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             double? latitude,
             double? longitude,
             String? userId,
-            String? userName)
+            String? userName,
+            List<String>? imageUrls)
         $default,
   ) {
     final _that = this;
@@ -321,7 +343,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             _that.latitude,
             _that.longitude,
             _that.userId,
-            _that.userName);
+            _that.userName,
+            _that.imageUrls);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -351,7 +374,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             double? latitude,
             double? longitude,
             String? userId,
-            String? userName)?
+            String? userName,
+            List<String>? imageUrls)?
         $default,
   ) {
     final _that = this;
@@ -367,7 +391,8 @@ extension WorkLogEntityPatterns on WorkLogEntity {
             _that.latitude,
             _that.longitude,
             _that.userId,
-            _that.userName);
+            _that.userName,
+            _that.imageUrls);
       case _:
         return null;
     }
@@ -387,7 +412,9 @@ class _WorkLogEntity implements WorkLogEntity {
       this.latitude,
       this.longitude,
       this.userId,
-      this.userName});
+      this.userName,
+      final List<String>? imageUrls})
+      : _imageUrls = imageUrls;
 
   @override
   final int id;
@@ -409,6 +436,15 @@ class _WorkLogEntity implements WorkLogEntity {
   final String? userId;
   @override
   final String? userName;
+  final List<String>? _imageUrls;
+  @override
+  List<String>? get imageUrls {
+    final value = _imageUrls;
+    if (value == null) return null;
+    if (_imageUrls is EqualUnmodifiableListView) return _imageUrls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   /// Create a copy of WorkLogEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -438,16 +474,29 @@ class _WorkLogEntity implements WorkLogEntity {
                 other.longitude == longitude) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userName, userName) ||
-                other.userName == userName));
+                other.userName == userName) &&
+            const DeepCollectionEquality()
+                .equals(other._imageUrls, _imageUrls));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, workOrderId, type,
-      description, timestamp, notes, latitude, longitude, userId, userName);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      workOrderId,
+      type,
+      description,
+      timestamp,
+      notes,
+      latitude,
+      longitude,
+      userId,
+      userName,
+      const DeepCollectionEquality().hash(_imageUrls));
 
   @override
   String toString() {
-    return 'WorkLogEntity(id: $id, workOrderId: $workOrderId, type: $type, description: $description, timestamp: $timestamp, notes: $notes, latitude: $latitude, longitude: $longitude, userId: $userId, userName: $userName)';
+    return 'WorkLogEntity(id: $id, workOrderId: $workOrderId, type: $type, description: $description, timestamp: $timestamp, notes: $notes, latitude: $latitude, longitude: $longitude, userId: $userId, userName: $userName, imageUrls: $imageUrls)';
   }
 }
 
@@ -469,7 +518,8 @@ abstract mixin class _$WorkLogEntityCopyWith<$Res>
       double? latitude,
       double? longitude,
       String? userId,
-      String? userName});
+      String? userName,
+      List<String>? imageUrls});
 }
 
 /// @nodoc
@@ -495,6 +545,7 @@ class __$WorkLogEntityCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? userId = freezed,
     Object? userName = freezed,
+    Object? imageUrls = freezed,
   }) {
     return _then(_WorkLogEntity(
       id: null == id
@@ -537,6 +588,10 @@ class __$WorkLogEntityCopyWithImpl<$Res>
           ? _self.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrls: freezed == imageUrls
+          ? _self._imageUrls
+          : imageUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }

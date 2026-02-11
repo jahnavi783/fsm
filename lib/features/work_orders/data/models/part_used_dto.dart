@@ -7,7 +7,7 @@ part 'part_used_dto.g.dart';
 @freezed
 abstract class PartUsedDto with _$PartUsedDto {
   const factory PartUsedDto({
-    required String partNumber,
+    String? partNumber,
     @JsonKey(name: 'quantity_used') required int quantityUsed,
     String? partName,
     String? description,
@@ -20,8 +20,8 @@ abstract class PartUsedDto with _$PartUsedDto {
 extension PartUsedDtoX on PartUsedDto {
   PartUsedEntity toEntity() {
     return PartUsedEntity(
-      partNumber: partNumber,
-      quantityUsed: quantityUsed,
+      partNumber: partNumber ?? '',
+      quantityUsed: quantityUsed ?? 0,
       partName: partName,
       description: description,
     );

@@ -18,8 +18,8 @@ mixin _$UserEntity {
   String get firstName;
   String get lastName;
   String get email;
-  String? get phone;
-  Gender? get gender;
+  String? get phone; // Gender? gender,
+  String? get gender;
   String? get city;
   DateTime? get dob;
   UserRole? get roleId;
@@ -79,7 +79,7 @@ abstract mixin class $UserEntityCopyWith<$Res> {
       String lastName,
       String email,
       String? phone,
-      Gender? gender,
+      String? gender,
       String? city,
       DateTime? dob,
       UserRole? roleId,
@@ -137,7 +137,7 @@ class _$UserEntityCopyWithImpl<$Res> implements $UserEntityCopyWith<$Res> {
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
+              as String?,
       city: freezed == city
           ? _self.city
           : city // ignore: cast_nullable_to_non_nullable
@@ -265,7 +265,7 @@ extension UserEntityPatterns on UserEntity {
             String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             UserRole? roleId,
@@ -317,7 +317,7 @@ extension UserEntityPatterns on UserEntity {
             String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             UserRole? roleId,
@@ -367,7 +367,7 @@ extension UserEntityPatterns on UserEntity {
             String lastName,
             String email,
             String? phone,
-            Gender? gender,
+            String? gender,
             String? city,
             DateTime? dob,
             UserRole? roleId,
@@ -426,8 +426,9 @@ class _UserEntity extends UserEntity {
   final String email;
   @override
   final String? phone;
+// Gender? gender,
   @override
-  final Gender? gender;
+  final String? gender;
   @override
   final String? city;
   @override
@@ -496,7 +497,7 @@ abstract mixin class _$UserEntityCopyWith<$Res>
       String lastName,
       String email,
       String? phone,
-      Gender? gender,
+      String? gender,
       String? city,
       DateTime? dob,
       UserRole? roleId,
@@ -554,7 +555,7 @@ class __$UserEntityCopyWithImpl<$Res> implements _$UserEntityCopyWith<$Res> {
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as Gender?,
+              as String?,
       city: freezed == city
           ? _self.city
           : city // ignore: cast_nullable_to_non_nullable

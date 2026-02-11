@@ -367,6 +367,7 @@ mixin _$WorkOrderImageCaptureDto {
   String? get capturedAt;
   String? get reason;
   String? get remarks;
+  String? get comments;
 
   /// Create a copy of WorkOrderImageCaptureDto
   /// with the given fields replaced by the non-null parameter values.
@@ -395,7 +396,9 @@ mixin _$WorkOrderImageCaptureDto {
             (identical(other.capturedAt, capturedAt) ||
                 other.capturedAt == capturedAt) &&
             (identical(other.reason, reason) || other.reason == reason) &&
-            (identical(other.remarks, remarks) || other.remarks == remarks));
+            (identical(other.remarks, remarks) || other.remarks == remarks) &&
+            (identical(other.comments, comments) ||
+                other.comments == comments));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -409,11 +412,12 @@ mixin _$WorkOrderImageCaptureDto {
       capturedBy,
       capturedAt,
       reason,
-      remarks);
+      remarks,
+      comments);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
+    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks, comments: $comments)';
   }
 }
 
@@ -431,7 +435,8 @@ abstract mixin class $WorkOrderImageCaptureDtoCopyWith<$Res> {
       @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
       @JsonKey(name: 'captured_at') String? capturedAt,
       String? reason,
-      String? remarks});
+      String? remarks,
+      String? comments});
 
   $GpsCoordinatesDtoCopyWith<$Res>? get gpsCoordinates;
   $CapturedByDtoCopyWith<$Res>? get capturedBy;
@@ -458,6 +463,7 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
     Object? capturedAt = freezed,
     Object? reason = freezed,
     Object? remarks = freezed,
+    Object? comments = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -491,6 +497,10 @@ class _$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
       remarks: freezed == remarks
           ? _self.remarks
           : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comments: freezed == comments
+          ? _self.comments
+          : comments // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -625,7 +635,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
             @JsonKey(name: 'captured_at') String? capturedAt,
             String? reason,
-            String? remarks)?
+            String? remarks,
+            String? comments)?
         $default, {
     required TResult orElse(),
   }) {
@@ -640,7 +651,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
-            _that.remarks);
+            _that.remarks,
+            _that.comments);
       case _:
         return orElse();
     }
@@ -669,7 +681,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
             @JsonKey(name: 'captured_at') String? capturedAt,
             String? reason,
-            String? remarks)
+            String? remarks,
+            String? comments)
         $default,
   ) {
     final _that = this;
@@ -683,7 +696,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
-            _that.remarks);
+            _that.remarks,
+            _that.comments);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -711,7 +725,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
             @JsonKey(name: 'captured_at') String? capturedAt,
             String? reason,
-            String? remarks)?
+            String? remarks,
+            String? comments)?
         $default,
   ) {
     final _that = this;
@@ -725,7 +740,8 @@ extension WorkOrderImageCaptureDtoPatterns on WorkOrderImageCaptureDto {
             _that.capturedBy,
             _that.capturedAt,
             _that.reason,
-            _that.remarks);
+            _that.remarks,
+            _that.comments);
       case _:
         return null;
     }
@@ -743,7 +759,8 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
       @JsonKey(name: 'captured_by') this.capturedBy,
       @JsonKey(name: 'captured_at') this.capturedAt,
       this.reason,
-      this.remarks})
+      this.remarks,
+      this.comments})
       : _imageUrls = imageUrls;
   factory _WorkOrderImageCaptureDto.fromJson(Map<String, dynamic> json) =>
       _$WorkOrderImageCaptureDtoFromJson(json);
@@ -776,6 +793,8 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
   final String? reason;
   @override
   final String? remarks;
+  @override
+  final String? comments;
 
   /// Create a copy of WorkOrderImageCaptureDto
   /// with the given fields replaced by the non-null parameter values.
@@ -810,7 +829,9 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
             (identical(other.capturedAt, capturedAt) ||
                 other.capturedAt == capturedAt) &&
             (identical(other.reason, reason) || other.reason == reason) &&
-            (identical(other.remarks, remarks) || other.remarks == remarks));
+            (identical(other.remarks, remarks) || other.remarks == remarks) &&
+            (identical(other.comments, comments) ||
+                other.comments == comments));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -824,11 +845,12 @@ class _WorkOrderImageCaptureDto implements WorkOrderImageCaptureDto {
       capturedBy,
       capturedAt,
       reason,
-      remarks);
+      remarks,
+      comments);
 
   @override
   String toString() {
-    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks)';
+    return 'WorkOrderImageCaptureDto(id: $id, timestamp: $timestamp, imageUrls: $imageUrls, gpsCoordinates: $gpsCoordinates, capturedBy: $capturedBy, capturedAt: $capturedAt, reason: $reason, remarks: $remarks, comments: $comments)';
   }
 }
 
@@ -848,7 +870,8 @@ abstract mixin class _$WorkOrderImageCaptureDtoCopyWith<$Res>
       @JsonKey(name: 'captured_by') CapturedByDto? capturedBy,
       @JsonKey(name: 'captured_at') String? capturedAt,
       String? reason,
-      String? remarks});
+      String? remarks,
+      String? comments});
 
   @override
   $GpsCoordinatesDtoCopyWith<$Res>? get gpsCoordinates;
@@ -877,6 +900,7 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
     Object? capturedAt = freezed,
     Object? reason = freezed,
     Object? remarks = freezed,
+    Object? comments = freezed,
   }) {
     return _then(_WorkOrderImageCaptureDto(
       id: freezed == id
@@ -910,6 +934,10 @@ class __$WorkOrderImageCaptureDtoCopyWithImpl<$Res>
       remarks: freezed == remarks
           ? _self.remarks
           : remarks // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comments: freezed == comments
+          ? _self.comments
+          : comments // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

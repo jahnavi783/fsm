@@ -1,782 +1,538 @@
-// import 'package:auto_route/auto_route.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-// import 'package:uuid/uuid.dart';
-//
-// import '../../../../core/./services/chatbot_services.dart';
-// import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-//
-// @RoutePage()
-// class ChatbotPage extends StatefulWidget {
-//   const ChatbotPage({super.key});
-//
-//   @override
-//   State<ChatbotPage> createState() => _ChatbotPageState();
-// }
-//
-// class _ChatbotPageState extends State<ChatbotPage> {
-//   // UI state variables
-//   final List<types.Message> _messages = [];
-//   final TextEditingController _textCtrl = TextEditingController();
-//   final _user = const types.User(id: 'user-1', firstName: 'You');
-//   final _bot = const types.User(id: 'bot-1', firstName: 'FSM Agent');
-//
-//   bool _isBotTyping = false;
-//   bool _inputEnabled = false;
-//
-//   // API service variables
-//   late ChatbotApiService _apiService;
-//   String? _sessionId;
-//   String? _errorMessage;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _initializeChat();
-//   }
-//
-//   @override
-//   void dispose() {
-//     _textCtrl.dispose();
-//     // End session when leaving page
-//     if (_sessionId != null) {
-//       _apiService.endSession(_sessionId!);
-//     }
-//     _apiService.dispose();
-//     super.dispose();
-//   }
-//
-//   /// STEP 1: Initialize chat when page opens
-//   void _initializeChat() async {
-//     // final authToken = BlocProvider.of<AuthBloc>(context).state.accessToken;
-//     final authState = BlocProvider.of<AuthBloc>(context).state;
-//
-//     String? authToken;
-//     if (authState is Authenticated) {
-//       authToken = authState.user.accessToken;
-//     }
-//
-//     // Create API service
-//     _apiService = ChatbotApiService(token: authToken);
-//
-//     // Start session
-//     await _startSession();
-//   }
-//
-//   /// STEP 2: Start a new chat session
-//   Future<void> _startSession() async {
-//     try {
-//       setState(() {
-//         _isBotTyping = true;
-//         _errorMessage = null;
-//       });
-//
-//       // Call API to start session
-//       final response = await _apiService.startSession();
-//
-//       setState(() {
-//         _sessionId = response.sessionId;
-//         _inputEnabled = true;
-//         _isBotTyping = false;
-//       });
-//
-//       // Show welcome message
-//       _addInitialBotMessage();
-//
-//       // Show success notification
-//       if (mounted) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(
-//             content: Text('Chat session started'),
-//             duration: Duration(seconds: 2),
-//           ),
-//         );
-//       }
-//     } catch (e) {
-//       setState(() {
-//         _isBotTyping = false;
-//         _errorMessage = e.toString();
-//       });
-//
-//       if (mounted) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(
-//             content: Text(' Error: $e'),
-//             backgroundColor: Colors.red,
-//           ),
-//         );
-//       }
-//     }
-//   }
-//
-//   /// Add initial bot message
-//   void _addInitialBotMessage() {
-//     final message = types.TextMessage(
-//       author: _bot,
-//       id: const Uuid().v4(),
-//       text:
-//           "Hi! I'm FSM Agent, your assistant for Field Service Management. How can I help you today?",
-//       createdAt: DateTime.now().millisecondsSinceEpoch,
-//     );
-//
-//     setState(() {
-//       _messages.insert(0, message);
-//     });
-//   }
-//
-//   /// STEP 3: Send user's message to bot
-//   void _handleSendPressed(types.PartialText message) async {
-//     if (!_inputEnabled || _sessionId == null) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('⚠️ Please wait, session starting...')),
-//       );
-//       return;
-//     }
-//
-//     // Create user message and add to UI
-//     final userMessage = types.TextMessage(
-//       author: _user,
-//       id: const Uuid().v4(),
-//       text: message.text,
-//       createdAt: DateTime.now().millisecondsSinceEpoch,
-//     );
-//
-//     setState(() {
-//       _messages.insert(0, userMessage);
-//       _isBotTyping = true;
-//       _messages.insert(0, _buildTypingPlaceholder());
-//       _inputEnabled = false;
-//     });
-//
-//     try {
-//       // Call API to send message
-//       final response = await _apiService.sendMessage(
-//         sessionId: _sessionId!,
-//         message: message.text,
-//       );
-//
-//       // Create bot reply and add to UI
-//       final botReply = types.TextMessage(
-//         author: _bot,
-//         id: const Uuid().v4(),
-//         text: response.message,
-//         createdAt: DateTime.now().millisecondsSinceEpoch,
-//       );
-//
-//       setState(() {
-//         _isBotTyping = false;
-//         _inputEnabled = true;
-//         _messages.removeWhere((m) => m.id == '__typing__');
-//         _messages.insert(0, botReply);
-//       });
-//
-//       // Log tools used
-//       if (response.toolsUsed != null && response.toolsUsed!.isNotEmpty) {
-//         debugPrint('🔧 Tools used: ${response.toolsUsed!.join(", ")}');
-//       }
-//     } catch (e) {
-//       setState(() {
-//         _isBotTyping = false;
-//         _inputEnabled = true;
-//         _messages.removeWhere((m) => m.id == '__typing__');
-//       });
-//
-//       // Show error as bot message
-//       final errorMessage = types.TextMessage(
-//         author: _bot,
-//         id: const Uuid().v4(),
-//         text: '❌ Sorry, I encountered an error: $e',
-//         createdAt: DateTime.now().millisecondsSinceEpoch,
-//       );
-//
-//       setState(() {
-//         _messages.insert(0, errorMessage);
-//       });
-//     }
-//   }
-//
-//   /// Build typing indicator placeholder
-//   types.TextMessage _buildTypingPlaceholder() {
-//     return types.TextMessage(
-//       author: _bot,
-//       id: '__typing__',
-//       text: 'typing...',
-//       createdAt: DateTime.now().millisecondsSinceEpoch,
-//     );
-//   }
-//
-//   /// Clear chat and restart session
-//   void _clearChat() async {
-//     if (_sessionId != null) {
-//       try {
-//         await _apiService.endSession(_sessionId!);
-//       } catch (e) {
-//         debugPrint('Error ending session: $e');
-//       }
-//     }
-//
-//     setState(() {
-//       _messages.clear();
-//       _sessionId = null;
-//       _isBotTyping = false;
-//       _inputEnabled = false;
-//     });
-//
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       const SnackBar(content: Text('🔄 Starting new session...')),
-//     );
-//
-//     await _startSession();
-//   }
-//
-//   /// Send message when user presses enter or send button
-//   void _trySend() {
-//     final text = _textCtrl.text.trim();
-//     if (text.isEmpty) return;
-//     _textCtrl.clear();
-//     _handleSendPressed(types.PartialText(text: text));
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Row(
-//           children: const [
-//             Icon(Icons.smart_toy, color: Colors.white),
-//             SizedBox(width: 8),
-//             Text('AI Assistant'),
-//           ],
-//         ),
-//         actions: [
-//           IconButton(
-//             tooltip: 'Clear chat',
-//             icon: const Icon(Icons.delete_outline),
-//             onPressed: _messages.isEmpty ? null : _clearChat,
-//           ),
-//         ],
-//         flexibleSpace: Container(
-//           decoration: const BoxDecoration(
-//             gradient: LinearGradient(
-//               colors: [Color(0xFF00796B), Color(0xFF004D40)],
-//             ),
-//           ),
-//         ),
-//       ),
-//       body: SafeArea(
-//         child: Column(
-//           children: [
-//             // Error banner
-//             if (_errorMessage != null)
-//               Container(
-//                 width: double.infinity,
-//                 padding: const EdgeInsets.all(12),
-//                 color: Colors.red.shade100,
-//                 child: Row(
-//                   children: [
-//                     const Icon(Icons.error_outline, color: Colors.red),
-//                     const SizedBox(width: 8),
-//                     Expanded(
-//                       child: Text(_errorMessage!,
-//                           style: const TextStyle(color: Colors.red)),
-//                     ),
-//                     IconButton(
-//                       icon: const Icon(Icons.close, color: Colors.red),
-//                       onPressed: () => setState(() => _errorMessage = null),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//
-//             // Chat messages
-//             Expanded(
-//               child: Chat(
-//                 messages: _messages,
-//                 user: _user,
-//                 onSendPressed: (_) {},
-//                 scrollPhysics: const BouncingScrollPhysics(),
-//                 bubbleBuilder: (child,
-//                     {required message, required nextMessageInGroup}) {
-//                   final isUser = message.author.id == _user.id;
-//                   final isTyping = message.id == '__typing__';
-//
-//                   if (isTyping) {
-//                     return Align(
-//                       alignment: Alignment.centerLeft,
-//                       child: Container(
-//                         margin: const EdgeInsets.all(8),
-//                         padding: const EdgeInsets.all(10),
-//                         decoration: BoxDecoration(
-//                           color: const Color(0xFFE5F4F1),
-//                           borderRadius: BorderRadius.circular(16),
-//                         ),
-//                         child: const _TypingDots(),
-//                       ),
-//                     );
-//                   }
-//
-//                   return Align(
-//                     alignment:
-//                         isUser ? Alignment.centerRight : Alignment.centerLeft,
-//                     child: Container(
-//                       margin: const EdgeInsets.symmetric(
-//                           vertical: 4, horizontal: 12),
-//                       padding: const EdgeInsets.all(12),
-//                       decoration: BoxDecoration(
-//                         color: isUser
-//                             ? const Color(0xFF00796B)
-//                             : const Color(0xFFE5F4F1),
-//                         borderRadius: BorderRadius.circular(16),
-//                       ),
-//                       child: Text(
-//                         (message as types.TextMessage).text,
-//                         style: TextStyle(
-//                           color: isUser ? Colors.white : Colors.black87,
-//                           fontSize: 15,
-//                         ),
-//                       ),
-//                     ),
-//                   );
-//                 },
-//                 showUserAvatars: false,
-//                 showUserNames: false,
-//                 theme: const DefaultChatTheme(
-//                   primaryColor: Color(0xFF00796B),
-//                 ),
-//                 customBottomWidget: const SizedBox.shrink(),
-//               ),
-//             ),
-//
-//             // Text input
-//             Container(
-//               padding: const EdgeInsets.all(12),
-//               decoration: BoxDecoration(
-//                 color: Colors.grey.shade100,
-//                 border: Border(top: BorderSide(color: Colors.grey.shade300)),
-//               ),
-//               child: Row(
-//                 children: [
-//                   Expanded(
-//                     child: TextField(
-//                       controller: _textCtrl,
-//                       enabled: _inputEnabled,
-//                       maxLines: null,
-//                       decoration: InputDecoration(
-//                         hintText: _sessionId == null
-//                             ? 'Starting session...'
-//                             : 'Type a message...',
-//                         border: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(24)),
-//                         contentPadding: const EdgeInsets.symmetric(
-//                             horizontal: 16, vertical: 10),
-//                       ),
-//                       onSubmitted: (_) => _trySend(),
-//                     ),
-//                   ),
-//                   const SizedBox(width: 8),
-//                   CircleAvatar(
-//                     backgroundColor: const Color(0xFF00796B),
-//                     child: IconButton(
-//                       icon: const Icon(Icons.send, color: Colors.white),
-//                       onPressed: _inputEnabled ? _trySend : null,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// /// Typing animation widget
-// class _TypingDots extends StatefulWidget {
-//   const _TypingDots();
-//
-//   @override
-//   State<_TypingDots> createState() => _TypingDotsState();
-// }
-//
-// class _TypingDotsState extends State<_TypingDots>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController _controller;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = AnimationController(
-//       vsync: this,
-//       duration: const Duration(milliseconds: 1000),
-//     )..repeat();
-//   }
-//
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisSize: MainAxisSize.min,
-//       children: List.generate(3, (index) {
-//         return AnimatedBuilder(
-//           animation: _controller,
-//           builder: (_, __) {
-//             double t = (_controller.value + (index * 0.2)) % 1.0;
-//             double opacity = t < 0.5 ? 1.0 - (t * 2) : (t - 0.5) * 2;
-//             return Opacity(
-//               opacity: opacity,
-//               child: Padding(
-//                 padding: const EdgeInsets.symmetric(horizontal: 2),
-//                 child: Container(
-//                   width: 6,
-//                   height: 6,
-//                   decoration: const BoxDecoration(
-//                     color: Color(0xFF00796B),
-//                     shape: BoxShape.circle,
-//                   ),
-//                 ),
-//               ),
-//             );
-//           },
-//         );
-//       }),
-//     );
-//   }
-// }
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:fsm/core/theme/app_colors.dart';
+import 'package:fsm/core/widgets/fsm_app_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/services/chatbot_services.dart';
-import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
-import '../../../auth/presentation/blocs/auth/auth_state.dart';
+import '../../../../core/di/injection.dart';
+import '../../../auth/data/datasources/auth_local_datasource.dart';
 
 @RoutePage()
 class ChatbotPage extends StatefulWidget {
-  const ChatbotPage({super.key});
+  final String userName;
+  const ChatbotPage({super.key, required this.userName});
 
   @override
   State<ChatbotPage> createState() => _ChatbotPageState();
 }
 
-class _ChatbotPageState extends State<ChatbotPage> {
-  // UI State
+class _ChatbotPageState extends State<ChatbotPage>
+    with AutomaticKeepAliveClientMixin {
   final List<types.Message> _messages = [];
-  final TextEditingController _inputCtrl = TextEditingController();
   final _user = const types.User(id: 'user-1', firstName: 'You');
-  final _bot = const types.User(id: 'bot-1', firstName: 'FSM Bot');
-
+  final _bot = const types.User(id: 'bot-1', firstName: 'FSM Agent');
+  bool _hasText = false;
+  bool _isBotTyping = false;
   bool _inputEnabled = false;
-  bool _botTyping = false;
+  final TextEditingController _textCtrl = TextEditingController();
+  bool get _hasUserMessages {
+    return _messages.any((m) => m.author.id == _user.id);
+  }
 
-  // API
-  ChatbotApiService? _api;
-  String? _sessionId;
+  // API Configuration
+  static const String _apiUrl =
+      'https://unbracketed-royal-sphereless.ngrok-free.dev/api/chat';
+  String? _authToken;
+  String? _refreshToken;
+  // String _sessionId = const Uuid().v4();
   String? _error;
+  String? _sessionId;
 
   @override
   void initState() {
     super.initState();
-    _bootstrap();
+    _textCtrl.addListener(() {
+      final hasText = _textCtrl.text.trim().isNotEmpty;
+      if (hasText != _hasText) {
+        setState(() {
+          _hasText = hasText;
+        });
+      }
+    });
+    // _bootstrap();
+    _loadOrCreateSession().then((_) => _bootstrap());
   }
 
   @override
   void dispose() {
-    _inputCtrl.dispose();
-    if (_sessionId != null) _api?.endSession(_sessionId!);
-    _api?.dispose();
+    _textCtrl.dispose();
     super.dispose();
   }
 
-  // ---------------------------------------------------------------------------
-  // INIT WORKFLOW
-  // ---------------------------------------------------------------------------
-
   Future<void> _bootstrap() async {
-    final authState = BlocProvider.of<AuthBloc>(context).state;
-
-    // Extract access token safely using maybeWhen
-    final token = authState.maybeWhen(
-      authenticated: (user) => user.accessToken,
-      orElse: () => null,
-    );
-
-    if (token == null) {
-      setState(() => _error = "Authentication expired. Please log in again.");
-      return;
-    }
-
-    _api = ChatbotApiService(token: token);
-    await _startSession();
-  }
-
-  Future<void> _startSession() async {
     try {
+      final authLocal = getIt<AuthLocalDataSource>();
+
+      final token = await authLocal.getAccessToken();
+      final refreshToken = await authLocal.getRefreshToken();
+
+      if (token == null || refreshToken == null) {
+        setState(() {
+          _error = "Authentication expired. Please log in again.";
+          _inputEnabled = false;
+        });
+        _showErrorMessage();
+        return;
+      }
+
       setState(() {
-        _botTyping = true;
+        _authToken = token;
+        _refreshToken = refreshToken;
         _error = null;
       });
 
-      final res = await _api!.startSession();
-
-      setState(() {
-        _sessionId = res.sessionId;
-        _inputEnabled = true;
-        _botTyping = false;
-      });
-
-      _addWelcomeMessage();
-
-      if (!mounted) return;
+      await _startSession();
     } catch (e) {
       setState(() {
-        _error = e.toString();
-        _botTyping = false;
+        _error = "Failed to initialize chat: ${e.toString()}";
+        _inputEnabled = false;
       });
+      _showErrorMessage();
     }
   }
 
-  void _addWelcomeMessage() {
-    final msg = types.TextMessage(
-      id: const Uuid().v4(),
-      author: _bot,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      text: "Hello! I'm your FSM assistant. How can I help you today?",
-    );
+  // Start session and add welcome message
+  Future<void> _startSession() async {
+    setState(() {
+      _isBotTyping = true;
+    });
 
-    setState(() => _messages.insert(0, msg));
+    // // Generate new session ID
+    // _sessionId = const Uuid().v4();
+
+    setState(() {
+      _inputEnabled = true;
+      _isBotTyping = false;
+    });
+    if (_messages.isEmpty) {
+      _addInitialBotMessage();
+    }
+
+    // _addInitialBotMessage();
   }
 
-  // ---------------------------------------------------------------------------
-  // MESSAGE FLOW
-  // ---------------------------------------------------------------------------
-
-  Future<void> _sendUserMessage(String text) async {
-    if (_sessionId == null || !_inputEnabled) return;
-
-    // Insert user message
-    final userMsg = types.TextMessage(
+  void _addInitialBotMessage() {
+    final initialMessage = types.TextMessage(
+      author: _bot,
       id: const Uuid().v4(),
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      text: text,
+      text:
+          "Hi ${widget.userName} I am FSM Agent, your assistant for anything and everything related to FSM. Which module do you need help with?",
     );
 
     setState(() {
-      _messages.insert(0, userMsg);
-      _botTyping = true;
-      _messages.insert(0, _buildTypingPlaceholder());
-      _inputEnabled = false;
+      _messages.add(initialMessage);
     });
+  }
 
-    try {
-      final response = await _api!.sendMessage(
-        sessionId: _sessionId!,
-        message: text,
-      );
-
-      final botMsg = types.TextMessage(
-        id: const Uuid().v4(),
+  void _showErrorMessage() {
+    if (_error != null) {
+      final errorMessage = types.TextMessage(
         author: _bot,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        text: response.message,
+        id: const Uuid().v4(),
+        text: _error!,
       );
 
       setState(() {
-        _botTyping = false;
-        _inputEnabled = true;
-        _messages.removeWhere((m) => m.id == "__typing__");
-        _messages.insert(0, botMsg);
+        _messages.insert(0, errorMessage);
       });
-    } catch (e) {
-      setState(() {
-        _botTyping = false;
-        _inputEnabled = true;
-        _messages.removeWhere((m) => m.id == "__typing__");
-      });
-
-      final errMsg = types.TextMessage(
-        id: const Uuid().v4(),
-        author: _bot,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        text: "Error: $e",
-      );
-
-      setState(() => _messages.insert(0, errMsg));
     }
   }
 
   types.TextMessage _buildTypingPlaceholder() {
     return types.TextMessage(
-      id: "__typing__",
       author: _bot,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      text: "typing...",
+      id: '__typing__',
+      text: 'typing...',
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // CHAT RESET
-  // ---------------------------------------------------------------------------
-
-  Future<void> _resetChat() async {
-    if (_sessionId != null) {
-      try {
-        await _api?.endSession(_sessionId!);
-      } catch (_) {}
-    }
-
-    setState(() {
-      _messages.clear();
-      _sessionId = null;
-      _inputEnabled = false;
-      _botTyping = false;
-    });
-
-    await _startSession();
+  bool _welcomeMessage(String msg) {
+    final t = msg.toLowerCase().trim();
+    return [
+      'hii',
+      'hi'
+          'hello',
+      'hey',
+      'greetings',
+      'good morning',
+      'good afternoon',
+      'good evening'
+    ].contains(t);
   }
 
-  // ---------------------------------------------------------------------------
-  // UI
-  // ---------------------------------------------------------------------------
+  String _welcomeMessageResponse() {
+    return "Hello! ${widget.userName}, How can I help you today?";
+  }
+
+  String _cleanMessage(String msg) {
+    return msg.replaceAll('**', '').replaceAll('*', '').trim();
+  }
+
+  Future<String> _sendMessageToAPI(String query) async {
+    if (_welcomeMessage(query)) {
+      return _welcomeMessageResponse();
+    }
+    if (_authToken == null) {
+      return 'Authentication error. Please log in again.';
+    }
+
+    try {
+      final dio = getIt<Dio>(); // <-- USE GLOBAL DIO CLIENT
+
+      final response = await dio.post(
+        _apiUrl,
+        data: {
+          "query": query,
+          "session_id": _sessionId,
+        },
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $_authToken",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        ),
+      );
+
+      final data = response.data;
+      final rawMessage =
+          data["message"] ?? "Sorry, I could not process your request.";
+      return _cleanMessage(rawMessage);
+    } catch (e) {
+      debugPrint("Chat API error: $e");
+      return "Sorry, I encountered an error. Please check your connection and try again.";
+    }
+  }
+
+  Future<void> _loadOrCreateSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'chat_session_${widget.userName}';
+
+    final savedSession = prefs.getString(key);
+
+    if (savedSession != null && savedSession.isNotEmpty) {
+      _sessionId = savedSession;
+    } else {
+      _sessionId = const Uuid().v4();
+      await prefs.setString(key, _sessionId!);
+    }
+    debugPrint('CHAT SESSION LOADED => $_sessionId');
+  }
+
+  void _handleSendPressed(types.PartialText message) async {
+    if (!_inputEnabled || _authToken == null) return;
+
+    final userMessage = types.TextMessage(
+      author: _user,
+      id: const Uuid().v4(),
+      text: message.text,
+    );
+
+    setState(() {
+      _messages.insert(0, userMessage);
+      _isBotTyping = true;
+      _messages.insert(0, _buildTypingPlaceholder());
+      _inputEnabled = false;
+    });
+
+    // Call API
+    final botResponseText = await _sendMessageToAPI(message.text);
+
+    final botReply = types.TextMessage(
+      author: _bot,
+      id: const Uuid().v4(),
+      text: botResponseText,
+    );
+
+    setState(() {
+      _isBotTyping = false;
+      _inputEnabled =
+          _authToken != null; // Re-enable only if still authenticated
+      _messages.removeWhere((m) => m.id == '__typing__');
+      _messages.insert(0, botReply);
+    });
+  }
+
+  Future<void> _clearChat() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'chat_session_${widget.userName}';
+    setState(() {
+      _messages.clear();
+      _isBotTyping = false;
+      _hasText = false;
+      _sessionId = const Uuid().v4(); // Generate new session ID
+    });
+    await prefs.setString(key, _sessionId!);
+    _addInitialBotMessage();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Chat cleared."),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _trySend() {
+    final text = _textCtrl.text.trim();
+    if (text.isEmpty) return;
+    _textCtrl.clear();
+    _hasText = false;
+    _handleSendPressed(types.PartialText(text: text));
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: _buildHeader(),
-      body: Column(
-        children: [
-          if (_error != null) _buildErrorBanner(),
-          Expanded(child: _buildChat()),
-          _buildInputBar(),
+      appBar: FSMAppBar.gradient(
+        titleWidget: Row(children: [
+          Icon(Icons.smart_toy, color: Colors.white),
+          SizedBox(width: 8),
+          Text('AI Assistant')
+        ]),
+        actions: [
+          IconButton(
+            tooltip: 'Clear chat',
+            icon: Icon(
+              Icons.delete_outline,
+              color: _hasUserMessages
+                  ? Colors.white
+                  : Colors.white.withOpacity(0.4),
+            ),
+            // onPressed: _messages.isEmpty ? null : _clearChat,
+            onPressed: _hasUserMessages ? _clearChat : null,
+          ),
         ],
       ),
-    );
-  }
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (_isBotTyping) const SizedBox(height: 8),
+            Expanded(
+              child: _error != null && _authToken == null
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              _error!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Chat(
+                      messages: _messages,
+                      user: _user,
+                      onSendPressed: (_) {},
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      bubbleBuilder: (child,
+                          {required message, required nextMessageInGroup}) {
+                        final isUserMessage = message.author.id == _user.id;
+                        final isTypingPlaceholder = message.id == '__typing__';
 
-  PreferredSizeWidget _buildHeader() {
-    return AppBar(
-      title: const Text("AI Assistant"),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: _messages.isEmpty ? null : _resetChat,
-        ),
-      ],
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF00796B), Color(0xFF004D40)],
-          ),
-        ),
-      ),
-    );
-  }
+                        if (isTypingPlaceholder) {
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                CircleAvatar(
+                                  radius: 16,
+                                  // backgroundColor: Color(0xFF00796B),
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  child: Icon(Icons.smart_toy,
+                                      color: Colors.white, size: 18),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: const _TypingDots(),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
 
-  Widget _buildErrorBanner() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      color: Colors.red.shade100,
-      child: Text(
-        _error!,
-        style: const TextStyle(color: Colors.red),
-      ),
-    );
-  }
-
-  Widget _buildChat() {
-    return Chat(
-      messages: _messages,
-      user: _user,
-      onSendPressed: (_) {},
-      customBottomWidget: const SizedBox.shrink(),
-      showUserNames: false,
-      showUserAvatars: false,
-      bubbleBuilder: (child, {required message, required nextMessageInGroup}) {
-        return _buildMessageBubble(message);
-      },
-    );
-  }
-
-  Widget _buildMessageBubble(types.Message msg) {
-    final isUser = msg.author.id == _user.id;
-    final isTyping = msg.id == "__typing__";
-
-    if (isTyping) {
-      return const Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Text("Agent is typing..."),
-        ),
-      );
-    }
-
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isUser ? const Color(0xFF00796B) : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          (msg as types.TextMessage).text,
-          style: TextStyle(
-            color: isUser ? Colors.white : Colors.black87,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInputBar() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      color: Colors.grey.shade100,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _inputCtrl,
-              enabled: _inputEnabled,
-              decoration: const InputDecoration(
-                hintText: "Type your message...",
-                border: OutlineInputBorder(),
+                        return Align(
+                          alignment: isUserMessage
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 12),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isUserMessage
+                                  // ? const Color(0xFF00796B)
+                                  ? Theme.of(context).primaryColor
+                                  : const Color(0xFFE5F4F1),
+                              borderRadius: BorderRadius.only(
+                                topLeft: const Radius.circular(16),
+                                topRight: const Radius.circular(16),
+                                bottomLeft: isUserMessage
+                                    ? const Radius.circular(16)
+                                    : const Radius.circular(0),
+                                bottomRight: isUserMessage
+                                    ? const Radius.circular(0)
+                                    : const Radius.circular(16),
+                              ),
+                            ),
+                            child: SelectableText(
+                              (message as types.TextMessage).text,
+                              style: TextStyle(
+                                color: isUserMessage
+                                    ? Colors.white
+                                    : Colors.black87,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      showUserAvatars: false,
+                      showUserNames: true,
+                      theme: DefaultChatTheme(
+                        primaryColor: AppColors.primary,
+                        secondaryColor: AppColors.surface,
+                        inputBackgroundColor: AppColors.surface,
+                        inputTextColor: AppColors.textPrimary,
+                        backgroundColor: Colors.white,
+                        inputMargin: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                      ),
+                      customBottomWidget: const SizedBox.shrink(),
+                    ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                border: Border(top: BorderSide(color: AppColors.divider)),
               ),
-              onSubmitted: (_) => _submitMessage(),
+              child: Row(
+                children: [
+                  // IconButton(
+                  //   icon: Icon(Icons.attach_file, color: AppColors.primary),
+                  //   onPressed: _inputEnabled ? () {} : null,
+                  // ),
+                  Expanded(
+                    child: TextField(
+                      controller: _textCtrl,
+                      enabled: _inputEnabled,
+                      maxLines: null,
+                      minLines: 1,
+                      decoration: const InputDecoration(
+                        hintText: 'Type your message...',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 8),
+                      ),
+                      onSubmitted: (_) => _trySend(),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: (_inputEnabled && _hasText)
+                          ? AppColors.primary
+                          : Colors.grey.shade400,
+                    ),
+                    onPressed: (_inputEnabled && _hasText) ? _trySend : null,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          CircleAvatar(
-            backgroundColor: const Color(0xFF00796B),
-            child: IconButton(
-              icon: const Icon(Icons.send, color: Colors.white),
-              onPressed: _inputEnabled ? _submitMessage : null,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+}
 
-  void _submitMessage() {
-    final text = _inputCtrl.text.trim();
-    if (text.isEmpty) return;
+class _TypingDots extends StatefulWidget {
+  const _TypingDots();
 
-    _inputCtrl.clear();
-    _sendUserMessage(text);
+  @override
+  State<_TypingDots> createState() => _TypingDotsState();
+}
+
+class _TypingDotsState extends State<_TypingDots>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(3, (index) {
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (_, __) {
+            double t = (_controller.value + (index * 0.2)) % 1.0;
+            double opacity = t < 0.5 ? 1.0 - (t * 2) : (t - 0.5) * 2;
+            return Opacity(
+              opacity: opacity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    // color: Color(0xFF00796B),
+                    color: Theme.of(context).primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }),
+    );
   }
 }

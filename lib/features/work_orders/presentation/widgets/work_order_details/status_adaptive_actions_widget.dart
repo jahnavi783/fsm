@@ -4,6 +4,8 @@ import 'package:fsm/core/theme/design_tokens.dart';
 import 'package:fsm/core/theme/extensions/fsm_theme_extension.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
 
+import '../../../domain/entities/work_log_entity.dart';
+
 /// StatusAdaptiveActionsWidget
 ///
 /// Displays context-appropriate action buttons based on work order status.
@@ -19,6 +21,8 @@ import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart'
 class StatusAdaptiveActionsWidget extends StatelessWidget {
   final WorkOrderEntity workOrder;
   final bool isActionInProgress;
+  final bool isOffline;
+  final int currentUserPauseCount;
   final VoidCallback? onStart;
   final VoidCallback? onPause;
   final VoidCallback? onResume;
@@ -30,6 +34,8 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
     super.key,
     required this.workOrder,
     required this.isActionInProgress,
+    required this.isOffline,
+    required this.currentUserPauseCount,
     this.onStart,
     this.onPause,
     this.onResume,
@@ -66,13 +72,14 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        child: _buildActionButtons(context, isActionInProgress),
+        child: _buildActionButtons(context, isActionInProgress, isOffline),
       ),
     );
   }
 
   /// Build appropriate buttons based on work order status
-  Widget _buildActionButtons(BuildContext context, bool isLoading) {
+  Widget _buildActionButtons(
+      BuildContext context, bool isLoading, bool isOffline) {
     final theme = Theme.of(context);
     final fsmTheme = context.fsmTheme;
 
@@ -89,6 +96,7 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
         );
 
       case WorkOrderStatus.assigned:
+      case WorkOrderStatus.reAssigned:
         // Assigned → "Start" + "Reject" (side-by-side)
         return _buildDualButtons(
           context,
@@ -106,18 +114,56 @@ class StatusAdaptiveActionsWidget extends StatelessWidget {
 
       case WorkOrderStatus.inProgress:
         // InProgress → "Pause" + "Complete" (side-by-side)
-        return _buildDualButtons(
-          context,
-          primaryLabel: 'Pause Job',
-          primaryIcon: Icons.pause,
-          primaryColor: fsmTheme.statusPending,
-          primaryOnPressed: !isLoading ? onPause : null,
-          secondaryLabel: 'Complete Job',
-          secondaryIcon: Icons.check_circle,
-          secondaryColor: theme.colorScheme.primary,
-          secondaryOnPressed: !isLoading ? onComplete : null,
-          isLoading: isLoading,
-        );
+
+        // final pauseCount = isOffline
+        //     ? workOrder.workLogs
+        //         .where((log) => log.type == WorkLogType.paused)
+        //         .length
+        //     : currentUserPauseCount;
+
+        // final canPause = currentUserPauseCount < 3;
+        // final canPause = pauseCount < 3;
+        // final canPause = workOrder.pauseCount < 3;
+        final pauseCount =
+            isOffline ? workOrder.pauseCount : currentUserPauseCount;
+        // ADD THESE DEBUG PRINTS
+        debugPrint('===== DEBUG STATUS WIDGET =====');
+        debugPrint('isOffline: $isOffline');
+        debugPrint('currentUserPauseCount: $currentUserPauseCount');
+        debugPrint('workOrder.workLogs.length: ${workOrder.workLogs.length}');
+        debugPrint(
+            'Pause logs count: ${workOrder.workLogs.where((log) => log.type == WorkLogType.paused).length}');
+        debugPrint('pauseCount: $pauseCount');
+        debugPrint('canPause: ${pauseCount < 3}');
+        debugPrint('workOrder.status: ${workOrder.status}');
+        debugPrint('===============================');
+
+        final canPause = pauseCount < 3;
+
+        if (canPause) {
+          return _buildDualButtons(
+            context,
+            primaryLabel: 'Pause Job',
+            primaryIcon: Icons.pause,
+            primaryColor: fsmTheme.statusPending,
+            primaryOnPressed: !isLoading ? onPause : null,
+            secondaryLabel: 'Complete Job',
+            secondaryIcon: Icons.check_circle,
+            secondaryColor: theme.colorScheme.primary,
+            secondaryOnPressed: !isLoading ? onComplete : null,
+            isLoading: isLoading,
+          );
+        } else {
+          return _buildSingleButton(
+            context,
+            label: 'Complete Job',
+            icon: Icons.check_circle,
+            // color: fsmTheme.statusCompleted,
+            color: theme.colorScheme.primary,
+            onPressed: !isLoading ? onComplete : null,
+            isLoading: isLoading,
+          );
+        }
 
       case WorkOrderStatus.paused:
         // Paused → "Resume"

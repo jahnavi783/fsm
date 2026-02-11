@@ -460,44 +460,117 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
                 itemCount: _availableParts.length,
                 itemBuilder: (context, index) {
                   final part = _availableParts[index];
-                  return Card(
-                    margin: REdgeInsets.only(bottom: DesignTokens.space3),
-                    child: ListTile(
-                      title: Text(
-                        part.partName,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
+                  final isOutOfStock = part.quantityAvailable <= 0;
+                  return Opacity(
+                    opacity: isOutOfStock ? 0.5 : 1.0,
+                    child: Card(
+                      margin: REdgeInsets.only(bottom: DesignTokens.space3),
+                      color: isOutOfStock
+                          ? Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                          : null,
+                      child: ListTile(
+                        title: Text(
+                          part.partName,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RSizedBox(height: DesignTokens.space1),
+                            // Text('Part #: ${part.partNumber}'),
+                            Text(
+                              'Part #: ${part.partNumber}',
+                              style: TextStyle(
+                                color: isOutOfStock
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.5)
+                                    : null,
+                              ),
                             ),
+                            Text(
+                              'Category: ${part.category}',
+                              style: TextStyle(
+                                  color: isOutOfStock
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.5)
+                                      : null),
+                            ),
+                            Text(
+                              'Available: ${part.quantityAvailable}',
+                              style: TextStyle(
+                                  color: isOutOfStock
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.5)
+                                      : null),
+                            ),
+                            if (isOutOfStock) ...[
+                              RSizedBox(height: DesignTokens.space1),
+                              Text(
+                                'OUT OF STOCK',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        trailing: Icon(
+                          isOutOfStock
+                              ? Icons.block
+                              : part.isInStock
+                                  ? Icons.check_circle
+                                  : part.isLowStock
+                                      ? Icons.warning
+                                      : Icons.cancel,
+                          color: isOutOfStock
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withValues(alpha: 0.6)
+                              : part.isInStock
+                                  ? Colors.green
+                                  : part.isLowStock
+                                      ? Colors.orange
+                                      : Colors.red,
+                        ),
+                        onTap: isOutOfStock
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      '${part.partName} is currently out of stock',
+                                    ),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.error,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : () {
+                                formArray.add(
+                                  WorkOrderForms.createPartEntry(
+                                    partNumber: part.partNumber,
+                                    partName: part.partName,
+                                    quantity: 1,
+                                  ),
+                                );
+                                Navigator.pop(context);
+                              },
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RSizedBox(height: DesignTokens.space1),
-                          Text('Part #: ${part.partNumber}'),
-                          Text('Category: ${part.category}'),
-                          Text('Available: ${part.quantityAvailable}'),
-                        ],
-                      ),
-                      trailing: Icon(
-                        part.isInStock
-                            ? Icons.check_circle
-                            : part.isLowStock
-                                ? Icons.warning
-                                : Icons.cancel,
-                        color: part.isInStock
-                            ? Colors.green
-                            : part.isLowStock
-                                ? Colors.orange
-                                : Colors.red,
-                      ),
-                      onTap: () {
-                        formArray.add(WorkOrderForms.createPartEntry(
-                          partNumber: part.partNumber,
-                          partName: part.partName,
-                          quantity: 1,
-                        ));
-                        Navigator.pop(context);
-                      },
                     ),
                   );
                 },
@@ -943,13 +1016,13 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           DesignTokens.verticalSpaceLarge,
           ReactiveSignaturePad(formControlName: 'signature'),
           DesignTokens.verticalSpaceLarge,
-          ReactiveMultilineInput(
-            formControlName: 'completionNotes',
-            hint: 'Add any additional notes or observations...',
-            label: 'Completion Notes (Optional)',
-            minLines: 3,
-            maxLines: 5,
-          ),
+          // ReactiveMultilineInput(
+          //   formControlName: 'completionNotes',
+          //   hint: 'Add any additional notes or observations...',
+          //   label: 'Completion Notes (Optional)',
+          //   minLines: 3,
+          //   maxLines: 5,
+          // ),
         ],
       ),
     );
@@ -1208,13 +1281,13 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
             ),
           if (_currentStep > 0) RSizedBox(width: DesignTokens.space3),
           if (_canSkipCurrentStep())
-            Expanded(
-              child: OutlinedButton(
-                onPressed: isLoading ? null : _handleSkip,
-                child: const Text('Skip'),
-              ),
-            ),
-          if (_canSkipCurrentStep()) RSizedBox(width: DesignTokens.space3),
+            // Expanded(
+            //   child: OutlinedButton(
+            //     onPressed: isLoading ? null : _handleSkip,
+            //     child: const Text('Skip'),
+            //   ),
+            // ),
+            if (_canSkipCurrentStep()) RSizedBox(width: DesignTokens.space3),
           Expanded(
             child: FilledButton(
               onPressed: isLoading

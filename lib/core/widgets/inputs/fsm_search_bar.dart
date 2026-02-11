@@ -23,7 +23,8 @@ class FSMSearchBar extends StatefulWidget {
   final String? initialValue;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
-  final VoidCallback? onVoiceSearch;
+  // final VoidCallback? onVoiceSearch;
+  final VoidCallback? onVoiceSearchTap;
   final VoidCallback? onFilterTap;
   final bool showVoiceSearch;
   final bool showFilterButton;
@@ -43,7 +44,7 @@ class FSMSearchBar extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.onSubmitted,
-    this.onVoiceSearch,
+    this.onVoiceSearchTap,
     this.onFilterTap,
     this.showVoiceSearch = false,
     this.showFilterButton = false,
@@ -71,7 +72,8 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController(text: widget.initialValue);
+    _controller =
+        widget.controller ?? TextEditingController(text: widget.initialValue);
     _focusNode = widget.focusNode ?? FocusNode();
 
     _hasText = _controller.text.isNotEmpty;
@@ -217,7 +219,7 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                     color: theme.colorScheme.primary,
                     size: DesignTokens.iconMd.sp,
                   ),
-                  onPressed: widget.onVoiceSearch,
+                  onPressed: widget.onVoiceSearchTap,
                   constraints: BoxConstraints(
                     minWidth: DesignTokens.buttonHeightMd,
                     minHeight: DesignTokens.buttonHeightMd,
@@ -260,8 +262,10 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
                             shape: BoxShape.circle,
                           ),
                           constraints: BoxConstraints(
-                            minWidth: (DesignTokens.space4 + DesignTokens.space1).w,
-                            minHeight: (DesignTokens.space4 + DesignTokens.space1).h,
+                            minWidth:
+                                (DesignTokens.space4 + DesignTokens.space1).w,
+                            minHeight:
+                                (DesignTokens.space4 + DesignTokens.space1).h,
                           ),
                           child: Center(
                             child: Text(
@@ -283,8 +287,7 @@ class _FSMSearchBarState extends State<FSMSearchBar> {
         ),
 
         // Recent searches
-        if (_showRecentSearches)
-          _buildRecentSearches(),
+        if (_showRecentSearches) _buildRecentSearches(),
       ],
     );
   }

@@ -65,15 +65,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
+  // Future<void> _onLogout(
+  //   LogoutEvent event,
+  //   Emitter<AuthState> emit,
+  // ) async {
+  //   emit(const AuthState.loading());
+  //
+  //   // emit(AuthState.error(message: 'Logging out...'));
+  //   // emit(AuthState.error(message: ''));
+  //   emit(const AuthState.unauthenticated());
+  // }
   Future<void> _onLogout(
     LogoutEvent event,
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthState.loading());
 
-    // emit(AuthState.error(message: 'Logging out...'));
-    // emit(AuthState.error(message: ''));
-    emit(const AuthState.unauthenticated());
+    final result = await _logoutUseCase();
+
+    result.fold(
+      (failure) => emit(const AuthState.unauthenticated()),
+      (_) => emit(const AuthState.unauthenticated()),
+    );
   }
 
   Future<void> _onRefreshToken(

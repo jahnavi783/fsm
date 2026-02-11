@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fsm/features/work_orders/domain/entities/pause_count_entity.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_image_capture_entity.dart';
 
 part 'work_order_grouped_images_entity.freezed.dart';
@@ -9,6 +10,7 @@ abstract class WorkOrderGroupedImagesEntity
   const factory WorkOrderGroupedImagesEntity({
     required int workOrderId,
     required Map<String, List<WorkOrderImageCaptureEntity>> groupedImages,
+    @Default([]) List<PauseCountEntity> pauseCounts,
   }) = _WorkOrderGroupedImagesEntity;
 
   const WorkOrderGroupedImagesEntity._();
@@ -103,9 +105,29 @@ abstract class WorkOrderGroupedImagesEntity
       if (dateB == null) return -1; // B goes to end
 
       // Sort ascending (oldest first - chronological timeline)
-      return dateA.compareTo(dateB);
+      return dateA.toUtc().compareTo(dateB.toUtc());
     });
 
     return entries;
+  }
+
+  /// Get pause count for a specific user ID
+  /// Get pause count for a specific user ID
+  int getPauseCountForUser(int userId) {
+    try {
+      final userPauseCount = pauseCounts.firstWhere(
+        (pc) => pc.userId == userId,
+        orElse: () => const PauseCountEntity(
+          userId: 0,
+          firstName: '',
+          lastName: '',
+          email: '',
+          pauseCount: 0,
+        ),
+      );
+      return userPauseCount.pauseCount;
+    } catch (_) {
+      return 0;
+    }
   }
 }

@@ -280,7 +280,7 @@ class _WorkOrderImagePreviewDialogState
           _buildMetadataRow(
             Icons.location_on,
             'GPS',
-            '${capture.latitude!.toStringAsFixed(6)}, ${capture.longitude!.toStringAsFixed(6)}',
+            '${capture.longitude!.toStringAsFixed(6)} , ${capture.latitude!.toStringAsFixed(6)}',
           ),
           DesignTokens.verticalSpaceSmall,
         ],

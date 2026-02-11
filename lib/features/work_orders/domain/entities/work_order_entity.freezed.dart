@@ -24,13 +24,15 @@ mixin _$WorkOrderEntity {
   String get location;
   WorkOrderStatus get status;
   int get durationDays;
+  String? get serviceRequestNumber;
   double? get durationHours;
+  int get pauseCount;
   DateTime get createdAt;
   DateTime get updatedAt;
   DateTime? get startedAt;
   DateTime? get resumedAt;
   DateTime? get completedAt;
-  String? get pauseLogs;
+  List<String>? get pauseLogs;
   String? get workLog;
   List<PartUsedEntity> get partsUsed;
   List<String> get images;
@@ -42,6 +44,7 @@ mixin _$WorkOrderEntity {
   List<PartEntity> get requiredParts;
   List<String> get attachments;
   String? get completionNotes;
+  String? get userId;
 
   /// Create a copy of WorkOrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -72,8 +75,12 @@ mixin _$WorkOrderEntity {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.serviceRequestNumber, serviceRequestNumber) ||
+                other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.durationHours, durationHours) ||
                 other.durationHours == durationHours) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -84,8 +91,7 @@ mixin _$WorkOrderEntity {
                 other.resumedAt == resumedAt) &&
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt) &&
-            (identical(other.pauseLogs, pauseLogs) ||
-                other.pauseLogs == pauseLogs) &&
+            const DeepCollectionEquality().equals(other.pauseLogs, pauseLogs) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality().equals(other.partsUsed, partsUsed) &&
             const DeepCollectionEquality().equals(other.images, images) &&
@@ -103,7 +109,8 @@ mixin _$WorkOrderEntity {
             const DeepCollectionEquality()
                 .equals(other.attachments, attachments) &&
             (identical(other.completionNotes, completionNotes) ||
-                other.completionNotes == completionNotes));
+                other.completionNotes == completionNotes) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
@@ -119,13 +126,15 @@ mixin _$WorkOrderEntity {
         location,
         status,
         durationDays,
+        serviceRequestNumber,
         durationHours,
+        pauseCount,
         createdAt,
         updatedAt,
         startedAt,
         resumedAt,
         completedAt,
-        pauseLogs,
+        const DeepCollectionEquality().hash(pauseLogs),
         workLog,
         const DeepCollectionEquality().hash(partsUsed),
         const DeepCollectionEquality().hash(images),
@@ -136,12 +145,13 @@ mixin _$WorkOrderEntity {
         const DeepCollectionEquality().hash(requiredSkills),
         const DeepCollectionEquality().hash(requiredParts),
         const DeepCollectionEquality().hash(attachments),
-        completionNotes
+        completionNotes,
+        userId
       ]);
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, pauseCount: $pauseCount, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -162,13 +172,15 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       String location,
       WorkOrderStatus status,
       int durationDays,
+      String? serviceRequestNumber,
       double? durationHours,
+      int pauseCount,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
       DateTime? resumedAt,
       DateTime? completedAt,
-      String? pauseLogs,
+      List<String>? pauseLogs,
       String? workLog,
       List<PartUsedEntity> partsUsed,
       List<String> images,
@@ -179,7 +191,8 @@ abstract mixin class $WorkOrderEntityCopyWith<$Res> {
       List<String> requiredSkills,
       List<PartEntity> requiredParts,
       List<String> attachments,
-      String? completionNotes});
+      String? completionNotes,
+      String? userId});
 
   $CustomerEntityCopyWith<$Res>? get customer;
   $LocationEntityCopyWith<$Res>? get locationDetails;
@@ -209,7 +222,9 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? serviceRequestNumber = freezed,
     Object? durationHours = freezed,
+    Object? pauseCount = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -227,6 +242,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -269,10 +285,18 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      serviceRequestNumber: freezed == serviceRequestNumber
+          ? _self.serviceRequestNumber
+          : serviceRequestNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       durationHours: freezed == durationHours
           ? _self.durationHours
           : durationHours // ignore: cast_nullable_to_non_nullable
               as double?,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -296,7 +320,7 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
       pauseLogs: freezed == pauseLogs
           ? _self.pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       workLog: freezed == workLog
           ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
@@ -340,6 +364,10 @@ class _$WorkOrderEntityCopyWithImpl<$Res>
       completionNotes: freezed == completionNotes
           ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -491,13 +519,15 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -508,7 +538,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)?
+            String? completionNotes,
+            String? userId)?
         $default, {
     required TResult orElse(),
   }) {
@@ -526,7 +557,9 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -543,7 +576,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         return orElse();
     }
@@ -575,13 +609,15 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -592,7 +628,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)
+            String? completionNotes,
+            String? userId)
         $default,
   ) {
     final _that = this;
@@ -609,7 +646,9 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -626,7 +665,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -657,13 +697,15 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             String location,
             WorkOrderStatus status,
             int durationDays,
+            String? serviceRequestNumber,
             double? durationHours,
+            int pauseCount,
             DateTime createdAt,
             DateTime updatedAt,
             DateTime? startedAt,
             DateTime? resumedAt,
             DateTime? completedAt,
-            String? pauseLogs,
+            List<String>? pauseLogs,
             String? workLog,
             List<PartUsedEntity> partsUsed,
             List<String> images,
@@ -674,7 +716,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             List<String> requiredSkills,
             List<PartEntity> requiredParts,
             List<String> attachments,
-            String? completionNotes)?
+            String? completionNotes,
+            String? userId)?
         $default,
   ) {
     final _that = this;
@@ -691,7 +734,9 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.location,
             _that.status,
             _that.durationDays,
+            _that.serviceRequestNumber,
             _that.durationHours,
+            _that.pauseCount,
             _that.createdAt,
             _that.updatedAt,
             _that.startedAt,
@@ -708,7 +753,8 @@ extension WorkOrderEntityPatterns on WorkOrderEntity {
             _that.requiredSkills,
             _that.requiredParts,
             _that.attachments,
-            _that.completionNotes);
+            _that.completionNotes,
+            _that.userId);
       case _:
         return null;
     }
@@ -729,13 +775,15 @@ class _WorkOrderEntity extends WorkOrderEntity {
       required this.location,
       required this.status,
       required this.durationDays,
+      this.serviceRequestNumber,
       this.durationHours,
+      this.pauseCount = 0,
       required this.createdAt,
       required this.updatedAt,
       this.startedAt,
       this.resumedAt,
       this.completedAt,
-      this.pauseLogs,
+      final List<String>? pauseLogs,
       this.workLog,
       final List<PartUsedEntity> partsUsed = const [],
       final List<String> images = const [],
@@ -746,8 +794,10 @@ class _WorkOrderEntity extends WorkOrderEntity {
       final List<String> requiredSkills = const [],
       final List<PartEntity> requiredParts = const [],
       final List<String> attachments = const [],
-      this.completionNotes})
-      : _partsUsed = partsUsed,
+      this.completionNotes,
+      this.userId})
+      : _pauseLogs = pauseLogs,
+        _partsUsed = partsUsed,
         _images = images,
         _workLogs = workLogs,
         _requiredSkills = requiredSkills,
@@ -776,7 +826,12 @@ class _WorkOrderEntity extends WorkOrderEntity {
   @override
   final int durationDays;
   @override
+  final String? serviceRequestNumber;
+  @override
   final double? durationHours;
+  @override
+  @JsonKey()
+  final int pauseCount;
   @override
   final DateTime createdAt;
   @override
@@ -787,8 +842,16 @@ class _WorkOrderEntity extends WorkOrderEntity {
   final DateTime? resumedAt;
   @override
   final DateTime? completedAt;
+  final List<String>? _pauseLogs;
   @override
-  final String? pauseLogs;
+  List<String>? get pauseLogs {
+    final value = _pauseLogs;
+    if (value == null) return null;
+    if (_pauseLogs is EqualUnmodifiableListView) return _pauseLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? workLog;
   final List<PartUsedEntity> _partsUsed;
@@ -853,6 +916,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
 
   @override
   final String? completionNotes;
+  @override
+  final String? userId;
 
   /// Create a copy of WorkOrderEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -883,8 +948,12 @@ class _WorkOrderEntity extends WorkOrderEntity {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.durationDays, durationDays) ||
                 other.durationDays == durationDays) &&
+            (identical(other.serviceRequestNumber, serviceRequestNumber) ||
+                other.serviceRequestNumber == serviceRequestNumber) &&
             (identical(other.durationHours, durationHours) ||
                 other.durationHours == durationHours) &&
+            (identical(other.pauseCount, pauseCount) ||
+                other.pauseCount == pauseCount) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -895,8 +964,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
                 other.resumedAt == resumedAt) &&
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt) &&
-            (identical(other.pauseLogs, pauseLogs) ||
-                other.pauseLogs == pauseLogs) &&
+            const DeepCollectionEquality()
+                .equals(other._pauseLogs, _pauseLogs) &&
             (identical(other.workLog, workLog) || other.workLog == workLog) &&
             const DeepCollectionEquality()
                 .equals(other._partsUsed, _partsUsed) &&
@@ -915,7 +984,8 @@ class _WorkOrderEntity extends WorkOrderEntity {
             const DeepCollectionEquality()
                 .equals(other._attachments, _attachments) &&
             (identical(other.completionNotes, completionNotes) ||
-                other.completionNotes == completionNotes));
+                other.completionNotes == completionNotes) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
@@ -931,13 +1001,15 @@ class _WorkOrderEntity extends WorkOrderEntity {
         location,
         status,
         durationDays,
+        serviceRequestNumber,
         durationHours,
+        pauseCount,
         createdAt,
         updatedAt,
         startedAt,
         resumedAt,
         completedAt,
-        pauseLogs,
+        const DeepCollectionEquality().hash(_pauseLogs),
         workLog,
         const DeepCollectionEquality().hash(_partsUsed),
         const DeepCollectionEquality().hash(_images),
@@ -948,12 +1020,13 @@ class _WorkOrderEntity extends WorkOrderEntity {
         const DeepCollectionEquality().hash(_requiredSkills),
         const DeepCollectionEquality().hash(_requiredParts),
         const DeepCollectionEquality().hash(_attachments),
-        completionNotes
+        completionNotes,
+        userId
       ]);
 
   @override
   String toString() {
-    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, durationHours: $durationHours, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes)';
+    return 'WorkOrderEntity(id: $id, woNumber: $woNumber, srId: $srId, summary: $summary, problemDescription: $problemDescription, priority: $priority, visitDate: $visitDate, location: $location, status: $status, durationDays: $durationDays, serviceRequestNumber: $serviceRequestNumber, durationHours: $durationHours, pauseCount: $pauseCount, createdAt: $createdAt, updatedAt: $updatedAt, startedAt: $startedAt, resumedAt: $resumedAt, completedAt: $completedAt, pauseLogs: $pauseLogs, workLog: $workLog, partsUsed: $partsUsed, images: $images, customer: $customer, locationDetails: $locationDetails, serviceRequest: $serviceRequest, workLogs: $workLogs, requiredSkills: $requiredSkills, requiredParts: $requiredParts, attachments: $attachments, completionNotes: $completionNotes, userId: $userId)';
   }
 }
 
@@ -976,13 +1049,15 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       String location,
       WorkOrderStatus status,
       int durationDays,
+      String? serviceRequestNumber,
       double? durationHours,
+      int pauseCount,
       DateTime createdAt,
       DateTime updatedAt,
       DateTime? startedAt,
       DateTime? resumedAt,
       DateTime? completedAt,
-      String? pauseLogs,
+      List<String>? pauseLogs,
       String? workLog,
       List<PartUsedEntity> partsUsed,
       List<String> images,
@@ -993,7 +1068,8 @@ abstract mixin class _$WorkOrderEntityCopyWith<$Res>
       List<String> requiredSkills,
       List<PartEntity> requiredParts,
       List<String> attachments,
-      String? completionNotes});
+      String? completionNotes,
+      String? userId});
 
   @override
   $CustomerEntityCopyWith<$Res>? get customer;
@@ -1026,7 +1102,9 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
     Object? location = null,
     Object? status = null,
     Object? durationDays = null,
+    Object? serviceRequestNumber = freezed,
     Object? durationHours = freezed,
+    Object? pauseCount = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? startedAt = freezed,
@@ -1044,6 +1122,7 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
     Object? requiredParts = null,
     Object? attachments = null,
     Object? completionNotes = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_WorkOrderEntity(
       id: null == id
@@ -1086,10 +1165,18 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
           ? _self.durationDays
           : durationDays // ignore: cast_nullable_to_non_nullable
               as int,
+      serviceRequestNumber: freezed == serviceRequestNumber
+          ? _self.serviceRequestNumber
+          : serviceRequestNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       durationHours: freezed == durationHours
           ? _self.durationHours
           : durationHours // ignore: cast_nullable_to_non_nullable
               as double?,
+      pauseCount: null == pauseCount
+          ? _self.pauseCount
+          : pauseCount // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -1111,9 +1198,9 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
           : completedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       pauseLogs: freezed == pauseLogs
-          ? _self.pauseLogs
+          ? _self._pauseLogs
           : pauseLogs // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<String>?,
       workLog: freezed == workLog
           ? _self.workLog
           : workLog // ignore: cast_nullable_to_non_nullable
@@ -1157,6 +1244,10 @@ class __$WorkOrderEntityCopyWithImpl<$Res>
       completionNotes: freezed == completionNotes
           ? _self.completionNotes
           : completionNotes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

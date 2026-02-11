@@ -36,6 +36,7 @@ _WorkOrderImageCaptureDto _$WorkOrderImageCaptureDtoFromJson(
       capturedAt: json['captured_at'] as String?,
       reason: json['reason'] as String?,
       remarks: json['remarks'] as String?,
+      comments: json['comments'] as String?,
     );
 
 Map<String, dynamic> _$WorkOrderImageCaptureDtoToJson(
@@ -49,4 +50,5 @@ Map<String, dynamic> _$WorkOrderImageCaptureDtoToJson(
       'captured_at': instance.capturedAt,
       'reason': instance.reason,
       'remarks': instance.remarks,
+      'comments': instance.comments,
     };

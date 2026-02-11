@@ -138,9 +138,9 @@ class FSMAppBar extends StatelessWidget implements PreferredSizeWidget {
           FSMAppBarAction.refresh(
             onPressed: onRefreshTap,
           ),
-        FSMAppBarAction.search(
-          onPressed: onSearchTap,
-        ),
+        // FSMAppBarAction.search(
+        //   onPressed: onSearchTap,
+        // ),
         ...?actions,
       ],
       automaticallyImplyLeading: false,

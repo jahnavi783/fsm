@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
-import 'package:fsm/features/work_orders/data/models/work_order_response.dart';
-import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/assign_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_response.dart';
+import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'work_order_api_client.g.dart';
 
@@ -31,6 +32,7 @@ abstract class WorkOrderApiClient {
     @Path('id') required int id,
     @Part(name: 'gps_coordinates') required String gpsCoordinates,
     @Part(name: 'files') List<File> files = const [],
+    @Part(name: 'comments') String? comments,
   });
 
   @PATCH('/work-orders/{id}/pause')
@@ -48,6 +50,7 @@ abstract class WorkOrderApiClient {
     @Path('id') required int id,
     @Part(name: 'gps_coordinates') String? gpsCoordinates,
     @Part(name: 'files') List<File> files = const [],
+    @Part(name: 'comments') String? comments,
   });
 
   @PATCH('/work-orders/{id}/complete')

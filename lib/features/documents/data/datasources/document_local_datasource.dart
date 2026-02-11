@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:fsm/features/documents/data/models/document_hive_model.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+
 import '../../../../core/constants/hive_boxes.dart';
 import '../../domain/entities/document_entity.dart';
 
@@ -41,6 +43,8 @@ abstract class DocumentLocalDataSource {
 class DocumentLocalDataSourceImpl implements DocumentLocalDataSource {
   static const String _documentsBoxName = HiveBoxes.documents;
   static const String _downloadedDocumentsDir = 'downloaded_documents';
+
+  DocumentLocalDataSourceImpl();
 
   @override
   Future<List<DocumentHiveModel>> getCachedDocuments({

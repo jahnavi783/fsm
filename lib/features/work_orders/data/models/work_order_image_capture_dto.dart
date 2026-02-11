@@ -40,6 +40,7 @@ abstract class WorkOrderImageCaptureDto with _$WorkOrderImageCaptureDto {
     @JsonKey(name: 'captured_at') String? capturedAt,
     String? reason,
     String? remarks,
+    String? comments,
   }) = _WorkOrderImageCaptureDto;
 
   factory WorkOrderImageCaptureDto.fromJson(Map<String, dynamic> json) =>
@@ -85,6 +86,7 @@ extension WorkOrderImageCaptureDtoX on WorkOrderImageCaptureDto {
       capturedBy: capturedBy?.toEntity(),
       capturedAt: parsedCapturedAt,
       reason: reason,
+      comments: comments,
       remarks: remarks,
     );
   }

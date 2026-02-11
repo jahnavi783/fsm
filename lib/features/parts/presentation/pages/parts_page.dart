@@ -129,13 +129,13 @@ class _PartsPageState extends State<PartsPage> {
                 leadingIcon: Icons.inventory_2,
               ),
               const FilterChipData<String>(
-                value: 'electrical',
-                label: 'Electrical',
+                value: 'compressor parts',
+                label: 'Compressor Parts',
                 leadingIcon: Icons.electrical_services,
               ),
               const FilterChipData<String>(
-                value: 'hydraulic',
-                label: 'Hydraulic',
+                value: 'valves & pumps',
+                label: 'Valves & Pumps',
                 leadingIcon: Icons.water_drop,
               ),
               const FilterChipData<String>(
@@ -144,8 +144,13 @@ class _PartsPageState extends State<PartsPage> {
                 leadingIcon: Icons.settings,
               ),
               const FilterChipData<String>(
-                value: 'tools',
-                label: 'Tools',
+                value: 'filters',
+                label: 'Filters',
+                leadingIcon: Icons.filter_alt,
+              ),
+              const FilterChipData<String>(
+                value: 'drilling components',
+                label: 'Drilling Components',
                 leadingIcon: Icons.construction,
               ),
             ],
@@ -187,6 +192,7 @@ class _PartsPageState extends State<PartsPage> {
                 ),
               );
             },
+            onVoiceSearchTap: () {},
           );
         },
       ),
@@ -195,7 +201,7 @@ class _PartsPageState extends State<PartsPage> {
 
   Widget _buildListContent(PartsState state) {
     return ListView.builder(
-      controller: _scrollController,
+      // controller: _scrollController,
       padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
       itemCount: state.filteredParts.length + (state.isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {

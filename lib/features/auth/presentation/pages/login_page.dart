@@ -5,10 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../core/router/app_router.gr.dart';
+import '../../../../core/theme/components/gradient_elevated_button.dart';
+import '../../../work_orders/data/services/local_user_store.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/auth/auth_event.dart';
 import '../blocs/auth/auth_state.dart';
-import '../../../../core/theme/components/gradient_elevated_button.dart';
 import '../widgets/login_form.dart';
 
 @RoutePage()
@@ -68,8 +69,11 @@ class _LoginPageState extends State<LoginPage> {
           state.when(
             initial: () {},
             loading: () {},
-            authenticated: (user) {
+            authenticated: (user) async {
               if (user.isTechnician) {
+                // SAVE USER ID LOCALLY (CRITICAL FOR OFFLINE FILTERING)
+                await LocalUserStore().saveUserId(user.id.toString());
+
                 context.router.navigate(const MainNavigationRoute());
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(

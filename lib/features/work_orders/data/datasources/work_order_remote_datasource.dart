@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:injectable/injectable.dart';
+
 import 'package:fsm/features/work_orders/data/api/work_order_api_client.dart';
-import 'package:fsm/features/work_orders/data/models/work_order_dto.dart';
-import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
-import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
 import 'package:fsm/features/work_orders/data/models/assign_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/reject_work_order_request.dart';
+import 'package:fsm/features/work_orders/data/models/work_order_dto.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_grouped_images_response_dto.dart';
+import 'package:fsm/features/work_orders/data/models/work_orders_response.dart';
 import 'package:fsm/features/work_orders/domain/entities/work_order_entity.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class WorkOrderRemoteDataSource {
   Future<WorkOrdersResponse> getWorkOrders({
@@ -113,6 +114,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       id: workOrderId,
       gpsCoordinates: '[$longitude, $latitude]',
       files: files,
+      comments: notes,
     );
     return response.workOrder;
   }
@@ -146,6 +148,7 @@ class WorkOrderRemoteDataSourceImpl implements WorkOrderRemoteDataSource {
       id: workOrderId,
       gpsCoordinates: '[$longitude, $latitude]',
       files: files,
+      comments: notes,
     );
     return response.workOrder;
   }

@@ -2,20 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fsm/core/widgets/templates/fsm_list_page_template.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
-import '../../../../core/theme/extensions/fsm_theme_extension.dart';
-import '../../../../core/widgets/widgets.dart';
+import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../domain/entities/document_entity.dart';
 import '../blocs/documents/documents_bloc.dart';
 import '../blocs/documents/documents_event.dart';
 import '../blocs/documents/documents_state.dart';
 import '../widgets/document_card_tile.dart';
-import '../widgets/document_shimmer.dart';
-import '../widgets/download_progress_indicator.dart';
 
 @RoutePage()
 class DocumentsPage extends StatefulWidget {
@@ -26,408 +25,259 @@ class DocumentsPage extends StatefulWidget {
 }
 
 class _DocumentsPageState extends State<DocumentsPage> {
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
   late final DocumentsBloc _documentsBloc;
-
+  String _searchQuery = '';
+  List<String> _selectedCategories = [];
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
   @override
   void initState() {
     super.initState();
+    _speech = stt.SpeechToText();
+    _scrollController.addListener(_onScroll);
+
+    // Initialize DocumentsBloc and load documents initially
     _documentsBloc = getIt<DocumentsBloc>()
-      ..add(const LoadDocuments())
-      ..add(const LoadCategories());
+      ..add(const DocumentsEvent.loadDocuments(page: 1))
+      ..add(const DocumentsEvent.loadCategories());
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
     _documentsBloc.close();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      _documentsBloc.add(
+        const DocumentsEvent.loadMoreDocuments(),
+      );
+    }
+  }
+
+  void _onSearchChanged(String query) {
+    final q = query.toLowerCase().trim();
+    setState(() {
+      _searchQuery = query;
+    });
+    final categoryToSend = query.isEmpty
+        ? _selectedCategories.isNotEmpty
+            ? _selectedCategories.first
+            : null
+        : null;
+
+    if (query.isNotEmpty) {
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(query: query, category: categoryToSend),
+      );
+    } else {
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category:
+              _selectedCategories.isNotEmpty ? _selectedCategories.first : null,
+        ),
+      );
+    }
+  }
+
+  void _startVoiceSearch() async {
+    bool available = await _speech.initialize();
+
+    if (!available) {
+      debugPrint("speech not available");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Voice recognition not available'),
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isListening = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🎙 Listening...'),
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+    _speech.listen(
+      onResult: (result) {
+        if (result.finalResult) {
+          // FIXED: Update both the state variable AND the controller
+          final recognizedText = result.recognizedWords;
+          setState(() {
+            _searchQuery = recognizedText;
+          });
+
+          // Update the search controller so the UI shows the text
+          _searchController.text = recognizedText;
+
+          // Trigger the search
+          _onSearchChanged(recognizedText);
+
+          // Stop listening after final result
+          _stopVoiceSearch();
+        } else {
+          // Optional: Show interim results in real-time
+          setState(() {
+            _searchQuery = result.recognizedWords;
+          });
+          _searchController.text = result.recognizedWords;
+        }
+      },
+      listenFor: const Duration(seconds: 10), // Increased timeout
+      pauseFor: const Duration(seconds: 3),
+    );
+  }
+
+  void _stopVoiceSearch() {
+    _speech.stop();
+    setState(() => _isListening = false);
+  }
+
+  void _handleVoiceSearch() {
+    if (_isListening) {
+      _stopVoiceSearch();
+    } else {
+      _startVoiceSearch();
+    }
+  }
+
+  void _onFilterChanged(List<String> selectedFilters) {
+    setState(() {
+      _selectedCategories = selectedFilters;
+    });
+
+    if (_searchQuery.isNotEmpty) {
+      _documentsBloc.add(
+        DocumentsEvent.searchDocuments(
+          query: _searchQuery,
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
+    } else {
+      _documentsBloc.add(
+        DocumentsEvent.loadDocuments(
+          category: selectedFilters.isNotEmpty ? selectedFilters.first : null,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _documentsBloc,
-      child: const DocumentsView(),
-    );
-  }
-}
-
-class DocumentsView extends StatefulWidget {
-  const DocumentsView({super.key});
-
-  @override
-  State<DocumentsView> createState() => _DocumentsViewState();
-}
-
-class _DocumentsViewState extends State<DocumentsView> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    if (_isBottom) {
-      context.read<DocumentsBloc>().add(const LoadMoreDocuments());
-    }
-  }
-
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: _buildAppBar(theme),
-      body: BlocConsumer<DocumentsBloc, DocumentsState>(
-        listener: (context, state) {
-          if (state.hasError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: theme.colorScheme.error,
-                action: state.lastFailedEvent != null
-                    ? SnackBarAction(
-                        label: 'Retry',
-                        textColor: theme.colorScheme.onError,
-                        onPressed: () {
-                          context
-                              .read<DocumentsBloc>()
-                              .add(const RetryLastAction());
-                        },
-                      )
-                    : null,
-              ),
-            );
-          }
-        },
+      child: BlocBuilder<DocumentsBloc, DocumentsState>(
         builder: (context, state) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  theme.colorScheme.primary.withValues(alpha: 0.02),
-                  theme.colorScheme.surface,
-                ],
-              ),
-            ),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                context.read<DocumentsBloc>().add(
-                      LoadDocuments(
-                        isRefresh: true,
-                        type: state.selectedType,
-                        category: state.selectedCategory,
-                        searchQuery: state.searchQuery,
-                      ),
-                    );
-              },
-              child: Column(
-                children: [
-                  FSMSearchBar(
-                    hintText: 'Search documents...',
-                    initialValue: state.searchQuery,
-                    isLoading: state.isSearching,
-                    onChanged: (query) {
-                      if (query.isNotEmpty) {
-                        context.read<DocumentsBloc>().add(
-                              SearchDocuments(
-                                query: query,
-                                type: state.selectedType,
-                                category: state.selectedCategory,
-                              ),
-                            );
-                      } else {
-                        context.read<DocumentsBloc>().add(const ClearSearch());
-                      }
-                    },
-                    showFilterButton: true,
-                    activeFilterCount: _getActiveFilterCount(state),
-                  ),
-                  if (state.categories.isNotEmpty)
-                    FSMFilterChipGroup<String>(
-                      options: ['All', ...state.categories]
-                          .map((category) => FilterChipData(
-                                value: category,
-                                label: category,
-                                leadingIcon: _getCategoryIcon(category),
-                              ))
-                          .toList(),
-                      selectedValues: state.selectedCategory != null
-                          ? [state.selectedCategory!]
-                          : ['All'],
-                      onSelectionChanged: (selected) {
-                        final category =
-                            selected.isNotEmpty && selected.first != 'All'
-                                ? selected.first
-                                : null;
-                        context
-                            .read<DocumentsBloc>()
-                            .add(FilterByCategory(category));
-                      },
-                      multiSelect: false,
-                      showClearAll: false,
-                    ),
-                  if (state.isDownloading &&
-                      state.downloadingDocumentId != null)
-                    DownloadProgressIndicator(
-                      fileName: _getDownloadingFileName(state),
-                    ),
-                  if (state.isOffline)
-                    Container(
-                      width: double.infinity,
-                      margin: REdgeInsets.symmetric(
-                        horizontal: DesignTokens.space4,
-                      ),
-                      padding: REdgeInsets.all(DesignTokens.space2),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            context.fsmTheme.warning.withValues(alpha: 0.15),
-                            context.fsmTheme.warning.withValues(alpha: 0.05),
-                          ],
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(DesignTokens.radiusSm.r),
-                        border: Border.all(
-                          color:
-                              context.fsmTheme.warning.withValues(alpha: 0.3),
-                          width: DesignTokens.borderWidthThin.w,
+          return FSMListPageTemplate<String>(
+            // Custom gradient app bar
+            appBar: FSMAppBar.gradient(
+              title: 'Documents',
+              actions: [
+                if (state.isDownloading)
+                  Padding(
+                    padding: REdgeInsets.all(DesignTokens.space4),
+                    child: RSizedBox(
+                      width: DesignTokens.iconSm,
+                      height: DesignTokens.iconSm,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.w,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: REdgeInsets.all(DesignTokens.space1),
-                            decoration: BoxDecoration(
-                              color: context.fsmTheme.warning
-                                  .withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(
-                                  DesignTokens.radiusXs.r),
-                            ),
-                            child: Icon(
-                              Icons.cloud_off_rounded,
-                              color: context.fsmTheme.warning,
-                              size: DesignTokens.iconSm.sp,
-                            ),
-                          ),
-                          DesignTokens.horizontalSpace(DesignTokens.space2),
-                          Expanded(
-                            child: Text(
-                              'Offline - Showing cached documents',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: context.fsmTheme.warning
-                                    .withValues(alpha: 0.9),
-                                fontSize: DesignTokens.fontSize13.sp,
-                                fontWeight: DesignTokens.fontWeightSemiBold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  Expanded(
-                    child: _buildDocumentsList(context, state),
                   ),
-                ],
-              ),
+              ],
             ),
+            // Search and filters
+            showSearch: true,
+            searchHint: 'Search documents...',
+            searchValue: _searchQuery,
+            onSearchChanged: _onSearchChanged,
+            onSearchSubmitted: (query) => _onSearchChanged(query),
+            showVoiceSearch: true,
+            onVoiceSearchTap: _handleVoiceSearch,
+
+            showFilters: state.categories.isNotEmpty,
+            filterOptions: state.categories.isNotEmpty
+                ? state.categories
+                    .map((category) => FilterChipData<String>(
+                          value: category,
+                          label: category,
+                        ))
+                    .toList()
+                : null,
+            selectedFilters: _selectedCategories,
+            onFilterChanged: _onFilterChanged,
+            multiSelectFilters: false,
+            // Content
+            listContent: _buildListContent(state),
+            isLoading: state.isLoading,
+            isEmpty: state.filteredDocuments.isEmpty && !state.isLoading,
+            hasError: state.hasError,
+            errorMessage: state.errorMessage,
+            onRetry: () => _documentsBloc.add(
+              const DocumentsEvent.loadDocuments(page: 1, isRefresh: true),
+            ),
+            emptyTitle: 'No Documents Found',
+            emptyDescription: 'Try adjusting your search or filter criteria.',
+            // Actions
+            onRefresh: () async {
+              _documentsBloc.add(
+                DocumentsEvent.loadDocuments(
+                  page: 1,
+                  isRefresh: true,
+                  searchQuery: _searchQuery.isNotEmpty ? _searchQuery : null,
+                  category: _selectedCategories.isNotEmpty
+                      ? _selectedCategories.first
+                      : null,
+                ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar(ThemeData theme) {
-    return FSMAppBar.gradient(
-      titleWidget: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: REdgeInsets.all(DesignTokens.space1),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(DesignTokens.radiusSm.r),
-            ),
-            child: Icon(
-              Icons.folder_rounded,
-              color: theme.colorScheme.onPrimary,
-              size: DesignTokens.iconSm.sp,
-            ),
-          ),
-          DesignTokens.horizontalSpace(DesignTokens.space2),
-          const Text('Documents'),
-        ],
-      ),
-      actions: [
-        FSMAppBarAction.search(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Global search coming soon')),
-            );
-          },
-        ),
-        BlocBuilder<DocumentsBloc, DocumentsState>(
-          builder: (context, state) {
-            if (state.downloadedDocumentsCount > 0) {
-              return Padding(
-                padding: REdgeInsets.only(right: DesignTokens.space4),
-                child: Center(
-                  child: Container(
-                    padding: REdgeInsets.symmetric(
-                      horizontal: DesignTokens.space2,
-                      vertical: DesignTokens.space1,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          context.fsmTheme.success.withValues(alpha: 0.9),
-                          context.fsmTheme.success.withValues(alpha: 0.7),
-                        ],
-                      ),
-                      borderRadius:
-                          BorderRadius.circular(DesignTokens.radiusLg.r),
-                      border: Border.all(
-                        color:
-                            theme.colorScheme.onPrimary.withValues(alpha: 0.3),
-                        width: DesignTokens.borderWidthThin.w,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              context.fsmTheme.success.withValues(alpha: 0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.download_done_rounded,
-                          color: theme.colorScheme.onPrimary,
-                          size: DesignTokens.fontSize14.sp,
-                        ),
-                        DesignTokens.horizontalSpace(DesignTokens.space1),
-                        Text(
-                          '${state.downloadedDocumentsCount}',
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onPrimary,
-                            fontWeight: DesignTokens.fontWeightBold,
-                            fontSize: DesignTokens.fontSize12.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDocumentsList(BuildContext context, DocumentsState state) {
-    if (state.isLoading && state.documents.isEmpty) {
-      return const DocumentShimmer();
-    }
-
-    if (!state.isLoading && state.documents.isEmpty && !state.hasError) {
-      return _buildEmptyState(context, state);
-    }
-
+  Widget _buildListContent(DocumentsState state) {
     return ListView.builder(
       controller: _scrollController,
-      padding: REdgeInsets.symmetric(
-        horizontal: DesignTokens.space4,
-        vertical: DesignTokens.space2,
-      ),
-      itemCount: state.documents.length + (state.isLoadingMore ? 1 : 0),
+      padding: REdgeInsets.symmetric(horizontal: DesignTokens.space4),
+      itemCount: state.filteredDocuments.length + (state.isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {
-        if (index >= state.documents.length) {
-          return Center(
-            child: Padding(
-              padding: REdgeInsets.all(DesignTokens.space4),
-              child: CircularProgressIndicator(
-                strokeWidth: 2.w,
-              ),
-            ),
+        if (index >= state.filteredDocuments.length) {
+          return Padding(
+            padding: REdgeInsets.all(DesignTokens.space4),
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 
-        final document = state.documents[index];
-        final isDownloading = state.isDownloading &&
-            state.downloadingDocumentId == document.id.toString();
-
-        return DocumentCardTile(
-          document: document,
-          isDownloading: isDownloading,
-          onTap: () => _openDocument(context, document),
-          onDownload: () => _downloadDocument(context, document),
-          onDelete: () => _deleteDocument(context, document),
+        final document = state.filteredDocuments[index];
+        return Padding(
+          padding: REdgeInsets.only(bottom: DesignTokens.space3),
+          child: DocumentCardTile(
+            document: document,
+            onTap: () => _openDocument(context, document),
+            onDownload: () => _downloadDocument(context, document),
+            onDelete: () => _deleteDocument(context, document),
+            isDownloading: state.isDownloading &&
+                state.downloadingDocumentId == document.id,
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildEmptyState(BuildContext context, DocumentsState state) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(32.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              state.isSearchMode ? Icons.search_off : Icons.description,
-              size: 64.sp,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              state.isSearchMode
-                  ? 'No documents found for "${state.searchQuery}"'
-                  : 'No documents available',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                fontSize: 16.sp,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              state.isSearchMode
-                  ? 'Try adjusting your search terms or filters'
-                  : 'Documents will appear here when available',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                fontSize: 14.sp,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -436,84 +286,30 @@ class _DocumentsViewState extends State<DocumentsView> {
   }
 
   void _downloadDocument(BuildContext context, DocumentEntity document) {
-    context.read<DocumentsBloc>().add(DownloadDocument(document));
+    _documentsBloc.add(DocumentsEvent.downloadDocument(document));
   }
 
   void _deleteDocument(BuildContext context, DocumentEntity document) {
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Delete Downloaded Document'),
-        content: Text(
-          'Are you sure you want to delete the downloaded copy of "${document.title}"? You can download it again later.',
-        ),
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Document'),
+        content: Text('Are you sure you want to delete "${document.title}"?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(dialogContext).pop();
-              context.read<DocumentsBloc>().add(
-                    DeleteDownloadedDocument(document.id),
-                  );
+              Navigator.of(context).pop();
+              // Add delete event here if needed
+              // context.read<DocumentsBloc>().add(DocumentsEvent.deleteDocument(document));
             },
             child: const Text('Delete'),
           ),
         ],
       ),
     );
-  }
-
-  int _getActiveFilterCount(DocumentsState state) {
-    int count = 0;
-    if (state.selectedCategory != null) count++;
-    if (state.selectedType != null) count++;
-    if (state.searchQuery?.isNotEmpty == true) count++;
-    return count;
-  }
-
-  IconData _getCategoryIcon(String category) {
-    switch (category.toLowerCase()) {
-      case 'all':
-        return Icons.folder_outlined;
-      case 'manuals':
-        return Icons.book_outlined;
-      case 'specifications':
-        return Icons.description_outlined;
-      case 'procedures':
-        return Icons.list_alt_outlined;
-      case 'diagrams':
-        return Icons.schema_outlined;
-      case 'certificates':
-        return Icons.verified_outlined;
-      default:
-        return Icons.insert_drive_file_outlined;
-    }
-  }
-
-  String _getDownloadingFileName(DocumentsState state) {
-    final documentId = state.downloadingDocumentId;
-    if (documentId != null && documentId.isNotEmpty) {
-      final document = state.documents.firstWhere(
-        (doc) => doc.id == documentId,
-        orElse: () => DocumentEntity(
-          id: '',
-          title: 'Unknown Document',
-          description: '',
-          type: DocumentType.other,
-          fileUrl: '',
-          fileName: 'document',
-          fileSize: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          tags: const [],
-          categories: const [],
-        ),
-      );
-      return document.fileName;
-    }
-    return 'Document';
   }
 }

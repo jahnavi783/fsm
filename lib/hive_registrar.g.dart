@@ -9,6 +9,7 @@ import 'package:fsm/features/chat/data/models/chat_session_hive_model.dart';
 import 'package:fsm/features/documents/data/models/document_hive_model.dart';
 import 'package:fsm/features/parts/data/models/part_hive_model.dart';
 import 'package:fsm/features/profile/data/models/profile_hive_model.dart';
+import 'package:fsm/features/work_orders/data/models/work_log_hive_model.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_completion_cache_model.dart';
 import 'package:fsm/features/work_orders/data/models/work_order_hive_model.dart';
 
@@ -18,14 +19,11 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(ChatMessageHiveModelAdapter());
     registerAdapter(ChatSessionHiveModelAdapter());
-    registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
-    registerAdapter(LocationHiveModelAdapter());
     registerAdapter(PartHiveModelAdapter());
     registerAdapter(PartUsedHiveModelAdapter());
     registerAdapter(ProfileHiveModelAdapter());
     registerAdapter(ProfilePreferencesHiveModelAdapter());
-    registerAdapter(ServiceRequestHiveModelAdapter());
     registerAdapter(WorkLogHiveModelAdapter());
     registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());
@@ -38,14 +36,11 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(CalendarEventHiveModelAdapter());
     registerAdapter(ChatMessageHiveModelAdapter());
     registerAdapter(ChatSessionHiveModelAdapter());
-    registerAdapter(CustomerHiveModelAdapter());
     registerAdapter(DocumentHiveModelAdapter());
-    registerAdapter(LocationHiveModelAdapter());
     registerAdapter(PartHiveModelAdapter());
     registerAdapter(PartUsedHiveModelAdapter());
     registerAdapter(ProfileHiveModelAdapter());
     registerAdapter(ProfilePreferencesHiveModelAdapter());
-    registerAdapter(ServiceRequestHiveModelAdapter());
     registerAdapter(WorkLogHiveModelAdapter());
     registerAdapter(WorkOrderCompletionCacheModelAdapter());
     registerAdapter(WorkOrderHiveModelAdapter());

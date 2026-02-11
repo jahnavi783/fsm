@@ -841,6 +841,8 @@
 //         );
 //   }
 // }
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -851,20 +853,20 @@ import '../../../../core/router/app_router.gr.dart';
 import '../../../../core/theme/design_tokens.dart';
 import '../../../../core/theme/spacing_theme.dart';
 import '../../../../core/utils/work_order_status_helper.dart';
+import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../../core/widgets/stats_card.dart' as stats;
 import '../../../../core/widgets/widgets.dart'
     hide StatsGrid, StatsCard, StatsCardData; // Barrel import, hide duplicates
-import '../../../../core/widgets/inputs/filter_chip_data.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
-import '../../../chat/presentation/pages/chatbot_page.dart';
+import '../../data/services/sync_events.dart' as sync_service;
 import '../../domain/entities/work_order_entity.dart';
 import '../blocs/work_orders_list/work_orders_list_bloc.dart';
 import '../blocs/work_orders_list/work_orders_list_event.dart';
 import '../blocs/work_orders_list/work_orders_list_state.dart';
-import '../widgets/work_order_list_card.dart';
 import '../widgets/carousels/in_progress_work_order_carousel.dart';
+import '../widgets/work_order_list_card.dart';
 
 /// DashboardPage - Work Orders dashboard with tabs and statistics
 ///
@@ -895,6 +897,7 @@ class _DashboardPageState extends State<DashboardPage> {
   // Filter state - using String to match FilterChipData value type
   String _selectedFilter =
       'assigned'; // Default to 'assigned' (previously tab index 1)
+  StreamSubscription<sync_service.SyncEvent>? _syncSubscription;
 
   @override
   void initState() {
@@ -907,11 +910,54 @@ class _DashboardPageState extends State<DashboardPage> {
             page: 1,
           ),
         );
+    _syncSubscription = sync_service.SyncEvents.instance.stream.listen((event) {
+      if (event.type == sync_service.SyncEventType.syncCompleted) {
+        debugPrint('🔄 Sync completed - refreshing dashboard');
+        context.read<WorkOrdersListBloc>().add(
+              const WorkOrdersListEvent.refreshWorkOrders(),
+            );
+        // Show success message to user
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'Changes synced successfully',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.black,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              margin: const EdgeInsets.all(16),
+              action: SnackBarAction(
+                label: '✕',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _syncSubscription?.cancel();
     super.dispose();
   }
 
@@ -1020,11 +1066,14 @@ class _DashboardPageState extends State<DashboardPage> {
           // ═══════════════════════════════════════════════════════════
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ChatbotPage(),
-                ),
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ChatbotPage(userName: userName),
+              //   ),
+              // );
+              context.router.push(
+                ChatbotRoute(userName: userName),
               );
             },
             label: const Text('AI Assistant'),
@@ -1225,10 +1274,7 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             ...filteredWorkOrders.map((workOrder) => WorkOrderListCard(
                   workOrder: workOrder,
-                  onTap: () {
-                    context.router
-                        .push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
-                  },
+                  onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
                   onStart: () =>
                       _handleWorkOrderAction(context, workOrder, 'start'),
                   onPause: () =>
@@ -1427,23 +1473,35 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   CompactWorkOrderListCard(
                     workOrder: workOrder,
-                    onTap: () {
-                      context.router.push(
-                          WorkOrderDetailsRoute(workOrderId: workOrder.id));
-                    },
+                    // onTap: () {
+                    //   context.router.push(
+                    //       WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                    // },
+                    // onTap: () async {
+                    //   final result = await context.router.push(
+                    //       WorkOrderDetailsRoute(workOrderId: workOrder.id));
+                    //   if (result == true && mounted) _handleRefresh();
+                    // },
+                    onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
                   ),
                   DesignTokens.verticalSpaceSmall,
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                      icon:
-                          Icon(Icons.person_add, size: DesignTokens.iconSm.sp),
-                      label: Text('Assign to Me',
-                          style: theme.textTheme.labelLarge),
+                      icon: Icon(
+                        Icons.person_add,
+                        size: DesignTokens.iconSm.sp,
+                      ),
+                      label: Text(
+                        'Assign to Me',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: theme.colorScheme.onPrimary,
+                        foregroundColor: Colors.white,
                         padding: REdgeInsets.symmetric(
                           horizontal: DesignTokens.space4,
                           vertical: DesignTokens.space3,
@@ -1469,6 +1527,20 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  Future<void> _navigateToDetailsAndRefresh(int workOrderId) async {
+    // Navigate and wait for result
+    final result = await context.router.push(
+      WorkOrderDetailsRoute(workOrderId: workOrderId),
+    );
+
+    // If result is true (action was performed), refresh the dashboard
+    if (result == true && mounted) {
+      context.read<WorkOrdersListBloc>().add(
+            const WorkOrdersListEvent.refreshWorkOrders(),
+          );
+    }
+  }
+
   void _assignWorkOrderToSelf(int workOrderId) {
     // Capture the outer context that has access to the WorkOrdersListBloc
     final outerContext = context;
@@ -1476,9 +1548,19 @@ class _DashboardPageState extends State<DashboardPage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Assign Work Order'),
+        title: const Text(
+          'Assign Work Order',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
         content: const Text(
-            'Are you sure you want to assign this work order to yourself?'),
+          'Are you sure you want to assign this work order to yourself?',
+          style: TextStyle(color: Colors.black87),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

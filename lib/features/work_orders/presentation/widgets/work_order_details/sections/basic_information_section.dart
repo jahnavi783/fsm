@@ -52,7 +52,9 @@ class BasicInformationSection extends StatelessWidget {
             Expanded(
               child: InfoItemCard(
                 label: 'Ticket ID',
-                value: 'SR-${workOrder.srId.toString().padLeft(12, '0')}',
+                // value: 'SR-${workOrder.srId.toString().padLeft(12, '0')}',
+                // value: workOrder.serviceRequestNumber,
+                value: workOrder.displayServiceRequestNumber,
                 icon: Icons.request_page,
               ),
             ),
@@ -96,15 +98,15 @@ class BasicInformationSection extends StatelessWidget {
               ),
             ),
             DesignTokens.horizontalSpaceMd,
-            Expanded(
-              child: InfoItemCard(
-                label: 'Duration',
-                // value:
-                //     '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
-                value: _formatDuration(workOrder),
-                icon: Icons.timelapse,
-              ),
-            ),
+            // Expanded(
+            //   child: InfoItemCard(
+            //     label: 'Duration',
+            //     // value:
+            //     //     '${workOrder.durationDays} day${workOrder.durationDays != 1 ? 's' : ''}',
+            //     value: _formatDuration(workOrder),
+            //     icon: Icons.timelapse,
+            //   ),
+            // ),
           ],
         ),
       ],

@@ -15,6 +15,7 @@ abstract class WorkLogEntity with _$WorkLogEntity {
     double? longitude,
     String? userId,
     String? userName,
+    List<String>? imageUrls,
   }) = _WorkLogEntity;
 }
 

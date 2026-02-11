@@ -9,6 +9,7 @@ import '../../../../core/widgets/fsm_app_bar.dart';
 import '../../../auth/presentation/blocs/auth/auth_bloc.dart';
 import '../../../auth/presentation/blocs/auth/auth_event.dart';
 import '../../../auth/presentation/blocs/auth/auth_state.dart';
+import '../../../work_orders/presentation/widgets/work_order_search_dialog.dart';
 import '../blocs/profile/profile_bloc.dart';
 import '../blocs/profile/profile_event.dart';
 import '../blocs/profile/profile_state.dart';
@@ -129,6 +130,7 @@ class ProfileView extends StatelessWidget {
             actions: [
               FSMAppBarAction.search(
                 onPressed: () {
+                  WorkOrderSearchDialog.show(context);
                   // TODO: Implement search navigation when SearchRoute is available
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Search coming soon')),
@@ -448,6 +450,43 @@ class ProfileView extends StatelessWidget {
           ),
 
           SizedBox(height: 32.h),
+        ],
+      ),
+    );
+  }
+
+  void _showSearchDialog(BuildContext context) {
+    final controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Search Work Order'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Work Order Number',
+            prefixIcon: Icon(Icons.search),
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              final woNumber = controller.text.trim().toUpperCase();
+              if (woNumber.isNotEmpty) {
+                // Navigate to work order detail
+                Navigator.pushNamed(context, '/work-order-detail',
+                    arguments: {'woNumber': woNumber});
+              }
+            },
+            child: const Text('Search'),
+          ),
         ],
       ),
     );

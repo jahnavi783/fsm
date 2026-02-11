@@ -1,5 +1,3 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'work_order_dto.dart';
 
 // **************************************************************************
@@ -11,6 +9,8 @@ _WorkOrderDto _$WorkOrderDtoFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       woNumber: json['wo_number'] as String,
       srId: (json['sr_id'] as num).toInt(),
+      pauseCount: (json['pause_count'] as num?)?.toInt(),
+      serviceRequestNumber: json['service_request_number'] as String?,
       summary: json['summary'] as String? ?? '',
       problemDescription: json['problem_description'] as String? ?? '',
       priority: json['priority'] as String,
@@ -24,7 +24,7 @@ _WorkOrderDto _$WorkOrderDtoFromJson(Map<String, dynamic> json) =>
       startedAt: json['started_at'] as String?,
       resumedAt: json['resumed_at'] as String?,
       completedAt: json['completed_at'] as String?,
-      pauseLogs: json['pause_logs'] as String?,
+      pauseLogs: _pauseLogsFromJson(json['pause_logs']),
       rejectionLogs: json['rejection_logs'] as String?,
       workLog: json['work_log'] as String?,
       partsUsed: _partsUsedFromJson(json['parts_used']),
@@ -75,6 +75,8 @@ Map<String, dynamic> _$WorkOrderDtoToJson(_WorkOrderDto instance) =>
       'id': instance.id,
       'wo_number': instance.woNumber,
       'sr_id': instance.srId,
+      'pause_count': instance.pauseCount,
+      'service_request_number': instance.serviceRequestNumber,
       'summary': instance.summary,
       'problem_description': instance.problemDescription,
       'priority': instance.priority,

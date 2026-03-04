@@ -1015,7 +1015,7 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
           ),
           DesignTokens.verticalSpaceSmall,
           Text(
-            'Take photos documenting the completed work (required)',
+            'Take photos documenting the completed work',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

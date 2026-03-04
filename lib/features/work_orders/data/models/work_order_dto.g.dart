@@ -1,3 +1,5 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'work_order_dto.dart';
 
 // **************************************************************************

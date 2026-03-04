@@ -269,6 +269,29 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
         return;
       }
     }
+    // Validate at least one image on step 3
+    if (_currentStep == 2) {
+      final rawValue = _step3Form.control('files').value;
+      final files =
+          rawValue is List ? rawValue.whereType<File>().toList() : <File>[];
+
+      if (files.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content:
+                    const Text('At least one image is required to proceed'),
+                backgroundColor: Theme.of(context).colorScheme.error,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+        }
+        return;
+      }
+    }
 
     // Save progress
     await _saveCache();
@@ -370,7 +393,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
 
   bool _canSkipCurrentStep() {
     // Only steps 2 (parts) and 3 (images) can be skipped
-    return _currentStep == 1 || _currentStep == 2;
+    // return _currentStep == 1 || _currentStep == 2;
+    return _currentStep == 1;
   }
 
   String _getStepTitle() {
@@ -397,7 +421,8 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       case 1:
         return 'Add parts used (optional)';
       case 2:
-        return 'Capture images of completed work (optional)';
+        // return 'Capture images of completed work (optional)';
+        return 'Capture images of completed work (required)';
       case 3:
         return 'Get customer signature and add notes';
       case 4:
@@ -968,15 +993,29 @@ class _WorkOrderCompleteWizardState extends State<WorkOrderCompleteWizard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Capture Images',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Capture Images',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                TextSpan(
+                  text: ' *',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
             ),
           ),
           DesignTokens.verticalSpaceSmall,
           Text(
-            'Take photos documenting the completed work',
+            'Take photos documenting the completed work (required)',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

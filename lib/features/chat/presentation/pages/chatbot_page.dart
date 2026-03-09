@@ -74,7 +74,7 @@ class _ChatbotPageState extends State<ChatbotPage>
 
       if (token == null || refreshToken == null) {
         setState(() {
-          _error = "Authentication expired. Please log in again.";
+          _error = "Authentication expired. Please try to log in again.";
           _inputEnabled = false;
         });
         _showErrorMessage();
@@ -145,11 +145,7 @@ class _ChatbotPageState extends State<ChatbotPage>
   }
 
   types.TextMessage _buildTypingPlaceholder() {
-    return types.TextMessage(
-      author: _bot,
-      id: '__typing__',
-      text: 'typing...',
-    );
+    return types.TextMessage(author: _bot, id: '__typing__', text: 'typing...');
   }
 
   bool _welcomeMessage(String msg) {
@@ -162,7 +158,7 @@ class _ChatbotPageState extends State<ChatbotPage>
       'greetings',
       'good morning',
       'good afternoon',
-      'good evening'
+      'good evening',
     ].contains(t);
   }
 
@@ -187,10 +183,7 @@ class _ChatbotPageState extends State<ChatbotPage>
 
       final response = await dio.post(
         _apiUrl,
-        data: {
-          "query": query,
-          "session_id": _sessionId,
-        },
+        data: {"query": query, "session_id": _sessionId},
         options: Options(
           headers: {
             "Authorization": "Bearer $_authToken",
@@ -295,11 +288,13 @@ class _ChatbotPageState extends State<ChatbotPage>
     super.build(context);
     return Scaffold(
       appBar: FSMAppBar.gradient(
-        titleWidget: Row(children: [
-          Icon(Icons.smart_toy, color: Colors.white),
-          SizedBox(width: 8),
-          Text('AI Assistant')
-        ]),
+        titleWidget: Row(
+          children: [
+            Icon(Icons.smart_toy, color: Colors.white),
+            SizedBox(width: 8),
+            Text('AI Assistant'),
+          ],
+        ),
         actions: [
           IconButton(
             tooltip: 'Clear chat',
@@ -349,77 +344,89 @@ class _ChatbotPageState extends State<ChatbotPage>
                       user: _user,
                       onSendPressed: (_) {},
                       scrollPhysics: const BouncingScrollPhysics(),
-                      bubbleBuilder: (child,
-                          {required message, required nextMessageInGroup}) {
-                        final isUserMessage = message.author.id == _user.id;
-                        final isTypingPlaceholder = message.id == '__typing__';
+                      bubbleBuilder:
+                          (
+                            child, {
+                            required message,
+                            required nextMessageInGroup,
+                          }) {
+                            final isUserMessage = message.author.id == _user.id;
+                            final isTypingPlaceholder =
+                                message.id == '__typing__';
 
-                        if (isTypingPlaceholder) {
-                          return Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                CircleAvatar(
-                                  radius: 16,
-                                  // backgroundColor: Color(0xFF00796B),
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  child: Icon(Icons.smart_toy,
-                                      color: Colors.white, size: 18),
+                            if (isTypingPlaceholder) {
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 16,
+                                      // backgroundColor: Color(0xFF00796B),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).primaryColor,
+                                      child: Icon(
+                                        Icons.smart_toy,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 4,
+                                      ),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: const _TypingDots(),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
+                              );
+                            }
+
+                            return Align(
+                              alignment: isUserMessage
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 12,
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: isUserMessage
+                                      // ? const Color(0xFF00796B)
+                                      ? Theme.of(context).primaryColor
+                                      : const Color(0xFFE5F4F1),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(16),
+                                    topRight: const Radius.circular(16),
+                                    bottomLeft: isUserMessage
+                                        ? const Radius.circular(16)
+                                        : const Radius.circular(0),
+                                    bottomRight: isUserMessage
+                                        ? const Radius.circular(0)
+                                        : const Radius.circular(16),
                                   ),
-                                  child: const _TypingDots(),
                                 ),
-                              ],
-                            ),
-                          );
-                        }
-
-                        return Align(
-                          alignment: isUserMessage
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 12),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: isUserMessage
-                                  // ? const Color(0xFF00796B)
-                                  ? Theme.of(context).primaryColor
-                                  : const Color(0xFFE5F4F1),
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(16),
-                                topRight: const Radius.circular(16),
-                                bottomLeft: isUserMessage
-                                    ? const Radius.circular(16)
-                                    : const Radius.circular(0),
-                                bottomRight: isUserMessage
-                                    ? const Radius.circular(0)
-                                    : const Radius.circular(16),
+                                child: SelectableText(
+                                  (message as types.TextMessage).text,
+                                  style: TextStyle(
+                                    color: isUserMessage
+                                        ? Colors.white
+                                        : Colors.black87,
+                                    fontSize: 15,
+                                  ),
+                                ),
                               ),
-                            ),
-                            child: SelectableText(
-                              (message as types.TextMessage).text,
-                              style: TextStyle(
-                                color: isUserMessage
-                                    ? Colors.white
-                                    : Colors.black87,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                            );
+                          },
                       showUserAvatars: false,
                       showUserNames: true,
                       theme: DefaultChatTheme(
@@ -429,7 +436,9 @@ class _ChatbotPageState extends State<ChatbotPage>
                         inputTextColor: AppColors.textPrimary,
                         backgroundColor: Colors.white,
                         inputMargin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                       ),
                       customBottomWidget: const SizedBox.shrink(),
                     ),

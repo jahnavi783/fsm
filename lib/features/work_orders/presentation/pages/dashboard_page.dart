@@ -63,15 +63,13 @@ class _DashboardPageState extends State<DashboardPage> {
 
     // Load all work orders initially without status filter
     context.read<WorkOrdersListBloc>().add(
-          const WorkOrdersListEvent.loadWorkOrders(
-            page: 1,
-          ),
-        );
+      const WorkOrdersListEvent.loadWorkOrders(page: 1),
+    );
     _syncSubscription = sync_service.SyncEvents.instance.stream.listen((event) {
       if (event.type == sync_service.SyncEventType.syncCompleted) {
         context.read<WorkOrdersListBloc>().add(
-              const WorkOrdersListEvent.refreshWorkOrders(),
-            );
+          const WorkOrdersListEvent.refreshWorkOrders(),
+        );
         // Show success message to user
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -130,8 +128,8 @@ class _DashboardPageState extends State<DashboardPage> {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
       context.read<WorkOrdersListBloc>().add(
-            const WorkOrdersListEvent.loadMoreWorkOrders(),
-          );
+        const WorkOrdersListEvent.loadMoreWorkOrders(),
+      );
     }
   }
 
@@ -191,8 +189,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     return RefreshIndicator(
                       onRefresh: () async {
                         context.read<WorkOrdersListBloc>().add(
-                              const WorkOrdersListEvent.refreshWorkOrders(),
-                            );
+                          const WorkOrdersListEvent.refreshWorkOrders(),
+                        );
                       },
                       child: ListView(
                         controller: _scrollController,
@@ -222,9 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
           // ═══════════════════════════════════════════════════════════
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              context.router.push(
-                ChatbotRoute(userName: userName),
-              );
+              context.router.push(ChatbotRoute(userName: userName));
             },
             label: const Text('AI Assistant'),
             icon: const Icon(Icons.smart_toy_outlined),
@@ -273,27 +269,30 @@ class _DashboardPageState extends State<DashboardPage> {
   // Build In-Progress Work Orders Carousel
   Widget _buildInProgressCarousel(WorkOrdersListState state) {
     return state.maybeWhen(
-      loaded: (workOrders,
-          unassignedWorkOrders,
-          unassignedCount,
-          currentPage,
-          hasReachedMax,
-          isLoadingMore,
-          statusFilter,
-          priorityFilter,
-          searchQuery,
-          isOffline,
-          hasPendingSync) {
-        // Find all in-progress work orders
-        final inProgressWorkOrders = workOrders
-            .where((wo) => wo.status == WorkOrderStatus.inProgress)
-            .toList();
+      loaded:
+          (
+            workOrders,
+            unassignedWorkOrders,
+            unassignedCount,
+            currentPage,
+            hasReachedMax,
+            isLoadingMore,
+            statusFilter,
+            priorityFilter,
+            searchQuery,
+            isOffline,
+            hasPendingSync,
+          ) {
+            // Find all in-progress work orders
+            final inProgressWorkOrders = workOrders
+                .where((wo) => wo.status == WorkOrderStatus.inProgress)
+                .toList();
 
-        // Return carousel with all in-progress work orders
-        return InProgressWorkOrderCarousel(
-          workOrders: inProgressWorkOrders,
-        );
-      },
+            // Return carousel with all in-progress work orders
+            return InProgressWorkOrderCarousel(
+              workOrders: inProgressWorkOrders,
+            );
+          },
       orElse: () => const SizedBox.shrink(),
     );
   }
@@ -401,55 +400,59 @@ class _DashboardPageState extends State<DashboardPage> {
     return state.when(
       initial: () => _buildLoadingState(),
       loading: () => _buildLoadingState(),
-      loaded: (workOrders,
-          unassignedWorkOrders,
-          unassignedCount,
-          currentPage,
-          hasReachedMax,
-          isLoadingMore,
-          statusFilter,
-          priorityFilter,
-          searchQuery,
-          isOffline,
-          hasPendingSync) {
-        // Filter work orders by current tab status
-        final filteredWorkOrders =
-            workOrders.where((wo) => wo.status == status).toList();
+      loaded:
+          (
+            workOrders,
+            unassignedWorkOrders,
+            unassignedCount,
+            currentPage,
+            hasReachedMax,
+            isLoadingMore,
+            statusFilter,
+            priorityFilter,
+            searchQuery,
+            isOffline,
+            hasPendingSync,
+          ) {
+            // Filter work orders by current tab status
+            final filteredWorkOrders = workOrders
+                .where((wo) => wo.status == status)
+                .toList();
 
-        if (filteredWorkOrders.isEmpty) {
-          return _buildEmptyState(status);
-        }
+            if (filteredWorkOrders.isEmpty) {
+              return _buildEmptyState(status);
+            }
 
-        return Column(
-          children: [
-            ...filteredWorkOrders.map((workOrder) => WorkOrderListCard(
-                  workOrder: workOrder,
-                  onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
-                  onStart: () =>
-                      _handleWorkOrderAction(context, workOrder, 'start'),
-                  onPause: () =>
-                      _handleWorkOrderAction(context, workOrder, 'pause'),
-                  onResume: () =>
-                      _handleWorkOrderAction(context, workOrder, 'resume'),
-                  onComplete: () =>
-                      _handleWorkOrderAction(context, workOrder, 'complete'),
-                )),
-            if (isLoadingMore)
-              Padding(
-                padding: REdgeInsets.symmetric(vertical: 16),
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF116587),
+            return Column(
+              children: [
+                ...filteredWorkOrders.map(
+                  (workOrder) => WorkOrderListCard(
+                    workOrder: workOrder,
+                    onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
+                    onStart: () =>
+                        _handleWorkOrderAction(context, workOrder, 'start'),
+                    onPause: () =>
+                        _handleWorkOrderAction(context, workOrder, 'pause'),
+                    onResume: () =>
+                        _handleWorkOrderAction(context, workOrder, 'resume'),
+                    onComplete: () =>
+                        _handleWorkOrderAction(context, workOrder, 'complete'),
                   ),
                 ),
-              ),
-          ],
-        );
-      },
-      error: (failure, workOrders, isOffline) => _buildErrorState(
-        message: failure.message,
-        isOffline: isOffline,
-      ),
+                if (isLoadingMore)
+                  Padding(
+                    padding: REdgeInsets.symmetric(vertical: 16),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF116587),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+      error: (failure, workOrders, isOffline) =>
+          _buildErrorState(message: failure.message, isOffline: isOffline),
       syncing: (workOrders) => _buildLoadingState(isSync: true),
     );
   }
@@ -468,8 +471,8 @@ class _DashboardPageState extends State<DashboardPage> {
         actionLabel: 'Refresh',
         onAction: () {
           context.read<WorkOrdersListBloc>().add(
-                const WorkOrdersListEvent.refreshWorkOrders(),
-              );
+            const WorkOrdersListEvent.refreshWorkOrders(),
+          );
         },
       ),
     );
@@ -527,10 +530,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 isSync
                     ? 'Please wait while we sync your latest work orders...'
                     : 'Please wait while we fetch your work orders...',
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -554,8 +554,8 @@ class _DashboardPageState extends State<DashboardPage> {
         actionLabel: 'Retry',
         onAction: () {
           context.read<WorkOrdersListBloc>().add(
-                const WorkOrdersListEvent.refreshWorkOrders(),
-              );
+            const WorkOrdersListEvent.refreshWorkOrders(),
+          );
         },
       ),
     );
@@ -563,20 +563,47 @@ class _DashboardPageState extends State<DashboardPage> {
 
   String _getCountForStatus(WorkOrdersListState state, WorkOrderStatus status) {
     return state.maybeWhen(
-      loaded: (workOrders, _, __, ___, ____, _____, ______, _______, ________,
-          _________, __________) {
-        return workOrders.where((wo) => wo.status == status).length.toString();
-      },
+      loaded:
+          (
+            workOrders,
+            _,
+            __,
+            ___,
+            ____,
+            _____,
+            ______,
+            _______,
+            ________,
+            _________,
+            __________,
+          ) {
+            return workOrders
+                .where((wo) => wo.status == status)
+                .length
+                .toString();
+          },
       orElse: () => '-',
     );
   }
 
   String _getUnassignedCount(WorkOrdersListState state) {
     return state.maybeWhen(
-      loaded: (_, __, unassignedCount, ___, ____, _____, ______, _______,
-          ________, _________, __________) {
-        return unassignedCount.toString();
-      },
+      loaded:
+          (
+            _,
+            __,
+            unassignedCount,
+            ___,
+            ____,
+            _____,
+            ______,
+            _______,
+            ________,
+            _________,
+            __________,
+          ) {
+            return unassignedCount.toString();
+          },
       orElse: () => '-',
     );
   }
@@ -585,85 +612,87 @@ class _DashboardPageState extends State<DashboardPage> {
     return state.when(
       initial: () => _buildLoadingState(),
       loading: () => _buildLoadingState(),
-      loaded: (workOrders,
-          unassignedWorkOrders,
-          unassignedCount,
-          currentPage,
-          hasReachedMax,
-          isLoadingMore,
-          statusFilter,
-          priorityFilter,
-          searchQuery,
-          isOffline,
-          hasPendingSync) {
-        if (unassignedWorkOrders.isEmpty) {
-          return Container(
-            constraints: BoxConstraints(minHeight: 300.h),
-            child: FSMEmptyState(
-              icon: Icons.inbox_outlined,
-              title: 'No Unassigned Work Orders',
-              description:
-                  'All work orders have been assigned to field engineers.',
-              iconColor: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          );
-        }
+      loaded:
+          (
+            workOrders,
+            unassignedWorkOrders,
+            unassignedCount,
+            currentPage,
+            hasReachedMax,
+            isLoadingMore,
+            statusFilter,
+            priorityFilter,
+            searchQuery,
+            isOffline,
+            hasPendingSync,
+          ) {
+            if (unassignedWorkOrders.isEmpty) {
+              return Container(
+                constraints: BoxConstraints(minHeight: 300.h),
+                child: FSMEmptyState(
+                  icon: Icons.inbox_outlined,
+                  title: 'No Unassigned Work Orders',
+                  description:
+                      'All work orders have been assigned to field engineers.',
+                  iconColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              );
+            }
 
-        return Column(
-          children: unassignedWorkOrders.map((workOrder) {
-            final theme = Theme.of(context);
-            final spacing = context.spacing;
+            return Column(
+              children: unassignedWorkOrders.map((workOrder) {
+                final theme = Theme.of(context);
+                final spacing = context.spacing;
 
-            return Padding(
-              padding: REdgeInsets.symmetric(
-                horizontal: DesignTokens.space4,
-                vertical: DesignTokens.space3,
-              ),
-              child: Column(
-                children: [
-                  CompactWorkOrderListCard(
-                    workOrder: workOrder,
-                    onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
+                return Padding(
+                  padding: REdgeInsets.symmetric(
+                    horizontal: DesignTokens.space4,
+                    vertical: DesignTokens.space3,
                   ),
-                  DesignTokens.verticalSpaceSmall,
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _assignWorkOrderToSelf(workOrder.id),
-                      icon: Icon(
-                        Icons.person_add,
-                        size: DesignTokens.iconSm.sp,
+                  child: Column(
+                    children: [
+                      CompactWorkOrderListCard(
+                        workOrder: workOrder,
+                        onTap: () => _navigateToDetailsAndRefresh(workOrder.id),
                       ),
-                      label: Text(
-                        'Assign to Me',
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
+                      DesignTokens.verticalSpaceSmall,
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _assignWorkOrderToSelf(workOrder.id),
+                          icon: Icon(
+                            Icons.person_add,
+                            size: DesignTokens.iconSm.sp,
+                          ),
+                          label: Text(
+                            'Assign to Me',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: Colors.white,
+                            padding: REdgeInsets.symmetric(
+                              horizontal: DesignTokens.space4,
+                              vertical: DesignTokens.space3,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                spacing.radiusSm.r,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
-                        foregroundColor: Colors.white,
-                        padding: REdgeInsets.symmetric(
-                          horizontal: DesignTokens.space4,
-                          vertical: DesignTokens.space3,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(spacing.radiusSm.r),
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
-      },
-      error: (failure, workOrders, isOffline) => _buildErrorState(
-        message: failure.message,
-        isOffline: isOffline,
-      ),
+          },
+      error: (failure, workOrders, isOffline) =>
+          _buildErrorState(message: failure.message, isOffline: isOffline),
       syncing: (workOrders) => _buildLoadingState(isSync: true),
     );
   }
@@ -677,8 +706,8 @@ class _DashboardPageState extends State<DashboardPage> {
     // If result is true (action was performed), refresh the dashboard
     if (result == true && mounted) {
       context.read<WorkOrdersListBloc>().add(
-            const WorkOrdersListEvent.refreshWorkOrders(),
-          );
+        const WorkOrdersListEvent.refreshWorkOrders(),
+      );
     }
   }
 
@@ -712,10 +741,10 @@ class _DashboardPageState extends State<DashboardPage> {
               Navigator.of(dialogContext).pop();
               // Use the captured outer context instead
               outerContext.read<WorkOrdersListBloc>().add(
-                    WorkOrdersListEvent.assignWorkOrderToSelf(
-                      workOrderId: workOrderId,
-                    ),
-                  );
+                WorkOrdersListEvent.assignWorkOrderToSelf(
+                  workOrderId: workOrderId,
+                ),
+              );
               // Switch to Assigned filter after assignment
               _switchToFilter('assigned');
             },
@@ -750,8 +779,8 @@ class _DashboardPageState extends State<DashboardPage> {
             Navigator.of(dialogContext).pop();
             if (query.isNotEmpty) {
               outerContext.read<WorkOrdersListBloc>().add(
-                    WorkOrdersListEvent.searchWorkOrders(query),
-                  );
+                WorkOrdersListEvent.searchWorkOrders(query),
+              );
             }
           },
         ),
@@ -766,8 +795,8 @@ class _DashboardPageState extends State<DashboardPage> {
               final query = searchController.text.trim();
               if (query.isNotEmpty) {
                 outerContext.read<WorkOrdersListBloc>().add(
-                      WorkOrdersListEvent.searchWorkOrders(query),
-                    );
+                  WorkOrdersListEvent.searchWorkOrders(query),
+                );
               }
             },
             child: const Text('Search'),
@@ -778,7 +807,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void _handleWorkOrderAction(
-      BuildContext context, WorkOrderEntity workOrder, String action) {
+    BuildContext context,
+    WorkOrderEntity workOrder,
+    String action,
+  ) {
     // Navigate to work order details page where the actual action will be performed
     // This ensures we have the WorkOrderActionBloc available and can capture GPS location
     context.router.push(WorkOrderDetailsRoute(workOrderId: workOrder.id));
@@ -786,8 +818,9 @@ class _DashboardPageState extends State<DashboardPage> {
     // Show a snackbar to inform the user
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content:
-            Text('Navigate to work order details to $action the work order'),
+        content: Text(
+          'Navigate to work order details to $action the work order',
+        ),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -820,7 +853,7 @@ class _DashboardPageState extends State<DashboardPage> {
         return DrawerSection.parts;
       case 'profile':
         return DrawerSection.profile;
-      case 'settings':
+      case 'settingss':
         return DrawerSection.settings;
       case 'chat':
         return DrawerSection.chat;
@@ -834,11 +867,15 @@ class _DashboardPageState extends State<DashboardPage> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: Text('Logout',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium),
-        content: Text('Are you sure you want to logout?',
-            style: Theme.of(context).textTheme.bodyMedium),
+        title: Text(
+          'Logout',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        content: Text(
+          'Are you sure you want to logout?',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
@@ -875,7 +912,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void _handleRefresh() {
     // Trigger a refresh on the dashboard
     context.read<WorkOrdersListBloc>().add(
-          const WorkOrdersListEvent.refreshWorkOrders(),
-        );
+      const WorkOrdersListEvent.refreshWorkOrders(),
+    );
   }
 }

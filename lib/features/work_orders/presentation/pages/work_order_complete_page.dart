@@ -141,11 +141,14 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
               unitPrice: cachedPart.unitPrice,
               status: _parsePartStatus(cachedPart.status),
             );
-            _partsUsed.add(PartUsedInput(
-              part: partEntity,
-              quantityController:
-                  TextEditingController(text: cachedPart.quantity.toString()),
-            ));
+            _partsUsed.add(
+              PartUsedInput(
+                part: partEntity,
+                quantityController: TextEditingController(
+                  text: cachedPart.quantity.toString(),
+                ),
+              ),
+            );
           }
 
           // Load images
@@ -191,8 +194,11 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
       setState(() {
         _isInitialized = true;
       });
-      LoggingService.logError('Error loading cache',
-          tag: 'WorkOrderCompletePage', error: e);
+      LoggingService.logError(
+        'Error loading cache',
+        tag: 'WorkOrderCompletePage',
+        error: e,
+      );
     }
   }
 
@@ -232,16 +238,18 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
             : _workLogController.text.trim(),
         partsUsed: _partsUsed
             .where((part) => part.quantityController.text.trim().isNotEmpty)
-            .map((part) => CachedPartUsedModel(
-                  partNumber: part.part.partNumber,
-                  quantity:
-                      int.tryParse(part.quantityController.text.trim()) ?? 1,
-                  partName: part.part.partName,
-                  category: part.part.category,
-                  quantityAvailable: part.part.quantityAvailable,
-                  unitPrice: part.part.unitPrice,
-                  status: part.part.status.name,
-                ))
+            .map(
+              (part) => CachedPartUsedModel(
+                partNumber: part.part.partNumber,
+                quantity:
+                    int.tryParse(part.quantityController.text.trim()) ?? 1,
+                partName: part.part.partName,
+                category: part.part.category,
+                quantityAvailable: part.part.quantityAvailable,
+                unitPrice: part.part.unitPrice,
+                status: part.part.status.name,
+              ),
+            )
             .toList(),
         images: _imageFiles.map((xFile) => xFile.path).toList(),
         signaturePath: signaturePath,
@@ -253,8 +261,11 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
 
       await _cacheService.saveCache(cache);
     } catch (e) {
-      LoggingService.logError('Error saving cache',
-          tag: 'WorkOrderCompletePage', error: e);
+      LoggingService.logError(
+        'Error saving cache',
+        tag: 'WorkOrderCompletePage',
+        error: e,
+      );
     }
   }
 
@@ -336,15 +347,17 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
   Future<File?> _saveSignatureAsFile() async {
     try {
       if (_signaturePadKey.currentState == null) {
-        throw Exception('Signature pad is not initialized');
+        throw Exception('Signature pad is not started');
       }
 
-      final signatureData =
-          await _signaturePadKey.currentState!.toImage(pixelRatio: 3.0);
-      final byteData =
-          await signatureData.toByteData(format: ui.ImageByteFormat.png);
+      final signatureData = await _signaturePadKey.currentState!.toImage(
+        pixelRatio: 3.0,
+      );
+      final byteData = await signatureData.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
       if (byteData == null) {
-        throw Exception('Failed to convert signature to image data');
+        throw Exception('Failed to convert the signature to image data');
       }
 
       final buffer = byteData.buffer.asUint8List();
@@ -390,7 +403,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text(
-              'Customer signature is required to complete the work order'),
+            'Customer signature is required to complete the work order',
+          ),
           backgroundColor: AppColors.warning,
         ),
       );
@@ -419,32 +433,34 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
     // Parse parts used
     final partsUsed = _partsUsed
         .where((part) => part.quantityController.text.trim().isNotEmpty)
-        .map((part) => PartUsedEntity(
-              partNumber: part.part.partNumber,
-              quantityUsed:
-                  int.tryParse(part.quantityController.text.trim()) ?? 0,
-              partName: part.part.partName,
-            ))
+        .map(
+          (part) => PartUsedEntity(
+            partNumber: part.part.partNumber,
+            quantityUsed:
+                int.tryParse(part.quantityController.text.trim()) ?? 0,
+            partName: part.part.partName,
+          ),
+        )
         .toList();
 
     if (!mounted) return;
 
     // Trigger completion
     context.read<WorkOrderActionBloc>().add(
-          WorkOrderActionEvent.completeWorkOrder(
-            workOrderId: _workOrderId,
-            workLog: _workLogController.text.trim(),
-            customerName: _customerNameController.text.trim(),
-            signature: signatureFile,
-            partsUsed: partsUsed,
-            files: files,
-            latitude: widget.currentLocation!.latitude,
-            longitude: widget.currentLocation!.longitude,
-            completionNotes: _completionNotesController.text.trim().isEmpty
-                ? null
-                : _completionNotesController.text.trim(),
-          ),
-        );
+      WorkOrderActionEvent.completeWorkOrder(
+        workOrderId: _workOrderId,
+        workLog: _workLogController.text.trim(),
+        customerName: _customerNameController.text.trim(),
+        signature: signatureFile,
+        partsUsed: partsUsed,
+        files: files,
+        latitude: widget.currentLocation!.latitude,
+        longitude: widget.currentLocation!.longitude,
+        completionNotes: _completionNotesController.text.trim().isEmpty
+            ? null
+            : _completionNotesController.text.trim(),
+      ),
+    );
 
     // Clear cache on successful submission
     await _cacheService.clearCache(_workOrderId);
@@ -456,12 +472,8 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
 
     if (!_isInitialized) {
       return Scaffold(
-        appBar: const FSMAppBar.gradient(
-          title: 'Complete Work Order',
-        ),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        appBar: const FSMAppBar.gradient(title: 'Complete Work Order'),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -480,9 +492,11 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
               if (!mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(message.isNotEmpty
-                      ? message
-                      : 'Work order completed successfully'),
+                  content: Text(
+                    message.isNotEmpty
+                        ? message
+                        : 'Work order completed successfully',
+                  ),
                   backgroundColor: AppColors.success,
                 ),
               );
@@ -695,17 +709,11 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: AppColors.outline.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: AppColors.outline.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.access_time,
-            size: 20.sp,
-            color: AppColors.success,
-          ),
+          Icon(Icons.access_time, size: 20.sp, color: AppColors.success),
           SizedBox(width: 12.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -749,10 +757,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
               ),
               child: Text(
                 'Back',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -766,11 +771,12 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
             onPressed: isLoading
                 ? null
                 : _activeStep < 3
-                    ? () => _nextStep()
-                    : () => _completeWorkOrder(),
+                ? () => _nextStep()
+                : () => _completeWorkOrder(),
             style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  _activeStep < 3 ? AppColors.primary : AppColors.success,
+              backgroundColor: _activeStep < 3
+                  ? AppColors.primary
+                  : AppColors.success,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 16.h),
               shape: RoundedRectangleBorder(

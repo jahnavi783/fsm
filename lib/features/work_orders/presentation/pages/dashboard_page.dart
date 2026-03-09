@@ -853,7 +853,7 @@ class _DashboardPageState extends State<DashboardPage> {
         return DrawerSection.parts;
       case 'profile':
         return DrawerSection.profile;
-      case 'settingss':
+      case 'settings':
         return DrawerSection.settings;
       case 'chat':
         return DrawerSection.chat;

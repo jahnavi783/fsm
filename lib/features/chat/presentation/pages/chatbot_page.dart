@@ -74,7 +74,7 @@ class _ChatbotPageState extends State<ChatbotPage>
 
       if (token == null || refreshToken == null) {
         setState(() {
-          _error = "Authentication expired. Please log in again.";
+          _error = "Authentication expired. Please try to log in again.";
           _inputEnabled = false;
         });
         _showErrorMessage();

@@ -347,7 +347,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
   Future<File?> _saveSignatureAsFile() async {
     try {
       if (_signaturePadKey.currentState == null) {
-        throw Exception('Signature pad is not started');
+        throw Exception('Signature pad is not initialized');
       }
 
       final signatureData = await _signaturePadKey.currentState!.toImage(

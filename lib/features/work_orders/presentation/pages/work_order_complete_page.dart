@@ -357,7 +357,7 @@ class _WorkOrderCompleteViewState extends State<WorkOrderCompleteView> {
         format: ui.ImageByteFormat.png,
       );
       if (byteData == null) {
-        throw Exception('Failed to convert the signature to image data');
+        throw Exception('Failed to convert signature to image data');
       }
 
       final buffer = byteData.buffer.asUint8List();

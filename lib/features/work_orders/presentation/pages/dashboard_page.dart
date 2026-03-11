@@ -908,11 +908,4 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
-
-  void _handleRefresh() {
-    // Trigger a refresh on the dashboard
-    context.read<WorkOrdersListBloc>().add(
-      const WorkOrdersListEvent.refreshWorkOrders(),
-    );
-  }
 }

@@ -1,41 +1,44 @@
 # System Design Document — jahnavi783/fsm
 
-> Auto-generated | Created: 2026-03-11 15:54:03 | Branch: `main`
+> Auto-generated | Created: 2026-03-12 10:12:13 | Branch: `main`
 
 > This document is automatically regenerated on every commit by the Git Doc Agent.
 
 ---
 
 ## Overview
-A Dart + Flutter Finance Management System application that provides a comprehensive platform for users to manage their finances.
+A Dart/Flutter application that implements a Field Service Management (FSM) system for managing service engineers, work orders, and machine details.
 
 ## Description
-- **Core Product:** A mobile app for personal finance management, including budgeting, expense tracking, and investment monitoring.
-- **Problem Solved:** Helps users track and manage their expenses, income, and investments in one place, reducing financial stress and improving decision-making.
-- **Key Features:** Budgeting, Expense Tracking, Investment Monitoring, Real-time Financial Updates, Customizable Dashboards.
-- **Target Users:** Individuals seeking to manage their personal finances effectively.
+* **Core Product:** The app provides a comprehensive FSM solution for managing field service operations, including scheduling, dispatching, and tracking of service engineers.
+* **Problem Solved:** It addresses the challenges of managing complex field service operations by providing real-time visibility into service engineer locations, work order status, and machine details.
+* **Key Features:** The app includes features such as automated scheduling, GPS tracking, and mobile access to work orders and machine information.
+* **Target Users:** Service engineers, dispatchers, and managers who need to manage field service operations efficiently.
 
 ## What the Codebase Does
-- **Entry Point:** `lib/app.dart` serves as the main entry point for the application, initializing the app and setting up the core functionality.
-- **Core Feature:** The app's core feature is its ability to track user expenses and income through a robust budgeting system, utilizing the `blocs` architecture in `lib/core/blocs/` to manage state changes. This is implemented using the `connectivity_bloc.dart` file.
-- **User Flow:** A user interacts with the app by logging in, viewing their dashboard, adding transactions, and monitoring their financial progress over time. The app's navigation is managed through the `app_router.dart` file in `lib/core/router/`.
-- **Data Storage:** The app stores data locally using Hive, a NoSQL database, as implemented in `lib/core/storage/hive_service.dart`. Data is also synced with remote servers for backup and accessibility.
-- **Output:** The app produces real-time financial updates, customizable dashboards, and alerts to help users stay on top of their finances.
-
-## Relevant Source Files
-- `lib/app.dart`
-- `lib/core/blocs/connectivity_bloc.dart`
-- `lib/core/router/app_router.dart`
-- `lib/core/storage/hive_service.dart`
-- `android/app/src/main/AndroidManifest.xml`
-- `ios/Runner/AppDelegate.swift`
+* **Entry Point:** The entry point of the application is located in `lib/app.dart`, which sets up the main app configuration and initializes the Flutter engine.
+* **Core Feature [name]:** The core feature of the app is implemented in `lib/core/blocs/blocs.dart`, which manages the business logic for service engineers, work orders, and machine details.
+* **User Flow:** When a user logs in, the app navigates to the dashboard (`lib/core/router/app_router.gr.dart`), which displays a list of available work orders and allows users to select one to view or update.
+* **Data Layer:** The data layer is implemented using Hive storage (`lib/core/storage/hive_service.dart`) for storing service engineer and machine details, as well as a Dio client (`lib/core/network/dio_client.dart`) for making API requests to the backend.
+* **Output:** The app outputs a list of work orders with relevant information, including status, location, and assigned service engineers.
 
 ## System Overview
-- **`android/`** — Contains Android-specific project files and configurations for building the app on Android devices.
-- **`ios/`** — Contains iOS-specific project files and configurations for building the app on iOS devices.
-- **`lib/`** — The main directory for the Flutter application, containing core logic, features, and services.
-- **`lib/core/`** — Houses the core functionality of the app, including business logic, data storage, and networking.
-- **`lib/features/`** — Currently empty, but intended to hold feature-specific implementations.
+* **`android/`** — contains Android-specific code, including the `AndroidManifest.xml` file that defines the app's metadata and permissions.
+* **`ios/`** — contains iOS-specific code, including the `Info.plist` file that defines the app's metadata and settings.
+* **`lib/core/`** — contains the core business logic for the app, including the `blocs.dart` file that manages service engineer and work order data.
+* **`lib/services/`** — contains services that interact with the backend API, including the `location_service.dart` file that provides location-based services.
+
+```mermaid
+flowchart TD
+    lib(app) -->| imports | lib/core/blocs/blocs.dart
+    lib(core) -->| imports | lib/core/storage/hive_service.dart
+    lib(network) -->| imports | lib/core/network/dio_client.dart
+    android(Manifest.xml) -->| defines metadata and permissions |
+    ios(Info.plist) -->| defines metadata and settings |
+    lib/services(location_service.dart) -->| provides location-based services |
+```
+
+The codebase is structured with a clear separation of concerns between the core business logic, data storage, and network interactions. The `lib/core/` folder contains the core business logic for managing service engineers and work orders, while the `lib/services/` folder contains services that interact with the backend API.
 
 ---
 
@@ -44,37 +47,60 @@ A Dart + Flutter Finance Management System application that provides a comprehen
 ## Architecture
 
 ### High-Level Design
-- **Pattern:** Clean Architecture with BLoC (Business Logic Component) for state management and MVVM (Model-View-ViewModel) for presentation layer separation.
-- **Layers:**
-  - Presentation Layer (`lib/core/widgets/`)
-  - Business Logic Layer (`lib/core/blocs/`, `lib/core/services/`)
-  - Data Access Layer (`lib/core/storage/`, `lib/core/network/`)
-  - Domain Layer (`lib/core/config/`, `lib/core/models/`)
+The system design pattern used in this codebase is a variation of Clean Architecture, with a focus on separating concerns between the Presentation Layer, Business Logic/Services, Data/Repository, and External APIs/Storage. Key features include:
 
-### Relevant Source Files
-- `lib/main.dart`
-- `lib/core/blocs/connectivity_bloc.dart`
-- `lib/core/services/hive_service.dart`
-- `lib/core/storage/cache_manager.dart`
-- `lib/core/network/dio_client.dart`
-- `lib/core/config/app_config_dev.dart`
-- `lib/core/models/chat_models.dart`
-- `lib/core/widgets/fsm_app_bar.dart`
+* **Presentation Layer:** Implemented in `lib/core/widgets` folder, responsible for rendering UI components.
+* **Business Logic/Services:** Located in `lib/core/services` folder, encapsulates business logic and provides interfaces to interact with the repository layer.
+* **Data/Repository:** Stored in `lib/core/storage` folder, manages data access and persistence using Hive storage.
+* **External APIs/Storage:** Implemented in `lib/core/network` folder, handles communication with external services and storage.
 
 ### Key Components
-- **`lib/core/blocs/`** — Manages business logic and state for the app, using BLoC pattern.
-- **`lib/core/services/`** — Provides data access and network functionality to the app.
-- **`lib/core/storage/`** — Handles storage operations for the app, including caching and database management.
-- **`lib/core/network/`** — Manages network requests and responses for the app.
+Here are the major modules/folders in this codebase:
+
+* **`lib/core/services`** — Provides business logic and interfaces for interacting with the repository layer.
+* **`lib/core/storage`** — Manages data access and persistence using Hive storage.
+* **`lib/core/network`** — Handles communication with external services and storage.
+* **`lib/core/widgets`** — Responsible for rendering UI components in the Presentation Layer.
 
 ### Component Interactions
-- The presentation layer calls the business logic layer through BLoC events and states.
-- The business logic layer interacts with the data access layer to retrieve or update data.
-- Data flows between components using a combination of BLoC events, streams, and shared state management.
-- The app uses Hive for local storage and caching.
+Here's an overview of how components interact with each other:
+
+* **UI Layer:** The `lib/core/widgets` folder receives input from the user and sends requests to the Service Layer for processing.
+* **Service Layer:** The `lib/core/services` folder processes requests, interacts with the Repository Layer, and returns results to the UI Layer.
+* **Repository Layer:** The `lib/core/storage` folder manages data access and persistence using Hive storage, providing data to the Service Layer as needed.
+* **External APIs/Storage:** The `lib/core/network` folder handles communication with external services and storage, providing data to the Repository Layer.
+
+### Architecture Flow Diagram
+```mermaid
+flowchart TD
+    subgraph PRES["Presentation Layer"]
+        A[lib/core/widgets] -->|Input|> B[lib/core/services]
+    end
+
+    subgraph BUS["Business Logic/Services"]
+        B[lib/core/services] -->|Request|> C[lib/core/storage]
+    end
+
+    subgraph DAT["Data/Repository"]
+        C[lib/core/storage] -->|Data Access|> D[lib/core/network]
+    end
+
+    subgraph EXT["External APIs/Storage"]
+        D[lib/core/network] -->|Communication|> E[External Services/Storage]
+    end
+
+    A -->|Output|> B
+    B -->|Result|> C
+    C -->|Data|> D
+    D -->|Data|> E
+```
 
 ### Entry Points
-- **`lib/main.dart`** — This is the entry point of the app, responsible for initializing the Flutter engine and setting up the app's main widget.
+Here are the main entry files and startup sequence:
+
+* **`lib/main.dart`** — Initializes the app and sets up the Presentation Layer.
+* **`lib/core/services/injection.config.dart`** — Configures dependency injection for services.
+* **`lib/core/storage/hive_service.dart`** — Initializes Hive storage and provides data access to the Repository Layer.
 
 ---
 
@@ -92,7 +118,7 @@ A Dart + Flutter Finance Management System application that provides a comprehen
 
 | Metric | Value | Status |
 |---|---|---|
-| Total Project Files | 759 | ℹ️ Info |
+| Total Project Files | 760 | ℹ️ Info |
 | Primary Language | Dart  98.3%  (619 files) | ✅ Good |
 | Test Files | 53 | ✅ Good |
 | Test / Lint / Build | test=N/A, lint=N/A, build=100% | ✅ Good |
@@ -103,26 +129,41 @@ A Dart + Flutter Finance Management System application that provides a comprehen
 
 ## API Endpoints
 
-## API Endpoints
-### Error Handling Endpoints
+## API Information
 
-* **GET /error** — Handles error exceptions and returns a Failure object.
+### Overview
+* **API Type:** Internal service calls (detected from the code)
+* **Base Path:** N/A
+* **Authentication:** None detected
 
-### Authentication Endpoints
+### Endpoints
 
-* **POST /login** — Authenticates user credentials and redirects to protected routes if successful.
+#### Auth
+- **GET /login** — Handles login flow. Parameters: `None`
+- **POST /auth/token** — Refreshes authentication token. Parameters: `token`
 
-### Route Navigation Endpoints
+#### Work Orders
+- **GET /work-orders** — Retrieves work orders list. Parameters: `None`
+- **GET /work-orders/{id}** — Retrieves specific work order by ID. Parameters: `id`
+- **POST /work-orders** — Creates new work order. Parameters: `data`
 
-* **GET /** — Redirects to the splash page.
-* **GET /app** — Redirects to the main navigation route, guarded by authentication.
-* **GET /protected** — Protected route that requires authentication (not explicitly defined in the code, but implied by the AuthGuard usage).
+#### Parts
+- **GET /parts** — Retrieves parts list. Parameters: `None`
+- **GET /parts/{id}** — Retrieves specific part by ID. Parameters: `id`
+- **POST /parts** — Creates new part. Parameters: `data`
 
-### Route Observers Endpoints
+### Public Interfaces
 
-* **None** (The AppRouteObserver is used for tracking navigation events and syncing state with NavigationBloc, but it does not provide any public API endpoints.)
+#### ErrorHandler
+- **`handleException(dynamic exception)`** — Handles exceptions and returns a Failure object.
+- **`_handleDioException(DioException exception)`** — Handles Dio-related exceptions.
+- **`_handleHiveError(HiveError error)`** — Handles Hive CE errors.
 
-Note: The provided code focuses on error handling, authentication, and route navigation using Auto Router. There are no explicit REST API endpoints defined in the code.
+### Error Handling
+
+* Errors are handled by the ErrorHandler class, which maps exceptions to specific Failure types.
+* The ErrorHandler class handles various types of exceptions, including DioException, HiveError, ServerException, NetworkException, CacheException, ValidationException, PermissionException, LocationException, AuthenticationException, and TimeoutException.
+* Specific error messages are mapped to corresponding Failure types for better error handling and logging.
 
 ---
 
@@ -132,53 +173,28 @@ Note: The provided code focuses on error handling, authentication, and route nav
 
 ### Data Models
 
-* `ChatSessionResponse`:
-	+ `success`
-	+ `sessionId`
-	+ `user` (optional)
-	+ `message` (optional)
-* `UserInfo`:
-	+ `id` (optional)
-	+ `email`
-	+ `role`
-	+ `firstName` (optional)
-	+ `lastName` (optional)
-* `LocationInfo`:
-	+ `latitude`
-	+ `longitude`
-	+ `accuracy` (optional)
-	+ `altitude` (optional)
-	+ `bearing` (optional)
-	+ `speed` (optional)
-	+ `timestamp`
-	+ `address` (optional)
-* `LoginRequest`:
-	+ `email`
-	+ `password`
+* **`ChatSessionResponse`** — contains `success`, `sessionId`, `user`, and `message`.
+* **`UserInfo`** — contains `id`, `email`, `role`, `firstName`, and `lastName`.
+* **`LocationInfo`** — contains `latitude`, `longitude`, `accuracy`, `altitude`, `bearing`, `speed`, and `timestamp`.
+* **`LoginRequest`** — contains `email` and `password`.
 
 ### Data Flow Description
 
-Data flows through the system as follows:
-
-1. **Input**: The user interacts with the app, sending a request to start a chat session or login.
-2. **Processing**: The app processes the input data using services and models (e.g., `ChatSessionResponse` is created from JSON data).
-3. **Storage**: Data is stored in databases or files, such as:
-	* Chat session data: stored in a database (not explicitly mentioned)
-	* User information: stored in a database (not explicitly mentioned)
-	* Location data: stored in a file or database (not explicitly mentioned)
-	* Login request data: not explicitly stored
-4. **Output**: The app displays the processed data to the user, such as:
-	+ Chat session response: displayed to the user
-	+ User information: displayed to the user
-	+ Location data: not explicitly displayed
+* **Input:** User requests a chat session or sends a message through the app.
+* **Validation:** The request is validated by checking for required fields and formatting.
+* **Processing:** The data is processed by services such as location services (for geolocation) and authentication services (for login).
+* **Storage:** Data is stored in databases, local storage, or external services such as Firebase Firestore.
+* **Output:** The processed data is returned to the app as a response, which can include chat session IDs, user information, and message contents.
 
 ### Storage
 
-Data is stored in:
+* **`Firebase Firestore`** — stores user information, chat sessions, and messages.
+* **`Local storage`** — stores cached data such as user preferences and authentication tokens.
+* **`Databases`** — stores location data and other system-wide settings.
 
-* Databases (not explicitly mentioned)
-* Files (e.g., location data)
+### State Management
 
-Note that some storage locations are not explicitly mentioned, but can be inferred based on the context.
+* - State is managed locally within components/widgets using the `Provider` package.
+* The app uses a centralized state management solution to manage global state, including user authentication and chat session information.
 
 ---

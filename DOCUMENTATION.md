@@ -1,6 +1,6 @@
 # Documentation — fsm
 
-> Auto-generated | Last updated: 2026-03-13 08:39:40 | Commit: `c13246c` on `main` by git-doc-agent[bot]
+> Auto-generated | Last updated: 2026-03-13 11:16:21 | Commit: `890d710` on `main` by git-doc-agent[bot]
 
 ---
 
@@ -8,57 +8,65 @@
 A Dart/Flutter Field Service Management application that manages work orders for service engineers.
 
 ## Description
-* **Core Product:** The FSM app is designed to manage work orders, track service history, and provide real-time updates for field service management.
-* **Problem Solved:** It solves the problem of inefficient work order management, enabling service engineers to focus on customer satisfaction while providing accurate tracking and reporting.
-* **Key Features:**
-	+ Real-time work order management
-	+ Service history tracking
-	+ Location-based services for efficient route planning
-	+ Performance monitoring and analytics
-* **Extensibility:** The app is designed with extensibility in mind, allowing for easy integration of new features and modules as the business grows.
+* **Core Product:** The FSM app is designed to manage work orders, track service engineer locations, and provide real-time updates on machine details and service history.
+* **Problem Solved:** It solves the problem of managing field service operations efficiently by providing a centralized platform for scheduling, tracking, and reporting work orders.
+* **Key Features:** The app includes features such as location-based services, chatbot integration, and performance monitoring to enhance user experience and improve operational efficiency.
+* **Extensibility:** The codebase is designed to be modular, allowing for easy extension of new features and integrations with existing systems.
 
 ## What the Codebase Does
-* **Entry Point:** The entry point of the application is `lib/app.dart`, which initializes the Flutter engine and sets up the main application widget.
-* **Core Feature [name]:** The core feature of the app is work order management, implemented in `lib/core/blocs/work_order_bloc.dart`.
-* **User Flow:** The user flow starts with authentication, followed by work order assignment, service execution, and finally, reporting and analytics. This flow is managed through various routes defined in `lib/core/router/app_router.gr.dart`.
-* **Data:** Data storage is handled using Hive, a lightweight NoSQL database, implemented in `lib/core/storage/hive_service.dart`. The app also uses Dio for network requests.
-* **Output:** The output of the application includes work order reports, service history logs, and performance metrics.
+* **Entry Point:** The entry point of the application is located in `lib/app.dart`, which initializes the app and sets up the necessary dependencies.
+* **Core Feature [name]:** The core feature of the app is the work order management system, which is implemented in `lib/core/blocs/work_order_bloc.dart`.
+* **User Flow:** The user flow starts with the login screen, which is handled by `lib/core/services/auth_service.dart`. Once logged in, the user can view and manage their assigned work orders.
+* **Data:** The app stores data locally using Hive, a NoSQL database, and synchronizes it with the server using a network service implemented in `lib/core/network/dio_client.dart`.
+* **Output:** The output of the app is a list of work orders, which can be filtered, sorted, and updated by the user.
 
 ## System Overview
-* **`android/`** — Android-specific implementation using Kotlin and Gradle build scripts.
-* **`ios/`** — iOS-specific implementation using Swift and Xcode project files.
-* **`lib/`** — Core application logic implemented in Dart, including business logic, data storage, and networking.
-* **`assets/`** — Application assets, including fonts, icons, and images.
+* **`android/`** — This folder contains the Android-specific code for building and running the app on Android devices.
+* **`ios/`** — This folder contains the iOS-specific code for building and running the app on iOS devices.
+* **`lib/`** — This folder contains the core logic of the app, including business logic, data models, and services.
+* **`assets/`** — This folder contains static assets such as images, fonts, and icons used by the app.
 
 ```mermaid
 flowchart TD
     subgraph android/
         direction TB
-        app/build.gradle.kts[Android build script]
-        app/src/main/kotlin/com/csg/fsm/fsm/MainActivity.kt[Main activity]
-        app/src/main/res/drawable-v21/launch_background.xml[Launch background]
+        A[AndroidManifest.xml]
+        B[build.gradle.kts]
+        C[app/src/main/kotlin/com/csg/fsm/fsm/MainActivity.kt]
     end
 
     subgraph ios/
         direction TB
-        Runner.xcodeproj/project.pbxproj[iOS project file]
-        Runner/AppDelegate.swift[App delegate]
-        Runner/Assets.xcassets/AppIcon.appiconset/Contents.json[App icon asset]
+        D[iOS Plist files]
+        E[Xcode project files]
+        F[iOS-specific code]
     end
 
-    lib/[Core application logic]
+    subgraph lib/
         direction TB
-        lib/app.dart[Entry point]
-        lib/core/blocs/work_order_bloc.dart[Work order management]
-        lib/core/router/app_router.gr.dart[Routing configuration]
+        G[app.dart]
+        H[blocs/work_order_bloc.dart]
+        I[services/auth_service.dart]
+        J[network/dio_client.dart]
+    end
 
-    assets/[Application assets]
+    subgraph assets/
         direction TB
-        assets/fonts/Inter/Inter.ttf[Font asset]
-        assets/icons/sort-down.png[Icon asset]
+        K[images]
+        L[fonts]
+        M[icons]
+    end
+
+    A --> B
+    C --> B
+    D --> E
+    F --> E
+    G --> H
+    I --> J
+    K --> M
 ```
 
-The codebase structure is modular, with separate folders for Android and iOS implementation. The core application logic is implemented in the `lib` folder, using Dart and Flutter. The app uses Hive for data storage and Dio for networking requests.
+The codebase is structured into separate modules for Android, iOS, and core logic. The `lib` folder contains the business logic, data models, and services that are shared between platforms. The `android` and `ios` folders contain platform-specific code for building and running the app on each platform.
 
 ---
 
@@ -92,8 +100,9 @@ The codebase structure is modular, with separate folders for Android and iOS imp
 
 | Area Impacted | Type of Impact | Severity | Description | Action Required |
 | --- | --- | --- | --- | --- |
-| Documentation | Functional | Low | Updated documentation to reflect changes in work order management and user flow. | Review updated documentation for accuracy. |
-| Documentation | UI | Medium | Changes made to improve readability and clarity of documentation. | None |
+| Documentation | UI | Low | Updated documentation with new feature descriptions and user flow information. | Review and update related code for consistency. |
+| Documentation | Data | Medium | Changes to work order management system description may require updates to data models and storage logic. | Investigate and update affected code as necessary. |
+| Documentation | Functional | High | Changes to problem statement and key features may impact app's core functionality and user experience. | Review and update related business logic and services. |
 
 Note: The table only includes the changed file, which is `DOCUMENTATION.md`.
 
@@ -101,9 +110,9 @@ Note: The table only includes the changed file, which is `DOCUMENTATION.md`.
 
 ## Commit Change Details
 
-| File Changed | Change Type | Description | Lines Added | Lines Removed | Risk Level |
-| DOCUMENTATION.md | Modified | Corrected formatting and content of documentation sections | 6 | 62 | Low<br> |
+| DOCUMENTATION.md | Modified | Corrected formatting and content of documentation sections, updated system design document to reflect changes in FSM app | 6 | 64 | Low<br> |
 | lib/features/chat/presentation/pages/chatbot_page.dart | Modified | Corrected login error message in ChatbotPageState | 0 | 1 | Low<br> |
-| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Removed _handleRefresh method from DashboardPageState | 0 | 11 | Low<br>
+| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Removed _handleRefresh method from DashboardPageState, Renamed 'settingss' to 'settings' in DrawerSection parts | 0 | 12 | Low<br> |
+| lib/features/work_orders/presentation/pages/work_order_complete_page.dart | Modified | Changed exception message from 'Signature pad is not started' to 'Signature pad is not initialized' | 0 | 2 | Low |
 
 ---

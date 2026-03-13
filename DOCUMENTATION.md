@@ -1,6 +1,6 @@
 # Documentation — fsm
 
-> Auto-generated | Last updated: 2026-03-12 16:33:06 | Commit: `86b867f` on `main` by git-doc-agent[bot]
+> Auto-generated | Last updated: 2026-03-13 08:14:19 | Commit: `70e1701` on `main` by git-doc-agent[bot]
 
 ---
 
@@ -8,56 +8,40 @@
 A Dart/Flutter Field Service Management application that manages work orders for service engineers.
 
 ## Description
-* **Core Product:** The FSM app is designed to manage work orders, track service history, and provide real-time updates for field service management.
-* **Problem Solved:** It solves the problem of managing complex workflows, tracking machine details, and ensuring timely completion of tasks by service engineers.
+* **Core Product:** The FSM app is designed to manage work orders, track service history, and provide real-time updates for field service engineers.
+* **Problem Solved:** It solves the problem of inefficient work order management, enabling faster response times, improved customer satisfaction, and reduced costs.
 * **Key Features:**
-	+ Real-time updates on work order status
-	+ Service history tracking
-	+ Machine detail management
-	+ Timely task completion notifications
-* **Extensibility:** The app is designed to be extensible with additional features such as location-based services, performance monitoring, and error handling.
+	+ Real-time work order tracking
+	+ Service history logging
+	+ Location-based services for efficient route planning
+	+ Chatbot integration for customer support
+* **Extensibility:** The app is built with modularity in mind, allowing for easy extension of features and integrations.
 
 ## What the Codebase Does
-* **Entry Point:** The entry point of the application is located in `lib/app.dart`.
-* **Core Feature [name]:** The core feature of the application is work order management, which is implemented in `lib/core/blocs/work_order_bloc.dart`.
-* **User Flow:** The user flow involves creating a new work order, assigning it to a service engineer, and tracking its status in real-time.
-* **Data:** The data for the application is stored using Hive, with separate boxes for storing work orders, machine details, and service history.
-* **Output:** The output of the application includes real-time updates on work order status, notifications for timely task completion, and a comprehensive service history.
+* **Entry Point:** The entry point of the application is `lib/app.dart`, which initializes the Flutter engine and sets up the main widget.
+* **Core Feature [name]:** The core feature of the app is the work order management system, implemented in `lib/core/blocs/work_order_bloc.dart`.
+* **User Flow:**
+	+ Users can view and manage their assigned work orders through the `WorkOrderScreen` widget.
+	+ Engineers can update work order status and add notes through the `UpdateWorkOrderStatusScreen` widget.
+* **Data:** The app stores data in a local Hive database, with separate boxes for work orders, service history, and user information.
+* **Output:** The app generates reports on work order completion rates, engineer productivity, and customer satisfaction.
 
 ## System Overview
-* **`lib/`** — contains core business logic, including work order management, machine detail management, and service history tracking.
-* **`lib/core/blocs/`** — contains the blocs that manage the application's state, including work order_bloc.dart and machine_detail_bloc.dart.
-* **`lib/core/services/`** — contains services for location-based functionality, performance monitoring, and error handling.
-* **`lib/core/storage/`** — contains storage-related classes for Hive data management.
+* **`lib/`** — contains the core business logic of the application, including work order management, chatbot integration, and location-based services.
+* **`android/`** — contains the Android-specific code for building and deploying the app on Android devices.
+* **`ios/`** — contains the iOS-specific code for building and deploying the app on iOS devices.
+* **`assets/`** — stores static assets such as images, fonts, and icons used throughout the application.
 
 ```mermaid
 flowchart TD
-    lib[Core Business Logic]
-    lib_core_blocs[Blocs]
-    lib_core_services[Services]
-    lib_core_storage[Storage]
-    android[Android App]
-    ios[iOS App]
-    assets[Assets]
-    subgraph lib/lib
-        lib_core_blocs
-        lib_core_services
-        lib_core_storage
-    end
-    subgraph android/android
-        android_app
-    end
-    subgraph ios/ios
-        ios_app
-    end
-    subgraph assets/assets
-        assets_fonts
-        assets_icons
-        assets_images
-    end
+    lib[lib/] --> WorkOrderScreen
+    lib[lib/] --> UpdateWorkOrderStatusScreen
+    android[android/] --> AndroidManifest.xml
+    ios[ios/] --> Info.plist
+    assets[assets/] --> fsm_logo.png
 ```
 
-The codebase is structured with a clear separation of concerns between the core business logic, Android and iOS apps, and asset management. The application's components are designed to be modular and extensible, allowing for easy addition of new features and functionality.
+The codebase is structured with a clear separation of concerns between the business logic, platform-specific code, and static assets. The `lib/` folder contains the core application logic, while the `android/` and `ios/` folders contain platform-specific code for building and deploying on Android and iOS devices respectively.
 
 ---
 
@@ -91,10 +75,10 @@ The codebase is structured with a clear separation of concerns between the core 
 
 | Area Impacted | Type of Impact | Severity | Description | Action Required |
 | --- | --- | --- | --- | --- |
-| Documentation | Functional | Low | Updated documentation to reflect changes in work order management and service history tracking. | Review and update related code for consistency. |
-| Documentation | UI | Low | Changes made to improve readability and formatting of system design document. | None |
+| Documentation | Functional | Low | Updated documentation to reflect changes in app features and functionality. | Review updated docs for accuracy. |
+| Documentation | UI | Medium | Changes made to improve user flow and feature descriptions in documentation. | Verify that UI changes are accurately reflected in docs. |
 
-Note: The table only has two rows because the commit only changed one file, `DOCUMENTATION.md`. If there were more files changed, additional rows would be added to the table.
+Note: Since only one file was changed, which is the documentation file, there's only one row in the table. If more files were changed, additional rows would be added accordingly.
 
 ---
 
@@ -102,8 +86,9 @@ Note: The table only has two rows because the commit only changed one file, `DOC
 
 | File Changed | Change Type | Description | Lines Added | Lines Removed | Risk Level |
 | DOCUMENTATION.md | Modified | Updated system design document to reflect changes in FSM app | 0 | 2 | Low<br> |
-| DOCUMENTATION.md | Modified | Corrected formatting and content of documentation sections | 6 | 62 | Low |
-
-Note: The table only includes the files that were changed, which is only one file in this case.
+| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Renamed 'settingss' to 'settings' in DrawerSection parts | 0 | 1 | Low<br> |
+| lib/features/work_orders/presentation/pages/work_order_complete_page.dart | Modified | Changed exception message from 'Signature pad is not started' to 'Signature pad is not initialized' | 0 | 2 | Low |
+| lib/features/chat/presentation/pages/chatbot_page.dart | Modified | Corrected login error message in ChatbotPageState | 0 | 1 | Low<br> |
+| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Removed _handleRefresh method from DashboardPageState | 0 | 11 | Low<br>
 
 ---

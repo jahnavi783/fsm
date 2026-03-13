@@ -1,6 +1,8 @@
-# Documentation — fsm
+# System Design Document — jahnavi783/fsm
 
-> Auto-generated | Last updated: 2026-03-13 11:41:59 | Commit: `8b0b73b` on `main` by git-doc-agent[bot]
+> Auto-generated | Created: 2026-03-13 16:09:00 | Branch: `main`
+
+> This document is automatically regenerated on every commit by the Git Doc Agent.
 
 ---
 
@@ -11,35 +13,85 @@ A Dart/Flutter Field Service Management application that manages work orders for
 * **Core Product:** The FSM app is designed to manage work orders, track service engineer locations, and provide real-time updates on job status.
 * **Problem Solved:** It solves the problem of inefficient field service management by providing a centralized platform for dispatchers to assign jobs, track progress, and communicate with engineers in real-time.
 * **Key Features:**
-	+ Real-time location tracking of service engineers
-	+ Automated assignment of work orders based on engineer availability and job priority
-	+ Push notifications for updates on job status and new assignments
-	+ Integration with Hive storage for data persistence
-* **Extensibility:** The app is designed to be extensible, allowing for easy integration of new features and services through its modular architecture.
+	+ Work order management
+	+ Service engineer location tracking
+	+ Real-time updates on job status
+	+ Centralized platform for dispatchers to manage jobs
+* **Extensibility:** The app is designed to be extensible, allowing developers to easily add new features and integrate with existing systems.
 
 ## What the Codebase Does
-* **Entry Point:** The entry point of the application is located in `lib/app.dart`, which initializes the Flutter engine and sets up the app's routing configuration.
+* **Entry Point:** The entry point of the application is `lib/app.dart`, which sets up the main widget and initializes the app.
 * **Core Feature [name]:** The core feature of the app is the work order management system, implemented in `lib/core/blocs/work_order_bloc.dart`.
-* **User Flow:** The user flow begins with the login screen, where users authenticate using their credentials. Once logged in, they are presented with a dashboard displaying their assigned work orders and real-time location tracking.
-* **Data:** The app stores data in Hive storage, which is accessed through the `lib/core/storage/hive_service.dart` module.
-* **Output:** The output of the app includes push notifications for updates on job status and new assignments, as well as a map view displaying the real-time locations of service engineers.
+* **User Flow:** The user flow starts with the login screen, where users enter their credentials to access the app. Once logged in, they can view assigned jobs, track progress, and communicate with dispatchers.
+* **Data:** The app stores data locally using Hive, a lightweight NoSQL database, and synchronizes it with the server using a custom networking library.
+* **Output:** The output of the app is a real-time dashboard displaying job status, engineer locations, and other relevant information.
 
 ## System Overview
-* **`android/`** — contains Android-specific code, including the `AndroidManifest.xml` file that defines the app's permissions and activities.
-* **`ios/`** — contains iOS-specific code, including the `Info.plist` file that defines the app's metadata and settings.
-* **`lib/`** — contains the core logic of the app, including the work order management system and real-time location tracking features.
-* **`assets/`** — contains static assets used by the app, such as images and fonts.
+* **`lib/`** — contains core business logic, including work order management, service engineer location tracking, and real-time updates on job status.
+* **`android/`** — contains Android-specific code for the app, including the main activity and layout files.
+* **`ios/`** — contains iOS-specific code for the app, including the main view controller and storyboard files.
+* **`lib/core/blocs/`** — contains business logic for work order management, service engineer location tracking, and real-time updates on job status.
+* **`lib/core/services/`** — contains services for networking, storage, and other core functionality.
 
 ```mermaid
 flowchart TD
-    A[android/] --> B[AndroidManifest.xml]
-    C[ios/] --> D[Info.plist]
-    E[lib/] --> F[app.dart]
-    G[lib/core/blocs/] --> H[work_order_bloc.dart]
-    I[lib/core/storage/] --> J[hive_service.dart]
+    lib[Core Business Logic]
+    android[Android-Specific Code]
+    ios[iOS-Specific Code]
+    lib/core/blocs[Work Order Management]
+    lib/core/services[Networking & Storage Services]
+
+    lib -->|contains|> lib/core/blocs
+    lib -->|contains|> lib/core/services
+
+    android -->|contains|> android/app/build.gradle.kts
+    ios -->|contains|> ios/Runner.xcodeproj/project.pbxproj
+
+    lib/core/blocs -->|depends on|> lib/core/services
 ```
 
-The codebase is structured around a modular architecture, with each module responsible for a specific feature or functionality. The `lib/` folder contains the core logic of the app, including the work order management system and real-time location tracking features. The `android/` and `ios/` folders contain platform-specific code, while the `assets/` folder stores static assets used by the app.
+The codebase is structured around a modular architecture, with each module responsible for a specific aspect of the app's functionality. The `lib` folder contains core business logic, while the `android` and `ios` folders contain platform-specific code. The `lib/core/blocs` and `lib/core/services` folders contain business logic and services that are shared across both platforms.
+
+---
+
+## Architecture
+
+## Architecture
+
+### High-Level Design
+
+The FSM application follows a Model-View-Bloc (MVB) architecture pattern, which is an extension of the traditional Model-View-Controller (MVC) pattern. This design allows for a clear separation of concerns between business logic, presentation layer, and data storage.
+
+### Key Components
+
+* **Business Logic**: The core of the application's logic resides in the `lib/core/blocs` folder, which contains various blocs that handle different aspects of the app, such as connectivity, error handling, and synchronization.
+* **Presentation Layer**: The UI components are located in the `lib/core/widgets` folder, where you'll find various widgets for displaying data, handling user interactions, and providing feedback to the user.
+* **Data Storage**: The application uses Hive for local storage, with the relevant code residing in the `lib/core/storage` folder.
+* **Networking**: The networking layer is implemented using Dio Client, located in the `lib/core/network` folder.
+
+### Component Interactions
+
+The components interact with each other through a combination of events and streams. For example:
+
+* The `connectivity_bloc` emits events to notify the UI about changes in network connectivity.
+* The `error_handler` bloc receives error events from various parts of the app and handles them accordingly.
+* The `sync_bloc` synchronizes data between the local storage and remote servers.
+
+Data flows between layers through a combination of streams, events, and callbacks. For instance:
+
+* The UI widgets emit events to notify the corresponding blocs about user interactions.
+* The blocs process these events and update the relevant data in the storage or send requests to the server.
+
+### Entry Points
+
+The main entry points for the application are located in the `lib/app.dart` file, which sets up the root widget and initializes the necessary dependencies. The startup sequence involves:
+
+1. Initializing the Hive storage.
+2. Setting up the networking layer.
+3. Creating instances of the various blocs.
+4. Starting the app's main widget.
+
+Note that this is a high-level overview of the architecture, and there may be additional details or nuances not covered here.
 
 ---
 
@@ -49,9 +101,6 @@ The codebase is structured around a modular architecture, with each module respo
 
 
 **Infrastructure:** GitHub Actions
-
-
-**Repository Type:** `FLUTTER`
 
 
 ---
@@ -69,23 +118,110 @@ The codebase is structured around a modular architecture, with each module respo
 
 ---
 
-## Impact Analysis
+## API Endpoints
 
-| Area Impacted | Type of Impact | Severity | Description | Action Required |
-| --- | --- | --- | --- | --- |
-| Documentation | UI | Low | Updated documentation with new features and changes | Review and update related code accordingly |
-| Documentation | Data | Medium | Changes in work order management system description | Verify accuracy of changes with stakeholders |
+## API Endpoints
 
-Note: The table only includes the changed file `DOCUMENTATION.md` as per the provided diff. If there were other files changed, they would be included here as well.
+### Network and Connectivity
+
+- **GET /connectivity** — Checks if the device has a stable internet connection
+- **Stream GET /onConnectivityChanged** — Listens for changes in network connectivity
+
+### Authentication
+
+- **POST /login** — Authenticates user with provided credentials
+- **GET /auth/refresh-token** — Refreshes access token when it expires
+- **DELETE /auth/logout** — Logs out the current user and clears authentication data
+
+### Work Orders
+
+- **GET /work-orders** — Retrieves a list of work orders for the authenticated user
+- **POST /work-orders** — Creates a new work order for the authenticated user
+- **GET /work-orders/{id}** — Retrieves details of a specific work order
+- **PUT /work-orders/{id}** — Updates an existing work order
+- **DELETE /work-orders/{id}** — Deletes a work order
+
+### Documents
+
+- **GET /documents** — Retrieves a list of documents for the authenticated user
+- **POST /documents** — Uploads a new document for the authenticated user
+- **GET /documents/{id}** — Retrieves details of a specific document
+- **PUT /documents/{id}** — Updates an existing document
+
+### Parts
+
+- **GET /parts** — Retrieves a list of parts for the authenticated user
+- **POST /parts** — Creates a new part for the authenticated user
+- **GET /parts/{id}** — Retrieves details of a specific part
+- **PUT /parts/{id}** — Updates an existing part
+
+### Calendar
+
+- **GET /calendar** — Retrieves a list of events in the calendar for the authenticated user
+- **POST /calendar** — Creates a new event in the calendar for the authenticated user
+- **GET /calendar/{id}** — Retrieves details of a specific event in the calendar
+
+### Settings
+
+- **GET /settings** — Retrieves settings for the authenticated user
+- **PUT /settings** — Updates settings for the authenticated user
+
+### Public Routes (no authentication required)
+
+- **GET /** — Redirects to the splash page
+- **GET /login** — Displays the login page
 
 ---
 
-## Commit Change Details
+## Data Flow
 
-| File Changed | Change Type | Description | Lines Added | Lines Removed | Risk Level |
-| DOCUMENTATION.md | Modified | Updated system design document to reflect changes in FSM app | 0 | 2 | Low<br> |
-| lib/features/chat/presentation/pages/chatbot_page.dart | Modified | Corrected login error message in ChatbotPageState | 0 | 1 | Low<br> |
-| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Renamed 'settingss' to 'settings' in DrawerSection parts | 0 | 1 | Low<br> |
-| lib/features/work_orders/presentation/pages/work_order_complete_page.dart | Modified | Changed exception message from 'Signature pad is not started' to 'Signature pad is not initialized' | 0 | 2 | Low |
+## Data Flow
+
+### Data Models
+
+* `ChatSessionResponse`:
+	+ `success`
+	+ `sessionId`
+	+ `user`: `UserInfo`
+	+ `message`
+* `UserInfo`:
+	+ `id`
+	+ `email`
+	+ `role`
+	+ `firstName`
+	+ `lastName`
+* `LocationInfo`:
+	+ `latitude`
+	+ `longitude`
+	+ `accuracy`
+	+ `altitude`
+	+ `bearing`
+	+ `speed`
+	+ `timestamp`
+	+ `address`
+* `LoginRequest`:
+	+ `email`
+	+ `password`
+
+### Data Flow Description
+
+Data flows through the system as follows:
+
+1. **Input**: The user interacts with the app, sending a request to start a chat session or login.
+2. **Processing**: The app processes the input data and generates relevant models (e.g., `ChatSessionResponse` for chat sessions).
+3. **Storage**: Data is stored in various databases and files:
+	* Chat session data: likely stored in a database, but specific details not provided.
+	* User information: possibly stored in a user management system or database.
+	* Location data: potentially stored in a geolocation service or database.
+4. **Output**: The app displays the processed data to the user, using widgets such as `PriorityIndicator` and `StatusBadge`.
+
+### Storage
+
+Data is stored in various locations:
+
+* Databases (not specified which ones)
+* Files (not specified which files)
+
+Note that this analysis only covers the provided code snippets and does not include any external services or databases that may be used by the app.
 
 ---

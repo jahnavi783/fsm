@@ -1,6 +1,6 @@
 # Documentation — jahnavi783/fsm
 
-> Auto-generated | Updated: 2026-03-16 10:08:48 | Commit: `f420fec` on `main` by git-doc-agent[bot]
+> Auto-generated | Updated: 2026-03-16 10:17:13 | Commit: `cdb3678` on `main` by git-doc-agent[bot]
 
 > This file is automatically updated on every commit by the Git Doc Agent.
 
@@ -43,6 +43,7 @@
 | Chatbot Feature | Functional | Medium | Updated error message for expired authentication | Review UI changes. |
 | lib/features/chat/presentation/pages/chatbot_page.dart | Functional | Low | Minor UI change: updated error message | None |
 | Work Orders Dashboard | Functional | Low | Renamed 'settings' to 'settingsss' in DrawerSection | None |
+| lib/features/work_orders/presentation/pages/dashboard_page.dart | Functional | Low | Renamed 'settings' to 'settingsss' in DrawerSection | None |
 
 ---
 

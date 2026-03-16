@@ -1,6 +1,6 @@
 # Documentation — jahnavi783/fsm
 
-> Auto-generated | Updated: 2026-03-16 09:46:38 | Commit: `d80ec0f` on `main` by jahnavis
+> Auto-generated | Updated: 2026-03-16 10:03:00 | Commit: `8226b44` on `main` by jahnavis
 
 > This file is automatically updated on every commit by the Git Doc Agent.
 
@@ -39,8 +39,7 @@
 
 | Area Impacted | Type of Impact | Severity | Description | Action Required |
 | --- | --- | --- | --- | --- |
-| Chat Feature | UI | Medium | Updated error message in chat page. | Review UI changes. |
-| Work Orders Dashboard | Functional | Low | Renamed 'settings' to 'settingsss'. | None |
+| Chatbot Feature | Functional | Medium | Updated error message for expired authentication. | Review UI changes. |
 
 ---
 
@@ -49,6 +48,5 @@
 | File Changed | Change Type | Description | Lines Added | Lines Removed | Risk Level |
 | --- | --- | --- | --- | --- | --- |
 | lib/features/chat/presentation/pages/chatbot_page.dart | Modified | Updated error message for authentication expired | 0 | 1 | Low<br>Minor UI change |
-| lib/features/work_orders/presentation/pages/dashboard_page.dart | Modified | Renamed 'settings' to 'settingsss' in DrawerSection | 0 | 0 | Low |
 
 ---

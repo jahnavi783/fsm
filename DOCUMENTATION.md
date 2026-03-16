@@ -1,49 +1,49 @@
 # System Design Document — jahnavi783/fsm
 
-> Auto-generated | Created: 2026-03-15 23:10:42 | Branch: `main`
+> Auto-generated | Created: 2026-03-16 08:52:50 | Branch: `main`
 
 > This document is automatically regenerated on every commit by the Git Doc Agent.
 
 ---
 
 ## Overview
-A Dart/Flutter Field Service Management application that manages service engineers, work orders, and machine details.
+A Dart + Flutter Field Service Management application that manages work orders for service engineers.
 
 ## Description
-* **Core Product:** Manages field service operations for a company.
-* **Problem Solved:** Eliminates inefficiencies in scheduling, dispatching, and tracking of service engineers.
-* **Key Features:** connectivity management, error handling, sync functionality, performance monitoring.
+* **Core Product:** Work order management system for field service engineers.
+* **Problem Solved:** Eliminates inefficiencies in scheduling, dispatching, and tracking of service engineers' activities.
+* **Key Features:** connectivity management, error handling, sync functionality, location services, performance monitoring, memory management.
 * **Entry Point:** `lib/main.dart`
 
 ## What the Codebase Does
 * **Entry Point:** The application initializes with `lib/main.dart`, which sets up the app's configuration and routing.
-* **Core Feature – Connectivity Management:** The app uses a connectivity bloc to manage network connections and errors, as seen in `lib/core/blocs/connectivity/connectivity_bloc.dart`.
-* **User Flow:** Users can navigate through different screens, including a dashboard, work orders list, and service engineer details, using the routing system defined in `lib/core/router/app_router.gr.dart`.
-* **Data Layer:** The app stores data locally using Hive, as implemented in `lib/core/storage/hive_service.dart`, and syncs it with a remote server using the sync bloc, defined in `lib/core/blocs/sync/sync_bloc.dart`.
-* **Output:** The app displays various screens and widgets to users, including a launch screen, main screen, and work orders list, as seen in `ios/Runner/Base.lproj/LaunchScreen.storyboard` and `android/app/src/main/res/layout/activity_main.xml`.
+* **Core Feature – Connectivity Management:** The `connectivity_bloc` manages network connectivity and updates the app accordingly.
+* **User Flow:** When a user logs in, the app checks for connectivity and syncs data from the server using the `sync_bloc`.
+* **Data Layer:** Data is stored locally using Hive, with separate boxes for different types of data (e.g., chat models, location data).
+* **Output:** The app displays work orders, service history, and other relevant information to the user.
+* **Core Feature – Error Handling:** The `error_handler` handles errors and exceptions, providing a robust error handling mechanism.
 
 ## System Overview
-* **`lib/`** — Contains the core logic of the app, including routing, connectivity management, and data storage.
-* **`core/`** — Houses the core features and functionality of the app, including error handling, sync functionality, and performance monitoring.
-* **`features/`** — Includes feature-specific modules, such as work orders and service engineers.
-* **`services/`** — Defines services used throughout the app, including authentication, location management, and logging.
+* `lib/main.dart`: Initializes the app's configuration and routing.
+* `lib/core/services/`: Contains services for connectivity management, sync functionality, location services, performance monitoring, memory management.
+* `lib/features/work_orders/`: Manages work orders, including scheduling, dispatching, and tracking of service engineers' activities.
+* `lib/core/blocs/`: Contains event-driven state management using the BLoC pattern.
 
 ## Codebase Structure
-* **`lib/`** — Contains the main application logic and configuration.
-* **`core/`** — Houses core features and functionality, including routing, connectivity management, and data storage.
-* **`features/`** — Includes feature-specific modules, such as work orders and service engineers.
-* **`services/`** — Defines services used throughout the app.
+* **`lib/`**: Top-level folder containing app configuration, routing, services, and features.
+* **`lib/core/`**: Folder containing core functionality, including connectivity management, error handling, sync functionality, location services, performance monitoring, memory management.
+* **`lib/features/`**: Folder containing feature-specific code, including work order management.
 
 ```mermaid
 flowchart TD
     A([lib/main.dart]) --> B([lib/app.dart])
     B --> C([lib/core/])
-    B --> D([lib/features/])
+    B --> D([lib/features/work_orders/])
     C --> E([lib/core/services/])
-    D --> F([lib/features/work_orders/])
+    D --> F([lib/features/work_orders/work_order_manager.dart])
 ```
 
-The codebase is structured around a modular design, with each module responsible for a specific feature or functionality. The `lib` folder contains the main application logic and configuration, while the `core` folder houses core features and functionality. The `features` folder includes feature-specific modules, such as work orders and service engineers, and the `services` folder defines services used throughout the app.
+The codebase is structured around a modular architecture, with separate folders for core functionality and feature-specific code. The `lib/main.dart` file initializes the app's configuration and routing, while the `lib/core/services/` folder contains services for connectivity management, sync functionality, location services, performance monitoring, memory management. The `lib/features/work_orders/` folder manages work orders, including scheduling, dispatching, and tracking of service engineers' activities.
 
 ---
 
@@ -52,24 +52,24 @@ The codebase is structured around a modular design, with each module responsible
 ## Architecture
 
 ### High-Level Design
-* **Pattern:** Clean Architecture with a BLoC (Business Logic Component) pattern for state management.
-* **Structure:** The project is structured into top-level folders like `lib/core`, `lib/core/blocs`, and `lib/core/services` that reflect the Clean Architecture principles, separating concerns by layer.
-* **State Management:** The project uses the BLoC pattern for state management, with a clear separation of presentation logic from business logic.
+* **Pattern:** Clean Architecture with a BLoC (Business Logic Component) state management approach.
+* **Structure:** The project is structured into top-level folders such as `lib/core`, `lib/core/blocs`, and `lib/core/services` that reflect the Clean Architecture pattern, separating concerns by layer.
+* **State Management:** The project uses BLoC for state management, with a clear separation of presentation logic from business logic.
 
 ### Key Components
-* **`lib/core/config/`** — This folder contains configuration files and classes that manage app settings and environment-specific configurations.
-* **`lib/core/blocs/`** — This folder houses the BLoC implementation, including event handlers, state management, and business logic for various features.
-* **`lib/core/services/`** — This folder contains service classes that encapsulate data access, networking, and other external interactions.
+* **`lib/core/config/`** — Contains configuration files for different environments (e.g., `app_config_dev.dart`, `app_config_prod.dart`) that are used throughout the app.
+* **`lib/core/di/injection.config.dart`** — Manages dependency injection using a custom implementation.
+* **`lib/core/services/`** — Houses various services, including authentication, location, and logging services.
 
 ### Component Interactions
-* **Request Flow:** A user action flows from the UI (e.g., a button press) to the BLoC (e.g., `connectivity_bloc`) which then interacts with services (e.g., `network` service) to fetch or send data.
-* **Data Direction:** Responses/data flow back through the services (e.g., `network` service) to the BLoC, and finally to the UI for rendering.
-* **Shared Services:** The project has shared/core modules like `di/injection.config.dart`, which provides dependency injection capabilities across the app.
+* **Request Flow:** A user action flows from the UI (e.g., `fsm_app_bar`) to the BLoC (`connectivity_bloc`, `error_bloc`) which then interacts with services (e.g., `auth_interceptor`, `location_service`) before making API calls.
+* **Data Direction:** Responses/data flow back to the UI through the BLoC, updating the app state and triggering UI updates.
+* **Shared Services:** The project has shared/core modules such as `network` and `storage` that multiple features depend on.
 
 ### Entry Points
-* **Main Entry:** The main entry point is likely in `lib/main.dart` or a similar file that initializes the Flutter app framework/widget tree.
-* **App Init:** The app initialization process might involve files like `lib/core/config/app_config_dev.dart`, which sets up environment-specific configurations.
-* **Routing:** Navigation and routing are managed through the `app_router` module, possibly in `lib/core/router/app_router.dart`.
+* **Main Entry:** The first file executed at startup is likely `lib/main.dart`, which initializes the Flutter app framework/widget tree.
+* **App Init:** The file responsible for initializing the app framework/widget tree is also `lib/main.dart`.
+* **Routing:** The file or module responsible for navigation/routing is `lib/core/router/app_router.dart` and its corresponding generated code in `lib/core/router/app_router.gr.dart`.
 
 ---
 
@@ -100,57 +100,45 @@ The codebase is structured around a modular design, with each module responsible
 
 ## API Endpoints
 
-### Authentication
-
-* **POST /login** — Handles user login with authentication credentials
-* **GET /logout** — Logs out the current user and clears session data
-
 ### Work Orders
 
-* **GET /work-orders** — Retrieves a list of work orders for the authenticated user
-* **GET /work-orders/{id}** — Retrieves a specific work order by ID
-* **POST /work-orders** — Creates a new work order with provided details
-* **PUT /work-orders/{id}** — Updates an existing work order with new details
+* **GET /work-orders** — Retrieves a list of work orders
+* **POST /work-orders** — Creates a new work order
+* **PUT /work-orders/{id}** — Updates an existing work order
 * **DELETE /work-orders/{id}** — Deletes a work order by ID
 
 ### Engineers
 
-* **GET /engineers** — Retrieves a list of engineers for the authenticated user
-* **GET /engineers/{id}** — Retrieves a specific engineer by ID
-* **POST /engineers** — Creates a new engineer with provided details
-* **PUT /engineers/{id}** — Updates an existing engineer with new details
+* **GET /engineers** — Retrieves a list of engineers
+* **POST /engineers** — Creates a new engineer
+* **PUT /engineers/{id}** — Updates an existing engineer
 * **DELETE /engineers/{id}** — Deletes an engineer by ID
 
 ### Parts
 
-* **GET /parts** — Retrieves a list of parts for the authenticated user
-* **GET /parts/{id}** — Retrieves a specific part by ID
-* **POST /parts** — Creates a new part with provided details
-* **PUT /parts/{id}** — Updates an existing part with new details
+* **GET /parts** — Retrieves a list of parts
+* **POST /parts** — Creates a new part
+* **PUT /parts/{id}** — Updates an existing part
 * **DELETE /parts/{id}** — Deletes a part by ID
 
 ### Documents
 
-* **GET /documents** — Retrieves a list of documents for the authenticated user
-* **GET /documents/{id}** — Retrieves a specific document by ID
-* **POST /documents** — Creates a new document with provided details
-* **PUT /documents/{id}** — Updates an existing document with new details
+* **GET /documents** — Retrieves a list of documents
+* **POST /documents** — Creates a new document
+* **PUT /documents/{id}** — Updates an existing document
 * **DELETE /documents/{id}** — Deletes a document by ID
 
-### Calendar
+### Authentication
 
-* **GET /calendar** — Retrieves the authenticated user's calendar events
-* **POST /calendar** — Creates a new calendar event with provided details
+* **POST /login** — Authenticates a user and returns an access token
+* **POST /logout** — Logs out the current user and revokes their access token
 
-### Chatbot
+### Error Handling
 
-* **GET /chatbot** — Initiates a chat session with the chatbot
-* **POST /chatbot** — Sends a message to the chatbot
+* **GET /error-handling** — Retrieves error handling configuration (not implemented)
+* **POST /error-handling** — Updates error handling configuration (not implemented)
 
-### Developer Options
-
-* **GET /developer-options** — Retrieves developer options for debugging purposes
-* **POST /developer-options** — Updates developer options with new settings
+Note: The above endpoints are based on the provided code snippets, but some of them might not be fully implemented or might require additional setup.
 
 ---
 
@@ -160,38 +148,37 @@ The codebase is structured around a modular design, with each module responsible
 
 ### Data Models
 
-* **`ChatSessionResponse`:** `success`, `sessionId`, `user`, `message`. Represents a response to starting a chat session.
+* **`ChatSessionResponse`:** `success`, `sessionId`, `user`, `message`. Represents a response when starting a chat session.
 * **`UserInfo`:** `id`, `email`, `role`, `firstName`, `lastName`. Stores user information.
 * **`LocationInfo`:** `latitude`, `longitude`, `accuracy`, `altitude`, `bearing`, `speed`, `timestamp`, `address`. Represents location data.
-* **`LoginRequest`:** `email`, `password`. Contains login credentials.
+* **`LoginRequest`:** `email`, `password`. Used for login requests.
 
 ### Data Flow Description
 
-1. **UI Layer:** The user initiates a chat session by clicking a button or navigating to the chat page, triggering a BLoC event to start a new chat session.
-2. **State/Logic Layer:** The `ChatSessionBloc` handles the event and sends a request to the service layer to create a new chat session.
-3. **Service Layer:** The `ChatSessionService` creates a new chat session and returns a `ChatSessionResponse` object, which includes a unique session ID and user information.
-4. **API/Network Layer:** The API call is made to the `/chat/sessions` endpoint using the HTTP POST method.
-5. **Repository Layer:** The response from the service layer is parsed into a `ChatSessionResponse` object, which is then returned to the BLoC event handler.
-6. **State Update:** The UI is updated with the new chat session information, including the session ID and user details.
+1. **UI Layer:** The user initiates a chat session by clicking on the "Start Chat" button, which triggers a BLoC event to start a new chat session.
+2. **State/Logic Layer:** The `ChatSessionBloc` handles the event and sends a request to the `ChatService` to create a new chat session.
+3. **Service Layer:** The `ChatService` processes the request by creating a new chat session in the database and returns a `ChatSessionResponse` object.
+4. **API/Network Layer:** No API call is made, as this is an internal service.
+5. **Repository Layer:** The response from the `ChatService` is parsed and returned to the UI layer through the BLoC event stream.
+6. **State Update:** The UI layer updates with the new chat session information.
 
-1. **UI Layer:** The user sends a message by typing in the chat input field and clicking the send button, triggering a BLoC event to send a message.
-2. **State/Logic Layer:** The `ChatMessageBloc` handles the event and sends a request to the service layer to send a new message.
-3. **Service Layer:** The `ChatMessageService` processes the request and returns a `ChatMessageResponse` object, which includes a success flag and any error messages.
-4. **API/Network Layer:** The API call is made to the `/chat/messages` endpoint using the HTTP POST method.
-5. **Repository Layer:** The response from the service layer is parsed into a `ChatMessageResponse` object, which is then returned to the BLoC event handler.
-6. **State Update:** The UI is updated with the new message information, including any success or error messages.
+1. **UI Layer:** The user sends a message by typing in the chat input field and clicking on the "Send" button, which triggers a BLoC event to send a message.
+2. **State/Logic Layer:** The `ChatMessageBloc` handles the event and sends a request to the `ChatService` to send a new message.
+3. **Service Layer:** The `ChatService` processes the request by sending the message to the chat session in the database and returns a `ChatMessageResponse` object.
+4. **API/Network Layer:** No API call is made, as this is an internal service.
+5. **Repository Layer:** The response from the `ChatService` is parsed and returned to the UI layer through the BLoC event stream.
+6. **State Update:** The UI layer updates with the new message information.
 
-1. **UI Layer:** The user requests location data by clicking a button or navigating to the location page, triggering a BLoC event to retrieve location information.
-2. **State/Logic Layer:** The `LocationBloc` handles the event and sends a request to the service layer to retrieve location data.
-3. **Service Layer:** The `LocationService` processes the request and returns a `LocationInfo` object, which includes location coordinates and other metadata.
-4. **API/Network Layer:** The API call is made to the `/location/data` endpoint using the HTTP GET method.
-5. **Repository Layer:** The response from the service layer is parsed into a `LocationInfo` object, which is then returned to the BLoC event handler.
-6. **State Update:** The UI is updated with the new location information.
+1. **UI Layer:** The user requests their location by clicking on a button, which triggers a BLoC event to request location data.
+2. **State/Logic Layer:** The `LocationBloc` handles the event and sends a request to the `LocationService` to get the current location.
+3. **Service Layer:** The `LocationService` processes the request by getting the current location using the device's GPS and returns a `LocationInfo` object.
+4. **API/Network Layer:** No API call is made, as this is an internal service.
+5. **Repository Layer:** The response from the `LocationService` is parsed and returned to the UI layer through the BLoC event stream.
+6. **State Update:** The UI layer updates with the new location information.
 
 ### Storage
 
-* **`SharedPreferences`:** Stores user preferences and settings.
-* **`SQLite Database`:** Stores chat session data, including messages and user information.
-* **`REST API`:** Stores location data and other metadata.
+* **`SQLite`:** Stores chat sessions, messages, user information, and location data.
+* **`SharedPreferences`:** Stores login credentials (email and password).
 
 ---

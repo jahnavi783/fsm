@@ -1,6 +1,6 @@
 # Documentation — jahnavi783/fsm
 
-> Auto-generated | Updated: 2026-03-21 00:51:38 | Commit: `ba78290` on `main` by git-doc-agent[bot]
+> Auto-generated | Updated: 2026-03-21 00:52:10 | Commit: `f7043ae` on `main` by git-doc-agent[bot]
 
 > Maintained by Git Doc Agent v4 (agentic).
 

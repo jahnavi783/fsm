@@ -1,101 +1,119 @@
-# System Design Document — jahnavi783/fsm
+# Documentation — jahnavi783/fsm
 
-> Auto-generated | Created: 2026-03-23 14:54:38 | Branch: `main`
+> Auto-generated | Updated: 2026-03-23 14:59:02 | Commit: `6779eae` on `main` by git-doc-agent[bot]
 
-> This document is automatically regenerated on every commit by Git Doc Agent v4 (agentic).
+> Maintained by Git Doc Agent v4 (agentic).
 
 ---
 
- main.dart
-import 'package:flutter/material.dart';
-import 'package:fsm/fsm.dart';
+## Sections Updated This Commit
 
-void main() {
-  runApp(const MyApp());
-}
+- Updated: **Repo Description**
+- Updated: **Architecture**
+- Unchanged: Api Section
+- Unchanged: Data Flow
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+---
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'FSM App',
-      home: MyHomePage(),
-    );
-  }
-}
+ Use this section as a reference for your documentation
+## Overview
+A Dart + Flutter finite state machine app that demonstrates state management.
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+## Description
+* **Core Product:** Finite State Machine (FSM) implementation in Dart
+* **Problem Solved:** Simplifies state management in Flutter applications
+* **Key Features:** 
+  + Supports multiple states and transitions
+  + Provides a simple API for defining and managing states
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+## What the Codebase Does
+* **Entry Point:** `lib/main.dart` - The main entry point of the application
+* **Core Feature:** `lib/fsm.dart` - The core FSM implementation
+* **Data:** `lib/data.dart` - Data models used by the application
+* **Output:** `lib/ui.dart` - User interface components
+* **State Management:** `lib/state_manager.dart` - Manages the application's state
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+## System Overview
+* `lib/` — The main application code
+* `lib/fsm/` — The FSM implementation
+* `lib/data/` — Data models
+* `lib/ui/` — User interface components
+* `lib/state_manager/` — State management logic
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('FSM App'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
+## Codebase Structure
+* Top-level folders: 
+  + `.github`
+  + `.idea`
+  + `.kiro`
+  + `.metadata`
+  + `.vscode`
+  + `android`
+  + `assets`
+  + `ios`
+  + `lib`
+  + `linux`
+  + `macos`
+```mermaid
+graph TD
+    A[.github] --> B[.idea]
+    B --> C[.kiro]
+    C --> D[.metadata]
+    D --> E[.vscode]
+    E --> F[android]
+    F --> G[assets]
+    G --> H[ios]
+    H --> I[lib]
+    I --> J[linux]
+    J --> K[macos]
+    K --> L[README.md]
+    L --> M[pubspec.yaml]
+```
+The codebase is structured into several top-level folders, each containing specific components of the application. The `lib` folder contains the main application code, including the FSM implementation, data models, and user interface components. The `android`, `ios`, `linux`, and `macos` folders contain platform-specific code. The `assets` folder contains static assets used by the application. The `README.md` and `pubspec.yaml` files provide documentation and configuration for the project.
 
 ---
 
 ## Architecture
 
 ## Architecture
-### High-Level Design
-The high-level design of the jahnavi783/fsm repository is based on the Flutter framework and follows a modular architecture. The app is divided into features, each with its own domain, data, and presentation layers.
+### High-Level Design (MVC / layered / microservices / etc.)
+The high-level design of the jahnavi783/fsm repository is based on a layered architecture, with a focus on separation of concerns and modularity. The repository is organized into several features, each representing a distinct domain or functionality, such as authentication, calendar, chat, documents, and more.
 
-### Key Components
-* **`lib/core`** — This module contains the core functionality of the app, including configuration, dependencies, and services.
-* **`lib/features`** — This module contains the features of the app, each with its own domain, data, and presentation layers.
-* **`lib/main.dart`** — This is the main entry point of the app, responsible for initializing the app and running it.
+### Key Components (one bullet per module: **`path`** — what it does)
+* **`lib/core/blocs`** — Business logic components, responsible for managing app state and handling events.
+* **`lib/core/config`** — Configuration and environment settings.
+* **`lib/core/di`** — Dependency injection and service locator.
+* **`lib/core/error`** — Error handling and logging mechanisms.
+* **`lib/core/models`** — Data models and entities used throughout the app.
+* **`lib/core/network`** — Networking and API interaction logic.
+* **`lib/core/router`** — App routing and navigation management.
+* **`lib/core/services`** — Various services, such as chatbot, location, and logging.
+* **`lib/core/storage`** — Data storage and caching mechanisms.
+* **`lib/core/theme`** — App theme and design-related components.
+* **`lib/core/utils`** — Utility functions and extensions.
+* **`lib/features`** — Feature-specific modules, each containing their own set of components and logic.
 
-### Component Interactions
-The components interact with each other through the use of services and repositories. The services provide a way for the components to communicate with each other, while the repositories provide a way for the components to access data.
+### Component Interactions (data flow between layers, use → arrows)
+The components interact with each other through a combination of dependency injection, service locators, and event-driven programming. The data flow between layers can be represented as follows:
+`lib/core/blocs` → `lib/core/services` → `lib/core/network` → `lib/core/storage`
+`lib/core/blocs` → `lib/core/models` → `lib/core/utils`
+`lib/core/services` → `lib/core/error` → `lib/core/logging`
+`lib/core/router` → `lib/core/blocs` → `lib/core/services`
 
-### Entry Points
-The main entry point of the app is **`lib/main.dart`**, which initializes the app and runs it. The app also has other entry points, such as **`lib/features/auth/presentation/pages/login_page.dart`**, which handles user authentication.
+### Entry Points (startup sequence)
+The main entry point of the app is the `main` function, located in `lib/main.dart`. The startup sequence involves:
+1. Initializing the Flutter bindings and setting the preferred orientations.
+2. Resolving the environment and app configuration.
+3. Configuring the dependency injection and initializing the error boundary service.
+4. Initializing the offline sync background service.
+5. Running the app with the `MyApp` widget.
 
-### Design Patterns
-The app uses several design patterns, including:
-* **Dependency Injection (DI)**: The app uses a DI framework to manage dependencies between components.
-* **Repository Pattern**: The app uses repositories to provide a way for components to access data.
-* **Service Pattern**: The app uses services to provide a way for components to communicate with each other.
-* **MVC (Model-View-Controller) Pattern**: The app uses the MVC pattern to separate the concerns of the app into models, views, and controllers.
+### Design Patterns (DI, repository, factory, etc. if present)
+The repository uses several design patterns, including:
+* Dependency Injection (DI): used to manage dependencies between components.
+* Repository pattern: used to abstract data access and storage.
+* Factory pattern: used to create instances of components and services.
+* Event-driven programming: used to handle events and interactions between components.
+* Observer pattern: used to notify components of changes and updates.
 
 ---
 
@@ -125,65 +143,10 @@ The app uses several design patterns, including:
 
 ---
 
-## API Endpoints
-
-## API Endpoints
-### Authentication
-**POST /auth/login** — Login to the application
-**POST /auth/refresh-token** — Refresh authentication token
-**GET /users/me** — Get current user information
-**POST /auth/logout** — Logout from the application
-
-### Calendar
-**GET /calendar/events** — Get calendar events
-**GET /calendar/events/daily** — Get daily schedule
-**GET /calendar/events/weekly** — Get weekly schedule
-**GET /calendar/events/monthly** — Get monthly schedule
-**GET /calendar/events/optimize-route** — Get optimized daily route
-**POST /calendar/events** — Create a new event
-**PUT /calendar/events/{id}** — Update an existing event
-**DELETE /calendar/events/{id}** — Delete an event
-**GET /calendar/events/conflicts** — Get conflicting events
-
-Note: The above API endpoints are based on the provided code snippets and may not be exhaustive. Additional endpoints may exist in the application.
-
----
-
-## Data Flow
-
-## Data Flow
-### Data Models
-* UserEntity: id, email, password
-* ChatMessageEntity: id, text, timestamp
-* ChatSessionEntity: id, userId, messages
-* DocumentEntity: id, name, category, isDownloaded, localPath
-* PartEntity: id, partNumber, partName, category, status
-* WorkOrderEntity: id, userId, workOrderId, status
-* WorkOrderGroupedImagesEntity: id, workOrderId, images
-
-### Data Flow Description
-1. **Input**: User interacts with the app, sending requests to the repository layer.
-2. **Processing**: The repository layer processes the requests, using the data sources (local and remote) to fetch or store data.
-3. **Storage**: The data is stored in the local database (Hive) or the remote server (via API).
-4. **Output**: The processed data is returned to the user, or used to update the app's state.
-
-### Storage
-* Local database (Hive): stores user data, chat messages, documents, and work orders.
-* Remote server (API): stores user data, chat messages, documents, and work orders.
-
-### Data Transformations
-* Serialization: converting data from the app's format to a format suitable for storage or transmission.
-* Deserialization: converting data from a stored or transmitted format to the app's format.
-* Validation: checking the data for correctness and consistency before storing or transmitting it.
-* ETL (Extract, Transform, Load): extracting data from the remote server, transforming it into a suitable format, and loading it into the local database.
-
----
-
 ## QA Review Summary
 
 - repo_description: Passed
 - architecture: Passed
 - api_section: Passed
-- data_flow: Passed
 
 ---

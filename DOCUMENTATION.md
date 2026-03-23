@@ -1,6 +1,6 @@
 # System Design Document — jahnavi783/fsm
 
-> Auto-generated | Created: 2026-03-23 12:23:09 | Branch: `main`
+> Auto-generated | Created: 2026-03-23 12:23:47 | Branch: `main`
 
 > This document is automatically regenerated on every commit by Git Doc Agent v4 (agentic).
 

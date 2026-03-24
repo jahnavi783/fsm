@@ -1,8 +1,17 @@
-# System Design Document — jahnavi783/fsm
+# Documentation — jahnavi783/fsm
 
-> Auto-generated | Created: 2026-03-24 11:13:54 | Branch: `main`
+> Auto-generated | Updated: 2026-03-24 11:14:55 | Commit: `d2d06aa` on `main` by git-doc-agent[bot]
 
-> This document is automatically regenerated on every commit by Git Doc Agent v4 (agentic).
+> Maintained by Git Doc Agent v4 (agentic).
+
+---
+
+## Sections Updated This Commit
+
+- Updated: **Repo Description**
+- Updated: **Architecture**
+- Updated: **Api Section**
+- Updated: **Data Flow**
 
 ---
 
